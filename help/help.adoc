@@ -1,0 +1,675 @@
+= YaguraExtender ヘルプ
+:toc2:
+:figure-caption: 図
+:table-caption: 表
+:numbered:
+
+== 動作環境
+
+.Java
+* JRE(JDK) 1.8以上(Oracle JRE を推奨)( http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+
+.Burp suite
+* 1.7以上 (http://www.portswigger.net/burp/)
+
+.開発環境
+* NetBean 8.2(http://netbeans.org/)
+* Apache ant 1.9(http://ant.apache.org/)
+* asciidoc (http://asciidoc.org/) 
+
+.利用ライブラリ
+* JSON
+** https://javaee.github.io/jsonp/
+** CDDL 1.1、GPL 2.0 デュアルライセンス
+
+* Java Mail
+** https://javaee.github.io/javamail/
+** CDDL 1.1、GPL 2.0 デュアルライセンス
+
+* Use Icon
+** http://www.famfamfam.com/lab/icons/silk/
+** Creative Commons Attribution 2.5 ライセンス
+
+== Start up 
+Burp suiteの「Extender」タブから「Add」ボタンを押して、YaguraExtender.jar を追加します。
+「Loaded」にチェックをいれることで拡張がロード後、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
+各種設定はこちらから行えるようになっています。
+
+image:images/Extender_Yagura.png[Extender]
+
+== YaguraExtenderタブ
+
+=== Encoding
+使用頻度の高い Encoding を選択することができます。ここで選択した値は、JTransCoderやJSONのView表示画面にて選択可能なEncodingとして表示されます。
+
+==== Encodingタブ
+image:images/custom_encoding.png[Encodingタブ]
+
+Target:: 
+    Javaで利用可能なすべてのエンコーディングリスト一覧が表示されます。
+
+Select:: 
+    選択したエンコーディング一覧されます。
+
+[＜]、[＞]ボタン:: 
+    選択したエンコーディングをTargetに移動もしくは、Selectに移動します。
+
+[Up]、[Down]ボタン::
+    選択したエンコーディングの順番を移動します。
+    ここでの順番が、エンコーディングに表示される順番になります。
+
+clip bord auto decode:: 
+    チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
+    クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。 +
+    現在のバージョンではサポートされていません。
+
+=== MatchReplace
+Burp sute 本体の Proxy => OptionタブのMatch and Replaceの拡張になります。複数のMatch and Replace を作成して切り替えられます。
+置換文字列として正規表現の前方参照を指定できます。Burp本体のMatch and Replaceとは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。
+
+==== MatchReplaceItemタブ
+image:images/custom_matchreplace.png[MatchReplaceタブ]
+
+[Select]ボタン:: 
+    選択したMatchReplaceを適用します。
+    適用済みを再度選択した場合は、解除されます。
+
+[New]ボタン:: 
+    MatchReplaceを新規作成します。
+    空のMatchReplaceItemダイヤログが表示されます。
+
+[Edit]ボタン:: 
+    選択したMatchReplaceを編集します。
+    選択した内容のMatchReplaceItemダイヤログが表示されます。
+
+[Remove]ボタン:: 
+    選択したMatchReplaceを削除します。
+
+[Up]、[Down]ボタン:: 
+    選択したMatchReplaceの順番を移動します。
+
+==== MatchReplace ダイヤログ
+image:images/custom_matchreplace_edit.png[MatchReplaceItemダイヤログ]
+
+in-scope only::
+    ターゲットをBurpのTargetタブのscopeにマッチするものに限定します。
+
+[burp import match and replace rule]ボタン:: 
+    現在のBurpのmatch and replace設定をインポートします。 +
+    現在のバージョンではサポートされていません。
+
+[Edit]ボタン:: 
+    選択した MatchReplace を編集します。
+
+[Remove]ボタン:: 
+    選択した MatchReplace を削除します。
+
+[Up]、[Down]ボタン:: 
+    選択した MatchReplace Item の順番を移動します。
+
+[All Clear]ボタン:: 
+    リストをすべて削除します。
+
+[Add]、[Update]ボタン:: 
+    MatchReplace を追加します。編集中の場合は更新します。
+
+==== MatchReplace Item 編集ダイヤログ
+image:images/custom_matchreplace_item.png[MatchReplaceItem編集ダイヤログ]
+
+Type(置換対象):: 
+    request heder,request body,response heder,response bodyのいずれかから選択します。
+
+Match(置換前):: 
+    置換対象の置換前の文字列を入力します。
+
+Replace(置換後)::
+    置換対象の置換後の文字列を入力します。
+    置換対象に request heder,response hederが選択されている場合でかつ置換後の文字のみを入力した場合はHeder行の追加になります。
+    また、$1、$2などの前方参照を指定することができます。
+    いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
+    アスキー文字以外を指定する場合は、メタ文字を利用します。
+
+Regexp:: 
+    チェック時、正規表現を有効にします。
+
+IgnoreCase::
+    チェック時、大文字小文字を無視します。
+
+Metachar:: 
+     メタ文字を有効にします。
+     以下のメタ文字が利用可能です。
+
+[options="header", cols="2,8"]
+|=======================
+|メタ文字|変換文字
+|\r      |CR(0xD) に変換
+|\n      |LF(0xA) に変換
+|\b      |0x08 に変換
+|\f      |0x0C に変換
+|\t      |TAB(0x08) に変換
+|\v      |0x0B に変換
+|\xhh    |16進表記、 hhには16進文字を2桁指定する。バイト列そのままに変換したい場合に利用します。
+|\uhhhh  |Unicode表記、 hhhhにはUnicodeコードを16進指定する。Unicode文字は推測したレスポンスの推測した文字コードに自動で変換されます。対応する文字が存在しない場合、?に変換されます。
+|=======================
+
+=== MatchAlert
+
+指定した文字列にマッチする文字がレスポンスに現れた場合に通知してくれます。 ExceptionなどのErrorCode系の文字列を登録することを想定しています。
+通知方法には以下の４つの方法があり、同時に複数の方法を選択できます
+
+. BurpのAlertsタブにて通知する方法
+. タスクトレイのメッセージにて通知する方法 +
+  現在のバージョンではサポートされていません。
+. マッチしたヒストリのHighlightColorを変更する方法 +
+  proxyにチェックが入っている場合にしか意味がありません。
+. マッチしたヒストリのCommentを変更する方法 +
+  proxyにチェックが入っている場合にしか意味がありません。
+
+==== MatchAlertタブ
+image:images/custom_matchalert.png[MatchAlertタブ]
+
+[Enable Alert]チェックボックス:: 
+    チェック時にMatchAlert機能を有効にします。
+[Edit]ボタン:: 
+    選択した MatchAlert Item を編集します。
+[Remove]ボタン:: 
+    選択した MatchAlert Item を削除します。
+[Add]、[Update]ボタン:: 
+    MatchAlert Item を追加します。編集中時は更新します。
+
+==== MatchAlert Item 編集ダイヤログ
+
+image:images/custom_matchalert_item.png[MatchAlertItem編集ダイヤログ]
+
+Type(検索対象):: 
+    request,responseのいずれかから選択
+
+Match(検索文字列):: 
+    マッチさせたい文字列を入力します。
+
+Target(アラート対象):: 
+    proxy,repeater,spider,intruder,scanner,sequencer
+    チェックした対象がMatchAlertの対象になります。
+
+Regexp:: 
+    チェック時正規表現を有効にします。
+
+IgnoreCase:: 
+    チェック時大文字小文字を無視します。
+
+alert tabs:: 
+     Burp suite のalertsが通知先になります。
+
+try message:: 
+    トレイのメッセージが通知先になります。
+
+Highlight Color::
+     文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
+     proxyログにチェックした場合のみ有効です。
+
+comment:: 
+     文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
+     proxyログにチェックした場合のみ有効です。
+
+
+=== AutoResponder
+指定したURLにマッチする場合に指定したファイルの内容でレスポンスを返します。
+
+==== AutoResponderタブ
+image:images/custom_autoresponder.png[AutoResponderタブ]
+
+[Edit]ボタン:: 
+    選択した AutoResponder Itemを編集します。
+[Remove]ボタン:: 
+    選択した AutoResponder tItemを削除します。
+[Add]、[Update]ボタン:: 
+    AutoResponder temを追加します。編集中時は更新します。
+
+==== AutoResponder Item編集ダイヤログ
+image:images/custom_autoresponder_item.png[AutoResponder Item 編集ダイヤログ]
+
+Match(検索文字列):: 
+    マッチさせたいURLを入力します。
+    マッチ方法は前方一致にになります。
+
+Regexp:: 
+    チェック時正規表現を有効にします。
+
+IgnoreCase:: 
+    チェック時大文字小文字を無視します。
+
+Replace:: 
+    置き換える対象のファイルのパスを指定します。
+
+
+=== SendTo
+Burpがもつ拡張メニューを利用した機能です。
+BurpのHistory等から表示される右クリックのメニューを増やすことができ、 メニューから指定した機能を呼び出すことができます。送られる内容は、選択したHistoryのリクエストとレスポンスの内容になります。 
+
+==== SendToタブ
+image:images/custom_sendto.png[SendToタブ]
+
+[Send To Submenu]チェックボックス:: 
+    チェックした場合、Send To Menuをサブメニューで表示します。
+
+[Edit]ボタン:: 
+    選択したSendToItemを編集します。
+    選択した内容のSendToItemの編集ダイヤログが表示されます。
+
+[Remove]ボタン:: 
+    選択したSendToItemを削除します。
+
+[Up]、[Down]ボタン:: 
+    選択したSendToItemの順番を移動します。
+    ここでの順番が、右クリックのメニューに表示される順番になります。
+
+[Add]ボタン::
+    SendToItemを追加します。
+    空のSendToItemの編集ダイヤログが表示されます。
+
+==== SendToItem編集ダイヤログ
+
+SendToには、Baseタブと、Extendタブがあります。 Baseタブでは、バイナリエディタやファイル比較ツール等を登録すると便利です。 右クリックからエディタを呼び出すと、一時的に作られたファイルを引数にしてバイナリエディタが起動されます。 比較ツールの場合、2つHistoryを選択することで比較することができます。 これは BurpのHEX ダンプやCompare機能が使いにくいためにつくりました。
+
+ExtendタブにはBaseタブでは対応ができない便利な機能をあつめてます。
+
+==== Baseタブ
+image:images/custom_sendto_base.png[SendToItem編集 Base ダイヤログ]
+
+Menu Caption:: 
+    メニュー名
+
+Target:: 
+    任意のバイナリエディタやファイル比較ツール等の実行パスを記載します。
+    serverにチェックが入ってる場合は、http:// または https:// で始まるURLを書きます。
+
+server::
+    サーバに送信する場合にチェックします。
+    serverにチェックが入ってる場合は、Target に記載されたURLに対してmultipartのデータを送ります。
+
+requset、response:: 
+    リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
+    リクエストおよびレスポンスはヘッダも含みます。
+
+===== 送信される multipart のデータ
+     host :: 
+           ホスト名
+     port:: 
+           ポート名
+     protocol:: 
+           protocol名(httpまたは、https)
+     url::
+           url文字列
+     requset:: 
+           リクエスト
+     response:: 
+           レスポンス
+     comment:: 
+           コメント
+     highlight:: 
+           選択した Highlight Color
+           以下のいずれかの値になります。 +
+           red, orange, yellow, green, cyan, blue, pink, magenta, gray
+     encoding:: 
+            推測エンコーディング
+
+----
+Content-Type: multipart/form-data; boundary=---------------------------265001916915724
+Content-Length: 988
+
+-----------------------------265001916915724
+Content-Disposition: form-data; name="host"
+
+example.jp
+-----------------------------265001916915724
+Content-Disposition: form-data; name="port"
+
+80
+-----------------------------265001916915724
+Content-Disposition: form-data; name="protocol"
+
+http
+-----------------------------265001916915724
+Content-Disposition: form-data; name="url"
+
+http://example.jp/
+-----------------------------265001916915724
+Content-Disposition: form-data; name="comment"
+
+
+-----------------------------265001916915724
+Content-Disposition: form-data; name="highlight"
+
+red
+-----------------------------265001916915724
+Content-Disposition: form-data; name="request"; filename="request"
+Content-Type: text/plain
+
+request header and body
+-----------------------------265001916915724
+Content-Disposition: form-data; name="response"; filename="response"
+Content-Type: text/plain
+
+Response header and body
+-----------------------------265001916915724
+Content-Disposition: form-data; name="encoding"
+
+UTF-8
+-----------------------------265001916915724--
+----
+
+現時点ではこの形式をうけとることができる（公開されている）Webアプリはありません。
+sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけのCGIアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。
+
+==== Extendタブ
+image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
+
+     request and response to file:: 
+          レスポンスのボディの部分のみをファイルに保存します。
+     send to jtranscoder:: 
+          JTransCoder のInputに選択した文字列を送ります。
+     paste from jtranscoder:: 
+          JTransCoder のOutputから文字列を貼り付けます。
+     message info copy:: 
+          message の情報をクリップボードにコピーします。
+
+=== Logging
+
+ログの自動ロギング機能です。
+この機能では、毎回ログの選択を行わなくても自動でログを 保存してくれます。 
+
+==== Loggingタブ
+image:images/custom_logging.png[Loggingタブ]
+
+auto logging:: 
+    チェックすると自動でログを記録します。LogDirで指定したディレクトリに作成されます。
+
+Log Dir:: 
+    ログを作成するディレクトリを指定します。
+    日付形式(burp_yyyyMMdd)のディレクトリが作成されます。
+    同じ日付が既に存在する場合は、その日付のディレクトリが使われます。出力するログファイル名が存在した場合は追記されます。
+
+Log size:: 
+    ログファイルの上限サイズを指定します。ファイル上限に達した場合は新しい名前でログが作成されます。
+    ログサイズの上限に達した場合は、.1,.2のように付加されていきます。
+----
+proxy-message.log
+proxy-message.log.1
+proxy-message.log.2
+	:
+----
+
+0を指定した場合は上限はありません。
+
+===== Logging target
+
+ProxyLog:: 
+     Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。
+ToolLog:: 
+     各種Toolのログの値が記録されます。
+history is included:: 
+     auto loggingがオフの状態でのみチェックできます。
+     チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。
+
+=== JSearch
+JSearch タブはProxyのHistory一覧から文字を検索するための機能です。
+
+==== JSearchタブ
+image:images/custom_jsearch.png[JSearchタブ]
+
+[Search]ボタン:: 
+     ProxyのHistory一覧からテキストボックスに入力した値で検索します。
+
+Regexp:: 
+    チェック時正規表現を有効にします。
+
+IgnoreCase:: 
+    チェック時大文字小文字を無視します。
+
+request::
+    検索対象をリクエストに限定します。
+
+response::
+    検索対象をレスポンスに限定します。
+ 
+commint::
+    検索対象をコメントに限定します。
+
+Search Encoding::
+    検索時のエンコーディングを指定します。
+
+=== JTransCoder
+Transcoder タブは各種エンコード、デコードを行うための機能です。
+
+==== Translatorタブ
+image:images/custom_jtranscoder.png[Translatorタブ]
+
+Encode Type:: 
+     Encode時の変換する対象の文字列を指定します。
+
+Convert Case:: 
+     文字がエンコードされたときの16進表記を大文字にするか小文字するかを指定します。
+
+NewLineMode:: 
+     エディタの改行コードを指定します。
+
+Encodeing:: 
+     変換する文字のエンコーディングを指定します。コンボボックスで選択可能なエンコーディングは、Encodingタブで設定したものが表示されます。 +
+     Raw にチェックすると ISO-8859_1 にてエンコード、デコードします。 +
+     Guess にチェックすると文字コードを自動で判定してエンコード、デコードします。
+
+[Clear]ボタン:: 
+     InputおよびOutputの内容をクリアします。
+
+[Output => Input]ボタン:: 
+     Outputの内容をInputに送ります。
+
+[Smart Decode]ボタン:: 
+     文字列の形式を自動判定しデコードします。
+
+[Encode]/[Decode]ボタン:: 
+     選択した変換方式でエンコード、デコード変換を行います。
+
+===== Encode/Decode
+
+チェックしたエンコード/デコードを行います。
+
+URL(%hh)::
+     URLエンコード、デコードを行います。
+
+URL(%uhhhh):: 
+     Unicode形式のURLエンコード、デコードを行います。
+
+Base64:: 
+    Base64形式のエンコード、デコードを行います。
+
+76 newline:: 
+    Base64形式のエンコード時に76文字で改行を行う場合に指定します。
+
+uuencode::
+    uuencode形式のエンコード、デコードを行います。
+
+QuotedPrintable::
+    QuotedPrintable形式のエンコード、デコードを行います。
+
+HTML(<,>,",')::
+    HTMLのエンコード、デコードを行います。
+    エンコードは、「<,>,",'」のみされます。
+
+&#dd;:: 
+    10進数形式の実体参照形式のエンコード、デコードを行います。
+
+&#xhh;::
+    16進数形式の実体参照形式のエンコード、デコードを行います。
+
+ZLIB::
+    ZLIBによるdeflate、inflateを行います。
+
+UTF-7:: 
+    UTF-7のエンコード、デコードを行います。
+
+UTF-8:: 
+    UTF-8のエンコードを行います。2バイト表現、3バイト表現、4バイト表現をURLエンコードします。
+
+C Lang:: 
+    C言語形式のエスケープお行います。
+
+SQL:: 
+    SQL言語形式のエスケープお行います。
+
+===== Hash 
+    テキストエリアに入力されている値でハッシュ値計算を行います。
+
+md2:: 
+    md2によるハッシュを求めます
+
+md5:: 
+    md5によるハッシュを求めます
+
+sha1:: 
+    sha1によるハッシュを求めます
+
+sha256:: 
+    sha256によるハッシュを求めます
+
+sha384:: 
+    sha384によるハッシュを求めます
+
+sha512:: 
+    sha512によるハッシュを求めます
+
+===== Raidx 
+
+Inputのテキストエリアに入力されている値を基数変換します。
+
+Bin::
+  2進数に変換します。
+    0bで始まる文字列は2進数と判断されます。
+
+Oct:: 
+    8進数に変換します。
+    0で始まる文字列は8進数と判断されます。
+
+Dec:: 
+    10進数に変換します。
+    1～9の数字で始まる文字列は10進数と判断されます。
+
+Hex:: 
+    16進数に変換します。
+    0xの数字で始まる文字列は16進数と判断されます。
+
+==== Generaterタブ
+
+Generater には、sequenceタブとrandomタブがあります。
+
+.sequenceタブ
+sequenceタブは連続する文字リストを生成するための簡易的な機能です。
+
+image:images/custom_gene_seq.png[Generaterタブ]
+
+生成書式文字列入力:: 
+    C言語のprintf形式の書式文字列を入力します。
+    書式文字列は数字関係の書式を一つしか指定できません。
+
+start:: 
+    リストの開始の数字を入力します。
+
+end:: 
+    リストの終了の数字を入力します。終了の数字まで生成されます。
+
+step::
+    startからendまでの数字の増加数を指定します。
+
+[generate]ボタン::
+  指定した情報でリストを生成します。
+
+[List Copy]ボタン::
+  生成したリストをクリップボードに出力します。
+
+[Save to file]ボタン::
+  生成したリストをファイルに出力します。
+
+.randomタブ
+randomタブはランダムな文字リストを生成するための簡易的な機能です。
+
+image:images/custom_gene_random.png[randomタブ]
+
+Character:: 
+    Characterは生成する文字の種類を指定します。
+
+Character length:: 
+    生成する文字数の長さを指定します。
+
+generator count::
+    生成する個数を入力します。
+
+[generate]ボタン::
+  指定した情報でリストを生成します。
+
+[List Copy]ボタン::
+  生成したリストをクリップボードに出力します。
+
+[Save to file]ボタン::
+  生成したリストをファイルに出力します。
+
+
+=== Generate CSRF PoC
+
+CSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。
+
+ProxyのHistoryタブなどのリクエストを確認可能な箇所において、
+選択したリクエストがPOSTリクエスト場合に表示されます。
+
+image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
+
+[Generate]ボタン::
+   設定した条件にしたがってPoCを生成します。
+   条件を変更した場合は再度、[Generate]ボタンを押して生成しなおす必要があります。
+
+[Copy to Clipbord]ボタン::
+   生成したPoCをクリップボードにコピーします。 +
+   文字コードは無視されます。
+
+[Save to file]ボタン::
+   生成したPoCをファイルに保存します。 +
+   指定した文字コードで保存されます。
+   
+[auto submit]チェックボックス::
+   自動でsubmitされるPoCを生成します。
+
+[Time Delay]チェックボックス::
+   指定時間後(秒)にsubmitされるPoCを生成します。 +
+   [auto submit]チェック時のみ有効になります。
+
+[GET]チェックボックス::
+   PoCのリクエストメソッドがGETメソッドになるようにします。
+
+[https]チェックボックス::
+   PoCのリクエストをHTTPSにする必要がある場合にチェックします。
+   選択したリクエストから自動判定された値がデフォルトになります。
+   
+[HTML5]チェックボックス::
+   PoCの罠をHTML5の機能を利用して作成します。
+   
+[Binay]チェックボックス::
+   チェック時、バイナリアップロードを可能とします。 +
+   [HTML5]チェック時のみ有効になります。
+
+. Content-Type
+auto:: Content-Typeを自動判定します。
+text field:: text フィールドを利用してPoCを作成します。 +
+              Content-TypeがMulti Partの場合にこの選択を行ってもうまく生成できません。
+multi part:: Content-TypeがMulti partの場合にこの選択を行います。 +
+plain:: text area を利用してPoCを作成します。 +
+        Content-TypeがMulti part かつファイルアップロードの項目がある場合にこの選択を行います。 +
+        バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。
+
+=== Version
+バージョン情報を表示します。
+
+[Import]ボタン:: 
+     設定をXML形式にてExportします。
+[Export]ボタン:: 
+     XML形式の設定をImportします。
+
+

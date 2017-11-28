@@ -1,0 +1,110 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package yagura.model;
+
+import extend.util.Util;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author isayan
+ */
+public class MatchReplaceProperty {
+
+    private String selectedName = "";
+    
+    /**
+     * @return the selectedName
+     */
+    public String getSelectedName() {
+        return this.selectedName;
+    }
+
+    /**
+     * @param selectedName the selectedName to set
+     */
+    public void setSelectedName(String selectedName) {
+        this.selectedName = selectedName;
+    }
+        
+    private final Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>(16, (float)0.75, true);
+
+    /**
+     * @return the replaceMap
+     */
+    public Map<String, MatchReplaceGroup> getReplaceMap() {
+        return this.replaceMap;
+    }
+
+    /**
+     * @param replaceMap the replaceMap to set
+     */
+    public void setReplaceMap(Map<String, MatchReplaceGroup> replaceMap) {
+        if (replaceMap.get(this.selectedName) == null) {
+            this.selectedName = "";
+        }
+        this.replaceMap.clear();
+        this.replaceMap.putAll(replaceMap);
+   }
+
+    /**
+     *
+     * @param selectedName
+     * @return
+     */
+    public MatchReplaceGroup getReplaceSelectedGroup(String selectedName) {
+        return this.replaceMap.get(selectedName);
+    }    
+    /**
+     *
+     * @param selectedName
+     * @return
+     */
+    public List<MatchReplaceItem> getReplaceSelectedList(String selectedName) {
+        MatchReplaceGroup group = this.replaceMap.get(selectedName);
+        if (group == null) {
+            return new ArrayList<MatchReplaceItem>();
+        } else {
+            return group.getReplaceList();
+        }
+    }
+    /**
+     * @return the matchReplaceGroup
+     */
+    public MatchReplaceGroup getMatchReplaceGroup() {
+        return this.replaceMap.get(this.selectedName);
+    }
+    
+    /**
+     * @return the matchReplaceList
+     */
+    public List<MatchReplaceItem> getMatchReplaceList() {
+        MatchReplaceGroup group = this.replaceMap.get(this.selectedName);
+        return group.getReplaceList();
+    }
+
+    public boolean isSelectedMatchReplace() {
+        MatchReplaceGroup group = this.replaceMap.get(this.selectedName);
+        return (group != null);
+    }
+
+    public List<String> getReplaceNameList() {
+        return Util.toList(this.replaceMap.keySet().iterator());
+    }
+    
+    private boolean autoRecognise = false;
+
+    public boolean getAutoRecogniseEncoding() {
+        return this.autoRecognise;
+    }
+
+    public void setAutoRecogniseEncoding(boolean autoRecognise) {
+        this.autoRecognise = autoRecognise;
+    }
+    
+}

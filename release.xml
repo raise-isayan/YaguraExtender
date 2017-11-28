@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<project name="YaguraExtender" default="release" basedir="." xmlns:asciidoctor="antlib:org.asciidoctor.ant">
+
+    <!-- Load our properties -->
+    <property file="src/yagura/release.properties"/>
+    <property name="dist.dir" value="."/>
+    <property name="dist.zip" value="YaguraExtender.${version}.zip"/>
+    <property name="help.zip" value="YaguraExtender.${version}-help.zip"/>
+
+    <target name="release">
+        <antcall target="margepkg"/>
+        <antcall target="releasepkg"/>
+        <antcall target="releasehelp"/>
+    </target>
+
+    <target name="margepkg">
+        <jar destfile="release/YaguraExtender.jar" update="false">
+            <zipgroupfileset dir="dist/" includes="*.jar" />
+            <zipgroupfileset dir="dist/lib" includes="*.jar" />
+        </jar>
+    </target>
+
+    <target name="releasepkg">
+        <zip basedir="." destfile="${dist.zip}" update="false">
+            <include name="**"/>
+            <exclude name="dist/**"/>
+            <exclude name="nbproject/configs/**"/>
+            <exclude name="nbproject/private/**"/>
+            <exclude name="help/html/**"/>
+            <exclude name="help/pdf/**"/>
+            <exclude name="build/**"/>
+            <exclude name="**/.svn"/>
+            <exclude name="**/.git"/>
+            <exclude name="*.zip"/>
+            <exclude name="*.log"/>
+            <exclude name="*.log.lck"/>
+            <exclude name="burp.extender.xml"/>
+        </zip>
+    </target>
+
+    <target name="ascdoctor-lib">
+        <mkdir dir="build/lib"/>
+        <get src="http://repo1.maven.org/maven2/org/asciidoctor/asciidoctor-ant/${asciidoctor-version}/asciidoctor-ant-${asciidoctor-version}.jar"
+           dest="build/lib/asciidoctor-ant.jar" usetimestamp="true"/>
+    </target>
+
+    <target name="ascdoctor-def" depends="ascdoctor-lib">
+        <taskdef uri="antlib:org.asciidoctor.ant" resource="org/asciidoctor/ant/antlib.xml" classpath="build/lib/asciidoctor-ant.jar"/>
+    </target>
+
+    <target name="help" depends="ascdoctor-def">
+        <asciidoctor:convert sourceDirectory="help" outputDirectory="help" imagesDir="." backend="html5"/>
+    </target>
+
+    <target name="releasehelp" depends="help">
+        <zip basedir="." destfile="${help.zip}" update="false">
+            <include name="help/css/**"/>
+            <include name="help/html/**"/>
+        </zip>
+    </target>
+    
+    <target name="clean">
+      <delete dir="/build"/>
+      <delete dir="/dist"/>
+    </target>
+    
+</project>
