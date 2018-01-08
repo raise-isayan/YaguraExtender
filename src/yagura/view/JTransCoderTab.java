@@ -25,13 +25,15 @@ import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import java.security.KeyPair;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
 import yagura.external.CertificateInKey;
+import yagura.external.TransUtil.ConvertCase;
+import yagura.external.TransUtil.EncodeType;
+import yagura.external.TransUtil.NewLine;
+import yagura.model.JTransCoderProperty;
 
 /**
  *
@@ -172,13 +174,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
         lblStep = new javax.swing.JLabel();
         tabRandom = new javax.swing.JPanel();
         pnlCharacter = new javax.swing.JPanel();
-        chkNumber = new javax.swing.JCheckBox();
-        chkLowercase = new javax.swing.JCheckBox();
-        chkUppercase = new javax.swing.JCheckBox();
-        chkSpace = new javax.swing.JCheckBox();
-        chkUnderline = new javax.swing.JCheckBox();
+        chkCharacterNumber = new javax.swing.JCheckBox();
+        chkCharacterLowerCase = new javax.swing.JCheckBox();
+        chkCharacterUpperCase = new javax.swing.JCheckBox();
+        chkCharacterSpace = new javax.swing.JCheckBox();
+        chkCharacterUnderline = new javax.swing.JCheckBox();
         pnlCustom = new javax.swing.JPanel();
-        chkCustom = new javax.swing.JCheckBox();
+        chkCharacterCustom = new javax.swing.JCheckBox();
         txtCustom = new javax.swing.JTextField();
         pnlStringLength = new javax.swing.JPanel();
         rdoLength4 = new javax.swing.JRadioButton();
@@ -594,10 +596,21 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlEncoding.setBorder(javax.swing.BorderFactory.createTitledBorder("Encoding"));
 
+        cmbEncoding.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbEncodingActionPerformed(evt);
+            }
+        });
+
         chkRawMode.setText("Raw(8859_1)");
         chkRawMode.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chkRawModeStateChanged(evt);
+            }
+        });
+        chkRawMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkRawModeActionPerformed(evt);
             }
         });
 
@@ -605,6 +618,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
         chkGuess.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chkGuessStateChanged(evt);
+            }
+        });
+        chkGuess.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkGuessActionPerformed(evt);
             }
         });
 
@@ -680,6 +698,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
         btnGrpEncodeType.add(rdoAll);
         rdoAll.setSelected(true);
         rdoAll.setText("All");
+        rdoAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoAllActionPerformed(evt);
+            }
+        });
         pnlEncode.add(rdoAll);
 
         btnGrpEncodeType.add(rdoAlphaNum);
@@ -726,6 +749,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         btnConvertCase.add(rdoUpperCase);
         rdoUpperCase.setText("UpperCase");
+        rdoUpperCase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoUpperCaseActionPerformed(evt);
+            }
+        });
         pnlConvertCase.add(rdoUpperCase);
 
         pnlSelectOption.add(pnlConvertCase);
@@ -736,14 +764,29 @@ public class JTransCoderTab extends javax.swing.JPanel {
         btnGrpNewLine.add(rdoNone);
         rdoNone.setSelected(true);
         rdoNone.setText("None");
+        rdoNone.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoNoneActionPerformed(evt);
+            }
+        });
         pnlNewLine.add(rdoNone);
 
         btnGrpNewLine.add(rdoCR);
         rdoCR.setText("CR");
+        rdoCR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoCRActionPerformed(evt);
+            }
+        });
         pnlNewLine.add(rdoCR);
 
         btnGrpNewLine.add(rdoLF);
         rdoLF.setText("LF");
+        rdoLF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoLFActionPerformed(evt);
+            }
+        });
         pnlNewLine.add(rdoLF);
 
         btnGrpNewLine.add(rdoCRLF);
@@ -764,6 +807,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
         chkViewLineWrap.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chkViewLineWrapStateChanged(evt);
+            }
+        });
+        chkViewLineWrap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkViewLineWrapActionPerformed(evt);
             }
         });
         pnlWrap.add(chkViewLineWrap);
@@ -925,25 +973,25 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlCharacter.setBorder(javax.swing.BorderFactory.createTitledBorder("Character"));
         pnlCharacter.setLayout(new java.awt.GridLayout(0, 1));
 
-        chkNumber.setText("Number");
-        pnlCharacter.add(chkNumber);
+        chkCharacterNumber.setText("Number");
+        pnlCharacter.add(chkCharacterNumber);
 
-        chkLowercase.setText("Lowercase");
-        pnlCharacter.add(chkLowercase);
+        chkCharacterLowerCase.setText("LowerCase");
+        pnlCharacter.add(chkCharacterLowerCase);
 
-        chkUppercase.setText("Uppercase");
-        pnlCharacter.add(chkUppercase);
+        chkCharacterUpperCase.setText("UpperCase");
+        pnlCharacter.add(chkCharacterUpperCase);
 
-        chkSpace.setText("Space");
-        pnlCharacter.add(chkSpace);
+        chkCharacterSpace.setText("Space");
+        pnlCharacter.add(chkCharacterSpace);
 
-        chkUnderline.setText("Underline(_)");
-        pnlCharacter.add(chkUnderline);
+        chkCharacterUnderline.setText("Underline(_)");
+        pnlCharacter.add(chkCharacterUnderline);
 
         pnlCustom.setLayout(new java.awt.BorderLayout());
 
-        chkCustom.setText("Custom");
-        pnlCustom.add(chkCustom, java.awt.BorderLayout.WEST);
+        chkCharacterCustom.setText("Custom");
+        pnlCustom.add(chkCharacterCustom, java.awt.BorderLayout.WEST);
 
         txtCustom.setText("!\"#$%&'()");
         txtCustom.addActionListener(new java.awt.event.ActionListener() {
@@ -1265,7 +1313,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     /*
      * ステータスメッセージ書式
      */
-    private static final MessageFormat statusTextFormat = new MessageFormat(
+    private static final MessageFormat STATUS_TEXT_FORMAT = new MessageFormat(
             "Length:{0,number} Position:{1,number} SelectLength:{2,number}"); // @jve:decl-index=0:
     private CustomTableModel modelHex = null;
 
@@ -1335,7 +1383,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_txtFormatKeyPressed
 
     private void rdoAlphaNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoAlphaNumActionPerformed
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_rdoAlphaNumActionPerformed
 
     private void btnSmartDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartDecodeActionPerformed
@@ -1347,19 +1395,19 @@ public class JTransCoderTab extends javax.swing.JPanel {
             String value = this.getInputText();
             String encode = value;
             if (this.rdoUrl.isSelected()) {
-                encode = TransUtil.encodeUrl(value, this.getSelectEncode(), this.encodeURLPattern(), this.rdoUpperCase.isSelected());
+                encode = TransUtil.encodeUrl(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUrlUnicode.isSelected()) {
-                encode = TransUtil.toUnocodeUrlEncode(value, this.encodeURLPattern(), this.rdoUpperCase.isSelected());
+                encode = TransUtil.toUnocodeUrlEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
                 if (this.rdoUpperCase.isSelected()) {
                     encode = encode.toUpperCase();
                 }
             } else if (this.rdoBase64.isSelected()) {
                 encode = ConvertUtil.toBase64Encode(value, this.getSelectEncode());
-                if (chk76Newline.isSelected()) {
-                    encode = TransUtil.newLine(getNewLine(getSelectNewLine()), encode, 76);
+                if (this.chk76Newline.isSelected()) {
+                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
                 }
-                else if (chk64Newline.isSelected()) {
-                    encode = TransUtil.newLine(getNewLine(getSelectNewLine()), encode, 64);
+                else if (this.chk64Newline.isSelected()) {
+                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
                 }                
             } else if (this.rdoUuencode.isSelected()) {
                 encode = TransUtil.toUuencode(value, this.getSelectEncode());
@@ -1368,13 +1416,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
             } else if (this.rdoHtml.isSelected()) {
                 encode = TransUtil.toHtmlEncode(value);
             } else if (this.rdoUnicodeHex.isSelected()) {
-                encode = TransUtil.toUnocodeEncode(value, this.encodeURLPattern(), this.rdoUpperCase.isSelected());
+                encode = TransUtil.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex.isSelected()) {
-                encode = TransUtil.toByteEncode(value, this.getSelectEncode(), this.encodeURLPattern(), this.rdoUpperCase.isSelected());
+                encode = TransUtil.toByteEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoHtmlDec.isSelected()) {
-                encode = TransUtil.toHtmlDecEncode(value, this.encodeURLPattern());
+                encode = TransUtil.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlHex.isSelected()) {
-                encode = TransUtil.toHtmlHexEncode(value, this.encodeURLPattern(), this.rdoUpperCase.isSelected());
+                encode = TransUtil.toHtmlHexEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoZLIB.isSelected()) {
                 encode = Util.getRawStr(ConvertUtil.compressZlib(Util.encodeMessage(value, this.getSelectEncode())));
             } else if (this.rdoUTF7.isSelected()) {
@@ -1402,7 +1450,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
             }
             this.setOutput(encode);
         } catch (UnsupportedEncodingException e1) {
-            setOutputText(Util.getStackTraceMessage(e1));
+            this.setOutputText(Util.getStackTraceMessage(e1));
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnEncodeActionPerformed
@@ -1584,7 +1632,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRadixHexActionPerformed
 
     private void rdoCRLFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCRLFActionPerformed
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_rdoCRLFActionPerformed
 
     private void txtInputRawCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtInputRawCaretUpdate
@@ -1611,7 +1659,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_btnOutputfileActionPerformed
 
     private void rdoLigthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoLigthActionPerformed
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_rdoLigthActionPerformed
 
     private void txtCustomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomActionPerformed
@@ -1632,11 +1680,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_rdoQuotedPrintableActionPerformed
 
     private void rdoStandardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoStandardActionPerformed
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_rdoStandardActionPerformed
 
     private void rdoLowerCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoLowerCaseActionPerformed
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_rdoLowerCaseActionPerformed
 
     private void btnCalcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcActionPerformed
@@ -1759,6 +1807,42 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.txtInputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
         this.txtOutputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
     }//GEN-LAST:event_chkViewLineWrapStateChanged
+
+    private void rdoAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoAllActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_rdoAllActionPerformed
+
+    private void rdoUpperCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoUpperCaseActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_rdoUpperCaseActionPerformed
+
+    private void rdoNoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNoneActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_rdoNoneActionPerformed
+
+    private void rdoCRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCRActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_rdoCRActionPerformed
+
+    private void rdoLFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoLFActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_rdoLFActionPerformed
+
+    private void chkViewLineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewLineWrapActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkViewLineWrapActionPerformed
+
+    private void chkRawModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRawModeActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkRawModeActionPerformed
+
+    private void chkGuessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGuessActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkGuessActionPerformed
+
+    private void cmbEncodingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEncodingActionPerformed
+        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_cmbEncodingActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalyze;
@@ -1793,14 +1877,14 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chk64Newline;
     private javax.swing.JCheckBox chk76Newline;
-    private javax.swing.JCheckBox chkCustom;
+    private javax.swing.JCheckBox chkCharacterCustom;
+    private javax.swing.JCheckBox chkCharacterLowerCase;
+    private javax.swing.JCheckBox chkCharacterNumber;
+    private javax.swing.JCheckBox chkCharacterSpace;
+    private javax.swing.JCheckBox chkCharacterUnderline;
+    private javax.swing.JCheckBox chkCharacterUpperCase;
     private javax.swing.JCheckBox chkGuess;
-    private javax.swing.JCheckBox chkLowercase;
-    private javax.swing.JCheckBox chkNumber;
     private javax.swing.JCheckBox chkRawMode;
-    private javax.swing.JCheckBox chkSpace;
-    private javax.swing.JCheckBox chkUnderline;
-    private javax.swing.JCheckBox chkUppercase;
     private javax.swing.JCheckBox chkViewLineWrap;
     private javax.swing.JComboBox<String> cmbEncoding;
     private javax.swing.JComboBox cmbIILUTF8;
@@ -1939,7 +2023,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 encodeCodeList.add((int) caretint1);
             }
 
-            String sttmsg = statusTextFormat.format(new Object[]{
+            String sttmsg = STATUS_TEXT_FORMAT.format(new Object[]{
                 new Integer(this.txtInputRaw.getText().length()),
                 new Integer(this.txtInputRaw.getCaret().getDot()),
                 new Integer(this.txtInputRaw.getSelectionEnd() - this.txtInputRaw.getSelectionStart())});
@@ -2077,55 +2161,88 @@ public class JTransCoderTab extends javax.swing.JPanel {
         }
         return enc;
     }
-
-    private Pattern encodeURLPattern() {
+            
+    private EncodeType getEncodeType() {
         if (this.rdoAll.isSelected()) {
-            return TransUtil.ENCODE_ALL;
+            return EncodeType.ALL;
         } else if (this.rdoAlphaNum.isSelected()) {
-            return TransUtil.ENCODE_ALPHANUM;
+            return EncodeType.ALPHANUM;
         } else if (this.rdoLigth.isSelected()) {
-            return TransUtil.ENCODE_LIGHT;
+            return EncodeType.LIGHT;
         } else if (this.rdoStandard.isSelected()) {
-            return TransUtil.ENCODE_STANDARD;
+            return EncodeType.STANDARD;
         }        
-        return TransUtil.ENCODE_ALL;
+        return EncodeType.ALL;       
     }
 
-    private int getSelectNewLine() {
-        int newLineMode = TransUtil.NEW_LINE_CRLF;
+    private void setEncodeType(EncodeType type) {
+        switch (type) {
+            case ALL:
+                this.rdoAll.setSelected(true);
+                break;
+            case ALPHANUM:
+                this.rdoAlphaNum.setSelected(true);
+                break;
+            case LIGHT:
+                this.rdoLigth.setSelected(true);
+                break;
+            case STANDARD:
+                this.rdoStandard.setSelected(true);
+                break;
+        }
+    }
+    
+    private NewLine getSelectNewLine() {
+        NewLine newLineMode = NewLine.CRLF;
         if (this.rdoNone.isSelected()) {
-            newLineMode = TransUtil.NEW_LINE_NONE;
+            newLineMode = NewLine.NONE;
         } else if (this.rdoCRLF.isSelected()) {
-            newLineMode = TransUtil.NEW_LINE_CRLF;
+            newLineMode = NewLine.CRLF;
         } else if (this.rdoLF.isSelected()) {
-            newLineMode = TransUtil.NEW_LINE_LF;
+            newLineMode = NewLine.LF;
         } else if (this.rdoCR.isSelected()) {
-            newLineMode = TransUtil.NEW_LINE_CR;
+            newLineMode = NewLine.CR;
         }
         return newLineMode;
     }
 
-    private String getNewLine(int linemode) {
-        String newLine = Util.NEW_LINE;
-        switch (linemode) {
-            case TransUtil.NEW_LINE_NONE:
-                newLine = Util.NEW_LINE;
+    private void setNewLine(NewLine newLineMode) {
+        switch (newLineMode) {
+            case NONE:  
+                this.rdoNone.setSelected(true);
                 break;
-            case TransUtil.NEW_LINE_CRLF:
-                newLine = "\r\n";
+            case CRLF:    
+                this.rdoCRLF.setSelected(true);
                 break;
-            case TransUtil.NEW_LINE_LF:
-                newLine = "\n";
+            case CR:    
+                this.rdoCR.setSelected(true);
                 break;
-            case TransUtil.NEW_LINE_CR:
-                newLine = "\r";
-                break;
-            default:
-                break;
+            case LF:    
+                this.rdoLF.setSelected(true);
+                break;            
+        }        
+    }
+    
+    private ConvertCase getConvertCase() {
+        if (this.rdoUpperCase.isSelected()) {
+            return ConvertCase.UPPER;
         }
-        return newLine;        
+        else if (this.rdoLowerCase.isSelected()) {
+            return ConvertCase.LOWLER;        
+        }        
+        return ConvertCase.LOWLER;        
     }
 
+    private void setConvertCase(ConvertCase convertCase) {
+        switch (convertCase) {
+            case UPPER:    
+                this.rdoUpperCase.setSelected(true);
+                break;                        
+            case LOWLER:    
+                this.rdoLowerCase.setSelected(true);
+                break;            
+        }        
+    }
     
     private int getCharacterLength() {
         int len = -1;
@@ -2157,25 +2274,47 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private String getRangeChars() {
         StringBuilder buff = new StringBuilder();
-        if (this.chkNumber.isSelected()) {
+        if (this.chkCharacterNumber.isSelected()) {
             buff.append("1234567890");
         }
-        if (this.chkLowercase.isSelected()) {
+        if (this.chkCharacterLowerCase.isSelected()) {
             buff.append("abcdefghijklmnopqrstuvwxyz");
         }
-        if (this.chkUppercase.isSelected()) {
+        if (this.chkCharacterUpperCase.isSelected()) {
             buff.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         }
-        if (this.chkUnderline.isSelected()) {
+        if (this.chkCharacterUnderline.isSelected()) {
             buff.append("_");
         }
-        if (this.chkSpace.isSelected()) {
+        if (this.chkCharacterSpace.isSelected()) {
             buff.append(" ");
         }
-        if (this.chkCustom.isSelected()) {
+        if (this.chkCharacterCustom.isSelected()) {
             buff.append(this.txtCustom.getText());
         }
         return buff.toString();
     }
-   
+    
+    public JTransCoderProperty getProperty() {
+        final JTransCoderProperty transcoderProp = new JTransCoderProperty();
+        transcoderProp.setEncodeType(this.getEncodeType());
+        transcoderProp.setConvertCase(this.getConvertCase());
+        transcoderProp.setNewLine(this.getSelectNewLine());
+        transcoderProp.setLineWrap(this.chkViewLineWrap.isSelected());
+        transcoderProp.setRawEncoding(this.chkRawMode.isSelected());
+        transcoderProp.setGuessEncoding(this.chkGuess.isSelected());
+        transcoderProp.setSelectEncoding((String)this.cmbEncoding.getSelectedItem());
+        return transcoderProp;
+    }
+
+    public void setProperty(JTransCoderProperty transcoderProp) {
+        this.setEncodeType(transcoderProp.getEncodeType());
+        this.setConvertCase(transcoderProp.getConvertCase());
+        this.setNewLine(transcoderProp.getNewLine());
+        this.chkViewLineWrap.setSelected(transcoderProp.isLineWrap());
+        this.chkRawMode.setSelected(transcoderProp.isRawEncoding());
+        this.chkGuess.setSelected(transcoderProp.isGuessEncoding());
+        this.cmbEncoding.setSelectedItem(transcoderProp.getSelectEncoding());        
+    }
+       
 }

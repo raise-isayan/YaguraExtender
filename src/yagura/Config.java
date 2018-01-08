@@ -22,7 +22,10 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import yagura.external.TransUtil;
 import yagura.model.FilterProperty;
+import yagura.model.JSearchProperty;
+import yagura.model.JTransCoderProperty;
 import yagura.model.MatchReplaceGroup;
 
 /**
@@ -259,7 +262,17 @@ public final class Config {
         option.getMatchAlertProperty().setMatchAlertItemList(alertItemList);
         
         // JSearch Filter
-        FilterProperty filter = option.getFilterProperty();
+        JSearchProperty jsearch = option.getJSearchProperty();
+        jsearch.setRegexp(prop.readEntryBool("jsearch", "regexp", false));
+        jsearch.setIgnoreCase(prop.readEntryBool("jsearch", "ignorecase", false));
+        jsearch.setAutoRecogniseEncoding(prop.readEntryBool("jsearch", "autoRecogniseEncoding", false));
+        
+        jsearch.setRequest(prop.readEntryBool("jsearch", "request", true));
+        jsearch.setResponse(prop.readEntryBool("jsearch", "response", true));
+        jsearch.setComment(prop.readEntryBool("jsearch", "comment", true));
+                
+        FilterProperty filter = new FilterProperty();
+        filter.setShowOnlyScopeItems(prop.readEntryBool("jsearch", "showOnlyScopeItems", false));
         filter.setShowOnly(prop.readEntryBool("jsearch", "showOnly", false));
         filter.setShowOnlyExtension(prop.readEntry("jsearch", "showOnlyExtension", "asp,aspx,jsp,php"));
         filter.setHide(prop.readEntryBool("jsearch", "hide", false));
@@ -272,7 +285,27 @@ public final class Config {
         String highlightColors = prop.readEntry("jsearch", "highlightColors", Util.enumSetToString(EnumSet.allOf(MatchItem.HighlightColor.class)));        
         highlightColorSet.addAll(MatchItem.HighlightColor.enumSetValueOf(highlightColors));
         filter.setHighlightColors(highlightColorSet);
-                
+        jsearch.setFilterProperty(filter);
+
+        // JTranscoder
+        JTransCoderProperty transcoder = option.getJTransCoderProperty();
+        String encodeType = prop.readEntry("transcoder", "encodeType", TransUtil.EncodeType.ALL.name());
+        transcoder.setEncodeType(TransUtil.EncodeType.valueOf(encodeType));
+
+        String convertCase = prop.readEntry("transcoder", "convertCase", TransUtil.ConvertCase.LOWLER.name());
+        transcoder.setConvertCase(TransUtil.ConvertCase.valueOf(convertCase));
+
+        String newLine = prop.readEntry("transcoder", "newLine", TransUtil.NewLine.NONE.name());
+        transcoder.setNewLine(TransUtil.NewLine.valueOf(newLine));
+         
+        transcoder.setLineWrap(prop.readEntryBool("transcoder", "lineWrap", false));
+
+        transcoder.setSelectEncoding(prop.readEntry("transcoder", "selectEncoding", "UTF-8"));
+        
+        transcoder.setRawEncoding(prop.readEntryBool("transcoder", "rawEncoding", false));
+        transcoder.setGuessEncoding(prop.readEntryBool("transcoder", "guessEncoding", false));
+        
+        
     }
     
     /**
@@ -398,17 +431,39 @@ public final class Config {
         }        
 
         // JSearch Filter
-        FilterProperty filter = option.getFilterProperty();
+        JSearchProperty jsearch = option.getJSearchProperty();
+        prop.writeEntryBool("jsearch", "regexp", jsearch.isRegexp());
+        prop.writeEntryBool("jsearch", "ignorecase", jsearch.isIgnoreCase());
+        prop.writeEntryBool("jsearch", "autoRecogniseEncoding", jsearch.isAutoRecogniseEncoding());
+
+        prop.writeEntryBool("jsearch", "request", jsearch.isRequest());
+        prop.writeEntryBool("jsearch", "response", jsearch.isResponse());
+        prop.writeEntryBool("jsearch", "comment", jsearch.isComment());
+        
+        FilterProperty filter = jsearch.getFilterProperty();
+        prop.writeEntryBool("jsearch", "showOnlyScopeItems", filter.getShowOnlyScopeItems());
         prop.writeEntryBool("jsearch", "showOnly", filter.getShowOnly());
         prop.writeEntry("jsearch", "showOnlyExtension", filter.getShowOnlyExtension());
         prop.writeEntryBool("jsearch", "hide", filter.getHide());
         prop.writeEntry("jsearch", "hideExtension", filter.getHideExtension());
         prop.writeEntryBool("jsearch", "stat2xx", filter.getStat2xx());
-        prop.readEntryBool("jsearch", "stat3xx", filter.getStat3xx());
-        prop.readEntryBool("jsearch", "stat4xx", filter.getStat4xx());
-        prop.readEntryBool("jsearch", "stat5xx", filter.getStat5xx());
+        prop.writeEntryBool("jsearch", "stat3xx", filter.getStat3xx());
+        prop.writeEntryBool("jsearch", "stat4xx", filter.getStat4xx());
+        prop.writeEntryBool("jsearch", "stat5xx", filter.getStat5xx());
         prop.writeEntry("jsearch", "highlightColors",  Util.enumSetToString(filter.getHighlightColors()));
 
+        // JTranscoder
+        JTransCoderProperty transcoder = option.getJTransCoderProperty();
+        prop.writeEntry("transcoder", "encodeType", transcoder.getEncodeType().name());
+        prop.writeEntry("transcoder", "convertCase", transcoder.getConvertCase().name());
+        prop.writeEntry("transcoder", "newLine", transcoder.getNewLine().name());
+        prop.writeEntryBool("transcoder", "lineWrap", transcoder.isLineWrap());
+
+        prop.writeEntry("transcoder", "selectEncoding", transcoder.getSelectEncoding());
+        
+        prop.writeEntryBool("transcoder", "rawEncoding", transcoder.isRawEncoding());
+        prop.writeEntryBool("transcoder", "guessEncoding", transcoder.isGuessEncoding());
+               
     }    
 
 }

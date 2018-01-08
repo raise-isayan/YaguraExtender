@@ -11,13 +11,14 @@ import yagura.model.MatchAlertProperty;
 import yagura.model.MatchReplaceProperty;
 import yagura.model.OptionProperty;
 import yagura.model.SendToProperty;
-import yagura.model.FilterProperty;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JTabbedPane;
+import yagura.model.JSearchProperty;
+import yagura.model.JTransCoderProperty;
 
 /**
  *
@@ -115,7 +116,8 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         this.setAutoResponderProperty(property.getAutoResponderProperty());
         this.setMatchAlertProperty(property.getMatchAlertProperty());
         this.setSendToProperty(property.getSendToProperty());
-        this.setFilterProperty(property.getFilterProperty());
+        this.setJSearchProperty(property.getJSearchProperty());
+        this.setJTransCoderProperty(property.getJTransCoderProperty());
         // common
         this.setDebugMode(property.getDebugMode());
     }
@@ -192,16 +194,28 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         return this.tabAutoResponder.getAutoResponderProperty();
     }
     
-    public FilterProperty getFilterProperty() {
+    @Override
+    public JSearchProperty getJSearchProperty() {
         return this.tabJSearch.getProperty();
     }
 
-    public void setFilterProperty(FilterProperty filter) {
-        this.tabJSearch.setProperty(filter);
+    @Override
+    public void setJSearchProperty(JSearchProperty jsearch) {
+        this.tabJSearch.setProperty(jsearch);
     }
     
     public void setJTransCoderProperty(EncodingProperty encodingProperty) {        
         this.tabJTransCoder.setEncodingList(encodingProperty.getEncodingList(), "");
+    }
+
+    @Override
+    public JTransCoderProperty getJTransCoderProperty() {
+        return this.tabJTransCoder.getProperty();
+    }
+
+    @Override
+    public void setJTransCoderProperty(JTransCoderProperty transcoder) {
+        this.tabJTransCoder.setProperty(transcoder);
     }
     
     @Override

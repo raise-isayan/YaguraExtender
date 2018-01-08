@@ -10,7 +10,7 @@ Burp Suiteは主にアジア圏のエンコーディング周りが弱いため�
 ## ヘルプ
 利用方法等の詳細なヘルプは、help ディレクトリのhelp.html を参照して下さい。
 
-##必須ライブラリ
+## 必須ライブラリ
 ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。
 
 ## 注意事項

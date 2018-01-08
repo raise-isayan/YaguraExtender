@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
  * VersionTab.java
  *
  * Created on 2010/11/27, 15:00:30
@@ -28,8 +28,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author isayan
  */
 public class VersionTab extends javax.swing.JPanel {
+
     private OptionProperty option;
-    
+
     /**
      * Creates new form VersionTab
      */
@@ -118,13 +119,13 @@ public class VersionTab extends javax.swing.JPanel {
         add(chkDebugMode);
         chkDebugMode.setBounds(0, 259, 559, 21);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void chkDebugModeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkDebugModeStateChanged
         this.firePropertyChange(TabbetOption.VERSION_PROPERTY, null, this);
     }//GEN-LAST:event_chkDebugModeStateChanged
 
     final static FileFilter burp_config_filter = new FileNameExtensionFilter("burp configファイル(*.bcxml)", "bcxml");
-    
+
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -182,9 +183,9 @@ public class VersionTab extends javax.swing.JPanel {
     public boolean getDebugMode() {
         return this.chkDebugMode.getModel().isSelected();
     }
-    
+
     public void setDebugMode(boolean debugMode) {
         this.chkDebugMode.getModel().setSelected(debugMode);
     }
-    
+
 }

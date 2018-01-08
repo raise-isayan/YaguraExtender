@@ -765,6 +765,9 @@
                                   <StringArray count="0"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbEncodingActionPerformed"/>
+                              </Events>
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                               </AuxValues>
@@ -775,6 +778,7 @@
                               </Properties>
                               <Events>
                                 <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkRawModeStateChanged"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkRawModeActionPerformed"/>
                               </Events>
                             </Component>
                             <Component class="javax.swing.JCheckBox" name="chkGuess">
@@ -783,6 +787,7 @@
                               </Properties>
                               <Events>
                                 <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkGuessStateChanged"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkGuessActionPerformed"/>
                               </Events>
                             </Component>
                           </SubComponents>
@@ -871,6 +876,9 @@
                                 <Property name="selected" type="boolean" value="true"/>
                                 <Property name="text" type="java.lang.String" value="All"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoAllActionPerformed"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoAlphaNum">
                               <Properties>
@@ -940,6 +948,9 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="UpperCase"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoUpperCaseActionPerformed"/>
+                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -965,6 +976,9 @@
                                 <Property name="selected" type="boolean" value="true"/>
                                 <Property name="text" type="java.lang.String" value="None"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoNoneActionPerformed"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoCR">
                               <Properties>
@@ -973,6 +987,9 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="CR"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoCRActionPerformed"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoLF">
                               <Properties>
@@ -981,6 +998,9 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="LF"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoLFActionPerformed"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoCRLF">
                               <Properties>
@@ -1015,6 +1035,7 @@
                               </Properties>
                               <Events>
                                 <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkViewLineWrapStateChanged"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkViewLineWrapActionPerformed"/>
                               </Events>
                             </Component>
                           </SubComponents>
@@ -1335,27 +1356,27 @@
                             <Property name="rows" type="int" value="0"/>
                           </Layout>
                           <SubComponents>
-                            <Component class="javax.swing.JCheckBox" name="chkNumber">
+                            <Component class="javax.swing.JCheckBox" name="chkCharacterNumber">
                               <Properties>
                                 <Property name="text" type="java.lang.String" value="Number"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JCheckBox" name="chkLowercase">
+                            <Component class="javax.swing.JCheckBox" name="chkCharacterLowerCase">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="Lowercase"/>
+                                <Property name="text" type="java.lang.String" value="LowerCase"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JCheckBox" name="chkUppercase">
+                            <Component class="javax.swing.JCheckBox" name="chkCharacterUpperCase">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="Uppercase"/>
+                                <Property name="text" type="java.lang.String" value="UpperCase"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JCheckBox" name="chkSpace">
+                            <Component class="javax.swing.JCheckBox" name="chkCharacterSpace">
                               <Properties>
                                 <Property name="text" type="java.lang.String" value="Space"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JCheckBox" name="chkUnderline">
+                            <Component class="javax.swing.JCheckBox" name="chkCharacterUnderline">
                               <Properties>
                                 <Property name="text" type="java.lang.String" value="Underline(_)"/>
                               </Properties>
@@ -1364,7 +1385,7 @@
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JCheckBox" name="chkCustom">
+                                <Component class="javax.swing.JCheckBox" name="chkCharacterCustom">
                                   <Properties>
                                     <Property name="text" type="java.lang.String" value="Custom"/>
                                   </Properties>

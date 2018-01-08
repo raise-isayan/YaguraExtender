@@ -31,8 +31,8 @@
 ** Creative Commons Attribution 2.5 ライセンス
 
 == Start up 
-Burp suiteの「Extender」タブから「Add」ボタンを押して、YaguraExtender.jar を追加します。
-「Loaded」にチェックをいれることで拡張がロード後、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
+Burp suiteの「Extender」タブから「Add」ボタンを押下後、YaguraExtender.jar を追加します。
+「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
 各種設定はこちらから行えるようになっています。
 
 image:images/Extender_Yagura.png[Extender]
@@ -655,7 +655,7 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
    チェック時、バイナリアップロードを可能とします。 +
    [HTML5]チェック時のみ有効になります。
 
-. Content-Type
+.Content-Type
 auto:: Content-Typeを自動判定します。
 text field:: text フィールドを利用してPoCを作成します。 +
               Content-TypeがMulti Partの場合にこの選択を行ってもうまく生成できません。

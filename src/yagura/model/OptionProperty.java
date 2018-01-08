@@ -41,10 +41,15 @@ public interface OptionProperty {
 
     public LoggingProperty getLoggingProperty();
 
-    // Filter
-    public FilterProperty getFilterProperty();
+    // JSearch
+    public JSearchProperty getJSearchProperty();
 
-    public void setFilterProperty(FilterProperty filter);
+    public void setJSearchProperty(JSearchProperty filter);
+
+    // JTranscoder
+    public JTransCoderProperty getJTransCoderProperty();
+
+    public void setJTransCoderProperty(JTransCoderProperty transcoder);
     
     // all
     public boolean getDebugMode();

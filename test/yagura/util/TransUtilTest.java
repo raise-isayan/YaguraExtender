@@ -297,11 +297,11 @@ public class TransUtilTest {
     public void testToHtmlDecEncode() {
         System.out.println("toHtmlDecEncode");
         assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;_&#92;&#13;&#10;abcdef", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcdef"));
-        assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;&#95;&#92;&#13;&#10;&#97;&#98;&#99;&#101;&#100;&#101;&#102;", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedef", TransUtil.ENCODE_ALL));
+        assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;&#95;&#92;&#13;&#10;&#97;&#98;&#99;&#101;&#100;&#101;&#102;", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedef", TransUtil.PTN_ENCODE_ALL));
         int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
         String x = new String(ch, 0, ch.length);
         assertEquals("jkf&#131083;&#135741;ghi&#135963;&#136302;&#137405;&#134047;&#136884;&#138804;&#143812;&#144836;abz019", TransUtil.toHtmlDecEncode(x));
-        assertEquals("&#106;&#107;&#102;&#131083;&#135741;&#103;&#104;&#105;&#135963;&#136302;&#137405;&#134047;&#136884;&#138804;&#143812;&#144836;&#97;&#98;&#122;&#48;&#49;&#57;", TransUtil.toHtmlDecEncode(x,TransUtil.ENCODE_ALL));
+        assertEquals("&#106;&#107;&#102;&#131083;&#135741;&#103;&#104;&#105;&#135963;&#136302;&#137405;&#134047;&#136884;&#138804;&#143812;&#144836;&#97;&#98;&#122;&#48;&#49;&#57;", TransUtil.toHtmlDecEncode(x,TransUtil.PTN_ENCODE_ALL));
     }
 
     /**
@@ -318,7 +318,7 @@ public class TransUtilTest {
         System.out.println("c:" + TransUtil.toHtmlHexEncode(x, false));
         assertEquals("jkf&#x2000b;&#x2123d;ghi&#x2131b;&#x2146e;&#x218bd;&#x20b9f;&#x216b4;&#x21e34;&#x231c4;&#x235c4;abz019", TransUtil.toHtmlHexEncode(x, false));
         assertEquals("jkf&#X2000B;&#X2123D;ghi&#X2131B;&#X2146E;&#X218BD;&#X20B9F;&#X216B4;&#X21E34;&#X231C4;&#X235C4;abz019", TransUtil.toHtmlHexEncode(x, true));
-        assertEquals("&#x6a;&#x6b;&#x66;&#x2000b;&#x2123d;&#x67;&#x68;&#x69;&#x2131b;&#x2146e;&#x218bd;&#x20b9f;&#x216b4;&#x21e34;&#x231c4;&#x235c4;&#x61;&#x62;&#x7a;&#x30;&#x31;&#x39;", TransUtil.toHtmlHexEncode(x, TransUtil.ENCODE_ALL, false));
+        assertEquals("&#x6a;&#x6b;&#x66;&#x2000b;&#x2123d;&#x67;&#x68;&#x69;&#x2131b;&#x2146e;&#x218bd;&#x20b9f;&#x216b4;&#x21e34;&#x231c4;&#x235c4;&#x61;&#x62;&#x7a;&#x30;&#x31;&#x39;", TransUtil.toHtmlHexEncode(x, TransUtil.PTN_ENCODE_ALL, false));
     }
     
     /**
@@ -348,7 +348,7 @@ public class TransUtilTest {
         System.out.println("URLEncode");
         try {
             assertEquals("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", TransUtil.encodeUrl("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "Shift_JIS", false));
-            assertEquals("%61%62%63%64%65%66%67%68%69%6a%6b%6c%6d%6e%6f%70%71%72%73%74%75%76%77%78%79%7a%41%42%43%44%45%46%47%48%49%4a%4b%4c%4d%4e%4f%50%51%52%53%54%55%56%57%58%59%5a%30%31%32%33%34%35%36%37%38%39", TransUtil.encodeUrl("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "Shift_JIS", TransUtil.ENCODE_ALL, false));
+            assertEquals("%61%62%63%64%65%66%67%68%69%6a%6b%6c%6d%6e%6f%70%71%72%73%74%75%76%77%78%79%7a%41%42%43%44%45%46%47%48%49%4a%4b%4c%4d%4e%4f%50%51%52%53%54%55%56%57%58%59%5a%30%31%32%33%34%35%36%37%38%39", TransUtil.encodeUrl("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "Shift_JIS", TransUtil.PTN_ENCODE_ALL, false));
             assertEquals("%0D%0A%09",  TransUtil.encodeUrl("\r\n\t", "Shift_JIS", true));
             assertEquals("%0d%0a%09",  TransUtil.encodeUrl("\r\n\t", "Shift_JIS", false));
             assertEquals("%83e%83X%83g", TransUtil.encodeUrl("テスト","Shift_JIS", false));
@@ -366,8 +366,8 @@ public class TransUtilTest {
     public void testToUnocodeEncode() {
         System.out.println("toUnocodeEncode");
         assertEquals("abcdef\\u000d\\u000a\\u0021\\u0022ghi\\u0023\\u0024\\u0025jkf", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", false));
-        assertEquals("\\u0061\\u0062\\u0063\\u0064\\u0065\\u0066\\u000d\\u000a\\u0021\\u0022\\u0067\\u0068\\u0069\\u0023\\u0024\\u0025\\u006a\\u006b\\u0066", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.ENCODE_ALL, false));
-        assertEquals("\\U0061\\U0062\\U0063\\U0064\\U0065\\U0066\\U000D\\U000A\\U0021\\U0022\\U0067\\U0068\\U0069\\U0023\\U0024\\U0025\\U006A\\U006B\\U0066", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.ENCODE_ALL, true));
+        assertEquals("\\u0061\\u0062\\u0063\\u0064\\u0065\\u0066\\u000d\\u000a\\u0021\\u0022\\u0067\\u0068\\u0069\\u0023\\u0024\\u0025\\u006a\\u006b\\u0066", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, false));
+        assertEquals("\\U0061\\U0062\\U0063\\U0064\\U0065\\U0066\\U000D\\U000A\\U0021\\U0022\\U0067\\U0068\\U0069\\U0023\\U0024\\U0025\\U006A\\U006B\\U0066", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, true));
         
         assertEquals("\\u3042\\u3044\\u3046\\u3048\\u304a", TransUtil.toUnocodeEncode("あいうえお", false));
         assertEquals("\\U3042\\U3044\\U3046\\U3048\\U304A", TransUtil.toUnocodeEncode("あいうえお", true));
@@ -377,8 +377,8 @@ public class TransUtilTest {
         assertEquals("jkf\\ud840\\udc0b\\ud844\\ude3dghi\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4abz019", TransUtil.toUnocodeEncode(x, false));
         assertEquals("jkf\\UD840\\UDC0B\\UD844\\UDE3Dghi\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4abz019", TransUtil.toUnocodeEncode(x, true));
 
-        assertEquals("\\u006a\\u006b\\u0066\\ud840\\udc0b\\ud844\\ude3d\\u0067\\u0068\\u0069\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4\\u0061\\u0062\\u007a\\u0030\\u0031\\u0039", TransUtil.toUnocodeEncode(x, TransUtil.ENCODE_ALL, false));
-        assertEquals("\\U006A\\U006B\\U0066\\UD840\\UDC0B\\UD844\\UDE3D\\U0067\\U0068\\U0069\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4\\U0061\\U0062\\U007A\\U0030\\U0031\\U0039", TransUtil.toUnocodeEncode(x, TransUtil.ENCODE_ALL, true));
+        assertEquals("\\u006a\\u006b\\u0066\\ud840\\udc0b\\ud844\\ude3d\\u0067\\u0068\\u0069\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4\\u0061\\u0062\\u007a\\u0030\\u0031\\u0039", TransUtil.toUnocodeEncode(x, TransUtil.PTN_ENCODE_ALL, false));
+        assertEquals("\\U006A\\U006B\\U0066\\UD840\\UDC0B\\UD844\\UDE3D\\U0067\\U0068\\U0069\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4\\U0061\\U0062\\U007A\\U0030\\U0031\\U0039", TransUtil.toUnocodeEncode(x, TransUtil.PTN_ENCODE_ALL, true));
     }
 
     /**
@@ -410,8 +410,8 @@ public class TransUtilTest {
         assertEquals("abcdef\\x0d\\x0a\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", false));
         assertEquals("abcdef\\X0D\\X0A\\X21\\X22ghi\\X23\\X24\\X25jkf", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", true));
 
-        assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0d\\x0a\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.ENCODE_ALL, false));        
-        assertEquals("\\X61\\X62\\X63\\X64\\X65\\X66\\X0D\\X0A\\X21\\X22\\X67\\X68\\X69\\X23\\X24\\X25\\X6A\\X6B\\X66", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.ENCODE_ALL, true));        
+        assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0d\\x0a\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, false));        
+        assertEquals("\\X61\\X62\\X63\\X64\\X65\\X66\\X0D\\X0A\\X21\\X22\\X67\\X68\\X69\\X23\\X24\\X25\\X6A\\X6B\\X66", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, true));        
 
         System.out.println(TransUtil.toHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", ENCODE_JS, false));
         assertEquals(" !\\x22#$%&\\x27()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\x5c]^_`abcdefghijklmnopqrstuvwxyz{|}~", TransUtil.toHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", ENCODE_JS, false));

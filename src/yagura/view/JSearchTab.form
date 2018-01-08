@@ -99,29 +99,44 @@
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="RegExp"/>
           </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkRegExpStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkIgnoreCase">
           <Properties>
             <Property name="text" type="java.lang.String" value="IgnoreCase"/>
           </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkIgnoreCaseStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkRequest">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Request"/>
           </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkRequestStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkResponse">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Response"/>
           </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkResponseStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkComment">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Comment"/>
           </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkCommentStateChanged"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="pnlSearchEnc">
           <Properties>
@@ -152,6 +167,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="AutoRecognise"/>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rdoRepEnc_AutoRecogniseStateChanged"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

@@ -11,6 +11,7 @@
         <antcall target="margepkg"/>
         <antcall target="releasepkg"/>
         <antcall target="releasehelp"/>
+        <antcall target="mkhash"/>
     </target>
 
     <target name="margepkg">
@@ -36,6 +37,11 @@
             <exclude name="*.log.lck"/>
             <exclude name="burp.extender.xml"/>
         </zip>
+    </target>
+
+    <target name="mkhash">
+       <checksum file="${dist.zip}" algorithm="md5" fileext=".md5"/>
+       <checksum file="${dist.zip}" algorithm="SHA-1" fileext=".sha1"/>
     </target>
 
     <target name="ascdoctor-lib">

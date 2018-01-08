@@ -7,7 +7,6 @@ package yagura.view;
 
 import burp.BurpExtender;
 import burp.IHttpRequestResponse;
-import extend.util.SwingUtil;
 import extend.util.Util;
 import extend.view.base.MatchItem;
 import extend.view.base.NamedColor;
@@ -20,7 +19,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,6 +40,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
+import yagura.model.JSearchProperty;
 import yagura.model.ResultViewModel;
 
 /**
@@ -98,17 +97,42 @@ public class JSearchTab extends javax.swing.JPanel {
 
         chkRegExp.setSelected(true);
         chkRegExp.setText("RegExp");
+        chkRegExp.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkRegExpStateChanged(evt);
+            }
+        });
 
         chkIgnoreCase.setText("IgnoreCase");
+        chkIgnoreCase.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkIgnoreCaseStateChanged(evt);
+            }
+        });
 
         chkRequest.setSelected(true);
         chkRequest.setText("Request");
+        chkRequest.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkRequestStateChanged(evt);
+            }
+        });
 
         chkResponse.setSelected(true);
         chkResponse.setText("Response");
+        chkResponse.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkResponseStateChanged(evt);
+            }
+        });
 
         chkComment.setSelected(true);
         chkComment.setText("Comment");
+        chkComment.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkCommentStateChanged(evt);
+            }
+        });
 
         pnlSearchEnc.setBorder(javax.swing.BorderFactory.createTitledBorder("Search Encoding"));
         pnlSearchEnc.setLayout(new javax.swing.BoxLayout(pnlSearchEnc, javax.swing.BoxLayout.Y_AXIS));
@@ -120,6 +144,11 @@ public class JSearchTab extends javax.swing.JPanel {
 
         rdoEncodeingGrp.add(rdoRepEnc_AutoRecognise);
         rdoRepEnc_AutoRecognise.setText("AutoRecognise");
+        rdoRepEnc_AutoRecognise.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rdoRepEnc_AutoRecogniseStateChanged(evt);
+            }
+        });
         pnlSearchEnc.add(rdoRepEnc_AutoRecognise);
 
         javax.swing.GroupLayout pnlSearchLayout = new javax.swing.GroupLayout(pnlSearch);
@@ -287,8 +316,8 @@ public class JSearchTab extends javax.swing.JPanel {
             return component;
         }
     };
+
     private final ResultFilterPopup filterPopup = new ResultFilterPopup();
-//    private FilterProperty filterProp = this.filterPopup;
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
@@ -388,8 +417,6 @@ public class JSearchTab extends javax.swing.JPanel {
         this.tableResult.getColumnModel().getColumn(7).setPreferredWidth(80);
 
         this.tableResult.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-        this.setProperty(new FilterProperty());
         
     }
 
@@ -404,6 +431,30 @@ public class JSearchTab extends javax.swing.JPanel {
     private void tableResultMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableResultMouseClicked
         this.showBurpMenu(evt);
     }//GEN-LAST:event_tableResultMouseClicked
+
+    private void chkIgnoreCaseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkIgnoreCaseStateChanged
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkIgnoreCaseStateChanged
+
+    private void chkRegExpStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRegExpStateChanged
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkRegExpStateChanged
+
+    private void chkRequestStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestStateChanged
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkRequestStateChanged
+
+    private void chkResponseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseStateChanged
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkResponseStateChanged
+
+    private void chkCommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCommentStateChanged
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_chkCommentStateChanged
+
+    private void rdoRepEnc_AutoRecogniseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoRepEnc_AutoRecogniseStateChanged
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
+    }//GEN-LAST:event_rdoRepEnc_AutoRecogniseStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -586,17 +637,18 @@ public class JSearchTab extends javax.swing.JPanel {
     }
 
     protected void showFilter() {
-        this.filterPopup.setProperty(this.getProperty());
+        this.filterPopup.setProperty(this.getProperty().getFilterProperty());
     }
 
     protected void hideFilter() {
-        FilterProperty filterProp = this.getProperty();
+        FilterProperty filterProp = this.getProperty().getFilterProperty();
         this.tableResult.getSelectionModel().clearSelection();
         DefaultTableModel model = (DefaultTableModel) this.tableResult.getModel();
         TableRowSorter<DefaultTableModel> sorter = new ResultFilterPopup.PropertyRowSorter<DefaultTableModel>(model);
         sorter.setRowFilter(RowFilter.andFilter(getFilters(filterProp)));
         sorter.setRowFilter(new ResultFilterPopup.PropertyRowFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }
 
     public List<RowFilter<Object, Object>> getFilters(FilterProperty filterProp) {
@@ -605,13 +657,37 @@ public class JSearchTab extends javax.swing.JPanel {
         return filters;
     }
 
-    public void setProperty(FilterProperty filterProp) {
-        this.filterPopup.setProperty(filterProp);
+    public void setProperty(JSearchProperty searchProp) {
+        this.chkRegExp.setSelected(searchProp.isRegexp());
+        this.chkIgnoreCase.setSelected(searchProp.isIgnoreCase());  
+        if (searchProp.isAutoRecogniseEncoding()) {
+            this.rdoRepEnc_AutoRecognise.setSelected(true);    
+        }
+        else {
+            this.rdoRepEnc_8859_1.setSelected(true);            
+        }
+
+        this.chkRequest.setSelected(searchProp.isRequest());
+        this.chkResponse.setSelected(searchProp.isResponse());
+        this.chkComment.setSelected(searchProp.isComment());
+        
+        this.filterPopup.setProperty(searchProp.getFilterProperty());
         this.hideFilter();
     }
 
-    public FilterProperty getProperty() {
-        return this.filterPopup.getProperty();
+    public JSearchProperty getProperty() {
+        final JSearchProperty searchProp = new JSearchProperty();
+
+        searchProp.setRegexp(this.chkRegExp.isSelected());
+        searchProp.setIgnoreCase(this.chkIgnoreCase.isSelected());  
+        searchProp.setAutoRecogniseEncoding(this.rdoRepEnc_AutoRecognise.isSelected());
+
+        searchProp.setRequest(this.chkRequest.isSelected());
+        searchProp.setResponse(this.chkResponse.isSelected());
+        searchProp.setComment(this.chkComment.isSelected());
+        
+        searchProp.setFilterProperty(this.filterPopup.getProperty());        
+        return searchProp;        
     }
 
     private void showBurpMenu(MouseEvent evt) {

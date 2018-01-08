@@ -23,12 +23,32 @@ import javax.xml.bind.DatatypeConverter;
  */
 public class TransUtil {
 
+    public enum EncodeType {
+        ALL, ALPHANUM, LIGHT, STANDARD
+    };
+        
     // 条件一致時にEncode
-    public final static Pattern ENCODE_ALL = Pattern.compile(".", Pattern.DOTALL);
-    public final static Pattern ENCODE_ALPHANUM = Pattern.compile("[^a-zA-Z0-9_]");
-    public final static Pattern ENCODE_LIGHT = Pattern.compile("[^A-Za-z0-9!\"$'()*,/:<>@\\[\\\\\\]^`{|}~]");
-    public final static Pattern ENCODE_STANDARD = Pattern.compile("[^A-Za-z0-9\"<>\\[\\\\\\]^`{|}]");
+    public final static Pattern PTN_ENCODE_ALL = Pattern.compile(".", Pattern.DOTALL);
+    public final static Pattern PTN_ENCODE_ALPHANUM = Pattern.compile("[^a-zA-Z0-9_]");
+    public final static Pattern PTN_ENCODE_LIGHT = Pattern.compile("[^A-Za-z0-9!\"$'()*,/:<>@\\[\\\\\\]^`{|}~]");
+    public final static Pattern PTN_ENCODE_STANDARD = Pattern.compile("[^A-Za-z0-9\"<>\\[\\\\\\]^`{|}]");
 
+    public static Pattern getEncodeTypePattern(EncodeType type) {
+        switch (type) {
+            case ALL:
+                return PTN_ENCODE_ALL;
+            case ALPHANUM:
+                return PTN_ENCODE_ALPHANUM;
+            case LIGHT:
+                return PTN_ENCODE_LIGHT;
+            case STANDARD:
+                return PTN_ENCODE_STANDARD;
+            default:
+                break;            
+        }
+        return PTN_ENCODE_ALL;
+    }
+        
     public enum EncodePattern {
         BASE64, UUENCODE, QUOTEDPRINTABLE, URL_STANDARD, HTML, URL_UNICODE, UNICODE, BYTE, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG
     };
@@ -301,14 +321,14 @@ public class TransUtil {
             return "";
         }
     }
-    private final static String special_char = "!\"#$%&'()*+,-./:;<=>?@[\\]{|}~";
+    private final static String SPECIAL_CHAR = "!\"#$%&'()*+,-./:;<=>?@[\\]{|}~";
 
     public static String toUSASCII(String str, String enc)
             throws UnsupportedEncodingException {
         char[] chars = toChars(str);
         for (int i = 0; i < chars.length; i++) {
             // 指定された文字のみ
-            if (special_char.indexOf(chars[i]) > -1) {
+            if (SPECIAL_CHAR.indexOf(chars[i]) > -1) {
                 chars[i] = (char) ((int) chars[i] | 0x80);
             }
         }
@@ -331,20 +351,40 @@ public class TransUtil {
     /*
      * 改行
      */
-    public static final int NEW_LINE_NONE = -1;
-    public static final int NEW_LINE_CRLF = 0;
-    public static final int NEW_LINE_LF = 1;
-    public static final int NEW_LINE_CR = 2;
+    public enum NewLine {
+        NONE, CRLF, LF, CR
+    };
 
-    public static String replaceNewLine(int mode, String selectText) {
+    public static String getNewLine(NewLine linemode) {
+        String newLine = Util.NEW_LINE;
+        switch (linemode) {
+            case NONE:
+                newLine = Util.NEW_LINE;
+                break;
+            case CRLF:
+                newLine = "\r\n";
+                break;
+            case LF:
+                newLine = "\n";
+                break;
+            case CR:
+                newLine = "\r";
+                break;
+            default:
+                break;
+        }
+        return newLine;        
+    }
+    
+    public static String replaceNewLine(NewLine mode, String selectText) {
         switch (mode) {
-            case NEW_LINE_CRLF: {
+            case CRLF: {
                 return selectText.replaceAll("\n", "\r\n");
             }
-            case NEW_LINE_LF: {
+            case LF: {
                 return selectText.replaceAll("\r\n", "\n");
             }
-            case NEW_LINE_CR: {
+            case CR: {
                 return selectText.replaceAll("\r\n", "\r");
             }
             default: {
@@ -408,7 +448,7 @@ public class TransUtil {
     }
 
     public static String encodeUrl(String pString, String charset, boolean upperCase) throws UnsupportedEncodingException {
-        return new String(encodeUrl(pString.getBytes(charset), ENCODE_ALPHANUM, upperCase), "US-ASCII");
+        return new String(encodeUrl(pString.getBytes(charset), PTN_ENCODE_ALPHANUM, upperCase), "US-ASCII");
     }
 
     public static String encodeUrl(String pString, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
@@ -477,7 +517,7 @@ public class TransUtil {
     }
 
     public static String toUnocodeEncode(String input, boolean upperCase) {
-        return toUnocodeEncode(input, ENCODE_ALPHANUM, upperCase);
+        return toUnocodeEncode(input, PTN_ENCODE_ALPHANUM, upperCase);
     }
 
     public static String toUnocodeEncode(String input, Pattern pattern, boolean upperCase) {
@@ -499,7 +539,7 @@ public class TransUtil {
     }
 
     public static String toByteEncode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteEncode(input, charset, ENCODE_ALPHANUM, upperCase);
+        return toByteEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
     }
 
     public static String toByteEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
@@ -507,7 +547,7 @@ public class TransUtil {
     }
 
     public static String toHexEncode(String input, boolean upperCase) {
-        return toHexEncode(input, ENCODE_ALPHANUM, upperCase);
+        return toHexEncode(input, PTN_ENCODE_ALPHANUM, upperCase);
     }
     
     public static String toHexEncode(String input, Pattern pattern, boolean upperCase) {
@@ -619,7 +659,7 @@ public class TransUtil {
     }
     
     public static String toUnocodeUrlEncode(String input, boolean upperCase) {
-        return toUnocodeUrlEncode(input, ENCODE_ALPHANUM, upperCase);
+        return toUnocodeUrlEncode(input, PTN_ENCODE_ALPHANUM, upperCase);
     }
 
     public static String toUnocodeUrlEncode(String input, Pattern pattern, boolean upperCase) {
@@ -665,7 +705,7 @@ public class TransUtil {
     }
 
     public static String toHtmlDecEncode(String input) {
-        return toHtmlDecEncode(input, ENCODE_ALPHANUM);
+        return toHtmlDecEncode(input, PTN_ENCODE_ALPHANUM);
     }
 
     public static String toHtmlDecEncode(String input, Pattern pattern) {
@@ -684,7 +724,7 @@ public class TransUtil {
     }
 
     public static String toHtmlHexEncode(String input, boolean upperCase) {
-        return toHtmlHexEncode(input, ENCODE_ALPHANUM, upperCase);
+        return toHtmlHexEncode(input, PTN_ENCODE_ALPHANUM, upperCase);
     }
 
     public static String toHtmlHexEncode(String input, Pattern pattern, boolean upperCase) {
@@ -711,18 +751,25 @@ public class TransUtil {
         int length = input.length();
         for (int i = 0; i < length; i++) {
             char c = input.charAt(i);
-            if (c == '<') {
-                buff.append("&lt;");
-            } else if (c == '>') {
-                buff.append("&gt;");
-            } else if (c == '&') {
-                buff.append("&amp;");
-            } else if (c == '"') {
-                buff.append("&quot;");
-            } else if (c == '\'') {
-                buff.append("&#39;");
-            } else {
-                buff.append(c);
+            switch (c) {
+                case '<':
+                    buff.append("&lt;");
+                    break;
+                case '>':
+                    buff.append("&gt;");
+                    break;
+                case '&':
+                    buff.append("&amp;");
+                    break;
+                case '"':
+                    buff.append("&quot;");
+                    break;
+                case '\'':
+                    buff.append("&#39;");
+                    break;
+                default:
+                    buff.append(c);
+                    break;
             }
         }
         return buff.toString();
@@ -993,6 +1040,10 @@ public class TransUtil {
         return value.replaceAll("''", "'");
     }
 
+    public enum ConvertCase {
+        UPPER, LOWLER
+    };
+    
     /**
      * リストを作成する
      *

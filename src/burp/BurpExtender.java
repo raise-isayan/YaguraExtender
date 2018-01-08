@@ -18,7 +18,6 @@ import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.Util;
-import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
 import yagura.view.AutoResponderProperty;
 import yagura.view.GeneratePoCTab;
@@ -45,7 +44,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import yagura.model.FilterProperty;
+import yagura.model.JSearchProperty;
+import yagura.model.JTransCoderProperty;
 import yagura.model.MatchReplaceGroup;
 
 /**
@@ -53,8 +53,6 @@ import yagura.model.MatchReplaceGroup;
  */
 public class BurpExtender extends BurpExtenderImpl
         implements IHttpListener, IProxyListener, OptionProperty {
-
-    private Object messageInfo;
 
     public BurpExtender() {
     }
@@ -362,7 +360,7 @@ public class BurpExtender extends BurpExtenderImpl
         }
     }
 
-    private final static Pattern httpLineSep = Pattern.compile("\\r\\n\\r\\n");
+    private final static Pattern HTTP_LINESEP = Pattern.compile("\\r\\n\\r\\n");
 
     private byte[] autoresponderProxyMessage(
             IHttpService httpService,
@@ -451,7 +449,7 @@ public class BurpExtender extends BurpExtenderImpl
                             edited = true;
                         }
                     }
-                    Matcher m = httpLineSep.matcher(httpMsg.getHeader());
+                    Matcher m = HTTP_LINESEP.matcher(httpMsg.getHeader());
                     httpMsg.setHeader(m.replaceAll(HttpMessage.LINE_TERMINATE));
                 }
             }
@@ -649,7 +647,7 @@ public class BurpExtender extends BurpExtenderImpl
         this.setSendToProperty(property.getSendToProperty());
         this.setLoggingProperty(property.getLoggingProperty());
         this.setMatchAlertProperty(property.getMatchAlertProperty());        
-        this.setFilterProperty(property.getFilterProperty());
+        this.setJSearchProperty(property.getJSearchProperty());
         this.setDebugMode(property.getDebugMode());
     }
 
@@ -805,7 +803,10 @@ public class BurpExtender extends BurpExtenderImpl
                     setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
                     applyOptionProperty();                
                 } else if (TabbetOption.JSEARCH_FILTER_PROPERTY.equals(evt.getPropertyName())) {
-                    setFilterProperty(tabbetOption.getFilterProperty());
+                    setJSearchProperty(tabbetOption.getJSearchProperty());
+                    applyOptionProperty();                
+                } else if (TabbetOption.JTRANS_CODER_PROPERTY.equals(evt.getPropertyName())) {
+                    setJTransCoderProperty(tabbetOption.getJTransCoderProperty());
                     applyOptionProperty();                
                 } else if (TabbetOption.VERSION_PROPERTY.equals(evt.getPropertyName())) {
                     setDebugMode(tabbetOption.getDebugMode());        
@@ -869,17 +870,37 @@ public class BurpExtender extends BurpExtenderImpl
      * JSearch
      * ***********************************************************************
      */
-    private FilterProperty filterProperty = new FilterProperty();
+    private JSearchProperty searchProperty = new JSearchProperty();
 
     @Override
-    public FilterProperty getFilterProperty() {
-        return this.filterProperty;
+    public JSearchProperty getJSearchProperty() {
+        return this.searchProperty;
     }
 
     @Override
-    public void setFilterProperty(FilterProperty filter) {
-        this.filterProperty = filter;
+    public void setJSearchProperty(JSearchProperty searchProperty) {
+        this.searchProperty = searchProperty;
     }
+
+
+    /**
+     * ***********************************************************************
+     * JTransCoder
+     * ***********************************************************************
+     */
+    private JTransCoderProperty transcoderProperty = new JTransCoderProperty();
+
+    
+    @Override
+    public JTransCoderProperty getJTransCoderProperty() {
+        return this.transcoderProperty;
+    }
+
+    @Override
+    public void setJTransCoderProperty(JTransCoderProperty transcoder) {
+        this.transcoderProperty = transcoder;
+    }
+
     
     /**
      * ***********************************************************************
@@ -922,6 +943,5 @@ public class BurpExtender extends BurpExtenderImpl
         }
         SwingUtil.systemClipboardCopy(buff.toString());
     }
-    
     
 }
