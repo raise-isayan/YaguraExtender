@@ -343,6 +343,7 @@ public class SendToTab extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     private void showSendToItemDlg(boolean editMode) {
         this.sendtoItemDlg.setLocationRelativeTo(this);
+        this.sendtoItemDlg.setItemList(this.getSendToItemList());
         if (editMode) {
             this.sendtoItemDlg.setItem(getEditItem());
         } else {

@@ -26,6 +26,10 @@ public class TransUtil {
     public enum EncodeType {
         ALL, ALPHANUM, LIGHT, STANDARD
     };
+
+    public static String toEmpty(Object obj) {
+        return (obj == null) ? "" : obj.toString();
+    }
         
     // 条件一致時にEncode
     public final static Pattern PTN_ENCODE_ALL = Pattern.compile(".", Pattern.DOTALL);
