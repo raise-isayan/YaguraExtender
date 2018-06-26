@@ -142,6 +142,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     @Override
     public void setMessage(byte[] content, boolean isRequest) {
         try {
+            BurpExtender extenderImpl = BurpExtender.getInstance();
             String guessCharset = null;
             HttpMessage httpmessage = null;
             if (isRequest) {
@@ -155,7 +156,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             }
             this.message = httpmessage;
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-            this.quickSearchTab.renewEncodingList(guessCharset);
+            this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
             encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {

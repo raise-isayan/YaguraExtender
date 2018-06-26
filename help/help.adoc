@@ -26,6 +26,10 @@
 ** https://javaee.github.io/javamail/
 ** CDDL 1.1、GPL 2.0 デュアルライセンス
 
+* JDatePicker
+** https://github.com/JDatePicker/JDatePicker
+** BSD ライセンス
+
 * Use Icon
 ** http://www.famfamfam.com/lab/icons/silk/
 ** Creative Commons Attribution 2.5 ライセンス

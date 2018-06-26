@@ -10,6 +10,7 @@ import yagura.model.KeywordHighlighter;
 import yagura.model.StartEndPosion;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -218,14 +219,10 @@ public class QuickSearchTab extends javax.swing.JPanel {
         this.lblMatch.setText(String.format("%d match", 0));
     }
 
-    public void renewEncodingList(String defaultCharset) {
-        BurpExtender extenderImpl = BurpExtender.getInstance();
+    public void renewEncodingList(String defaultCharset, List<String> encodingLiest) {
         this.cmbEncoding.removeAllItems();
-        for (String enc : extenderImpl.getSelectEncodingList()) {
+        for (String enc : encodingLiest) {
             this.cmbEncoding.addItem(enc);
-        }
-        if (defaultCharset == null) {
-            defaultCharset = extenderImpl.getCharsetMode();
         }
         this.cmbEncoding.setSelectedItem(defaultCharset);
     }

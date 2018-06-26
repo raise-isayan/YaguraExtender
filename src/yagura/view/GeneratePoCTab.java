@@ -430,6 +430,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     @Override
     public void setMessage(byte[] content, boolean isMessageRequest) {
         try {
+            BurpExtender extenderImpl = BurpExtender.getInstance();
             String guessCharset = null;
             HttpRequest request = null;
             if (this.controller.getResponse() != null) {
@@ -456,7 +457,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 this.chkUseHttps.setSelected(false);
             }
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-            this.quickSearchTab.renewEncodingList(guessCharset);
+            this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
             encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {

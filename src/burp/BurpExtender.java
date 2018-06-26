@@ -43,7 +43,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.application.Platform;
 import javax.swing.JOptionPane;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
