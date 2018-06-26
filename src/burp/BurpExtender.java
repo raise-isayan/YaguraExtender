@@ -43,6 +43,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 import javax.swing.JOptionPane;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
@@ -101,6 +102,12 @@ public class BurpExtender extends BurpExtenderImpl
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
+//        cb.registerExtensionStateListener(new IExtensionStateListener() {
+//            @Override
+//            public void extensionUnloaded() {
+//                Platform.exit();
+//            }        
+//        });
         BurpWrap.assained(cb);
         this.burp_version = new BurpWrap.Version(cb);
         if (this.burp_version.isExtendSupport()) {
@@ -121,7 +128,6 @@ public class BurpExtender extends BurpExtenderImpl
                 }
             } catch (IOException ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
             }
             
             setSendToMenu(new SendToMenu(cb, this.getSendToProperty()));
@@ -150,7 +156,6 @@ public class BurpExtender extends BurpExtenderImpl
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.6 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
         }
-
     }
 
     @Override

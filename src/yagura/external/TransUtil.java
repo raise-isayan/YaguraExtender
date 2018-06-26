@@ -9,6 +9,9 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import java.util.logging.Level;
@@ -1061,9 +1064,18 @@ public class TransUtil {
         if (stepNum == 0) {
             throw new IllegalArgumentException("You can not specify zero for Step");
         }
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = startNum; i <= endNum; i += stepNum) {
-            list.add(String.format(format, i));
+        int startValue = Math.min(startNum, endNum);
+        int endValue = Math.max(startNum, endNum);
+        ArrayList<String> list = new ArrayList<>();
+        if (0 < stepNum) {
+            for (int i = startValue; i <= endValue; i += stepNum) {
+                list.add(String.format(format, i));
+            }        
+        }
+        if (0 > stepNum) {
+            for (int i = endValue; i >= startValue; i += stepNum) {
+                list.add(String.format(format, i));
+            }            
         }
         return list.toArray(new String[0]);
     }
@@ -1076,6 +1088,42 @@ public class TransUtil {
         return list.toArray(new String[0]);
     }
 
+    /**
+     * リストを作成する
+     *
+     * @param format prntf形式書式
+     * @param startDate 開始
+     * @param endDate 終了
+     * @param stepDate ステップ
+     * @return 作成済みのリスト
+     */
+    public static String[] dateList(String format, LocalDate startDate, LocalDate endDate, int stepDate) {
+        if (stepDate == 0) {
+            throw new IllegalArgumentException("You can not specify zero for Step");
+        }
+        LocalDate startValue = startDate.compareTo(endDate) < 0 ? startDate : endDate;
+        LocalDate endValue = startDate.compareTo(endDate) > 0 ? startDate : endDate;
+
+        ArrayList<String> list = new ArrayList<String>();
+        final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(format);
+        if (0 < stepDate) {
+            LocalDate currentDate = startValue;
+            while (currentDate.compareTo(endValue) <= 0) {            
+                list.add(currentDate.format(dateFormat));
+                currentDate = currentDate.plus(stepDate, ChronoUnit.DAYS);
+            }        
+        }
+        if (0 > stepDate) {
+            LocalDate currentDate = endValue;
+            while (currentDate.compareTo(startValue) >= 0) {            
+                list.add(currentDate.format(dateFormat));
+                currentDate = currentDate.plus(stepDate, ChronoUnit.DAYS);
+            }                
+        }
+        return list.toArray(new String[0]);        
+    }
+
+    
     private static final DecimalFormat fmtPosition = new DecimalFormat("000000"); // @jve:decl-index=0:
 
     public static void hexDump(byte[] output, PrintStream out) {

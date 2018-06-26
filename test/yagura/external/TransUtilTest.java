@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package yagura.util;
+package yagura.external;
 
 import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
@@ -22,6 +22,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import extend.util.HashUtil;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Date;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -601,8 +604,8 @@ public class TransUtilTest {
      * // * Test of generaterList method, of class TransUtil.
      */
     @Test
-    public void testGeneraterList() {
-        System.out.println("testGeneraterList");
+    public void testGenerater_NumbersList() {
+        System.out.println("testGenerater_NumbersList");
         {
             String list[] = TransUtil.generaterList("abc%02d", 4, 11, 2);
             assertEquals(list.length, 4);
@@ -612,12 +615,78 @@ public class TransUtilTest {
             assertEquals(list[3], "abc10");
         }
         {
+            String list[] = TransUtil.generaterList("abc%02d", 4, 11, -2);
+            assertEquals(list.length, 4);
+            assertEquals(list[0], "abc11");
+            assertEquals(list[1], "abc09");
+            assertEquals(list[2], "abc07");
+            assertEquals(list[3], "abc05");
+        }
+        {
+            String list[] = TransUtil.generaterList("abc%02d",11, 4, -2);
+            assertEquals(list.length, 4);
+            assertEquals(list[0], "abc11");
+            assertEquals(list[1], "abc09");
+            assertEquals(list[2], "abc07");
+            assertEquals(list[3], "abc05");
+        }
+        {
             String list[] = TransUtil.generaterList("abc%03x", 8, 20, 4);
             assertEquals(list.length, 4);
             assertEquals(list[0], "abc008");
             assertEquals(list[1], "abc00c");
             assertEquals(list[2], "abc010");
             assertEquals(list[3], "abc014");
+        }
+        {
+            String list[] = TransUtil.generaterList("abc%03x", 8, 20, -4);
+            assertEquals(list.length, 4);
+            assertEquals(list[0], "abc014");
+            assertEquals(list[1], "abc010");
+            assertEquals(list[2], "abc00c");
+            assertEquals(list[3], "abc008");
+        }
+        {
+            String list[] = TransUtil.generaterList("abc%03x", 20, 8, -4);
+            assertEquals(list.length, 4);
+            assertEquals(list[0], "abc014");
+            assertEquals(list[1], "abc010");
+            assertEquals(list[2], "abc00c");
+            assertEquals(list[3], "abc008");
+        }
+        try {
+            String list[] = TransUtil.generaterList("abc%02d", 4, 11, 0);
+            assertTrue(false);
+        } catch (Exception e) {
+            assertTrue(e.getMessage(), true);
+        }
+    }    
+
+    /**
+     * // * Test of generaterList method, of class TransUtil.
+     */
+    @Test
+    public void testGenerater_DateList() {
+        System.out.println("testGenerater_DateList");
+        {
+            String list[] = TransUtil.dateList("yyyy/MM/dd", LocalDate.of(2007, Month.OCTOBER, 28), LocalDate.of(2007, Month.NOVEMBER, 2), 1);
+            assertEquals(list.length, 6);
+            assertEquals(list[0], "2007/10/28");
+            assertEquals(list[1], "2007/10/29");
+            assertEquals(list[2], "2007/10/30");
+            assertEquals(list[3], "2007/10/31");
+            assertEquals(list[4], "2007/11/01");
+            assertEquals(list[5], "2007/11/02");
+        }
+        {
+            String list[] = TransUtil.dateList("yyyy/MM/dd", LocalDate.of(2007, Month.NOVEMBER, 2), LocalDate.of(2007, Month.OCTOBER, 28), -1);
+            assertEquals(list.length, 6);
+            assertEquals(list[0], "2007/11/02");
+            assertEquals(list[1], "2007/11/01");
+            assertEquals(list[2], "2007/10/31");
+            assertEquals(list[3], "2007/10/30");
+            assertEquals(list[4], "2007/10/29");
+            assertEquals(list[5], "2007/10/28");
         }
     }
     

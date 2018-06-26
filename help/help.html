@@ -1227,6 +1227,10 @@ proxy-message.log.2
 <dd>
 <p>エディタの改行コードを指定します。</p>
 </dd>
+<dt class="hdlist1">View</dt>
+<dd>
+<p>lineWrap にチェックすると表示が折り返されます。</p>
+</dd>
 <dt class="hdlist1">Encodeing</dt>
 <dd>
 <p>変換する文字のエンコーディングを指定します。コンボボックスで選択可能なエンコーディングは、Encodingタブで設定したものが表示されます。<br>
@@ -1269,6 +1273,10 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dt class="hdlist1">Base64</dt>
 <dd>
 <p>Base64形式のエンコード、デコードを行います。</p>
+</dd>
+<dt class="hdlist1">64 newline</dt>
+<dd>
+<p>Base64形式のエンコード時に64文字で改行を行う場合に指定します。</p>
 </dd>
 <dt class="hdlist1">76 newline</dt>
 <dd>
@@ -1398,6 +1406,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <p><span class="image"><img src="./images/custom_gene_seq.png" alt="Generaterタブ"></span></p>
 </div>
 <div class="dlist">
+<div class="title">sequence-Numbersタブ</div>
 <dl>
 <dt class="hdlist1">生成書式文字列入力</dt>
 <dd>
@@ -1415,6 +1424,27 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dt class="hdlist1">step</dt>
 <dd>
 <p>startからendまでの数字の増加数を指定します。</p>
+</dd>
+</dl>
+</div>
+<div class="dlist">
+<div class="title">sequence-Dateタブ</div>
+<dl>
+<dt class="hdlist1">生成書式文字列入力</dt>
+<dd>
+<p>Java言語のDateTimeFormatter形式の書式文字列を入力します。</p>
+</dd>
+<dt class="hdlist1">start</dt>
+<dd>
+<p>リストの開始の日付を入力します。</p>
+</dd>
+<dt class="hdlist1">end</dt>
+<dd>
+<p>リストの終了の日付を入力します。終了の日付まで生成されます。</p>
+</dd>
+<dt class="hdlist1">step</dt>
+<dd>
+<p>startからendまでの日付の増加数を指定します。</p>
 </dd>
 <dt class="hdlist1">[generate]ボタン</dt>
 <dd>
@@ -1573,7 +1603,7 @@ Content-TypeがMulti part かつファイルアップロードの項目がある
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-01-09 10:23:39 JST
+Last updated 2018-06-25 22:29:40 JST
 </div>
 </div>
 </body>

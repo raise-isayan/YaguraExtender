@@ -11,6 +11,7 @@ import extend.util.SwingUtil;
 import extend.util.Util;
 import extend.util.HashUtil;
 import extend.view.model.VerticalFlowLayout;
+import java.awt.BorderLayout;
 import yagura.external.CertUtil;
 import yagura.external.TransUtil;
 import yagura.model.EncodingProperty;
@@ -29,6 +30,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import org.jdatepicker.JDateComponentFactory;
+import org.jdatepicker.impl.JDatePickerImpl;
 import yagura.external.CertificateInKey;
 import yagura.external.TransUtil.ConvertCase;
 import yagura.external.TransUtil.EncodeType;
@@ -154,24 +159,32 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlWrap = new javax.swing.JPanel();
         chkViewLineWrap = new javax.swing.JCheckBox();
         tabGenerator = new javax.swing.JPanel();
+        splitGenerator = new javax.swing.JSplitPane();
+        scrollGenerate = new javax.swing.JScrollPane();
+        txtGenarate = new javax.swing.JTextArea();
         pnlTop = new javax.swing.JPanel();
-        pnlRight = new javax.swing.JPanel();
-        btnGenerate = new javax.swing.JButton();
-        txtListCopy = new javax.swing.JButton();
-        btnSavetoFile = new javax.swing.JButton();
         tabbetGenerate = new javax.swing.JTabbedPane();
         tabSequence = new javax.swing.JPanel();
-        pnlSeqSelect = new javax.swing.JPanel();
-        cmbSeqSelect = new javax.swing.JComboBox();
         pnlGenerate = new javax.swing.JPanel();
-        txtFormat = new javax.swing.JTextField();
-        txtStartNum = new javax.swing.JTextField();
-        txtEndNum = new javax.swing.JTextField();
-        txtStepNum = new javax.swing.JTextField();
-        lblFormat = new javax.swing.JLabel();
-        lblStart = new javax.swing.JLabel();
-        lblEnd = new javax.swing.JLabel();
-        lblStep = new javax.swing.JLabel();
+        tabbetSequence = new javax.swing.JTabbedPane();
+        pnlNumbers = new javax.swing.JPanel();
+        txtNumFormat = new javax.swing.JTextField();
+        txtNumStart = new javax.swing.JTextField();
+        txtNumEnd = new javax.swing.JTextField();
+        txtNumStep = new javax.swing.JTextField();
+        lblNumFormat = new javax.swing.JLabel();
+        lblNumStart = new javax.swing.JLabel();
+        lblNumEnd = new javax.swing.JLabel();
+        lblNumStep = new javax.swing.JLabel();
+        pnlDate = new javax.swing.JPanel();
+        txtDateFormat = new javax.swing.JTextField();
+        lblDateFormat = new javax.swing.JLabel();
+        lblDateStart = new javax.swing.JLabel();
+        lblDateEnd = new javax.swing.JLabel();
+        lblDateStep = new javax.swing.JLabel();
+        txtDateStep = new javax.swing.JTextField();
+        pnlDateStart = new javax.swing.JPanel();
+        pnlDateEnd = new javax.swing.JPanel();
         tabRandom = new javax.swing.JPanel();
         pnlCharacter = new javax.swing.JPanel();
         chkCharacterNumber = new javax.swing.JCheckBox();
@@ -194,8 +207,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoCount50 = new javax.swing.JRadioButton();
         rdoCountNum = new javax.swing.JRadioButton();
         txtCountNum = new javax.swing.JTextField();
-        scrollGenerate = new javax.swing.JScrollPane();
-        txtGenarate = new javax.swing.JTextArea();
+        pnlRight = new javax.swing.JPanel();
+        btnGenerate = new javax.swing.JButton();
+        txtListCopy = new javax.swing.JButton();
+        btnSavetoFile = new javax.swing.JButton();
         pnlCertificate = new javax.swing.JPanel();
         btnExport = new javax.swing.JButton();
         rdoConvertPEM = new javax.swing.JRadioButton();
@@ -636,7 +651,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                     .addComponent(chkGuess)
                     .addComponent(chkRawMode))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cmbEncoding, 0, 110, Short.MAX_VALUE)
+                .addComponent(cmbEncoding, 0, 113, Short.MAX_VALUE)
                 .addGap(7, 7, 7))
         );
         pnlEncodingLayout.setVerticalGroup(
@@ -828,143 +843,175 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         tabGenerator.setLayout(new java.awt.BorderLayout());
 
+        splitGenerator.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        txtGenarate.setColumns(20);
+        txtGenarate.setRows(5);
+        scrollGenerate.setViewportView(txtGenarate);
+
+        splitGenerator.setBottomComponent(scrollGenerate);
+
         pnlTop.setLayout(new java.awt.BorderLayout());
-
-        btnGenerate.setText("generate");
-        btnGenerate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerateActionPerformed(evt);
-            }
-        });
-
-        txtListCopy.setText("List Copy");
-        txtListCopy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtListCopyActionPerformed(evt);
-            }
-        });
-
-        btnSavetoFile.setText("Save to file");
-        btnSavetoFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSavetoFileActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
-        pnlRight.setLayout(pnlRightLayout);
-        pnlRightLayout.setHorizontalGroup(
-            pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRightLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtListCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGenerate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSavetoFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        pnlRightLayout.setVerticalGroup(
-            pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRightLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(btnGenerate, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtListCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSavetoFile, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(205, Short.MAX_VALUE))
-        );
-
-        pnlTop.add(pnlRight, java.awt.BorderLayout.EAST);
 
         tabSequence.setLayout(new java.awt.BorderLayout());
 
-        cmbSeqSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Numbers" }));
+        pnlGenerate.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout pnlSeqSelectLayout = new javax.swing.GroupLayout(pnlSeqSelect);
-        pnlSeqSelect.setLayout(pnlSeqSelectLayout);
-        pnlSeqSelectLayout.setHorizontalGroup(
-            pnlSeqSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlSeqSelectLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cmbSeqSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(835, Short.MAX_VALUE))
-        );
-        pnlSeqSelectLayout.setVerticalGroup(
-            pnlSeqSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlSeqSelectLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cmbSeqSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        tabSequence.add(pnlSeqSelect, java.awt.BorderLayout.PAGE_START);
-
-        txtFormat.setText("%04d");
-        txtFormat.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNumFormat.setText("%04d");
+        txtNumFormat.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFormatKeyPressed(evt);
+                txtNumFormatKeyPressed(evt);
             }
         });
 
-        txtStartNum.setText("0");
+        txtNumStart.setText("0");
 
-        txtEndNum.setText("1");
+        txtNumEnd.setText("1");
 
-        txtStepNum.setText("1");
-        txtStepNum.setToolTipText("");
+        txtNumStep.setText("1");
+        txtNumStep.setToolTipText("");
 
-        lblFormat.setText("(c like printf format)");
+        lblNumFormat.setText("(c like printf format)");
 
-        lblStart.setText("Start:");
+        lblNumStart.setText("Start:");
 
-        lblEnd.setText("End:");
+        lblNumEnd.setText("End:");
 
-        lblStep.setText("Stop:");
+        lblNumStep.setText("Stop:");
 
-        javax.swing.GroupLayout pnlGenerateLayout = new javax.swing.GroupLayout(pnlGenerate);
-        pnlGenerate.setLayout(pnlGenerateLayout);
-        pnlGenerateLayout.setHorizontalGroup(
-            pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlNumbersLayout = new javax.swing.GroupLayout(pnlNumbers);
+        pnlNumbers.setLayout(pnlNumbersLayout);
+        pnlNumbersLayout.setHorizontalGroup(
+            pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNumbersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlGenerateLayout.createSequentialGroup()
-                        .addGroup(pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblStep, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblEnd, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblStart, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlNumbersLayout.createSequentialGroup()
+                        .addComponent(lblNumStep)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlNumbersLayout.createSequentialGroup()
+                        .addComponent(txtNumFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtStartNum)
-                            .addComponent(txtEndNum)
-                            .addComponent(txtStepNum, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))))
-                .addGap(18, 18, 18)
-                .addComponent(lblFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(785, Short.MAX_VALUE))
+                        .addComponent(lblNumFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlNumbersLayout.createSequentialGroup()
+                        .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblNumStart)
+                            .addComponent(lblNumEnd))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(865, Short.MAX_VALUE))
         );
-        pnlGenerateLayout.setVerticalGroup(
-            pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateLayout.createSequentialGroup()
+        pnlNumbersLayout.setVerticalGroup(
+            pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNumbersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFormat))
-                .addGap(18, 18, 18)
-                .addGroup(pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtStartNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblStart))
+                .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNumFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNumFormat))
+                .addGap(13, 13, 13)
+                .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNumStart)
+                    .addComponent(txtNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtEndNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEnd))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtStepNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblStep))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNumEnd)
+                    .addComponent(txtNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNumStep))
+                .addContainerGap(88, Short.MAX_VALUE))
         );
+
+        tabbetSequence.addTab("Numbers", pnlNumbers);
+
+        txtDateFormat.setText("yyyy/MM/dd");
+        txtDateFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDateFormatActionPerformed(evt);
+            }
+        });
+        txtDateFormat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDateFormatKeyPressed(evt);
+            }
+        });
+
+        lblDateFormat.setText("(DateTimeFormatter pattern)");
+
+        lblDateStart.setText("Start:");
+
+        lblDateEnd.setText("End:");
+
+        lblDateStep.setText("Stop:");
+
+        txtDateStep.setText("1");
+        txtDateStep.setToolTipText("");
+
+        pnlDateStart.setLayout(new java.awt.BorderLayout());
+
+        pnlDateEnd.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout pnlDateLayout = new javax.swing.GroupLayout(pnlDate);
+        pnlDate.setLayout(pnlDateLayout);
+        pnlDateLayout.setHorizontalGroup(
+            pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDateLayout.createSequentialGroup()
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlDateLayout.createSequentialGroup()
+                                .addComponent(lblDateStep)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlDateLayout.createSequentialGroup()
+                                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDateLayout.createSequentialGroup()
+                                        .addComponent(lblDateEnd)
+                                        .addGap(18, 18, 18))
+                                    .addComponent(lblDateStart))
+                                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(pnlDateStart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(txtDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(825, Short.MAX_VALUE))
+        );
+        pnlDateLayout.setVerticalGroup(
+            pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlDateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDateFormat))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addComponent(lblDateStart)
+                        .addGap(10, 10, 10))
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addComponent(pnlDateStart, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDateEnd)
+                    .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDateStep))
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
+
+        tabbetSequence.addTab("Date", pnlDate);
+
+        pnlGenerate.add(tabbetSequence, java.awt.BorderLayout.CENTER);
 
         tabSequence.add(pnlGenerate, java.awt.BorderLayout.CENTER);
 
@@ -1067,7 +1114,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(650, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1078,20 +1125,63 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 .addGroup(tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabbetGenerate.addTab("Random", tabRandom);
 
         pnlTop.add(tabbetGenerate, java.awt.BorderLayout.CENTER);
 
-        tabGenerator.add(pnlTop, java.awt.BorderLayout.NORTH);
+        btnGenerate.setText("generate");
+        btnGenerate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerateActionPerformed(evt);
+            }
+        });
 
-        txtGenarate.setColumns(20);
-        txtGenarate.setRows(5);
-        scrollGenerate.setViewportView(txtGenarate);
+        txtListCopy.setText("List Copy");
+        txtListCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtListCopyActionPerformed(evt);
+            }
+        });
 
-        tabGenerator.add(scrollGenerate, java.awt.BorderLayout.CENTER);
+        btnSavetoFile.setText("Save to file");
+        btnSavetoFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSavetoFileActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlRightLayout = new javax.swing.GroupLayout(pnlRight);
+        pnlRight.setLayout(pnlRightLayout);
+        pnlRightLayout.setHorizontalGroup(
+            pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRightLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtListCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGenerate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSavetoFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        pnlRightLayout.setVerticalGroup(
+            pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRightLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(btnGenerate, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtListCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSavetoFile, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(144, Short.MAX_VALUE))
+        );
+
+        pnlTop.add(pnlRight, java.awt.BorderLayout.EAST);
+
+        splitGenerator.setTopComponent(pnlTop);
+
+        tabGenerator.add(splitGenerator, java.awt.BorderLayout.CENTER);
 
         tabbetTranscoder.addTab("Generater", tabGenerator);
 
@@ -1154,7 +1244,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(851, Short.MAX_VALUE))
+                .addContainerGap(932, Short.MAX_VALUE))
         );
         pnlCertificateLayout.setVerticalGroup(
             pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1275,11 +1365,19 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         add(tabbetTranscoder, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    VerticalFlowLayout verticalFlowLayout1 = new VerticalFlowLayout();
         
     @SuppressWarnings("unchecked")
 
+    private CustomTableModel modelHex = null;
+    
+    private final VerticalFlowLayout verticalFlowLayout1 = new VerticalFlowLayout();
+    
+    private JDatePickerImpl datePickerStart;
+    private JDatePickerImpl datePickerEnd;
+    
+    private final HexViewTab hexInputViewTab = new HexViewTab();
+    private final HexViewTab hexOutputViewTab = new HexViewTab();
+    
     private void customizeComponents() {
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
         this.hexOutputViewTab.setEnabled(false);
@@ -1289,13 +1387,26 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         this.txtOutputRaw.setEditable(false);
         
-        this.txtStartNum.setDocument(new SwingUtil.IntegerDocument());
-        this.txtEndNum.setDocument(new SwingUtil.IntegerDocument());
-        this.txtStepNum.setDocument(new SwingUtil.IntegerDocument());
+        this.txtNumStart.setDocument(new SwingUtil.IntegerDocument());
+        this.txtNumEnd.setDocument(new SwingUtil.IntegerDocument());
+        this.txtNumStep.setDocument(new SwingUtil.IntegerDocument());
+         
+        this.txtNumStart.setText("0");
+        this.txtNumEnd.setText("100");
+        this.txtNumStep.setText("1");
+
+        JDateComponentFactory componentFactory = new JDateComponentFactory();
+        datePickerStart = (JDatePickerImpl)componentFactory.createJDatePicker();
+        datePickerEnd = (JDatePickerImpl)componentFactory.createJDatePicker();
+
+        pnlDateStart.add(datePickerStart, BorderLayout.CENTER);
+        pnlDateEnd.add(datePickerEnd, BorderLayout.CENTER);
         
-        this.txtStartNum.setText("0");
-        this.txtEndNum.setText("1");
-        this.txtStepNum.setText("1");
+        this.pnlDateStart.add(datePickerStart);
+        this.pnlDateEnd.add(datePickerEnd);
+        
+        this.txtDateStep.setDocument(new SwingUtil.IntegerDocument());
+        this.txtDateStep.setText("1");
         
         this.txtLengthNum.setDocument(new SwingUtil.IntegerDocument());
         this.txtCountNum.setDocument(new SwingUtil.IntegerDocument());
@@ -1307,80 +1418,17 @@ public class JTransCoderTab extends javax.swing.JPanel {
         
     }
 
-    private final HexViewTab hexInputViewTab = new HexViewTab();
-    private final HexViewTab hexOutputViewTab = new HexViewTab();
-
     /*
      * ステータスメッセージ書式
      */
     private static final MessageFormat STATUS_TEXT_FORMAT = new MessageFormat(
             "Length:{0,number} Position:{1,number} SelectLength:{2,number}"); // @jve:decl-index=0:
-    private CustomTableModel modelHex = null;
 
     protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     
-    private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
-        if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Sequence")) {
-            try {
-                int startNum = Util.parseIntDefault(this.txtStartNum.getText(), 0);
-                int endNum = Util.parseIntDefault(this.txtEndNum.getText(), 0);
-                int stepNum = Util.parseIntDefault(this.txtStepNum.getText(), 1);
-                String[] list = TransUtil.generaterList(this.txtFormat.getText(), startNum, endNum, stepNum);
-                this.txtGenarate.setText(TransUtil.join("\r\n", list));
-            } catch (IllegalFormatException e) {
-                JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Random")) {
-            int count = this.getGenerateCount();
-            int length = this.getCharacterLength();
-            String rangeChars = this.getRangeChars();
-            if (rangeChars.length() == 0) {
-                JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.chars.empty"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                String[] list = TransUtil.randomList(rangeChars, length, count);
-                this.txtGenarate.setText(TransUtil.join("\r\n", list));
-            }
-        }
-    }//GEN-LAST:event_btnGenerateActionPerformed
-
-    private void txtListCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtListCopyActionPerformed
-        String s = this.txtGenarate.getText();
-        SwingUtil.systemClipboardCopy(s);
-    }//GEN-LAST:event_txtListCopyActionPerformed
-
-    private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
-        String s = this.txtGenarate.getText();
-        JFileChooser filechooser = new JFileChooser();
-        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int selected = filechooser.showSaveDialog(null);
-        if (selected == JFileChooser.APPROVE_OPTION) {
-            FileOutputStream fstm = null;
-            try {
-                File file = filechooser.getSelectedFile();
-                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(bundle.getString("extend.exists.overwrite.message"), file.getName()), bundle.getString("extend.exists.overwrite.confirm"))) {
-                    fstm = new FileOutputStream(file);
-                    fstm.write(Util.encodeMessage(s, this.getSelectEncode()));
-                    fstm.flush();
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                if (fstm != null) {
-                    try {
-                        fstm.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }
-    }//GEN-LAST:event_btnSavetoFileActionPerformed
-
-    private void txtFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFormatKeyPressed
+    private void txtNumFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumFormatKeyPressed
         //this.lblExampleValue.setText(String.format(this.txtFormat.getText(), 123));
-    }//GEN-LAST:event_txtFormatKeyPressed
+    }//GEN-LAST:event_txtNumFormatKeyPressed
 
     private void rdoAlphaNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoAlphaNumActionPerformed
         firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
@@ -1843,6 +1891,88 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void cmbEncodingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEncodingActionPerformed
         firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_cmbEncodingActionPerformed
+
+    private void txtDateFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDateFormatKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateFormatKeyPressed
+
+    private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
+        if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Sequence")) {
+            if (this.tabbetSequence.getSelectedIndex() == this.tabbetSequence.indexOfTab("Numbers")) {
+                try {
+                    int startNum = Util.parseIntDefault(this.txtNumStart.getText(), 0);
+                    int endNum = Util.parseIntDefault(this.txtNumEnd.getText(), 0);
+                    int stepNum = Util.parseIntDefault(this.txtNumStep.getText(), 1);
+                    String[] list = TransUtil.generaterList(this.txtNumFormat.getText(), startNum, endNum, stepNum);                    
+                    this.txtGenarate.setText(TransUtil.join("\r\n", list));
+                } catch (IllegalFormatException e) {
+                    JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            else if (this.tabbetSequence.getSelectedIndex() == this.tabbetSequence.indexOfTab("Date")) {
+                try {
+                    LocalDate dateStart = LocalDate.of(datePickerStart.getModel().getYear(), datePickerStart.getModel().getMonth()+1, datePickerStart.getModel().getDay());
+                    LocalDate dateEnd = LocalDate.of(datePickerEnd.getModel().getYear(), datePickerEnd.getModel().getMonth()+1, datePickerEnd.getModel().getDay());;
+                    int stepNum = Util.parseIntDefault(this.txtDateStep.getText(), 1);
+                    String[] list = TransUtil.dateList(this.txtDateFormat.getText(), dateStart, dateEnd, stepNum);                        
+                    this.txtGenarate.setText(TransUtil.join("\r\n", list));
+                } catch (IllegalFormatException e) {
+                    JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(this, e.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                }            
+            }
+        } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Random")) {
+            int count = this.getGenerateCount();
+            int length = this.getCharacterLength();
+            String rangeChars = this.getRangeChars();
+            if (rangeChars.length() == 0) {
+                JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.chars.empty"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                String[] list = TransUtil.randomList(rangeChars, length, count);
+                this.txtGenarate.setText(TransUtil.join("\r\n", list));
+            }
+        }
+    }//GEN-LAST:event_btnGenerateActionPerformed
+
+    private void txtListCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtListCopyActionPerformed
+        String s = this.txtGenarate.getText();
+        SwingUtil.systemClipboardCopy(s);
+    }//GEN-LAST:event_txtListCopyActionPerformed
+
+    private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
+        String s = this.txtGenarate.getText();
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int selected = filechooser.showSaveDialog(null);
+        if (selected == JFileChooser.APPROVE_OPTION) {
+            FileOutputStream fstm = null;
+            try {
+                File file = filechooser.getSelectedFile();
+                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(bundle.getString("extend.exists.overwrite.message"), file.getName()), bundle.getString("extend.exists.overwrite.confirm"))) {
+                    fstm = new FileOutputStream(file);
+                    fstm.write(Util.encodeMessage(s, this.getSelectEncode()));
+                    fstm.flush();
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                if (fstm != null) {
+                    try {
+                        fstm.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_btnSavetoFileActionPerformed
+
+    private void txtDateFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateFormatActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDateFormatActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalyze;
@@ -1888,18 +2018,21 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkViewLineWrap;
     private javax.swing.JComboBox<String> cmbEncoding;
     private javax.swing.JComboBox cmbIILUTF8;
-    private javax.swing.JComboBox cmbSeqSelect;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblEnd;
-    private javax.swing.JLabel lblFormat;
+    private javax.swing.JLabel lblDateEnd;
+    private javax.swing.JLabel lblDateFormat;
+    private javax.swing.JLabel lblDateStart;
+    private javax.swing.JLabel lblDateStep;
+    private javax.swing.JLabel lblNumEnd;
+    private javax.swing.JLabel lblNumFormat;
+    private javax.swing.JLabel lblNumStart;
+    private javax.swing.JLabel lblNumStep;
     private javax.swing.JLabel lblPositionStatus;
-    private javax.swing.JLabel lblStart;
-    private javax.swing.JLabel lblStep;
     private javax.swing.JLabel lblmaximum;
     private javax.swing.JPanel pnlBase64;
     private javax.swing.JPanel pnlCertificate;
@@ -1908,6 +2041,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JPanel pnlConvertCase;
     private javax.swing.JPanel pnlCount;
     private javax.swing.JPanel pnlCustom;
+    private javax.swing.JPanel pnlDate;
+    private javax.swing.JPanel pnlDateEnd;
+    private javax.swing.JPanel pnlDateStart;
     private javax.swing.JPanel pnlEncDec;
     private javax.swing.JPanel pnlEncode;
     private javax.swing.JPanel pnlEncodeDecode;
@@ -1921,13 +2057,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JPanel pnlJSHexEnc;
     private javax.swing.JPanel pnlLang;
     private javax.swing.JPanel pnlNewLine;
+    private javax.swing.JPanel pnlNumbers;
     private javax.swing.JPanel pnlOutputRaw;
     private javax.swing.JPanel pnlOutputToInput;
     private javax.swing.JPanel pnlRadixTrans;
     private javax.swing.JPanel pnlRight;
     private javax.swing.JPanel pnlSelect;
     private javax.swing.JPanel pnlSelectOption;
-    private javax.swing.JPanel pnlSeqSelect;
     private javax.swing.JPanel pnlStatus;
     private javax.swing.JPanel pnlStringLength;
     private javax.swing.JPanel pnlTop;
@@ -1978,6 +2114,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrollOutput;
     private javax.swing.JScrollPane scrollStatus;
     private javax.swing.JSplitPane splitConvert;
+    private javax.swing.JSplitPane splitGenerator;
     private javax.swing.JPanel tabGenerator;
     private javax.swing.JPanel tabRandom;
     private javax.swing.JPanel tabSequence;
@@ -1986,21 +2123,24 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JTabbedPane tabbetGenerate;
     private javax.swing.JTabbedPane tabbetInput;
     private javax.swing.JTabbedPane tabbetOutput;
+    private javax.swing.JTabbedPane tabbetSequence;
     private javax.swing.JTabbedPane tabbetTranscoder;
     private javax.swing.JTextField txtBase;
     private javax.swing.JTextField txtCountNum;
     private javax.swing.JTextField txtCustom;
-    private javax.swing.JTextField txtEndNum;
+    private javax.swing.JTextField txtDateFormat;
+    private javax.swing.JTextField txtDateStep;
     private javax.swing.JTextField txtExponent;
-    private javax.swing.JTextField txtFormat;
     private javax.swing.JTextArea txtGenarate;
     private javax.swing.JTextArea txtInputRaw;
     private javax.swing.JTextField txtLengthNum;
     private javax.swing.JButton txtListCopy;
+    private javax.swing.JTextField txtNumEnd;
+    private javax.swing.JTextField txtNumFormat;
+    private javax.swing.JTextField txtNumStart;
+    private javax.swing.JTextField txtNumStep;
     private javax.swing.JTextArea txtOutputRaw;
-    private javax.swing.JTextField txtStartNum;
     private javax.swing.JTextArea txtStatus;
-    private javax.swing.JTextField txtStepNum;
     private javax.swing.JTextField txtStoreFile;
     private javax.swing.JTextField txtStorePassword;
     private javax.swing.JTextField txtStrength;
