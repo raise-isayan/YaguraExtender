@@ -702,5 +702,21 @@ public class TransUtilTest {
             System.out.printf("\\%x\n", b[i]);
         }
     } 
+
+    private final static Pattern REQUEST_URI = Pattern.compile("^(.*?\\s+)(.*?)(\\s+.*?)");
     
+    @Test
+    public void testURI() {
+        String requestLine = "GET / HTTP/1.1\r\nHost: example.com\r\n";
+        Matcher m = REQUEST_URI.matcher(requestLine);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            sb.append(m.group(1));
+            m.appendReplacement(sb, "aaaaaaaaaaaaaa");
+            sb.append(m.group(3));
+        }
+        m.appendTail(sb);
+    System.out.println(sb.toString());
+    }
+
 }

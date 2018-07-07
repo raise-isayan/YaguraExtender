@@ -5,9 +5,14 @@
  */
 package yagura.view;
 
+import burp.BurpExtender;
 import yagura.model.AutoResponderItem;
 import extend.model.base.CustomTableModel;
 import extend.util.SwingUtil;
+import extend.util.Util;
+import java.awt.TrayIcon;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.net.BindException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,12 +24,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import yagura.AutoResponderServer;
 
 /**
  *
  * @author isayan
  */
-public class AutoResponderTab extends javax.swing.JPanel {
+public class AutoResponderTab extends javax.swing.JPanel implements UncaughtExceptionHandler {
 
     /**
      * Creates new form AutoResponder
@@ -49,6 +55,7 @@ public class AutoResponderTab extends javax.swing.JPanel {
         chkEnableRule = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAutoResponder = new javax.swing.JTable();
+        spnListenPort = new javax.swing.JSpinner();
 
         btnAutoResponderAdd.setText("Add");
         btnAutoResponderAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -72,20 +79,25 @@ public class AutoResponderTab extends javax.swing.JPanel {
         });
 
         chkEnableRule.setText("Enable rule");
+        chkEnableRule.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkEnableRuleActionPerformed(evt);
+            }
+        });
 
         tableAutoResponder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "", "match", "regex", "icase", "body", "replace"
+                "", "match", "regex", "icase", "body", "mime", "replace"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false
+                true, true, false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -99,6 +111,14 @@ public class AutoResponderTab extends javax.swing.JPanel {
         tableAutoResponder.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tableAutoResponder);
 
+        spnListenPort.setModel(new javax.swing.SpinnerNumberModel(7777, 1024, 65535, 1));
+        spnListenPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnListenPort, "#0"));
+        spnListenPort.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnListenPortStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,7 +131,8 @@ public class AutoResponderTab extends javax.swing.JPanel {
                     .addComponent(chkEnableRule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAutoResponderEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAutoResponderRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAutoResponderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAutoResponderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spnListenPort))
                 .addGap(15, 15, 15))
         );
         layout.setVerticalGroup(
@@ -121,9 +142,11 @@ public class AutoResponderTab extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(chkEnableRule)
-                        .addGap(11, 11, 11)
+                        .addGap(6, 6, 6)
+                        .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAutoResponderEdit)
-                        .addGap(10, 10, 10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAutoResponderRemove)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAutoResponderAdd))
@@ -187,22 +210,27 @@ public class AutoResponderTab extends javax.swing.JPanel {
         this.tableAutoResponder.getColumnModel().getColumn(3).setMinWidth(20);
         this.tableAutoResponder.getColumnModel().getColumn(3).setPreferredWidth(30);
         this.tableAutoResponder.getColumnModel().getColumn(3).setMaxWidth(40);
-
+                
         // body
         this.tableAutoResponder.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableAutoResponder.getColumnModel().getColumn(4).setPreferredWidth(30);
         this.tableAutoResponder.getColumnModel().getColumn(4).setMaxWidth(40);
 
-//
-//        // replace
+        // mime
 //        this.tableAutoResponder.getColumnModel().getColumn(5).setMinWidth(40);
 //        this.tableAutoResponder.getColumnModel().getColumn(5).setPreferredWidth(100);
 //        this.tableAutoResponder.getColumnModel().getColumn(5).setMaxWidth(180);
+        
+//        // replace
+//        this.tableAutoResponder.getColumnModel().getColumn(6).setMinWidth(40);
+//        this.tableAutoResponder.getColumnModel().getColumn(6).setPreferredWidth(100);
+//        this.tableAutoResponder.getColumnModel().getColumn(6).setMaxWidth(180);
          
     }
 
     public AutoResponderProperty getAutoResponderProperty() {
         AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
+        autoResponderProperty.setRedirectPort((int) this.spnListenPort.getValue());
         autoResponderProperty.setAutoResponderEnable(this.chkEnableRule.isSelected());
         autoResponderProperty.setAutoResponderItemList(this.getAutoResponderItemList());
         return autoResponderProperty;
@@ -210,7 +238,9 @@ public class AutoResponderTab extends javax.swing.JPanel {
     
     public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
         this.chkEnableRule.setSelected(autoResponderProperty.getAutoResponderEnable());
+        this.spnListenPort.setValue(autoResponderProperty.getRedirectPort());
         this.setAutoResponderItemList(autoResponderProperty.getAutoResponderItemList());
+        this.chkEnableRuleActionPerformed(null);
     }
     
     private void btnAutoResponderAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoResponderAddActionPerformed
@@ -225,6 +255,35 @@ public class AutoResponderTab extends javax.swing.JPanel {
         this.showAutoResponderItemDlg(true);
     }//GEN-LAST:event_btnAutoResponderEditActionPerformed
 
+    private void spnListenPortStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnListenPortStateChanged
+        this.firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getAutoResponderProperty());
+    }//GEN-LAST:event_spnListenPortStateChanged
+
+    private AutoResponderServer.ThreadWrap thredServer = null;
+        
+    private void chkEnableRuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkEnableRuleActionPerformed
+        if (this.chkEnableRule.isSelected()) {
+            if (this.thredServer == null || (this.thredServer != null && !this.thredServer.isRunning())) {
+                try {
+                    this.thredServer = new AutoResponderServer.ThreadWrap((int) this.spnListenPort.getValue());
+                    this.thredServer.setUncaughtExceptionHandler(this);
+                    this.thredServer.startServer();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
+                    BurpExtender.issueAlert("AutoResponder", Util.getStackTraceMessage(ex), TrayIcon.MessageType.ERROR);
+                    this.chkEnableRule.setSelected(false);
+                    Logger.getLogger(AutoResponderTab.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }        
+        }
+        else {
+            if (this.thredServer != null) {
+                this.thredServer.stopServer();
+                this.thredServer = null;
+            }        
+        }
+    }//GEN-LAST:event_chkEnableRuleActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAutoResponderAdd;
@@ -232,6 +291,7 @@ public class AutoResponderTab extends javax.swing.JPanel {
     private javax.swing.JButton btnAutoResponderRemove;
     private javax.swing.JCheckBox chkEnableRule;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner spnListenPort;
     private javax.swing.JTable tableAutoResponder;
     // End of variables declaration//GEN-END:variables
 
@@ -292,6 +352,18 @@ public class AutoResponderTab extends javax.swing.JPanel {
             list.add(AutoResponderItem.fromObjects(editRows));
         }
         return list;
+    }
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) {
+        if (e instanceof BindException) {
+            this.chkEnableRule.setSelected(false);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
+            BurpExtender.issueAlert("AutoResponder", e.getMessage(), TrayIcon.MessageType.ERROR);
+        } else {
+            BurpExtender.issueAlert("AutoResponder", e.getMessage(), TrayIcon.MessageType.ERROR);
+        }
+
     }
 
 }

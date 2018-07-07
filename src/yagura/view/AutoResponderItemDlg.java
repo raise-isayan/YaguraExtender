@@ -10,6 +10,7 @@ import yagura.model.AutoResponderItem;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import yagura.external.TransUtil;
 
 /**
  *
@@ -46,6 +47,8 @@ public class AutoResponderItemDlg extends CustomDialog {
         btnSelectExecute = new javax.swing.JButton();
         chkIgnoreCase = new javax.swing.JCheckBox();
         chkBodyOnly = new javax.swing.JCheckBox();
+        cmbContentType = new javax.swing.JComboBox<>();
+        lblReplace1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -123,7 +126,14 @@ public class AutoResponderItemDlg extends CustomDialog {
             }
         });
 
+        chkBodyOnly.setSelected(true);
         chkBodyOnly.setText("Body only");
+        chkBodyOnly.setEnabled(false);
+
+        cmbContentType.setEditable(true);
+        cmbContentType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "text/html", "text/plain", "image/jpeg", "image/gif", "image/png", "application/json", "application/javascript" }));
+
+        lblReplace1.setText("Content-Type:");
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
@@ -133,18 +143,20 @@ public class AutoResponderItemDlg extends CustomDialog {
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblMatch)
-                    .addComponent(lblReplace))
+                    .addComponent(lblReplace)
+                    .addComponent(lblReplace1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cmbContentType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtRepReplace)
                     .addComponent(txtRepMatch, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addComponent(chkRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(chkIgnoreCase)
-                        .addContainerGap(22, Short.MAX_VALUE))
+                        .addContainerGap(12, Short.MAX_VALUE))
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -154,20 +166,24 @@ public class AutoResponderItemDlg extends CustomDialog {
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMatch)
                     .addComponent(txtRepMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkRegExp)
                     .addComponent(chkIgnoreCase))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblReplace)
                         .addComponent(txtRepReplace, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnSelectExecute)
-                    .addComponent(chkBodyOnly, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(chkBodyOnly))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbContentType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblReplace1))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -175,6 +191,8 @@ public class AutoResponderItemDlg extends CustomDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    
     private void txtRepReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepReplaceActionPerformed
 
     }//GEN-LAST:event_txtRepReplaceActionPerformed
@@ -200,8 +218,16 @@ public class AutoResponderItemDlg extends CustomDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        this.setModalResult(JOptionPane.OK_OPTION);
-        this.closeDialog(null);
+        String repMath = this.txtRepMatch.getText().trim();
+        String mime = TransUtil.toEmpty(this.cmbContentType.getEditor().getItem());
+        if (repMath.isEmpty()) {
+            JOptionPane.showMessageDialog(this, bundle.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
+        } else if (mime.isEmpty()) {
+            JOptionPane.showMessageDialog(this, bundle.getString("view.responder.mime.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            this.setModalResult(JOptionPane.OK_OPTION);
+            this.closeDialog(null);
+        }
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void txtRepMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepMatchActionPerformed
@@ -257,8 +283,10 @@ public class AutoResponderItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkBodyOnly;
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkRegExp;
+    private javax.swing.JComboBox<String> cmbContentType;
     private javax.swing.JLabel lblMatch;
     private javax.swing.JLabel lblReplace;
+    private javax.swing.JLabel lblReplace1;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JTextField txtRepMatch;
@@ -276,6 +304,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
         item.setReplace(this.txtRepReplace.getText());
         item.setBodyOnly(this.chkBodyOnly.isSelected());
+        item.setContentType(TransUtil.toEmpty(this.cmbContentType.getEditor().getItem()));
         return item;
     }
 
@@ -288,6 +317,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
         this.txtRepReplace.setText(item.getReplace());
         this.chkBodyOnly.setSelected(item.getBodyOnly());
+        this.cmbContentType.getEditor().setItem(item.getContentType());
     }
     
 }

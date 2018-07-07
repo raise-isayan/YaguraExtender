@@ -14,7 +14,6 @@ import java.util.regex.Matcher;
  * @author isayan
  */
 public class AutoResponderItem extends MatchItem {
-
     public static final String TYPE_AUTO_RESPONDER = "auto responder";
     
     public AutoResponderItem() {
@@ -68,7 +67,7 @@ public class AutoResponderItem extends MatchItem {
         this.replace = replace;
     }
 
-    private boolean bodyOnly = false;
+    private boolean bodyOnly = true;
 
     /**
      * body only
@@ -85,15 +84,25 @@ public class AutoResponderItem extends MatchItem {
         this.bodyOnly = bodyOnly;
     }
 
+    private String contentType = "";
+    
+    public String getContentType() {
+        return contentType;
+    }
+    
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
     
     public static Object[] toObjects(AutoResponderItem matchReplace) {
-        Object[] beans = new Object[6];
+        Object[] beans = new Object[7];
         beans[0] = matchReplace.isSelected();
         beans[1] = matchReplace.getMatch();
         beans[2] = matchReplace.isRegexp();
         beans[3] = matchReplace.isIgnoreCase();
         beans[4] = matchReplace.getBodyOnly();
-        beans[5] = matchReplace.getReplace();
+        beans[5] = matchReplace.getContentType();
+        beans[6] = matchReplace.getReplace();
         return beans;
     }
 
@@ -104,7 +113,8 @@ public class AutoResponderItem extends MatchItem {
         autoResponder.setRegexp((Boolean) rows[2]);
         autoResponder.setIgnoreCase((Boolean) rows[3]);
         autoResponder.setBodyOnly(((Boolean) rows[4]).booleanValue());
-        autoResponder.setReplace((String) rows[5]);
+        autoResponder.setContentType(((String) rows[5]));
+        autoResponder.setReplace((String) rows[6]);
         return autoResponder;
     }
     

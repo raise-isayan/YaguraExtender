@@ -185,6 +185,7 @@ public final class Config {
         // AutoResponder
         List<AutoResponderItem> responderList = new ArrayList<AutoResponderItem>();
         option.getAutoResponderProperty().setAutoResponderEnable(prop.readEntryBool("autoresponder", "enable", false));
+        option.getAutoResponderProperty().setRedirectPort(prop.readEntryInt("autoresponder", "redirectPort", 7777));
         int autoresponder_count = prop.readEntryInt("autoresponder", "count", 0);
         for (int i = 0; i < autoresponder_count; i++) {
             AutoResponderItem item = new AutoResponderItem();
@@ -193,6 +194,7 @@ public final class Config {
             item.setRegexp(prop.readEntryBool("autoresponder", String.format("item[%d].regexp", i), true));
             item.setIgnoreCase(prop.readEntryBool("autoresponder", String.format("item[%d].ignorecase", i), false));
             item.setReplace(prop.readEntry("autoresponder", String.format("item[%d].replace", i), ""));            
+            item.setContentType(prop.readEntry("autoresponder", String.format("item[%d].mime", i), ""));            
             item.setBodyOnly(prop.readEntryBool("autoresponder", String.format("item[%d].bodyonly", i), true));
             responderList.add(item);
         }
@@ -363,6 +365,7 @@ public final class Config {
         
         // AutoResponder
         prop.writeEntryBool("autoresponder", "enable", option.getAutoResponderProperty().getAutoResponderEnable());
+        prop.writeEntryInt("autoresponder", "redirectPort", option.getAutoResponderProperty().getRedirectPort());
         List<AutoResponderItem> responderList = option.getAutoResponderProperty().getAutoResponderItemList();
         prop.writeEntryInt("autoresponder", "count", responderList.size());
         for (int i = 0; i < responderList.size(); i++) {
@@ -372,6 +375,7 @@ public final class Config {
             prop.writeEntryBool("autoresponder", String.format("item[%d].regexp", i), item.isRegexp());
             prop.writeEntryBool("autoresponder", String.format("item[%d].ignorecase", i), item.isIgnoreCase());
             prop.writeEntry("autoresponder", String.format("item[%d].replace", i), item.getReplace());         
+            prop.writeEntry("autoresponder", String.format("item[%d].mime", i), item.getContentType());
             prop.writeEntryBool("autoresponder", String.format("item[%d].bodyonly", i), item.getBodyOnly());
         }
                 

@@ -218,14 +218,21 @@ comment::
 
 === AutoResponder
 指定したURLにマッチする場合に指定したファイルの内容でレスポンスを返します。
+FidderのAutoResponderに似た機能を持ちますがBurp suiteのAPIでは完全にシュミュレートは
+困難なため疑似的に挙動をまねています。
 
 ==== AutoResponderタブ
 image:images/custom_autoresponder.png[AutoResponderタブ]
 
+[Enable rule]チェックボックス::
+     AutoResponderを有効にします。
+     有効にすると指定したポート番号でローカルサーバが起動されます。
+     起動されたローカルは、指定したResponseを返却するために使われます。
+     
 [Edit]ボタン:: 
     選択した AutoResponder Itemを編集します。
 [Remove]ボタン:: 
-    選択した AutoResponder tItemを削除します。
+    選択した AutoResponder Itemを削除します。
 [Add]、[Update]ボタン:: 
     AutoResponder temを追加します。編集中時は更新します。
 
@@ -242,9 +249,11 @@ Regexp::
 IgnoreCase:: 
     チェック時大文字小文字を無視します。
 
+Content-Type:: 
+    ResponseのContent-Typeを指定します。
+
 Replace:: 
     置き換える対象のファイルのパスを指定します。
-
 
 === SendTo
 Burpがもつ拡張メニューを利用した機能です。
@@ -697,5 +706,4 @@ plain:: text area を利用してPoCを作成します。 +
      設定をXML形式にてExportします。
 [Export]ボタン:: 
      XML形式の設定をImportします。
-
 

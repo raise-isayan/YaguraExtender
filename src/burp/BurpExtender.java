@@ -52,7 +52,7 @@ import yagura.model.MatchReplaceGroup;
  * @author isayan
  */
 public class BurpExtender extends BurpExtenderImpl
-        implements IHttpListener, IProxyListener, OptionProperty {
+        implements IHttpListener, IProxyListener, IExtensionStateListener, OptionProperty {
 
     public BurpExtender() {
     }
@@ -61,7 +61,8 @@ public class BurpExtender extends BurpExtenderImpl
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
+//        JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
+//        burp.StartBurp.main(args);
     }
 
     /**
@@ -101,13 +102,7 @@ public class BurpExtender extends BurpExtenderImpl
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
-//        cb.registerExtensionStateListener(new IExtensionStateListener() {
-//            @Override
-//            public void extensionUnloaded() {
-//                Platform.exit();
-//            }        
-//        });
-        BurpWrap.assained(cb);
+        cb.registerExtensionStateListener(this);
         this.burp_version = new BurpWrap.Version(cb);
         if (this.burp_version.isExtendSupport()) {
             // 設定ファイル読み込み
@@ -178,6 +173,14 @@ public class BurpExtender extends BurpExtenderImpl
         
         IHttpRequestResponse msgInfo = message.getMessageInfo();
 
+        // Autoresponder
+        if (messageIsRequest &&  this.getAutoResponderProperty().getAutoResponderEnable()) {            
+           boolean apply = this.autoresponderProxyMessage(msgInfo.getHttpService(), msgInfo);                
+            if (apply) {
+                return ;
+            }
+        } 
+                        
         // Match and Replace
         if (this.getMatchReplaceProperty().isSelectedMatchReplace()) {
             MatchReplaceGroup group = this.getMatchReplaceProperty().getMatchReplaceGroup();
@@ -187,28 +190,9 @@ public class BurpExtender extends BurpExtenderImpl
                     resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
                 }
             } else {
-                resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
+               resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
             }            
         }
-
-        // Autoresponder
-        if (!messageIsRequest &&  this.getAutoResponderProperty().getAutoResponderEnable()) {            
-            byte [] requestBytes = this.proxyLogs.get(message.getMessageReference());
-            if (requestBytes != null) {
-                byte [] replaceBytes = this.autoresponderProxyMessage(msgInfo.getHttpService(), requestBytes, messageByte);                
-                if (replaceBytes != null) {
-                    resultBytes = replaceBytes;
-                }
-            }
-        } 
-                
-        if (messageByte != resultBytes) {
-            if (messageIsRequest) {
-                message.getMessageInfo().setRequest(resultBytes);
-            } else {
-                message.getMessageInfo().setResponse(resultBytes);
-            }
-        }        
         
         // autologging
         if (this.getLoggingProperty().isAutoLogging() && this.getLoggingProperty().isProxyLog()) {
@@ -363,43 +347,67 @@ public class BurpExtender extends BurpExtenderImpl
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    private final static Pattern REQUEST_URI = Pattern.compile("^(.*?\\s+)(.*?)(\\s+.*)");
 
     private final static Pattern HTTP_LINESEP = Pattern.compile("\\r\\n\\r\\n");
 
-    private byte[] autoresponderProxyMessage(
-            IHttpService httpService,
-            byte [] requestByte,
-            byte[] responseByte) {
-        List<AutoResponderItem> autoresponderItemList = this.getAutoResponderProperty().getAutoResponderItemList();
-        IRequestInfo reqInfo = getHelpers().analyzeRequest(httpService, requestByte);  
-        String url = HttpUtil.normalizeURL(reqInfo.getUrl().toExternalForm());
-        for (int i = 0; i < autoresponderItemList.size(); i++) {
-            AutoResponderItem bean = autoresponderItemList.get(i);
-            if (!bean.isSelected()) {
-                continue;
-            }
-//            Pattern p = bean.compileRegex(!bean.isRegexp());
-            Pattern p = bean.getRegexPattern();
-            Matcher m = p.matcher(url);
-            if (m.lookingAt()) {            
-                try {
-                    if (bean.getBodyOnly()) {
-                        HttpMessage message = HttpMessage.parseHttpMessage(responseByte);
-                        byte bodyBytes[] = Util.bytesFromFile(new File(bean.getReplace()));
-                        message.setBody(Util.getRawStr(bodyBytes));
-                        message.updateContentLength(true);
-                        responseByte = message.getMessageBytes();
-                    }
-                    else {
-                        responseByte = Util.bytesFromFile(new File(bean.getReplace()));
-                    }
-                    break;
-                } catch (IOException ex) {
-                    Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+    private boolean autoresponderProxyMessage(
+            IHttpService httpService, IHttpRequestResponse messageInfo) {
+
+        boolean apply = false;
+        try {
+            IRequestInfo reqInfo = getHelpers().analyzeRequest(httpService, messageInfo.getRequest());  
+            String url = HttpUtil.normalizeURL(reqInfo.getUrl().toExternalForm());
+            AutoResponderItem item = this.autoResponderProperty.findItem(url);
+            if (item != null) {
+                // FullパスをRequestヘッダに追加
+                String request = Util.decodeMessage(messageInfo.getRequest());
+                Matcher m = REQUEST_URI.matcher(request);
+                StringBuffer sb = new StringBuffer();
+                if (m.find()) {
+                    m.appendReplacement(sb, m.group(0));
+                    sb.append("\r\nX-AutoResponder: " + url);
                 }
+                m.appendTail(sb);
+                request = sb.toString();
+                messageInfo.setRequest(Util.encodeMessage(request));
+                messageInfo.setHttpService(getHelpers().buildHttpService("127.0.0.1", autoResponderProperty.getRedirectPort(), "http"));
+                apply = true;            
             }
-        }        
-        return responseByte;
+        
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return apply;
+
+//                // Fullパスに変換
+//                String request = Util.decodeMessage(messageInfo.getRequest());
+//                Matcher m = REQUEST_URI.matcher(request);
+//                StringBuffer sb = new StringBuffer();
+//               while (m.find()) {
+//                    sb.append(m.group(1));
+//                    sb.append("/?");
+//                    m.appendReplacement(sb, Matcher.quoteReplacement(url));
+//                    sb.append(m.group(3));
+//                }
+//                m.appendTail(sb);
+//                request = sb.toString();
+//                try {
+//                    if (bean.getBodyOnly()) {
+//                        HttpMessage message = HttpMessage.parseHttpMessage(responseByte);
+//                        byte bodyBytes[] = Util.bytesFromFile(new File(bean.getReplace()));
+//                        message.setBody(Util.getRawStr(bodyBytes));
+//                        message.updateContentLength(true);
+//                        responseByte = message.getMessageBytes();
+//                    }
+//                    else {
+//                        responseByte = Util.bytesFromFile(new File(bean.getReplace()));
+//                    }
+//                    break;
+//                } catch (IOException ex) {
+//                    Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//        }        
     }    
     
     /**
@@ -427,7 +435,6 @@ public class BurpExtender extends BurpExtenderImpl
             }
             if ((messageIsRequest == bean.isRequest()) || (!messageIsRequest == bean.isResponse())) {
                 // body
-//                Pattern p = bean.compileRegex(!bean.isRegexp());
                 Pattern p = bean.getRegexPattern();
                 if (bean.isBody() && httpMsg.isBody()) {
                     Matcher m = p.matcher(httpMsg.getBody());
@@ -947,5 +954,11 @@ public class BurpExtender extends BurpExtenderImpl
         }
         SwingUtil.systemClipboardCopy(buff.toString());
     }
+
+    @Override
+    public void extensionUnloaded() {
+
+    }
+
     
 }
