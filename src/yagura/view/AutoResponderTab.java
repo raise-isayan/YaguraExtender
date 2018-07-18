@@ -5,6 +5,7 @@
  */
 package yagura.view;
 
+import yagura.model.AutoResponderProperty;
 import burp.BurpExtender;
 import yagura.model.AutoResponderItem;
 import extend.model.base.CustomTableModel;

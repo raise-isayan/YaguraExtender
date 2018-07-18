@@ -76,7 +76,7 @@ public class FormatUtil {
             Document document = docBuilder.parse(new InputSource(new StringReader(plainXML)));
             transformer = TransformerFactory.newInstance()
                     .newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.INDENT, pretty ? "yes" : "no");
             transformer.transform(new DOMSource(document),
                                   new StreamResult(sw));
         } catch (TransformerConfigurationException ex) {

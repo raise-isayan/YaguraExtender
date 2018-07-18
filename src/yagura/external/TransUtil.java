@@ -60,7 +60,7 @@ public class TransUtil {
         BASE64, UUENCODE, QUOTEDPRINTABLE, URL_STANDARD, HTML, URL_UNICODE, UNICODE, BYTE, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG
     };
 
-    private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-z+/\r\n])+={0,2}");
+    private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
     private final static Pattern PTN_UUENCODE = Pattern.compile("begin\\s[0-6]{3}\\s\\w+");
     private final static Pattern PTN_QUOTEDPRINTABLE = Pattern.compile("=([0-9a-fA-F]{2})");
     private final static Pattern PTN_URL = Pattern.compile("%([0-9a-fA-F]{2})");

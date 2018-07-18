@@ -4,6 +4,7 @@
  */
 package yagura.view;
 
+import yagura.model.AutoResponderProperty;
 import burp.ITab;
 import yagura.model.EncodingProperty;
 import yagura.model.LoggingProperty;

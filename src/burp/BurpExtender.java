@@ -19,7 +19,7 @@ import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.Util;
 import extend.view.base.HttpResponse;
-import yagura.view.AutoResponderProperty;
+import yagura.model.AutoResponderProperty;
 import yagura.view.GeneratePoCTab;
 import yagura.view.HtmlCommetViewTab;
 import yagura.view.JSONViewTab;

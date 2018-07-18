@@ -20,7 +20,7 @@ import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import yagura.model.AutoResponderItem;
-import yagura.view.AutoResponderProperty;
+import yagura.model.AutoResponderProperty;
 
 /**
  *

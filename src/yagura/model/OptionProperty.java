@@ -4,8 +4,6 @@
  */
 package yagura.model;
 
-import yagura.view.AutoResponderProperty;
-
 /**
  *
  * @author isayan

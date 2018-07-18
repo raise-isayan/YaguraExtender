@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package yagura.view;
+package yagura.model;
 
 import yagura.model.AutoResponderItem;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class AutoResponderProperty {
-    private int redirectPort = 0;
+    private int redirectPort = 7777;
 
     /**
      * @return the redirectPort

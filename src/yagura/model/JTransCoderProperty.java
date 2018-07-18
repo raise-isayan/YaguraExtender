@@ -15,7 +15,7 @@ import yagura.external.TransUtil.NewLine;
  */
 public class JTransCoderProperty {
 
-    private EncodeType encodeType;
+    private EncodeType encodeType = EncodeType.ALL;
 
     /**
      * @return the encodeType
@@ -31,7 +31,7 @@ public class JTransCoderProperty {
         this.encodeType = encodeType;
     }
 
-    private NewLine newLine;
+    private NewLine newLine = NewLine.NONE;
 
     /**
      * @return the newLine
@@ -47,7 +47,7 @@ public class JTransCoderProperty {
         this.newLine = newLine;
     }
 
-    private ConvertCase convertCase;
+    private ConvertCase convertCase = ConvertCase.LOWLER;
     
     /**
      * @return the convertCase
@@ -63,7 +63,7 @@ public class JTransCoderProperty {
         this.convertCase = convertCase;
     }
     
-    private boolean lineWrap;
+    private boolean lineWrap = false;
 
     /**
      * @return the lineWrap
@@ -79,7 +79,7 @@ public class JTransCoderProperty {
         this.lineWrap = lineWrap;
     }
 
-    private boolean rawEncoding;
+    private boolean rawEncoding = false;
 
     /**
      * @return the rawEncoding
@@ -95,7 +95,7 @@ public class JTransCoderProperty {
         this.rawEncoding = rawEncoding;
     }
     
-    private boolean guessEncoding;
+    private boolean guessEncoding = false;
 
     /**
      * @return the guessEncoding
@@ -111,7 +111,7 @@ public class JTransCoderProperty {
         this.guessEncoding = guessEncoding;
     }
 
-    private String selectEncoding;
+    private String selectEncoding = "UTF-8";
 
     /**
      * @return the selectEncoding
