@@ -52,7 +52,7 @@ import yagura.model.MatchReplaceGroup;
  * @author isayan
  */
 public class BurpExtender extends BurpExtenderImpl
-        implements IHttpListener, IProxyListener, IExtensionStateListener, OptionProperty {
+        implements IHttpListener, IProxyListener, OptionProperty {
 
     public BurpExtender() {
     }
@@ -62,7 +62,7 @@ public class BurpExtender extends BurpExtenderImpl
      */
     public static void main(String args[]) {
 //        JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
-//        burp.StartBurp.main(args);
+    //        burp.StartBurp.main(args);
     }
 
     /**
@@ -102,7 +102,6 @@ public class BurpExtender extends BurpExtenderImpl
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
-        cb.registerExtensionStateListener(this);
         this.burp_version = new BurpWrap.Version(cb);
         if (this.burp_version.isExtendSupport()) {
             // 設定ファイル読み込み
@@ -128,6 +127,7 @@ public class BurpExtender extends BurpExtenderImpl
             cb.registerHttpListener(this);
             cb.registerProxyListener(this);
             cb.addSuiteTab(this.tabbetOption);
+            cb.registerExtensionStateListener(this.tabbetOption);
             cb.registerContextMenuFactory(this.getSendToMenu());
             this.tabbetOption.setProperty(this);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
@@ -192,6 +192,14 @@ public class BurpExtender extends BurpExtenderImpl
             } else {
                resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
             }            
+        }
+
+        if (messageByte != resultBytes) {
+            if (messageIsRequest) {
+                message.getMessageInfo().setRequest(resultBytes);
+            } else {
+                message.getMessageInfo().setResponse(resultBytes);
+            }
         }
         
         // autologging
@@ -376,7 +384,7 @@ public class BurpExtender extends BurpExtenderImpl
             }
         
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
         return apply;
 
@@ -954,11 +962,5 @@ public class BurpExtender extends BurpExtenderImpl
         }
         SwingUtil.systemClipboardCopy(buff.toString());
     }
-
-    @Override
-    public void extensionUnloaded() {
-
-    }
-
     
 }

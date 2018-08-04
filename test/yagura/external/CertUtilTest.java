@@ -6,16 +6,12 @@
 package yagura.external;
 
 import java.io.File;
-import java.security.Key;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
-import java.util.Iterator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -94,8 +90,8 @@ public class CertUtilTest {
     @Test
     public void testExportToPem_Key_X509Certificate_JKS() throws Exception {
         System.out.println("exportToPem JKS");
-        File storeFile = new File("C:\\temp\\server.keystore");
-        HashMap<String, CertificateInKey> certMap = CertUtil.loadFromJKS(storeFile, "testtest");
+        String storeFileName = CertUtilTest.class.getResource("../../resources/server.keystore").getPath();
+        HashMap<String, CertificateInKey> certMap = CertUtil.loadFromJKS(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
             CertificateInKey cert = certMap.get(ailias);
             String result = CertUtil.exportToPem(cert.getPrivateKey(), cert.getX509Certificate());
@@ -109,8 +105,8 @@ public class CertUtilTest {
     @Test
     public void testExportToPem_Key_X509Certificate_PKCS12() throws Exception {
         System.out.println("exportToPem PKCS12");
-        File storeFile = new File("C:\\temp\\burp_custom.p12");
-        HashMap<String, CertificateInKey> certMap = CertUtil.loadFromPKCS12(storeFile, "testca");
+        String storeFileName = CertUtilTest.class.getResource("../../resources/burpca.p12").getPath();
+        HashMap<String, CertificateInKey> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
             System.out.println("ailias:" + ailias);
             CertificateInKey cert = certMap.get(ailias);

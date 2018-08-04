@@ -7,6 +7,7 @@ package yagura.view;
 
 import yagura.model.AutoResponderProperty;
 import burp.BurpExtender;
+import burp.IExtensionStateListener;
 import yagura.model.AutoResponderItem;
 import extend.model.base.CustomTableModel;
 import extend.util.SwingUtil;
@@ -31,7 +32,7 @@ import yagura.AutoResponderServer;
  *
  * @author isayan
  */
-public class AutoResponderTab extends javax.swing.JPanel implements UncaughtExceptionHandler {
+public class AutoResponderTab extends javax.swing.JPanel implements IExtensionStateListener, UncaughtExceptionHandler {
 
     /**
      * Creates new form AutoResponder
@@ -278,10 +279,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements UncaughtExce
             }        
         }
         else {
-            if (this.thredServer != null) {
-                this.thredServer.stopServer();
-                this.thredServer = null;
-            }        
+            stopThreadServer();
         }
     }//GEN-LAST:event_chkEnableRuleActionPerformed
 
@@ -365,6 +363,18 @@ public class AutoResponderTab extends javax.swing.JPanel implements UncaughtExce
             BurpExtender.issueAlert("AutoResponder", e.getMessage(), TrayIcon.MessageType.ERROR);
         }
 
+    }
+
+    protected void stopThreadServer() {
+        if (this.thredServer != null) {
+            this.thredServer.stopServer();
+            this.thredServer = null;
+        }            
+    }
+    
+    @Override
+    public void extensionUnloaded() {
+        stopThreadServer();
     }
 
 }

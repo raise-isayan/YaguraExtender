@@ -7,7 +7,6 @@ package yagura.external;
 import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
 import extend.util.Util;
-import yagura.external.TransUtil;
 import yagura.external.TransUtil.EncodePattern;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -24,7 +23,6 @@ import static org.junit.Assert.*;
 import extend.util.HashUtil;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Date;
 import javax.xml.bind.DatatypeConverter;
 
 /**
