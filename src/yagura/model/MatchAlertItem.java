@@ -4,6 +4,8 @@
  */
 package yagura.model;
 
+import burp.BurpExtenderImpl.Confidence;
+import burp.BurpExtenderImpl.Severity;
 import extend.view.base.MatchItem;
 import java.util.EnumSet;
 
@@ -15,15 +17,15 @@ public class MatchAlertItem extends MatchItem {
 
     private EnumSet<TargetTool> targetTools = EnumSet.allOf(TargetTool.class);
     private EnumSet<NotifyType> notifyTypes = EnumSet.noneOf(NotifyType.class);
-    private static final String[] types = new String[]{"request", "response"};
+    private static final String[] MESSAGE_TYPE = new String[]{"request", "response"};
 
     public MatchAlertItem() {
         super();
-        this.setType(types[1]);
+        this.setType(MESSAGE_TYPE[1]);
     }
 
     public static String[] getTypes() {
-        return types;
+        return MESSAGE_TYPE;
     }
 
     /**
@@ -84,7 +86,56 @@ public class MatchAlertItem extends MatchItem {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    private String issueName = "";
     
+    
+    /**
+     * @return the issueName
+     */
+    public String getIssueName() {
+        return issueName;
+    }
+
+    /**
+     * @param issueName the issueName to set
+     */
+    public void setIssueName(String issueName) {
+        this.issueName = issueName;
+    }
+        
+    private Severity serverity = Severity.INFORMATION;
+
+    /**
+     * @return the serverity
+     */
+    public Severity getServerity() {
+        return serverity;
+    }
+
+    /**
+     * @param serverity the serverity to set
+     */
+    public void setServerity(Severity serverity) {
+        this.serverity = serverity;
+    }
+
+    private Confidence confidence = Confidence.CERTAIN;
+
+    /**
+     * @return the confidence
+     */
+    public Confidence getConfidence() {
+        return confidence;
+    }
+
+    /**
+     * @param confidence the confidence to set
+     */
+    public void setConfidence(Confidence confidence) {
+        this.confidence = confidence;
+    }
+        
     public boolean isRequest() {
         return this.getType().startsWith("request");
     }
@@ -94,7 +145,7 @@ public class MatchAlertItem extends MatchItem {
     }
 
     public static Object[] toObjects(MatchAlertItem matchAlert) {
-        Object[] beans = new Object[9];
+        Object[] beans = new Object[12];
         beans[0] = matchAlert.isSelected();
         beans[1] = matchAlert.getType();
         beans[2] = matchAlert.getMatch();
@@ -104,6 +155,9 @@ public class MatchAlertItem extends MatchItem {
         beans[6] = matchAlert.getTargetTools();
         beans[7] = matchAlert.getHighlightColor();
         beans[8] = matchAlert.getComment();
+        beans[9] = matchAlert.getIssueName();
+        beans[10] = matchAlert.getServerity();
+        beans[11] = matchAlert.getConfidence();
         return beans;
     }
 
@@ -119,6 +173,9 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setTargetTools((EnumSet<TargetTool>) rows[6]);
         matchAlert.setHighlightColor((HighlightColor) rows[7]);
         matchAlert.setComment((String) rows[8]);
+        matchAlert.setIssueName((String) rows[9]);
+        matchAlert.setServerity((Severity) rows[10]); 
+        matchAlert.setConfidence((Confidence)rows[11]); 
         return matchAlert;
     }
 

@@ -11,18 +11,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.security.Key;
-import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -120,6 +116,19 @@ public class CertUtil {
         } catch (NoSuchAlgorithmException ex) {
         }
         return null;
+    }
+
+    public static String getFirstAlias(KeyStore ks) throws KeyStoreException {
+        String alias = null;
+        // 最初にみつかったalias
+        if (alias == null) {
+            Enumeration<String> e = ks.aliases();
+            while (e.hasMoreElements()) {
+                alias = e.nextElement();
+                break;
+            }
+        }
+        return alias;
     }
     
 }

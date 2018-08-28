@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class EncodingProperty {
 
-    private static final String[] listDefault = {
+    private static final String[] ENCODING_DEFAULT_LIST = {
         "Shift_JIS",
         "EUC-JP",
         "UTF-8",
@@ -24,7 +24,7 @@ public class EncodingProperty {
     // Encoding tab
     public static List<String> getDefaultEncodingList() {
         List<String> list = new ArrayList<String>();
-        list.addAll(Arrays.asList(listDefault));
+        list.addAll(Arrays.asList(ENCODING_DEFAULT_LIST));
         return Collections.unmodifiableList(list);
     }
     private final List<String> encodingList = new ArrayList(getDefaultEncodingList());

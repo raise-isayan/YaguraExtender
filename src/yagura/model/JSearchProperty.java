@@ -33,38 +33,70 @@ public class JSearchProperty extends RegexItem {
         this.filterProp = filterProp;
     }
     
-    private boolean request = true;
+    private boolean requestHeader = true;
 
     /**
-     * @return the isRequest
+     * @return the isRequestHeader
      */
-    public boolean isRequest() {
-        return request;
+    public boolean isRequestHeader() {
+        return requestHeader;
     }
 
     /**
-     * @param request the isRequest to set
+     * @param request the isRequestHeader to set
      */
-    public void setRequest(boolean request) {
-        this.request = request;
+    public void setRequestHeader(boolean request) {
+        this.requestHeader = request;
+    }
+
+    private boolean requestBody = true;
+
+    /**
+     * @return the requestBody
+     */
+    public boolean isRequestBody() {
+        return requestBody;
+    }
+
+    /**
+     * @param requestBody the requestBody to set
+     */
+    public void setRequestBody(boolean requestBody) {
+        this.requestBody = requestBody;
     }
     
-    private boolean response = true;
+    private boolean responseHeader = true;
 
     /**
-     * @return the response
+     * @return the responseHeader
      */
-    public boolean isResponse() {
-        return response;
+    public boolean isResponseHeader() {
+        return responseHeader;
     }
 
     /**
-     * @param response the isResponse to set
+     * @param response the isResponseHeader to set
      */
-    public void setResponse(boolean response) {
-        this.response = response;
+    public void setResponseHeader(boolean response) {
+        this.responseHeader = response;
     }
 
+    private boolean responseBody = true;
+    
+    /**
+     * @return the responseBody
+     */
+    public boolean isResponseBody() {
+        return responseBody;
+    }
+
+    /**
+     * @param responseBody the responseBody to set
+     */
+    public void setResponseBody(boolean responseBody) {
+        this.responseBody = responseBody;
+    }
+    
     private boolean comment = true;
 
     /**

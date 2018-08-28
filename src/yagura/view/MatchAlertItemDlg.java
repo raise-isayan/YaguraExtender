@@ -4,6 +4,8 @@
  */
 package yagura.view;
 
+import burp.BurpExtenderImpl;
+import extend.util.SwingUtil;
 import extend.view.base.CustomDialog;
 import yagura.model.MatchAlertItem;
 import extend.view.base.MatchItem;
@@ -43,25 +45,32 @@ public class MatchAlertItemDlg extends CustomDialog {
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
         pnlMain = new javax.swing.JPanel();
+        pnlNotice = new javax.swing.JPanel();
+        chkSequencer = new javax.swing.JCheckBox();
+        chkRepeater = new javax.swing.JCheckBox();
+        chkIntruder = new javax.swing.JCheckBox();
+        chkScanner = new javax.swing.JCheckBox();
+        chkSpider = new javax.swing.JCheckBox();
+        chkProxy = new javax.swing.JCheckBox();
+        lblTarget = new javax.swing.JLabel();
+        lblMatch = new javax.swing.JLabel();
+        lblType = new javax.swing.JLabel();
         cmbAlertType = new javax.swing.JComboBox();
         txtAlertMatch = new javax.swing.JTextField();
-        chkRegExp = new javax.swing.JCheckBox();
-        cmbAlertColor = new javax.swing.JComboBox();
         chkIgnoreCase = new javax.swing.JCheckBox();
-        chkRepeater = new javax.swing.JCheckBox();
-        chkScanner = new javax.swing.JCheckBox();
-        chkProxy = new javax.swing.JCheckBox();
-        chkSpider = new javax.swing.JCheckBox();
-        chkIntruder = new javax.swing.JCheckBox();
-        chkSequencer = new javax.swing.JCheckBox();
-        lblType = new javax.swing.JLabel();
-        lblMatch = new javax.swing.JLabel();
-        lblTarget = new javax.swing.JLabel();
+        chkRegExp = new javax.swing.JCheckBox();
+        pnlMatch = new javax.swing.JPanel();
+        txtComment = new javax.swing.JTextField();
+        chkComment = new javax.swing.JCheckBox();
+        cmbAlertColor = new javax.swing.JComboBox();
+        chkItem_highlight = new javax.swing.JCheckBox();
         chkTray_message = new javax.swing.JCheckBox();
         chkAlerts_tab = new javax.swing.JCheckBox();
-        chkItem_highlight = new javax.swing.JCheckBox();
-        chk_Comment = new javax.swing.JCheckBox();
-        txtComment = new javax.swing.JTextField();
+        pnlScannerIssue = new javax.swing.JPanel();
+        chkScannerIssue = new javax.swing.JCheckBox();
+        cmbSeverity = new javax.swing.JComboBox<>();
+        cmbConfidence = new javax.swing.JComboBox<>();
+        txtIssueName = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -99,10 +108,30 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
+
+        pnlMain.setLayout(new java.awt.BorderLayout());
+
+        chkSequencer.setText("sequencer");
+
+        chkRepeater.setText("repeater");
+
+        chkIntruder.setText("intruder");
+
+        chkScanner.setText("scanner");
+
+        chkSpider.setText("spider");
+
+        chkProxy.setText("proxy");
+
+        lblTarget.setText("Target:");
+
+        lblMatch.setText("Match:");
+
+        lblType.setText("Type:");
 
         cmbAlertType.setToolTipText("");
         cmbAlertType.addActionListener(new java.awt.event.ActionListener() {
@@ -111,8 +140,21 @@ public class MatchAlertItemDlg extends CustomDialog {
             }
         });
 
+        chkIgnoreCase.setText("IgnoreCase");
+
         chkRegExp.setSelected(true);
         chkRegExp.setText("RegExp");
+
+        pnlMatch.setBorder(javax.swing.BorderFactory.createTitledBorder("Notice"));
+
+        txtComment.setEnabled(false);
+
+        chkComment.setText("comment");
+        chkComment.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkCommentStateChanged(evt);
+            }
+        });
 
         cmbAlertColor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "red", "orange", "yellow", "green", "cyan", "blue", "pink", "magenta", "gray" }));
         cmbAlertColor.setEnabled(false);
@@ -122,31 +164,6 @@ public class MatchAlertItemDlg extends CustomDialog {
             }
         });
 
-        chkIgnoreCase.setText("IgnoreCase");
-
-        chkRepeater.setText("repeater");
-
-        chkScanner.setText("scanner");
-
-        chkProxy.setText("proxy");
-
-        chkSpider.setText("spider");
-
-        chkIntruder.setText("intruder");
-
-        chkSequencer.setText("sequencer");
-
-        lblType.setText("Type:");
-
-        lblMatch.setText("Match:");
-
-        lblTarget.setText("Target:");
-
-        chkTray_message.setText("tray message");
-        chkTray_message.setEnabled(false);
-
-        chkAlerts_tab.setText("alerts tab");
-
         chkItem_highlight.setText("item highlight");
         chkItem_highlight.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -154,108 +171,163 @@ public class MatchAlertItemDlg extends CustomDialog {
             }
         });
 
-        chk_Comment.setText("comment");
-        chk_Comment.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chk_CommentStateChanged(evt);
-            }
-        });
+        chkTray_message.setText("tray message");
+        chkTray_message.setEnabled(false);
 
-        txtComment.setEnabled(false);
+        chkAlerts_tab.setText("alerts tab");
 
-        javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
-        pnlMain.setLayout(pnlMainLayout);
-        pnlMainLayout.setHorizontalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
+        chkScannerIssue.setText("scanner issue");
+
+        cmbSeverity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HIGH", "MEDIUM", "LOW", "INFORMATION" }));
+
+        cmbConfidence.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CERTAIN", "FIRM", "TENTATIVE" }));
+
+        javax.swing.GroupLayout pnlScannerIssueLayout = new javax.swing.GroupLayout(pnlScannerIssue);
+        pnlScannerIssue.setLayout(pnlScannerIssueLayout);
+        pnlScannerIssueLayout.setHorizontalGroup(
+            pnlScannerIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlScannerIssueLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(lblType)
-                        .addComponent(lblMatch))
-                    .addComponent(lblTarget))
-                .addGap(18, 18, 18)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkSpider)
-                            .addComponent(chkProxy, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkIntruder)
-                            .addComponent(chkScanner))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkSequencer)
-                            .addComponent(chkRepeater)))
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtAlertMatch)
-                            .addComponent(cmbAlertType, 0, 243, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkRegExp)
-                            .addComponent(chkIgnoreCase))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chk_Comment)
+                .addGroup(pnlScannerIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtIssueName)
+                    .addGroup(pnlScannerIssueLayout.createSequentialGroup()
+                        .addGroup(pnlScannerIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkScannerIssue, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbSeverity, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbConfidence, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 62, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        pnlScannerIssueLayout.setVerticalGroup(
+            pnlScannerIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlScannerIssueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkScannerIssue)
+                .addGap(5, 5, 5)
+                .addComponent(txtIssueName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbSeverity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbConfidence, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnlMatchLayout = new javax.swing.GroupLayout(pnlMatch);
+        pnlMatch.setLayout(pnlMatchLayout);
+        pnlMatchLayout.setHorizontalGroup(
+            pnlMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMatchLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(pnlMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMatchLayout.createSequentialGroup()
+                        .addGroup(pnlMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkComment)
                             .addComponent(chkTray_message)
                             .addComponent(chkAlerts_tab)
                             .addComponent(chkItem_highlight))
-                        .addGap(0, 96, Short.MAX_VALUE))
+                        .addGap(0, 176, Short.MAX_VALUE))
                     .addComponent(txtComment)
                     .addComponent(cmbAlertColor, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(pnlScannerIssue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
         );
-        pnlMainLayout.setVerticalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
+        pnlMatchLayout.setVerticalGroup(
+            pnlMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMatchLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(chkAlerts_tab)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkTray_message)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkItem_highlight)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmbAlertColor, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chk_Comment))
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlMainLayout.createSequentialGroup()
-                                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbAlertType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(pnlMainLayout.createSequentialGroup()
-                                        .addComponent(lblType)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lblMatch)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblTarget))
-                            .addGroup(pnlMainLayout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(txtAlertMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(chkProxy)
-                                    .addComponent(chkScanner)
-                                    .addComponent(chkRepeater))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(chkSpider)
-                            .addComponent(chkIntruder)
-                            .addComponent(chkSequencer)))
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(chkRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkIgnoreCase)))
+                .addComponent(chkAlerts_tab)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkTray_message)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkItem_highlight)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbAlertColor, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chkComment)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(138, Short.MAX_VALUE))
+            .addComponent(pnlScannerIssue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout pnlNoticeLayout = new javax.swing.GroupLayout(pnlNotice);
+        pnlNotice.setLayout(pnlNoticeLayout);
+        pnlNoticeLayout.setHorizontalGroup(
+            pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNoticeLayout.createSequentialGroup()
+                .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlNoticeLayout.createSequentialGroup()
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlNoticeLayout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(lblType)
+                                .addGap(20, 20, 20))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlNoticeLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblMatch)
+                                .addGap(18, 18, 18)))
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtAlertMatch)
+                            .addComponent(cmbAlertType, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkRegExp)
+                            .addComponent(chkIgnoreCase)))
+                    .addGroup(pnlNoticeLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTarget)
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkSpider)
+                            .addComponent(chkProxy, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkIntruder)
+                            .addComponent(chkScanner))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkSequencer)
+                            .addComponent(chkRepeater))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlNoticeLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(pnlMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        pnlNoticeLayout.setVerticalGroup(
+            pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlNoticeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlNoticeLayout.createSequentialGroup()
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chkRegExp)
+                            .addComponent(cmbAlertType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chkIgnoreCase)
+                            .addComponent(txtAlertMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblMatch)))
+                    .addComponent(lblType))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTarget)
+                    .addGroup(pnlNoticeLayout.createSequentialGroup()
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chkProxy)
+                            .addComponent(chkScanner)
+                            .addComponent(chkRepeater))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chkSpider)
+                            .addComponent(chkIntruder)
+                            .addComponent(chkSequencer))))
+                .addGap(18, 18, 18)
+                .addComponent(pnlMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        pnlMain.add(pnlNotice, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -272,20 +344,21 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.closeDialog(null);
     }//GEN-LAST:event_btnOKActionPerformed
 
-    private void cmbAlertTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlertTypeActionPerformed
-   }//GEN-LAST:event_cmbAlertTypeActionPerformed
-
-    private void cmbAlertColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlertColorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbAlertColorActionPerformed
+    private void chkCommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCommentStateChanged
+        this.txtComment.setEnabled(this.chkComment.isSelected());
+    }//GEN-LAST:event_chkCommentStateChanged
 
     private void chkItem_highlightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkItem_highlightStateChanged
         this.cmbAlertColor.setEnabled(this.chkItem_highlight.isSelected());
     }//GEN-LAST:event_chkItem_highlightStateChanged
 
-    private void chk_CommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chk_CommentStateChanged
-        this.txtComment.setEnabled(this.chk_Comment.isSelected());
-    }//GEN-LAST:event_chk_CommentStateChanged
+    private void cmbAlertColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlertColorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbAlertColorActionPerformed
+
+    private void cmbAlertTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlertTypeActionPerformed
+
+    }//GEN-LAST:event_cmbAlertTypeActionPerformed
 
     /**
      * @param args the command line arguments
@@ -342,6 +415,7 @@ public class MatchAlertItemDlg extends CustomDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox chkAlerts_tab;
+    private javax.swing.JCheckBox chkComment;
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkIntruder;
     private javax.swing.JCheckBox chkItem_highlight;
@@ -349,19 +423,25 @@ public class MatchAlertItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkRegExp;
     private javax.swing.JCheckBox chkRepeater;
     private javax.swing.JCheckBox chkScanner;
+    private javax.swing.JCheckBox chkScannerIssue;
     private javax.swing.JCheckBox chkSequencer;
     private javax.swing.JCheckBox chkSpider;
     private javax.swing.JCheckBox chkTray_message;
-    private javax.swing.JCheckBox chk_Comment;
     private javax.swing.JComboBox cmbAlertColor;
     private javax.swing.JComboBox cmbAlertType;
+    private javax.swing.JComboBox<String> cmbConfidence;
+    private javax.swing.JComboBox<String> cmbSeverity;
     private javax.swing.JLabel lblMatch;
     private javax.swing.JLabel lblTarget;
     private javax.swing.JLabel lblType;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JPanel pnlMatch;
+    private javax.swing.JPanel pnlNotice;
+    private javax.swing.JPanel pnlScannerIssue;
     private javax.swing.JTextField txtAlertMatch;
     private javax.swing.JTextField txtComment;
+    private javax.swing.JTextField txtIssueName;
     // End of variables declaration//GEN-END:variables
 
     @SuppressWarnings("unchecked")
@@ -393,6 +473,8 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         this.txtComment.setEnabled(false);
 
+        SwingUtil.setContainerEnable(this.pnlScannerIssue, false);
+        
     }
 
     /**
@@ -417,8 +499,11 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (this.chkItem_highlight.isSelected()) {
             notifys.add(NotifyType.ITEM_HIGHLIGHT);
         }
-        if (this.chk_Comment.isSelected()) {
+        if (this.chkComment.isSelected()) {
             notifys.add(NotifyType.COMMENT);
+        }
+        if (this.chkScannerIssue.isSelected()) {
+            notifys.add(NotifyType.SCANNER_ISSUE);
         }
         item.setNotifyTypes(notifys);
 
@@ -448,6 +533,13 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
         if (item.getNotifyTypes().contains(NotifyType.COMMENT)) {
             item.setComment(this.txtComment.getText());
+        }        
+        if (item.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
+            item.setIssueName(this.txtIssueName.getText());
+            String serverty = (String)this.cmbSeverity.getSelectedItem();
+            item.setServerity(BurpExtenderImpl.Severity.valueOf(serverty));
+            String confidence = (String)this.cmbConfidence.getSelectedItem();
+            item.setConfidence(BurpExtenderImpl.Confidence.valueOf(confidence));
         }
         return item;
     }
@@ -465,7 +557,8 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.chkAlerts_tab.setSelected(notifys.contains(MatchAlertItem.NotifyType.ALERTS_TAB));
         this.chkTray_message.setSelected(notifys.contains(MatchAlertItem.NotifyType.TRAY_MESSAGE));
         this.chkItem_highlight.setSelected(notifys.contains(MatchAlertItem.NotifyType.ITEM_HIGHLIGHT));
-        this.chk_Comment.setSelected(notifys.contains(MatchAlertItem.NotifyType.COMMENT));
+        this.chkComment.setSelected(notifys.contains(MatchAlertItem.NotifyType.COMMENT));
+        this.chkScannerIssue.setSelected(notifys.contains(MatchAlertItem.NotifyType.SCANNER_ISSUE));
 
         EnumSet<MatchAlertItem.TargetTool> tools = item.getTargetTools();
         this.chkProxy.setSelected(tools.contains(MatchAlertItem.TargetTool.PROXY));
@@ -481,5 +574,11 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (item.getNotifyTypes().contains(NotifyType.COMMENT)) {
             this.txtComment.setText(item.getComment());
         }
+        if (item.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
+            this.txtIssueName.setText(item.getIssueName());
+            this.cmbSeverity.setSelectedItem(item.getServerity().toString());
+            this.cmbConfidence.setSelectedItem(item.getConfidence().toString());
+        }
+
     }
 }

@@ -9,8 +9,8 @@ package yagura.model;
  * @author isayan
  */
 public class StartEndPosion {
-    private int startPos = 0;
-    private int endPos = 0;
+    private int startPos = -1;
+    private int endPos = -1;
         
     public StartEndPosion(int s, int e) {
         this.setPosision(s, e);

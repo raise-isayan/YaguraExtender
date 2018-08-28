@@ -8,11 +8,15 @@ import yagura.model.MatchAlertProperty;
 import extend.view.base.MatchItem;
 import yagura.model.OptionProperty;
 import extend.util.IniProp;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -214,5 +218,25 @@ public class ConfigTest {
         }
         
     }
+
+    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
+
+    /**
+     * Test of saveToXML method, of class Config.
+     */
+    @Test
+    public void testLoadLogPropertyXML() {
+        InputStream inStream = BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES);
+        Properties prop = new Properties();
+        try {
+            prop.load(inStream);
+            ByteArrayOutputStream bstm = new ByteArrayOutputStream();
+            prop.storeToXML(bstm, "");
+            System.out.println(bstm.toString("8859_1"));            
+        } catch (IOException ex) {
+            Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     
 }

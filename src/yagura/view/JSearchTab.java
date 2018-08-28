@@ -7,6 +7,8 @@ package yagura.view;
 
 import burp.BurpExtender;
 import burp.IHttpRequestResponse;
+import burp.IRequestInfo;
+import burp.IResponseInfo;
 import extend.util.Util;
 import extend.view.base.MatchItem;
 import extend.view.base.NamedColor;
@@ -19,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,12 +75,16 @@ public class JSearchTab extends javax.swing.JPanel {
         btnSearch = new javax.swing.JButton();
         chkRegExp = new javax.swing.JCheckBox();
         chkIgnoreCase = new javax.swing.JCheckBox();
-        chkRequest = new javax.swing.JCheckBox();
-        chkResponse = new javax.swing.JCheckBox();
         chkComment = new javax.swing.JCheckBox();
         pnlSearchEnc = new javax.swing.JPanel();
         rdoRepEnc_8859_1 = new javax.swing.JRadioButton();
         rdoRepEnc_AutoRecognise = new javax.swing.JRadioButton();
+        pnlRequest = new javax.swing.JPanel();
+        chkRequestHeader = new javax.swing.JCheckBox();
+        chkRequestBody = new javax.swing.JCheckBox();
+        pnlRequest1 = new javax.swing.JPanel();
+        chkResponseHeader = new javax.swing.JCheckBox();
+        chkResponseBody = new javax.swing.JCheckBox();
         pnlResult = new javax.swing.JPanel();
         pnlResultView = new javax.swing.JPanel();
         lblFilter = new javax.swing.JLabel();
@@ -110,22 +117,6 @@ public class JSearchTab extends javax.swing.JPanel {
             }
         });
 
-        chkRequest.setSelected(true);
-        chkRequest.setText("Request");
-        chkRequest.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkRequestStateChanged(evt);
-            }
-        });
-
-        chkResponse.setSelected(true);
-        chkResponse.setText("Response");
-        chkResponse.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkResponseStateChanged(evt);
-            }
-        });
-
         chkComment.setSelected(true);
         chkComment.setText("Comment");
         chkComment.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -151,6 +142,80 @@ public class JSearchTab extends javax.swing.JPanel {
         });
         pnlSearchEnc.add(rdoRepEnc_AutoRecognise);
 
+        pnlRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Request"));
+
+        chkRequestHeader.setSelected(true);
+        chkRequestHeader.setText("Header");
+        chkRequestHeader.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkRequestHeaderStateChanged(evt);
+            }
+        });
+
+        chkRequestBody.setSelected(true);
+        chkRequestBody.setText("Body");
+        chkRequestBody.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkRequestBodyStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlRequestLayout = new javax.swing.GroupLayout(pnlRequest);
+        pnlRequest.setLayout(pnlRequestLayout);
+        pnlRequestLayout.setHorizontalGroup(
+            pnlRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkRequestHeader)
+                    .addComponent(chkRequestBody))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        pnlRequestLayout.setVerticalGroup(
+            pnlRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequestLayout.createSequentialGroup()
+                .addComponent(chkRequestHeader)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkRequestBody))
+        );
+
+        pnlRequest1.setBorder(javax.swing.BorderFactory.createTitledBorder("Response"));
+
+        chkResponseHeader.setSelected(true);
+        chkResponseHeader.setText("Header");
+        chkResponseHeader.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkResponseHeaderStateChanged(evt);
+            }
+        });
+
+        chkResponseBody.setSelected(true);
+        chkResponseBody.setText("Body");
+        chkResponseBody.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkResponseBodyStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlRequest1Layout = new javax.swing.GroupLayout(pnlRequest1);
+        pnlRequest1.setLayout(pnlRequest1Layout);
+        pnlRequest1Layout.setHorizontalGroup(
+            pnlRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequest1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkResponseHeader)
+                    .addComponent(chkResponseBody))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        pnlRequest1Layout.setVerticalGroup(
+            pnlRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequest1Layout.createSequentialGroup()
+                .addComponent(chkResponseHeader)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkResponseBody))
+        );
+
         javax.swing.GroupLayout pnlSearchLayout = new javax.swing.GroupLayout(pnlSearch);
         pnlSearch.setLayout(pnlSearchLayout);
         pnlSearchLayout.setHorizontalGroup(
@@ -159,15 +224,16 @@ public class JSearchTab extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlSearchLayout.createSequentialGroup()
-                        .addComponent(chkRequest)
+                        .addComponent(txtSearch)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkResponse)
+                        .addComponent(btnSearch))
+                    .addGroup(pnlSearchLayout.createSequentialGroup()
+                        .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(chkComment)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(txtSearch))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSearch)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkRegExp)
@@ -180,21 +246,28 @@ public class JSearchTab extends javax.swing.JPanel {
             pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSearchLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch)
-                    .addComponent(chkRegExp))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(chkRequest)
-                        .addComponent(chkResponse)
-                        .addComponent(chkComment))
-                    .addComponent(chkIgnoreCase))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pnlSearchLayout.createSequentialGroup()
-                .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE))
+                    .addGroup(pnlSearchLayout.createSequentialGroup()
+                        .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlSearchLayout.createSequentialGroup()
+                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSearch)
+                            .addComponent(chkRegExp))
+                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlSearchLayout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(chkComment)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(pnlSearchLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(pnlRequest1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(chkIgnoreCase))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
 
         add(pnlSearch, java.awt.BorderLayout.NORTH);
@@ -440,14 +513,6 @@ public class JSearchTab extends javax.swing.JPanel {
         firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_chkRegExpStateChanged
 
-    private void chkRequestStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
-    }//GEN-LAST:event_chkRequestStateChanged
-
-    private void chkResponseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
-    }//GEN-LAST:event_chkResponseStateChanged
-
     private void chkCommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCommentStateChanged
         firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_chkCommentStateChanged
@@ -456,15 +521,35 @@ public class JSearchTab extends javax.swing.JPanel {
         firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_rdoRepEnc_AutoRecogniseStateChanged
 
+    private void chkRequestHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestHeaderStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkRequestHeaderStateChanged
+
+    private void chkRequestBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestBodyStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkRequestBodyStateChanged
+
+    private void chkResponseHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseHeaderStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkResponseHeaderStateChanged
+
+    private void chkResponseBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseBodyStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkResponseBodyStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
     private javax.swing.JCheckBox chkComment;
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkRegExp;
-    private javax.swing.JCheckBox chkRequest;
-    private javax.swing.JCheckBox chkResponse;
+    private javax.swing.JCheckBox chkRequestBody;
+    private javax.swing.JCheckBox chkRequestHeader;
+    private javax.swing.JCheckBox chkResponseBody;
+    private javax.swing.JCheckBox chkResponseHeader;
     private javax.swing.JLabel lblFilter;
+    private javax.swing.JPanel pnlRequest;
+    private javax.swing.JPanel pnlRequest1;
     private javax.swing.JPanel pnlResult;
     private javax.swing.JPanel pnlResultView;
     private javax.swing.JPanel pnlSearch;
@@ -565,16 +650,36 @@ public class JSearchTab extends javax.swing.JPanel {
                     if (this.getAutoRecogniseEncoding()) {
                         encoding = item.getGuessCharset();
                     }
-                    if (this.chkRequest.isSelected() && item.getRequest() != null) {
-                        String req = Util.decodeMessage(item.getRequest(), encoding);
+                    if ((this.chkRequestHeader.isSelected() || this.chkRequestBody.isSelected()) && item.getRequest() != null) {
+                        byte reqMessage[] = item.getRequest();
+                        if (!(this.chkRequestHeader.isSelected() && this.chkRequestBody.isSelected())) {
+                            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(reqMessage);
+                            if (this.chkRequestHeader.isSelected()) {
+                                reqMessage = Arrays.copyOfRange(item.getRequest(), 0, reqInfo.getBodyOffset());
+                            }
+                            else if (this.chkRequestBody.isSelected()) {
+                                reqMessage = Arrays.copyOfRange(item.getRequest(), reqInfo.getBodyOffset(), item.getRequest().length);                            
+                            }                                                    
+                        }
+                        String req = Util.decodeMessage(reqMessage, encoding);
                         m = p.matcher(req);
                         if (m.find()) {
                             find = true;
                             break;
                         }
                     }
-                    if (this.chkResponse.isSelected() && item.getResponse() != null) {
-                        String res = Util.decodeMessage(item.getResponse(), encoding);
+                    if ((this.chkResponseHeader.isSelected() || this.chkResponseBody.isSelected()) && item.getResponse() != null) {
+                        byte resMessage[] = item.getResponse();
+                        if (!(this.chkResponseHeader.isSelected() && this.chkResponseBody.isSelected())) {
+                            IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(resMessage);
+                            if (this.chkResponseHeader.isSelected()) {
+                                resMessage = Arrays.copyOfRange(item.getResponse(), 0, resInfo.getBodyOffset());
+                            }
+                            else if (this.chkResponseBody.isSelected()) {
+                                resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getRequest().length);                            
+                            }                                                    
+                        }
+                        String res = Util.decodeMessage(resMessage, encoding);
                         m = p.matcher(res);
                         if (m.find()) {
                             find = true;
@@ -667,8 +772,11 @@ public class JSearchTab extends javax.swing.JPanel {
             this.rdoRepEnc_8859_1.setSelected(true);            
         }
 
-        this.chkRequest.setSelected(searchProp.isRequest());
-        this.chkResponse.setSelected(searchProp.isResponse());
+        this.chkRequestHeader.setSelected(searchProp.isRequestHeader());
+        this.chkRequestBody.setSelected(searchProp.isRequestBody());
+        this.chkResponseHeader.setSelected(searchProp.isResponseHeader());
+        this.chkResponseBody.setSelected(searchProp.isResponseBody());
+
         this.chkComment.setSelected(searchProp.isComment());
         
         this.filterPopup.setProperty(searchProp.getFilterProperty());
@@ -682,8 +790,11 @@ public class JSearchTab extends javax.swing.JPanel {
         searchProp.setIgnoreCase(this.chkIgnoreCase.isSelected());  
         searchProp.setAutoRecogniseEncoding(this.rdoRepEnc_AutoRecognise.isSelected());
 
-        searchProp.setRequest(this.chkRequest.isSelected());
-        searchProp.setResponse(this.chkResponse.isSelected());
+        searchProp.setRequestHeader(this.chkRequestHeader.isSelected());
+        searchProp.setRequestBody(this.chkRequestBody.isSelected());
+        searchProp.setResponseHeader(this.chkResponseHeader.isSelected());
+        searchProp.setResponseBody(this.chkResponseBody.isSelected());
+
         searchProp.setComment(this.chkComment.isSelected());
         
         searchProp.setFilterProperty(this.filterPopup.getProperty());        

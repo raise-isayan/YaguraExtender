@@ -9,6 +9,17 @@ package yagura.model;
  * @author isayan
  */
 public interface OptionProperty {
+    public final static String LOAD_CONFIG_PROPERTY = "LoadConfigProperty";
+    public final static String ENCODING_PROPERTY = "EncodingProperty";
+    public final static String MATCHREPLACE_PROPERTY = "MatchReplaceProperty";
+    public final static String MATCHALERT_PROPERTY = "MatchAlertProperty";
+    public final static String AUTO_RESPONDER_PROPERTY = "AutoResponderProperty";
+    public final static String SENDTO_PROPERTY = "SendToProperty";
+    public final static String LOGGING_PROPERTY = "LoggingProperty";
+    public final static String JSEARCH_FILTER_PROPERTY = "JSearchFilterProperty";
+    public final static String JTRANS_CODER_PROPERTY = "JTransCoderProperty";
+    public final static String VERSION_PROPERTY = "VersionProperty";
+
     // Encoding
     public EncodingProperty getEncodingProperty();
 

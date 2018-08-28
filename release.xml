@@ -2,7 +2,7 @@
 <project name="YaguraExtender" default="release" basedir="." xmlns:asciidoctor="antlib:org.asciidoctor.ant">
 
     <!-- Load our properties -->
-    <property file="src/yagura/release.properties"/>
+    <property file="src/burp/release.properties"/>
     <property name="dist.dir" value="."/>
     <property name="dist.zip" value="YaguraExtender.${version}.zip"/>
     <property name="help.zip" value="YaguraExtender.${version}-help.zip"/>
@@ -33,6 +33,8 @@
             <exclude name="**/.svn"/>
             <exclude name="**/.git"/>
             <exclude name="*.zip"/>
+            <exclude name="*.md5"/>
+            <exclude name="*.sha1"/>
             <exclude name="*.log"/>
             <exclude name="*.log.lck"/>
             <exclude name="burp.extender.xml"/>

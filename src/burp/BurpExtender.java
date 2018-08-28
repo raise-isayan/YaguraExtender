@@ -47,6 +47,10 @@ import javax.swing.JOptionPane;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
 import yagura.model.MatchReplaceGroup;
+import yagura.model.StartEndPosion;
+import yagura.signature.MarkIssue;
+import yagura.signature.MatchAlert;
+import yagura.signature.MatchAlertIssue;
 
 /**
  * @author isayan
@@ -61,8 +65,8 @@ public class BurpExtender extends BurpExtenderImpl
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-//        JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
-    //        burp.StartBurp.main(args);
+    //  JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
+    //  burp.StartBurp.main(args);
     }
 
     /**
@@ -97,13 +101,11 @@ public class BurpExtender extends BurpExtenderImpl
     private final TabbetOption tabbetOption = new TabbetOption();
     private final HtmlCommetViewTab commentViewTab = new HtmlCommetViewTab();
     private final GeneratePoCTab generatePoCTab = new GeneratePoCTab();
-    private BurpWrap.Version burp_version = null;
 
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
-        this.burp_version = new BurpWrap.Version(cb);
-        if (this.burp_version.isExtendSupport()) {
+        if (this.getBurpVersion().isExtendSupport()) {
             // 設定ファイル読み込み
             try {
                 String configXML = getCallbacks().loadExtensionSetting("configXML");
@@ -374,7 +376,7 @@ public class BurpExtender extends BurpExtenderImpl
                 StringBuffer sb = new StringBuffer();
                 if (m.find()) {
                     m.appendReplacement(sb, m.group(0));
-                    sb.append("\r\nX-AutoResponder: " + url);
+                    sb.append("\r\nX-AutoResponder: ").append(url);
                 }
                 m.appendTail(sb);
                 request = sb.toString();
@@ -387,35 +389,6 @@ public class BurpExtender extends BurpExtenderImpl
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
         return apply;
-
-//                // Fullパスに変換
-//                String request = Util.decodeMessage(messageInfo.getRequest());
-//                Matcher m = REQUEST_URI.matcher(request);
-//                StringBuffer sb = new StringBuffer();
-//               while (m.find()) {
-//                    sb.append(m.group(1));
-//                    sb.append("/?");
-//                    m.appendReplacement(sb, Matcher.quoteReplacement(url));
-//                    sb.append(m.group(3));
-//                }
-//                m.appendTail(sb);
-//                request = sb.toString();
-//                try {
-//                    if (bean.getBodyOnly()) {
-//                        HttpMessage message = HttpMessage.parseHttpMessage(responseByte);
-//                        byte bodyBytes[] = Util.bytesFromFile(new File(bean.getReplace()));
-//                        message.setBody(Util.getRawStr(bodyBytes));
-//                        message.updateContentLength(true);
-//                        responseByte = message.getMessageBytes();
-//                    }
-//                    else {
-//                        responseByte = Util.bytesFromFile(new File(bean.getReplace()));
-//                    }
-//                    break;
-//                } catch (IOException ex) {
-//                    Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//        }        
     }    
     
     /**
@@ -501,7 +474,6 @@ public class BurpExtender extends BurpExtenderImpl
                 if (!bean.getTargetTools().contains(tools)) {
                     continue;
                 }
-//                Pattern p = bean.compileRegex(!bean.isRegexp());
                 Pattern p = bean.getRegexPattern();
                 String decodeMessage = "";
                 if (bean.isRequest() && messageIsRequest) {
@@ -509,23 +481,33 @@ public class BurpExtender extends BurpExtenderImpl
                 } else if (bean.isResponse() && !messageIsRequest) {
                     decodeMessage = Util.decodeMessage(messageInfo.getResponse());
                 }
+                List<MarkIssue> markList = new ArrayList<>();
                 Matcher m = p.matcher(decodeMessage);
                 int count = 0;
                 while (m.find()) {
+                    markList.add(new MarkIssue(messageIsRequest, m.start(), m.end()));
                     count++;
                 }
                 if (count > 0) {
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.ALERTS_TAB)) {
                         issueAlert(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
                     }
-//                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.TRAY_MESSAGE)) {
+                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.TRAY_MESSAGE)) {
 //                        trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
-//                    }
+                    }
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.ITEM_HIGHLIGHT)) {
                         BurpWrap.setHighlightColor(messageInfo, String.valueOf(bean.getHighlightColor()));
                     }
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.COMMENT)) {
                         messageInfo.setComment(bean.getComment());
+                    }
+                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.SCANNER_ISSUE)) {
+                        MatchAlert alert = new MatchAlert(this.getMatchAlertProperty());
+                        MatchAlertIssue issue = new MatchAlertIssue(bean, markList);
+                        List<IScanIssue> issues = alert.makeIssueList(messageIsRequest, messageInfo, issue, markList);
+                        for (IScanIssue scanissue : issues) {
+                            BurpExtender.getCallbacks().addScanIssue(scanissue);                        
+                        }                        
                     }
                 }
             } catch (Exception ex) {
@@ -533,7 +515,12 @@ public class BurpExtender extends BurpExtenderImpl
             }
         }
     }
-    
+
+//    private IScannerCheck professionalPassiveScanCheck() {
+//       MatchAlert scan = new MatchAlert(this.getMatchAlertProperty());
+//       return scan.passiveScanCheck();
+//    }
+        
     /**
      * debugModeの取得
      */

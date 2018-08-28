@@ -1,8 +1,6 @@
 package yagura;
 
-import yagura.Config;
 import extend.util.CustomVersion;
-import extend.util.Util;
 
 /*
  * To change this template, choose Tools | Templates and open the template in
@@ -14,7 +12,7 @@ import extend.util.Util;
  */
 public final class Version extends CustomVersion {
 
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/release");
+    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("burp/release");
 
     private Version() {
         String ver = bundle.getString("version");

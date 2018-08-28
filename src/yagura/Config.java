@@ -4,6 +4,7 @@
  */
 package yagura;
 
+import burp.BurpExtenderImpl;
 import yagura.model.AutoResponderItem;
 import yagura.model.EncodingProperty;
 import yagura.model.LoggingProperty;
@@ -259,6 +260,16 @@ public final class Config {
                 String comment = prop.readEntry("matchalert", String.format("item[%d].comment", i), "");
                 item.setComment(comment);
             }
+
+            if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
+                String issueName = prop.readEntry("matchalert", String.format("item[%d].issueName", i), "");
+                item.setIssueName(issueName);
+                String severity = prop.readEntry("matchalert", String.format("item[%d].severity", i), "");
+                item.setServerity(BurpExtenderImpl.Severity.valueOf(severity));
+                String confidence = prop.readEntry("matchalert", String.format("item[%d].confidence", i), "");
+                item.setConfidence(BurpExtenderImpl.Confidence.valueOf(confidence));                
+            }
+
             alertItemList.add(item);
         }
         option.getMatchAlertProperty().setMatchAlertItemList(alertItemList);
@@ -269,8 +280,10 @@ public final class Config {
         jsearch.setIgnoreCase(prop.readEntryBool("jsearch", "ignorecase", false));
         jsearch.setAutoRecogniseEncoding(prop.readEntryBool("jsearch", "autoRecogniseEncoding", false));
         
-        jsearch.setRequest(prop.readEntryBool("jsearch", "request", true));
-        jsearch.setResponse(prop.readEntryBool("jsearch", "response", true));
+        jsearch.setRequestHeader(prop.readEntryBool("jsearch", "requestHeader", true));
+        jsearch.setRequestBody(prop.readEntryBool("jsearch", "requestBody", true));
+        jsearch.setResponseHeader(prop.readEntryBool("jsearch", "responseHeader", true));
+        jsearch.setResponseBody(prop.readEntryBool("jsearch", "responseBody", true));
         jsearch.setComment(prop.readEntryBool("jsearch", "comment", true));
                 
         FilterProperty filter = new FilterProperty();
@@ -306,8 +319,7 @@ public final class Config {
         
         transcoder.setRawEncoding(prop.readEntryBool("transcoder", "rawEncoding", false));
         transcoder.setGuessEncoding(prop.readEntryBool("transcoder", "guessEncoding", false));
-        
-        
+               
     }
     
     /**
@@ -430,8 +442,15 @@ public final class Config {
                 prop.writeEntry("matchalert", String.format("item[%d].comment", i), item.getComment());
             }
 
+            if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
+                prop.writeEntry("matchalert", String.format("item[%d].issueName", i), item.getIssueName());
+                prop.writeEntry("matchalert", String.format("item[%d].severity", i), item.getServerity().name());
+                prop.writeEntry("matchalert", String.format("item[%d].confidence", i), item.getConfidence().name());                
+            }
+            
             EnumSet<MatchItem.TargetTool> tools = item.getTargetTools();
             prop.writeEntry("matchalert", String.format("item[%d].target", i), Util.enumSetToString(tools));
+            
         }        
 
         // JSearch Filter
@@ -440,8 +459,10 @@ public final class Config {
         prop.writeEntryBool("jsearch", "ignorecase", jsearch.isIgnoreCase());
         prop.writeEntryBool("jsearch", "autoRecogniseEncoding", jsearch.isAutoRecogniseEncoding());
 
-        prop.writeEntryBool("jsearch", "request", jsearch.isRequest());
-        prop.writeEntryBool("jsearch", "response", jsearch.isResponse());
+        prop.writeEntryBool("jsearch", "requestHeader", jsearch.isRequestHeader());
+        prop.writeEntryBool("jsearch", "requestBody", jsearch.isRequestBody());
+        prop.writeEntryBool("jsearch", "responseHeader", jsearch.isResponseHeader());
+        prop.writeEntryBool("jsearch", "responseBody", jsearch.isResponseBody());
         prop.writeEntryBool("jsearch", "comment", jsearch.isComment());
         
         FilterProperty filter = jsearch.getFilterProperty();
