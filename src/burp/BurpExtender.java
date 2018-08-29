@@ -47,7 +47,6 @@ import javax.swing.JOptionPane;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
 import yagura.model.MatchReplaceGroup;
-import yagura.model.StartEndPosion;
 import yagura.signature.MarkIssue;
 import yagura.signature.MatchAlert;
 import yagura.signature.MatchAlertIssue;
@@ -211,7 +210,7 @@ public class BurpExtender extends BurpExtenderImpl
                 
     }
 
-    private synchronized String getCurrentLogTimestamp() {
+    public synchronized String getCurrentLogTimestamp() {
         SimpleDateFormat format = this.logProperty.getLogTimestampDateFormat();
         return format.format(new java.util.Date());
     }
@@ -502,7 +501,7 @@ public class BurpExtender extends BurpExtenderImpl
                         messageInfo.setComment(bean.getComment());
                     }
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.SCANNER_ISSUE)) {
-                        MatchAlert alert = new MatchAlert(this.getMatchAlertProperty());
+                        MatchAlert alert = new MatchAlert(toolName, this.getMatchAlertProperty());
                         MatchAlertIssue issue = new MatchAlertIssue(bean, markList);
                         List<IScanIssue> issues = alert.makeIssueList(messageIsRequest, messageInfo, issue, markList);
                         for (IScanIssue scanissue : issues) {

@@ -4,13 +4,14 @@
  */
 package yagura.view;
 
+import burp.BurpExtender;
 import burp.BurpExtenderImpl;
 import extend.util.SwingUtil;
 import extend.view.base.CustomDialog;
 import yagura.model.MatchAlertItem;
 import extend.view.base.MatchItem;
-import extend.view.base.MatchItem.NotifyType;
 import java.awt.Component;
+import java.awt.event.ComponentEvent;
 import java.util.EnumSet;
 import javax.swing.*;
 
@@ -177,6 +178,11 @@ public class MatchAlertItemDlg extends CustomDialog {
         chkAlerts_tab.setText("alerts tab");
 
         chkScannerIssue.setText("scanner issue");
+        chkScannerIssue.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkScannerIssueStateChanged(evt);
+            }
+        });
 
         cmbSeverity.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "HIGH", "MEDIUM", "LOW", "INFORMATION" }));
 
@@ -360,6 +366,12 @@ public class MatchAlertItemDlg extends CustomDialog {
 
     }//GEN-LAST:event_cmbAlertTypeActionPerformed
 
+    private void chkScannerIssueStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkScannerIssueStateChanged
+        this.txtIssueName.setEnabled(this.chkScannerIssue.isSelected());
+        this.cmbSeverity.setEnabled(this.chkScannerIssue.isSelected());
+        this.cmbConfidence.setEnabled(this.chkScannerIssue.isSelected());
+    }//GEN-LAST:event_chkScannerIssueStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -473,7 +485,18 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         this.txtComment.setEnabled(false);
 
-        SwingUtil.setContainerEnable(this.pnlScannerIssue, false);
+        this.txtIssueName.setEnabled(false);
+        this.cmbSeverity.setEnabled(false);
+        this.cmbConfidence.setEnabled(false);
+        
+        // FreeVersion only
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(ComponentEvent e) {
+                SwingUtil.setContainerEnable(pnlScannerIssue, BurpExtender.getInstance().getBurpVersion().isProfessional());
+            }
+        });
+        
+//        SwingUtil.setContainerEnable(this.pnlScannerIssue, false);
         
     }
 
@@ -491,19 +514,19 @@ public class MatchAlertItemDlg extends CustomDialog {
         //item.setNotifyType((MatchItem.NotifyType) this.cmbAlertNotify.getSelectedItem());
         EnumSet<MatchItem.NotifyType> notifys = EnumSet.noneOf(MatchItem.NotifyType.class);
         if (this.chkAlerts_tab.isSelected()) {
-            notifys.add(NotifyType.ALERTS_TAB);
+            notifys.add(MatchItem.NotifyType.ALERTS_TAB);
         }
         if (this.chkTray_message.isSelected()) {
-            notifys.add(NotifyType.TRAY_MESSAGE);
+            notifys.add(MatchItem.NotifyType.TRAY_MESSAGE);
         }
         if (this.chkItem_highlight.isSelected()) {
-            notifys.add(NotifyType.ITEM_HIGHLIGHT);
+            notifys.add(MatchItem.NotifyType.ITEM_HIGHLIGHT);
         }
         if (this.chkComment.isSelected()) {
-            notifys.add(NotifyType.COMMENT);
+            notifys.add(MatchItem.NotifyType.COMMENT);
         }
         if (this.chkScannerIssue.isSelected()) {
-            notifys.add(NotifyType.SCANNER_ISSUE);
+            notifys.add(MatchItem.NotifyType.SCANNER_ISSUE);
         }
         item.setNotifyTypes(notifys);
 
@@ -528,13 +551,13 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
         item.setTargetTools(tools);
 
-        if (item.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
+        if (item.getNotifyTypes().contains(MatchItem.NotifyType.ITEM_HIGHLIGHT)) {
             item.setHighlightColor((MatchItem.HighlightColor) this.cmbAlertColor.getSelectedItem());
         }
-        if (item.getNotifyTypes().contains(NotifyType.COMMENT)) {
+        if (item.getNotifyTypes().contains(MatchItem.NotifyType.COMMENT)) {
             item.setComment(this.txtComment.getText());
         }        
-        if (item.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
+        if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
             item.setIssueName(this.txtIssueName.getText());
             String serverty = (String)this.cmbSeverity.getSelectedItem();
             item.setServerity(BurpExtenderImpl.Severity.valueOf(serverty));
@@ -568,13 +591,13 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.chkScanner.setSelected(tools.contains(MatchAlertItem.TargetTool.SCANNER));
         this.chkSequencer.setSelected(tools.contains(MatchAlertItem.TargetTool.SEQUENCER));
 
-        if (item.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
+        if (item.getNotifyTypes().contains(MatchItem.NotifyType.ITEM_HIGHLIGHT)) {
             this.cmbAlertColor.setSelectedItem(item.getHighlightColor());
         }
-        if (item.getNotifyTypes().contains(NotifyType.COMMENT)) {
+        if (item.getNotifyTypes().contains(MatchItem.NotifyType.COMMENT)) {
             this.txtComment.setText(item.getComment());
         }
-        if (item.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
+        if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
             this.txtIssueName.setText(item.getIssueName());
             this.cmbSeverity.setSelectedItem(item.getServerity().toString());
             this.cmbConfidence.setSelectedItem(item.getConfidence().toString());

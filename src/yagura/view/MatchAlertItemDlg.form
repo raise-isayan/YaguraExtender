@@ -415,6 +415,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="scanner issue"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkScannerIssueStateChanged"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="cmbSeverity">
                       <Properties>

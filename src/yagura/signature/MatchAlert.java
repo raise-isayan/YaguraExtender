@@ -16,19 +16,29 @@ import burp.IScannerInsertionPoint;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import yagura.external.TransUtil;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
-import yagura.model.StartEndPosion;
 
 /**
  *
  * @author isayan
  */
 public class MatchAlert implements Signature<MatchAlertIssue> {
+
+    private final String toolName;
     private final MatchAlertProperty option;
     
-    public MatchAlert(final MatchAlertProperty option) {
+    public MatchAlert(final String toolName, final MatchAlertProperty option) {
+        this.toolName = toolName;
         this.option = option;
+    }
+
+    /**
+     * @return the toolName
+     */
+    public String getToolName() {
+        return toolName;
     }
     
     @Override
@@ -69,7 +79,8 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
             @Override
             public String getIssueBackground() {
                 final String ISSUE_BACKGROUND = "\r\n"
-                        + "<h4>Reference:</h4>";
+                        + "<h4>Reference:</h4>" 
+                        + "<p>MatchAlert for YaguraExtender</p>";
                 return ISSUE_BACKGROUND;
             }
 
@@ -82,6 +93,8 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
             public String getIssueDetail() {
                 StringBuilder buff = new StringBuilder();
                 buff.append("<h4>Datail:</h4>");
+                buff.append(String.format("<p>toolName: %s</p>", TransUtil.toHtmlEncode(toolName)));
+                buff.append(String.format("<p>Scan Date: %s</p>", BurpExtender.getInstance().getCurrentLogTimestamp()));
                 return buff.toString();
             }
 
