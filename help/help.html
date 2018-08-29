@@ -467,10 +467,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">開発環境</div>
 <ul>
 <li>
-<p>NetBean 8.2(<a href="http://netbeans.org/" class="bare">http://netbeans.org/</a>)</p>
+<p>NetBean 8.2 (<a href="http://netbeans.org/" class="bare">http://netbeans.org/</a>)</p>
 </li>
 <li>
-<p>Apache ant 1.9(<a href="http://ant.apache.org/" class="bare">http://ant.apache.org/</a>)</p>
+<p>Apache ant 1.9 (<a href="http://ant.apache.org/" class="bare">http://ant.apache.org/</a>)</p>
 </li>
 <li>
 <p>asciidoc (<a href="http://asciidoc.org/" class="bare">http://asciidoc.org/</a>)</p>
@@ -759,7 +759,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_matchalert">3.3. MatchAlert</h3>
 <div class="paragraph">
 <p>指定した文字列にマッチする文字がレスポンスに現れた場合に通知してくれます。 ExceptionなどのErrorCode系の文字列を登録することを想定しています。
-通知方法には以下の４つの方法があり、同時に複数の方法を選択できます</p>
+通知方法には以下の５つの方法があり、同時に複数の方法を選択できます</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -777,6 +777,9 @@ proxyにチェックが入っている場合にしか意味がありません。
 <li>
 <p>マッチしたヒストリのCommentを変更する方法<br>
 proxyにチェックが入っている場合にしか意味がありません。</p>
+</li>
+<li>
+<p>マッチした内容と指定した値にてScannerのIssueを作成します。</p>
 </li>
 </ol>
 </div>
@@ -840,7 +843,8 @@ proxyにチェックが入っている場合にしか意味がありません。
 </dd>
 <dt class="hdlist1">try message</dt>
 <dd>
-<p>トレイのメッセージが通知先になります。</p>
+<p>トレイのメッセージが通知先になります。
+現在のバージョンではサポートされていません。</p>
 </dd>
 <dt class="hdlist1">Highlight Color</dt>
 <dd>
@@ -851,6 +855,10 @@ proxyログにチェックした場合のみ有効です。</p>
 <dd>
 <p>文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります<br>
 proxyログにチェックした場合のみ有効です。</p>
+</dd>
+<dt class="hdlist1">scanner issue</dt>
+<dd>
+<p>文字列がマッチした場合、該当のScannerのIssueを作成します。</p>
 </dd>
 </dl>
 </div>
@@ -1211,11 +1219,11 @@ proxy-message.log.2
 </dd>
 <dt class="hdlist1">request</dt>
 <dd>
-<p>検索対象をリクエストに限定します。</p>
+<p>検索対象をリクエスト(Header,Body)に限定します。</p>
 </dd>
 <dt class="hdlist1">response</dt>
 <dd>
-<p>検索対象をレスポンスに限定します。</p>
+<p>検索対象をレスポンス(Header,Body)に限定します。</p>
 </dd>
 <dt class="hdlist1">commint</dt>
 <dd>
@@ -1319,7 +1327,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dt class="hdlist1">HTML(&lt;,&gt;,",')</dt>
 <dd>
 <p>HTMLのエンコード、デコードを行います。
-エンコードは、「&lt;,&gt;,",'」のみされます。</p>
+エンコードは、「&lt;,&gt;,",'」のみ行われます。</p>
 </dd>
 <dt class="hdlist1">&amp;#dd;</dt>
 <dd>
@@ -1629,7 +1637,7 @@ Content-TypeがMulti part かつファイルアップロードの項目がある
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-07 22:41:06 JST
+Last updated 2018-08-29 21:37:04 JST
 </div>
 </div>
 </body>

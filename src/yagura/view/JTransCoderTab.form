@@ -1270,7 +1270,7 @@
                                                   <Group type="103" groupAlignment="0" attributes="0">
                                                       <Group type="102" attributes="0">
                                                           <EmptySpace max="-2" attributes="0"/>
-                                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                          <Group type="103" groupAlignment="0" attributes="0">
                                                               <Group type="102" alignment="0" attributes="0">
                                                                   <Component id="lblDateStep" min="-2" max="-2" attributes="0"/>
                                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -1284,16 +1284,16 @@
                                                                       </Group>
                                                                       <Component id="lblDateStart" alignment="0" min="-2" max="-2" attributes="0"/>
                                                                   </Group>
-                                                                  <Component id="pnlDateEnd" min="-2" pref="113" max="-2" attributes="0"/>
+                                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                                      <Component id="pnlDateEnd" min="-2" pref="113" max="-2" attributes="0"/>
+                                                                      <Component id="pnlDateStart" alignment="0" min="-2" pref="113" max="-2" attributes="0"/>
+                                                                  </Group>
                                                               </Group>
                                                           </Group>
                                                       </Group>
                                                       <Group type="102" alignment="0" attributes="0">
                                                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                                          <Group type="103" groupAlignment="1" attributes="0">
-                                                              <Component id="pnlDateStart" alignment="1" min="-2" pref="113" max="-2" attributes="0"/>
-                                                              <Component id="txtDateFormat" min="-2" pref="152" max="-2" attributes="0"/>
-                                                          </Group>
+                                                          <Component id="txtDateFormat" min="-2" pref="152" max="-2" attributes="0"/>
                                                           <EmptySpace max="-2" attributes="0"/>
                                                           <Component id="lblDateFormat" min="-2" pref="174" max="-2" attributes="0"/>
                                                       </Group>
@@ -1310,22 +1310,21 @@
                                                       <Component id="txtDateFormat" alignment="3" min="-2" max="-2" attributes="0"/>
                                                       <Component id="lblDateFormat" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                      <Group type="102" attributes="0">
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="1" attributes="0">
+                                                      <Group type="102" alignment="1" attributes="0">
                                                           <Component id="lblDateStart" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                                          <Component id="lblDateEnd" min="-2" max="-2" attributes="0"/>
+                                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <Group type="102" alignment="1" attributes="0">
+                                                          <Component id="pnlDateStart" min="-2" pref="25" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="pnlDateEnd" min="-2" pref="25" max="-2" attributes="0"/>
                                                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                                                       </Group>
-                                                      <Group type="102" attributes="0">
-                                                          <Component id="pnlDateStart" pref="25" max="32767" attributes="0"/>
-                                                          <EmptySpace max="-2" attributes="0"/>
-                                                      </Group>
                                                   </Group>
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="lblDateEnd" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="pnlDateEnd" min="-2" pref="25" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="3" attributes="0">
                                                       <Component id="txtDateStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                       <Component id="lblDateStep" alignment="3" min="-2" max="-2" attributes="0"/>

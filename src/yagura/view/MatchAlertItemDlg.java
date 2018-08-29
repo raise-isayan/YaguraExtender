@@ -253,7 +253,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addComponent(chkComment)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(pnlScannerIssue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -594,14 +594,14 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (item.getNotifyTypes().contains(MatchItem.NotifyType.ITEM_HIGHLIGHT)) {
             this.cmbAlertColor.setSelectedItem(item.getHighlightColor());
         }
-        if (item.getNotifyTypes().contains(MatchItem.NotifyType.COMMENT)) {
+//        if (item.getNotifyTypes().contains(MatchItem.NotifyType.COMMENT)) {
             this.txtComment.setText(item.getComment());
-        }
-        if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
+//        }
+//        if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
             this.txtIssueName.setText(item.getIssueName());
             this.cmbSeverity.setSelectedItem(item.getServerity().toString());
             this.cmbConfidence.setSelectedItem(item.getConfidence().toString());
-        }
+//        }
 
     }
 }

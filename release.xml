@@ -62,8 +62,8 @@
 
     <target name="releasehelp" depends="help">
         <zip basedir="." destfile="${help.zip}" update="false">
-            <include name="help/css/**"/>
-            <include name="help/html/**"/>
+            <include name="help/**"/>
+            <include name="help/images/**"/>
         </zip>
     </target>
     

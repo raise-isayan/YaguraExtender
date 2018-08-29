@@ -13,8 +13,8 @@
 * 1.7以上 (http://www.portswigger.net/burp/)
 
 .開発環境
-* NetBean 8.2(http://netbeans.org/)
-* Apache ant 1.9(http://ant.apache.org/)
+* NetBean 8.2 (http://netbeans.org/)
+* Apache ant 1.9 (http://ant.apache.org/)
 * asciidoc (http://asciidoc.org/) 
 
 .利用ライブラリ
@@ -159,7 +159,7 @@ Metachar::
 === MatchAlert
 
 指定した文字列にマッチする文字がレスポンスに現れた場合に通知してくれます。 ExceptionなどのErrorCode系の文字列を登録することを想定しています。
-通知方法には以下の４つの方法があり、同時に複数の方法を選択できます
+通知方法には以下の５つの方法があり、同時に複数の方法を選択できます
 
 . BurpのAlertsタブにて通知する方法
 . タスクトレイのメッセージにて通知する方法 +
@@ -168,6 +168,7 @@ Metachar::
   proxyにチェックが入っている場合にしか意味がありません。
 . マッチしたヒストリのCommentを変更する方法 +
   proxyにチェックが入っている場合にしか意味がありません。
+. マッチした内容と指定した値にてScannerのIssueを作成します。
 
 ==== MatchAlertタブ
 image:images/custom_matchalert.png[MatchAlertタブ]
@@ -206,6 +207,7 @@ alert tabs::
 
 try message:: 
     トレイのメッセージが通知先になります。
+    現在のバージョンではサポートされていません。
 
 Highlight Color::
      文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
@@ -215,6 +217,9 @@ comment::
      文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
      proxyログにチェックした場合のみ有効です。
 
+scanner issue:: 
+     文字列がマッチした場合、該当のScannerのIssueを作成します。
+     
 
 === AutoResponder
 指定したURLにマッチする場合に指定したファイルの内容でレスポンスを返します。
@@ -440,11 +445,11 @@ IgnoreCase::
     チェック時大文字小文字を無視します。
 
 request::
-    検索対象をリクエストに限定します。
+    検索対象をリクエスト(Header,Body)に限定します。
 
 response::
-    検索対象をレスポンスに限定します。
- 
+    検索対象をレスポンス(Header,Body)に限定します。
+
 commint::
     検索対象をコメントに限定します。
 
@@ -513,7 +518,7 @@ QuotedPrintable::
 
 HTML(<,>,",')::
     HTMLのエンコード、デコードを行います。
-    エンコードは、「<,>,",'」のみされます。
+    エンコードは、「<,>,",'」のみ行われます。
 
 &#dd;:: 
     10進数形式の実体参照形式のエンコード、デコードを行います。
