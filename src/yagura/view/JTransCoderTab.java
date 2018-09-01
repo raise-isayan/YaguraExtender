@@ -31,7 +31,6 @@ import javax.swing.JOptionPane;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.impl.JDatePickerImpl;
 import yagura.external.CertificateInKey;
@@ -993,16 +992,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
                     .addComponent(lblDateFormat))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlDateLayout.createSequentialGroup()
-                        .addComponent(lblDateStart)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblDateEnd)
-                        .addGap(18, 18, 18))
-                    .addGroup(pnlDateLayout.createSequentialGroup()
-                        .addComponent(pnlDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)))
+                    .addComponent(lblDateStart)
+                    .addComponent(pnlDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDateEnd))
+                .addGap(10, 10, 10)
                 .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDateStep))

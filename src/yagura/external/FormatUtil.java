@@ -9,8 +9,6 @@ package yagura.external;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
@@ -51,7 +49,7 @@ public class FormatUtil {
         Matcher m = JSON_TYPE.matcher(plainJson);
         if (m.matches()) {
             try {
-                prettyJSON(plainJson, false);
+                JsonUtil.prettyJSON(plainJson, false);
                 return true;
             }
             catch (IOException e) {
@@ -92,27 +90,8 @@ public class FormatUtil {
     }
     
     public static String prettyJSON(String plainJson) throws IOException {
-        return prettyJSON(plainJson, true);
+        return JsonUtil.prettyJSON(plainJson, true);
     }
     
-    public static String prettyJSON(String plainJson, boolean pretty) throws IOException {
-        StringWriter sw = new StringWriter();
-        try {
-            javax.json.spi.JsonProvider jsonProvider = javax.json.spi.JsonProvider.provider();        
-            javax.json.JsonReader jsonReader = jsonProvider.createReader(new StringReader(plainJson));
-            javax.json.JsonStructure json = jsonReader.read();
-            jsonReader.close();
-
-            Map<String, Boolean> config = new HashMap<String, Boolean>();
-            config.put(javax.json.stream.JsonGenerator.PRETTY_PRINTING, pretty);        
-            javax.json.JsonWriter jsonWriter = jsonProvider.createWriterFactory(config).createWriter(sw);
-            jsonWriter.write(json);
-            jsonWriter.close();        
-        }
-        catch (javax.json.stream.JsonParsingException ex) {
-            throw new IOException(ex);
-        }
-        return sw.getBuffer().toString().trim();
-    }
     
 }

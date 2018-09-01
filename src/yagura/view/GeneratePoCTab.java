@@ -533,27 +533,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String csrfFormTarget = this.chkTimeDelay.isSelected() ? " target=\"_blank\"" : "";
             
 //            IHttpService httpService = this.controller.getHttpService();
-            IHttpService httpService = null;
-            if (httpService == null) {
-                httpService = new IHttpService() {
-
-                    @Override
-                    public String getHost() {
-                        return reqmsg.getHost();
-                    }
-
-                    @Override
-                    public int getPort() {
-                        return reqmsg.getPort();
-                    }
-
-                    @Override
-                    public String getProtocol() {
-                        return HttpUtil.getDefaultProtocol(chkUseHttps.isSelected());
-                    }
-                };
-            
-            }
+            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), chkUseHttps.isSelected());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");
@@ -670,7 +650,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String csrfFormTarget = this.chkTimeDelay.isSelected() ? " target=\"_blank\"" : "";
 
 //            IHttpService httpService = this.controller.getHttpService();
-            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), chkUseHttps.isSelected());;            
+            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), chkUseHttps.isSelected());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");
@@ -695,7 +675,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 //                    }
 //                    buff.append("xhr.withCredentials = true;\r\n");       // Cookieを付与
                     buff.append("xhr.onreadystatechange = function(){};\r\n");                    
-//                    String[][] parameters = callback.getParameters(reqmsg.getMessageBytes());
                     List<IParameter> parameters = requestInfo.getParameters();
                     Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.length:{0}", parameters.size());
                     boolean binaryParam = false;
@@ -713,7 +692,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         }
                         else if (HttpUtil.isMaltiPart(contentType)) {
                             paramName = Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
-                            paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
+                            if (!binaryParam) {
+                                paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
+                            }
                         }
                         if (paramType == IParameter.PARAM_URL || paramType == IParameter.PARAM_COOKIE) {
                             continue;
@@ -772,7 +753,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 //                    }
                     buff.append("xhr.withCredentials = true;\r\n");       // Cookieを付与
                     buff.append("xhr.onreadystatechange = function(){};\r\n");
-                    //String[][] parameters = callback.getParameters(reqmsg.getMessageBytes());
                     List<IParameter> parameters = requestInfo.getParameters();                
                     Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.size:{0}", parameters.size());
                     boolean binaryParam = false;
@@ -833,7 +813,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         }
         return buff.toString();
     }
-
+    
     public void clearView() {
         this.quickSearchTab.clearView();
     }

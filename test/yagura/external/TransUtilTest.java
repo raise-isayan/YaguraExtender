@@ -23,6 +23,7 @@ import static org.junit.Assert.*;
 import extend.util.HashUtil;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Locale;
 import javax.xml.bind.DatatypeConverter;
 
 /**
@@ -717,4 +718,126 @@ public class TransUtilTest {
     System.out.println(sb.toString());
     }
 
+    /**
+     */
+    @Test
+    public void testGetUniversalGuessCode() {
+        {
+            try {
+                String expResult = "SHIFT_JIS";
+                String expValue = "あいうえお";
+                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("Shift_JIS"), "UTF-8");
+                assertEquals(expResult, guessCharset);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            }        
+        }
+
+        {
+            try {
+                String expResult = "SHIFT_JIS";
+                String expValue = "①②③④⑤⑥⑦ⅩⅨあいうえおかきくけこ";
+                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("MS932"), "UTF-8");
+                assertEquals(expResult, guessCharset);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            }        
+        }
+        
+        {
+            try {
+                String expResult = "EUC-JP";
+                String expValue = "あいうえお";
+                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("EUC-JP"), "UTF-8");
+                assertEquals(expResult, guessCharset);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            }        
+        }
+
+        {
+            try {
+                String expResult = "ISO-2022-JP";
+                String expValue = "あいうえお";
+                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("ISO-2022-JP"), "UTF-8");
+                assertEquals(expResult, guessCharset);
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            }        
+        }
+
+    }
+    
+    /**
+     */
+    @Test
+    public void testUniversalCharCode() {
+        // Chinese
+        String [] list = {
+            "ISO-2022-CN",
+            "BIG5",
+            "EUC-TW",
+            "GB18030",
+            "HZ-GB-23121",
+            // Cyrillic
+            "ISO-8859-5",
+            "KOI8-R",
+            "WINDOWS-1251",
+            // MACCYRILLIC
+            "IBM866",
+            "IBM855",
+            // Greek
+            "ISO-8859-7",
+            "WINDOWS-1253",
+            // Hebrew
+            "ISO-8859-8",
+            "WINDOWS-1255",
+            // Japanese
+            "ISO-2022-JP",
+            "SHIFT_JIS",
+            "EUC-JP",
+            // Korean
+            "ISO-2022-KR",
+            "EUC-KR",
+            // Unicode
+            "UTF-8",
+            "UTF-16BE",
+            "UTF-16LE",
+            "UTF-32BE",
+            "UTF-32LE",
+            "X-ISO-10646-UCS-4-34121", // unk
+            "X-ISO-10646-UCS-4-21431", // unk
+            // Others
+            "WINDOWS-1252",
+        };
+        for (String l: list) {
+            String normChar = HttpUtil.normalizeCharset(l);        
+            if (normChar == null) {
+                    System.out.println("unk="  + l);            
+            
+            }
+            else {
+                if (l.compareToIgnoreCase(normChar) != 0) {
+                    System.out.println(l + "="  + normChar);            
+                }            
+            }
+            
+        }
+        
+    }
+
+    @Test
+    public void testLocale() {
+        System.out.println(Locale.JAPANESE.toString());        
+        System.out.println(Locale.JAPANESE.getCountry());
+        System.out.println(Locale.JAPANESE.getDisplayLanguage());
+        System.out.println(Locale.JAPANESE.getDisplayName());
+        System.out.println(Locale.JAPANESE.toLanguageTag());
+        System.out.println(Locale.JAPANESE.getISO3Language());
+        System.out.println(Locale.JAPANESE.getLanguage());
+        System.out.println(Locale.JAPANESE.getDisplayScript());
+        System.out.println(Locale.JAPANESE.getVariant());
+        System.out.println(Locale.JAPANESE.toLanguageTag());
+    }
+    
 }

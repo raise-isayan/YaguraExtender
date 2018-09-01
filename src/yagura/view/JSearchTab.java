@@ -251,10 +251,11 @@ public class JSearchTab extends javax.swing.JPanel {
                         .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlSearchLayout.createSequentialGroup()
-                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearch)
-                            .addComponent(chkRegExp))
+                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkRegExp)
+                            .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnSearch)))
                         .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlSearchLayout.createSequentialGroup()
                                 .addGap(15, 15, 15)
@@ -522,19 +523,19 @@ public class JSearchTab extends javax.swing.JPanel {
     }//GEN-LAST:event_rdoRepEnc_AutoRecogniseStateChanged
 
     private void chkRequestHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestHeaderStateChanged
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_chkRequestHeaderStateChanged
 
     private void chkRequestBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestBodyStateChanged
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_chkRequestBodyStateChanged
 
     private void chkResponseHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseHeaderStateChanged
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_chkResponseHeaderStateChanged
 
     private void chkResponseBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseBodyStateChanged
-        // TODO add your handling code here:
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
     }//GEN-LAST:event_chkResponseBodyStateChanged
 
 

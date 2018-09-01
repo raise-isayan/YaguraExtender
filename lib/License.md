@@ -11,6 +11,11 @@ use license
 #### LICENSE
 - https://github.com/javaee/json-processing-spec/blob/master/LICENSE
 
+### juniversalchardet
+- https://code.google.com/archive/p/juniversalchardet/
+#### LICENSE
+- https://code.google.com/archive/p/juniversalchardet/
+
 ### mailapi
 - https://javaee.github.io/javamail/
 #### LICENSE
