@@ -142,7 +142,7 @@ public class TransUtil {
             // URL encode match
             switch (encodePattern) {
                 case URL_STANDARD: {
-                    String guessCode = (charset == null) ? HttpUtil.getGuessCode(Util.getRawByte(TransUtil.decodeUrl(value, "8859_1"))) : charset;
+                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(value, "8859_1"))) : charset;
                     if (guessCode != null) {
                         applyCharset = guessCode;
                         decode = TransUtil.decodeUrl(value, guessCode);
@@ -161,7 +161,7 @@ public class TransUtil {
                     break;
                 // Byte
                 case BYTE: {
-                    String guessCode = (charset == null) ? HttpUtil.getGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
+                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
                     if (guessCode != null) {
                         applyCharset = guessCode;
                         decode = toByteDecode(value, applyCharset);
@@ -172,7 +172,7 @@ public class TransUtil {
                 break;
                 // uuencode
                 case UUENCODE: {
-                    String guessCode = (charset == null) ? HttpUtil.getGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
                     if (guessCode != null) {
                         applyCharset = guessCode;
                         decode = toUudecode(value, guessCode);
@@ -183,7 +183,7 @@ public class TransUtil {
                 break;
                 // QuotedPrintable
                 case QUOTEDPRINTABLE: {
-                    String guessCode = (charset == null) ? HttpUtil.getGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
                     if (guessCode != null) {
                         applyCharset = guessCode;
                         decode = toUnQuotedPrintable(value, guessCode);
@@ -196,7 +196,7 @@ public class TransUtil {
                 case BASE64: {
                     value = value.replaceAll("[\r\n]", ""); // 改行削除
                     byte[] bytes = DatatypeConverter.parseBase64Binary(value);
-                    String guessCode = (charset == null) ? HttpUtil.getGuessCode(bytes) : charset;
+                    String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
                     if (guessCode != null) {
                         applyCharset = guessCode;
                         decode = ConvertUtil.toBase64Decode(value, guessCode);
@@ -1168,6 +1168,10 @@ public class TransUtil {
         }
     }
 
+    public static String getUniversalGuessCode(byte[] bytes) {
+        return getUniversalGuessCode(bytes, null);
+    }
+            
     /**
      *
      * @param bytes 文字コードを調べるデータ
@@ -1192,7 +1196,7 @@ public class TransUtil {
         if (guessCharset == null) {
             guessCharset = defaultCharset;
         }
-        return guessCharset;
+        return normalizeCharset(guessCharset);
     }
 
     private final static Map<String, String> CHARSET_ALIAS = new HashMap();
