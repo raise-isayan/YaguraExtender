@@ -288,6 +288,7 @@ public final class Config {
                 
         FilterProperty filter = new FilterProperty();
         filter.setShowOnlyScopeItems(prop.readEntryBool("jsearch", "showOnlyScopeItems", false));
+        filter.setHideItemsWithoutResponses(prop.readEntryBool("jsearch", "hideItemsWithoutResponsess", false));
         filter.setShowOnly(prop.readEntryBool("jsearch", "showOnly", false));
         filter.setShowOnlyExtension(prop.readEntry("jsearch", "showOnlyExtension", "asp,aspx,jsp,php"));
         filter.setHide(prop.readEntryBool("jsearch", "hide", false));
@@ -467,6 +468,7 @@ public final class Config {
         
         FilterProperty filter = jsearch.getFilterProperty();
         prop.writeEntryBool("jsearch", "showOnlyScopeItems", filter.getShowOnlyScopeItems());
+        prop.writeEntryBool("jsearch", "hideItemsWithoutResponsess", filter.isHideItemsWithoutResponses());
         prop.writeEntryBool("jsearch", "showOnly", filter.getShowOnly());
         prop.writeEntry("jsearch", "showOnlyExtension", filter.getShowOnlyExtension());
         prop.writeEntryBool("jsearch", "hide", filter.getHide());

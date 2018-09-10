@@ -23,6 +23,23 @@ public class FilterProperty {
         this.showOnlyScopeItems = value;
     }
 
+    private boolean hideItemsWithoutResponses = false;
+
+    /**
+     * @return the hideItemsWithoutResponses
+     */
+    public boolean isHideItemsWithoutResponses() {
+        return hideItemsWithoutResponses;
+    }
+
+    /**
+     * @param hideItemsWithoutResponses the hideItemsWithoutResponses to set
+     */
+    public void setHideItemsWithoutResponses(boolean hideItemsWithoutResponses) {
+        this.hideItemsWithoutResponses = hideItemsWithoutResponses;
+    }
+
+    
     private boolean showOnly = false;
 
     public boolean getShowOnly() {

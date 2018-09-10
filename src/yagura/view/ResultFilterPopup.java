@@ -66,6 +66,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         pnlLeft = new javax.swing.JPanel();
         pnlFilterByRequest = new javax.swing.JPanel();
         chkShowOnlyinscopeItem = new javax.swing.JCheckBox();
+        chkHideItemsWithoutResponses = new javax.swing.JCheckBox();
         pnlExtension = new javax.swing.JPanel();
         txtShowOnly = new javax.swing.JTextField();
         txtHide = new javax.swing.JTextField();
@@ -136,10 +137,13 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         pnlLeft.setLayout(new javax.swing.BoxLayout(pnlLeft, javax.swing.BoxLayout.Y_AXIS));
 
         pnlFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
-        pnlFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlFilterByRequest, javax.swing.BoxLayout.LINE_AXIS));
+        pnlFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlFilterByRequest, javax.swing.BoxLayout.PAGE_AXIS));
 
         chkShowOnlyinscopeItem.setText("Show only in-scope items");
         pnlFilterByRequest.add(chkShowOnlyinscopeItem);
+
+        chkHideItemsWithoutResponses.setText("Hide items without responses");
+        pnlFilterByRequest.add(chkHideItemsWithoutResponses);
 
         pnlLeft.add(pnlFilterByRequest);
 
@@ -267,6 +271,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkGray;
     private javax.swing.JCheckBox chkGreen;
     private javax.swing.JCheckBox chkHide;
+    private javax.swing.JCheckBox chkHideItemsWithoutResponses;
     private javax.swing.JCheckBox chkMagenta;
     private javax.swing.JCheckBox chkNoselect;
     private javax.swing.JCheckBox chkOrange;
@@ -291,6 +296,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
 
     public void setProperty(FilterProperty filterProp) {
         this.chkShowOnlyinscopeItem.setSelected(filterProp.getShowOnlyScopeItems());
+        this.chkHideItemsWithoutResponses.setSelected(filterProp.isHideItemsWithoutResponses());
         this.chkShowOnly.setSelected(filterProp.getShowOnly());
         this.txtShowOnly.setText(filterProp.getShowOnlyExtension());
         this.chkHide.setSelected(filterProp.getHide());
@@ -305,6 +311,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     public FilterProperty getProperty() {
         FilterProperty filterProp = new FilterProperty();
         filterProp.setShowOnlyScopeItems(this.chkShowOnlyinscopeItem.isSelected());
+        filterProp.setHideItemsWithoutResponses(this.chkHideItemsWithoutResponses.isSelected());
         filterProp.setShowOnly(this.chkShowOnly.isSelected());
         filterProp.setShowOnlyExtension(this.txtShowOnly.getText());
         filterProp.setHide(this.chkHide.isSelected());
@@ -382,8 +389,14 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 HttpMessageItem item = HttpMessageItem.toHttpMessageItem(entry);
 
                 boolean showOnlyScopFilter = true;
+                // Filter by request type
                 if (this.filterProp.getShowOnlyScopeItems()) {
                     showOnlyScopFilter = BurpWrap.isInScope(item.getUrl());
+                }
+
+                boolean hideItemsWithoutResponses = true;
+                if (this.filterProp.isHideItemsWithoutResponses()) {
+                    hideItemsWithoutResponses = (item.getResponse() != null);
                 }
                 // status filter
                 boolean statusFilter = false;
@@ -435,7 +448,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                         }
                     }
                 }
-                allFilter = (statusFilter && colorFilter && matchFilter && showOnlyScopFilter);
+                allFilter = (statusFilter && colorFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses);
             } catch (Exception ex) {
                 Logger.getLogger(ResultFilterPopup.class.getName()).log(Level.SEVERE, null, ex);
             }

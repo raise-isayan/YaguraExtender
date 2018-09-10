@@ -152,8 +152,13 @@ public class HttpMessageItem implements IHttpRequestResponse {
 
     public short getStatusCode() throws Exception {
     if (this.httpItem != null) {
-            IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(this.httpItem.getResponse());
-            return resInfo.getStatusCode();
+            if (this.httpItem.getResponse() != null) {
+                IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(this.httpItem.getResponse());
+                return resInfo.getStatusCode();
+            }
+            else {
+                return 0;
+            }
         } else {
             return this.statuscode;
         }

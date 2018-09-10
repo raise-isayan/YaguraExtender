@@ -65,7 +65,10 @@ public class ResultViewModel extends ObjectTableModel<HttpMessageItem> {
                     value = String.valueOf(msg.getUrl());
                     break;
                 case 5: // status code
-                    value = String.valueOf((int) msg.getStatusCode());
+                    value = 0;
+                    if (msg.getResponse() != null) {
+                        value = String.valueOf((int) msg.getStatusCode());
+                    }
                     break;
                 case 6: // length
                     value = 0;

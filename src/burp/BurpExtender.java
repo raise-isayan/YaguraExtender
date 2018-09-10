@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -929,17 +930,21 @@ public class BurpExtender extends BurpExtenderImpl
     public void sendToMessageInfoCopy(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
         StringBuilder buff = new StringBuilder();
         try {
-            buff.append("url\tstatus\tlength\r\n");
+            buff.append("url\tquery\tmethod\tstatus\tlength\r\n");
             for (IHttpRequestResponse messageInfo : messageInfoList) {    
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
                 URL url = reqInfo.getUrl();
                 buff.append(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()).toString());
+                buff.append("\t");
+                buff.append(url.getQuery());
+                buff.append("\t");
+                buff.append(reqInfo.getMethod());
                 if (messageInfo.getResponse() != null) {
                     HttpResponse httpResponse = HttpResponse.parseHttpResponse(messageInfo.getResponse());
                     buff.append("\t");
                     buff.append(httpResponse.getStatusCode());
                     buff.append("\t");
-                    buff.append(httpResponse.getContentLength());                                        
+                    buff.append(messageInfo.getResponse().length);                                        
                 }
                 buff.append("\r\n");
             }
@@ -948,5 +953,24 @@ public class BurpExtender extends BurpExtenderImpl
         }
         SwingUtil.systemClipboardCopy(buff.toString());
     }
+
+    /**
+     * ***********************************************************************
+     * Add Host To Scope
+     * ***********************************************************************
+     */
+
+    public void sendToAddHostToScope(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
+        try {
+            for (IHttpRequestResponse messageInfo : messageInfoList) {    
+                    IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
+                    URL url = reqInfo.getUrl();
+                    BurpExtender.getCallbacks().includeInScope(new URL(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort())));
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     
 }

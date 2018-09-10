@@ -65,6 +65,10 @@ public class SendToExtend extends SendToMenuItem {
             BurpExtender.getInstance().sendToMessageInfoCopy(this.contextMenu, messageInfo);                                    
             break;
         }
+        case ADD_HOST_TO_SCOPE: {
+            BurpExtender.getInstance().sendToAddHostToScope(this.contextMenu, messageInfo);                                    
+            break;
+        }
         default:                             
             // ここには現状こない
             break;

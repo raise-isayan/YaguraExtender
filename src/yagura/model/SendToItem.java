@@ -27,9 +27,10 @@ public class SendToItem {
         REQUEST_AND_RESPONSE_TO_FILE,
         SEND_TO_JTRANSCODER,
         PASTE_FROM_JTRANSCODER,
-        MESSAGE_INFO_COPY;
+        MESSAGE_INFO_COPY,
+        ADD_HOST_TO_SCOPE;
 
-	@Override
+        @Override
 	public String toString() {
             String value = name().toLowerCase();
             return value.replace('_', ' ');
