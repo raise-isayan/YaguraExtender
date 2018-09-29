@@ -132,7 +132,8 @@ public class SendToExtend extends SendToMenuItem {
                       (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_PAYLOAD_POSITIONS);
             break;
         }
-        case MESSAGE_INFO_COPY: {
+        case MESSAGE_INFO_COPY: 
+        case ADD_HOST_TO_SCOPE: {
             enabled = (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_PROXY_HISTORY) ||
                       (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_SEARCH_RESULTS) ||
                       (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_ATTACK_RESULTS) ||

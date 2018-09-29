@@ -52,18 +52,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     private void initComponents() {
 
         pnlMain = new javax.swing.JPanel();
-        pnlHighlighColor = new javax.swing.JPanel();
-        chkNoselect = new javax.swing.JCheckBox();
-        chkRed = new javax.swing.JCheckBox();
-        chkOrange = new javax.swing.JCheckBox();
-        chkYellow = new javax.swing.JCheckBox();
-        chkGreen = new javax.swing.JCheckBox();
-        chkCyan = new javax.swing.JCheckBox();
-        chkBlue = new javax.swing.JCheckBox();
-        chkPink = new javax.swing.JCheckBox();
-        chkMagenta = new javax.swing.JCheckBox();
-        chkGray = new javax.swing.JCheckBox();
-        pnlLeft = new javax.swing.JPanel();
+        pnlCenter = new javax.swing.JPanel();
         pnlFilterByRequest = new javax.swing.JPanel();
         chkShowOnlyinscopeItem = new javax.swing.JCheckBox();
         chkHideItemsWithoutResponses = new javax.swing.JCheckBox();
@@ -77,6 +66,17 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         chkStat3xx = new javax.swing.JCheckBox();
         chkStat4xx = new javax.swing.JCheckBox();
         chkStat5xx = new javax.swing.JCheckBox();
+        pnlHighlighColor = new javax.swing.JPanel();
+        chkNoselect = new javax.swing.JCheckBox();
+        chkRed = new javax.swing.JCheckBox();
+        chkOrange = new javax.swing.JCheckBox();
+        chkYellow = new javax.swing.JCheckBox();
+        chkGreen = new javax.swing.JCheckBox();
+        chkCyan = new javax.swing.JCheckBox();
+        chkBlue = new javax.swing.JCheckBox();
+        chkPink = new javax.swing.JCheckBox();
+        chkMagenta = new javax.swing.JCheckBox();
+        chkGray = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(500, 250));
@@ -92,12 +92,108 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         pnlMain.setPreferredSize(new java.awt.Dimension(500, 300));
         pnlMain.setLayout(new java.awt.BorderLayout());
 
+        pnlCenter.setMinimumSize(new java.awt.Dimension(217, 250));
+        pnlCenter.setName(""); // NOI18N
+        pnlCenter.setPreferredSize(new java.awt.Dimension(500, 300));
+        pnlCenter.setLayout(new javax.swing.BoxLayout(pnlCenter, javax.swing.BoxLayout.Y_AXIS));
+
+        pnlFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
+        pnlFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlFilterByRequest, javax.swing.BoxLayout.Y_AXIS));
+
+        chkShowOnlyinscopeItem.setText("Show only in-scope items");
+        pnlFilterByRequest.add(chkShowOnlyinscopeItem);
+
+        chkHideItemsWithoutResponses.setText("Hide items without responses");
+        pnlFilterByRequest.add(chkHideItemsWithoutResponses);
+
+        pnlCenter.add(pnlFilterByRequest);
+
+        pnlExtension.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by extension"));
+        pnlExtension.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        pnlExtension.setMinimumSize(new java.awt.Dimension(133, 100));
+        pnlExtension.setName(""); // NOI18N
+        pnlExtension.setPreferredSize(new java.awt.Dimension(564, 100));
+
+        txtShowOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtShowOnlyActionPerformed(evt);
+            }
+        });
+
+        chkShowOnly.setText("show only:");
+        chkShowOnly.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkShowOnlyStateChanged(evt);
+            }
+        });
+
+        chkHide.setText("hide:");
+
+        javax.swing.GroupLayout pnlExtensionLayout = new javax.swing.GroupLayout(pnlExtension);
+        pnlExtension.setLayout(pnlExtensionLayout);
+        pnlExtensionLayout.setHorizontalGroup(
+            pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlExtensionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkHide)
+                    .addComponent(chkShowOnly))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtShowOnly, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                    .addComponent(txtHide))
+                .addContainerGap(262, Short.MAX_VALUE))
+        );
+        pnlExtensionLayout.setVerticalGroup(
+            pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlExtensionLayout.createSequentialGroup()
+                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkShowOnly)
+                    .addComponent(txtShowOnly))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtHide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkHide))
+                .addGap(86, 86, 86))
+        );
+
+        pnlCenter.add(pnlExtension);
+        pnlExtension.getAccessibleContext().setAccessibleDescription("");
+
+        pnlStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Status Filter"));
+        pnlStatus.setMaximumSize(new java.awt.Dimension(133, 110));
+        pnlStatus.setMinimumSize(new java.awt.Dimension(133, 110));
+        pnlStatus.setPreferredSize(new java.awt.Dimension(200, 130));
+        pnlStatus.setRequestFocusEnabled(false);
+        pnlStatus.setLayout(new javax.swing.BoxLayout(pnlStatus, javax.swing.BoxLayout.Y_AXIS));
+
+        chkStat2xx.setText("2xx [success]");
+        pnlStatus.add(chkStat2xx);
+
+        chkStat3xx.setText("3xx [redirection]");
+        pnlStatus.add(chkStat3xx);
+
+        chkStat4xx.setText("4xx [request error]");
+        pnlStatus.add(chkStat4xx);
+
+        chkStat5xx.setText("5xx [server error]");
+        chkStat5xx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkStat5xxActionPerformed(evt);
+            }
+        });
+        pnlStatus.add(chkStat5xx);
+
+        pnlCenter.add(pnlStatus);
+
+        pnlMain.add(pnlCenter, java.awt.BorderLayout.CENTER);
+
         pnlHighlighColor.setBorder(javax.swing.BorderFactory.createTitledBorder("HighlighColor"));
         pnlHighlighColor.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         pnlHighlighColor.setMinimumSize(new java.awt.Dimension(100, 250));
         pnlHighlighColor.setName(""); // NOI18N
         pnlHighlighColor.setPreferredSize(new java.awt.Dimension(100, 250));
-        pnlHighlighColor.setLayout(new javax.swing.BoxLayout(pnlHighlighColor, javax.swing.BoxLayout.PAGE_AXIS));
+        pnlHighlighColor.setLayout(new javax.swing.BoxLayout(pnlHighlighColor, javax.swing.BoxLayout.Y_AXIS));
 
         chkNoselect.setText("noselect");
         pnlHighlighColor.add(chkNoselect);
@@ -131,101 +227,6 @@ public class ResultFilterPopup extends javax.swing.JFrame {
 
         pnlMain.add(pnlHighlighColor, java.awt.BorderLayout.EAST);
 
-        pnlLeft.setMinimumSize(new java.awt.Dimension(217, 250));
-        pnlLeft.setName(""); // NOI18N
-        pnlLeft.setPreferredSize(new java.awt.Dimension(500, 300));
-        pnlLeft.setLayout(new javax.swing.BoxLayout(pnlLeft, javax.swing.BoxLayout.Y_AXIS));
-
-        pnlFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
-        pnlFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlFilterByRequest, javax.swing.BoxLayout.PAGE_AXIS));
-
-        chkShowOnlyinscopeItem.setText("Show only in-scope items");
-        pnlFilterByRequest.add(chkShowOnlyinscopeItem);
-
-        chkHideItemsWithoutResponses.setText("Hide items without responses");
-        pnlFilterByRequest.add(chkHideItemsWithoutResponses);
-
-        pnlLeft.add(pnlFilterByRequest);
-
-        pnlExtension.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by extension"));
-        pnlExtension.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        pnlExtension.setMinimumSize(new java.awt.Dimension(133, 100));
-        pnlExtension.setName(""); // NOI18N
-        pnlExtension.setPreferredSize(new java.awt.Dimension(564, 100));
-
-        txtShowOnly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtShowOnlyActionPerformed(evt);
-            }
-        });
-
-        chkShowOnly.setText("show only:");
-        chkShowOnly.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkShowOnlyStateChanged(evt);
-            }
-        });
-
-        chkHide.setText("hide:");
-
-        javax.swing.GroupLayout pnlExtensionLayout = new javax.swing.GroupLayout(pnlExtension);
-        pnlExtension.setLayout(pnlExtensionLayout);
-        pnlExtensionLayout.setHorizontalGroup(
-            pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(pnlExtensionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkHide)
-                    .addComponent(chkShowOnly))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtShowOnly, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                    .addComponent(txtHide))
-                .addContainerGap(262, Short.MAX_VALUE))
-        );
-        pnlExtensionLayout.setVerticalGroup(
-            pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlExtensionLayout.createSequentialGroup()
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkShowOnly)
-                    .addComponent(txtShowOnly))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtHide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkHide)))
-        );
-
-        pnlLeft.add(pnlExtension);
-        pnlExtension.getAccessibleContext().setAccessibleDescription("");
-
-        pnlStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Status Filter"));
-        pnlStatus.setMaximumSize(new java.awt.Dimension(133, 110));
-        pnlStatus.setMinimumSize(new java.awt.Dimension(133, 110));
-        pnlStatus.setPreferredSize(new java.awt.Dimension(200, 130));
-        pnlStatus.setRequestFocusEnabled(false);
-        pnlStatus.setLayout(new javax.swing.BoxLayout(pnlStatus, javax.swing.BoxLayout.Y_AXIS));
-
-        chkStat2xx.setText("2xx [success]");
-        pnlStatus.add(chkStat2xx);
-
-        chkStat3xx.setText("3xx [redirection]");
-        pnlStatus.add(chkStat3xx);
-
-        chkStat4xx.setText("4xx [request error]");
-        pnlStatus.add(chkStat4xx);
-
-        chkStat5xx.setText("5xx [server error]");
-        chkStat5xx.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkStat5xxActionPerformed(evt);
-            }
-        });
-        pnlStatus.add(chkStat5xx);
-
-        pnlLeft.add(pnlStatus);
-
-        pnlMain.add(pnlLeft, java.awt.BorderLayout.CENTER);
-
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -235,7 +236,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.pnlLeft.setLayout(this.verticalFlowLayout1);
+        this.pnlCenter.setLayout(this.verticalFlowLayout1);
     }
 
     private void txtShowOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtShowOnlyActionPerformed
@@ -284,10 +285,10 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkStat4xx;
     private javax.swing.JCheckBox chkStat5xx;
     private javax.swing.JCheckBox chkYellow;
+    private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlExtension;
     private javax.swing.JPanel pnlFilterByRequest;
     private javax.swing.JPanel pnlHighlighColor;
-    private javax.swing.JPanel pnlLeft;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnlStatus;
     private javax.swing.JTextField txtHide;

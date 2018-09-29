@@ -85,6 +85,7 @@ public class JSearchTab extends javax.swing.JPanel {
         pnlRequest1 = new javax.swing.JPanel();
         chkResponseHeader = new javax.swing.JCheckBox();
         chkResponseBody = new javax.swing.JCheckBox();
+        lblProgress = new javax.swing.JLabel();
         pnlResult = new javax.swing.JPanel();
         pnlResultView = new javax.swing.JPanel();
         lblFilter = new javax.swing.JLabel();
@@ -216,6 +217,8 @@ public class JSearchTab extends javax.swing.JPanel {
                 .addComponent(chkResponseBody))
         );
 
+        lblProgress.setText("100.0%");
+
         javax.swing.GroupLayout pnlSearchLayout = new javax.swing.GroupLayout(pnlSearch);
         pnlSearch.setLayout(pnlSearchLayout);
         pnlSearchLayout.setHorizontalGroup(
@@ -225,50 +228,49 @@ public class JSearchTab extends javax.swing.JPanel {
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlSearchLayout.createSequentialGroup()
                         .addComponent(txtSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSearch))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearch)
+                        .addGap(6, 6, 6))
                     .addGroup(pnlSearchLayout.createSequentialGroup()
                         .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(chkComment)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)))
+                .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(chkRegExp)
-                    .addComponent(chkIgnoreCase))
-                .addGap(18, 18, 18)
+                    .addComponent(chkIgnoreCase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(30, 30, 30))
         );
         pnlSearchLayout.setVerticalGroup(
             pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSearchLayout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch)
+                    .addComponent(lblProgress))
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlSearchLayout.createSequentialGroup()
-                        .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15)
+                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chkComment)
+                            .addComponent(chkRegExp))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(chkIgnoreCase)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlSearchLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkRegExp)
-                            .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnSearch)))
-                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlSearchLayout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(chkComment)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(pnlSearchLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(pnlRequest1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(chkIgnoreCase))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                            .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(pnlRequest1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(20, Short.MAX_VALUE))))
         );
 
         add(pnlSearch, java.awt.BorderLayout.NORTH);
@@ -549,6 +551,7 @@ public class JSearchTab extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkResponseBody;
     private javax.swing.JCheckBox chkResponseHeader;
     private javax.swing.JLabel lblFilter;
+    private javax.swing.JLabel lblProgress;
     private javax.swing.JPanel pnlRequest;
     private javax.swing.JPanel pnlRequest1;
     private javax.swing.JPanel pnlResult;
@@ -627,6 +630,8 @@ public class JSearchTab extends javax.swing.JPanel {
         }
     }
 
+    private final String SEARCH_PROGRESS = "%1$.1f%%";
+    
     public /*synchronized*/ void search(String text) {
         this.querying = true;
         this.btnSearch.setText("Stop");
@@ -642,6 +647,7 @@ public class JSearchTab extends javax.swing.JPanel {
         Pattern p = Pattern.compile(text, flags);
         IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
         try {
+            this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
             for (int i = 0; i < messageInfo.length; i++) {
                 HttpMessageItem item = new HttpMessageItem(messageInfo[i], i);
                 Matcher m = null;
@@ -694,6 +700,7 @@ public class JSearchTab extends javax.swing.JPanel {
                             break;
                         }
                     }
+                    this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double)i / messageInfo.length * 100.0));
                 } while (false);
                 if (m != null && find) {
                     //item.dump(); // debug
@@ -709,6 +716,7 @@ public class JSearchTab extends javax.swing.JPanel {
             this.cancel = false;
             this.querying = false;
             this.btnSearch.setText("Search");
+            this.lblProgress.setText(String.format(SEARCH_PROGRESS, 100.0));
         }
     }
 
