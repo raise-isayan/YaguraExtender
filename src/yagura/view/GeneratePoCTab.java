@@ -222,7 +222,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 .addComponent(chkHtml5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkHtml5Binaly)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlCheck);
@@ -270,6 +270,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         splitGeneratorPoC.setLeftComponent(pnlPoC);
 
         txtGeneratorPoC.setColumns(20);
+        txtGeneratorPoC.setLineWrap(true);
         txtGeneratorPoC.setRows(5);
         scrollGeneratorPoC.setViewportView(txtGeneratorPoC);
 

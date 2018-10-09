@@ -74,6 +74,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         setLayout(new java.awt.BorderLayout());
 
         txtHtmlComment.setColumns(20);
+        txtHtmlComment.setLineWrap(true);
         txtHtmlComment.setRows(5);
         scrollHtmlComment.setViewportView(txtHtmlComment);
 

@@ -72,6 +72,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         setLayout(new java.awt.BorderLayout());
 
         txtRaw.setColumns(20);
+        txtRaw.setLineWrap(true);
         txtRaw.setRows(5);
         scrollRaw.setViewportView(txtRaw);
 

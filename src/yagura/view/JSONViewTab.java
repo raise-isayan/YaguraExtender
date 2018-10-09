@@ -96,6 +96,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         setLayout(new java.awt.BorderLayout());
 
         txtJSON.setColumns(20);
+        txtJSON.setLineWrap(true);
         txtJSON.setRows(5);
         txtJSON.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
