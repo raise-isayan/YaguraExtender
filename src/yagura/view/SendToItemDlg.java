@@ -49,10 +49,14 @@ public class SendToItemDlg extends CustomDialog {
         lblMenuCaption = new javax.swing.JLabel();
         txtMenuCaption = new javax.swing.JTextField();
         chkServer = new javax.swing.JCheckBox();
-        chkRequest = new javax.swing.JCheckBox();
-        chkResponse = new javax.swing.JCheckBox();
         btnSelectExecute = new javax.swing.JButton();
         cmbTargetLocal = new javax.swing.JComboBox<>();
+        pnlRequest = new javax.swing.JPanel();
+        chkRequestHeader = new javax.swing.JCheckBox();
+        chkRequestBody = new javax.swing.JCheckBox();
+        pnlRequest1 = new javax.swing.JPanel();
+        chkResponseHeader = new javax.swing.JCheckBox();
+        chkResponseBody = new javax.swing.JCheckBox();
         tabExtend = new javax.swing.JPanel();
         cmbExtend = new javax.swing.JComboBox();
 
@@ -79,7 +83,7 @@ public class SendToItemDlg extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(259, Short.MAX_VALUE)
+                .addContainerGap(309, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -103,12 +107,6 @@ public class SendToItemDlg extends CustomDialog {
 
         chkServer.setText("Server:");
 
-        chkRequest.setSelected(true);
-        chkRequest.setText("request");
-
-        chkResponse.setSelected(true);
-        chkResponse.setText("response");
-
         btnSelectExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_image.png"))); // NOI18N
         btnSelectExecute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,6 +120,80 @@ public class SendToItemDlg extends CustomDialog {
                 cmbTargetLocalActionPerformed(evt);
             }
         });
+
+        pnlRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Request"));
+
+        chkRequestHeader.setSelected(true);
+        chkRequestHeader.setText("Header");
+        chkRequestHeader.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkRequestHeaderStateChanged(evt);
+            }
+        });
+
+        chkRequestBody.setSelected(true);
+        chkRequestBody.setText("Body");
+        chkRequestBody.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkRequestBodyStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlRequestLayout = new javax.swing.GroupLayout(pnlRequest);
+        pnlRequest.setLayout(pnlRequestLayout);
+        pnlRequestLayout.setHorizontalGroup(
+            pnlRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequestLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkRequestHeader)
+                    .addComponent(chkRequestBody))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        pnlRequestLayout.setVerticalGroup(
+            pnlRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequestLayout.createSequentialGroup()
+                .addComponent(chkRequestHeader)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkRequestBody))
+        );
+
+        pnlRequest1.setBorder(javax.swing.BorderFactory.createTitledBorder("Response"));
+
+        chkResponseHeader.setSelected(true);
+        chkResponseHeader.setText("Header");
+        chkResponseHeader.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkResponseHeaderStateChanged(evt);
+            }
+        });
+
+        chkResponseBody.setSelected(true);
+        chkResponseBody.setText("Body");
+        chkResponseBody.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkResponseBodyStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlRequest1Layout = new javax.swing.GroupLayout(pnlRequest1);
+        pnlRequest1.setLayout(pnlRequest1Layout);
+        pnlRequest1Layout.setHorizontalGroup(
+            pnlRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequest1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkResponseHeader)
+                    .addComponent(chkResponseBody))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        pnlRequest1Layout.setVerticalGroup(
+            pnlRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRequest1Layout.createSequentialGroup()
+                .addComponent(chkResponseHeader)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkResponseBody))
+        );
 
         javax.swing.GroupLayout tabBaseLayout = new javax.swing.GroupLayout(tabBase);
         tabBase.setLayout(tabBaseLayout);
@@ -140,10 +212,10 @@ public class SendToItemDlg extends CustomDialog {
                         .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtMenuCaption, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(tabBaseLayout.createSequentialGroup()
-                        .addComponent(chkRequest)
-                        .addGap(35, 35, 35)
-                        .addComponent(chkResponse)))
-                .addGap(0, 28, Short.MAX_VALUE))
+                        .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         tabBaseLayout.setVerticalGroup(
             tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,10 +235,10 @@ public class SendToItemDlg extends CustomDialog {
                     .addGroup(tabBaseLayout.createSequentialGroup()
                         .addComponent(btnSelectExecute)
                         .addGap(4, 4, 4)))
-                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkRequest)
-                    .addComponent(chkResponse))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Base", tabBase);
@@ -178,7 +250,7 @@ public class SendToItemDlg extends CustomDialog {
             .addGroup(tabExtendLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmbExtend, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
         tabExtendLayout.setVerticalGroup(
             tabExtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,6 +298,22 @@ public class SendToItemDlg extends CustomDialog {
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
+    private void chkResponseBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseBodyStateChanged
+    }//GEN-LAST:event_chkResponseBodyStateChanged
+
+    private void chkResponseHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseHeaderStateChanged
+    }//GEN-LAST:event_chkResponseHeaderStateChanged
+
+    private void chkRequestBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestBodyStateChanged
+    }//GEN-LAST:event_chkRequestBodyStateChanged
+
+    private void chkRequestHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestHeaderStateChanged
+    }//GEN-LAST:event_chkRequestHeaderStateChanged
+
+    private void cmbTargetLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTargetLocalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTargetLocalActionPerformed
+
     private void btnSelectExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectExecuteActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -236,10 +324,6 @@ public class SendToItemDlg extends CustomDialog {
             this.cmbTargetLocal.getEditor().setItem(file.getAbsolutePath());
         }
     }//GEN-LAST:event_btnSelectExecuteActionPerformed
-
-    private void cmbTargetLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTargetLocalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbTargetLocalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -296,13 +380,17 @@ public class SendToItemDlg extends CustomDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnSelectExecute;
-    private javax.swing.JCheckBox chkRequest;
-    private javax.swing.JCheckBox chkResponse;
+    private javax.swing.JCheckBox chkRequestBody;
+    private javax.swing.JCheckBox chkRequestHeader;
+    private javax.swing.JCheckBox chkResponseBody;
+    private javax.swing.JCheckBox chkResponseHeader;
     private javax.swing.JCheckBox chkServer;
     private javax.swing.JComboBox cmbExtend;
     private javax.swing.JComboBox<String> cmbTargetLocal;
     private javax.swing.JLabel lblMenuCaption;
     private javax.swing.JPanel pnlApply;
+    private javax.swing.JPanel pnlRequest;
+    private javax.swing.JPanel pnlRequest1;
     private javax.swing.JPanel tabBase;
     private javax.swing.JPanel tabExtend;
     private javax.swing.JTabbedPane tabbetSendTo;
@@ -323,8 +411,10 @@ public class SendToItemDlg extends CustomDialog {
             item.setCaption(this.txtMenuCaption.getText().trim());
             item.setTarget(TransUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim());
             item.setServer(this.chkServer.isSelected() || HttpUtil.startsWithHttp(item.getTarget()));
-            item.setRequest(this.chkRequest.isSelected());
-            item.setResponse(this.chkResponse.isSelected());
+            item.setRequestHeader(this.chkRequestHeader.isSelected());
+            item.setRequestBody(this.chkRequestBody.isSelected());
+            item.setResponseHeader(this.chkResponseHeader.isSelected());
+            item.setResponseBody(this.chkResponseBody.isSelected());
         } else {
             SendToItem.ExtendType sendToExtend = (SendToItem.ExtendType) this.modelExtend.getSelectedItem();
             item.setCaption(sendToExtend.toString());
@@ -343,8 +433,10 @@ public class SendToItemDlg extends CustomDialog {
             this.txtMenuCaption.setText(item.getCaption());
             this.chkServer.setSelected(item.isServer());
             this.cmbTargetLocal.getEditor().setItem(item.getTarget());
-            this.chkRequest.setSelected(item.isRequest());
-            this.chkResponse.setSelected(item.isResponse());
+            this.chkRequestHeader.setSelected(item.isRequestHeader());
+            this.chkRequestBody.setSelected(item.isRequestBody());
+            this.chkResponseHeader.setSelected(item.isResponseHeader());
+            this.chkResponseBody.setSelected(item.isResponseBody());
         } else {
             this.tabbetSendTo.setSelectedIndex(this.tabbetSendTo.indexOfTab("Extend"));
             SendToItem.ExtendType sendToExtend = item.getExtend();

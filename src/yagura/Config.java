@@ -209,8 +209,12 @@ public final class Config {
             item.setSelected(prop.readEntryBool("sendto", String.format("item[%d].selected", i), false));
             item.setCaption(prop.readEntry("sendto", String.format("item[%d].caption", i), ""));
             item.setTarget(prop.readEntry("sendto", String.format("item[%d].target", i), ""));
-            item.setRequest(prop.readEntryBool("sendto", String.format("item[%d].request", i), true));
-            item.setResponse(prop.readEntryBool("sendto", String.format("item[%d].response", i), true));
+            boolean request = prop.readEntryBool("sendto", String.format("item[%d].request", i), false);
+            item.setRequestHeader(prop.readEntryBool("sendto", String.format("item[%d].requestHeader", i), request));
+            item.setRequestBody(prop.readEntryBool("sendto", String.format("item[%d].requestBody", i), request));
+            boolean response = prop.readEntryBool("sendto", String.format("item[%d].response", i), false);
+            item.setResponseHeader(prop.readEntryBool("sendto", String.format("item[%d].responseHeader", i), response));
+            item.setResponseBody(prop.readEntryBool("sendto", String.format("item[%d].responseBody", i), response));
             item.setServer(HttpUtil.startsWithHttp(item.getTarget()));
             String sendExtend = prop.readEntry("sendto", String.format("item[%d].extend", i), "null");
             SendToItem.ExtendType sendExtendType = null;
@@ -368,8 +372,12 @@ public final class Config {
             prop.writeEntryBool("sendto", String.format("item[%d].selected", i), item.isSelected());
             prop.writeEntry("sendto", String.format("item[%d].caption", i), item.getCaption());
             prop.writeEntry("sendto", String.format("item[%d].target", i), item.getTarget());
-            prop.writeEntryBool("sendto", String.format("item[%d].request", i), item.isRequest());
-            prop.writeEntryBool("sendto", String.format("item[%d].response", i), item.isResponse());
+//            prop.writeEntryBool("sendto", String.format("item[%d].request", i), item.isRequest());
+            prop.writeEntryBool("sendto", String.format("item[%d].requestHeader", i), item.isRequestHeader());
+            prop.writeEntryBool("sendto", String.format("item[%d].requestBody", i), item.isRequestBody());
+//            prop.writeEntryBool("sendto", String.format("item[%d].response", i), item.isResponse());
+            prop.writeEntryBool("sendto", String.format("item[%d].responseHeader", i), item.isRequestHeader());
+            prop.writeEntryBool("sendto", String.format("item[%d].responseBody", i), item.isResponseBody());
             if (item.getExtend() != null) {
                 prop.writeEntry("sendto", String.format("item[%d].extend", i), item.getExtend().name());
             }

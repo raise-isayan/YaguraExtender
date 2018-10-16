@@ -683,7 +683,7 @@ public class JSearchTab extends javax.swing.JPanel {
                                 resMessage = Arrays.copyOfRange(item.getResponse(), 0, resInfo.getBodyOffset());
                             }
                             else if (this.chkResponseBody.isSelected()) {
-                                resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getRequest().length);                            
+                                resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getResponse().length);                            
                             }                                                    
                         }
                         String res = Util.decodeMessage(resMessage, encoding);

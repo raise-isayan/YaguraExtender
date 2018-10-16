@@ -50,8 +50,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="chkSubmenu" min="-2" pref="133" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="scrollSendTo" min="-2" pref="465" max="-2" attributes="0"/>
-                              <EmptySpace pref="14" max="32767" attributes="0"/>
+                              <Component id="scrollSendTo" pref="472" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="btnSendToEdit" alignment="1" min="-2" pref="83" max="-2" attributes="3"/>
@@ -132,13 +131,15 @@
                 <Component class="javax.swing.JTable" name="tableSendTo">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="7" rowCount="0">
+                      <Table columnCount="9" rowCount="0">
                         <Column editable="true" title="" type="java.lang.Boolean"/>
                         <Column editable="false" title="MenuCaption" type="java.lang.String"/>
                         <Column editable="false" title="Server" type="java.lang.Boolean"/>
                         <Column editable="false" title="Target" type="java.lang.String"/>
-                        <Column editable="false" title="Req" type="java.lang.Boolean"/>
-                        <Column editable="false" title="Res" type="java.lang.Boolean"/>
+                        <Column editable="false" title="Req Header" type="java.lang.Boolean"/>
+                        <Column editable="false" title="Req Body" type="java.lang.Boolean"/>
+                        <Column editable="false" title="Res Header" type="java.lang.Boolean"/>
+                        <Column editable="false" title="Res Body" type="java.lang.Boolean"/>
                         <Column editable="false" title="Extend" type="java.lang.Object"/>
                       </Table>
                     </Property>
@@ -169,7 +170,17 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="0" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>

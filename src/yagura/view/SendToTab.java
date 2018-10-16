@@ -10,7 +10,6 @@
  */
 package yagura.view;
 
-import burp.BurpExtender;
 import extend.model.base.CustomTableModel;
 import yagura.model.SendToItem;
 import yagura.model.SendToProperty;
@@ -89,14 +88,14 @@ public class SendToTab extends javax.swing.JPanel {
 
             },
             new String [] {
-                "", "MenuCaption", "Server", "Target", "Req", "Res", "Extend"
+                "", "MenuCaption", "Server", "Target", "Req Header", "Req Body", "Res Header", "Res Body", "Extend"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -112,7 +111,9 @@ public class SendToTab extends javax.swing.JPanel {
             tableSendTo.getColumnModel().getColumn(2).setResizable(false);
             tableSendTo.getColumnModel().getColumn(4).setResizable(false);
             tableSendTo.getColumnModel().getColumn(5).setResizable(false);
-            tableSendTo.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tableSendTo.getColumnModel().getColumn(6).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(0);
+            tableSendTo.getColumnModel().getColumn(7).setResizable(false);
         }
 
         btnSendToDownArraw.setText("down");
@@ -145,8 +146,8 @@ public class SendToTab extends javax.swing.JPanel {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkSubmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(scrollSendTo, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(scrollSendTo, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(btnSendToEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -236,20 +237,30 @@ public class SendToTab extends javax.swing.JPanel {
         this.tableSendTo.getColumnModel().getColumn(3).setPreferredWidth(180);
         this.tableSendTo.getColumnModel().getColumn(3).setMaxWidth(250);
 
-        // request
+        // request header
         this.tableSendTo.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(4).setPreferredWidth(30);
         this.tableSendTo.getColumnModel().getColumn(4).setMaxWidth(60);
 
-        // response
+        // request body
         this.tableSendTo.getColumnModel().getColumn(5).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(5).setPreferredWidth(30);
         this.tableSendTo.getColumnModel().getColumn(5).setMaxWidth(60);
+        
+        // response header
+        this.tableSendTo.getColumnModel().getColumn(6).setMinWidth(20);
+        this.tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(30);
+        this.tableSendTo.getColumnModel().getColumn(6).setMaxWidth(60);
 
+        // response body
+        this.tableSendTo.getColumnModel().getColumn(7).setMinWidth(20);
+        this.tableSendTo.getColumnModel().getColumn(7).setPreferredWidth(30);
+        this.tableSendTo.getColumnModel().getColumn(7).setMaxWidth(60);
+        
         // Extend
-        this.tableSendTo.getColumnModel().getColumn(6).setMinWidth(0);
-        this.tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(0);
-        this.tableSendTo.getColumnModel().getColumn(6).setMaxWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(8).setMinWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(8).setPreferredWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(8).setMaxWidth(0);
 
         // 
         this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

@@ -46,6 +46,10 @@ public class SendToItem {
         this.selected = item.selected;
         this.caption = item.caption;
         this.target = item.target;
+        this.requestHeader = item.requestHeader;
+        this.requestBody = item.requestBody;
+        this.responseHeader = item.responseHeader;
+        this.responseBody = item.responseBody;
         this.sendExtend = item.sendExtend;
     }
     
@@ -111,36 +115,84 @@ public class SendToItem {
         this.target = target;
     }
 
-    private boolean request = true;
     /**
      * @return the request
      */
     public boolean isRequest() {
-        return this.request;
+        return this.requestHeader && this.requestBody;
+    }
+
+    private boolean requestHeader = true;
+    
+    /**
+     * @return the requestHeader
+     */
+    public boolean isRequestHeader() {
+        return requestHeader;
     }
 
     /**
-     * @param request the request to set
+     * @param requestHeader the requestHeader to set
      */
-    public void setRequest(boolean request) {
-        this.request = request;
+    public void setRequestHeader(boolean requestHeader) {
+        this.requestHeader = requestHeader;
     }
 
-    private boolean response = true;
+    private boolean requestBody = true;
+    
+    /**
+     * @return the requestBody
+     */
+    public boolean isRequestBody() {
+        return requestBody;
+    }
+
+    /**
+     * @param requestBody the requestBody to set
+     */
+    public void setRequestBody(boolean requestBody) {
+        this.requestBody = requestBody;
+    }
+    
     /**
      * @return the response
      */
     public boolean isResponse() {
-        return this.response;
+        return this.responseHeader && this.responseBody;
+    }
+
+    private boolean responseHeader = true;
+
+    /**
+     * @return the responseHeader
+     */
+    public boolean isResponseHeader() {
+        return responseHeader;
     }
 
     /**
-     * @param response the response to set
+     * @param responseHeader the responseHeader to set
      */
-    public void setResponse(boolean response) {
-        this.response = response;
+    public void setResponseHeader(boolean responseHeader) {
+        this.responseHeader = responseHeader;
     }
 
+    private boolean responseBody = true;
+
+    /**
+     * @return the responseBody
+     */
+    public boolean isResponseBody() {
+        return responseBody;
+    }
+
+    /**
+     * @param responseBody the responseBody to set
+     */
+    public void setResponseBody(boolean responseBody) {
+        this.responseBody = responseBody;
+    }
+    
     /**
      * @return the extend
      */
@@ -193,14 +245,16 @@ public class SendToItem {
     }
     
     public static Object[] toObjects(SendToItem sendTo) {
-        Object[] beans = new Object[7];
+        Object[] beans = new Object[9];
         beans[0] = sendTo.isSelected();
         beans[1] = sendTo.getCaption();
         beans[2] = sendTo.isServer();
         beans[3] = sendTo.getTarget();
-        beans[4] = sendTo.isRequest();
-        beans[5] = sendTo.isResponse();
-        beans[6] = sendTo.getExtend();
+        beans[4] = sendTo.isRequestHeader();
+        beans[5] = sendTo.isRequestBody();
+        beans[6] = sendTo.isResponseHeader();
+        beans[7] = sendTo.isResponseBody();
+        beans[8] = sendTo.getExtend();
         return beans;
     }
 
@@ -210,9 +264,11 @@ public class SendToItem {
         sendTo.setCaption((String)rows[1]);
         sendTo.setServer((Boolean)rows[2]);
         sendTo.setTarget((String)rows[3]);
-        sendTo.setRequest((Boolean)rows[4]);
-        sendTo.setResponse((Boolean)rows[5]);
-        sendTo.setExtend((ExtendType)rows[6]);
+        sendTo.setRequestHeader((Boolean)rows[4]);
+        sendTo.setRequestBody((Boolean)rows[5]);
+        sendTo.setResponseHeader((Boolean)rows[6]);
+        sendTo.setResponseBody((Boolean)rows[7]);
+        sendTo.setExtend((ExtendType)rows[8]);
         return sendTo;
     }
     
