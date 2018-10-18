@@ -146,10 +146,10 @@ public class SendToServer extends SendToMenuItem {
         if (color != null) {
             HttpUtil.outMultipartText(boundary, out, "highlight", BurpWrap.getHighlightColor(messageInfo));
         }        
-        if (messageInfo.getRequest() != null) {
+        if (messageInfo.getRequest() != null && this.isRequest()) {
             HttpUtil.outMultipartBinary(boundary, out, "request", messageInfo.getRequest());
         }
-        if (messageInfo.getResponse() != null) {
+        if (messageInfo.getResponse() != null && this.isResponse()) {
             HttpUtil.outMultipartBinary(boundary, out, "response", messageInfo.getResponse());
         }
         HttpUtil.outMultipartFinish(boundary, out);

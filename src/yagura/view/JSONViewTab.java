@@ -31,6 +31,7 @@ import javax.swing.text.JTextComponent;
  * @author isayan
  */
 public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
+
     private boolean isRequest = true;
 
     /**
@@ -39,7 +40,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     public JSONViewTab(boolean isResuest) {
         this(null, false, isResuest);
     }
-    
+
     /**
      * Creates new form JSONView
      */
@@ -47,7 +48,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.isRequest = isResuest;
         initComponents();
         customizeComponents();
-        this.txtJSON.setEditable(false);        
+        this.txtJSON.setEditable(false);
     }
 
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
@@ -179,18 +180,18 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             return false;
         }
         boolean mimeJsonType = false;
-        byte [] body = new byte [0]; 
+        byte[] body = new byte[0];
         if (this.isRequest && isMessageRequest) {
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             mimeJsonType = (reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_JSON);
             body = BurpWrap.getRequestBody(reqInfo, content);
-        } else if (!this.isRequest &&  !isMessageRequest) {
+        } else if (!this.isRequest && !isMessageRequest) {
             IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
             String mimeType = resInfo.getInferredMimeType();
             mimeJsonType = "JSON".equals(mimeType);
             body = BurpWrap.getResponseBody(resInfo, content);
         }
-        if (body.length > 0 && mimeJsonType)  {
+        if (body.length > 0 && mimeJsonType) {
             return FormatUtil.isJSON(Util.getRawStr(body));
         } else {
             return false;

@@ -46,8 +46,8 @@ public class FormatUtil {
     }
     
     public static boolean isJSON(String plainJson) {
-        Matcher m = JSON_TYPE.matcher(plainJson);
-        if (m.matches()) {
+//        Matcher m = JSON_TYPE.matcher(plainJson);
+//        if (m.matches()) {
             try {
                 JsonUtil.prettyJSON(plainJson, false);
                 return true;
@@ -55,10 +55,10 @@ public class FormatUtil {
             catch (IOException e) {
                 return false;
             }       
-        }
-        else {
-            return false;
-        }       
+//        }
+//        else {
+//            return false;
+//        }       
     }
 
     public static String prettyXML(String plainXML) throws IOException {
