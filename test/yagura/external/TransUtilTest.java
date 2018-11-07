@@ -71,8 +71,8 @@ public class TransUtilTest {
         assertEquals(EncodePattern.URL_UNICODE, TransUtil.getSmartDecode("%u3042%u3044%u3046%u3048%u304a"));
         assertEquals(EncodePattern.URL_UNICODE, TransUtil.getSmartDecode("%U3042%U3044%U3046%U3048%U304A"));
         
-        assertEquals(EncodePattern.BYTE, TransUtil.getSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8"));
-        assertEquals(EncodePattern.BYTE, TransUtil.getSmartDecode("\\x82\\xA0\\x82\\xA2\\x82\\xA4\\x82\\xA6\\x82\\xA8"));
+        assertEquals(EncodePattern.BYTE_HEX, TransUtil.getSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8"));
+        assertEquals(EncodePattern.BYTE_HEX, TransUtil.getSmartDecode("\\x82\\xA0\\x82\\xA2\\x82\\xA4\\x82\\xA6\\x82\\xA8"));
 
         assertEquals(EncodePattern.BASE64, TransUtil.getSmartDecode("gqmCq4Ktgq+CsQ=="));
         assertEquals(EncodePattern.BASE64, TransUtil.getSmartDecode("pKukraSvpLGksw=="));
@@ -120,18 +120,18 @@ public class TransUtilTest {
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;&#X5F;&#X5C;&#X61;&#X62;&#X63;&#X65;&#X64;&#X66;"));
             
             StringBuffer charset = new StringBuffer("Shift_JIS");
-            assertEquals("あいうえお", TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE, charset));
+            assertEquals("あいうえお", TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, charset));
             assertEquals("Shift_JIS", charset.toString());
-            assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedfあいうえお!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("!\"#$%&'()=~|`{}*+<>?_\\abcedf\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8!\"#$%&'()=~|`{}*+<>?_\\abcedf", EncodePattern.BYTE, charset));
+            assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedfあいうえお!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("!\"#$%&'()=~|`{}*+<>?_\\abcedf\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8!\"#$%&'()=~|`{}*+<>?_\\abcedf", EncodePattern.BYTE_HEX, charset));
             assertEquals("Shift_JIS", charset.toString());
             
             charset = new StringBuffer();
-            assertEquals("あいうえお", TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE, charset));
+            assertEquals("あいうえお", TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, charset));
             assertEquals("Shift_JIS", charset.toString());
             
             charset = new StringBuffer("8859_1");
             byte b[] = new byte[] {(byte)0x82,(byte)0xa0,(byte)0x82,(byte)0xa2,(byte)0x82,(byte)0xa4,(byte)0x82,(byte)0xa6,(byte)0x82,(byte)0xa8};
-            assertEquals(new String(b, "8859_1"), TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE, charset));
+            assertEquals(new String(b, "8859_1"), TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, charset));
             assertEquals("8859_1", charset.toString());
                         
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
@@ -420,7 +420,7 @@ public class TransUtilTest {
     }
 
     /**
-     * Test of toByteEncode method, of class TransUtil.
+     * Test of toByteHexEncode method, of class TransUtil.
      */
     @Test
     public void testToByteArrayJsEncode() {
@@ -449,6 +449,8 @@ public class TransUtilTest {
             System.out.println("toUnocode4Decode");
             assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));        
             assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
+            assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\41\\42\\43\\44\\45", "8859_1"));        
+
 //        } catch (UnsupportedEncodingException ex) {
 //            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
 //        }

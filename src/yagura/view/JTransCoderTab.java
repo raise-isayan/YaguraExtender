@@ -93,6 +93,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoHtmlHex = new javax.swing.JRadioButton();
         pnlJSHexEnc = new javax.swing.JPanel();
         rdoByteHex = new javax.swing.JRadioButton();
+        rdoByteOct = new javax.swing.JRadioButton();
         rdoUnicodeHex = new javax.swing.JRadioButton();
         rdoZLIB = new javax.swing.JRadioButton();
         rdoUTF7 = new javax.swing.JRadioButton();
@@ -347,8 +348,22 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
 
         rdoEncodeDecodeGrp.add(rdoByteHex);
-        rdoByteHex.setText("\\xhh");
+        rdoByteHex.setText("\\xhh(hex)");
+        rdoByteHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteHexActionPerformed(evt);
+            }
+        });
         pnlJSHexEnc.add(rdoByteHex);
+
+        rdoEncodeDecodeGrp.add(rdoByteOct);
+        rdoByteOct.setText("\\ddd(oct)");
+        rdoByteOct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteOctActionPerformed(evt);
+            }
+        });
+        pnlJSHexEnc.add(rdoByteOct);
 
         rdoEncodeDecodeGrp.add(rdoUnicodeHex);
         rdoUnicodeHex.setText("\\uhhhh");
@@ -966,7 +981,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                             .addGroup(pnlDateLayout.createSequentialGroup()
                                 .addComponent(lblDateStep)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDateStep))
+                                .addComponent(txtDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnlDateLayout.createSequentialGroup()
                                 .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDateLayout.createSequentialGroup()
@@ -1462,7 +1477,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
             } else if (this.rdoUnicodeHex.isSelected()) {
                 encode = TransUtil.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex.isSelected()) {
-                encode = TransUtil.toByteEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = TransUtil.toByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoByteOct.isSelected()) {
+                encode = TransUtil.toByteOctEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoHtmlDec.isSelected()) {
                 encode = TransUtil.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlHex.isSelected()) {
@@ -1516,7 +1533,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
         } else if (this.rdoUnicodeHex.isSelected()) {
             encodePattern = TransUtil.EncodePattern.UNICODE;
         } else if (this.rdoByteHex.isSelected()) {
-            encodePattern = TransUtil.EncodePattern.BYTE;
+            encodePattern = TransUtil.EncodePattern.BYTE_HEX;
+        } else if (this.rdoByteOct.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BYTE_OCT;
         } else if (this.rdoHtmlDec.isSelected()) {
             encodePattern = TransUtil.EncodePattern.HTML;
         } else if (this.rdoHtmlHex.isSelected()) {
@@ -1969,6 +1988,14 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void txtDateFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateFormatActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDateFormatActionPerformed
+
+    private void rdoByteHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteHexActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoByteHexActionPerformed
+
+    private void rdoByteOctActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteOctActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoByteOctActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalyze;
@@ -2071,6 +2098,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdoAlphaNum;
     private javax.swing.JRadioButton rdoBase64;
     private javax.swing.JRadioButton rdoByteHex;
+    private javax.swing.JRadioButton rdoByteOct;
     private javax.swing.JRadioButton rdoCLang;
     private javax.swing.JRadioButton rdoCR;
     private javax.swing.JRadioButton rdoCRLF;

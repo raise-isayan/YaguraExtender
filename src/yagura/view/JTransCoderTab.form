@@ -247,8 +247,22 @@
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="rdoEncodeDecodeGrp"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="\u005cxhh" containsInvalidXMLChars="true"/>
+                            <Property name="text" type="java.lang.String" value="\u005cxhh(hex)" containsInvalidXMLChars="true"/>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteHexActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JRadioButton" name="rdoByteOct">
+                          <Properties>
+                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                              <ComponentRef name="rdoEncodeDecodeGrp"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="\u005cddd(oct)" containsInvalidXMLChars="true"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteOctActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="rdoUnicodeHex">
                           <Properties>
@@ -1274,7 +1288,7 @@
                                                               <Group type="102" alignment="0" attributes="0">
                                                                   <Component id="lblDateStep" min="-2" max="-2" attributes="0"/>
                                                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                                  <Component id="txtDateStep" max="32767" attributes="0"/>
+                                                                  <Component id="txtDateStep" min="-2" pref="51" max="-2" attributes="0"/>
                                                               </Group>
                                                               <Group type="102" alignment="0" attributes="0">
                                                                   <Group type="103" groupAlignment="0" attributes="0">
