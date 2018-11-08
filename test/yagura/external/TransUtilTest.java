@@ -134,6 +134,10 @@ public class TransUtilTest {
             assertEquals(new String(b, "8859_1"), TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, charset));
             assertEquals("8859_1", charset.toString());
                         
+            byte o[] = new byte[] {(byte)0202,(byte)0240,(byte)0202,(byte)0242,(byte)0202,(byte)0244,(byte)0202,(byte)0246,(byte)0202,(byte)0250,(byte)012};
+            assertEquals(new String(o, "8859_1"), TransUtil.toSmartDecode("\\202\\240\\202\\242\\202\\244\\202\\246\\202\\250\\12", EncodePattern.BYTE_OCT, charset));
+            assertEquals("8859_1", charset.toString());
+            
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));
             

@@ -150,7 +150,7 @@ public class BurpExtender extends BurpExtenderImpl
             cb.registerMessageEditorTabFactory(this.generatePoCTab);
             
         } else {
-            JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.6 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -515,11 +515,6 @@ public class BurpExtender extends BurpExtenderImpl
             }
         }
     }
-
-//    private IScannerCheck professionalPassiveScanCheck() {
-//       MatchAlert scan = new MatchAlert(this.getMatchAlertProperty());
-//       return scan.passiveScanCheck();
-//    }
         
     /**
      * debugModeの取得

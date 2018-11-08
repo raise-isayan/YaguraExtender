@@ -304,7 +304,7 @@ public class EncodingTab extends javax.swing.JPanel {
         else if (encoding.equals("Other")) {
             setEncodingList(EncodingProperty.getDefaultEncodingList(Locale.US));       
         }
-        
+        this.firePropertyChange(TabbetOption.ENCODING_PROPERTY, null, this.getEncodingProperty());        
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void renewPopup() {    

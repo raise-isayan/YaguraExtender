@@ -111,6 +111,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         this.setJTransCoderProperty(property.getJTransCoderProperty());
         // common
         this.setDebugMode(property.getDebugMode());
+        this.setJTransCoderProperty(property.getEncodingProperty());
     }
 
     public OptionProperty getProperty() {
