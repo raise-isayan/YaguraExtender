@@ -85,8 +85,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoBase64 = new javax.swing.JRadioButton();
         chk64Newline = new javax.swing.JCheckBox();
         chk76Newline = new javax.swing.JCheckBox();
+        pnlMail = new javax.swing.JPanel();
         rdoUuencode = new javax.swing.JRadioButton();
         rdoQuotedPrintable = new javax.swing.JRadioButton();
+        rdoPunycode = new javax.swing.JRadioButton();
         rdoHtml = new javax.swing.JRadioButton();
         pnlHtmlEnc = new javax.swing.JPanel();
         rdoHtmlDec = new javax.swing.JRadioButton();
@@ -311,6 +313,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlEncodeDecode.add(pnlBase64);
 
+        pnlMail.setLayout(new java.awt.GridLayout(1, 2));
+
         rdoEncodeDecodeGrp.add(rdoUuencode);
         rdoUuencode.setText("uuencode");
         rdoUuencode.addActionListener(new java.awt.event.ActionListener() {
@@ -318,7 +322,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 rdoUuencodeActionPerformed(evt);
             }
         });
-        pnlEncodeDecode.add(rdoUuencode);
+        pnlMail.add(rdoUuencode);
 
         rdoEncodeDecodeGrp.add(rdoQuotedPrintable);
         rdoQuotedPrintable.setText("QuotedPrintable");
@@ -327,7 +331,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 rdoQuotedPrintableActionPerformed(evt);
             }
         });
-        pnlEncodeDecode.add(rdoQuotedPrintable);
+        pnlMail.add(rdoQuotedPrintable);
+
+        pnlEncodeDecode.add(pnlMail);
+
+        rdoEncodeDecodeGrp.add(rdoPunycode);
+        rdoPunycode.setText("puyencode");
+        pnlEncodeDecode.add(rdoPunycode);
 
         rdoEncodeDecodeGrp.add(rdoHtml);
         rdoHtml.setText("HTML(<,>,\",')");
@@ -1276,7 +1286,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoConvertPEM)
                     .addComponent(btnExport))
-                .addContainerGap(433, Short.MAX_VALUE))
+                .addContainerGap(558, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Certificate", pnlCertificate);
@@ -1328,20 +1338,22 @@ public class JTransCoderTab extends javax.swing.JPanel {
                             .addComponent(txtBase, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(39, 39, 39)
                         .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(lblmaximum, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(tabTokenStrengthLayout.createSequentialGroup()
+                                .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblmaximum, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(20, 20, 20)
+                        .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                                 .addComponent(txtStrength, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCalc)))
-                        .addGap(560, 560, 560))
+                                .addComponent(btnCalc)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
+                        .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1356,20 +1368,21 @@ public class JTransCoderTab extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAnalyze))
                 .addGap(18, 18, 18)
-                .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
+                .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtStrength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnCalc)
-                        .addComponent(jLabel1)
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblmaximum)))
-                .addContainerGap(316, Short.MAX_VALUE))
+                        .addComponent(lblmaximum)
+                        .addComponent(jLabel1)))
+                .addContainerGap(441, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -1472,6 +1485,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 encode = TransUtil.toUuencode(value, this.getSelectEncode());
             } else if (this.rdoQuotedPrintable.isSelected()) {
                 encode = TransUtil.toQuotedPrintable(value, this.getSelectEncode());
+            } else if (this.rdoPunycode.isSelected()) {
+                encode = TransUtil.toPunycodeEncode(value);
             } else if (this.rdoHtml.isSelected()) {
                 encode = TransUtil.toHtmlEncode(value);
             } else if (this.rdoUnicodeHex.isSelected()) {
@@ -1528,6 +1543,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
             encodePattern = TransUtil.EncodePattern.UUENCODE;
         } else if (this.rdoQuotedPrintable.isSelected()) {
             encodePattern = TransUtil.EncodePattern.QUOTEDPRINTABLE;
+        } else if (this.rdoPunycode.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.PUNYCODE;
         } else if (this.rdoHtml.isSelected()) {
             encodePattern = TransUtil.EncodePattern.HTML;
         } else if (this.rdoUnicodeHex.isSelected()) {
@@ -2079,6 +2096,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JPanel pnlInputOutput;
     private javax.swing.JPanel pnlJSHexEnc;
     private javax.swing.JPanel pnlLang;
+    private javax.swing.JPanel pnlMail;
     private javax.swing.JPanel pnlNewLine;
     private javax.swing.JPanel pnlNumbers;
     private javax.swing.JPanel pnlOutputRaw;
@@ -2121,6 +2139,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdoLigth;
     private javax.swing.JRadioButton rdoLowerCase;
     private javax.swing.JRadioButton rdoNone;
+    private javax.swing.JRadioButton rdoPunycode;
     private javax.swing.JRadioButton rdoQuotedPrintable;
     private javax.swing.ButtonGroup rdoRandomCountGrp;
     private javax.swing.ButtonGroup rdoRandomLengthGrp;

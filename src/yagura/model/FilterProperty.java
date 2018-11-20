@@ -129,5 +129,16 @@ public class FilterProperty {
     public void setHighlightColors(EnumSet<MatchItem.HighlightColor> colors) {
         this.colors = colors;
     }
+
+    private boolean comments = false;
+
+    public boolean getComments() {
+        return this.comments;
+    }
+
+    public void setComments(boolean comments) {
+        this.comments = comments;
+    }
+
     
 }

@@ -516,6 +516,9 @@ uuencode::
 QuotedPrintable::
     QuotedPrintable形式のエンコード、デコードを行います。
 
+Punycode::
+    Punycodeエンコード、デコードを行います。
+
 HTML(<,>,",')::
     HTMLのエンコード、デコードを行います。
     エンコードは、「<,>,",'」のみ行われます。

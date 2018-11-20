@@ -66,6 +66,9 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         chkStat3xx = new javax.swing.JCheckBox();
         chkStat4xx = new javax.swing.JCheckBox();
         chkStat5xx = new javax.swing.JCheckBox();
+        pnlRight = new javax.swing.JPanel();
+        pnlComment = new javax.swing.JPanel();
+        chkComment = new javax.swing.JCheckBox();
         pnlHighlighColor = new javax.swing.JPanel();
         chkNoselect = new javax.swing.JCheckBox();
         chkRed = new javax.swing.JCheckBox();
@@ -142,7 +145,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtShowOnly, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                     .addComponent(txtHide))
-                .addContainerGap(262, Short.MAX_VALUE))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         pnlExtensionLayout.setVerticalGroup(
             pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,6 +191,36 @@ public class ResultFilterPopup extends javax.swing.JFrame {
 
         pnlMain.add(pnlCenter, java.awt.BorderLayout.CENTER);
 
+        pnlRight.setLayout(new java.awt.BorderLayout());
+
+        pnlComment.setBorder(javax.swing.BorderFactory.createTitledBorder("Comment"));
+
+        chkComment.setText("comment");
+        chkComment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkCommentActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlCommentLayout = new javax.swing.GroupLayout(pnlComment);
+        pnlComment.setLayout(pnlCommentLayout);
+        pnlCommentLayout.setHorizontalGroup(
+            pnlCommentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCommentLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkComment)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        pnlCommentLayout.setVerticalGroup(
+            pnlCommentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCommentLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(chkComment)
+                .addContainerGap())
+        );
+
+        pnlRight.add(pnlComment, java.awt.BorderLayout.SOUTH);
+
         pnlHighlighColor.setBorder(javax.swing.BorderFactory.createTitledBorder("HighlighColor"));
         pnlHighlighColor.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         pnlHighlighColor.setMinimumSize(new java.awt.Dimension(100, 250));
@@ -225,7 +258,9 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         chkGray.setText("gray");
         pnlHighlighColor.add(chkGray);
 
-        pnlMain.add(pnlHighlighColor, java.awt.BorderLayout.EAST);
+        pnlRight.add(pnlHighlighColor, java.awt.BorderLayout.CENTER);
+
+        pnlMain.add(pnlRight, java.awt.BorderLayout.EAST);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -254,6 +289,10 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_chkStat5xxActionPerformed
 
+    private void chkCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCommentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkCommentActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -268,6 +307,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox chkBlue;
+    private javax.swing.JCheckBox chkComment;
     private javax.swing.JCheckBox chkCyan;
     private javax.swing.JCheckBox chkGray;
     private javax.swing.JCheckBox chkGreen;
@@ -286,10 +326,12 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkStat5xx;
     private javax.swing.JCheckBox chkYellow;
     private javax.swing.JPanel pnlCenter;
+    private javax.swing.JPanel pnlComment;
     private javax.swing.JPanel pnlExtension;
     private javax.swing.JPanel pnlFilterByRequest;
     private javax.swing.JPanel pnlHighlighColor;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JPanel pnlRight;
     private javax.swing.JPanel pnlStatus;
     private javax.swing.JTextField txtHide;
     private javax.swing.JTextField txtShowOnly;
@@ -307,6 +349,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         this.chkStat4xx.getModel().setSelected(filterProp.getStat4xx());
         this.chkStat5xx.getModel().setSelected(filterProp.getStat5xx());
         this.setHighlightColors(filterProp.getHighlightColors());
+        this.setComments(filterProp.getComments());
     }
 
     public FilterProperty getProperty() {
@@ -322,6 +365,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         filterProp.setStat4xx(this.chkStat4xx.getModel().isSelected());
         filterProp.setStat5xx(this.chkStat5xx.getModel().isSelected());
         filterProp.setHighlightColors(this.getHighlightColors());
+        filterProp.setComments(this.getComments());
         return filterProp;
     }
 
@@ -373,6 +417,14 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         this.chkGray.setSelected(colors.contains(HighlightColor.GRAY));
     }
 
+    public boolean getComments() {
+        return this.chkComment.isSelected();
+    }
+
+    public void setComments(boolean comment) {
+        this.chkComment.setSelected(comment);
+    }
+    
     public static class PropertyRowFilter extends RowFilter<Object, Object> {
 
         private final FilterProperty filterProp;
@@ -386,15 +438,12 @@ public class ResultFilterPopup extends javax.swing.JFrame {
             boolean allFilter = false;
 
             try {
-
                 HttpMessageItem item = HttpMessageItem.toHttpMessageItem(entry);
-
                 boolean showOnlyScopFilter = true;
                 // Filter by request type
                 if (this.filterProp.getShowOnlyScopeItems()) {
                     showOnlyScopFilter = BurpWrap.isInScope(item.getUrl());
                 }
-
                 boolean hideItemsWithoutResponses = true;
                 if (this.filterProp.isHideItemsWithoutResponses()) {
                     hideItemsWithoutResponses = (item.getResponse() != null);
@@ -424,12 +473,21 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 // color filter
                 boolean colorFilter = false;
                 if (statusFilter && showOnlyScopFilter) {
+                    // cololr
                     EnumSet<HighlightColor> colors = this.filterProp.getHighlightColors();
                     MatchItem.HighlightColor hc = MatchItem.HighlightColor.parseValue(BurpWrap.getHighlightColor(item));
                     if (colors.contains(hc)) {
                         colorFilter = true;
                     }
                 }
+                // comment filter
+                boolean commentFilter = true;
+                if (statusFilter && showOnlyScopFilter) {                
+                    // comment
+                    if (this.filterProp.getComments()) {
+                        commentFilter = (item.getComment() != null);                        
+                    }
+                }               
                 // showOnly Filter
                 boolean matchFilter = true;
                 if (statusFilter && showOnlyScopFilter && colorFilter) {
@@ -449,7 +507,8 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                         }
                     }
                 }
-                allFilter = (statusFilter && colorFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses);
+                // 条件のAND
+                allFilter = (statusFilter && colorFilter && commentFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses);
             } catch (Exception ex) {
                 Logger.getLogger(ResultFilterPopup.class.getName()).log(Level.SEVERE, null, ex);
             }

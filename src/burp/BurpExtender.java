@@ -129,6 +129,7 @@ public class BurpExtender extends BurpExtenderImpl
             cb.registerHttpListener(this);
             cb.registerProxyListener(this);
             cb.addSuiteTab(this.tabbetOption);
+//            cb.registerIntruderPayloadGeneratorFactory(factory);
             cb.registerExtensionStateListener(this.tabbetOption);
             cb.registerContextMenuFactory(this.getSendToMenu());
             this.tabbetOption.setProperty(this);

@@ -305,6 +305,7 @@ public final class Config {
         String highlightColors = prop.readEntry("jsearch", "highlightColors", Util.enumSetToString(EnumSet.allOf(MatchItem.HighlightColor.class)));        
         highlightColorSet.addAll(MatchItem.HighlightColor.enumSetValueOf(highlightColors));
         filter.setHighlightColors(highlightColorSet);
+        filter.setComments(prop.readEntryBool("jsearch", "comments", false));
         jsearch.setFilterProperty(filter);
 
         // JTranscoder
@@ -486,6 +487,7 @@ public final class Config {
         prop.writeEntryBool("jsearch", "stat4xx", filter.getStat4xx());
         prop.writeEntryBool("jsearch", "stat5xx", filter.getStat5xx());
         prop.writeEntry("jsearch", "highlightColors",  Util.enumSetToString(filter.getHighlightColors()));
+        prop.writeEntryBool("jsearch", "comments", filter.getComments());
 
         // JTranscoder
         JTransCoderProperty transcoder = option.getJTransCoderProperty();

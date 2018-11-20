@@ -6,6 +6,7 @@ import extend.util.UTF7Charset;
 import extend.util.Util;
 import java.io.*;
 import java.math.BigInteger;
+import java.net.IDN;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.text.DecimalFormat;
@@ -28,6 +29,7 @@ import org.mozilla.universalchardet.UniversalDetector;
  *
  */
 public class TransUtil {
+
 
     public enum EncodeType {
         ALL, ALPHANUM, LIGHT, STANDARD
@@ -60,12 +62,13 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        BASE64, UUENCODE, QUOTEDPRINTABLE, URL_STANDARD, HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG
+        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG,
     };
 
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
     private final static Pattern PTN_UUENCODE = Pattern.compile("begin\\s[0-6]{3}\\s\\w+");
     private final static Pattern PTN_QUOTEDPRINTABLE = Pattern.compile("=([0-9a-fA-F]{2})");
+    private final static Pattern PTN_PUNYCODE = Pattern.compile("xn--[0-9a-zA-Z_\\.]+");
     private final static Pattern PTN_URL = Pattern.compile("%([0-9a-fA-F]{2})");
     private final static Pattern PTN_HTML = Pattern.compile("(&#(\\d+);)|(&#[xX]([0-9a-fA-F]+);)");
     private final static Pattern PTN_URL_UNICODE = Pattern.compile("%[uU]([0-9a-fA-F]{4})");
@@ -83,6 +86,8 @@ public class TransUtil {
         Matcher mUUENCODE = PTN_UUENCODE.matcher(value);
         // QuotedPrintable
         Matcher mQUOTEDPRINTABLE = PTN_QUOTEDPRINTABLE.matcher(value);
+        // Punycode
+        Matcher mPunycode = PTN_PUNYCODE.matcher(value);
         // html
         Matcher mHTML = PTN_HTML.matcher(value);
         // url unicode
@@ -109,6 +114,9 @@ public class TransUtil {
         }
         else if (mBYTE_OCT.find()) {
             return EncodePattern.BYTE_OCT;
+        } // pyny code
+        else if (mPunycode.lookingAt()) {
+            return EncodePattern.PUNYCODE;
         } // uuencode encode match
         else if (mUUENCODE.lookingAt()) {
             return EncodePattern.UUENCODE;
@@ -208,6 +216,10 @@ public class TransUtil {
                     }
                 }
                 break;
+                // Punycode
+                case PUNYCODE: 
+                    decode = toPunycodeDecode(value);
+                    break;
                 // Base64 encode match
                 case BASE64: {
                     value = value.replaceAll("[\r\n]", ""); // 改行削除
@@ -311,6 +323,14 @@ public class TransUtil {
         return digestbuff.toString();
     }
 
+    public static String toPunycodeEncode(String value) {
+        return IDN.toASCII(value);
+    }
+
+    public static String toPunycodeDecode(String value) {
+        return IDN.toUnicode(value);
+    }
+    
     public static String toUTF7Encode(String str) {
         UTF7Charset utf7cs = new UTF7Charset("UTF-7", new String[]{});
         ByteBuffer bb = utf7cs.encode(str);
