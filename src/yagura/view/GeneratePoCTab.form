@@ -192,7 +192,9 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkHtml5Binaly">
                   <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Binaly"/>
+                    <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JSpinner" name="spnTime">

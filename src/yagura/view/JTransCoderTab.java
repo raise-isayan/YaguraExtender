@@ -89,8 +89,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoUuencode = new javax.swing.JRadioButton();
         rdoQuotedPrintable = new javax.swing.JRadioButton();
         rdoPunycode = new javax.swing.JRadioButton();
-        rdoHtml = new javax.swing.JRadioButton();
         pnlHtmlEnc = new javax.swing.JPanel();
+        rdoHtml = new javax.swing.JRadioButton();
         rdoHtmlDec = new javax.swing.JRadioButton();
         rdoHtmlHex = new javax.swing.JRadioButton();
         pnlJSHexEnc = new javax.swing.JPanel();
@@ -243,7 +243,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlTransButton.setLayout(new javax.swing.BoxLayout(pnlTransButton, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(13, 0));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(12, 0));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -339,11 +339,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoPunycode.setText("puyencode");
         pnlEncodeDecode.add(rdoPunycode);
 
+        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 3));
+
         rdoEncodeDecodeGrp.add(rdoHtml);
         rdoHtml.setText("HTML(<,>,\",')");
-        pnlEncodeDecode.add(rdoHtml);
-
-        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 1));
+        pnlHtmlEnc.add(rdoHtml);
 
         rdoEncodeDecodeGrp.add(rdoHtmlDec);
         rdoHtmlDec.setText("&#d;");
@@ -367,7 +367,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlJSHexEnc.add(rdoByteHex);
 
         rdoEncodeDecodeGrp.add(rdoByteOct);
-        rdoByteOct.setText("\\ddd(oct)");
+        rdoByteOct.setText("\\ooo(oct)");
         rdoByteOct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoByteOctActionPerformed(evt);

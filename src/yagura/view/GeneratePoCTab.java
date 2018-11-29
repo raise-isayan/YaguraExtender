@@ -177,7 +177,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
         });
 
+        chkHtml5Binaly.setSelected(true);
         chkHtml5Binaly.setText("Binaly");
+        chkHtml5Binaly.setEnabled(false);
 
         spnTime.setValue(1000);
 
@@ -318,14 +320,15 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
         if (this.chkHtml5.isSelected()) {
-            ta.setText(this.generateHtml5PoC());
+//            ta.setText(this.generateHtml5PoC());
+            ta.setText(this.generateHTML5PoC());
         } else {
             ta.setText(this.generatePoC());
         }
     }//GEN-LAST:event_btnGenerateActionPerformed
 
     private void chkHtml5StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHtml5StateChanged
-        this.chkHtml5Binaly.setEnabled(this.chkHtml5.isSelected());
+//        this.chkHtml5Binaly.setEnabled(this.chkHtml5.isSelected());
     }//GEN-LAST:event_chkHtml5StateChanged
 
     private void chkAutoSubmitStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkAutoSubmitStateChanged
@@ -495,7 +498,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         return selectText;
     }
 
-    //private final static Pattern ENCODE_JS = Pattern.compile("[^ !#-/0-9a-zA-Z]");
     private final static Pattern ENCODE_JS = Pattern.compile("[^ !#-&(-/0-Z\\[\\]^-~]");
     
     private String generatePoC() {
@@ -613,8 +615,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         }
         return buff.toString();
     }
-
-    private String generateHtml5PoC() {
+    
+    private String generateHTML5PoC() {
         StringBuilder buff = new StringBuilder();
         try {
             boolean csrfAutoSubmit = this.chkAutoSubmit.isSelected();
@@ -659,29 +661,19 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             buff.append("<script type=\"text/javascript\">\n");
             buff.append("function html5_csrf() {\n");
             String boundary = HttpUtil.generateBoundary();
-            buff.append("var xhr = new XMLHttpRequest();\r\n");
-            buff.append(String.format("xhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl)}));
-            buff.append("var req = new Array();\r\n");
+            buff.append("\tvar xhr = new XMLHttpRequest();\r\n");
+            buff.append(String.format("\txhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl)}));
+            buff.append("\tvar req = '';\r\n");
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
                 if (csrfMultiPart) {
-                    buff.append(String.format("var boundary = '--%s';\r\n", new Object[]{boundary}));
-                    buff.append("xhr.setRequestHeader( 'Content-Type','multipart/form-data; boundary=' + boundary);\r\n");
-//                    List<String> headers = requestInfo.getHeaders();
-//                    for (String header : headers) {
-//                        if (header.startsWith("X-")) {
-//                            KeyValuePair headerPair = HttpUtil.getHeader(header);
-//                            buff.append("xhr.setRequestHeader( '" + headerPair.getKey() + "','" + headerPair.getValue() + "');\r\n");
-//                        }
-//                    }
-//                    buff.append("xhr.withCredentials = true;\r\n");       // Cookieを付与
-                    buff.append("xhr.onreadystatechange = function(){};\r\n");                    
+                    buff.append(String.format("\tvar boundary = '--%s';\r\n", new Object[]{boundary}));
+                    buff.append("\txhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);\r\n");
                     List<IParameter> parameters = requestInfo.getParameters();
                     Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.length:{0}", parameters.size());
                     boolean binaryParam = false;
                     String filename = "";
                     StringBuilder parambuff = new StringBuilder();        
-                    int index = 0;
                     for (int i = 0; i < parameters.size(); i++) {
                         IParameter param = parameters.get(i);
                         String paramName = param.getName();
@@ -691,12 +683,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
                             paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
                         }
-                        else if (HttpUtil.isMaltiPart(contentType)) {
-                            paramName = Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
-                            if (!binaryParam) {
-                                paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
-                            }
-                        }
                         if (paramType == IParameter.PARAM_URL || paramType == IParameter.PARAM_COOKIE) {
                             continue;
                         }
@@ -704,10 +690,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             if (parambuff.length() > 0) {
                                 parambuff.append(";\r\n");
                             }
-                            parambuff.append("req[" + index++ + "] = '--' + boundary + '\\r\\n' + \r\n");
-                            parambuff.append(String.format("'Content-Disposition: form-data; name=\"%s\"\\r\\n\\r\\n' + \r\n", new Object[]{paramName}));
-                            String encodeJs = TransUtil.toHexEncode(paramValue, ENCODE_JS, false);
-                            parambuff.append(String.format("'%s\\r\\n'", new Object[]{encodeJs}));
+                            parambuff.append("\treq += '--' + boundary + '\\r\\n' + \r\n");
+                            parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"\\r\\n\\r\\n' + \r\n", new Object[]{paramName}));
+                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue), TransUtil.PTN_ENCODE_ALPHANUM, false);
+                            parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                         } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {
                             binaryParam = true;
                             filename = paramValue;
@@ -715,45 +701,25 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             if (parambuff.length() > 0) {
                                 parambuff.append(";\r\n");
                             }
-                            parambuff.append("req[" + index++ + "] = '--' + boundary + '\\r\\n' + \r\n");
-                            parambuff.append(String.format("'Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\\r\\n' + \r\n", new Object[]{paramName, filename}));
-                            parambuff.append("'Content-Type: application/octet-stream\\r\\n\\r\\n'");
-                            if (csrfHtml5Binaly) {
-                                parambuff.append("; \r\n");
-                                parambuff.append("req[" + index++ + "] = new Uint8Array(" + TransUtil.toByteArrayJsEncode(Util.getRawByte(paramValue), false) + ");\r\n");
-                                parambuff.append("req[" + index++ + "] = '\\r\\n'");
-                            }
-                            else {
-                                parambuff.append("+ \r\n");
-                                String encodeJs = TransUtil.toHexEncode(paramValue, ENCODE_JS, false);
-                                parambuff.append(String.format("'%s\\r\\n'", new Object[]{encodeJs}));
-                            }
+                            parambuff.append("\treq += '--' + boundary + '\\r\\n' + \r\n");
+                            parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\\r\\n' + \r\n", new Object[]{paramName, filename}));
+                            parambuff.append("\t'Content-Type: application/octet-stream\\r\\n\\r\\n'");
+                            parambuff.append("+ \r\n");
+                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue), TransUtil.PTN_ENCODE_ALPHANUM, false);
+                            parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                             binaryParam = false;
                             filename = "";
                         }
                     }
                     parambuff.append(" + '--' + boundary + '--\\r\\n';\r\n");
                     buff.append(parambuff.toString());
-                    StringBuilder argbuff = new StringBuilder();                            
-                    for (int i = 0; i < index; i++) {
-                        if (argbuff.length() > 0) {
-                            argbuff.append(",");
-                        }
-                        argbuff.append("req[").append(i).append("]");
-                    }
-                    buff.append("var blob = new Blob([").append(argbuff.toString()).append("]);\r\n");                   
-                    buff.append("xhr.send(blob);\r\n");
+                    buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
+                    buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
+                    buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n"); 
+                    buff.append("\txhr.send(new Blob([blob]));\r\n");
                 } else {
-                    buff.append("xhr.setRequestHeader( 'Content-Type','application/x-www-form-urlencoded');\r\n");
-//                    List<String> headers = requestInfo.getHeaders();
-//                    for (String header : headers) {
-//                        if (header.startsWith("X-")) {
-//                            KeyValuePair headerPair = HttpUtil.getHeader(header);
-//                            buff.append("xhr.setRequestHeader( '" + headerPair.getKey() + "','" + headerPair.getValue() + "');\r\n");
-//                        }
-//                    }
-                    buff.append("xhr.withCredentials = true;\r\n");       // Cookieを付与
-                    buff.append("xhr.onreadystatechange = function(){};\r\n");
+                    buff.append("\txhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\r\n");
+                    buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
                     List<IParameter> parameters = requestInfo.getParameters();                
                     Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.size:{0}", parameters.size());
                     boolean binaryParam = false;
@@ -763,15 +729,19 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         String paramName = param.getName();
                         String paramValue = param.getValue();
                         byte paramType = param.getType();
+//                        if (HttpUtil.isUrlEencoded(contentType)) {
+//                            paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
+//                            paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
+//                        }
                         if (paramType == IParameter.PARAM_URL || paramType == IParameter.PARAM_COOKIE) {
                             continue;
                         }
                         if (paramType == IParameter.PARAM_BODY && !binaryParam) {
-                            buff.append("req[0] = req[0]");
+                            buff.append("\treq += ");
                             if (!first) {
                                 buff.append(" + '&'");
                             }
-                            buff.append(String.format(" + '%s' + '=' + '%s';\r\n", 
+                            buff.append(String.format("'%s' + '=' + '%s';\r\n", 
                                     new Object[]{TransUtil.encodeJsLangQuote(paramName), 
                                                  TransUtil.encodeJsLangQuote(paramValue)}));
                             first = false;
@@ -779,21 +749,21 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             binaryParam = true;
                         }
                     }
-                    buff.append("xhr.send(req[0]);\r\n");
+                    buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
+                    buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
+                    buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n"); 
+                    buff.append("\txhr.send(new Blob([blob]));\r\n");
                 }
             } // csrf textplain    
             else {
-                buff.append(String.format("xhr.setRequestHeader( 'Content-Type','%s');\r\n", csrfEnctype));
-                buff.append("xhr.withCredentials = true;\r\n");       // Cookieを付与
-                buff.append("xhr.onreadystatechange = function(){};\r\n");
+                buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');\r\n", csrfEnctype));
+                buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
                 String paramValue = Util.decodeMessage(reqmsg.getBodyBytes());
-                if (csrfHtml5Binaly) {
-                    buff.append("req[0] = new Uint8Array(" + TransUtil.toByteArrayJsEncode(Util.getRawByte(paramValue), false) + ");");
-                }
-                else {
-                    buff.append(String.format("req[0] = '%s';\r\n", new Object[]{TransUtil.toHexEncode(paramValue, ENCODE_JS, false)}));
-                }
-                buff.append("xhr.send(req[0]);\r\n");
+                buff.append(String.format("\treq += '%s';\r\n", new Object[]{TransUtil.toByteHexEncode(Util.getRawByte(paramValue), ENCODE_JS, false)}));
+                buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
+                buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
+                buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n"); 
+                buff.append("\txhr.send(new Blob([blob]));\r\n");
             }
             buff.append("}\n");
             buff.append("</script></head>\n");
@@ -814,7 +784,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         }
         return buff.toString();
     }
-    
+
+
     public void clearView() {
         this.quickSearchTab.clearView();
     }

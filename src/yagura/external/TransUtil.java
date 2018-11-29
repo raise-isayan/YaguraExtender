@@ -10,6 +10,7 @@ import java.net.IDN;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.text.DecimalFormat;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -475,6 +476,10 @@ public class TransUtil {
         return byte_array.toByteArray();
     }
 
+//    public static String UTF8Decode(String input) {
+//        return Normalizer.normalize(input, Normalizer.Form.NFKC);
+//    }
+    
     public static String decodeUrl(String pString, String charset) throws UnsupportedEncodingException {
         return new String(decodeUrl(pString.getBytes("US-ASCII")), charset);
     }
@@ -586,27 +591,27 @@ public class TransUtil {
         return toByteOctEncode(input.getBytes(charset), pattern, upperCase);
     }
     
-    public static String toHexEncode(String input, boolean upperCase) {
-        return toHexEncode(input, PTN_ENCODE_ALPHANUM, upperCase);
-    }
+//    public static String toHexEncode(String input, boolean upperCase) {
+//        return toHexEncode(input, PTN_ENCODE_ALPHANUM, upperCase);
+//    }
 
-    public static String toHexEncode(String input, Pattern pattern, boolean upperCase) {
-        StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            Matcher m = pattern.matcher(new String(new char[]{c}));
-            if (m.matches()) {
-                if (upperCase) {
-                    buff.append(String.format("\\X%02X", (int) c));
-                } else {
-                    buff.append(String.format("\\x%02x", (int) c));
-                }
-            } else {
-                buff.append(c);
-            }
-        }
-        return buff.toString();
-    }
+//    public static String toHexEncode(String input, Pattern pattern, boolean upperCase) {
+//        StringBuilder buff = new StringBuilder();
+//        for (int i = 0; i < input.length(); i++) {
+//            char c = input.charAt(i);
+//            Matcher m = pattern.matcher(new String(new char[]{c}));
+//            if (m.matches()) {
+//                if (upperCase) {
+//                    buff.append(String.format("\\X%02X", (int) c));
+//                } else {
+//                    buff.append(String.format("\\x%02x", (int) c));
+//                }
+//            } else {
+//                buff.append(c);
+//            }
+//        }
+//        return buff.toString();
+//    }
 
     public static String toByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
