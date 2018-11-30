@@ -62,7 +62,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         this.addTab("JSearch", this.tabJSearch);
         this.addTab("JTransCoder", this.tabJTransCoder);
         this.addTab("Version", this.tabVersion);
-        
+
         this.tabEncoding.addPropertyChangeListener(ENCODING_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MATCHREPLACE_PROPERTY, this);
         this.tabMatchAlert.addPropertyChangeListener(MATCHALERT_PROPERTY, this);
@@ -137,7 +137,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public MatchReplaceProperty getMatchReplaceProperty() {
         return this.tabMatchReplace.getMatchReplaceProperty();
     }
-    
+
     @Override
     public void setSendToProperty(SendToProperty sendToProperty) {
         this.tabSendTo.setSendToProperty(sendToProperty);
@@ -147,7 +147,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public SendToProperty getSendToProperty() {
         return this.tabSendTo.getSendToProperty();
     }
-    
+
     @Override
     public void setLoggingProperty(LoggingProperty loggingProperty) {
         this.tabLogging.setLoggingProperty(loggingProperty);
@@ -185,7 +185,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public AutoResponderProperty getAutoResponderProperty() {
         return this.tabAutoResponder.getAutoResponderProperty();
     }
-    
+
     @Override
     public JSearchProperty getJSearchProperty() {
         return this.tabJSearch.getProperty();
@@ -195,8 +195,8 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public void setJSearchProperty(JSearchProperty jsearch) {
         this.tabJSearch.setProperty(jsearch);
     }
-    
-    public void setJTransCoderProperty(EncodingProperty encodingProperty) {        
+
+    public void setJTransCoderProperty(EncodingProperty encodingProperty) {
         this.tabJTransCoder.setEncodingList(encodingProperty.getEncodingList(), "");
     }
 
@@ -209,7 +209,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public void setJTransCoderProperty(JTransCoderProperty transcoder) {
         this.tabJTransCoder.setProperty(transcoder);
     }
-    
+
     @Override
     public boolean getDebugMode() {
         return this.tabVersion.getDebugMode();
@@ -219,7 +219,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public void setDebugMode(boolean debugMode) {
         this.tabVersion.setDebugMode(debugMode);
     }
-        
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         this.firePropertyChange(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
@@ -228,7 +228,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public void sendToJTransCoder(String text) {
         Container container = this.getParent();
         if (container instanceof JTabbedPane) {
-            JTabbedPane tabbet = (JTabbedPane)container;
+            JTabbedPane tabbet = (JTabbedPane) container;
             int index = tabbet.indexOfTab(this.getTabCaption());
             //BurpExtender.errPrintln("\tname u r:" + index);        
             if (index > -1) {
@@ -238,20 +238,15 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
             tabbet.updateUI();
         }
         this.tabJTransCoder.sendToJTransCoder(text);
-//        Class cls = this.getParent().getClass();
-//        BurpExtender.errPrintln("name:" + cls.getName());
-//        while ((cls = cls.getSuperclass()) != null) {
-//            BurpExtender.errPrintln("\tname:" + cls.getName());        
-//        }
     }
 
-    public byte [] receiveFromJTransCoder() {
-        return this.tabJTransCoder.receiveFromJTransCoder();        
+    public byte[] receiveFromJTransCoder() {
+        return this.tabJTransCoder.receiveFromJTransCoder();
     }
 
     @Override
     public void extensionUnloaded() {
         this.tabAutoResponder.extensionUnloaded();
     }
-        
+
 }

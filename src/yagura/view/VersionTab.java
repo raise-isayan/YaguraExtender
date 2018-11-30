@@ -29,8 +29,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class VersionTab extends javax.swing.JPanel {
 
-    private OptionProperty option;
-
     /**
      * Creates new form VersionTab
      */
@@ -124,13 +122,13 @@ public class VersionTab extends javax.swing.JPanel {
         this.firePropertyChange(TabbetOption.VERSION_PROPERTY, null, this);
     }//GEN-LAST:event_chkDebugModeStateChanged
 
-    final static FileFilter burp_config_filter = new FileNameExtensionFilter("burp configファイル(*.bcxml)", "bcxml");
+    final static FileFilter BURP_CONFIG_FILTER = new FileNameExtensionFilter("burp configファイル(*.bcxml)", "bcxml");
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.addChoosableFileFilter(burp_config_filter);
-        filechooser.setFileFilter(burp_config_filter);
+        filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BURP_CONFIG_FILTER);
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
@@ -146,13 +144,13 @@ public class VersionTab extends javax.swing.JPanel {
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.addChoosableFileFilter(burp_config_filter);
-        filechooser.setFileFilter(burp_config_filter);
+        filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BURP_CONFIG_FILTER);
         int selected = filechooser.showSaveDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = filechooser.getSelectedFile();
-                if (!burp_config_filter.accept(file)) {
+                if (!BURP_CONFIG_FILTER.accept(file)) {
                     file = new File(file.getAbsolutePath() + ".bcxml");
                 }
                 Config.saveToXML(file, BurpExtender.getInstance().getProperty());

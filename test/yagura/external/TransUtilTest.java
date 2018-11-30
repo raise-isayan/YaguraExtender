@@ -414,15 +414,19 @@ public class TransUtilTest {
      */
     @Test
     public void testToHexEncode() {
-        System.out.println("testToHexEncode");
-        assertEquals("abcdef\\x0d\\x0a\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", false));
-        assertEquals("abcdef\\X0D\\X0A\\X21\\X22ghi\\X23\\X24\\X25jkf", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", true));
-
-        assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0d\\x0a\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, false));        
-        assertEquals("\\X61\\X62\\X63\\X64\\X65\\X66\\X0D\\X0A\\X21\\X22\\X67\\X68\\X69\\X23\\X24\\X25\\X6A\\X6B\\X66", TransUtil.toHexEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, true));        
-
-        System.out.println(TransUtil.toHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", ENCODE_JS, false));
-        assertEquals(" !\\x22#$%&\\x27()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\x5c]^_`abcdefghijklmnopqrstuvwxyz{|}~", TransUtil.toHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", ENCODE_JS, false));
+        try {
+            System.out.println("testToHexEncode");
+            assertEquals("abcdef\\x0d\\x0a\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toByteHexEncode("abcdef\r\n!\"ghi#$%jkf", "8859_1", false));
+            assertEquals("abcdef\\X0D\\X0A\\X21\\X22ghi\\X23\\X24\\X25jkf", TransUtil.toByteHexEncode("abcdef\r\n!\"ghi#$%jkf", "8859_1", true));
+            
+            assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0d\\x0a\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", TransUtil.toByteHexEncode(Util.getRawByte("abcdef\r\n!\"ghi#$%jkf"), TransUtil.PTN_ENCODE_ALL, false));
+            assertEquals("\\X61\\X62\\X63\\X64\\X65\\X66\\X0D\\X0A\\X21\\X22\\X67\\X68\\X69\\X23\\X24\\X25\\X6A\\X6B\\X66", TransUtil.toByteHexEncode(Util.getRawByte("abcdef\r\n!\"ghi#$%jkf"), TransUtil.PTN_ENCODE_ALL, true));
+            
+            System.out.println(TransUtil.toByteHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", "8859_1", ENCODE_JS, false));
+            assertEquals(" !\\x22#$%&\\x27()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\x5c]^_`abcdefghijklmnopqrstuvwxyz{|}~", TransUtil.toByteHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", "8859_1", ENCODE_JS, false));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -227,7 +227,8 @@ public class JReplaceDialog extends CustomDialog {
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         tabMatchReplace.add(pnlCenter, java.awt.BorderLayout.CENTER);

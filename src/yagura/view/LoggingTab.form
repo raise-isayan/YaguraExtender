@@ -71,7 +71,7 @@
                               <Component id="txtFileLimitSize" min="-2" pref="48" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="lblFileUnit" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="lblToolTip" min="-2" pref="224" max="-2" attributes="0"/>
                           </Group>
                           <Component id="chkHistoryLogInclude" alignment="0" min="-2" max="-2" attributes="0"/>
