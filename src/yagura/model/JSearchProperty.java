@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import extend.view.base.RegexItem;
@@ -111,6 +106,18 @@ public class JSearchProperty extends RegexItem {
      */
     public void setComment(boolean comment) {
         this.comment = comment;
+    }
+                
+    public void setProperty(JSearchProperty property) {
+        this.setAutoRecogniseEncoding(property.isAutoRecogniseEncoding());
+        this.setFilterProperty(property.getFilterProperty());
+        this.setRequestHeader(property.isRequestHeader());
+        this.setRequestBody(property.isRequestBody());
+        this.setResponseHeader(property.isResponseHeader());
+        this.setResponseBody(property.isResponseBody());
+        this.setComment(property.isComment());
+        this.setRegexp(property.isRegexp());
+        this.setIgnoreCase(property.isIgnoreCase());
     }
     
 }

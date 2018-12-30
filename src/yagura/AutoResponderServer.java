@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura;
 
 import burp.BurpExtender;
@@ -57,7 +52,7 @@ public class AutoResponderServer {
         private AutoResponderProperty autoResponder = null;
 
         public MyHandler() {
-            autoResponder = BurpExtender.getInstance().getAutoResponderProperty();
+            autoResponder = BurpExtender.getInstance().getProperty().getAutoResponderProperty();
         }
 
         @Override

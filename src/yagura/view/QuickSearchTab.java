@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
-import burp.BurpExtender;
 import yagura.model.KeywordHighlighter;
 import yagura.model.StartEndPosion;
 import java.awt.Color;
@@ -45,13 +39,14 @@ public class QuickSearchTab extends javax.swing.JPanel {
         mnuRegex = new javax.swing.JCheckBoxMenuItem();
         mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
         pnlEncode = new javax.swing.JPanel();
+        cmbEncoding = new javax.swing.JComboBox();
+        pnlSearch = new javax.swing.JPanel();
         btnQuickBack = new javax.swing.JButton();
         btnQuckOption = new javax.swing.JButton();
         btnQuickForward = new javax.swing.JButton();
         cmbQuckSearch = new javax.swing.JComboBox();
         lblMatch = new javax.swing.JLabel();
         chkUniq = new javax.swing.JCheckBox();
-        cmbEncoding = new javax.swing.JComboBox();
 
         mnuRegex.setSelected(true);
         mnuRegex.setText("regex");
@@ -64,43 +59,6 @@ public class QuickSearchTab extends javax.swing.JPanel {
 
         pnlEncode.setLayout(new javax.swing.BoxLayout(pnlEncode, javax.swing.BoxLayout.LINE_AXIS));
 
-        btnQuickBack.setText("<");
-        btnQuickBack.setMargin(new java.awt.Insets(2, 6, 2, 6));
-        btnQuickBack.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQuickBackActionPerformed(evt);
-            }
-        });
-        pnlEncode.add(btnQuickBack);
-
-        btnQuckOption.setText("+");
-        btnQuckOption.setMargin(new java.awt.Insets(2, 6, 2, 6));
-        btnQuckOption.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQuckOptionActionPerformed(evt);
-            }
-        });
-        pnlEncode.add(btnQuckOption);
-
-        btnQuickForward.setText(">");
-        btnQuickForward.setMargin(new java.awt.Insets(2, 6, 2, 6));
-        btnQuickForward.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnQuickForwardActionPerformed(evt);
-            }
-        });
-        pnlEncode.add(btnQuickForward);
-
-        cmbQuckSearch.setEditable(true);
-        pnlEncode.add(cmbQuckSearch);
-
-        lblMatch.setText("0 match");
-        pnlEncode.add(lblMatch);
-
-        chkUniq.setSelected(true);
-        chkUniq.setText("Uniq");
-        pnlEncode.add(chkUniq);
-
         cmbEncoding.setMaximumRowCount(10);
         cmbEncoding.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Shift_JIS" }));
         cmbEncoding.setToolTipText("");
@@ -110,7 +68,48 @@ public class QuickSearchTab extends javax.swing.JPanel {
         cmbEncoding.setPreferredSize(new java.awt.Dimension(120, 19));
         pnlEncode.add(cmbEncoding);
 
-        add(pnlEncode, java.awt.BorderLayout.SOUTH);
+        add(pnlEncode, java.awt.BorderLayout.EAST);
+
+        pnlSearch.setLayout(new javax.swing.BoxLayout(pnlSearch, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnQuickBack.setText("<");
+        btnQuickBack.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        btnQuickBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuickBackActionPerformed(evt);
+            }
+        });
+        pnlSearch.add(btnQuickBack);
+
+        btnQuckOption.setText("+");
+        btnQuckOption.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        btnQuckOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuckOptionActionPerformed(evt);
+            }
+        });
+        pnlSearch.add(btnQuckOption);
+
+        btnQuickForward.setText(">");
+        btnQuickForward.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        btnQuickForward.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuickForwardActionPerformed(evt);
+            }
+        });
+        pnlSearch.add(btnQuickForward);
+
+        cmbQuckSearch.setEditable(true);
+        pnlSearch.add(cmbQuckSearch);
+
+        lblMatch.setText("0 match");
+        pnlSearch.add(lblMatch);
+
+        chkUniq.setSelected(true);
+        chkUniq.setText("Uniq");
+        pnlSearch.add(chkUniq);
+
+        add(pnlSearch, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnQuckOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuckOptionActionPerformed
@@ -139,6 +138,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
     private javax.swing.JPanel pnlEncode;
+    private javax.swing.JPanel pnlSearch;
     private javax.swing.JPopupMenu popQuick;
     // End of variables declaration//GEN-END:variables
 
@@ -165,6 +165,10 @@ public class QuickSearchTab extends javax.swing.JPanel {
         return this.chkUniq;
     }
 
+    public javax.swing.JPanel getSearchPanel() {
+        return this.pnlSearch;
+    }
+        
     private void quickSearchPerformed(boolean forward) {
         javax.swing.text.JTextComponent ta = this.getSelectedTextArea();
         String s = (String) this.cmbQuckSearch.getEditor().getItem();

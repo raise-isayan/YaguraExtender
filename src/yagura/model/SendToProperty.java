@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import java.util.ArrayList;
@@ -38,6 +34,11 @@ public class SendToProperty {
 
     public void setSubMenu(boolean submenu) {
         this.submenu = submenu;
+    }
+
+    public void setProperty(SendToProperty property) {
+        this.setSendToItemList(property.getSendToItemList());
+        this.setSubMenu(property.isSubMenu());
     }
     
 }

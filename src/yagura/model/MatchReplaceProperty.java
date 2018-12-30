@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import extend.util.Util;
@@ -105,6 +101,12 @@ public class MatchReplaceProperty {
 
     public void setAutoRecogniseEncoding(boolean autoRecognise) {
         this.autoRecognise = autoRecognise;
+    }
+
+    public void setProperty(MatchReplaceProperty property) {
+        this.setSelectedName(property.getSelectedName());
+        this.setReplaceMap(property.getReplaceMap());
+        this.setAutoRecogniseEncoding(property.getAutoRecogniseEncoding());
     }
     
 }

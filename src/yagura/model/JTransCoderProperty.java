@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import yagura.external.TransUtil.ConvertCase;
@@ -14,7 +9,6 @@ import yagura.external.TransUtil.NewLine;
  * @author isayan
  */
 public class JTransCoderProperty {
-
     private EncodeType encodeType = EncodeType.ALL;
 
     /**
@@ -125,6 +119,16 @@ public class JTransCoderProperty {
      */
     public void setSelectEncoding(String selectEncoding) {
         this.selectEncoding = selectEncoding;
+    }
+
+    public void setProperty(JTransCoderProperty property) {
+        this.setEncodeType(property.getEncodeType());
+        this.setNewLine(property.getNewLine());
+        this.setConvertCase(property.getConvertCase());
+        this.setLineWrap(property.isLineWrap());
+        this.setRawEncoding(property.isRawEncoding());
+        this.setGuessEncoding(property.isGuessEncoding());
+        this.setSelectEncoding(property.getSelectEncoding());
     }
     
 }

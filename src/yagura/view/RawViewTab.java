@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
 import burp.BurpExtender;
@@ -119,9 +114,9 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     @Override
     public String getTabCaption() {
         if (this.request) {
-            return "Request";
+            return "JRaw";
         } else {
-            return "Response";
+            return "JRaw";
         }
     }
 
@@ -158,7 +153,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             this.message = httpmessage;
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-            encodingItemStateChanged.itemStateChanged(null);
+            this.encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {
             Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);

@@ -1,22 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * HTMLCommentTab.java
- *
- * Created on 2011/12/17, 14:05:55
- */
 package yagura.view;
 
 import burp.IHttpRequestResponse;
 import burp.BurpExtender;
-import burp.IMessageEditorTab;
 import yagura.model.*;
 import java.awt.Font;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +14,7 @@ import java.util.logging.Logger;
 public class MessageViewTab extends javax.swing.JPanel implements SendToMessage {
 
     /**
-     * Creates new form HTMLCommentTab
+     * Creates new form MessageViewTab
      */
     public MessageViewTab() {
         initComponents();
@@ -67,22 +54,22 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         add(tabbetMessageView, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private final javax.swing.JTabbedPane tabbetRequestView  = new javax.swing.JTabbedPane();
+    private final javax.swing.JTabbedPane tabbetResponseView  = new javax.swing.JTabbedPane();
+    
     private final RawViewTab tabRequestRawView = new RawViewTab(true);
     private final RawViewTab tabResponseRawView = new RawViewTab(false);
     private final HtmlCommetViewTab tabHtmlComment = new HtmlCommetViewTab();
     private final JSONViewTab tabRequestJSONViewTab = new JSONViewTab(true);
     private final JSONViewTab tabResponseJSONViewTab = new JSONViewTab(false);
     private final GeneratePoCTab tabGeneratePoC = new GeneratePoCTab();
-    private final List<IMessageEditorTab> listTabs = new ArrayList<IMessageEditorTab>();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.listTabs.add(this.tabRequestRawView);
-        this.listTabs.add(this.tabResponseRawView);
-        this.listTabs.add(this.tabRequestJSONViewTab);
-        this.listTabs.add(this.tabResponseJSONViewTab);
-        this.listTabs.add(this.tabHtmlComment);
-        this.listTabs.add(this.tabGeneratePoC);
+        // Request
+        this.tabbetMessageView.addTab("JRequest", this.tabbetRequestView);
+        // Response
+        this.tabbetMessageView.addTab("JResponse", this.tabbetResponseView);        
     }
 
     private void tabbetMessageViewStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbetMessageViewStateChanged
@@ -129,22 +116,20 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     public void setMessageInfo(IHttpRequestResponse messageInfo) {
         try {
             this.messageItem = new HttpMessageItem(messageInfo);
-            this.tabbetMessageView.removeAll();
-            for (int i = 0; i < this.listTabs.size(); i++) {
-                boolean visible = false;
-                IMessageEditorTab tab = this.listTabs.get(i);
-                if (tab.isEnabled(messageItem.getRequest(), true)) {
-                    tab.setMessage(messageItem.getRequest(), true);
-                    visible = true;
-                }
-                if (tab.isEnabled(messageItem.getResponse(), false)) {
-                    tab.setMessage(messageItem.getResponse(), false);
-                    visible = true;
-                }
-                if (visible) {
-                    this.tabbetMessageView.addTab(tab.getTabCaption(), tab.getUiComponent());
-                }
+            this.clearView();
+            this.tabGeneratePoC.createNewInstance(messageItem.getController(), false);
+            if (this.messageItem.getRequest() != null) {
+                this.setEnabled(messageItem.getRequest(), true);
+                if (this.tabbetRequestView.indexOfComponent(this.tabRequestRawView) > -1) this.tabRequestRawView.setMessage(this.messageItem.getRequest(), true);              
+                if (this.tabbetRequestView.indexOfComponent(this.tabRequestJSONViewTab) > -1) this.tabRequestJSONViewTab.setMessage(this.messageItem.getRequest(), true);              
+                if (this.tabbetRequestView.indexOfComponent(this.tabGeneratePoC) > -1) this.tabGeneratePoC.setMessage(this.messageItem.getRequest(), true);              
             }
+            if (this.messageItem.getResponse() != null) {
+                this.setEnabled(messageItem.getResponse(), false);
+                if (this.tabbetResponseView.indexOfComponent(this.tabResponseRawView) > -1) this.tabResponseRawView.setMessage(this.messageItem.getResponse(), false);        
+                if (this.tabbetResponseView.indexOfComponent(this.tabResponseJSONViewTab) > -1) this.tabResponseJSONViewTab.setMessage(this.messageItem.getResponse(), false);              
+                if (this.tabbetResponseView.indexOfComponent(this.tabHtmlComment) > -1) this.tabHtmlComment.setMessage(this.messageItem.getResponse(), false);              
+            }            
         } catch (Exception ex) {
             Logger.getLogger(MessageViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -180,6 +165,21 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         }
     }
 
+    public void setEnabled(byte[] content, boolean isMessageRequest) {
+        if (isMessageRequest) {
+            this.tabbetRequestView.removeAll();
+            if (this.tabRequestRawView.isEnabled(content, isMessageRequest)) this.tabbetRequestView.addTab("Raw", this.tabRequestRawView);
+            if (this.tabRequestJSONViewTab.isEnabled(content, isMessageRequest)) this.tabbetRequestView.addTab(this.tabRequestJSONViewTab.getTabCaption(), this.tabRequestJSONViewTab);
+            if (this.tabGeneratePoC.isEnabled(content, isMessageRequest)) this.tabbetRequestView.addTab(this.tabGeneratePoC.getTabCaption(), this.tabGeneratePoC);
+        }
+        else {
+            this.tabbetResponseView.removeAll();
+            if (this.tabResponseRawView.isEnabled(content, isMessageRequest)) this.tabbetResponseView.addTab("Raw", this.tabResponseRawView);
+            if (this.tabResponseJSONViewTab.isEnabled(content, isMessageRequest)) this.tabbetResponseView.addTab(this.tabResponseJSONViewTab.getTabCaption(), this.tabResponseJSONViewTab);
+            if (this.tabHtmlComment.isEnabled(content, isMessageRequest)) this.tabbetResponseView.addTab(this.tabHtmlComment.getTabCaption(), this.tabHtmlComment);                
+        }        
+    }
+        
     public void clearView() {
         this.tabRequestRawView.clearView();
         this.tabResponseRawView.clearView();

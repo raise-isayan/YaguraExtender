@@ -390,6 +390,8 @@ image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
           JTransCoder のOutputから文字列を貼り付けます。
      message info copy:: 
           message の情報をクリップボードにコピーします。
+     add host to scope:: 
+          URLのスキームとホストをscopeに追加します。
 
 === Logging
 
@@ -532,7 +534,7 @@ HTML(<,>,",')::
 \xhh;:: 
     16進数形式によるエンコード、デコードを行います。
 
-\ddd;:: 
+\ooo;:: 
     8進数形式によるエンコード、デコードを行います。
 
 \uhhhh;:: 
@@ -554,7 +556,8 @@ SQL::
     SQL言語形式のエスケープお行います。
 
 ===== Hash 
-    テキストエリアに入力されている値でハッシュ値計算を行います。
+
+テキストエリアに入力されている値でハッシュ値計算を行います。
 
 md2:: 
     md2によるハッシュを求めます
@@ -619,6 +622,8 @@ step::
     startからendまでの数字の増加数を指定します。
 
 .sequence-Dateタブ
+
+image:images/custom_gene_date.png[Generaterタブ]
 
 生成書式文字列入力:: 
     Java言語のDateTimeFormatter形式の書式文字列を入力します。

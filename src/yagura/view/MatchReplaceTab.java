@@ -1,16 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * MatchReplace.java
  *
  * Created on 2010/11/27, 13:11:37
  */
 package yagura.view;
 
-import burp.BurpExtender;
 import extend.model.base.CustomListModel;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;

@@ -145,7 +145,7 @@
                 <Property name="text" type="java.lang.String" value="history log is included(Proxy Log only)"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkHistoryLogIncludeStateChanged"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkHistoryLogIncludeActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkToolLog">
@@ -153,7 +153,7 @@
                 <Property name="text" type="java.lang.String" value="ToolLog:(proxy, spider, scanner, intruder, repeater tool)"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkToolLogStateChanged"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkToolLogActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkProxyLog">
@@ -161,7 +161,7 @@
                 <Property name="text" type="java.lang.String" value="ProxyLog(proxy history modifyed log)"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkProxyLogStateChanged"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkProxyLogActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblFileUnit">
@@ -175,7 +175,7 @@
                 <Property name="text" type="java.lang.String" value="0"/>
               </Properties>
               <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtFileLimitSizeKeyPressed"/>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtFileLimitSizeFocusLost"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblToolTip">
@@ -202,6 +202,9 @@
               <Properties>
                 <Property name="editable" type="boolean" value="false"/>
               </Properties>
+              <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtLogDirFocusLost"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblLogDir2">
               <Properties>
@@ -228,7 +231,7 @@
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
-                <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtExludeFilterExtensionKeyPressed"/>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtExludeFilterExtensionFocusLost"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkExludeFilter">
@@ -236,7 +239,6 @@
                 <Property name="text" type="java.lang.String" value="Exlude Filter Extension"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkExludeFilterStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkExludeFilterActionPerformed"/>
               </Events>
             </Component>

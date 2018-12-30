@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import java.util.ArrayList;
@@ -14,7 +10,6 @@ import java.util.List;
  */
 public class MatchAlertProperty {
     private boolean selectedMatchAlert = false;
-    private final List<MatchAlertItem> matchAlertItemList = new ArrayList<MatchAlertItem>();
     private boolean matchAlertEnable = false;
 
     public boolean isSelectedMatchAlert() {
@@ -29,6 +24,12 @@ public class MatchAlertProperty {
         this.matchAlertEnable = enable;
     }
 
+    private final List<MatchAlertItem> matchAlertItemList = new ArrayList<MatchAlertItem>();
+    
+    public List<MatchAlertItem> getMatchAlertItemList() {
+        return Collections.unmodifiableList(this.matchAlertItemList); 
+    }
+    
     public void setMatchAlertItemList(List<MatchAlertItem> list) {
         boolean find = false;
         this.matchAlertItemList.clear();
@@ -42,8 +43,9 @@ public class MatchAlertProperty {
         this.selectedMatchAlert = find;
     }
 
-    public List<MatchAlertItem> getMatchAlertItemList() {
-        return Collections.unmodifiableList(this.matchAlertItemList);
+    public void setProperty(MatchAlertProperty property) {
+        this.setMatchAlertEnable(property.isMatchAlertEnable());
+        this.setMatchAlertItemList(property.getMatchAlertItemList());
     }
     
 }

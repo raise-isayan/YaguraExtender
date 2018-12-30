@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
 import extend.model.base.CustomTableModel;
@@ -14,7 +9,7 @@ import extend.view.model.VerticalFlowLayout;
 import java.awt.BorderLayout;
 import yagura.external.CertUtil;
 import yagura.external.TransUtil;
-import yagura.model.EncodingProperty;
+import yagura.model.UniversalViewProperty;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1434,7 +1429,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         this.txtLengthNum.setDocument(new SwingUtil.IntegerDocument());
         this.txtCountNum.setDocument(new SwingUtil.IntegerDocument());
-        this.setEncodingList(EncodingProperty.getDefaultEncodingList(), "Shift_JIS");
+        this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), "Shift_JIS");
 
         this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
 

@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
-import extend.util.Util;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -34,7 +26,7 @@ public class MatchReplaceGroup {
         this.replaceList.clear();
         this.replaceList.addAll(replaceList);
     }
-        
+
     private boolean inScopeOnly = false;
 
     /**
@@ -50,5 +42,5 @@ public class MatchReplaceGroup {
     public void setInScopeOnly(boolean inScopeOnly) {
         this.inScopeOnly = inScopeOnly;
     }
-    
+
 }

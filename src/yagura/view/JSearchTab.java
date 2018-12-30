@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
 import burp.BurpExtender;
@@ -20,9 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -33,7 +26,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JTable;
-import javax.swing.RowFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
@@ -296,7 +288,7 @@ public class JSearchTab extends javax.swing.JPanel {
 
         tableResult.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Data", "#", "host", "method", "URL", "status", "length", "comment"
@@ -759,16 +751,9 @@ public class JSearchTab extends javax.swing.JPanel {
         this.tableResult.getSelectionModel().clearSelection();
         DefaultTableModel model = (DefaultTableModel) this.tableResult.getModel();
         TableRowSorter<DefaultTableModel> sorter = new ResultFilterPopup.PropertyRowSorter<DefaultTableModel>(model);
-        sorter.setRowFilter(RowFilter.andFilter(getFilters(filterProp)));
         sorter.setRowFilter(new ResultFilterPopup.PropertyRowFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
         firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
-    }
-
-    public List<RowFilter<Object, Object>> getFilters(FilterProperty filterProp) {
-        List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();
-        filters.add(new ResultFilterPopup.PropertyRowFilter(filterProp));
-        return filters;
     }
 
     public void setProperty(JSearchProperty searchProp) {

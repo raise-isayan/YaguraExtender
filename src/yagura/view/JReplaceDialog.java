@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * ReplaceDialog.java
  *
  * Created on 2010/11/09, 22:22:50

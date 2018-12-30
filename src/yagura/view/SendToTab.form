@@ -50,7 +50,6 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="scrollSendTo" pref="479" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" alignment="0" groupAlignment="0" attributes="0">
                                       <Component id="btnSendToEdit" alignment="1" min="-2" pref="83" max="-2" attributes="3"/>

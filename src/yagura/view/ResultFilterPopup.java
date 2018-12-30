@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * ResultFilterPopup.java
  *
  * Created on 2010/08/07, 17:39:47

@@ -1,68 +1,180 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 /**
  *
- * @author isayan
+ * @author raise.isayan
  */
-public interface OptionProperty {
-    public final static String LOAD_CONFIG_PROPERTY = "LoadConfigProperty";
-    public final static String ENCODING_PROPERTY = "EncodingProperty";
-    public final static String MATCHREPLACE_PROPERTY = "MatchReplaceProperty";
-    public final static String MATCHALERT_PROPERTY = "MatchAlertProperty";
-    public final static String AUTO_RESPONDER_PROPERTY = "AutoResponderProperty";
-    public final static String SENDTO_PROPERTY = "SendToProperty";
-    public final static String LOGGING_PROPERTY = "LoggingProperty";
-    public final static String JSEARCH_FILTER_PROPERTY = "JSearchFilterProperty";
-    public final static String JTRANS_CODER_PROPERTY = "JTransCoderProperty";
-    public final static String VERSION_PROPERTY = "VersionProperty";
+public class OptionProperty implements IOptionProperty {
 
-    // Encoding
-    public EncodingProperty getEncodingProperty();
-
-    public void setEncodingProperty(EncodingProperty encodingProperty);
-
-    // MatchReplace
-    public void setMatchReplaceProperty(MatchReplaceProperty matchReplaceProperty);
-
-    public MatchReplaceProperty getMatchReplaceProperty();
-
-    // MatchAlert
-    public MatchAlertProperty getMatchAlertProperty();
+    /**
+     * ***********************************************************************
+     * Encoding
+     * ***********************************************************************
+     */
+    private final UniversalViewProperty encodingProperty = new UniversalViewProperty();
     
-    public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty);
+    @Override
+    public UniversalViewProperty getEncodingProperty() {
+        return this.encodingProperty;
+    }
 
-    // AutoResponder
-    public AutoResponderProperty getAutoResponderProperty();
+    @Override
+    public void setEncodingProperty(UniversalViewProperty encodingProperty) {
+        this.encodingProperty.setProperty(encodingProperty);
+    }
 
-    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty);
+    /**
+     * ***********************************************************************
+     * MatchReplace
+     * ***********************************************************************
+     */
+    private final MatchReplaceProperty matchReplaceProperty = new MatchReplaceProperty();
+
+    @Override
+    public MatchReplaceProperty getMatchReplaceProperty() {
+        return this.matchReplaceProperty;
+    }
     
-    // SendTo
-    public void setSendToProperty(SendToProperty sendToProperty);
+    @Override
+    public void setMatchReplaceProperty(MatchReplaceProperty matchReplaceProperty) {
+        this.matchReplaceProperty.setProperty(matchReplaceProperty);
+    }
 
-    public SendToProperty getSendToProperty();
-        
-    // Logging
-    public void setLoggingProperty(LoggingProperty loggingProperty);
-
-    public LoggingProperty getLoggingProperty();
-
-    // JSearch
-    public JSearchProperty getJSearchProperty();
-
-    public void setJSearchProperty(JSearchProperty filter);
-
-    // JTranscoder
-    public JTransCoderProperty getJTransCoderProperty();
-
-    public void setJTransCoderProperty(JTransCoderProperty transcoder);
+    /**
+     * ***********************************************************************
+     * MatchAlert
+     * ***********************************************************************
+     */
+    private final MatchAlertProperty matchAlertProperty = new MatchAlertProperty();
     
-    // all
-    public boolean getDebugMode();
+    @Override
+    public MatchAlertProperty getMatchAlertProperty() {
+        return this.matchAlertProperty;
+    }
 
-    public void setDebugMode(boolean debugMode);
+    @Override
+    public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty) {
+        this.matchAlertProperty.setProperty(matchAlertProperty);
+    }
+
+    /**
+     * ***********************************************************************
+     * AutoResponder
+     * ***********************************************************************
+     */
+    private final AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
+    
+    @Override
+    public AutoResponderProperty getAutoResponderProperty() {
+        return this.autoResponderProperty;
+    }
+
+    @Override
+    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
+        this.autoResponderProperty.setProperty(autoResponderProperty);
+    }
+
+    /**
+     * ***********************************************************************
+     * SendTo
+     * ***********************************************************************
+     */
+    private final SendToProperty sendToProperty = new SendToProperty();
+
+    @Override
+    public SendToProperty getSendToProperty() {
+        return this.sendToProperty;
+    }
+    
+    @Override
+    public void setSendToProperty(SendToProperty sendtoProperty) {
+        this.sendToProperty.setProperty(sendtoProperty);
+    }
+
+    /**
+     * ***********************************************************************
+     * Logging
+     * ***********************************************************************
+     */
+    private final LoggingProperty logProperty = new LoggingProperty();
+
+    @Override
+    public LoggingProperty getLoggingProperty() {
+        return this.logProperty;
+    }
+    
+    @Override
+    public void setLoggingProperty(LoggingProperty loggingProperty) {
+        this.logProperty.setProperty(loggingProperty);
+    }
+
+    /**
+     * ***********************************************************************
+     * JSearch
+     * ***********************************************************************
+     */
+    private final JSearchProperty searchProperty = new JSearchProperty();
+    
+    @Override
+    public JSearchProperty getJSearchProperty() {
+        return this.searchProperty;
+    }
+
+    @Override
+    public void setJSearchProperty(JSearchProperty searchProperty) {
+        this.searchProperty.setProperty(searchProperty);
+    }
+
+    /**
+     * ***********************************************************************
+     * JTransCoder
+     * ***********************************************************************
+     */
+    private final JTransCoderProperty transcoderProperty = new JTransCoderProperty();
+    
+    @Override
+    public JTransCoderProperty getJTransCoderProperty() {
+        return this.transcoderProperty;
+    }
+
+    @Override
+    public void setJTransCoderProperty(JTransCoderProperty transcoderProperty) {
+        this.transcoderProperty.setProperty(transcoderProperty);
+    }
+    
+    /**
+     * debugModeの取得
+     */
+    private boolean debugMode = false;
+
+    @Override
+    public boolean getDebugMode() {
+        return this.debugMode;
+    }
+
+    @Override
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+    }
+
+    /**
+     * ***********************************************************************
+     * OptionProperty
+     * ***********************************************************************
+     */
+    /**
+     * @param property
+     */
+    public void setProperty(IOptionProperty property) {
+        this.setEncodingProperty(property.getEncodingProperty());
+        this.setMatchReplaceProperty(property.getMatchReplaceProperty());
+        this.setAutoResponderProperty(property.getAutoResponderProperty());
+        this.setSendToProperty(property.getSendToProperty());
+        this.setLoggingProperty(property.getLoggingProperty());
+        this.setMatchAlertProperty(property.getMatchAlertProperty());
+        this.setJSearchProperty(property.getJSearchProperty());
+        this.setDebugMode(property.getDebugMode());
+        this.setDebugMode(getDebugMode());
+    }
     
 }

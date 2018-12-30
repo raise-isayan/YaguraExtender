@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
  /*
  * VersionTab.java
  *
@@ -12,7 +7,6 @@ package yagura.view;
 
 import burp.BurpExtender;
 import yagura.Config;
-import yagura.model.OptionProperty;
 import yagura.Version;
 import extend.view.model.VerticalFlowLayout;
 import java.io.File;
@@ -22,6 +16,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import yagura.model.IOptionProperty;
 
 /**
  *

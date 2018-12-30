@@ -2,17 +2,15 @@
 package yagura;
 
 import burp.BurpExtender;
-import yagura.model.EncodingProperty;
+import yagura.model.UniversalViewProperty;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
 import extend.view.base.MatchItem;
-import yagura.model.OptionProperty;
 import extend.util.IniProp;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -25,6 +23,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import yagura.model.IOptionProperty;
+import yagura.model.OptionProperty;
 
 /**
  *
@@ -162,7 +162,7 @@ public class ConfigTest {
 //        }        
 //    }
 
-    private final OptionProperty optionProperty = new BurpExtender();
+    private final IOptionProperty optionProperty = new OptionProperty();
     
     /**
      * Test of saveToXML method, of class Config.
@@ -208,10 +208,10 @@ public class ConfigTest {
     @Test
     public void testEncoding() {
         IniProp prop = new IniProp();
-        EncodingProperty encProp = new EncodingProperty();
+        UniversalViewProperty encProp = new UniversalViewProperty();
         //encProp.setClipbordAutoDecode(prop.readEntryBool("encoding", "clipbordAutoDecode", false));
         encProp.setClipbordAutoDecode(false);
-        List<String> encList = prop.readEntryList("encoding", "list", EncodingProperty.getDefaultEncodingList());
+        List<String> encList = prop.readEntryList("encoding", "list", UniversalViewProperty.getDefaultEncodingList());
         encProp.setEncodingList(encList);
         for (String l : encList) {
             System.out.println(l);

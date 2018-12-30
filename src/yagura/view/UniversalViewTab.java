@@ -1,19 +1,15 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * EncodingTab.java
+ * UniversalViewTab.java
  *
  * Created on 2010/11/27, 12:50:08
  */
 package yagura.view;
 
 import extend.model.base.CustomListModel;
-import yagura.model.EncodingProperty;
+import yagura.model.UniversalViewProperty;
 import extend.util.Util;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.ButtonGroup;
@@ -29,12 +25,12 @@ import javax.swing.event.ListDataListener;
  *
  * @author isayan
  */
-public class EncodingTab extends javax.swing.JPanel {
+public class UniversalViewTab extends javax.swing.JPanel {
 
     /**
      * Creates new form EncodingTab
      */
-    public EncodingTab() {
+    public UniversalViewTab() {
         initComponents();
         customizeComponents();
     }
@@ -66,14 +62,22 @@ public class EncodingTab extends javax.swing.JPanel {
         lblSelectEncode = new javax.swing.JLabel();
         cmbDefaultLangEncoding = new javax.swing.JComboBox<>();
         btnReset = new javax.swing.JButton();
+        tabMessageView = new javax.swing.JPanel();
+        chkUniversalParams = new javax.swing.JCheckBox();
+        chkUniversalRaw = new javax.swing.JCheckBox();
+        chkJSON = new javax.swing.JCheckBox();
+        chkHTMLComment = new javax.swing.JCheckBox();
+        chkGeneratePoC = new javax.swing.JCheckBox();
 
         setName("Encoding"); // NOI18N
         setPreferredSize(new java.awt.Dimension(600, 450));
         setRequestFocusEnabled(false);
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         tabEncoding.setPreferredSize(new java.awt.Dimension(550, 300));
         tabEncoding.setLayout(new java.awt.BorderLayout());
+
+        pnlCenter.setBorder(javax.swing.BorderFactory.createTitledBorder("Encoding"));
 
         lblSelect.setText("Select:");
 
@@ -176,58 +180,132 @@ public class EncodingTab extends javax.swing.JPanel {
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(lblTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(466, Short.MAX_VALUE)))
+                    .addContainerGap(482, Short.MAX_VALUE)))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(lblSelect)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addGap(104, 104, 104)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(scrollTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                            .addComponent(scrollSelect)))
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(pop)
+                        .addGap(36, 36, 36)
+                        .addComponent(btnEncDownArraw))
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
                         .addComponent(btnEncRightArraw)
                         .addGap(35, 35, 35)
-                        .addComponent(btnEncLerftArraw))
-                    .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlCenterLayout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(lblSelect)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(scrollTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                                    .addComponent(scrollSelect)))
-                            .addGroup(pnlCenterLayout.createSequentialGroup()
-                                .addGap(104, 104, 104)
-                                .addComponent(pop)
-                                .addGap(36, 36, 36)
-                                .addComponent(btnEncDownArraw)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkClipboardAutoDecode)
-                            .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnReset)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblSelectEncode, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSelectDown))))
+                        .addComponent(btnEncLerftArraw)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkClipboardAutoDecode)
+                    .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnReset)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSelectEncode, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSelectDown))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(lblTarget)
-                    .addContainerGap(299, Short.MAX_VALUE)))
+                    .addContainerGap(357, Short.MAX_VALUE)))
         );
 
         tabEncoding.add(pnlCenter, java.awt.BorderLayout.CENTER);
 
-        add(tabEncoding, java.awt.BorderLayout.CENTER);
+        add(tabEncoding);
+
+        tabMessageView.setBorder(javax.swing.BorderFactory.createTitledBorder("MessageView"));
+
+        chkUniversalParams.setText("Universal Params");
+        chkUniversalParams.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkUniversalParamsActionPerformed(evt);
+            }
+        });
+
+        chkUniversalRaw.setText("Universal Raw");
+        chkUniversalRaw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkUniversalRawActionPerformed(evt);
+            }
+        });
+
+        chkJSON.setSelected(true);
+        chkJSON.setText("JSON");
+        chkJSON.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkJSONActionPerformed(evt);
+            }
+        });
+
+        chkHTMLComment.setSelected(true);
+        chkHTMLComment.setText("HTML Comment");
+        chkHTMLComment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkHTMLCommentActionPerformed(evt);
+            }
+        });
+
+        chkGeneratePoC.setSelected(true);
+        chkGeneratePoC.setText("Generate PoC");
+        chkGeneratePoC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkGeneratePoCActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout tabMessageViewLayout = new javax.swing.GroupLayout(tabMessageView);
+        tabMessageView.setLayout(tabMessageViewLayout);
+        tabMessageViewLayout.setHorizontalGroup(
+            tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabMessageViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkJSON)
+                    .addGroup(tabMessageViewLayout.createSequentialGroup()
+                        .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkGeneratePoC)
+                            .addComponent(chkHTMLComment))
+                        .addGap(34, 34, 34)
+                        .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkUniversalParams)
+                            .addComponent(chkUniversalRaw))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        tabMessageViewLayout.setVerticalGroup(
+            tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabMessageViewLayout.createSequentialGroup()
+                .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkGeneratePoC)
+                    .addComponent(chkUniversalRaw))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkHTMLComment)
+                    .addComponent(chkUniversalParams))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkJSON)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        add(tabMessageView);
     }// </editor-fold>//GEN-END:initComponents
     private final CustomListModel modelTarget = new CustomListModel();
     private final CustomListModel modelSelect = new CustomListModel();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
+        
         // Encoding Tab
         this.listTarget.setModel(this.modelTarget);
         for (String item : Util.getAvailableEncodingList()) {
@@ -259,31 +337,31 @@ public class EncodingTab extends javax.swing.JPanel {
 
     private void btnEncRightArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncRightArrawActionPerformed
         this.moveItemList(this.listTarget, this.listSelect);
-        this.firePropertyChange(TabbetOption.ENCODING_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_btnEncRightArrawActionPerformed
 
     private void btnEncLerftArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncLerftArrawActionPerformed
         this.moveItemList(this.listSelect, this.listTarget);
-        this.firePropertyChange(TabbetOption.ENCODING_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_btnEncLerftArrawActionPerformed
 
     private void popActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popActionPerformed
         int index = this.modelSelect.moveUp(this.listSelect.getSelectedIndex());
         this.listSelect.setSelectedIndex(index);
-        this.firePropertyChange(TabbetOption.ENCODING_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_popActionPerformed
 
     private void btnEncDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncDownArrawActionPerformed
         int index = this.modelSelect.moveDown(this.listSelect.getSelectedIndex());
         this.listSelect.setSelectedIndex(index);
-        this.firePropertyChange(TabbetOption.ENCODING_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_btnEncDownArrawActionPerformed
 
     private void chkClipboardAutoDecodeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkClipboardAutoDecodeStateChanged
     }//GEN-LAST:event_chkClipboardAutoDecodeStateChanged
 
     private void chkClipboardAutoDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkClipboardAutoDecodeActionPerformed
-        this.firePropertyChange(TabbetOption.ENCODING_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkClipboardAutoDecodeActionPerformed
 
     private void btnSelectDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectDownActionPerformed
@@ -293,19 +371,39 @@ public class EncodingTab extends javax.swing.JPanel {
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         String encoding = (String)this.cmbDefaultLangEncoding.getSelectedItem();
         if (encoding.equals("Japanese")) {
-            setEncodingList(EncodingProperty.getDefaultEncodingList(Locale.JAPANESE));
+            setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE));
         }
         else if (encoding.equals("Chinese")) {
-            setEncodingList(EncodingProperty.getDefaultEncodingList(Locale.CHINESE));
+            setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.CHINESE));
         }
         else if (encoding.equals("Korean")) {
-            setEncodingList(EncodingProperty.getDefaultEncodingList(Locale.KOREAN));
+            setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.KOREAN));
         }
         else if (encoding.equals("Other")) {
-            setEncodingList(EncodingProperty.getDefaultEncodingList(Locale.US));       
+            setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.US));       
         }
-        this.firePropertyChange(TabbetOption.ENCODING_PROPERTY, null, this.getEncodingProperty());        
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());        
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void chkUniversalParamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniversalParamsActionPerformed
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
+    }//GEN-LAST:event_chkUniversalParamsActionPerformed
+
+    private void chkUniversalRawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniversalRawActionPerformed
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
+    }//GEN-LAST:event_chkUniversalRawActionPerformed
+
+    private void chkJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJSONActionPerformed
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
+    }//GEN-LAST:event_chkJSONActionPerformed
+
+    private void chkHTMLCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHTMLCommentActionPerformed
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
+    }//GEN-LAST:event_chkHTMLCommentActionPerformed
+
+    private void chkGeneratePoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGeneratePoCActionPerformed
+        this.firePropertyChange(TabbetOption.UNIVERSAL_VIEW_PROPERTY, null, this.getEncodingProperty());
+    }//GEN-LAST:event_chkGeneratePoCActionPerformed
 
     private void renewPopup() {    
         String encodeList[] = {"PlatformDefault", "AutoRecognise", "RawBytes"};
@@ -341,6 +439,11 @@ public class EncodingTab extends javax.swing.JPanel {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSelectDown;
     private javax.swing.JCheckBox chkClipboardAutoDecode;
+    private javax.swing.JCheckBox chkGeneratePoC;
+    private javax.swing.JCheckBox chkHTMLComment;
+    private javax.swing.JCheckBox chkJSON;
+    private javax.swing.JCheckBox chkUniversalParams;
+    private javax.swing.JCheckBox chkUniversalRaw;
     private javax.swing.JComboBox<String> cmbDefaultLangEncoding;
     private javax.swing.JLabel lblSelect;
     private javax.swing.JLabel lblSelectEncode;
@@ -353,6 +456,7 @@ public class EncodingTab extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrollSelect;
     private javax.swing.JScrollPane scrollTarget;
     private javax.swing.JPanel tabEncoding;
+    private javax.swing.JPanel tabMessageView;
     // End of variables declaration//GEN-END:variables
 
     public void setClipboardAutoDecode(boolean value) {
@@ -384,15 +488,17 @@ public class EncodingTab extends javax.swing.JPanel {
         }
     }
 
-    public void setEncodingProperty(EncodingProperty encProperty) {
+    public void setEncodingProperty(UniversalViewProperty encProperty) {
         this.setClipboardAutoDecode(encProperty.getClipbordAutoDecode());
         this.setEncodingList(encProperty.getEncodingList());
+        this.setMessageView(encProperty.getMessageView());
     }
 
-    public EncodingProperty getEncodingProperty() {
-        EncodingProperty property = new EncodingProperty();
+    public UniversalViewProperty getEncodingProperty() {
+        UniversalViewProperty property = new UniversalViewProperty();
         property.setClipbordAutoDecode(this.getClipboardAutoDecode());
         property.setEncodingList(this.getEncodingList());
+        property.setMessageView(this.getMessageView());
         return property;
     }
 
@@ -407,4 +513,23 @@ public class EncodingTab extends javax.swing.JPanel {
             modelSrc.removeElementAt(indexs[index-1]);
         }
     }
+
+    private void setMessageView(EnumSet<UniversalViewProperty.UniversalView> view) {
+        this.chkGeneratePoC.setSelected(view.contains(UniversalViewProperty.UniversalView.GENERATE_POC));
+        this.chkHTMLComment.setSelected(view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT));
+        this.chkJSON.setSelected(view.contains(UniversalViewProperty.UniversalView.JSON));
+        this.chkUniversalRaw.setSelected(view.contains(UniversalViewProperty.UniversalView.JRAW));
+        this.chkUniversalParams.setSelected(view.contains(UniversalViewProperty.UniversalView.JPARAM));
+    }
+    
+    private EnumSet<UniversalViewProperty.UniversalView> getMessageView() {
+        EnumSet<UniversalViewProperty.UniversalView> view = EnumSet.noneOf(UniversalViewProperty.UniversalView.class);
+        if (this.chkGeneratePoC.isSelected()) view.add(UniversalViewProperty.UniversalView.GENERATE_POC);
+        if (this.chkHTMLComment.isSelected()) view.add(UniversalViewProperty.UniversalView.HTML_COMMENT);
+        if (this.chkJSON.isSelected()) view.add(UniversalViewProperty.UniversalView.JSON);
+        if (this.chkUniversalRaw.isSelected()) view.add(UniversalViewProperty.UniversalView.JRAW);
+        if (this.chkUniversalParams.isSelected()) view.add(UniversalViewProperty.UniversalView.JPARAM);
+        return view;
+    }
+    
 }

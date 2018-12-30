@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
 import yagura.model.AutoResponderProperty;
@@ -168,14 +163,14 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
         this.chkEnableRule.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getAutoResponderProperty());
+                firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getProperty());
             }
         } );        
         this.btnAutoResponderEdit.setEnabled(this.tableAutoResponder.getSelectedRowCount() > 0);
         this.modelAutoResponder.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getAutoResponderProperty());
+                firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getProperty());
             }
         });
 
@@ -230,7 +225,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
          
     }
 
-    public AutoResponderProperty getAutoResponderProperty() {
+    public AutoResponderProperty getProperty() {
         AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
         autoResponderProperty.setRedirectPort((int) this.spnListenPort.getValue());
         autoResponderProperty.setAutoResponderEnable(this.chkEnableRule.isSelected());
@@ -238,7 +233,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
         return autoResponderProperty;
     }
     
-    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
+    public void setProperty(AutoResponderProperty autoResponderProperty) {
         this.chkEnableRule.setSelected(autoResponderProperty.getAutoResponderEnable());
         this.spnListenPort.setValue(autoResponderProperty.getRedirectPort());
         this.setAutoResponderItemList(autoResponderProperty.getAutoResponderItemList());
@@ -258,7 +253,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
     }//GEN-LAST:event_btnAutoResponderEditActionPerformed
 
     private void spnListenPortStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnListenPortStateChanged
-        this.firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getAutoResponderProperty());
+        this.firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getProperty());
     }//GEN-LAST:event_spnListenPortStateChanged
 
     private AutoResponderServer.ThreadWrap thredServer = null;

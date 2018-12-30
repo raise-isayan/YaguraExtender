@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * LoggingTab.java
  *
  * Created on 2010/11/27, 13:30:59
@@ -64,23 +59,23 @@ public class LoggingTab extends javax.swing.JPanel {
         tabLogging.setLayout(new java.awt.BorderLayout());
 
         chkHistoryLogInclude.setText("history log is included(Proxy Log only)");
-        chkHistoryLogInclude.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkHistoryLogIncludeStateChanged(evt);
+        chkHistoryLogInclude.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkHistoryLogIncludeActionPerformed(evt);
             }
         });
 
         chkToolLog.setText("ToolLog:(proxy, spider, scanner, intruder, repeater tool)");
-        chkToolLog.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkToolLogStateChanged(evt);
+        chkToolLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkToolLogActionPerformed(evt);
             }
         });
 
         chkProxyLog.setText("ProxyLog(proxy history modifyed log)");
-        chkProxyLog.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkProxyLogStateChanged(evt);
+        chkProxyLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkProxyLogActionPerformed(evt);
             }
         });
 
@@ -88,9 +83,9 @@ public class LoggingTab extends javax.swing.JPanel {
 
         txtFileLimitSize.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtFileLimitSize.setText("0");
-        txtFileLimitSize.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtFileLimitSizeKeyPressed(evt);
+        txtFileLimitSize.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtFileLimitSizeFocusLost(evt);
             }
         });
 
@@ -106,6 +101,11 @@ public class LoggingTab extends javax.swing.JPanel {
         });
 
         txtLogDir.setEditable(false);
+        txtLogDir.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtLogDirFocusLost(evt);
+            }
+        });
 
         lblLogDir2.setText("logging target:");
 
@@ -125,18 +125,13 @@ public class LoggingTab extends javax.swing.JPanel {
 
         txtExludeFilterExtension.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtExludeFilterExtension.setEnabled(false);
-        txtExludeFilterExtension.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtExludeFilterExtensionKeyPressed(evt);
+        txtExludeFilterExtension.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtExludeFilterExtensionFocusLost(evt);
             }
         });
 
         chkExludeFilter.setText("Exlude Filter Extension");
-        chkExludeFilter.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkExludeFilterStateChanged(evt);
-            }
-        });
         chkExludeFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkExludeFilterActionPerformed(evt);
@@ -227,18 +222,6 @@ public class LoggingTab extends javax.swing.JPanel {
         add(tabLogging, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void chkExludeFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExludeFilterActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkExludeFilterActionPerformed
-
-    private void chkExludeFilterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExludeFilterStateChanged
-        this.txtExludeFilterExtension.setEnabled(this.chkExludeFilter.isSelected());
-    }//GEN-LAST:event_chkExludeFilterStateChanged
-
-    private void txtExludeFilterExtensionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtExludeFilterExtensionKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtExludeFilterExtensionKeyPressed
-
     private void chkAutoLoggingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAutoLoggingActionPerformed
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkAutoLoggingActionPerformed
@@ -264,21 +247,33 @@ public class LoggingTab extends javax.swing.JPanel {
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_btnSelectImageActionPerformed
 
-    private void txtFileLimitSizeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFileLimitSizeKeyPressed
+    private void txtExludeFilterExtensionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExludeFilterExtensionFocusLost
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_txtFileLimitSizeKeyPressed
+    }//GEN-LAST:event_txtExludeFilterExtensionFocusLost
 
-    private void chkProxyLogStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkProxyLogStateChanged
+    private void txtLogDirFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLogDirFocusLost
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_chkProxyLogStateChanged
+    }//GEN-LAST:event_txtLogDirFocusLost
 
-    private void chkToolLogStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkToolLogStateChanged
+    private void txtFileLimitSizeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFileLimitSizeFocusLost
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_chkToolLogStateChanged
+    }//GEN-LAST:event_txtFileLimitSizeFocusLost
 
-    private void chkHistoryLogIncludeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHistoryLogIncludeStateChanged
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_chkHistoryLogIncludeStateChanged
+    private void chkHistoryLogIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHistoryLogIncludeActionPerformed
+       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkHistoryLogIncludeActionPerformed
+
+    private void chkExludeFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExludeFilterActionPerformed
+       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkExludeFilterActionPerformed
+
+    private void chkProxyLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkProxyLogActionPerformed
+       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkProxyLogActionPerformed
+
+    private void chkToolLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkToolLogActionPerformed
+       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkToolLogActionPerformed
     protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void customizeComponents() {

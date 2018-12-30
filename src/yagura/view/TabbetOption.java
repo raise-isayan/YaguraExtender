@@ -1,32 +1,30 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
 import burp.IExtensionStateListener;
 import burp.ITab;
-import yagura.model.AutoResponderProperty;
-import yagura.model.EncodingProperty;
-import yagura.model.LoggingProperty;
-import yagura.model.MatchAlertProperty;
-import yagura.model.MatchReplaceProperty;
-import yagura.model.OptionProperty;
-import yagura.model.SendToProperty;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JTabbedPane;
+import java.util.Timer;
+import java.util.TimerTask;
+import yagura.model.AutoResponderProperty;
+import yagura.model.UniversalViewProperty;
+import yagura.model.LoggingProperty;
+import yagura.model.MatchAlertProperty;
+import yagura.model.MatchReplaceProperty;
+import yagura.model.SendToProperty;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
+import yagura.model.IOptionProperty;
 
 /**
  *
  * @author isayan
  */
-public class TabbetOption extends javax.swing.JTabbedPane implements OptionProperty, ITab, PropertyChangeListener, IExtensionStateListener {
+public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProperty, ITab, PropertyChangeListener, IExtensionStateListener {
 
     public TabbetOption() {
         super();
@@ -41,7 +39,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         super(tabPlacement, tabLayoutPolicy);
     }
 
-    private final EncodingTab tabEncoding = new EncodingTab();
+    private final UniversalViewTab tabUniversalView = new UniversalViewTab();
     private final MatchReplaceTab tabMatchReplace = new MatchReplaceTab();
     private final MatchAlertTab tabMatchAlert = new MatchAlertTab();
     private final AutoResponderTab tabAutoResponder = new AutoResponderTab();
@@ -53,7 +51,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.addTab("Encoding", this.tabEncoding);
+        this.addTab("UniversalView", this.tabUniversalView);
         this.addTab("MatchReplace", this.tabMatchReplace);
         this.addTab("MatchAlert", this.tabMatchAlert);
         this.addTab("AutoResponder", this.tabAutoResponder);
@@ -63,7 +61,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         this.addTab("JTransCoder", this.tabJTransCoder);
         this.addTab("Version", this.tabVersion);
 
-        this.tabEncoding.addPropertyChangeListener(ENCODING_PROPERTY, this);
+        this.tabUniversalView.addPropertyChangeListener(UNIVERSAL_VIEW_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MATCHREPLACE_PROPERTY, this);
         this.tabMatchAlert.addPropertyChangeListener(MATCHALERT_PROPERTY, this);
         this.tabAutoResponder.addPropertyChangeListener(AUTO_RESPONDER_PROPERTY, this);
@@ -100,7 +98,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         return this;
     }
 
-    public void setProperty(OptionProperty property) {
+    public void setProperty(IOptionProperty property) {
         this.setEncodingProperty(property.getEncodingProperty());
         this.setLoggingProperty(property.getLoggingProperty());
         this.setMatchReplaceProperty(property.getMatchReplaceProperty());
@@ -114,18 +112,18 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         this.setJTransCoderProperty(property.getEncodingProperty());
     }
 
-    public OptionProperty getProperty() {
+    public IOptionProperty getProperty() {
         return this;
     }
 
     @Override
-    public void setEncodingProperty(EncodingProperty encProperty) {
-        this.tabEncoding.setEncodingProperty(encProperty);
+    public void setEncodingProperty(UniversalViewProperty encProperty) {
+        this.tabUniversalView.setEncodingProperty(encProperty);
     }
 
     @Override
-    public EncodingProperty getEncodingProperty() {
-        return this.tabEncoding.getEncodingProperty();
+    public UniversalViewProperty getEncodingProperty() {
+        return this.tabUniversalView.getEncodingProperty();
     }
 
     @Override
@@ -178,12 +176,12 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
 
     @Override
     public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
-        this.tabAutoResponder.setAutoResponderProperty(autoResponderProperty);
+        this.tabAutoResponder.setProperty(autoResponderProperty);
     }
 
     @Override
     public AutoResponderProperty getAutoResponderProperty() {
-        return this.tabAutoResponder.getAutoResponderProperty();
+        return this.tabAutoResponder.getProperty();
     }
 
     @Override
@@ -196,7 +194,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         this.tabJSearch.setProperty(jsearch);
     }
 
-    public void setJTransCoderProperty(EncodingProperty encodingProperty) {
+    public void setJTransCoderProperty(UniversalViewProperty encodingProperty) {
         this.tabJTransCoder.setEncodingList(encodingProperty.getEncodingList(), "");
     }
 
@@ -209,7 +207,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
     public void setJTransCoderProperty(JTransCoderProperty transcoder) {
         this.tabJTransCoder.setProperty(transcoder);
     }
-
+    
     @Override
     public boolean getDebugMode() {
         return this.tabVersion.getDebugMode();
@@ -230,12 +228,20 @@ public class TabbetOption extends javax.swing.JTabbedPane implements OptionPrope
         if (container instanceof JTabbedPane) {
             JTabbedPane tabbet = (JTabbedPane) container;
             int index = tabbet.indexOfTab(this.getTabCaption());
-            //BurpExtender.errPrintln("\tname u r:" + index);        
             if (index > -1) {
-                tabbet.setForegroundAt(index, Color.RED);
+                tabbet.setBackgroundAt(index, Color.RED);
             }
-            tabbet.repaint();
-            tabbet.updateUI();
+            // 解除
+            final Timer timer = new Timer(false);
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    tabbet.setForegroundAt(index, null);
+                    tabbet.setBackgroundAt(index, null);
+                    timer.cancel();
+                }
+            };
+            timer.schedule(task, 5000);
         }
         this.tabJTransCoder.sendToJTransCoder(text);
     }

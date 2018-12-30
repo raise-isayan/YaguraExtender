@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import burp.BurpExtender;
 import burp.IHttpRequestResponse;
 import burp.IHttpService;
+import burp.IMessageEditorController;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
 import extend.util.BurpWrap;
@@ -274,5 +271,26 @@ public class HttpMessageItem implements IHttpRequestResponse {
             Logger.getLogger(HttpMessageItem.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public IMessageEditorController getController() {
+        return new IMessageEditorController() {
+            @Override
+            public IHttpService getHttpService() {
+                return HttpMessageItem.this.getHttpService();
+            }
+
+            @Override
+            public byte[] getRequest() {
+                return HttpMessageItem.this.getRequest();
+            }
+
+            @Override
+            public byte[] getResponse() {
+                return HttpMessageItem.this.getResponse();
+            }
+        
+        };
+    }
+
     
 }

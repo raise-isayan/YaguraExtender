@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
 import burp.BurpExtender;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
-import burp.IMessageEditorTabFactory;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
 import extend.view.base.HttpMessage;
@@ -16,7 +10,6 @@ import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
 import extend.util.BurpWrap;
 import yagura.external.FormatUtil;
-import yagura.external.TransUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;

@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * MatchAlertTab.java
  *
  * Created on 2010/11/27, 13:26:35

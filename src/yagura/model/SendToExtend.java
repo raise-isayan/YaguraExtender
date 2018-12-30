@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import burp.*;
@@ -62,7 +58,8 @@ public class SendToExtend extends SendToMenuItem {
             break;
         }
         case MESSAGE_INFO_COPY: {
-            BurpExtender.getInstance().sendToMessageInfoCopy(this.contextMenu, messageInfo);                                    
+//            BurpExtender.getInstance().sendToMessageInfoCopy(this.contextMenu, messageInfo);                                    
+            BurpExtender.getInstance().sendToTableInfoCopy(this.contextMenu, messageInfo);                                    
             break;
         }
         case ADD_HOST_TO_SCOPE: {

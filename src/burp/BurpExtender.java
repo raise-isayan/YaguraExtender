@@ -1,29 +1,30 @@
 package burp;
 
+import static burp.BurpExtenderImpl.getCallbacks;
 import yagura.Config;
 import yagura.model.AutoResponderItem;
-import yagura.model.EncodingProperty;
-import extend.view.base.HttpMessage;
-import yagura.model.LoggingProperty;
 import yagura.model.MatchAlertItem;
-import yagura.model.MatchAlertProperty;
-import extend.view.base.MatchItem;
 import yagura.model.MatchReplaceItem;
-import yagura.model.MatchReplaceProperty;
-import yagura.model.OptionProperty;
 import yagura.model.SendToMenu;
-import yagura.model.SendToProperty;
+import yagura.view.GeneratePoCTab;
+import yagura.view.HtmlCommetViewTab;
+import yagura.view.JSONViewTab;
+import yagura.view.TabbetOption;
+import yagura.model.MatchReplaceGroup;
+import yagura.signature.MarkIssue;
+import yagura.signature.MatchAlert;
+import yagura.signature.MatchAlertIssue;
+import yagura.model.OptionProperty;
+import extend.view.base.HttpMessage;
+import extend.view.base.MatchItem;
 import extend.util.BurpWrap;
 import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.Util;
 import extend.view.base.HttpResponse;
-import yagura.model.AutoResponderProperty;
-import yagura.view.GeneratePoCTab;
-import yagura.view.HtmlCommetViewTab;
-import yagura.view.JSONViewTab;
-import yagura.view.TabbetOption;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -36,6 +37,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,18 +47,19 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import yagura.model.JSearchProperty;
-import yagura.model.JTransCoderProperty;
-import yagura.model.MatchReplaceGroup;
-import yagura.signature.MarkIssue;
-import yagura.signature.MatchAlert;
-import yagura.signature.MatchAlertIssue;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
+import yagura.model.UniversalViewProperty;
+import yagura.view.ParamsViewTab;
+import yagura.view.RawViewTab;
 
 /**
  * @author isayan
  */
 public class BurpExtender extends BurpExtenderImpl
-        implements IHttpListener, IProxyListener, OptionProperty {
+        implements IHttpListener, IProxyListener {
+
+    private Class<? extends String> c;
 
     public BurpExtender() {
     }
@@ -65,8 +68,8 @@ public class BurpExtender extends BurpExtenderImpl
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-    //  JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
-    //  burp.StartBurp.main(args);
+        //  JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
+        //  burp.StartBurp.main(args);
     }
 
     /**
@@ -93,15 +96,35 @@ public class BurpExtender extends BurpExtenderImpl
             }
         }
     }
-    
+
     public static BurpExtender getInstance() {
         return BurpExtenderImpl.<BurpExtender>getInstance();
     }
-
+  
     private final TabbetOption tabbetOption = new TabbetOption();
+    
     private final HtmlCommetViewTab commentViewTab = new HtmlCommetViewTab();
     private final GeneratePoCTab generatePoCTab = new GeneratePoCTab();
 
+    private final RawViewTab requestRawTab = new RawViewTab(true);
+    private final RawViewTab responseRawTab = new RawViewTab(false);
+
+    private final ParamsViewTab requestParamsTab = new ParamsViewTab();
+
+    private final IMessageEditorTabFactory requestJSONTab = new IMessageEditorTabFactory() {
+        @Override
+        public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+            return new JSONViewTab(controller, editable, true);
+        }
+    };
+
+    private final IMessageEditorTabFactory responseJSONTab = new IMessageEditorTabFactory() {
+        @Override
+         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+             return new JSONViewTab(controller, editable, false);
+         }
+     };
+    
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
@@ -110,7 +133,7 @@ public class BurpExtender extends BurpExtenderImpl
             try {
                 String configXML = getCallbacks().loadExtensionSetting("configXML");
                 if (configXML != null) {
-                    Config.loadFromXml(ConvertUtil.decompressZlibBase64(configXML), this.getProperty());                
+                    Config.loadFromXml(ConvertUtil.decompressZlibBase64(configXML), this.option);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,43 +141,59 @@ public class BurpExtender extends BurpExtenderImpl
 
             try {
                 // 自動ログ作成時のみディレクトリ作成
-                if (this.getLoggingProperty().isAutoLogging()) {
-                    this.setLogDir(mkLogDir(this.getLoggingProperty().getBaseDir(), this.getLoggingProperty().getLogDirFormat()));
+                if (this.option.getLoggingProperty().isAutoLogging()) {
+                    this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
                 }
             } catch (IOException ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            setSendToMenu(new SendToMenu(cb, this.getSendToProperty()));
+
+            setSendToMenu(new SendToMenu(cb, this.option.getSendToProperty()));
             cb.registerHttpListener(this);
             cb.registerProxyListener(this);
             cb.addSuiteTab(this.tabbetOption);
-//            cb.registerIntruderPayloadGeneratorFactory(factory);
             cb.registerExtensionStateListener(this.tabbetOption);
             cb.registerContextMenuFactory(this.getSendToMenu());
-            this.tabbetOption.setProperty(this);
+            this.tabbetOption.setProperty(this.option);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
-           
-            cb.registerMessageEditorTabFactory(this.commentViewTab);
-            cb.registerMessageEditorTabFactory(new IMessageEditorTabFactory() {
-                @Override
-                public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-                   return new JSONViewTab(controller, editable, true);
-                }
-            });
-            cb.registerMessageEditorTabFactory(new IMessageEditorTabFactory() {
-                @Override
-                public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-                    return new JSONViewTab(controller, editable, false);
-                }
-            });
-            cb.registerMessageEditorTabFactory(this.generatePoCTab);
+            this.renewView();
             
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
+    public void renewView() {
+        IBurpExtenderCallbacks cb = getCallbacks();        
+        cb.removeMessageEditorTabFactory(this.requestRawTab);
+        cb.removeMessageEditorTabFactory(this.responseRawTab);
+        cb.removeMessageEditorTabFactory(this.requestParamsTab);
+        cb.removeMessageEditorTabFactory(this.generatePoCTab);
+        cb.removeMessageEditorTabFactory(this.commentViewTab);
+        cb.removeMessageEditorTabFactory(this.requestJSONTab);
+        cb.removeMessageEditorTabFactory(this.responseJSONTab);
+        
+        EnumSet<UniversalViewProperty.UniversalView> uview = this.option.getEncodingProperty().getMessageView();
+        if (uview.contains(UniversalViewProperty.UniversalView.JRAW)) {
+            cb.registerMessageEditorTabFactory(this.requestRawTab);
+            cb.registerMessageEditorTabFactory(this.responseRawTab);
+        }
+        if (uview.contains(UniversalViewProperty.UniversalView.JPARAM)) {
+            cb.registerMessageEditorTabFactory(this.requestParamsTab);            
+        }
+        if (uview.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+            cb.registerMessageEditorTabFactory(this.generatePoCTab);                
+        }
+        if (uview.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
+            cb.registerMessageEditorTabFactory(this.commentViewTab);            
+        }
+        if (uview.contains(UniversalViewProperty.UniversalView.JSON)) {
+            cb.registerMessageEditorTabFactory(this.requestJSONTab);
+            cb.registerMessageEditorTabFactory(this.responseJSONTab);                
+        }                                        
+    }
+    
+    
     @Override
     public void processHttpMessage(int toolFlag, boolean messageIsRequest, IHttpRequestResponse messageInfo) {
         String toolName = getCallbacks().getToolName(toolFlag);
@@ -173,28 +212,28 @@ public class BurpExtender extends BurpExtenderImpl
         }
 
         resultBytes = messageByte;
-        
+
         IHttpRequestResponse msgInfo = message.getMessageInfo();
 
         // Autoresponder
-        if (messageIsRequest &&  this.getAutoResponderProperty().getAutoResponderEnable()) {            
-           boolean apply = this.autoresponderProxyMessage(msgInfo.getHttpService(), msgInfo);                
+        if (messageIsRequest && this.option.getAutoResponderProperty().getAutoResponderEnable()) {
+            boolean apply = this.autoresponderProxyMessage(msgInfo.getHttpService(), msgInfo);
             if (apply) {
-                return ;
+                return;
             }
-        } 
-                        
+        }
+
         // Match and Replace
-        if (this.getMatchReplaceProperty().isSelectedMatchReplace()) {
-            MatchReplaceGroup group = this.getMatchReplaceProperty().getMatchReplaceGroup();
+        if (this.option.getMatchReplaceProperty().isSelectedMatchReplace()) {
+            MatchReplaceGroup group = this.option.getMatchReplaceProperty().getMatchReplaceGroup();
             if (group != null && group.isInScopeOnly()) {
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(msgInfo.getHttpService(), messageByte);
                 if (BurpExtender.getCallbacks().isInScope(reqInfo.getUrl())) {
                     resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
                 }
             } else {
-               resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
-            }            
+                resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
+            }
         }
 
         if (messageByte != resultBytes) {
@@ -204,16 +243,16 @@ public class BurpExtender extends BurpExtenderImpl
                 message.getMessageInfo().setResponse(resultBytes);
             }
         }
-        
+
         // autologging
-        if (this.getLoggingProperty().isAutoLogging() && this.getLoggingProperty().isProxyLog()) {
+        if (this.option.getLoggingProperty().isAutoLogging() && this.option.getLoggingProperty().isProxyLog()) {
             this.writeProxyMessage(message.getMessageReference(), messageIsRequest, msgInfo.getHttpService(), resultBytes);
         }
-                
+
     }
 
     public synchronized String getCurrentLogTimestamp() {
-        SimpleDateFormat format = this.logProperty.getLogTimestampDateFormat();
+        SimpleDateFormat format = this.option.getLoggingProperty().getLogTimestampDateFormat();
         return format.format(new java.util.Date());
     }
 
@@ -228,14 +267,14 @@ public class BurpExtender extends BurpExtenderImpl
             String toolName,
             boolean messageIsRequest,
             IHttpRequestResponse messageInfo) {
-        if (this.getMatchAlertProperty().isMatchAlertEnable() && this.getMatchAlertProperty().isSelectedMatchAlert()) {
+        if (this.option.getMatchAlertProperty().isMatchAlertEnable() && this.option.getMatchAlertProperty().isSelectedMatchAlert()) {
             this.matchAlertMessage(toolName, messageIsRequest, messageInfo);
         }
-        if (this.getLoggingProperty().isAutoLogging() && this.getLoggingProperty().isToolLog()) {
+        if (this.option.getLoggingProperty().isAutoLogging() && this.option.getLoggingProperty().isToolLog()) {
             this.writeToolMessage(toolName, messageIsRequest, messageInfo);
         }
     }
-    
+
     private final Map<Integer, byte[]> proxyLogs = new HashMap<Integer, byte[]>();
 
     /**
@@ -258,14 +297,14 @@ public class BurpExtender extends BurpExtenderImpl
             if (request != null) {
                 try {
                     File fname = new File(this.getLogDir(), Config.getProxyLogMessageName());
-                    if (fname.length() > this.getLoggingProperty().getLogFileByteLimitSize()
-                            && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
+                    if (fname.length() > this.option.getLoggingProperty().getLogFileByteLimitSize()
+                            && this.option.getLoggingProperty().getLogFileByteLimitSize() > 0) {
                         File renameFile = Util.rotateFile(this.getLogDir(), Config.getProxyLogMessageName());
                         fname.renameTo(renameFile);
                     }
                     boolean includeLog = true;
-                    if (this.getProperty().getLoggingProperty().isExludeFilter()) {
-                        Pattern patternExlude = Pattern.compile(BurpWrap.parseFilterPattern(this.getProperty().getLoggingProperty().getExludeFilterExtension()));
+                    if (this.option.getLoggingProperty().isExludeFilter()) {
+                        Pattern patternExlude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExludeFilterExtension()));
                         Matcher matchExlude = patternExlude.matcher(BurpWrap.getURL(request).getFile());
                         if (matchExlude.find()) {
                             includeLog = false;
@@ -274,7 +313,7 @@ public class BurpExtender extends BurpExtenderImpl
                     if (includeLog) {
                         try (FileOutputStream fostm = new FileOutputStream(fname, true)) {
                             fostm.write(Util.getRawByte(Util.NEW_LINE));
-                            fostm.write(Util.getRawByte("======================================================"+ Util.NEW_LINE));
+                            fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
                             fostm.write(Util.getRawByte(getCurrentLogTimestamp() + " " + BurpWrap.getURLString(httpService) + Util.NEW_LINE));
                             fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
                             fostm.write(Util.getRawByte(Util.NEW_LINE));
@@ -283,7 +322,7 @@ public class BurpExtender extends BurpExtenderImpl
                             fostm.write(Util.getRawByte("=========================================================" + Util.NEW_LINE));
                             fostm.write(message);
                             fostm.write(Util.getRawByte(Util.NEW_LINE));
-                            fostm.write(Util.getRawByte("=========================================================" + Util.NEW_LINE));                        
+                            fostm.write(Util.getRawByte("=========================================================" + Util.NEW_LINE));
                         }
                     }
                 } catch (IOException ex) {
@@ -318,24 +357,24 @@ public class BurpExtender extends BurpExtenderImpl
             boolean messageIsRequest,
             IHttpRequestResponse messageInfo) {
         String baselogfname = Config.getToolLogName(toolName);
-        try {            
+        try {
             if (!messageIsRequest) {
                 File fname = new File(this.getLogDir(), baselogfname);
-                if (fname.length() > this.getLoggingProperty().getLogFileByteLimitSize()
-                        && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
+                if (fname.length() > this.option.getLoggingProperty().getLogFileByteLimitSize()
+                        && this.option.getLoggingProperty().getLogFileByteLimitSize() > 0) {
                     File renameFile = Util.rotateFile(this.getLogDir(), baselogfname);
                     fname.renameTo(renameFile);
                 }
                 boolean includeLog = true;
-                if (this.getProperty().getLoggingProperty().isExludeFilter()) {
-                    Pattern patternExlude = Pattern.compile(BurpWrap.parseFilterPattern(this.getProperty().getLoggingProperty().getExludeFilterExtension()));
+                if (this.option.getLoggingProperty().isExludeFilter()) {
+                    Pattern patternExlude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExludeFilterExtension()));
                     Matcher matchExlude = patternExlude.matcher(BurpWrap.getURL(messageInfo).getFile());
                     if (matchExlude.find()) {
                         includeLog = false;
                     }
                 }
                 if (includeLog) {
-                    try(FileOutputStream fostm = new FileOutputStream(fname, true)) {
+                    try (FileOutputStream fostm = new FileOutputStream(fname, true)) {
                         fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
                         fostm.write(Util.getRawByte(getCurrentLogTimestamp() + " " + BurpWrap.getURLString(messageInfo.getHttpService()) + Util.NEW_LINE));
                         fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
@@ -367,9 +406,9 @@ public class BurpExtender extends BurpExtenderImpl
 
         boolean apply = false;
         try {
-            IRequestInfo reqInfo = getHelpers().analyzeRequest(httpService, messageInfo.getRequest());  
+            IRequestInfo reqInfo = getHelpers().analyzeRequest(httpService, messageInfo.getRequest());
             String url = HttpUtil.normalizeURL(reqInfo.getUrl().toExternalForm());
-            AutoResponderItem item = this.autoResponderProperty.findItem(url);
+            AutoResponderItem item = this.option.getAutoResponderProperty().findItem(url);
             if (item != null) {
                 // FullパスをRequestヘッダに追加
                 String request = Util.decodeMessage(messageInfo.getRequest());
@@ -382,16 +421,16 @@ public class BurpExtender extends BurpExtenderImpl
                 m.appendTail(sb);
                 request = sb.toString();
                 messageInfo.setRequest(Util.encodeMessage(request));
-                messageInfo.setHttpService(getHelpers().buildHttpService("127.0.0.1", autoResponderProperty.getRedirectPort(), "http"));
-                apply = true;            
+                messageInfo.setHttpService(getHelpers().buildHttpService("127.0.0.1", option.getAutoResponderProperty().getRedirectPort(), "http"));
+                apply = true;
             }
-        
+
         } catch (Exception ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
         return apply;
-    }    
-    
+    }
+
     /**
      * メッセージの置換
      *
@@ -409,7 +448,7 @@ public class BurpExtender extends BurpExtenderImpl
         boolean updateLength = false;
         String decodeMessage = Util.decodeMessage(message);
         HttpMessage httpMsg = HttpMessage.parseHttpMessage(decodeMessage);
-        List<MatchReplaceItem> matchReplaceList = this.getMatchReplaceProperty().getMatchReplaceList();
+        List<MatchReplaceItem> matchReplaceList = this.option.getMatchReplaceProperty().getMatchReplaceList();
         for (int i = 0; i < matchReplaceList.size(); i++) {
             MatchReplaceItem bean = matchReplaceList.get(i);
             if (!bean.isSelected()) {
@@ -464,7 +503,7 @@ public class BurpExtender extends BurpExtenderImpl
      */
     private void matchAlertMessage(String toolName, boolean messageIsRequest, IHttpRequestResponse messageInfo) {
         IRequestInfo reqInfo = getHelpers().analyzeRequest(messageInfo.getHttpService(), messageInfo.getRequest());
-        List<MatchAlertItem> matchAlertItemList = getMatchAlertProperty().getMatchAlertItemList();
+        List<MatchAlertItem> matchAlertItemList = option.getMatchAlertProperty().getMatchAlertItemList();
         for (int i = 0; i < matchAlertItemList.size(); i++) {
             MatchAlertItem bean = matchAlertItemList.get(i);
             if (!bean.isSelected()) {
@@ -503,33 +542,18 @@ public class BurpExtender extends BurpExtenderImpl
                         messageInfo.setComment(bean.getComment());
                     }
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.SCANNER_ISSUE)) {
-                        MatchAlert alert = new MatchAlert(toolName, this.getMatchAlertProperty());
+                        MatchAlert alert = new MatchAlert(toolName, this.option.getMatchAlertProperty());
                         MatchAlertIssue issue = new MatchAlertIssue(bean, markList);
                         List<IScanIssue> issues = alert.makeIssueList(messageIsRequest, messageInfo, issue, markList);
                         for (IScanIssue scanissue : issues) {
-                            BurpExtender.getCallbacks().addScanIssue(scanissue);                        
-                        }                        
+                            BurpExtender.getCallbacks().addScanIssue(scanissue);
+                        }
                     }
                 }
             } catch (Exception ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-        
-    /**
-     * debugModeの取得
-     */
-    private boolean debugMode = false;
-
-    @Override
-    public boolean getDebugMode() {
-        return this.debugMode;
-    }
-
-    @Override
-    public void setDebugMode(boolean debugMode) {
-        this.debugMode = debugMode;
     }
 
     /**
@@ -558,14 +582,14 @@ public class BurpExtender extends BurpExtenderImpl
     public List<String> getSelectEncodingList() {
         String charsetMode = this.getCharsetMode();
         List<String> list = new ArrayList<String>();
-        list.addAll(this.getEncodingProperty().getEncodingList());
+        list.addAll(this.option.getEncodingProperty().getEncodingList());
         // リストにない場合追加
-        if (!this.getEncodingProperty().getEncodingList().contains(charsetMode) && Config.isEncodingName(charsetMode)) {
+        if (!this.option.getEncodingProperty().getEncodingList().contains(charsetMode) && Config.isEncodingName(charsetMode)) {
             list.add(charsetMode);
         }
         return list;
     }
-    
+
     private File logdir = null;
 
     /**
@@ -621,8 +645,8 @@ public class BurpExtender extends BurpExtenderImpl
     }
 
     private SendToMenu sendToMenu = null;
-    
-     /**
+
+    /**
      * @return the sendToMenu
      */
     public SendToMenu getSendToMenu() {
@@ -632,189 +656,55 @@ public class BurpExtender extends BurpExtenderImpl
     public void setSendToMenu(SendToMenu sendToMenu) {
         this.sendToMenu = sendToMenu;
     }
-      
-    /**
-     * ***********************************************************************
-     * OptionProperty
-     * ***********************************************************************
-     */
 
-    /**
-     * @param property
-     */
-    public void setProperty(OptionProperty property) {
-        this.setEncodingProperty(property.getEncodingProperty());
-        this.setMatchReplaceProperty(property.getMatchReplaceProperty());
-        this.setAutoResponderProperty(property.getAutoResponderProperty());
-        this.setSendToProperty(property.getSendToProperty());
-        this.setLoggingProperty(property.getLoggingProperty());
-        this.setMatchAlertProperty(property.getMatchAlertProperty());        
-        this.setJSearchProperty(property.getJSearchProperty());
-        this.setDebugMode(property.getDebugMode());
-    }
-
+    public final OptionProperty option = new OptionProperty();
+    
     public OptionProperty getProperty() {
-        return this;
-    }
-
-    /**
-     * ***********************************************************************
-     * Encoding
-     * ***********************************************************************
-     */
-    private EncodingProperty encodingProperty = new EncodingProperty();
-
-    /**
-     * @return the encodingProperty
-     */
-    @Override
-    public EncodingProperty getEncodingProperty() {
-        return this.encodingProperty;
-    }
-
-    /**
-     * @param encodingProperty the encodingProperty to set
-     */
-    @Override
-    public void setEncodingProperty(EncodingProperty encodingProperty) {
-        this.encodingProperty = encodingProperty;
-    }
-
-    /**
-     * ***********************************************************************
-     * MatchReplace
-     * ***********************************************************************
-     */
-    private MatchReplaceProperty matchReplaceProperty = new MatchReplaceProperty();
-
-    /**
-     * @return the matchReplaceProperty
-     */
-    @Override
-    public MatchReplaceProperty getMatchReplaceProperty() {
-        return this.matchReplaceProperty;
-    }
-
-    /**
-     * @param matchReplaceProperty the matchReplaceProperty to set
-     */
-    @Override
-    public void setMatchReplaceProperty(MatchReplaceProperty matchReplaceProperty) {
-        this.matchReplaceProperty = matchReplaceProperty;
-    }
-
-    /**
-     * ***********************************************************************
-     * MatchAlert
-     * ***********************************************************************
-     */
-    private MatchAlertProperty matchAlertProperty = new MatchAlertProperty();
-
-    /**
-     * @return the matchAlertProperty
-     */
-    @Override
-    public MatchAlertProperty getMatchAlertProperty() {
-        return this.matchAlertProperty;
-    }
-
-    /**
-     * @param matchAlertProperty the matchAlertProperty to set
-     */
-    @Override
-    public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty) {
-        this.matchAlertProperty = matchAlertProperty;
-    }
-
-    /**
-     * ***********************************************************************
-     * AutoResponder
-     * ***********************************************************************
-     */
-
-    private AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
-    
-    /**
-     * @return the autoResponderProperty
-     */
-    @Override
-    public AutoResponderProperty getAutoResponderProperty() {
-        return this.autoResponderProperty;
-    }
-
-    /**
-     * 
-     * @param autoResponderProperty 
-     */
-    @Override
-    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
-        this.autoResponderProperty = autoResponderProperty;
+        return option;
     }
     
-    /**
-     * ***********************************************************************
-     * SendTo
-     * ***********************************************************************
-     */
-    private SendToProperty sendtoProperty = new SendToProperty();
-
-    /**
-     * @return the sendtoProperty
-     */
-    @Override
-    public SendToProperty getSendToProperty() {
-        return this.sendtoProperty;
-    }
-
-    /**
-     * @param sendtoProperty the sendtoProperty to set
-     */
-    @Override
-    public void setSendToProperty(SendToProperty sendtoProperty) {
-        this.sendtoProperty = sendtoProperty;
-    }
-
     public PropertyChangeListener newPropertyChangeListener() {
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 String charsetMode = getCharsetMode();
-                if (TabbetOption.ENCODING_PROPERTY.equals(evt.getPropertyName())) {
-                    setEncodingProperty(tabbetOption.getEncodingProperty());
+                if (TabbetOption.UNIVERSAL_VIEW_PROPERTY.equals(evt.getPropertyName())) {
+                    option.setEncodingProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
+                    renewView();
                     applyOptionProperty();
                 } else if (TabbetOption.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
-                    setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());
+                    option.setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());
                     applyOptionProperty();
                 } else if (TabbetOption.AUTO_RESPONDER_PROPERTY.equals(evt.getPropertyName())) {
-                    setAutoResponderProperty(tabbetOption.getAutoResponderProperty());
+                    option.setAutoResponderProperty(tabbetOption.getAutoResponderProperty());
                     applyOptionProperty();
                 } else if (TabbetOption.SENDTO_PROPERTY.equals(evt.getPropertyName())) {
-                    setSendToProperty(tabbetOption.getSendToProperty());
+                    option.setSendToProperty(tabbetOption.getSendToProperty());
                     if (getCallbacks() != null) {
                         IBurpExtenderCallbacks cb = getCallbacks();
                         cb.removeContextMenuFactory(getSendToMenu());
-                        setSendToMenu(new SendToMenu(cb, getSendToProperty()));
-                        cb.registerContextMenuFactory(getSendToMenu());                                                
-                    }                    
-                    applyOptionProperty();                
+                        setSendToMenu(new SendToMenu(cb, option.getSendToProperty()));
+                        cb.registerContextMenuFactory(getSendToMenu());
+                    }
+                    applyOptionProperty();
                 } else if (TabbetOption.LOGGING_PROPERTY.equals(evt.getPropertyName())) {
-                    setLoggingProperty(tabbetOption.getLoggingProperty());
-                    applyOptionProperty();                
+                    option.setLoggingProperty(tabbetOption.getLoggingProperty());
+                    applyOptionProperty();
                 } else if (TabbetOption.MATCHALERT_PROPERTY.equals(evt.getPropertyName())) {
-                    setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
-                    applyOptionProperty();                
+                    option.setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
+                    applyOptionProperty();
                 } else if (TabbetOption.JSEARCH_FILTER_PROPERTY.equals(evt.getPropertyName())) {
-                    setJSearchProperty(tabbetOption.getJSearchProperty());
-                    applyOptionProperty();                
+                    option.setJSearchProperty(tabbetOption.getJSearchProperty());
+                    applyOptionProperty();
                 } else if (TabbetOption.JTRANS_CODER_PROPERTY.equals(evt.getPropertyName())) {
-                    setJTransCoderProperty(tabbetOption.getJTransCoderProperty());
-                    applyOptionProperty();                
+                    option.setJTransCoderProperty(tabbetOption.getJTransCoderProperty());
+                    applyOptionProperty();
                 } else if (TabbetOption.VERSION_PROPERTY.equals(evt.getPropertyName())) {
-                    setDebugMode(tabbetOption.getDebugMode());        
+                    option.setDebugMode(tabbetOption.getDebugMode());
                     applyOptionProperty();
                 } else if (TabbetOption.LOAD_CONFIG_PROPERTY.equals(evt.getPropertyName())) {
-                    tabbetOption.setProperty(getProperty());
+                    tabbetOption.setProperty(option);
                     applyOptionProperty();
                 }
             }
@@ -824,7 +714,7 @@ public class BurpExtender extends BurpExtenderImpl
     protected void applyOptionProperty() {
         if (this.tabbetOption.isLogDirChanged()) {
             try {
-                this.setLogDir(mkLogDir(this.getLoggingProperty().getBaseDir(), this.getLoggingProperty().getLogDirFormat()));
+                this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
                 if (this.tabbetOption.isHistoryLogInclude()) {
                     this.historyLogAppend();
                 }
@@ -834,100 +724,39 @@ public class BurpExtender extends BurpExtenderImpl
         }
 
         try {
-            String configXML = Config.saveToXML(this.getProperty());
+            String configXML = Config.saveToXML(this.option);
             getCallbacks().saveExtensionSetting("configXML", ConvertUtil.compressZlibBase64(configXML));
 
         } catch (IOException ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
     }
-
-    /**
-     * ***********************************************************************
-     * Logging
-     * ***********************************************************************
-     */
-    private LoggingProperty logProperty = new LoggingProperty();
-
-    /**
-     * @return the logProperty
-     */
-    @Override
-    public LoggingProperty getLoggingProperty() {
-        return this.logProperty;
-    }
-    
-    /**
-     * @param logProperty the logProperty to set
-     */
-    @Override
-    public void setLoggingProperty(LoggingProperty logProperty) {
-        this.logProperty = logProperty;
-    }
-
-    /**
-     * ***********************************************************************
-     * JSearch
-     * ***********************************************************************
-     */
-    private JSearchProperty searchProperty = new JSearchProperty();
-
-    @Override
-    public JSearchProperty getJSearchProperty() {
-        return this.searchProperty;
-    }
-
-    @Override
-    public void setJSearchProperty(JSearchProperty searchProperty) {
-        this.searchProperty = searchProperty;
-    }
-
-
-    /**
-     * ***********************************************************************
-     * JTransCoder
-     * ***********************************************************************
-     */
-    private JTransCoderProperty transcoderProperty = new JTransCoderProperty();
-
-    
-    @Override
-    public JTransCoderProperty getJTransCoderProperty() {
-        return this.transcoderProperty;
-    }
-
-    @Override
-    public void setJTransCoderProperty(JTransCoderProperty transcoder) {
-        this.transcoderProperty = transcoder;
-    }
-
-    
+        
     /**
      * ***********************************************************************
      * Send to JTransCoder
      * ***********************************************************************
      */
     public void sendToJTransCoder(String text) {
-        this.tabbetOption.sendToJTransCoder(text);
+        tabbetOption.sendToJTransCoder(text);
     }
 
-    public byte [] receiveFromJTransCoder() {
+    public byte[] receiveFromJTransCoder() {
         return this.tabbetOption.receiveFromJTransCoder();
     }
-
+    
     /**
      * ***********************************************************************
      * Message Info Copy
      * ***********************************************************************
      */
-
     public void sendToMessageInfoCopy(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
         StringBuilder buff = new StringBuilder();
         try {
             buff.append("url\tquery\tmethod\tstatus\tlength\r\n");
-            for (IHttpRequestResponse messageInfo : messageInfoList) {    
+            for (IHttpRequestResponse messageInfo : messageInfoList) {
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
                 URL url = reqInfo.getUrl();
                 buff.append(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()).toString());
@@ -940,7 +769,7 @@ public class BurpExtender extends BurpExtenderImpl
                     buff.append("\t");
                     buff.append(httpResponse.getStatusCode());
                     buff.append("\t");
-                    buff.append(messageInfo.getResponse().length);                                        
+                    buff.append(messageInfo.getResponse().length);
                 }
                 buff.append("\r\n");
             }
@@ -950,23 +779,69 @@ public class BurpExtender extends BurpExtenderImpl
         SwingUtil.systemClipboardCopy(buff.toString());
     }
 
+    public void sendToTableInfoCopy(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
+        StringBuilder buff = new StringBuilder();
+        Component c = KeyboardFocusManager.getCurrentKeyboardFocusManager().getPermanentFocusOwner();
+        if (c instanceof JTable) {
+            JTable table = (JTable) c;
+            buff.append(copyJTable(table));
+        }
+        SwingUtil.systemClipboardCopy(buff.toString());
+    }
+
+    public String copyJTable(JTable table) {
+        StringBuilder export = new StringBuilder();
+        TableModel model = table.getModel();
+        int colcount = table.getColumnCount();
+        boolean[] cols = new boolean[colcount];
+        for (int i = 0; i < cols.length; i++) {
+            cols[i] = false;
+            try {
+                table.getColumnClass(i).asSubclass(String.class);
+                cols[i] = true;
+            } catch (ClassCastException ex) {
+                try {
+                    table.getColumnClass(i).asSubclass(Integer.class);
+                    cols[i] = true;
+                } catch (ClassCastException ex2) {
+                }
+            }
+            if (cols[i]) {
+                export.append(table.getColumnName(i));
+                export.append("\t");
+            }
+        }
+        export.append("\r\n");
+        int[] rows = table.getSelectedRows();
+        for (int k = 0; k < rows.length; k++) {
+            for (int i = 0; i < colcount; i++) {
+                if (cols[i]) {
+                    int rawRow = table.convertRowIndexToModel(rows[k]);
+                    Object data = model.getValueAt(rawRow, i);
+                    export.append(String.valueOf(data));
+                    export.append("\t");
+                }
+            }
+            export.append("\r\n");
+        }
+        return export.toString();
+    }
+
     /**
      * ***********************************************************************
      * Add Host To Scope
      * ***********************************************************************
      */
-
     public void sendToAddHostToScope(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
         try {
-            for (IHttpRequestResponse messageInfo : messageInfoList) {    
-                    IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
-                    URL url = reqInfo.getUrl();
-                    BurpExtender.getCallbacks().includeInScope(new URL(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort())));
+            for (IHttpRequestResponse messageInfo : messageInfoList) {
+                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
+                URL url = reqInfo.getUrl();
+                BurpExtender.getCallbacks().includeInScope(new URL(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort())));
             }
         } catch (MalformedURLException ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    
 }

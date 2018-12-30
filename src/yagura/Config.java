@@ -1,17 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura;
 
 import burp.BurpExtenderImpl;
 import yagura.model.AutoResponderItem;
-import yagura.model.EncodingProperty;
+import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
 import yagura.model.MatchAlertItem;
 import extend.view.base.MatchItem;
 import yagura.model.MatchReplaceItem;
-import yagura.model.OptionProperty;
 import yagura.model.SendToItem;
 import extend.util.HttpUtil;
 import extend.util.IniProp;
@@ -28,6 +23,7 @@ import yagura.model.FilterProperty;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
 import yagura.model.MatchReplaceGroup;
+import yagura.model.IOptionProperty;
 
 /**
  *
@@ -37,7 +33,7 @@ public final class Config {
 
     private Config() {
     }
-    
+
     public static String getUserHome() {
         return System.getProperties().getProperty("user.home");
     }
@@ -53,15 +49,16 @@ public final class Config {
     public static String getProxyLogMessageName() {
         return "proxy-message.log";
     }
-    
+
     public static String getToolLogName(String toolName) {
         return String.format("burp_tool_%s.log", toolName);
     }
 
     /**
      * EncodingNameをBurpのCharSetModeに変換します。
+     *
      * @param encodeName
-     * @return 
+     * @return
      */
     public static String toCharsetMode(String encodeName) {
         String charSetMode = encodeName;
@@ -77,6 +74,7 @@ public final class Config {
 
     /**
      * BurpのCharSetModeをEncodingNameに変換します。
+     *
      * @param charSetMode
      * @return EncodingName
      */
@@ -93,11 +91,36 @@ public final class Config {
     }
 
     public static boolean isEncodingName(String charsetMode) {
-        return !("use_the_platform_default".compareToIgnoreCase(charsetMode) == 0 || 
-                "recognize_automatically".compareToIgnoreCase(charsetMode) == 0 || 
-                "display_as_raw_bytes".compareToIgnoreCase(charsetMode) == 0);
+        return !("use_the_platform_default".compareToIgnoreCase(charsetMode) == 0
+                || "recognize_automatically".compareToIgnoreCase(charsetMode) == 0
+                || "display_as_raw_bytes".compareToIgnoreCase(charsetMode) == 0);
     }
-    
+
+//    public static void saveToXML(File fi, OptionProperty option) throws IOException {
+//        JAXB.marshal(option, fi);
+//    }
+//
+//    public static void loadFromXML(File fi, OptionProperty option) throws IOException {
+//        OptionProperty property = JAXB.unmarshal(fi, OptionProperty.class);
+//        option.setProperty(property);
+//    }
+    /**
+     * Propertyファイルの読み込み
+     *
+     * @param content コンテンツ内容
+     * @param option 設定オプション
+     * @throws java.io.IOException
+     */
+//    public static void loadFromXml(String content, OptionProperty option) throws IOException {
+//        OptionProperty property = JAXB.unmarshal(content, OptionProperty.class);
+//        option.setProperty(property);
+//    }
+//
+//    public static String saveToXML(OptionProperty option) throws IOException {
+//        StringWriter writer = new StringWriter();
+//        JAXB.marshal(option, writer);
+//        return writer.toString();
+//    }
     /**
      * Propertyファイルの読み込み
      *
@@ -105,7 +128,7 @@ public final class Config {
      * @param option 設定オプション
      * @throws java.io.IOException
      */
-    public static void loadFromXml(File fi, OptionProperty option) throws IOException {
+    public static void loadFromXml(File fi, IOptionProperty option) throws IOException {
         IniProp prop = new IniProp();
         prop.loadFromXML(fi);
         loadFromXml(prop, option);
@@ -118,18 +141,18 @@ public final class Config {
      * @param option 設定オプション
      * @throws java.io.IOException
      */
-    public static void loadFromXml(String content, OptionProperty option) throws IOException {
+    public static void loadFromXml(String content, IOptionProperty option) throws IOException {
         IniProp prop = new IniProp();
         prop.loadFromXML(content);
         loadFromXml(prop, option);
     }
-    
-    protected static void loadFromXml(IniProp prop, OptionProperty option) throws IOException {
+
+    protected static void loadFromXml(IniProp prop, IOptionProperty option) throws IOException {
         // Encoding
-        EncodingProperty encProp = new EncodingProperty();
+        UniversalViewProperty encProp = new UniversalViewProperty();
         //encProp.setClipbordAutoDecode(prop.readEntryBool("encoding", "clipbordAutoDecode", false));
         encProp.setClipbordAutoDecode(false);
-        List<String> encList = prop.readEntryList("encoding", "list", EncodingProperty.getDefaultEncodingList());
+        List<String> encList = prop.readEntryList("encoding", "list", UniversalViewProperty.getDefaultEncodingList());
         List<String> encSupportList = new ArrayList<String>();
         for (String enc : encList) {
             if (Util.lookupCharset(enc) != null) {
@@ -137,8 +160,13 @@ public final class Config {
             }
         }
         encProp.setEncodingList(encSupportList);
-        option.setEncodingProperty(encProp);
 
+        EnumSet<UniversalViewProperty.UniversalView> viewset = EnumSet.noneOf(UniversalViewProperty.UniversalView.class);
+        String universal = prop.readEntry("encoding", "universal.view", Util.enumSetToString(encProp.getMessageView()));
+        viewset.addAll(UniversalViewProperty.UniversalView.enumSetValueOf(universal));
+        encProp.setMessageView(viewset);
+        option.setEncodingProperty(encProp);
+                
         // Log
         LoggingProperty logProp = new LoggingProperty();
         logProp.setAutoLogging(prop.readEntryBool("log", "autologging", false));
@@ -179,10 +207,10 @@ public final class Config {
             MatchReplaceGroup group = new MatchReplaceGroup();
             group.setReplaceList(list);
             group.setInScopeOnly(inScopeOnly);
-            replaceMap.put((String)name, group);
+            replaceMap.put((String) name, group);
         }
         option.getMatchReplaceProperty().setReplaceMap(replaceMap);
-        
+
         // AutoResponder
         List<AutoResponderItem> responderList = new ArrayList<AutoResponderItem>();
         option.getAutoResponderProperty().setAutoResponderEnable(prop.readEntryBool("autoresponder", "enable", false));
@@ -194,13 +222,13 @@ public final class Config {
             item.setMatch(prop.readEntry("autoresponder", String.format("item[%d].match", i), ""));
             item.setRegexp(prop.readEntryBool("autoresponder", String.format("item[%d].regexp", i), true));
             item.setIgnoreCase(prop.readEntryBool("autoresponder", String.format("item[%d].ignorecase", i), false));
-            item.setReplace(prop.readEntry("autoresponder", String.format("item[%d].replace", i), ""));            
-            item.setContentType(prop.readEntry("autoresponder", String.format("item[%d].mime", i), ""));            
+            item.setReplace(prop.readEntry("autoresponder", String.format("item[%d].replace", i), ""));
+            item.setContentType(prop.readEntry("autoresponder", String.format("item[%d].mime", i), ""));
             item.setBodyOnly(prop.readEntryBool("autoresponder", String.format("item[%d].bodyonly", i), true));
             responderList.add(item);
         }
         option.getAutoResponderProperty().setAutoResponderItemList(responderList);
-        
+
         // SendToItem
         List<SendToItem> sendToList = new ArrayList<SendToItem>();
         int sendto_count = prop.readEntryInt("sendto", "count", 0);
@@ -271,25 +299,25 @@ public final class Config {
                 String severity = prop.readEntry("matchalert", String.format("item[%d].severity", i), "");
                 item.setServerity(BurpExtenderImpl.Severity.valueOf(severity));
                 String confidence = prop.readEntry("matchalert", String.format("item[%d].confidence", i), "");
-                item.setConfidence(BurpExtenderImpl.Confidence.valueOf(confidence));                
+                item.setConfidence(BurpExtenderImpl.Confidence.valueOf(confidence));
             }
 
             alertItemList.add(item);
         }
         option.getMatchAlertProperty().setMatchAlertItemList(alertItemList);
-        
+
         // JSearch Filter
         JSearchProperty jsearch = option.getJSearchProperty();
         jsearch.setRegexp(prop.readEntryBool("jsearch", "regexp", false));
         jsearch.setIgnoreCase(prop.readEntryBool("jsearch", "ignorecase", false));
         jsearch.setAutoRecogniseEncoding(prop.readEntryBool("jsearch", "autoRecogniseEncoding", false));
-        
+
         jsearch.setRequestHeader(prop.readEntryBool("jsearch", "requestHeader", true));
         jsearch.setRequestBody(prop.readEntryBool("jsearch", "requestBody", true));
         jsearch.setResponseHeader(prop.readEntryBool("jsearch", "responseHeader", true));
         jsearch.setResponseBody(prop.readEntryBool("jsearch", "responseBody", true));
         jsearch.setComment(prop.readEntryBool("jsearch", "comment", true));
-                
+
         FilterProperty filter = new FilterProperty();
         filter.setShowOnlyScopeItems(prop.readEntryBool("jsearch", "showOnlyScopeItems", false));
         filter.setHideItemsWithoutResponses(prop.readEntryBool("jsearch", "hideItemsWithoutResponsess", false));
@@ -302,7 +330,7 @@ public final class Config {
         filter.setStat4xx(prop.readEntryBool("jsearch", "stat4xx", true));
         filter.setStat5xx(prop.readEntryBool("jsearch", "stat5xx", true));
         EnumSet<MatchItem.HighlightColor> highlightColorSet = EnumSet.noneOf(MatchItem.HighlightColor.class);
-        String highlightColors = prop.readEntry("jsearch", "highlightColors", Util.enumSetToString(EnumSet.allOf(MatchItem.HighlightColor.class)));        
+        String highlightColors = prop.readEntry("jsearch", "highlightColors", Util.enumSetToString(EnumSet.allOf(MatchItem.HighlightColor.class)));
         highlightColorSet.addAll(MatchItem.HighlightColor.enumSetValueOf(highlightColors));
         filter.setHighlightColors(highlightColorSet);
         filter.setComments(prop.readEntryBool("jsearch", "comments", false));
@@ -318,16 +346,16 @@ public final class Config {
 
         String newLine = prop.readEntry("transcoder", "newLine", TransUtil.NewLine.NONE.name());
         transcoder.setNewLine(TransUtil.NewLine.valueOf(newLine));
-         
+
         transcoder.setLineWrap(prop.readEntryBool("transcoder", "lineWrap", false));
 
         transcoder.setSelectEncoding(prop.readEntry("transcoder", "selectEncoding", "UTF-8"));
-        
+
         transcoder.setRawEncoding(prop.readEntryBool("transcoder", "rawEncoding", false));
         transcoder.setGuessEncoding(prop.readEntryBool("transcoder", "guessEncoding", false));
-               
+
     }
-    
+
     /**
      * Propertyファイルの書き込み
      *
@@ -335,23 +363,26 @@ public final class Config {
      * @param option 設定オプション
      * @throws java.io.IOException
      */
-    public static void saveToXML(File fo, OptionProperty option) throws IOException {
+    public static void saveToXML(File fo, IOptionProperty option) throws IOException {
         IniProp prop = new IniProp();
         saveToXML(prop, option);
         prop.storeToXML(fo, "Temporary Properties", "UTF-8");
     }
 
-    public static String saveToXML(OptionProperty option) throws IOException {
+    public static String saveToXML(IOptionProperty option) throws IOException {
         IniProp prop = new IniProp();
         saveToXML(prop, option);
         return prop.storeToXML("Temporary Properties", "UTF-8");
     }
 
-    protected static void saveToXML(IniProp prop, OptionProperty option) throws IOException {
+    protected static void saveToXML(IniProp prop, IOptionProperty option) throws IOException {
 
         // Encoding
         prop.writeEntryBool("encoding", "clipbordAutoDecode", option.getEncodingProperty().getClipbordAutoDecode());
         prop.writeEntryList("encoding", "list", option.getEncodingProperty().getEncodingList());
+
+        EnumSet<UniversalViewProperty.UniversalView> universal = option.getEncodingProperty().getMessageView();
+        prop.writeEntry("encoding", "universal.view", Util.enumSetToString(universal));        
         
         // Log
         prop.writeEntryBool("log", "autologging", option.getLoggingProperty().isAutoLogging());
@@ -383,8 +414,8 @@ public final class Config {
                 prop.writeEntry("sendto", String.format("item[%d].extend", i), item.getExtend().name());
             }
         }
-        prop.writeEntryBool("sendto", "submenu", option.getSendToProperty().isSubMenu());        
-        
+        prop.writeEntryBool("sendto", "submenu", option.getSendToProperty().isSubMenu());
+
         // AutoResponder
         prop.writeEntryBool("autoresponder", "enable", option.getAutoResponderProperty().getAutoResponderEnable());
         prop.writeEntryInt("autoresponder", "redirectPort", option.getAutoResponderProperty().getRedirectPort());
@@ -396,11 +427,11 @@ public final class Config {
             prop.writeEntry("autoresponder", String.format("item[%d].match", i), item.getMatch());
             prop.writeEntryBool("autoresponder", String.format("item[%d].regexp", i), item.isRegexp());
             prop.writeEntryBool("autoresponder", String.format("item[%d].ignorecase", i), item.isIgnoreCase());
-            prop.writeEntry("autoresponder", String.format("item[%d].replace", i), item.getReplace());         
+            prop.writeEntry("autoresponder", String.format("item[%d].replace", i), item.getReplace());
             prop.writeEntry("autoresponder", String.format("item[%d].mime", i), item.getContentType());
             prop.writeEntryBool("autoresponder", String.format("item[%d].bodyonly", i), item.getBodyOnly());
         }
-                
+
         // Match and Replace
         prop.writeEntry("matchreplace", "selectedName", option.getMatchReplaceProperty().getSelectedName());
         List<String> replaceNameList = option.getMatchReplaceProperty().getReplaceNameList();
@@ -455,13 +486,13 @@ public final class Config {
             if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
                 prop.writeEntry("matchalert", String.format("item[%d].issueName", i), item.getIssueName());
                 prop.writeEntry("matchalert", String.format("item[%d].severity", i), item.getServerity().name());
-                prop.writeEntry("matchalert", String.format("item[%d].confidence", i), item.getConfidence().name());                
+                prop.writeEntry("matchalert", String.format("item[%d].confidence", i), item.getConfidence().name());
             }
-            
+
             EnumSet<MatchItem.TargetTool> tools = item.getTargetTools();
             prop.writeEntry("matchalert", String.format("item[%d].target", i), Util.enumSetToString(tools));
-            
-        }        
+
+        }
 
         // JSearch Filter
         JSearchProperty jsearch = option.getJSearchProperty();
@@ -474,7 +505,7 @@ public final class Config {
         prop.writeEntryBool("jsearch", "responseHeader", jsearch.isResponseHeader());
         prop.writeEntryBool("jsearch", "responseBody", jsearch.isResponseBody());
         prop.writeEntryBool("jsearch", "comment", jsearch.isComment());
-        
+
         FilterProperty filter = jsearch.getFilterProperty();
         prop.writeEntryBool("jsearch", "showOnlyScopeItems", filter.getShowOnlyScopeItems());
         prop.writeEntryBool("jsearch", "hideItemsWithoutResponsess", filter.isHideItemsWithoutResponses());
@@ -486,7 +517,7 @@ public final class Config {
         prop.writeEntryBool("jsearch", "stat3xx", filter.getStat3xx());
         prop.writeEntryBool("jsearch", "stat4xx", filter.getStat4xx());
         prop.writeEntryBool("jsearch", "stat5xx", filter.getStat5xx());
-        prop.writeEntry("jsearch", "highlightColors",  Util.enumSetToString(filter.getHighlightColors()));
+        prop.writeEntry("jsearch", "highlightColors", Util.enumSetToString(filter.getHighlightColors()));
         prop.writeEntryBool("jsearch", "comments", filter.getComments());
 
         // JTranscoder
@@ -497,10 +528,10 @@ public final class Config {
         prop.writeEntryBool("transcoder", "lineWrap", transcoder.isLineWrap());
 
         prop.writeEntry("transcoder", "selectEncoding", transcoder.getSelectEncoding());
-        
+
         prop.writeEntryBool("transcoder", "rawEncoding", transcoder.isRawEncoding());
         prop.writeEntryBool("transcoder", "guessEncoding", transcoder.isGuessEncoding());
-               
-    }    
+
+    }
 
 }

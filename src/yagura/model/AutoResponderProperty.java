@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
-import yagura.model.AutoResponderItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -42,10 +36,11 @@ public class AutoResponderProperty {
         return autoResponderEnable;
     }
     
-    private List<AutoResponderItem> autoResponderList = new ArrayList<AutoResponderItem>();
+    private final List<AutoResponderItem> autoResponderList = new ArrayList<AutoResponderItem>();
     
     public void setAutoResponderItemList(List<AutoResponderItem> autoResponderItemList) {
-        this.autoResponderList = autoResponderItemList;
+        this.autoResponderList.clear();
+        this.autoResponderList.addAll(autoResponderItemList);
     }
 
     public List<AutoResponderItem> getAutoResponderItemList() {
@@ -68,5 +63,11 @@ public class AutoResponderProperty {
         }        
         return matchItem;
     }
-           
+
+    public void setProperty(AutoResponderProperty property) {
+        this.setRedirectPort(property.getRedirectPort());
+        this.setAutoResponderEnable(property.getAutoResponderEnable());
+        this.setAutoResponderItemList(property.getAutoResponderItemList());
+    }
+    
 }
