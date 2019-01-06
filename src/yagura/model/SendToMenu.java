@@ -7,13 +7,19 @@ import burp.IHttpRequestResponse;
 import burp.IHttpService;
 import extend.util.BurpWrap;
 import extend.util.HttpUtil;
+import extend.util.Util;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 /**
  * burp new IF
@@ -21,6 +27,7 @@ import javax.swing.JMenuItem;
  * @author isayan
  */
 public class SendToMenu implements IContextMenuFactory,SendToListener {
+
     private final SendToProperty property;
     private final IBurpExtenderCallbacks callbacks;
     private IContextMenuInvocation invocation;
@@ -30,6 +37,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
     public SendToMenu(IBurpExtenderCallbacks cb, SendToProperty property) {
         this.callbacks = cb;
         this.property = property;
+
     }
     private final List<JMenuItem> menuList = new ArrayList<JMenuItem>();
 
@@ -78,9 +86,10 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
                             if (sendToItem.isEnabled()) this.menuList.add(mnuItem);                        
                         }                    
                     }
-                }
-            }
-        }    
+                }                        
+            }            
+        }            
+        
     }
 
     private final javax.swing.JPopupMenu popBurpMenu = new javax.swing.JPopupMenu();

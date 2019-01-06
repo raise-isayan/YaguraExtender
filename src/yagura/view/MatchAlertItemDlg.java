@@ -1,7 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.BurpExtenderImpl;
 import extend.util.SwingUtil;
 import extend.view.base.CustomDialog;
 import yagura.model.MatchAlertItem;
@@ -329,7 +328,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlMain.add(pnlNotice, java.awt.BorderLayout.PAGE_START);
+        pnlMain.add(pnlNotice, java.awt.BorderLayout.LINE_START);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -556,9 +555,9 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
             item.setIssueName(this.txtIssueName.getText());
             String serverty = (String)this.cmbSeverity.getSelectedItem();
-            item.setServerity(BurpExtenderImpl.Severity.valueOf(serverty));
+            item.setSeverity(MatchItem.Severity.parseEnum(serverty));
             String confidence = (String)this.cmbConfidence.getSelectedItem();
-            item.setConfidence(BurpExtenderImpl.Confidence.valueOf(confidence));
+            item.setConfidence(MatchItem.Confidence.parseEnum(confidence));
         }
         return item;
     }
@@ -595,8 +594,8 @@ public class MatchAlertItemDlg extends CustomDialog {
 //        }
 //        if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
             this.txtIssueName.setText(item.getIssueName());
-            this.cmbSeverity.setSelectedItem(item.getServerity().toString());
-            this.cmbConfidence.setSelectedItem(item.getConfidence().toString());
+            this.cmbSeverity.setSelectedItem(item.getSeverity().name());
+            this.cmbConfidence.setSelectedItem(item.getConfidence().name());
 //        }
 
     }

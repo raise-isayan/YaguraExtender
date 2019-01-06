@@ -1,6 +1,5 @@
 package yagura;
 
-import burp.BurpExtenderImpl;
 import yagura.model.AutoResponderItem;
 import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
@@ -297,9 +296,9 @@ public final class Config {
                 String issueName = prop.readEntry("matchalert", String.format("item[%d].issueName", i), "");
                 item.setIssueName(issueName);
                 String severity = prop.readEntry("matchalert", String.format("item[%d].severity", i), "");
-                item.setServerity(BurpExtenderImpl.Severity.valueOf(severity));
+                item.setSeverity(MatchItem.Severity.valueOf(severity));
                 String confidence = prop.readEntry("matchalert", String.format("item[%d].confidence", i), "");
-                item.setConfidence(BurpExtenderImpl.Confidence.valueOf(confidence));
+                item.setConfidence(MatchItem.Confidence.valueOf(confidence));
             }
 
             alertItemList.add(item);
@@ -485,7 +484,7 @@ public final class Config {
 
             if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
                 prop.writeEntry("matchalert", String.format("item[%d].issueName", i), item.getIssueName());
-                prop.writeEntry("matchalert", String.format("item[%d].severity", i), item.getServerity().name());
+                prop.writeEntry("matchalert", String.format("item[%d].severity", i), item.getSeverity().name());
                 prop.writeEntry("matchalert", String.format("item[%d].confidence", i), item.getConfidence().name());
             }
 

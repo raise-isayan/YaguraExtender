@@ -150,6 +150,9 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 httpmessage = response;
                 guessCharset = response.getGuessCharset();
             }
+            if (guessCharset == null) {
+                guessCharset = "ISO-8859-1";
+            }             
             this.message = httpmessage;
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());

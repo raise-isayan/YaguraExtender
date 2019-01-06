@@ -655,6 +655,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     public void setSendToMenu(SendToMenu sendToMenu) {
         this.sendToMenu = sendToMenu;
+        
     }
 
     public final OptionProperty option = new OptionProperty();
@@ -668,7 +669,7 @@ public class BurpExtender extends BurpExtenderImpl
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 String charsetMode = getCharsetMode();
-                if (TabbetOption.UNIVERSAL_VIEW_PROPERTY.equals(evt.getPropertyName())) {
+                if (TabbetOption.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setEncodingProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
                     renewView();

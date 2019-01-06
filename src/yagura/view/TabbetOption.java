@@ -33,10 +33,12 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 
     public TabbetOption(int tabPlacement) {
         super(tabPlacement, WRAP_TAB_LAYOUT);
+        customizeComponents();
     }
 
     public TabbetOption(int tabPlacement, int tabLayoutPolicy) {
         super(tabPlacement, tabLayoutPolicy);
+        customizeComponents();
     }
 
     private final UniversalViewTab tabUniversalView = new UniversalViewTab();
@@ -51,7 +53,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.addTab("UniversalView", this.tabUniversalView);
+        this.addTab("CJK View", this.tabUniversalView);
         this.addTab("MatchReplace", this.tabMatchReplace);
         this.addTab("MatchAlert", this.tabMatchAlert);
         this.addTab("AutoResponder", this.tabAutoResponder);
@@ -61,7 +63,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.addTab("JTransCoder", this.tabJTransCoder);
         this.addTab("Version", this.tabVersion);
 
-        this.tabUniversalView.addPropertyChangeListener(UNIVERSAL_VIEW_PROPERTY, this);
+        this.tabUniversalView.addPropertyChangeListener(CJK_VIEW_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MATCHREPLACE_PROPERTY, this);
         this.tabMatchAlert.addPropertyChangeListener(MATCHALERT_PROPERTY, this);
         this.tabAutoResponder.addPropertyChangeListener(AUTO_RESPONDER_PROPERTY, this);

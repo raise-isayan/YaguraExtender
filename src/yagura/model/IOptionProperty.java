@@ -6,7 +6,7 @@ package yagura.model;
  */
 public interface IOptionProperty {
     public final static String LOAD_CONFIG_PROPERTY = "LoadConfigProperty";
-    public final static String UNIVERSAL_VIEW_PROPERTY = "EncodingProperty";
+    public final static String CJK_VIEW_PROPERTY = "EncodingProperty";
     public final static String MATCHREPLACE_PROPERTY = "MatchReplaceProperty";
     public final static String MATCHALERT_PROPERTY = "MatchAlertProperty";
     public final static String AUTO_RESPONDER_PROPERTY = "AutoResponderProperty";

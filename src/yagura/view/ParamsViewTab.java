@@ -6,13 +6,23 @@ import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
+import extend.model.base.CustomTableModel;
+import extend.util.SwingUtil;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import yagura.model.ParamsViewModel;
 
 /**
@@ -52,7 +62,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Byte.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -67,6 +77,11 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
             }
         });
         tableParams.getTableHeader().setReorderingAllowed(false);
+        tableParams.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tableParamsKeyTyped(evt);
+            }
+        });
         scrollParams.setViewportView(tableParams);
         if (tableParams.getColumnModel().getColumnCount() > 0) {
             tableParams.getColumnModel().getColumn(0).setResizable(false);
@@ -74,14 +89,29 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
 
         add(scrollParams, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void tableParamsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableParamsKeyTyped
+        String ss = CustomTableModel.tableCopy(tableParams);
+        SwingUtil.systemClipboardCopy(ss);
+    }//GEN-LAST:event_tableParamsKeyTyped
 
     private ParamsViewModel modelParams = null;
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
-
+    
+    private final Action copyAction = new AbstractAction() {
+        public void actionPerformed(ActionEvent evt) {
+            //選択されている行の列コピーの値を取得
+            JTable table = (JTable)evt.getSource();
+            CustomTableModel.tableCopy(table);
+        } 
+    }; 
+    
     private void customizeComponents() {
+        this.tableParams.getActionMap().put("copytAction", copyAction); 
+
         this.modelParams = new ParamsViewModel(this.tableParams.getModel());
         this.tableParams.setModel(this.modelParams);
-
+        
         //this.quickSearchTab.setSelectedTextArea(this.txtRaw);
         this.quickSearchTab.getSearchPanel().setVisible(false);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
@@ -177,6 +207,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                 this.reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
                 this.setParams(this.reqInfo);
             }
+            if (guessCharset == null) {
+                guessCharset = "ISO-8859-1";
+            }             
             this.message = httpmessage;
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());

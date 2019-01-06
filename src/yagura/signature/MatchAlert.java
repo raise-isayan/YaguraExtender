@@ -63,7 +63,7 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
 
             @Override
             public String getSeverity() {
-                return item.getServerity().toString();
+                return item.getSeverity().toString();
             }
 
             @Override

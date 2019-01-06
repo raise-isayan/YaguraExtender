@@ -1,7 +1,5 @@
 package yagura.model;
 
-import burp.BurpExtenderImpl.Confidence;
-import burp.BurpExtenderImpl.Severity;
 import extend.view.base.MatchItem;
 import java.util.EnumSet;
 
@@ -51,7 +49,7 @@ public class MatchAlertItem extends MatchItem {
     public void setTargetTools(EnumSet<TargetTool> targetTools) {
         this.targetTools = targetTools;
     }
-    private HighlightColor highlightColor = null;
+    private MatchItem.HighlightColor highlightColor = null;
 
     /**
      * @return the highlightColor
@@ -63,7 +61,7 @@ public class MatchAlertItem extends MatchItem {
     /**
      * @param highlightColor the highlightColor to set
      */
-    public void setHighlightColor(HighlightColor highlightColor) {
+    public void setHighlightColor(MatchItem.HighlightColor highlightColor) {
         this.highlightColor = highlightColor;
     }
 
@@ -105,30 +103,30 @@ public class MatchAlertItem extends MatchItem {
     /**
      * @return the serverity
      */
-    public Severity getServerity() {
+    public Severity getSeverity() {
         return serverity;
     }
 
     /**
      * @param serverity the serverity to set
      */
-    public void setServerity(Severity serverity) {
+    public void setSeverity(MatchItem.Severity serverity) {
         this.serverity = serverity;
     }
 
-    private Confidence confidence = Confidence.CERTAIN;
+    private MatchItem.Confidence confidence = MatchItem.Confidence.CERTAIN;
 
     /**
      * @return the confidence
      */
-    public Confidence getConfidence() {
+    public MatchItem.Confidence getConfidence() {
         return confidence;
     }
 
     /**
      * @param confidence the confidence to set
      */
-    public void setConfidence(Confidence confidence) {
+    public void setConfidence(MatchItem.Confidence confidence) {
         this.confidence = confidence;
     }
         
@@ -152,7 +150,7 @@ public class MatchAlertItem extends MatchItem {
         beans[7] = matchAlert.getHighlightColor();
         beans[8] = matchAlert.getComment();
         beans[9] = matchAlert.getIssueName();
-        beans[10] = matchAlert.getServerity();
+        beans[10] = matchAlert.getSeverity();
         beans[11] = matchAlert.getConfidence();
         return beans;
     }
@@ -170,7 +168,7 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setHighlightColor((HighlightColor) rows[7]);
         matchAlert.setComment((String) rows[8]);
         matchAlert.setIssueName((String) rows[9]);
-        matchAlert.setServerity((Severity) rows[10]); 
+        matchAlert.setSeverity((Severity) rows[10]); 
         matchAlert.setConfidence((Confidence)rows[11]); 
         return matchAlert;
     }
