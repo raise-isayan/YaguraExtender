@@ -335,14 +335,21 @@ public class MatchAlertItemDlg extends CustomDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        this.setModalResult(JOptionPane.OK_OPTION);
-        this.closeDialog(null);
+        MatchAlertItem item = getItem();
+        if (!item.isValidRegex()) {
+            JOptionPane.showMessageDialog(this, bundle.getString("view.matchalert.regex"), "MatchAlert", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            this.setModalResult(JOptionPane.OK_OPTION);
+            this.closeDialog(null);
+        }
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void chkCommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCommentStateChanged

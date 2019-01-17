@@ -17,13 +17,13 @@ import javax.swing.table.TableModel;
  *
  * @author raise.isayan
  */
-public class ParamsViewModel extends ObjectTableModel<IParameter> {
+public class ParamsViewModel extends ObjectTableModel<Parameter> {
 
     public ParamsViewModel(TableModel model) {
         super(model);
     }
 
-    public ParamsViewModel(TableModel model, List<IParameter> d) {
+    public ParamsViewModel(TableModel model, List<Parameter> d) {
         super(model, d);
     }
 

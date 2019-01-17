@@ -1,10 +1,12 @@
 package yagura.view;
 
+import extend.view.base.RegexItem;
 import yagura.model.KeywordHighlighter;
 import yagura.model.StartEndPosion;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
+import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -112,6 +114,8 @@ public class QuickSearchTab extends javax.swing.JPanel {
         add(pnlSearch, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    
     private void btnQuckOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuckOptionActionPerformed
         Dimension sz = this.btnQuckOption.getSize();
         this.popQuick.show(this.btnQuckOption, 0, sz.height);
@@ -192,7 +196,13 @@ public class QuickSearchTab extends javax.swing.JPanel {
                     && this.ignoreCase == this.mnuIgnoreCase.isSelected()) {
                 high.searchPosition(forward);
             } else {
-                this.quickSearch(ta, s);
+                if (isValidRegex(s)) {
+                    this.quickSearch(ta, s);
+                }
+                else {
+                    this.lblMatch.setText(bundle.getString("view.invalid.regex"));
+                    return;
+                }
             }
             ta.requestFocus();
             this.lblMatch.setText(String.format("%d match", high.getPositionCount()));
@@ -204,13 +214,21 @@ public class QuickSearchTab extends javax.swing.JPanel {
         }
     }
 
+    private boolean isValidRegex(String text) {
+        int flags = 0;
+        if (this.mnuIgnoreCase.isSelected()) {
+            flags |= Pattern.CASE_INSENSITIVE;
+        }
+        return RegexItem.compileRegex(text, flags, !this.mnuRegex.isSelected()) != null;
+    }
+    
     private boolean regex = true;
     private boolean ignoreCase = false;
-
+    
     protected void quickSearch(javax.swing.text.JTextComponent ta, String keyword) {
         if (ta.getHighlighter() instanceof KeywordHighlighter) {
             KeywordHighlighter hc = (KeywordHighlighter) ta.getHighlighter();
-            hc.setHighlightKeyword(ta.getDocument(), keyword, this.mnuRegex.isSelected(), this.mnuIgnoreCase.isSelected(), Color.RED);
+            hc.setHighlightKeyword(ta.getDocument(), keyword, !this.mnuRegex.isSelected(), this.mnuIgnoreCase.isSelected(), Color.RED);
             //this.keyword = keyword;
             this.regex = this.mnuRegex.isSelected();
             this.ignoreCase = this.mnuIgnoreCase.isSelected();

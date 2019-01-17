@@ -34,7 +34,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         customizeComponents();
     }
 
-    private QuickSearchTab quickSearchTab = new QuickSearchTab();
+    private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea(this.txtRaw);

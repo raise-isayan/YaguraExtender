@@ -10,19 +10,24 @@ import extend.model.base.CustomTableModel;
 import extend.util.SwingUtil;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
+import extend.view.base.NamedColor;
 import java.awt.Component;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.JList;
 import javax.swing.JTable;
-import javax.swing.KeyStroke;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
+import yagura.model.Parameter;
 import yagura.model.ParamsViewModel;
 
 /**
@@ -58,14 +63,14 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
 
             },
             new String [] {
-                "Data", "Type", "Name", "Value"
+                "Data", "Type", "Name", "Value", "Decode", "Encoding"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -89,14 +94,44 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
 
         add(scrollParams, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    private DefaultTableCellRenderer encodingTableRenderer = new DefaultTableCellRenderer() {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column) {
+            Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            return component;
+        }
+    };
+    
+    private final BasicComboBoxRenderer encodingComboBoxRenderer = new BasicComboBoxRenderer() {
+
+        @Override
+        public Component getListCellRendererComponent(
+                JList list,
+                Object value,
+                int index,
+                boolean isSelected,
+                boolean cellHasFocus) {
+            Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            return component;
+        }
+    };
+
     
     private void tableParamsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableParamsKeyTyped
-        String ss = CustomTableModel.tableCopy(tableParams);
+        String ss = CustomTableModel.tableCopy(this.tableParams);
         SwingUtil.systemClipboardCopy(ss);
     }//GEN-LAST:event_tableParamsKeyTyped
 
     private ParamsViewModel modelParams = null;
-    private QuickSearchTab quickSearchTab = new QuickSearchTab();
+    private final QuickSearchTab quickSearchTab = new QuickSearchTab();
+    private final JComboBox cmbEncoding = new JComboBox();
     
     private final Action copyAction = new AbstractAction() {
         public void actionPerformed(ActionEvent evt) {
@@ -108,7 +143,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     
     private void customizeComponents() {
         this.tableParams.getActionMap().put("copytAction", copyAction); 
-
         this.modelParams = new ParamsViewModel(this.tableParams.getModel());
         this.tableParams.setModel(this.modelParams);
         
@@ -117,6 +151,15 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
+        this.cmbEncoding.setMaximumRowCount(10);
+        this.cmbEncoding.setRenderer(this.encodingComboBoxRenderer);
+        this.cmbEncoding.addItem(""); // nonselect
+
+        this.tableParams.setDefaultRenderer(Object.class, this.encodingTableRenderer);
+
+        TableColumn colorColumn = this.tableParams.getColumnModel().getColumn(1);
+        colorColumn.setCellEditor(new DefaultCellEditor(this.cmbEncoding));
+        
         // Data        
         this.tableParams.getColumnModel().getColumn(0).setMinWidth(0);
         this.tableParams.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -136,7 +179,17 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         this.tableParams.getColumnModel().getColumn(2).setMinWidth(20);
         this.tableParams.getColumnModel().getColumn(2).setPreferredWidth(80);
         this.tableParams.getColumnModel().getColumn(2).setMaxWidth(300);
+                
+        // Decode
+        this.tableParams.getColumnModel().getColumn(3).setMinWidth(0);
+        this.tableParams.getColumnModel().getColumn(3).setPreferredWidth(80);
+        this.tableParams.getColumnModel().getColumn(3).setMaxWidth(0);
 
+        // Encoding
+        this.tableParams.getColumnModel().getColumn(4).setMinWidth(0);
+        this.tableParams.getColumnModel().getColumn(4).setPreferredWidth(40);
+        this.tableParams.getColumnModel().getColumn(4).setMaxWidth(0);
+        
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
@@ -234,7 +287,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         List<IParameter> params = reqInfo.getParameters();
         for (int i = 0; i < params.size(); i++) {
             IParameter p = params.get(i);
-            this.modelParams.addRow(p);
+            this.modelParams.addRow(new Parameter(p));
         }
     }
 
@@ -248,4 +301,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         return null;
     }
 
+    public void renewEncodingList(String defaultCharset, List<String> encodingLiest) {
+        this.cmbEncoding.removeAllItems();
+        for (String enc : encodingLiest) {
+            this.cmbEncoding.addItem(enc);
+        }
+        this.cmbEncoding.setSelectedItem(defaultCharset);
+    }
+    
 }

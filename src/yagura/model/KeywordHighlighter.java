@@ -1,5 +1,6 @@
 package yagura.model;
 
+import extend.view.base.RegexItem;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -41,21 +42,18 @@ public class KeywordHighlighter extends DefaultHighlighter {
      *
      * @param doc
      * @param keyword Highlightするキーワード
-     * @param regex 正規表現
+     * @param quote 正規表現
      * @param ignore 大文字小文字
      * @param color
      */
-    public void setHighlightKeyword(Document doc, String keyword, boolean regex, boolean ignore, Color color) {
+    public void setHighlightKeyword(Document doc, String keyword, boolean quote, boolean ignore, Color color) {
         try {
             this.keyword = keyword;
-            if (!regex) {
-                keyword = Pattern.quote(keyword);
-            }
             int flags = 0; //Pattern.MULTILINE;
             if (ignore) {
                 flags |= Pattern.CASE_INSENSITIVE;
             }
-            Pattern p = Pattern.compile(keyword, flags);
+            Pattern p = RegexItem.compileRegex(keyword, flags, quote);                        
             this.setHighlight(doc, p, color);
         } catch (BadLocationException ex) {
             Logger.getLogger(KeywordHighlighter.class.getName()).log(Level.SEVERE, null, ex);

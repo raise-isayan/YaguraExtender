@@ -213,10 +213,12 @@ public class AutoResponderItemDlg extends CustomDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        String repMath = this.txtRepMatch.getText().trim();
+        AutoResponderItem item = this.getItem();
         String mime = TransUtil.toEmpty(this.cmbContentType.getEditor().getItem());
-        if (repMath.isEmpty()) {
+        if (item.getMatch().isEmpty()) {
             JOptionPane.showMessageDialog(this, bundle.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
+        } else if (item.isValidRegex()) {
+            JOptionPane.showMessageDialog(this, bundle.getString("view.responder.repmatch.regex"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);            
         } else if (mime.isEmpty()) {
             JOptionPane.showMessageDialog(this, bundle.getString("view.responder.mime.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else {

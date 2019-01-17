@@ -7,6 +7,7 @@ import burp.IResponseInfo;
 import extend.util.Util;
 import extend.view.base.MatchItem;
 import extend.view.base.NamedColor;
+import extend.view.base.RegexItem;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.SystemColor;
@@ -22,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -600,6 +602,8 @@ public class JSearchTab extends javax.swing.JPanel {
     private volatile boolean querying = false;
     private volatile boolean cancel = false;
 
+    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();    
     
     public void search() {
@@ -609,6 +613,10 @@ public class JSearchTab extends javax.swing.JPanel {
         } else if (!this.cancel && !this.querying) {
             String queryText = this.txtSearch.getText();
             if (queryText.length() > 0) {
+                if (!isValidRegex(queryText)) {
+                    lblProgress.setText(bundle.getString("view.invalid.regex"));
+                    return ;
+                }
                 Runnable search = new Runnable() {
 
                     @Override
@@ -623,20 +631,26 @@ public class JSearchTab extends javax.swing.JPanel {
     }
 
     private final String SEARCH_PROGRESS = "%1$.1f%%";
+
+    private boolean isValidRegex(String text) {
+        int flags = 0;
+        if (this.chkIgnoreCase.isSelected()) {
+            flags |= Pattern.CASE_INSENSITIVE;
+        }
+        return RegexItem.compileRegex(text, flags, !this.chkRegExp.isSelected()) != null;
+    }
     
     public /*synchronized*/ void search(String text) {
         this.querying = true;
         this.btnSearch.setText("Stop");
         // all clear
         this.modelSearch.removeAll();
-        int flags = 0; //Pattern.MULTILINE;
+        int flags = 0;
         if (this.chkIgnoreCase.isSelected()) {
             flags |= Pattern.CASE_INSENSITIVE;
         }
-        if (!this.chkRegExp.isSelected()) {
-            text = Pattern.quote(text);
-        }
-        Pattern p = Pattern.compile(text, flags);
+        Pattern p = RegexItem.compileRegex(text, flags, !this.chkRegExp.isSelected());
+
         IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
