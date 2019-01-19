@@ -170,7 +170,7 @@ public class MatchReplaceTab extends javax.swing.JPanel {
 
         add(tabMatchReplace, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final CustomListModel modelReplace = new CustomListModel();
     private final ListDataListener listDataListener = new ListDataListener() {
 
@@ -231,7 +231,7 @@ public class MatchReplaceTab extends javax.swing.JPanel {
 }//GEN-LAST:event_btnRepEditActionPerformed
 
     private void btnRepRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepRemoveActionPerformed
-        if (JOptionPane.showConfirmDialog(this, bundle.getString("view.matchreplace.remove"), "Match and Replace", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, BUNDLE.getString("view.matchreplace.remove"), "Match and Replace", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             String name = this.getReplaceSelectedName();           
             this.modelReplace.removeElement(name);
             this.replaceMap.remove(name);

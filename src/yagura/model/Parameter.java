@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import burp.IParameter;
@@ -55,9 +50,13 @@ public class Parameter implements IParameter {
         return this.parameter.getValueEnd();
     }
 
-//    public String getValue() {
-//        return Util.decodeMessage(Util.getRawByte(parameter.getValue()), encoding);
-//    }
+    public String getUniversalName() {
+        return Util.decodeMessage(Util.getRawByte(parameter.getName()), encoding);
+    }
+        
+    public String getUniversalValue() {
+        return Util.decodeMessage(Util.getRawByte(parameter.getValue()), encoding);
+    }
             
     private  String encoding = null;
 

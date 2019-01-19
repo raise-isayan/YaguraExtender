@@ -10,7 +10,6 @@ import extend.view.base.HttpResponse;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -179,12 +178,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     @Override
     public byte[] getSelectedData() {
-        try {
-            String selectText = this.txtRaw.getSelectedText();
-            return selectText.getBytes(this.quickSearchTab.getSelectedEncoding());
-        } catch (UnsupportedEncodingException ex) {
-            return new byte[]{};
-        }
+        return null;
     }
 
     public String getSelectedText() {

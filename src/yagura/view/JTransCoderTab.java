@@ -48,6 +48,46 @@ public class JTransCoderTab extends javax.swing.JPanel {
         customizeComponents();
     }
 
+    private void customizeComponents() {
+        this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
+        this.hexOutputViewTab.setEnabled(false);
+
+        this.tabbetInput.addTab("Hex", this.hexInputViewTab);
+        this.hexInputViewTab.setEnabled(false);
+
+        this.txtOutputRaw.setEditable(false);
+
+        this.txtNumStart.setDocument(new SwingUtil.IntegerDocument());
+        this.txtNumEnd.setDocument(new SwingUtil.IntegerDocument());
+        this.txtNumStep.setDocument(new SwingUtil.IntegerDocument());
+
+        this.txtNumStart.setText("0");
+        this.txtNumEnd.setText("100");
+        this.txtNumStep.setText("1");
+
+        JDateComponentFactory componentFactory = new JDateComponentFactory();
+        datePickerStart = (JDatePickerImpl) componentFactory.createJDatePicker();
+        datePickerEnd = (JDatePickerImpl) componentFactory.createJDatePicker();
+
+        pnlDateStart.add(datePickerStart, BorderLayout.CENTER);
+        pnlDateEnd.add(datePickerEnd, BorderLayout.CENTER);
+
+        this.pnlDateStart.add(datePickerStart);
+        this.pnlDateEnd.add(datePickerEnd);
+
+        this.txtDateStep.setDocument(new SwingUtil.IntegerDocument());
+        this.txtDateStep.setText("1");
+
+        this.txtLengthNum.setDocument(new SwingUtil.IntegerDocument());
+        this.txtCountNum.setDocument(new SwingUtil.IntegerDocument());
+        this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), "Shift_JIS");
+
+        this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
+
+        this.pnlCharacter.setLayout(verticalFlowLayout1);
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1396,54 +1436,14 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private final HexViewTab hexInputViewTab = new HexViewTab();
     private final HexViewTab hexOutputViewTab = new HexViewTab();
-
-    private void customizeComponents() {
-        this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
-        this.hexOutputViewTab.setEnabled(false);
-
-        this.tabbetInput.addTab("Hex", this.hexInputViewTab);
-        this.hexInputViewTab.setEnabled(false);
-
-        this.txtOutputRaw.setEditable(false);
-
-        this.txtNumStart.setDocument(new SwingUtil.IntegerDocument());
-        this.txtNumEnd.setDocument(new SwingUtil.IntegerDocument());
-        this.txtNumStep.setDocument(new SwingUtil.IntegerDocument());
-
-        this.txtNumStart.setText("0");
-        this.txtNumEnd.setText("100");
-        this.txtNumStep.setText("1");
-
-        JDateComponentFactory componentFactory = new JDateComponentFactory();
-        datePickerStart = (JDatePickerImpl) componentFactory.createJDatePicker();
-        datePickerEnd = (JDatePickerImpl) componentFactory.createJDatePicker();
-
-        pnlDateStart.add(datePickerStart, BorderLayout.CENTER);
-        pnlDateEnd.add(datePickerEnd, BorderLayout.CENTER);
-
-        this.pnlDateStart.add(datePickerStart);
-        this.pnlDateEnd.add(datePickerEnd);
-
-        this.txtDateStep.setDocument(new SwingUtil.IntegerDocument());
-        this.txtDateStep.setText("1");
-
-        this.txtLengthNum.setDocument(new SwingUtil.IntegerDocument());
-        this.txtCountNum.setDocument(new SwingUtil.IntegerDocument());
-        this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), "Shift_JIS");
-
-        this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
-
-        this.pnlCharacter.setLayout(verticalFlowLayout1);
-
-    }
-
+    
     /*
      * ステータスメッセージ書式
      */
     private static final MessageFormat STATUS_TEXT_FORMAT = new MessageFormat(
             "Length:{0,number} Position:{1,number} SelectLength:{2,number}"); // @jve:decl-index=0:
 
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void txtNumFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumFormatKeyPressed
         //this.lblExampleValue.setText(String.format(this.txtFormat.getText(), 123));
@@ -1932,7 +1932,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                     String[] list = TransUtil.generaterList(this.txtNumFormat.getText(), startNum, endNum, stepNum);
                     this.txtGenarate.setText(TransUtil.join("\r\n", list));
                 } catch (IllegalFormatException e) {
-                    JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IllegalArgumentException e) {
                     JOptionPane.showMessageDialog(this, e.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -1944,7 +1944,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                     String[] list = TransUtil.dateList(this.txtDateFormat.getText(), dateStart, dateEnd, stepNum);
                     this.txtGenarate.setText(TransUtil.join("\r\n", list));
                 } catch (IllegalFormatException e) {
-                    JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IllegalArgumentException e) {
                     JOptionPane.showMessageDialog(this, e.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -1954,7 +1954,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
             int length = this.getCharacterLength();
             String rangeChars = this.getRangeChars();
             if (rangeChars.length() == 0) {
-                JOptionPane.showMessageDialog(this, bundle.getString("view.transcoder.chars.empty"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.chars.empty"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 String[] list = TransUtil.randomList(rangeChars, length, count);
                 this.txtGenarate.setText(TransUtil.join("\r\n", list));
@@ -1976,7 +1976,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
             FileOutputStream fstm = null;
             try {
                 File file = filechooser.getSelectedFile();
-                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(bundle.getString("extend.exists.overwrite.message"), file.getName()), bundle.getString("extend.exists.overwrite.confirm"))) {
+                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                     fstm = new FileOutputStream(file);
                     fstm.write(Util.encodeMessage(s, this.getSelectEncode()));
                     fstm.flush();

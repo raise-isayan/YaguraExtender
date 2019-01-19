@@ -13,7 +13,6 @@ import yagura.external.TransUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -158,12 +157,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 
     @Override
     public byte[] getSelectedData() {
-        try {
-            String selectText = this.txtHtmlComment.getSelectedText();
-            return selectText.getBytes(this.quickSearchTab.getSelectedEncoding());
-        } catch (UnsupportedEncodingException ex) {
-            return new byte[]{};
-        }
+        return null;
     }
 
     public String getSelectedText() {

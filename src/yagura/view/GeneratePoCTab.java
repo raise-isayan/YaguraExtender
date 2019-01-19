@@ -276,7 +276,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         add(splitGeneratorPoC, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
@@ -288,7 +288,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             FileOutputStream fstm = null;
             try {
                 File file = filechooser.getSelectedFile();
-                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(bundle.getString("extend.exists.overwrite.message"), file.getName()), bundle.getString("extend.exists.overwrite.confirm"))) {
+                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                     fstm = new FileOutputStream(file);
                     fstm.write(Util.encodeMessage(ta.getText(), encoding));
                     fstm.flush();
@@ -480,12 +480,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     @Override
     public byte[] getSelectedData() {
-        try {
-            String selectText = this.txtGeneratorPoC.getSelectedText();
-            return selectText.getBytes(this.quickSearchTab.getSelectedEncoding());
-        } catch (UnsupportedEncodingException ex) {
-            return new byte[]{};
-        }
+        return null;
     }
 
     public String getSelectedText() {

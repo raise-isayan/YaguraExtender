@@ -183,7 +183,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
@@ -200,7 +200,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         MatchReplaceItem item = getItem();
         if (!item.isValidRegex()) {
-            JOptionPane.showMessageDialog(this, bundle.getString("view.replaceitem.regex"), "MatchReplace", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.replaceitem.regex"), "MatchReplace", JOptionPane.INFORMATION_MESSAGE);
         } else {
             this.setModalResult(JOptionPane.OK_OPTION);
             this.closeDialog(null);

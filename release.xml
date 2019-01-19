@@ -9,8 +9,8 @@
 
     <target name="release">
         <antcall target="margepkg"/>
+        <antcall target="help"/>
         <antcall target="releasepkg"/>
-        <antcall target="releasehelp"/>
         <antcall target="mkhash"/>
     </target>
 
@@ -58,13 +58,6 @@
 
     <target name="help" depends="ascdoctor-def">
         <asciidoctor:convert sourceDirectory="help" outputDirectory="help" imagesDir="." backend="html5"/>
-    </target>
-
-    <target name="releasehelp" depends="help">
-        <zip basedir="." destfile="${help.zip}" update="false">
-            <include name="help/**"/>
-            <include name="help/images/**"/>
-        </zip>
     </target>
     
     <target name="clean">

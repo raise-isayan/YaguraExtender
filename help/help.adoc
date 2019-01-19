@@ -29,6 +29,9 @@
 * JDatePicker
 ** https://github.com/JDatePicker/JDatePicker
 ** BSD ライセンス
+ 
+* MPL 1.1、GPL 2. 
+* https://github.com/albfernandez/juniversalchardet
 
 * Use Icon
 ** http://www.famfamfam.com/lab/icons/silk/
@@ -43,11 +46,14 @@ image:images/Extender_Yagura.png[Extender]
 
 == YaguraExtenderタブ
 
-=== Encoding
+=== CJK Viewタブ
+
+image:images/custom_encoding.png[CJK Viewタブ]
+
+いわゆるCJK(中国語、日本語、韓国語)に対応するための設定を行うタブです。
 使用頻度の高い Encoding を選択することができます。ここで選択した値は、JTransCoderやJSONのView表示画面にて選択可能なEncodingとして表示されます。
 
-==== Encodingタブ
-image:images/custom_encoding.png[Encodingタブ]
+==== CJK View
 
 Target:: 
     Javaで利用可能なすべてのエンコーディングリスト一覧が表示されます。
@@ -67,12 +73,33 @@ clip bord auto decode::
     クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。 +
     現在のバージョンではサポートされていません。
 
-=== MatchReplace
+==== CJK Message View
+
+Cenerate PoC:: 
+   メッセージタブにCenerate PoCタブを表示するようにします。
+   
+HTML Comment:: 
+   メッセージタブにHTML Commentタブを表示するようにします。
+
+JSON:: 
+   メッセージタブにJSONタブを表示するようにします。
+
+Universal Raw:: 
+   メッセージタブにCJKに対応したRawタブを表示するようにします。
+   現時点ではリードオンリーです。
+
+Universal Param:: 
+   メッセージタブにCJKに対応したParamタブを表示するようにします。
+   現時点ではリードオンリーです。
+
+=== MatchReplaceタブ
+
+image:images/custom_matchreplace.png[MatchReplaceタブ]
+
 Burp sute 本体の Proxy => OptionタブのMatch and Replaceの拡張になります。複数のMatch and Replace を作成して切り替えられます。
 置換文字列として正規表現の前方参照を指定できます。Burp本体のMatch and Replaceとは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。
 
-==== MatchReplaceItemタブ
-image:images/custom_matchreplace.png[MatchReplaceタブ]
+==== MatchReplace
 
 [Select]ボタン:: 
     選択したMatchReplaceを適用します。
@@ -156,7 +183,9 @@ Metachar::
 |\uhhhh  |Unicode表記、 hhhhにはUnicodeコードを16進指定する。Unicode文字は推測したレスポンスの推測した文字コードに自動で変換されます。対応する文字が存在しない場合、?に変換されます。
 |=======================
 
-=== MatchAlert
+=== MatchAlertタブ
+
+image:images/custom_matchalert.png[MatchAlertタブ]
 
 指定した文字列にマッチする文字がレスポンスに現れた場合に通知してくれます。 ExceptionなどのErrorCode系の文字列を登録することを想定しています。
 通知方法には以下の５つの方法があり、同時に複数の方法を選択できます
@@ -170,8 +199,7 @@ Metachar::
   proxyにチェックが入っている場合にしか意味がありません。
 . マッチした内容と指定した値にてScannerのIssueを作成します。
 
-==== MatchAlertタブ
-image:images/custom_matchalert.png[MatchAlertタブ]
+==== MatchAlert
 
 [Enable Alert]チェックボックス:: 
     チェック時にMatchAlert機能を有効にします。
@@ -221,13 +249,15 @@ scanner issue::
      文字列がマッチした場合、該当のScannerのIssueを作成します。
      
 
-=== AutoResponder
+=== AutoResponderタブ
+
+image:images/custom_autoresponder.png[AutoResponderタブ]
+
 指定したURLにマッチする場合に指定したファイルの内容でレスポンスを返します。
 FidderのAutoResponderに似た機能を持ちますがBurp suiteのAPIでは完全にシュミュレートは
 困難なため疑似的に挙動をまねています。
 
-==== AutoResponderタブ
-image:images/custom_autoresponder.png[AutoResponderタブ]
+==== AutoResponder
 
 [Enable rule]チェックボックス::
      AutoResponderを有効にします。
@@ -241,7 +271,7 @@ image:images/custom_autoresponder.png[AutoResponderタブ]
 [Add]、[Update]ボタン:: 
     AutoResponder temを追加します。編集中時は更新します。
 
-==== AutoResponder Item編集ダイヤログ
+==== AutoResponder Item 編集ダイヤログ
 image:images/custom_autoresponder_item.png[AutoResponder Item 編集ダイヤログ]
 
 Match(検索文字列):: 
@@ -260,12 +290,14 @@ Content-Type::
 Replace:: 
     置き換える対象のファイルのパスを指定します。
 
-=== SendTo
+=== SendToタブ
+
+image:images/custom_sendto.png[SendToタブ]
+
 Burpがもつ拡張メニューを利用した機能です。
 BurpのHistory等から表示される右クリックのメニューを増やすことができ、 メニューから指定した機能を呼び出すことができます。送られる内容は、選択したHistoryのリクエストとレスポンスの内容になります。 
 
-==== SendToタブ
-image:images/custom_sendto.png[SendToタブ]
+==== SendTo
 
 [Send To Submenu]チェックボックス:: 
     チェックした場合、Send To Menuをサブメニューで表示します。
@@ -285,7 +317,7 @@ image:images/custom_sendto.png[SendToタブ]
     SendToItemを追加します。
     空のSendToItemの編集ダイヤログが表示されます。
 
-==== SendToItem編集ダイヤログ
+==== SendToItem 編集ダイヤログ
 
 SendToには、Baseタブと、Extendタブがあります。 Baseタブでは、バイナリエディタやファイル比較ツール等を登録すると便利です。 右クリックからエディタを呼び出すと、一時的に作られたファイルを引数にしてバイナリエディタが起動されます。 比較ツールの場合、2つHistoryを選択することで比較することができます。 これは BurpのHEX ダンプやCompare機能が使いにくいためにつくりました。
 
@@ -393,13 +425,14 @@ image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
      add host to scope:: 
           URLのスキームとホストをscopeに追加します。
 
-=== Logging
+=== Loggingタブ
+
+image:images/custom_logging.png[Loggingタブ]
 
 ログの自動ロギング機能です。
 この機能では、毎回ログの選択を行わなくても自動でログを 保存してくれます。 
 
-==== Loggingタブ
-image:images/custom_logging.png[Loggingタブ]
+==== Logging
 
 auto logging:: 
     チェックすると自動でログを記録します。LogDirで指定したディレクトリに作成されます。
@@ -431,11 +464,13 @@ history is included::
      auto loggingがオフの状態でのみチェックできます。
      チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。
 
-=== JSearch
+=== JSearchタブ
+
+image:images/custom_jsearch.png[JSearchタブ]
+
 JSearch タブはProxyのHistory一覧から文字を検索するための機能です。
 
-==== JSearchタブ
-image:images/custom_jsearch.png[JSearchタブ]
+==== JSearch
 
 [Search]ボタン:: 
      ProxyのHistory一覧からテキストボックスに入力した値で検索します。
@@ -445,6 +480,9 @@ Regexp::
 
 IgnoreCase:: 
     チェック時大文字小文字を無視します。
+
+in-scope only:: 
+    検索をBurpのTargetタブのscopeにマッチするものに限定します。
 
 request::
     検索対象をリクエスト(Header,Body)に限定します。
@@ -458,10 +496,10 @@ commint::
 Search Encoding::
     検索時のエンコーディングを指定します。
 
-=== JTransCoder
+=== JTransCoderタブ
 Transcoder タブは各種エンコード、デコードを行うための機能です。
 
-==== Translatorタブ
+==== Translator
 image:images/custom_jtranscoder.png[Translatorタブ]
 
 Encode Type:: 

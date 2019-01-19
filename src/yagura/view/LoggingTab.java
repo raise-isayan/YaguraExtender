@@ -241,7 +241,7 @@ public class LoggingTab extends javax.swing.JPanel {
             if (file.isDirectory() && file.exists()) {
                 this.txtLogDir.setText(file.getAbsolutePath());
             } else {
-                JOptionPane.showMessageDialog(this, "Logging", bundle.getString("view.logging.choosedir"), JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(this, "Logging", BUNDLE.getString("view.logging.choosedir"), JOptionPane.OK_OPTION);
             }
         }
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
@@ -274,7 +274,7 @@ public class LoggingTab extends javax.swing.JPanel {
     private void chkToolLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkToolLogActionPerformed
        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkToolLogActionPerformed
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void customizeComponents() {
         this.txtFileLimitSize.setDocument(new SwingUtil.IntegerDocument());

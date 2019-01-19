@@ -149,14 +149,13 @@ public class AutoResponderItemDlg extends CustomDialog {
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addComponent(chkRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(chkIgnoreCase)
-                        .addContainerGap(12, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkIgnoreCase))
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkBodyOnly)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(chkBodyOnly)))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,7 +185,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     
     private void txtRepReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepReplaceActionPerformed
 
@@ -216,11 +215,11 @@ public class AutoResponderItemDlg extends CustomDialog {
         AutoResponderItem item = this.getItem();
         String mime = TransUtil.toEmpty(this.cmbContentType.getEditor().getItem());
         if (item.getMatch().isEmpty()) {
-            JOptionPane.showMessageDialog(this, bundle.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else if (item.isValidRegex()) {
-            JOptionPane.showMessageDialog(this, bundle.getString("view.responder.repmatch.regex"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);            
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.regex"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);            
         } else if (mime.isEmpty()) {
-            JOptionPane.showMessageDialog(this, bundle.getString("view.responder.mime.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.mime.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else {
             this.setModalResult(JOptionPane.OK_OPTION);
             this.closeDialog(null);

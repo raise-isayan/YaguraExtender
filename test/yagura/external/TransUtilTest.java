@@ -93,6 +93,9 @@ public class TransUtilTest {
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("%21%22%23%24%25%26%27%28%29%3d%7e%7c%60%7b%7d*%2b%3c%3e%3f_%5cabcedf"));
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("%21%22%23%24%25%26%27%28%29%3D%7E%7C%60%7B%7D*%2B%3C%3E%3F_%5cabcedf"));
             
+            assertEquals("入口", TransUtil.toSmartDecode("%93%fc%8c%fb"));
+            assertEquals("入口", TransUtil.toSmartDecode("%93%FC%8C%FB"));
+
             assertEquals("あいうえお", TransUtil.toSmartDecode("%82%a0%82%a2%82%a4%82%a6%82%a8"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("%82%A0%82%A2%82%A4%82%A6%82%A8"));
             
@@ -730,9 +733,24 @@ public class TransUtilTest {
      */
     @Test
     public void testGetUniversalGuessCode() {
+
         {
             try {
-                String expResult = "SHIFT_JIS";
+                assertEquals("US-ASCII", TransUtil.getUniversalGuessCode("0123456ABCDEF".getBytes("UTF-8"), "US-ASCII"));
+                assertEquals("Shift_JIS", TransUtil.getUniversalGuessCode("入口入口入口入口".getBytes("Shift_JIS")));
+                assertEquals("EUC-JP", TransUtil.getUniversalGuessCode("入口入口入口入口".getBytes("EUC-JP")));
+                assertEquals("UTF-8", TransUtil.getUniversalGuessCode("入口入口入口入口".getBytes("UTF-8")));
+//                assertEquals("UTF-16", TransUtil.getUniversalGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16BE")));
+//                assertEquals("UTF-16", TransUtil.getUniversalGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16LE"))); // UTF-16LE になるのがベスト
+                assertEquals("UTF-16", TransUtil.getUniversalGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16")));
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        {
+            try {
+                String expResult = "Shift_JIS";
                 String expValue = "あいうえお";
                 String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("Shift_JIS"), "UTF-8");
                 assertEquals(expResult, guessCharset);
@@ -743,7 +761,7 @@ public class TransUtilTest {
 
         {
             try {
-                String expResult = "SHIFT_JIS";
+                String expResult = "Shift_JIS";
                 String expValue = "①②③④⑤⑥⑦ⅩⅨあいうえおかきくけこ";
                 String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("MS932"), "UTF-8");
                 assertEquals(expResult, guessCharset);

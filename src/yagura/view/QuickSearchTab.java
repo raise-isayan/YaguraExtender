@@ -114,7 +114,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
         add(pnlSearch, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     
     private void btnQuckOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuckOptionActionPerformed
         Dimension sz = this.btnQuckOption.getSize();
@@ -200,7 +200,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
                     this.quickSearch(ta, s);
                 }
                 else {
-                    this.lblMatch.setText(bundle.getString("view.invalid.regex"));
+                    this.lblMatch.setText(BUNDLE.getString("view.invalid.regex"));
                     return;
                 }
             }

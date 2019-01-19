@@ -12,10 +12,10 @@ import extend.util.CustomVersion;
  */
 public final class Version extends CustomVersion {
 
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("burp/release");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/release");
 
     private Version() {
-        String ver = bundle.getString("version");
+        String ver = BUNDLE.getString("version");
         parseVersion(ver);
     }
 

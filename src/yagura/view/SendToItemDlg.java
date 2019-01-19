@@ -262,7 +262,7 @@ public class SendToItemDlg extends CustomDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private DefaultComboBoxModel modelExtend = null;
 
@@ -285,9 +285,9 @@ public class SendToItemDlg extends CustomDialog {
         String target = TransUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim();
         boolean server = this.chkServer.isSelected();
         if (this.isSelectedBase() && caption.isEmpty()) {
-            JOptionPane.showMessageDialog(this, bundle.getString("view.sendto.add.empty"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.sendto.add.empty"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
         } else if (this.isSelectedBase() && server && !(HttpUtil.startsWithHttp(target))) {
-            JOptionPane.showMessageDialog(this, bundle.getString("view.sendto.add.target"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.sendto.add.target"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
         } else {
             this.setModalResult(JOptionPane.OK_OPTION);
             this.closeDialog(null);

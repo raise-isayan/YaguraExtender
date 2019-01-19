@@ -21,7 +21,7 @@ import javax.swing.JFileChooser;
  * @author isayan
  */
 public class SendToExtend extends SendToMenuItem {
-    protected java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private File currentDirectory = new File(Config.getUserDir());
     private int repeternum = 0; 
     
@@ -82,7 +82,7 @@ public class SendToExtend extends SendToMenuItem {
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {
                     File file = filechooser.getSelectedFile();
-                    if (SwingUtil.isFileOverwriteConfirmed(file,String.format(bundle.getString("extend.exists.overwrite.message"), file.getName()), bundle.getString("extend.exists.overwrite.confirm"))) {
+                    if (SwingUtil.isFileOverwriteConfirmed(file,String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                         try (FileOutputStream fstm = new FileOutputStream(file)) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {                            
                                 fstm.write(messageItem.getRequest());

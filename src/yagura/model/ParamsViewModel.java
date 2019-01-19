@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.model;
 
 import burp.IParameter;
@@ -12,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
+import yagura.external.TransUtil;
 
 /**
  *
@@ -37,18 +33,38 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
             IParameter param = this.getData(row);
             switch (col) {
                 case 0: // 
+                {
                     value = param;
                     break;
+                }
                 case 1: // Type
+                {
                     value = getType(param.getType());
                     break;
+                }
                 case 2: // Name
-//                    value = param.getName();
-                    value = Util.decodeMessage(Util.getRawByte(param.getName()), encoding);
+                {
+                    String raw = param.getName();
+                    if (this.urldecode) {
+                        value = TransUtil.decodeUrl(raw, encoding);
+                    }
+                    else {
+                        value = Util.decodeMessage(Util.getRawByte(raw), encoding);                
+                    }
                     break;
+                }
                 case 3: // Value
-//                    value = param.getValue();
-                    value = Util.decodeMessage(Util.getRawByte(param.getValue()), encoding);
+                {
+                    String raw = param.getValue();
+                    if (this.urldecode) {
+                        value = TransUtil.decodeUrl(raw, encoding);
+                    }
+                    else {
+                        value = Util.decodeMessage(Util.getRawByte(raw), encoding);
+                    }
+                    break;
+                }
+                default:
                     break;
             }
         } catch (Exception ex) {
@@ -104,4 +120,14 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
         this.encoding = encoding;
     }
 
+    private boolean urldecode = false;
+    
+    public boolean getUrlDecode() {
+        return this.urldecode;
+    }
+
+    public void setUrlDeocde(boolean urldecode) {
+        this.urldecode = urldecode;
+    }
+    
 }

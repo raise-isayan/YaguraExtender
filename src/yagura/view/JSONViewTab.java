@@ -235,12 +235,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
     @Override
     public byte[] getSelectedData() {
-        try {
-            String selectText = this.txtJSON.getSelectedText();
-            return selectText.getBytes(this.quickSearchTab.getSelectedEncoding());
-        } catch (UnsupportedEncodingException ex) {
-            return new byte[]{};
-        }
+        return null;
     }
 
     public void clearView() {

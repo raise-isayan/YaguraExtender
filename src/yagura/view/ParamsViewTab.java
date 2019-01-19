@@ -8,12 +8,12 @@ import burp.IParameter;
 import burp.IRequestInfo;
 import extend.model.base.CustomTableModel;
 import extend.util.SwingUtil;
+import extend.util.Util;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
-import extend.view.base.NamedColor;
 import java.awt.Component;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,6 +27,7 @@ import javax.swing.JTable;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
+import yagura.external.TransUtil;
 import yagura.model.Parameter;
 import yagura.model.ParamsViewModel;
 
@@ -53,24 +54,42 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlLocation = new javax.swing.JPanel();
+        lblLocation = new javax.swing.JLabel();
+        btnDecode = new javax.swing.JToggleButton();
         scrollParams = new javax.swing.JScrollPane();
         tableParams = new javax.swing.JTable();
 
         setLayout(new java.awt.BorderLayout());
+
+        pnlLocation.setLayout(new java.awt.BorderLayout());
+
+        lblLocation.setText("http://localhost/");
+        pnlLocation.add(lblLocation, java.awt.BorderLayout.LINE_START);
+
+        btnDecode.setText("Decode");
+        btnDecode.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                btnDecodeStateChanged(evt);
+            }
+        });
+        pnlLocation.add(btnDecode, java.awt.BorderLayout.EAST);
+
+        add(pnlLocation, java.awt.BorderLayout.NORTH);
 
         tableParams.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Data", "Type", "Name", "Value", "Decode", "Encoding"
+                "Data", "Type", "Name", "Value"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -129,6 +148,11 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         SwingUtil.systemClipboardCopy(ss);
     }//GEN-LAST:event_tableParamsKeyTyped
 
+    private void btnDecodeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnDecodeStateChanged
+        this.modelParams.setUrlDeocde(this.btnDecode.isSelected());
+        this.tableParams.updateUI();
+    }//GEN-LAST:event_btnDecodeStateChanged
+
     private ParamsViewModel modelParams = null;
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
     private final JComboBox cmbEncoding = new JComboBox();
@@ -179,17 +203,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         this.tableParams.getColumnModel().getColumn(2).setMinWidth(20);
         this.tableParams.getColumnModel().getColumn(2).setPreferredWidth(80);
         this.tableParams.getColumnModel().getColumn(2).setMaxWidth(300);
-                
-        // Decode
-        this.tableParams.getColumnModel().getColumn(3).setMinWidth(0);
-        this.tableParams.getColumnModel().getColumn(3).setPreferredWidth(80);
-        this.tableParams.getColumnModel().getColumn(3).setMaxWidth(0);
-
-        // Encoding
-        this.tableParams.getColumnModel().getColumn(4).setMinWidth(0);
-        this.tableParams.getColumnModel().getColumn(4).setPreferredWidth(40);
-        this.tableParams.getColumnModel().getColumn(4).setMaxWidth(0);
-        
+                        
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
@@ -204,14 +218,19 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     };
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnDecode;
+    private javax.swing.JLabel lblLocation;
+    private javax.swing.JPanel pnlLocation;
     private javax.swing.JScrollPane scrollParams;
     private javax.swing.JTable tableParams;
     // End of variables declaration//GEN-END:variables
 
     private HttpMessage message = null;
+    private IMessageEditorController controller = null;
 
     @Override
     public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+        this.controller = controller;
         return this;
     }
 
@@ -239,6 +258,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                     count++;
                 }
             }
+            this.btnDecode.setSelected(false);
+            this.btnDecode.setEnabled(requestInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED);
             return count > 0;
         }
         return false;
@@ -255,9 +276,17 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
             if (isRequest) {
                 HttpRequest request = HttpRequest.parseHttpRequest(content);
                 httpmessage = request;
-                guessCharset = request.getGuessCharset();
+//                guessCharset = request.getGuessCharset();
                 this.content = content;
-                this.reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
+                this.reqInfo = BurpExtender.getHelpers().analyzeRequest(this.controller.getHttpService(), content);
+                if (this.reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
+                    guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), "8859_1")));
+                }
+                else {
+                    guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());                
+                }
+
+                this.setLocation(this.reqInfo);
                 this.setParams(this.reqInfo);
             }
             if (guessCharset == null) {
@@ -269,7 +298,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
             this.encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {
-            Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -282,6 +313,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         }
     }
 
+    public void setLocation(IRequestInfo reqInfo) {
+        this.lblLocation.setText(String.format("%s %s", reqInfo.getMethod(), reqInfo.getUrl().toString()));
+    }
+        
     public void setParams(IRequestInfo reqInfo) {
         this.modelParams.removeAll();
         List<IParameter> params = reqInfo.getParameters();

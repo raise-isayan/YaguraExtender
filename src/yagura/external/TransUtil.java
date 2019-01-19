@@ -10,7 +10,6 @@ import java.net.IDN;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.text.DecimalFormat;
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -1270,7 +1269,7 @@ public class TransUtil {
         UniversalDetector detector = new UniversalDetector(null);
         int nread = -1;
         try {
-            while ((nread = fis.read(buf)) > 0 && !detector.isDone()) {
+            while ((nread = fis.read(buf)) >= 0 && !detector.isDone()) {
                 detector.handleData(buf, 0, nread);
             }
         } catch (IOException ex) {
@@ -1289,15 +1288,21 @@ public class TransUtil {
 
     static {
         // universalchardet unknown support
+        CHARSET_ALIAS.put("UTF-16BE", "UTF-16");
         CHARSET_ALIAS.put("HZ-GB-23121", "GB2312");
         CHARSET_ALIAS.put("X-ISO-10646-UCS-4-34121", "UTF-32");
         CHARSET_ALIAS.put("X-ISO-10646-UCS-4-21431", "UTF-32");
     }
     
     public static String normalizeCharset(String charsetName) {
-        // alias
-        String aliasName = CHARSET_ALIAS.get(charsetName);        
-        String charset = HttpUtil.normalizeCharset(aliasName);
+        String charset = charsetName;
+        String aliasName = CHARSET_ALIAS.get(charsetName);   
+        if (aliasName == null) {
+            charset = HttpUtil.normalizeCharset(charsetName);
+        }
+        else {
+            charset = aliasName;
+        }
         return charset;
     }
     
