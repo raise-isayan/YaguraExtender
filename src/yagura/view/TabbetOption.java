@@ -49,6 +49,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     private final LoggingTab tabLogging = new LoggingTab();
     private final JSearchTab tabJSearch = new JSearchTab();
     private final JTransCoderTab tabJTransCoder = new JTransCoderTab();
+
     private final VersionTab tabVersion = new VersionTab();
 
     @SuppressWarnings("unchecked")
@@ -61,6 +62,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.addTab("Logging", this.tabLogging);
         this.addTab("JSearch", this.tabJSearch);
         this.addTab("JTransCoder", this.tabJTransCoder);
+//        this.addTab("RapidFire", this.tabRapidFireTab);
         this.addTab("Version", this.tabVersion);
 
         this.tabUniversalView.addPropertyChangeListener(CJK_VIEW_PROPERTY, this);

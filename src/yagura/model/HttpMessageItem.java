@@ -19,9 +19,10 @@ import javax.swing.RowFilter;
  * @author isayan
  */
 public class HttpMessageItem implements IHttpRequestResponse {
+
     private IHttpRequestResponse httpItem = null;
     private int ordinal = -1;
-    
+
     private String host = "";
     private int port;
     private String protocol;
@@ -101,7 +102,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     @Override
-    public byte[] getRequest()  {
+    public byte[] getRequest() {
         if (this.httpItem != null) {
             return this.httpItem.getRequest();
         } else {
@@ -119,7 +120,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     @Override
-    public void setRequest(byte[] request)  {
+    public void setRequest(byte[] request) {
         if (this.httpItem != null) {
             this.httpItem.setRequest(request);
         } else {
@@ -129,7 +130,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     @Override
-    public byte[] getResponse()  {
+    public byte[] getResponse() {
         if (this.httpItem != null) {
             return this.httpItem.getResponse();
         } else {
@@ -138,7 +139,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     @Override
-    public void setResponse(byte[] response)  {
+    public void setResponse(byte[] response) {
         if (this.httpItem != null) {
             this.httpItem.setResponse(response);
         } else {
@@ -148,12 +149,11 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     public short getStatusCode() throws Exception {
-    if (this.httpItem != null) {
+        if (this.httpItem != null) {
             if (this.httpItem.getResponse() != null) {
                 IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(this.httpItem.getResponse());
                 return resInfo.getStatusCode();
-            }
-            else {
+            } else {
                 return 0;
             }
         } else {
@@ -171,14 +171,14 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     @Override
-    public void setComment(String comment)  {
+    public void setComment(String comment) {
         if (this.httpItem != null) {
             this.httpItem.setComment(comment);
         } else {
             this.comment = comment;
         }
     }
-    
+
     @Override
     public String getHighlight() {
         if (this.httpItem != null) {
@@ -201,10 +201,10 @@ public class HttpMessageItem implements IHttpRequestResponse {
         return this.memo;
     }
 
-    public void setMemo(String memo)  {
+    public void setMemo(String memo) {
         this.memo = memo;
     }
-    
+
     public static HttpMessageItem toHttpMessageItem(RowFilter.Entry<? extends Object, ? extends Object> entry) {
         final RowFilter.Entry<? extends Object, ? extends Object> row = entry;
         IHttpRequestResponse item = (IHttpRequestResponse) row.getValue(0);
@@ -230,7 +230,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     public boolean isSSL() {
         return "https".equals(this.getProtocol());
     }
-    
+
     public void dump() {
         try {
             System.out.println(String.format("[%d].getUrl=%s", ordinal, this.getUrl()));
@@ -288,9 +288,8 @@ public class HttpMessageItem implements IHttpRequestResponse {
             public byte[] getResponse() {
                 return HttpMessageItem.this.getResponse();
             }
-        
+
         };
     }
 
-    
 }

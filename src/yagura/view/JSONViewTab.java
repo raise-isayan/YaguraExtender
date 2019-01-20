@@ -13,7 +13,6 @@ import yagura.external.FormatUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

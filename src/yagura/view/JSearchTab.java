@@ -294,7 +294,7 @@ public class JSearchTab extends javax.swing.JPanel {
 
         pnlResult.add(pnlResultView, java.awt.BorderLayout.NORTH);
 
-        splitResult.setDividerLocation(200);
+        splitResult.setDividerLocation(100);
         splitResult.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         tableResult.setModel(new javax.swing.table.DefaultTableModel(

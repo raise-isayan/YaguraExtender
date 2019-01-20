@@ -164,7 +164,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             Logger.getLogger(MessageViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+        
     public void setEnabled(byte[] content, boolean isMessageRequest) {
         if (isMessageRequest) {
             this.tabbetRequestView.removeAll();
