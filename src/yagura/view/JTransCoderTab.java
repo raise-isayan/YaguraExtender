@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.Key;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,10 +26,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
 import java.time.LocalDate;
+import java.util.Map;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.impl.JDatePickerImpl;
-import yagura.external.CertificateInKey;
 import yagura.external.TransUtil.ConvertCase;
 import yagura.external.TransUtil.EncodeType;
 import yagura.external.TransUtil.NewLine;
@@ -1831,7 +1833,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         try {
-            HashMap<String, CertificateInKey> mapCert = null;
+            HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
             File storeFile = new File(this.txtStoreFile.getText());
             if (this.rdoConvertPEM.isSelected()) {
                 if (this.btnStoreTypeJKS.isSelected()) {
@@ -1841,13 +1843,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 }
             }
             for (String ailias : mapCert.keySet()) {
-                CertificateInKey cert = mapCert.get(ailias);
+                Map.Entry<Key, X509Certificate> cert = mapCert.get(ailias);
                 JFileChooser filechooser = new JFileChooser();
                 filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 int selected = filechooser.showSaveDialog(this);
                 if (selected == JFileChooser.APPROVE_OPTION) {
                     File pemFile = filechooser.getSelectedFile();
-                    String output = CertUtil.exportToPem(cert.getPrivateKey(), cert.getX509Certificate());
+                    String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
                     Util.bytesToFile(Util.getRawByte(output), pemFile);
                 }
                 break;

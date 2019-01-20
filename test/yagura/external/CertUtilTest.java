@@ -1,7 +1,10 @@
 package yagura.external;
 
 import java.io.File;
+import java.security.Key;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
+import java.util.Map;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -86,10 +89,10 @@ public class CertUtilTest {
     public void testExportToPem_Key_X509Certificate_JKS() throws Exception {
         System.out.println("exportToPem JKS");
         String storeFileName = CertUtilTest.class.getResource("../../resources/server.keystore").getPath();
-        HashMap<String, CertificateInKey> certMap = CertUtil.loadFromJKS(new File(storeFileName), "testca");
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromJKS(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
-            CertificateInKey cert = certMap.get(ailias);
-            String result = CertUtil.exportToPem(cert.getPrivateKey(), cert.getX509Certificate());
+            Map.Entry<Key, X509Certificate> cert = certMap.get(ailias);
+            String result = CertUtil.exportToPem(cert.getKey(), cert.getValue());
             System.out.println(result);
         }
     }
@@ -101,11 +104,11 @@ public class CertUtilTest {
     public void testExportToPem_Key_X509Certificate_PKCS12() throws Exception {
         System.out.println("exportToPem PKCS12");
         String storeFileName = CertUtilTest.class.getResource("../../resources/burpca.p12").getPath();
-        HashMap<String, CertificateInKey> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
             System.out.println("ailias:" + ailias);
-            CertificateInKey cert = certMap.get(ailias);
-            String result = CertUtil.exportToPem(cert.getPrivateKey(), cert.getX509Certificate());
+            Map.Entry<Key, X509Certificate> cert = certMap.get(ailias);
+            String result = CertUtil.exportToPem(cert.getKey(), cert.getValue());
             System.out.println(result);
         }
     }

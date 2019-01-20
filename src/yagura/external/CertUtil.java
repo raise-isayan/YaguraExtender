@@ -14,8 +14,10 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.AbstractMap;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -79,8 +81,8 @@ public class CertUtil {
         return Util.getRawStr(derCert);
     }
 
-    protected static HashMap<String, CertificateInKey> loadFromKeyStore(File storeFile, String keyPassword, String storeType) throws CertificateEncodingException, IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
-        HashMap<String, CertificateInKey> certMap = new HashMap<String, CertificateInKey>();
+    protected static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromKeyStore(File storeFile, String keyPassword, String storeType) throws CertificateEncodingException, IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = new HashMap<>();
         KeyStore ks = KeyStore.getInstance(storeType);
         ks.load(new FileInputStream(storeFile), keyPassword.toCharArray());
         Enumeration e = ks.aliases();
@@ -88,12 +90,12 @@ public class CertUtil {
             String alias = (String) e.nextElement();
             Key key = ks.getKey(alias, keyPassword.toCharArray());
             X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
-            certMap.put(alias, new CertificateInKey(key, cert));
+            certMap.put(alias, new AbstractMap.SimpleEntry<>(key, cert));
         }    
         return certMap;
     }
 
-    public static HashMap<String, CertificateInKey> loadFromPKCS12(File storeFile, String password) throws CertificateEncodingException, IOException, UnrecoverableKeyException {
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromPKCS12(File storeFile, String password) throws CertificateEncodingException, IOException, UnrecoverableKeyException {
         try {
             return loadFromKeyStore(storeFile, password, "pkcs12");
         } catch (KeyStoreException ex) {
@@ -103,7 +105,7 @@ public class CertUtil {
         return null;
     }
 
-    public static HashMap<String, CertificateInKey> loadFromJKS(File storeFile, String password) throws CertificateEncodingException, IOException, UnrecoverableKeyException {
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromJKS(File storeFile, String password) throws CertificateEncodingException, IOException, UnrecoverableKeyException {
         try {
             return loadFromKeyStore(storeFile, password, "jks");
         } catch (KeyStoreException ex) {
