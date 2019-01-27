@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.net.IDN;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -150,7 +151,7 @@ public class TransUtil {
             throw new IllegalArgumentException("charset is not null");
         }
         String charset = (selectCharset.length() == 0) ? null : selectCharset.toString();
-        String applyCharset = "8859_1";
+        String applyCharset = StandardCharsets.ISO_8859_1.name();
         String decode = value;
         try {
             // URL encode match

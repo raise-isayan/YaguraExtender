@@ -106,10 +106,26 @@ public class BurpExtender extends BurpExtenderImpl
     private final HtmlCommetViewTab commentViewTab = new HtmlCommetViewTab();
     private final GeneratePoCTab generatePoCTab = new GeneratePoCTab();
 
-    private final RawViewTab requestRawTab = new RawViewTab(true);
-    private final RawViewTab responseRawTab = new RawViewTab(false);
+    private final IMessageEditorTabFactory requestRawTab = new IMessageEditorTabFactory() {
+        @Override
+        public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+            return new RawViewTab(controller, editable, true);
+        }
+    };
+    
+    private final IMessageEditorTabFactory responseRawTab = new IMessageEditorTabFactory() {
+        @Override
+        public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+            return new RawViewTab(controller, editable, false);
+        }
+    };
 
-    private final ParamsViewTab requestParamsTab = new ParamsViewTab();
+    private final IMessageEditorTabFactory requestParamsTab = new IMessageEditorTabFactory() {
+        @Override
+        public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+            return new ParamsViewTab(controller, editable);
+        }    
+    };
 
     private final IMessageEditorTabFactory requestJSONTab = new IMessageEditorTabFactory() {
         @Override

@@ -17,6 +17,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import extend.util.HashUtil;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Locale;
@@ -47,6 +48,11 @@ public class TransUtilTest {
     public void tearDown() {
     }
 
+    @Test
+    public void testCharset() {        
+        System.out.println("char:" + StandardCharsets.ISO_8859_1);
+    }
+        
     @Test
     public void testHexDump() {
         String output = ">あいうえお<";

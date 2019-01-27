@@ -23,6 +23,16 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
         super(model, d);
     }
 
+    private boolean editable = false;
+    public void setCellEditable(boolean enable) {
+        this.editable = enable;
+    }
+        
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return this.editable;
+    }
+    
     @Override
     public Object getValueAt(int row, int col) {
         Object value = null;
@@ -76,15 +86,18 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
     @Override
     public void setValueAt(Object value, int row, int col) {
         try {
-            IParameter param = this.getData(row);
+            Parameter param = this.getData(row);
             switch (col) {
                 case 0: // Data
                     break;
                 case 1: // Type
+                    param.setType((parseType((String)value)));
                     break;
                 case 2: // Name
+                    param.setName((String)value);
                     break;
                 case 3: // Value
+                    param.setValue((String)value);
                     break;
             }
             this.fireTableDataChanged();
@@ -99,6 +112,13 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
         return TYPES[type];
     }
 
+    public static byte parseType(String type) {
+        for (int i = 0; i < TYPES.length; i++) {
+            if (TYPES[i].equals(type)) return (byte)i;
+        }
+        return (byte)-1;
+    }
+        
     @Override
     public Object[] getRows(int row) {
         try {

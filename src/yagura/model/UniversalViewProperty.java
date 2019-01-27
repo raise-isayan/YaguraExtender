@@ -1,6 +1,7 @@
 package yagura.model;
 
 import extend.util.Util;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,32 +22,36 @@ public class UniversalViewProperty {
      * http://userguide.icu-project.org/conversion/detection
      * https://code.google.com/archive/p/juniversalchardet/
      */
-    private static final String[] ENCODING_DEFAULT_JAPANESE_LIST
-            = {"UTF-8",
+    private static final String[] ENCODING_DEFAULT_JAPANESE_LIST = {
+                StandardCharsets.UTF_8.name(),
                 "Shift_JIS",
                 "EUC-JP",
                 "ISO-2022-JP",
-                "ISO-8859-1",};
+                StandardCharsets.ISO_8859_1.name(),
+    };
 
-    private static final String[] ENCODING_DEFAULT_KOREAN_LIST
-            = {"UTF-8",
+    private static final String[] ENCODING_DEFAULT_KOREAN_LIST = {
+                StandardCharsets.UTF_8.name(),
                 "EUC-KR",
                 "ISO-2022-KR",
-                "ISO-8859-1",};
+                StandardCharsets.ISO_8859_1.name(),
+    };
 
-    private static final String[] ENCODING_DEFAULT_CHINESE_LIST
-            = {"UTF-8",
+    private static final String[] ENCODING_DEFAULT_CHINESE_LIST = {
+                StandardCharsets.UTF_8.name(),
                 "BIG5",
                 "x-EUC-TW",
                 "GB18030",
                 "GB2312", // HZ-GB-2312 (GBK/EUC-CN)
                 "ISO-2022-CN",
-                "ISO-8859-1",};
+                StandardCharsets.ISO_8859_1.name(),
+    };
 
-    private static final String[] ENCODING_DEFAULT_OTHER_LIST
-            = {"UTF-8",
-                "US-ASCII",
-                "ISO-8859-1",};
+    private static final String[] ENCODING_DEFAULT_OTHER_LIST = {
+        StandardCharsets.UTF_8.name(),
+        StandardCharsets.US_ASCII.name(),
+        StandardCharsets.ISO_8859_1.name(),
+    };
 
     // Encoding tab
     public static List<String> getDefaultEncodingList() {
@@ -79,7 +84,7 @@ public class UniversalViewProperty {
     }
 
     private final List<String> encodingList = new ArrayList(getDefaultEncodingList());
-    
+
     public void setEncodingList(List<String> encodingList) {
         this.encodingList.clear();
         this.encodingList.addAll(encodingList);
@@ -91,8 +96,8 @@ public class UniversalViewProperty {
 
     public enum UniversalView {
         GENERATE_POC, HTML_COMMENT, JSON, JRAW, JPARAM;
-    
-        public static UniversalView parseValue(String value) {            
+
+        public static UniversalView parseValue(String value) {
             UniversalView eval = (UniversalView) Util.parseEnumValue(UniversalView.class, value);
             if (eval == null) {
                 return null;
@@ -107,21 +112,21 @@ public class UniversalViewProperty {
             EnumSet<UniversalView> values = EnumSet.noneOf(UniversalView.class);
             Matcher m = ENUM_SPLIT.matcher(s.toUpperCase());
             while (m.find()) {
-                values.add((UniversalView)Util.parseEnumValue(UniversalView.class, m.group()));
+                values.add((UniversalView) Util.parseEnumValue(UniversalView.class, m.group()));
             }
             return values;
         }
-        
+
         @Override
         public String toString() {
             String value = name().toLowerCase();
             return value.replace('_', ' ');
         }
-        
+
     };
-    
+
     private EnumSet<UniversalView> view = EnumSet.of(UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON);
-    
+
     public EnumSet<UniversalView> getMessageView() {
         return view;
     }
@@ -129,7 +134,7 @@ public class UniversalViewProperty {
     public void setMessageView(EnumSet<UniversalView> view) {
         this.view = view;
     }
-        
+
     public void setProperty(UniversalViewProperty property) {
         this.setClipbordAutoDecode(property.getClipbordAutoDecode());
         this.setEncodingList(property.getEncodingList());

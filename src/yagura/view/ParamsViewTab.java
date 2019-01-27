@@ -3,7 +3,6 @@ package yagura.view;
 import burp.BurpExtender;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
-import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
 import extend.model.base.CustomTableModel;
@@ -14,7 +13,9 @@ import extend.view.base.HttpRequest;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,10 +23,9 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.JTable;
-import javax.swing.plaf.basic.BasicComboBoxRenderer;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import yagura.external.TransUtil;
 import yagura.model.Parameter;
@@ -35,16 +35,23 @@ import yagura.model.ParamsViewModel;
  *
  * @author raise.isayan
  */
-public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorTab {
 
+    private boolean textModified = false;
+    private boolean editable;
+    private IMessageEditorController controller = null;
+    
     /**
-     * Creates new form ParamViewTab
+     * Creates new form ParamsViewTab
      */
-    public ParamsViewTab() {
+    public ParamsViewTab(IMessageEditorController controller, boolean editable) {
+        this.controller = controller;
+        this.editable = editable;
+        this.editable = false;        
         initComponents();
-        customizeComponents();
+        customizeComponents();        
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -59,6 +66,11 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         btnDecode = new javax.swing.JToggleButton();
         scrollParams = new javax.swing.JScrollPane();
         tableParams = new javax.swing.JTable();
+        pnlEdit = new javax.swing.JPanel();
+        btnAdd = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
+        btnUp = new javax.swing.JButton();
+        btnDown = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -112,36 +124,69 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         }
 
         add(scrollParams, java.awt.BorderLayout.CENTER);
+
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnRemove.setText("Remove");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
+
+        btnUp.setText("up");
+        btnUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpActionPerformed(evt);
+            }
+        });
+
+        btnDown.setText("down");
+        btnDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlEditLayout = new javax.swing.GroupLayout(pnlEdit);
+        pnlEdit.setLayout(pnlEditLayout);
+        pnlEditLayout.setHorizontalGroup(
+            pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlEditLayout.createSequentialGroup()
+                        .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDown, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        pnlEditLayout.setVerticalGroup(
+            pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlEditLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnAdd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRemove)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUp)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDown)
+                .addContainerGap(297, Short.MAX_VALUE))
+        );
+
+        add(pnlEdit, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
-    private DefaultTableCellRenderer encodingTableRenderer = new DefaultTableCellRenderer() {
-
-        @Override
-        public Component getTableCellRendererComponent(JTable table,
-                Object value,
-                boolean isSelected,
-                boolean hasFocus,
-                int row,
-                int column) {
-            Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            return component;
-        }
-    };
-    
-    private final BasicComboBoxRenderer encodingComboBoxRenderer = new BasicComboBoxRenderer() {
-
-        @Override
-        public Component getListCellRendererComponent(
-                JList list,
-                Object value,
-                int index,
-                boolean isSelected,
-                boolean cellHasFocus) {
-            Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            return component;
-        }
-    };
-
+    private final JComboBox cmbParamType = new JComboBox();
     
     private void tableParamsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableParamsKeyTyped
         String ss = CustomTableModel.tableCopy(this.tableParams);
@@ -153,9 +198,28 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         this.tableParams.updateUI();
     }//GEN-LAST:event_btnDecodeStateChanged
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        this.modelParams.addRow(Parameter.newPameter());
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        SwingUtil.removeItem(this.tableParams);
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpActionPerformed
+        int index = this.tableParams.getSelectedRow();
+        index = this.modelParams.moveUp(index);
+        this.tableParams.getSelectionModel().setSelectionInterval(index, index);
+    }//GEN-LAST:event_btnUpActionPerformed
+
+    private void btnDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownActionPerformed
+        int index = this.tableParams.getSelectedRow();
+        index = this.modelParams.moveDn(index);
+        this.tableParams.getSelectionModel().setSelectionInterval(index, index);
+    }//GEN-LAST:event_btnDownActionPerformed
+
     private ParamsViewModel modelParams = null;
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
-    private final JComboBox cmbEncoding = new JComboBox();
     
     private final Action copyAction = new AbstractAction() {
         public void actionPerformed(ActionEvent evt) {
@@ -166,23 +230,33 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     }; 
     
     private void customizeComponents() {
+        if (!this.editable) {
+            this.remove(this.pnlEdit);
+        }
+
         this.tableParams.getActionMap().put("copytAction", copyAction); 
         this.modelParams = new ParamsViewModel(this.tableParams.getModel());
         this.tableParams.setModel(this.modelParams);
-        
+        this.modelParams.setCellEditable(this.editable);
+        this.modelParams.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                textModified = true;                
+            }                
+        });        
+           
         //this.quickSearchTab.setSelectedTextArea(this.txtRaw);
         this.quickSearchTab.getSearchPanel().setVisible(false);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
-        this.cmbEncoding.setMaximumRowCount(10);
-        this.cmbEncoding.setRenderer(this.encodingComboBoxRenderer);
-        this.cmbEncoding.addItem(""); // nonselect
-
-        this.tableParams.setDefaultRenderer(Object.class, this.encodingTableRenderer);
+        this.cmbParamType.setMaximumRowCount(10);
+        this.cmbParamType.addItem(ParamsViewModel.getType(IParameter.PARAM_URL));
+        this.cmbParamType.addItem(ParamsViewModel.getType(IParameter.PARAM_COOKIE));
+        this.cmbParamType.addItem(ParamsViewModel.getType(IParameter.PARAM_BODY));
 
         TableColumn colorColumn = this.tableParams.getColumnModel().getColumn(1);
-        colorColumn.setCellEditor(new DefaultCellEditor(this.cmbEncoding));
+        colorColumn.setCellEditor(new DefaultCellEditor(this.cmbParamType));
         
         // Data        
         this.tableParams.getColumnModel().getColumn(0).setMinWidth(0);
@@ -217,22 +291,19 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         }
     };
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
     private javax.swing.JToggleButton btnDecode;
+    private javax.swing.JButton btnDown;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnUp;
     private javax.swing.JLabel lblLocation;
+    private javax.swing.JPanel pnlEdit;
     private javax.swing.JPanel pnlLocation;
     private javax.swing.JScrollPane scrollParams;
     private javax.swing.JTable tableParams;
     // End of variables declaration//GEN-END:variables
-
-    private HttpMessage message = null;
-    private IMessageEditorController controller = null;
-
-    @Override
-    public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-        this.controller = controller;
-        return this;
-    }
 
     @Override
     public String getTabCaption() {
@@ -265,38 +336,44 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         return false;
     }
 
-    private byte[] content = new byte[]{};
+    private byte[] content = null;
     private IRequestInfo reqInfo = null;
 
     @Override
     public void setMessage(byte[] content, boolean isRequest) {
         try {
-            String guessCharset = null;
-            HttpMessage httpmessage = null;
-            if (isRequest) {
-                HttpRequest request = HttpRequest.parseHttpRequest(content);
-                httpmessage = request;
-//                guessCharset = request.getGuessCharset();
-                this.content = content;
-                this.reqInfo = BurpExtender.getHelpers().analyzeRequest(this.controller.getHttpService(), content);
-                if (this.reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
-                    guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), "8859_1")));
-                }
-                else {
-                    guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());                
-                }
-
-                this.setLocation(this.reqInfo);
-                this.setParams(this.reqInfo);
+            if (content == null) {
+                this.clearView();                
             }
-            if (guessCharset == null) {
-                guessCharset = "ISO-8859-1";
-            }             
-            this.message = httpmessage;
-            this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-            this.quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
-            this.encodingItemStateChanged.itemStateChanged(null);
-            this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+            else {
+                this.content = content;
+                String guessCharset = null;
+                HttpMessage httpmessage = null;
+                if (isRequest) {
+                    HttpRequest request = HttpRequest.parseHttpRequest(content);
+                    httpmessage = request;
+    //                guessCharset = request.getGuessCharset();
+                    this.reqInfo = BurpExtender.getHelpers().analyzeRequest(this.controller.getHttpService(), content);
+                    if (this.reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
+                        guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), "8859_1")));
+                    }
+                    else {
+                        guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());                
+                    }
+
+                    this.setLocation(this.reqInfo);
+                    this.setParams(this.reqInfo);
+                }
+                if (guessCharset == null) {
+                    guessCharset = StandardCharsets.ISO_8859_1.name();
+                }             
+                this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
+                this.quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
+                this.encodingItemStateChanged.itemStateChanged(null);
+                this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);                
+
+                this.textModified = false;                            
+            }            
         } catch (ParseException ex) {
             Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
@@ -306,8 +383,19 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
 
     @Override
     public byte[] getMessage() {
-        if (this.message != null) {
-            return this.message.getMessageBytes();
+        if (this.content != null) {
+             if (this.textModified) {
+                List<Parameter> params = this.getParams();
+                for (Parameter p : params) {
+                    if (p.isModified()) {
+                        //this.content = BurpExtender.getHelpers().updateParameter(this.content, p);                
+                    }
+                }
+                return this.content;
+             }
+             else {
+                return this.content;             
+             }
         } else {
             return new byte[]{};
         }
@@ -326,6 +414,19 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         }
     }
 
+    public List<Parameter> getParams() {
+        List<Parameter> params = new ArrayList<>();
+        for (int i = 0; i < this.modelParams.getRowCount(); i++) {
+            Parameter p = this.modelParams.getData(i);
+            params.add(p);
+        }
+        return params;
+    }
+    
+    public void addParam(Parameter p) {
+        this.modelParams.addRow(p);
+    }
+        
     @Override
     public boolean isModified() {
         return false;
@@ -336,12 +437,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         return null;
     }
 
-    public void renewEncodingList(String defaultCharset, List<String> encodingLiest) {
-        this.cmbEncoding.removeAllItems();
-        for (String enc : encodingLiest) {
-            this.cmbEncoding.addItem(enc);
-        }
-        this.cmbEncoding.setSelectedItem(defaultCharset);
+    public void clearView() {
+        this.modelParams.removeAll();
+        this.quickSearchTab.clearView();
+        this.modelParams.setCellEditable(false);
+        this.content = null;
+        this.reqInfo = null;                
     }
     
 }

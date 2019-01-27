@@ -10,6 +10,7 @@ import extend.util.BurpWrap;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpResponse;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.RowFilter;
@@ -212,13 +213,13 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     public String getGuessCharset() {
-        String charset = "8859_1";
+        String charset = StandardCharsets.ISO_8859_1.name();
         try {
             if (this.getResponse() != null) {
                 HttpResponse res = new HttpResponse(HttpMessage.parseHttpMessage(this.getResponse()));
                 charset = res.getGuessCharset();
                 if (charset == null) {
-                    charset = "8859_1";
+                    charset = StandardCharsets.ISO_8859_1.name();
                 }
             }
         } catch (Exception ex) {
