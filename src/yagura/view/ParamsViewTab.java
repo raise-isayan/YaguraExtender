@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import yagura.external.TransUtil;
 import yagura.model.Parameter;
+import yagura.model.ParamsView;
 import yagura.model.ParamsViewModel;
 
 /**
@@ -199,7 +201,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     }//GEN-LAST:event_btnDecodeStateChanged
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        this.modelParams.addRow(Parameter.newPameter());
+        this.modelParams.addRow(new ParamsView());
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
@@ -244,16 +246,15 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                 textModified = true;                
             }                
         });        
-           
         //this.quickSearchTab.setSelectedTextArea(this.txtRaw);
         this.quickSearchTab.getSearchPanel().setVisible(false);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.cmbParamType.setMaximumRowCount(10);
-        this.cmbParamType.addItem(ParamsViewModel.getType(IParameter.PARAM_URL));
-        this.cmbParamType.addItem(ParamsViewModel.getType(IParameter.PARAM_COOKIE));
-        this.cmbParamType.addItem(ParamsViewModel.getType(IParameter.PARAM_BODY));
+        this.cmbParamType.addItem(ParamsView.getType(IParameter.PARAM_URL));
+        this.cmbParamType.addItem(ParamsView.getType(IParameter.PARAM_COOKIE));
+        this.cmbParamType.addItem(ParamsView.getType(IParameter.PARAM_BODY));
 
         TableColumn colorColumn = this.tableParams.getColumnModel().getColumn(1);
         colorColumn.setCellEditor(new DefaultCellEditor(this.cmbParamType));
@@ -385,12 +386,15 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     public byte[] getMessage() {
         if (this.content != null) {
              if (this.textModified) {
-                List<Parameter> params = this.getParams();
-                for (Parameter p : params) {
-                    if (p.isModified()) {
-                        //this.content = BurpExtender.getHelpers().updateParameter(this.content, p);                
-                    }
+                List<IParameter> params = this.reqInfo.getParameters();
+                byte [] modify = Arrays.copyOf(this.content, this.content.length);
+                for (IParameter p : params) {
+                    modify = BurpExtender.getHelpers().removeParameter(modify, p);                            
                 }
+                for (Parameter p : this.getParams()) {            
+                    modify = BurpExtender.getHelpers().addParameter(modify, p);                                    
+                }
+                this.content = Arrays.copyOf(modify, modify.length);
                 return this.content;
              }
              else {
@@ -410,7 +414,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         List<IParameter> params = reqInfo.getParameters();
         for (int i = 0; i < params.size(); i++) {
             IParameter p = params.get(i);
-            this.modelParams.addRow(new Parameter(p));
+            this.modelParams.addRow(new ParamsView(p));
         }
     }
 
@@ -424,12 +428,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     }
     
     public void addParam(Parameter p) {
-        this.modelParams.addRow(p);
+        this.modelParams.addRow(new ParamsView(p));
     }
         
     @Override
     public boolean isModified() {
-        return false;
+        return this.textModified;
     }
 
     @Override
@@ -444,5 +448,5 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         this.content = null;
         this.reqInfo = null;                
     }
-    
+
 }

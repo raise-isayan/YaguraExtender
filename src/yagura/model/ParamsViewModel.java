@@ -1,9 +1,8 @@
 package yagura.model;
 
-import burp.IParameter;
-import extend.model.base.ObjectTableModel;
+import extend.model.base.DefaultObjectTableModel;
 import extend.util.Util;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
@@ -13,35 +12,33 @@ import yagura.external.TransUtil;
  *
  * @author raise.isayan
  */
-public class ParamsViewModel extends ObjectTableModel<Parameter> {
+public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
 
     public ParamsViewModel(TableModel model) {
         super(model);
     }
 
-    public ParamsViewModel(TableModel model, List<Parameter> d) {
-        super(model, d);
-    }
-
     private boolean editable = false;
+
     public void setCellEditable(boolean enable) {
         this.editable = enable;
     }
-        
+
+    public boolean getCellEditable() {
+        return this.editable;
+    }
+
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return this.editable;
     }
     
     @Override
-    public Object getValueAt(int row, int col) {
+    public Object getValueAt(int rowIndex, int columnIndex) {
         Object value = null;
         try {
-            if (row < 0 || row >= this.getRowCount()) {
-                return value;
-            }
-            IParameter param = this.getData(row);
-            switch (col) {
+            ParamsView param = super.getData(rowIndex);
+            switch (columnIndex) {
                 case 0: // 
                 {
                     value = param;
@@ -49,7 +46,7 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
                 }
                 case 1: // Type
                 {
-                    value = getType(param.getType());
+                    value = ParamsView.getType(param.getType());
                     break;
                 }
                 case 2: // Name
@@ -84,53 +81,45 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
     }
 
     @Override
-    public void setValueAt(Object value, int row, int col) {
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
         try {
-            Parameter param = this.getData(row);
-            switch (col) {
+            ParamsView param = new ParamsView();
+            switch (columnIndex) {
                 case 0: // Data
                     break;
                 case 1: // Type
-                    param.setType((parseType((String)value)));
+                    param.setType((ParamsView.parseType((String)value)));
                     break;
                 case 2: // Name
-                    param.setName((String)value);
+                    if (this.urldecode) {
+                        String raw = Util.getRawStr(Util.encodeMessage((String)value, encoding));
+                        raw = TransUtil.encodeUrl(raw, encoding, true);                        
+                        param.setName(raw);
+                    }
+                    else {
+                        String rowMessage = Util.getRawStr(Util.encodeMessage((String)value, encoding));
+                        param.setName(rowMessage);
+                    }
                     break;
                 case 3: // Value
-                    param.setValue((String)value);
+                    if (this.urldecode) {
+                        String raw = Util.getRawStr(Util.encodeMessage((String)value, encoding));
+                        raw = TransUtil.encodeUrl(raw, encoding, true);                        
+                        param.setValue(raw);
+                    }
+                    else {
+                        String raw = Util.getRawStr(Util.encodeMessage((String)value, encoding));
+                        param.setValue(raw);                    
+                    }
                     break;
             }
-            this.fireTableDataChanged();
+            super.setData(rowIndex, param);            
         } catch (Exception ex) {
-            Logger.getLogger(ParamsViewModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ParamsView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private final static String[] TYPES = {"URL", "Body", "Cookie", "XML", "-", "(file)", "JSON"};
-
-    public static String getType(byte type) {
-        return TYPES[type];
-    }
-
-    public static byte parseType(String type) {
-        for (int i = 0; i < TYPES.length; i++) {
-            if (TYPES[i].equals(type)) return (byte)i;
-        }
-        return (byte)-1;
-    }
-        
-    @Override
-    public Object[] getRows(int row) {
-        try {
-            IParameter msg = this.getData(row);
-            return new Object[]{row, msg.getType(), msg.getName(), msg.getValue()};
-        } catch (Exception ex) {
-            Logger.getLogger(ParamsViewModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    private String encoding = "8859_1";
+    private String encoding = StandardCharsets.ISO_8859_1.name();
 
     public String getEncoding() {
         return this.encoding;
@@ -139,7 +128,7 @@ public class ParamsViewModel extends ObjectTableModel<Parameter> {
     public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
-
+    
     private boolean urldecode = false;
     
     public boolean getUrlDecode() {

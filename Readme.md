@@ -8,11 +8,13 @@ Burp Suiteは主にアジア圏のエンコーディング周りが弱いため�
 全てにおいて問題ないわけではありません。
 
 ## ヘルプ
-利用方法等の詳細なヘルプは、help ディレクトリのhelp.html を参照して下さい。
+利用方法等の詳細なヘルプは、help ディレクトリの help.html を参照してください。
+
+オンラインの場合は、[help](https://github.com/raise-isayan/YaguraExtender/blob/master/help/help.adoc)を参照して下さい。
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。
-* BurpExtlib v1.7.36
+* BurpExtlib v1.7.37
 
 ## 注意事項
 このツールは、私個人が勝手に開発したもので、PortSwigger社は一切関係ありません。本ツールを使用したことによる不具合等についてPortSwiggerに問い合わせないようお願いします。

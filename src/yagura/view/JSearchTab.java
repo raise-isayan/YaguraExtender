@@ -4,6 +4,7 @@ import burp.BurpExtender;
 import burp.IHttpRequestResponse;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
+import extend.model.base.DefaultObjectTableModel;
 import extend.util.Util;
 import extend.view.base.MatchItem;
 import extend.view.base.NamedColor;
@@ -16,6 +17,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -32,13 +33,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
-import yagura.model.ResultViewModel;
+import yagura.model.ResultView;
 
 /**
  *
@@ -228,24 +229,24 @@ public class JSearchTab extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkComment)
-                        .addGap(0, 64, Short.MAX_VALUE))
-                    .addComponent(txtSearch))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkComment))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSearchLayout.createSequentialGroup()
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSearchLayout.createSequentialGroup()
+                    .addGroup(pnlSearchLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
                         .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(chkRegExp)
                             .addComponent(chkIgnoreCase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(chkScopeOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(pnlSearchLayout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlSearchLayout.setVerticalGroup(
             pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,7 +339,7 @@ public class JSearchTab extends javax.swing.JPanel {
         add(pnlResult, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private ResultViewModel modelSearch = null;
+    private DefaultObjectTableModel<ResultView> modelSearch = null;
     private MessageViewTab tabMessageView = new MessageViewTab();
     private JComboBox cmbColor = new JComboBox();
     private DefaultTableCellRenderer colorTableRenderer = new DefaultTableCellRenderer() {
@@ -431,7 +432,8 @@ public class JSearchTab extends javax.swing.JPanel {
         this.pnlView.add(this.tabMessageView, BorderLayout.CENTER);
         this.tabMessageView.setVisible(false);
 
-        this.modelSearch = new ResultViewModel(this.tableResult.getModel());
+        this.modelSearch = new DefaultObjectTableModel<>(this.tableResult.getModel());
+        this.modelSearch.setCellEditable(true);
         this.tableResult.setModel(this.modelSearch);
 
         this.tableResult.getSelectionModel().addListSelectionListener(newListSelectionListener());
@@ -669,7 +671,7 @@ public class JSearchTab extends javax.swing.JPanel {
                 Matcher m = null;
                 boolean find = false;
                 do {
-                    String encoding = "8859_1";
+                    String encoding = StandardCharsets.ISO_8859_1.name();
                     if (this.getAutoRecogniseEncoding()) {
                         encoding = item.getGuessCharset();
                     }
@@ -725,7 +727,7 @@ public class JSearchTab extends javax.swing.JPanel {
                 } while (false);
                 if (m != null && find) {
                     //item.dump(); // debug
-                    this.modelSearch.addRow(item);
+                    this.modelSearch.addRow(new ResultView(item, item.getOrdinal()));
                 }
                 if (this.cancel) {
                     break;
@@ -778,8 +780,8 @@ public class JSearchTab extends javax.swing.JPanel {
     protected void hideFilter() {
         FilterProperty filterProp = this.getProperty().getFilterProperty();
         this.tableResult.getSelectionModel().clearSelection();
-        DefaultTableModel model = (DefaultTableModel) this.tableResult.getModel();
-        TableRowSorter<DefaultTableModel> sorter = new ResultFilterPopup.PropertyRowSorter<DefaultTableModel>(model);
+        TableModel model = this.tableResult.getModel();
+        TableRowSorter<TableModel> sorter = new ResultFilterPopup.PropertyRowSorter<TableModel>(model);
         sorter.setRowFilter(new ResultFilterPopup.PropertyRowFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
         firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        

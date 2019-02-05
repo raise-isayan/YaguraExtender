@@ -1,45 +1,76 @@
 package yagura.model;
 
-import extend.model.base.ObjectTableModel;
-import extend.view.base.NamedColor;
+import burp.IHttpRequestResponse;
+import extend.model.base.ObjectTableColumn;
+import extend.model.base.ObjectTableMapping;
 import extend.util.BurpWrap;
 import extend.view.base.HttpRequest;
 import extend.view.base.MatchItem;
+import extend.view.base.NamedColor;
 import java.awt.Color;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.TableModel;
 
 /**
  *
  * @author isayan
  */
-@Deprecated
-public class ResultViewModel extends ObjectTableModel<HttpMessageItem> {
+public class ResultView extends HttpMessageItem implements ObjectTableMapping {
 
-    public ResultViewModel(TableModel model) {
-        super(model);
+    public ResultView() {
+    }  
+    
+    public ResultView(HttpMessageItem item) {
+        super(item);
+    }  
+
+    public ResultView(IHttpRequestResponse item, int ordinal) {
+        super(item, ordinal);        
     }
+    
+    private final String [] columns = new String [] {
+        "Data", "#", "host", "method", "URL", "status", "length", "comment"
+    };
 
-    public ResultViewModel(TableModel model, List<HttpMessageItem> d) {
-        super(model, d);
+    public ObjectTableColumn getColumn() {
+        return new ObjectTableColumn() {
+        
+            public String getColumnName(int column) {
+                return columns[column];
+            }
+
+            public int getColumnCount() {
+                return columns.length;
+            }        
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return Object.class;
+            }
+        
+        };           
     }
+    
 
+    boolean[] canEdit = new boolean [] {
+        false, true, false, false, false, false, false, true
+    };
+
+    public boolean isCellEditable(int columnIndex) {
+        return canEdit [columnIndex];
+    }
+        
     @Override
-    public Object getValueAt(int row, int col) {
+    public Object getObject(int column) {
         Object value = null;
         try {
-            if (row < 0 || row >= this.getRowCount()) {
-                return value;
-            }
-            HttpMessageItem msg = this.getData(row);
-            switch (col) {
+            HttpMessageItem msg = this;
+            switch (column) {
                 case 0: // 
                     value = msg;
                     break;
                 case 1: // #
-                    int ordinal = (msg.getOrdinal() >= 0) ? msg.getOrdinal() : row;
+                    int ordinal = msg.getOrdinal();
                     Color highlightColor = null;
                     String color = BurpWrap.getHighlightColor(msg);
                     if (color != null) {
@@ -63,13 +94,13 @@ public class ResultViewModel extends ObjectTableModel<HttpMessageItem> {
                     break;
                 case 5: // status code
                     value = 0;
-                    if (msg.getResponse() != null) {
+                    if (this.getResponse() != null) {
                         value = String.valueOf((int) msg.getStatusCode());
                     }
                     break;
                 case 6: // length
                     value = 0;
-                    if (msg.getResponse() != null) {
+                    if (this.getResponse() != null) {
                         value = msg.getResponse().length;
                     }
                     break;
@@ -78,16 +109,17 @@ public class ResultViewModel extends ObjectTableModel<HttpMessageItem> {
                     break;
             }
         } catch (Exception ex) {
-            Logger.getLogger(ResultViewModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ResultView.class.getName()).log(Level.SEVERE, null, ex);
         }
         return value;
+               
     }
 
     @Override
-    public void setValueAt(Object value, int row, int col) {
+    public void setObject(int column, Object value) {
         try {
-            HttpMessageItem msg = this.getData(row);
-            switch (col) {
+            HttpMessageItem msg = this;
+            switch (column) {
                 case 0: // Data
                     break;
                 case 1: // #
@@ -112,21 +144,9 @@ public class ResultViewModel extends ObjectTableModel<HttpMessageItem> {
                     msg.setComment((String) value);
                     break;
             }
-            this.fireTableDataChanged();
         } catch (Exception ex) {
-            Logger.getLogger(ResultViewModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ResultView.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    @Override
-    public Object[] getRows(int row) {
-        try {
-            HttpMessageItem msg = this.getData(row);
-            return new Object[]{row, msg.getHost(), String.valueOf(msg.getUrl()), String.valueOf((int) msg.getStatusCode()), msg.getComment()};
-        } catch (Exception ex) {
-            Logger.getLogger(ResultViewModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
     
 }
