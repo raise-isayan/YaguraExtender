@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -232,7 +233,7 @@ public class ConfigTest {
             prop.load(inStream);
             ByteArrayOutputStream bstm = new ByteArrayOutputStream();
             prop.storeToXML(bstm, "");
-            System.out.println(bstm.toString("8859_1"));            
+            System.out.println(bstm.toString(StandardCharsets.ISO_8859_1.name()));            
         } catch (IOException ex) {
             Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
         }

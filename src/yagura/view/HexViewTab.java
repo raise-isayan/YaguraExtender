@@ -10,12 +10,15 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -68,7 +71,26 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 return types [columnIndex];
             }
         });
+        tableHex.getTableHeader().setReorderingAllowed(false);
         scrollHex.setViewportView(tableHex);
+        if (tableHex.getColumnModel().getColumnCount() > 0) {
+            tableHex.getColumnModel().getColumn(1).setResizable(false);
+            tableHex.getColumnModel().getColumn(2).setResizable(false);
+            tableHex.getColumnModel().getColumn(3).setResizable(false);
+            tableHex.getColumnModel().getColumn(4).setResizable(false);
+            tableHex.getColumnModel().getColumn(5).setResizable(false);
+            tableHex.getColumnModel().getColumn(6).setResizable(false);
+            tableHex.getColumnModel().getColumn(7).setResizable(false);
+            tableHex.getColumnModel().getColumn(8).setResizable(false);
+            tableHex.getColumnModel().getColumn(9).setResizable(false);
+            tableHex.getColumnModel().getColumn(10).setResizable(false);
+            tableHex.getColumnModel().getColumn(11).setResizable(false);
+            tableHex.getColumnModel().getColumn(12).setResizable(false);
+            tableHex.getColumnModel().getColumn(13).setResizable(false);
+            tableHex.getColumnModel().getColumn(14).setResizable(false);
+            tableHex.getColumnModel().getColumn(15).setResizable(false);
+            tableHex.getColumnModel().getColumn(16).setResizable(false);
+        }
 
         add(scrollHex, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -79,11 +101,19 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private javax.swing.JTable tableHex;
     // End of variables declaration//GEN-END:variables
 
-    private static final DecimalFormat fmtPosition = new DecimalFormat("000000"); // @jve:decl-index=0:
+    private static final DecimalFormat FORMAT_POSITION = new DecimalFormat("000000"); // @jve:decl-index=0:
 
     private byte[] data = new byte[]{};
     private CustomTableModel modelHex = null;
 
+    private final Action copyAction = new AbstractAction() {
+        public void actionPerformed(ActionEvent evt) {
+            //選択されている行の列コピーの値を取得
+            JTable table = (JTable)evt.getSource();
+            CustomTableModel.tableCopy(table);
+        } 
+    };     
+    
     private void customizeComponents() {
         this.modelHex = new CustomTableModel(this.tableHex.getModel()) {
         
@@ -93,31 +123,36 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             }
         
         };
+        this.tableHex.getActionMap().put("copytAction", copyAction); 
         this.tableHex.setColumnSelectionAllowed(false);
-        this.tableHex.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.tableHex.setCellSelectionEnabled(false);
+
+        this.tableHex.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        this.tableHex.setCellSelectionEnabled(true);
+        this.tableHex.setRowSelectionAllowed(true);
+    
         this.tableHex.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         this.tableHex.setShowGrid(true);
         this.tableHex.setFont(new Font("DialogInput", Font.PLAIN, 12));
         this.tableHex.setModel(this.modelHex);
+        JTableHeader theader = this.tableHex.getTableHeader();
+        theader.setReorderingAllowed(false);
 
         TableColumnModel colmodel = this.tableHex.getColumnModel();
         colmodel.getColumn(0).setPreferredWidth(60);
         for (int i = 0; i < 16; i++) {
-            colmodel.getColumn(i + 1).setPreferredWidth(25);
+            colmodel.getColumn(i + 1).setPreferredWidth(30);
         }
         colmodel.getColumn(17).setPreferredWidth(150);
 //        for (int i = 0; i < colmodel.getColumnCount(); i++) {
 //            colmodel.getColumn(i).setHeaderRenderer(new SimpleTableHeaderRenderer());
 //            colmodel.getColumn(i).setCellRenderer(new SimpleTableCellRenderer());
 //        }
-//        JTableHeader theader = this.tableHex.getTableHeader();
 //        theader.setResizingAllowed(false);
 //        theader.setReorderingAllowed(false);
         this.modelHex.removeAll();
     }
 
-    private String encode = "8859_1";
+    private String encode = StandardCharsets.ISO_8859_1.name();
 
     public String getSelectEncode() {
         return this.encode;
@@ -150,7 +185,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 if (i > 0 && (j - 1) % 16 == 0) {
                     System.arraycopy(output, row * 16, partout, 0, partout.length);
                     String hexText = new String(partout, this.getSelectEncode());
-                    hexmod[0] = fmtPosition.format(row);
+                    hexmod[0] = FORMAT_POSITION.format(row);
                     hexmod[17] = hexText;
                     this.modelHex.addRow(hexmod);
                     hexmod = new String[16 + 2];
@@ -165,7 +200,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             if ((j - 1) > 0) {
                 System.arraycopy(output, row * 16, partout, 0, j - 1);
                 String hexText = new String(partout, this.getSelectEncode());
-                hexmod[0] = fmtPosition.format(row);
+                hexmod[0] = FORMAT_POSITION.format(row);
                 hexmod[17] = hexText;
                 this.modelHex.addRow(hexmod);
             }
@@ -217,7 +252,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     @Override
     public byte[] getSelectedData() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     public CustomTableModel getModel() {

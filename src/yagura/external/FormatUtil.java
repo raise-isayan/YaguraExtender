@@ -36,12 +36,12 @@ public class FormatUtil {
 
     public static boolean isXML(String plainXML) {
         Matcher m = XML_TYPE.matcher(plainXML);
-        return m.find();
+        return m.lookingAt();
     }
     
     public static boolean isJSON(String plainJson) {
-//        Matcher m = JSON_TYPE.matcher(plainJson);
-//        if (m.matches()) {
+        Matcher m = JSON_TYPE.matcher(plainJson);
+        if (m.lookingAt()) {
             try {
                 JsonUtil.prettyJSON(plainJson, false);
                 return true;
@@ -49,10 +49,10 @@ public class FormatUtil {
             catch (IOException e) {
                 return false;
             }       
-//        }
-//        else {
-//            return false;
-//        }       
+        }
+        else {
+            return false;
+        }       
     }
 
     public static String prettyXML(String plainXML) throws IOException {

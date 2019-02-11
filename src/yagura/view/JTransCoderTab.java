@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.impl.JDatePickerImpl;
+import yagura.external.FormatUtil;
 import yagura.external.TransUtil.ConvertCase;
 import yagura.external.TransUtil.EncodeType;
 import yagura.external.TransUtil.NewLine;
@@ -49,15 +51,16 @@ public class JTransCoderTab extends javax.swing.JPanel {
         initComponents();
         customizeComponents();
     }
+    private final QuickSearchTab quickSearchTabRaw = new QuickSearchTab();
+    private final QuickSearchTab quickSearchTabFormat = new QuickSearchTab();
 
     private void customizeComponents() {
+ 
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
         this.hexOutputViewTab.setEnabled(false);
-
+        
         this.tabbetInput.addTab("Hex", this.hexInputViewTab);
         this.hexInputViewTab.setEnabled(false);
-
-        this.txtOutputRaw.setEditable(false);
 
         this.txtNumStart.setDocument(new SwingUtil.IntegerDocument());
         this.txtNumEnd.setDocument(new SwingUtil.IntegerDocument());
@@ -68,11 +71,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.txtNumStep.setText("1");
 
         JDateComponentFactory componentFactory = new JDateComponentFactory();
-        datePickerStart = (JDatePickerImpl) componentFactory.createJDatePicker();
-        datePickerEnd = (JDatePickerImpl) componentFactory.createJDatePicker();
+        this.datePickerStart = (JDatePickerImpl) componentFactory.createJDatePicker();
+        this.datePickerEnd = (JDatePickerImpl) componentFactory.createJDatePicker();
 
-        pnlDateStart.add(datePickerStart, BorderLayout.CENTER);
-        pnlDateEnd.add(datePickerEnd, BorderLayout.CENTER);
+        this.pnlDateStart.add(datePickerStart, BorderLayout.CENTER);
+        this.pnlDateEnd.add(datePickerEnd, BorderLayout.CENTER);
 
         this.pnlDateStart.add(datePickerStart);
         this.pnlDateEnd.add(datePickerEnd);
@@ -82,11 +85,24 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         this.txtLengthNum.setDocument(new SwingUtil.IntegerDocument());
         this.txtCountNum.setDocument(new SwingUtil.IntegerDocument());
-        this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), "Shift_JIS");
+        this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), "UTF-8");
 
         this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
 
-        this.pnlCharacter.setLayout(verticalFlowLayout1);
+        this.pnlCharacter.setLayout(new VerticalFlowLayout());
+
+        this.quickSearchTabRaw.setSelectedTextArea(this.txtOutputRaw);
+        this.quickSearchTabRaw.getEncodingComboBox().setVisible(false);
+        this.quickSearchTabFormat.setSelectedTextArea(this.txtOutputFormat);
+        this.quickSearchTabFormat.getEncodingComboBox().setVisible(false);
+        
+        this.txtOutputRaw.setEditable(false);
+        this.txtOutputFormat.setEditable(false);
+
+        this.pnlOutputFormat.setLayout(new BorderLayout());        
+        this.pnlOutputFormat.add(this.txtOutputFormat, BorderLayout.CENTER);        
+        this.pnlOutputRaw.add(this.quickSearchTabRaw, java.awt.BorderLayout.SOUTH);
+        this.pnlOutputFormat.add(this.quickSearchTabFormat, java.awt.BorderLayout.SOUTH);
         
     }
     
@@ -222,8 +238,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
         lblDateEnd = new javax.swing.JLabel();
         lblDateStep = new javax.swing.JLabel();
         txtDateStep = new javax.swing.JTextField();
-        pnlDateStart = new javax.swing.JPanel();
         pnlDateEnd = new javax.swing.JPanel();
+        pnlDateStart = new javax.swing.JPanel();
         tabRandom = new javax.swing.JPanel();
         pnlCharacter = new javax.swing.JPanel();
         chkCharacterNumber = new javax.swing.JCheckBox();
@@ -948,22 +964,20 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlNumbersLayout.createSequentialGroup()
-                        .addComponent(lblNumStep)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlNumbersLayout.createSequentialGroup()
-                        .addComponent(txtNumFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtNumFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblNumFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlNumbersLayout.createSequentialGroup()
                         .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblNumStart)
-                            .addComponent(lblNumEnd))
+                            .addComponent(lblNumEnd)
+                            .addComponent(lblNumStep))
                         .addGap(18, 18, 18)
                         .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(865, Short.MAX_VALUE))
+                .addContainerGap(727, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1012,38 +1026,34 @@ public class JTransCoderTab extends javax.swing.JPanel {
         txtDateStep.setText("1");
         txtDateStep.setToolTipText("");
 
-        pnlDateStart.setLayout(new java.awt.BorderLayout());
-
         pnlDateEnd.setLayout(new java.awt.BorderLayout());
+
+        pnlDateStart.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout pnlDateLayout = new javax.swing.GroupLayout(pnlDate);
         pnlDate.setLayout(pnlDateLayout);
         pnlDateLayout.setHorizontalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlDateLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlDateLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlDateLayout.createSequentialGroup()
-                                .addComponent(lblDateStep)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlDateLayout.createSequentialGroup()
-                                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDateLayout.createSequentialGroup()
-                                        .addComponent(lblDateEnd)
-                                        .addGap(18, 18, 18))
-                                    .addComponent(lblDateStart))
-                                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(pnlDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(lblDateStep)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlDateLayout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(txtDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(825, Short.MAX_VALUE))
+                        .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlDateLayout.createSequentialGroup()
+                                .addComponent(lblDateEnd)
+                                .addGap(18, 18, 18))
+                            .addComponent(lblDateStart))
+                        .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(680, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1052,19 +1062,25 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDateFormat))
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(lblDateStart))
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(lblDateEnd))
+                    .addGroup(pnlDateLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblDateStart)
-                    .addComponent(pnlDateStart, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDateEnd))
-                .addGap(10, 10, 10)
                 .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDateStep))
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Date", pnlDate);
@@ -1302,7 +1318,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(932, Short.MAX_VALUE))
+                .addContainerGap(937, Short.MAX_VALUE))
         );
         pnlCertificateLayout.setVerticalGroup(
             pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1419,7 +1435,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(441, Short.MAX_VALUE))
+                .addContainerGap(458, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -1431,13 +1447,14 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private CustomTableModel modelHex = null;
 
-    private final VerticalFlowLayout verticalFlowLayout1 = new VerticalFlowLayout();
-
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
 
     private final HexViewTab hexInputViewTab = new HexViewTab();
     private final HexViewTab hexOutputViewTab = new HexViewTab();
+
+    private final javax.swing.JPanel pnlOutputFormat = new javax.swing.JPanel();
+    private final javax.swing.JTextArea txtOutputFormat = new javax.swing.JTextArea();
     
     /*
      * ステータスメッセージ書式
@@ -1603,7 +1620,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnHashMd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd2ActionPerformed
         try {
             String inputText = HashUtil.toMd2Sum(getInputText(),
-                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+                this.getSelectEncode(), this.rdoUpperCase.isSelected());
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             setOutputText(Util.getStackTraceMessage(e1));
@@ -1615,7 +1632,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnHashMd5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd5ActionPerformed
         try {
             String inputText = HashUtil.toMd5Sum(getInputText(),
-                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+                this.getSelectEncode(), this.rdoUpperCase.isSelected());
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             setOutputText(Util.getStackTraceMessage(e1));
@@ -1626,7 +1643,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnHashSha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha1ActionPerformed
         try {
             String inputText = HashUtil.toSHA1Sum(getInputText(),
-                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+                this.getSelectEncode(), this.rdoUpperCase.isSelected());
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             setOutputText(Util.getStackTraceMessage(e1));
@@ -1637,7 +1654,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnHashSha256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha256ActionPerformed
         try {
             String inputText = HashUtil.toSHA256Sum(getInputText(),
-                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+                this.getSelectEncode(), this.rdoUpperCase.isSelected());
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             setOutputText(Util.getStackTraceMessage(e1));
@@ -1659,7 +1676,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnHashSha512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512ActionPerformed
         try {
             String inputText = HashUtil.toSHA512Sum(getInputText(),
-                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+                this.getSelectEncode(), this.rdoUpperCase.isSelected());
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             setOutputText(Util.getStackTraceMessage(e1));
@@ -1670,9 +1687,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnRadixBinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRadixBinActionPerformed
         try {
             String inputText = TransUtil.toBigBin(getInputText().trim());
-            setOutput(inputText);
+            this.setOutput(inputText);
         } catch (java.lang.NumberFormatException ex) {
-            setOutputText(Util.getStackTraceMessage(ex));
+            this.setOutputText(Util.getStackTraceMessage(ex));
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
         }
     }//GEN-LAST:event_btnRadixBinActionPerformed
@@ -1680,9 +1697,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnRadixDecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRadixDecActionPerformed
         try {
             String inputText = TransUtil.toBigDec(getInputText().trim());
-            setOutput(inputText);
+            this.setOutput(inputText);
         } catch (java.lang.NumberFormatException ex) {
-            setOutputText(Util.getStackTraceMessage(ex));
+            this.setOutputText(Util.getStackTraceMessage(ex));
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
         }
     }//GEN-LAST:event_btnRadixDecActionPerformed
@@ -1690,9 +1707,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnRadixOctActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRadixOctActionPerformed
         try {
             String inputText = TransUtil.toBigOct(getInputText().trim());
-            setOutput(inputText);
+            this.setOutput(inputText);
         } catch (java.lang.NumberFormatException ex) {
-            setOutputText(Util.getStackTraceMessage(ex));
+            this.setOutputText(Util.getStackTraceMessage(ex));
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
         }
     }//GEN-LAST:event_btnRadixOctActionPerformed
@@ -1700,7 +1717,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnRadixHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRadixHexActionPerformed
         try {
             String inputText = TransUtil.toBigHex(getInputText().trim());
-            setOutput(inputText);
+            this.setOutput(inputText);
         } catch (java.lang.NumberFormatException ex) {
             setOutputText(Util.getStackTraceMessage(ex));
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
@@ -2248,13 +2265,12 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }
 
     private void toSmartDecode(String inputText, TransUtil.EncodePattern encodePattern) {
-        StringBuffer applyCharset = new StringBuffer();
+        String applyCharset = null;
         if (!this.chkGuess.isSelected() && this.getSelectEncode() != null) {
-            applyCharset = new StringBuffer(this.getSelectEncode());
+            applyCharset = this.getSelectEncode();
         }
         String decode = TransUtil.toSmartDecode(inputText, encodePattern, applyCharset);
-        this.setOutputText(decode);
-        this.setOutputByte(Util.encodeMessage(decode, applyCharset.toString()));
+        this.setOutput(decode, applyCharset);
     }
 
     private void clearText() {
@@ -2262,6 +2278,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.setInputByte(new byte[0]);
         this.setOutputText("");
         this.setOutputByte(new byte[0]);
+        this.setOutputFormat("");
+        this.tabbetOutput.remove(this.pnlOutputFormat);
     }
 
     private String getInputText() {
@@ -2293,19 +2311,20 @@ public class JTransCoderTab extends javax.swing.JPanel {
         return this.txtOutputRaw.getText();
     }
 
-    private void setOutput(String inputText) {
-        this.setOutputByte(Util.getRawByte(inputText));
-        this.setOutputText(inputText);
+    private void setOutput(String outputText) {
+        this.setOutput(outputText, StandardCharsets.ISO_8859_1.name());
+    }
+    
+    private void setOutput(String outputText, String encoding) {
+        this.setOutputText(outputText);
+        this.setOutputByte(Util.encodeMessage(outputText, encoding));
+        this.setOutputFormat(outputText);
     }
 
-    private void setOutputText(String inputText) {
-//        if (this.txtOutputRaw.getSelectionStart() == this.txtOutputRaw.getSelectionEnd()) {
-        this.txtOutputRaw.setText(inputText);
-//        } else {
-//            this.txtOutputRaw.replaceSelection(inputText);
-//        }
+    private void setOutputText(String outputText) {
+        this.txtOutputRaw.setText(outputText);
     }
-
+   
     private byte[] outputByte = new byte[0];
 
     private byte[] getOutputByte() {
@@ -2317,6 +2336,23 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.outputByte = outputByte;
     }
 
+    private void setOutputFormat(String outputText) {        
+        try {
+            this.txtOutputFormat.setText("");
+            this.tabbetOutput.remove(this.pnlOutputFormat);
+            if (FormatUtil.isJSON(outputText)) {
+                this.tabbetOutput.addTab("JSON", this.pnlOutputFormat);
+                this.txtOutputFormat.setText(FormatUtil.prettyJSON(outputText));
+            }
+            else if (FormatUtil.isXML(outputText)) {
+                this.tabbetOutput.addTab("XML", this.pnlOutputFormat);
+                this.txtOutputFormat.setText(FormatUtil.prettyXML(outputText));
+            }            
+        } catch (IOException ex) {
+            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     void sendToJTransCoder(String text) {
         this.setInputText(text);
         this.setInputByte(Util.getRawByte(text));
@@ -2327,9 +2363,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }
 
     private String getSelectEncode() {
-        String enc = "8859_1";
+        String enc = StandardCharsets.ISO_8859_1.name();
         if (this.chkRawMode.isSelected()) {
-            enc = "8859_1";
+            enc = StandardCharsets.ISO_8859_1.name();
         } else {
             int index = this.cmbEncoding.getSelectedIndex();
             if (index > -1) {

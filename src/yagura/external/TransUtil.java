@@ -71,7 +71,7 @@ public class TransUtil {
     private final static Pattern PTN_QUOTEDPRINTABLE = Pattern.compile("=([0-9a-fA-F]{2})");
     private final static Pattern PTN_PUNYCODE = Pattern.compile("xn--[0-9a-zA-Z_\\.]+");
     private final static Pattern PTN_URL = Pattern.compile("%([0-9a-fA-F]{2})");
-    private final static Pattern PTN_HTML = Pattern.compile("(&#(\\d+);)|(&#[xX]([0-9a-fA-F]+);)");
+    private final static Pattern PTN_HTML = Pattern.compile("(&#(\\d+);)|(&(lt|gt|amp|quot);)|(&#[xX]([0-9a-fA-F]+);)");
     private final static Pattern PTN_URL_UNICODE = Pattern.compile("%[uU]([0-9a-fA-F]{4})");
     private final static Pattern PTN_UNICODE = Pattern.compile("\\\\[uU]([0-9a-fA-F]{4})");
     private final static Pattern PTN_BYTE_HEX = Pattern.compile("\\\\[xX]([0-9a-fA-F]{2})");
@@ -162,7 +162,7 @@ public class TransUtil {
                         applyCharset = guessCode;
                         decode = TransUtil.decodeUrl(value, guessCode);
                     } else {
-                        decode = TransUtil.decodeUrl(value, "8859_1");
+                        decode = TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1.name());
                     }
                 }
                 break;
@@ -181,7 +181,7 @@ public class TransUtil {
                         applyCharset = guessCode;
                         decode = toByteDecode(value, applyCharset);
                     } else {
-                        decode = toByteDecode(value, "8859_1");
+                        decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
                     }
                     break;
                 }
@@ -191,7 +191,7 @@ public class TransUtil {
                         applyCharset = guessCode;
                         decode = toByteDecode(value, applyCharset);
                     } else {
-                        decode = toByteDecode(value, "8859_1");
+                        decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
                     }
                     break;
                 }
@@ -202,7 +202,7 @@ public class TransUtil {
                         applyCharset = guessCode;
                         decode = toUudecode(value, guessCode);
                     } else {
-                        decode = toUudecode(value, "8859_1");
+                        decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
                     }
                 }
                 break;
@@ -213,7 +213,7 @@ public class TransUtil {
                         applyCharset = guessCode;
                         decode = toUnQuotedPrintable(value, guessCode);
                     } else {
-                        decode = toUnQuotedPrintable(value, "8859_1");
+                        decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1.name());
                     }
                 }
                 break;
@@ -230,7 +230,7 @@ public class TransUtil {
                         applyCharset = guessCode;
                         decode = ConvertUtil.toBase64Decode(value, guessCode);
                     } else {
-                        decode = ConvertUtil.toBase64Decode(value, "8859_1");
+                        decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1.name());
                     }
                 }
                 break;
@@ -366,7 +366,7 @@ public class TransUtil {
             }
         }
         String ustr = new String(chars);
-        return new String(ustr.getBytes("8859_1"), enc);
+        return new String(ustr.getBytes(StandardCharsets.ISO_8859_1), enc);
     }
 
     public static int getCharCode(String str, String enc)
@@ -1218,7 +1218,7 @@ public class TransUtil {
                 hexmod[j++] = hexs[i];
                 if (i > 0 && (j - 1) % 16 == 0) {
                     System.arraycopy(output, row * 16, partout, 0, partout.length);
-                    String hexText = new String(partout, "8859_1");
+                    String hexText = new String(partout, StandardCharsets.ISO_8859_1.name());
                     hexmod[0] = fmtPosition.format(row);
                     hexmod[17] = hexText;
                     for (int x = 0; x < hexmod.length; x++) {
@@ -1237,7 +1237,7 @@ public class TransUtil {
              */
             if ((j - 1) > 0) {
                 System.arraycopy(output, row * 16, partout, 0, j - 1);
-                String hexText = new String(partout, "8859_1");
+                String hexText = new String(partout, StandardCharsets.ISO_8859_1.name());
                 hexmod[0] = fmtPosition.format(row);
                 hexmod[17] = hexText;
                 for (int x = 0; x < j; x++) {

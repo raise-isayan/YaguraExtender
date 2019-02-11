@@ -175,29 +175,29 @@ public class QuickSearchTab extends javax.swing.JPanel {
         
     private void quickSearchPerformed(boolean forward) {
         javax.swing.text.JTextComponent ta = this.getSelectedTextArea();
-        String s = (String) this.cmbQuckSearch.getEditor().getItem();
-        if (s == null || (s != null && s.length() == 0)) {
+        String searchText = (String) this.cmbQuckSearch.getEditor().getItem();
+        if (searchText == null || (searchText != null && searchText.length() == 0)) {
             this.clearView();
             return;
         }
         // history
         this.cmbQuckSearch.setVisible(false);
         DefaultComboBoxModel model = (DefaultComboBoxModel) this.cmbQuckSearch.getModel();
-        model.removeElement(s);
-        model.insertElementAt(s, 0);
+        model.removeElement(searchText);
+        model.insertElementAt(searchText, 0);
         this.cmbQuckSearch.setSelectedIndex(0);
         this.cmbQuckSearch.setVisible(true);
 
         if (ta.getHighlighter() instanceof KeywordHighlighter) {
             KeywordHighlighter high = (KeywordHighlighter) ta.getHighlighter();
 
-            if (s.equals(high.getHighlightKeyword())
+            if (searchText.equals(high.getHighlightKeyword())
                     && this.regex == this.mnuRegex.isSelected()
                     && this.ignoreCase == this.mnuIgnoreCase.isSelected()) {
                 high.searchPosition(forward);
             } else {
-                if (isValidRegex(s)) {
-                    this.quickSearch(ta, s);
+                if (isValidRegex(searchText)) {
+                    this.quickSearch(ta, searchText);
                 }
                 else {
                     this.lblMatch.setText(BUNDLE.getString("view.invalid.regex"));

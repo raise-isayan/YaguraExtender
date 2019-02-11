@@ -109,28 +109,36 @@ public class BurpExtender extends BurpExtenderImpl
     private final IMessageEditorTabFactory requestRawTab = new IMessageEditorTabFactory() {
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-            return new RawViewTab(controller, editable, true);
+            final RawViewTab tab = new RawViewTab(controller, editable, true);
+            getCallbacks().customizeUiComponent(tab);            
+            return tab;
         }
     };
     
     private final IMessageEditorTabFactory responseRawTab = new IMessageEditorTabFactory() {
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-            return new RawViewTab(controller, editable, false);
+            final RawViewTab tab = new RawViewTab(controller, editable, false);
+            getCallbacks().customizeUiComponent(tab);            
+            return tab;
         }
     };
 
     private final IMessageEditorTabFactory requestParamsTab = new IMessageEditorTabFactory() {
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-            return new ParamsViewTab(controller, editable);
+            final ParamsViewTab tab = new ParamsViewTab(controller, editable);
+            getCallbacks().customizeUiComponent(tab);            
+            return tab;
         }    
     };
 
     private final IMessageEditorTabFactory requestJSONTab = new IMessageEditorTabFactory() {
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-            return new JSONViewTab(controller, editable, true);
+            final JSONViewTab tab = new JSONViewTab(controller, editable, true);
+            getCallbacks().customizeUiComponent(tab);            
+            return tab;
         }
     };
 

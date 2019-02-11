@@ -262,11 +262,9 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    VerticalFlowLayout verticalFlowLayout1 = new VerticalFlowLayout();
-
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.pnlCenter.setLayout(this.verticalFlowLayout1);
+        this.pnlCenter.setLayout(new VerticalFlowLayout());
     }
 
     private void txtShowOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtShowOnlyActionPerformed

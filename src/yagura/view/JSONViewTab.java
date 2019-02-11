@@ -186,7 +186,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         if (body.length > 0 && mimeJsonType) {
             return FormatUtil.isJSON(Util.getRawStr(body));
         } else {
-            return false;
+            return FormatUtil.isJSON(Util.getRawStr(body));
         }
     }
 

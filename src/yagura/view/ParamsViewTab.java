@@ -356,7 +356,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     //                guessCharset = request.getGuessCharset();
                     this.reqInfo = BurpExtender.getHelpers().analyzeRequest(this.controller.getHttpService(), content);
                     if (this.reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
-                        guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), "8859_1")));
+                        guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
                     }
                     else {
                         guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());                
