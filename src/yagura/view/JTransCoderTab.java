@@ -2230,7 +2230,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
             StringBuilder statusFormat = new StringBuilder();
             Object[] formatArgsList = new Object[encodeCodeList.size() * 2];
             for (int i = 0; i < formatArgsList.length; i += 2) {
-                formatArgsList[i + 0] = TransUtil.toHexString(encodeCodeList.get((int) i / 2));
+                formatArgsList[i + 0] = ConvertUtil.toHexString(encodeCodeList.get((int) i / 2));
                 formatArgsList[i + 1] = encodeCodeList.get((int) i / 2);
                 if (i == 0) {
                     statusFormat.append(String.format("%s:\n 0x{%d}({%d,number,#####})", "CharCode", 0, 1));

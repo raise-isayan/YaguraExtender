@@ -60,7 +60,12 @@ public class TransUtilTest {
         System.out.println(row.length);
 //        TransUtil.hexDump();
     }
-    
+
+
+    @Test
+    public void testNewLine() {
+        System.out.println(TransUtil.newLine("\r\n", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 76));
+    }
     /**
      * Test of getSmartDecode method, of class TransUtil.
      */
@@ -204,59 +209,7 @@ public class TransUtilTest {
         assertEquals("ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff", HashUtil.toSHA512Sum("test", false));
         assertEquals("cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e", HashUtil.toSHA512Sum("", false));
     }
-    
-    /**
-     * Test of toInteger method, of class TransUtil.
-     */
-    @Test
-    public void testToInteger() {
-        System.out.println("toInteger");
-        assertEquals(0x7fff, TransUtil.toInteger(new byte[]{(byte) 0x7f, (byte) 0xff}));
-        assertEquals(0xff7f, TransUtil.toInteger(new byte[]{(byte) 0xff, (byte) 0x7f}));
-        assertEquals(0x8080, TransUtil.toInteger(new byte[]{(byte) 0x80, (byte) 0x80}));
-    }
-
-    /**
-     * Test of toBASE64Encoder method, of class TransUtil.
-     */
-    @Test
-    public void testToBASE64Encoder() {
-        try {
-            System.out.println("toBASE64Encoder");
-            assertEquals("PA==", ConvertUtil.toBase64Encode("<", "8859_1"));
-            assertEquals("dGVzdA==", ConvertUtil.toBase64Encode("test", "8859_1"));
-            assertEquals("ZnVnYWY=", ConvertUtil.toBase64Encode("fugaf", "8859_1"));
-            assertEquals("aG9nZWhv", ConvertUtil.toBase64Encode("hogeho", "8859_1"));
-
-            System.out.println(TransUtil.newLine("\r\n", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 76));
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            assertTrue(false);
-        }
-    }
-
-    /**
-     * Test of toBASE64Decode method, of class TransUtil.
-     */
-    @Test
-    public void testToBASE64Decoder() {
-        try {
-            System.out.println("toBASE64Decoder");
-            assertEquals("<", ConvertUtil.toBase64Decode("PA==", "8859_1"));
-            assertEquals("hogeho", ConvertUtil.toBase64Decode("aG9nZWhv", "8859_1"));
-            assertEquals("fugaf", ConvertUtil.toBase64Decode("ZnVnYWY=", "8859_1"));
-            assertEquals("test", ConvertUtil.toBase64Decode("dGVzdA==", "8859_1"));
-            System.out.println(ConvertUtil.toBase64Decode("absdadbd", "8859_1"));
-            byte[] bytes = DatatypeConverter.parseHexBinary("abdadb0d");           
-            System.out.println(TransUtil.toHexString(bytes));
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            assertTrue(false);
-        }
-    }
-
-
-   
+       
     /**
      * Test of UTF7Decode method, of class TransUtil.
      */

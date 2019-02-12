@@ -4,6 +4,7 @@ import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import extend.model.base.CustomTableModel;
+import extend.util.ConvertUtil;
 import yagura.external.TransUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -171,7 +172,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
              */
             String[] hexs = new String[output.length];
             for (int i = 0; i < output.length; i++) {
-                hexs[i] = TransUtil.toHexString(output[i]);
+                hexs[i] = ConvertUtil.toHexString(output[i]);
             }
             /*
              * HEX表示の作成

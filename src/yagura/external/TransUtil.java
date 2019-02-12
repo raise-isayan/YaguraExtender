@@ -268,62 +268,6 @@ public class TransUtil {
         return decode;
     }
 
-    public static String toHexString(byte[] input) {
-        StringBuilder digestbuff = new StringBuilder();
-        for (int i = 0; i < input.length; i++) {
-            String tmp = Integer.toHexString(input[i] & 0xff);
-            if (tmp.length() == 1) {
-                digestbuff.append('0').append(tmp);
-            } else {
-                digestbuff.append(tmp);
-            }
-        }
-        return digestbuff.toString();
-    }
-
-    public static String toOctString(byte[] input) {
-        StringBuilder digestbuff = new StringBuilder();
-        for (int i = 0; i < input.length; i++) {
-            String tmp = Integer.toOctalString(input[i] & 0xff);
-            if (tmp.length() == 1) {
-                digestbuff.append('0').append(tmp);
-            } else {
-                digestbuff.append(tmp);
-            }
-        }
-        return digestbuff.toString();
-    }
-
-    public static int toInteger(byte[] input) {
-        int value = 0;
-        for (int i = 0; i < input.length; i++) {
-            value = (value << 8) | (input[i] & 0xff);
-        }
-        return value;
-    }
-
-    public static String toHexString(byte input) {
-        StringBuilder digestbuff = new StringBuilder();
-        String tmp = Integer.toHexString(input & 0xff);
-        if (tmp.length() == 1) {
-            digestbuff.append('0').append(tmp);
-        } else {
-            digestbuff.append(tmp);
-        }
-        return digestbuff.toString();
-    }
-
-    public static String toHexString(int input) {
-        StringBuilder digestbuff = new StringBuilder();
-        String tmp = Integer.toHexString(input & 0xffffffff);
-        // 2で割れる数で0詰め
-        if ((tmp.length() % 2) != 0) {
-            digestbuff.append('0');
-        }
-        digestbuff.append(tmp);
-        return digestbuff.toString();
-    }
-
     public static String toPunycodeEncode(String value) {
         return IDN.toASCII(value);
     }
@@ -372,7 +316,7 @@ public class TransUtil {
     public static int getCharCode(String str, String enc)
             throws UnsupportedEncodingException {
         byte caretbyte[] = str.getBytes(enc);
-        return toInteger(caretbyte);
+        return ConvertUtil.toInteger(caretbyte);
     }
 
     public static char[] toChars(String str) {
@@ -1205,7 +1149,7 @@ public class TransUtil {
              */
             String[] hexs = new String[output.length];
             for (int i = 0; i < output.length; i++) {
-                hexs[i] = TransUtil.toHexString(output[i]);
+                hexs[i] = ConvertUtil.toHexString(output[i]);
             }
             /*
              * HEX表示の作成

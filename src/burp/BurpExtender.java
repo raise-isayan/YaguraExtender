@@ -110,7 +110,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, true);
-            getCallbacks().customizeUiComponent(tab);            
+            getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
         }
     };
@@ -119,7 +119,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, false);
-            getCallbacks().customizeUiComponent(tab);            
+            getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
         }
     };
@@ -128,7 +128,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final ParamsViewTab tab = new ParamsViewTab(controller, editable);
-            getCallbacks().customizeUiComponent(tab);            
+            getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
         }    
     };
@@ -137,7 +137,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, true);
-            getCallbacks().customizeUiComponent(tab);            
+            getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
         }
     };
@@ -145,7 +145,9 @@ public class BurpExtender extends BurpExtenderImpl
     private final IMessageEditorTabFactory responseJSONTab = new IMessageEditorTabFactory() {
         @Override
          public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-             return new JSONViewTab(controller, editable, false);
+            final JSONViewTab tab = new JSONViewTab(controller, editable, false);
+            getCallbacks().customizeUiComponent(tab.getUiComponent());            
+            return tab;
          }
      };
     
