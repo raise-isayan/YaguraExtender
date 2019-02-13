@@ -49,6 +49,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.request = isResuest;
         this.controller = controller;
         this.editable = editable;
+        this.editable = false;
         initComponents();
         customizeComponents();        
     }
