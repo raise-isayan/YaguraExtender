@@ -352,6 +352,7 @@ public class BurpExtender extends BurpExtenderImpl
                         }
                     }
                 } catch (IOException ex) {
+                    getCallbacks().issueAlert(ex.getMessage());
                     Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
                     Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
