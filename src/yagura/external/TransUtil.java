@@ -31,6 +31,9 @@ import org.mozilla.universalchardet.UniversalDetector;
  */
 public class TransUtil {
 
+    public enum DateUnit {
+        DAYS, WEEKS, MONTHS, YEARS
+    }
 
     public enum EncodeType {
         ALL, ALPHANUM, LIGHT, STANDARD
@@ -154,111 +157,120 @@ public class TransUtil {
         String applyCharset = StandardCharsets.ISO_8859_1.name();
         String decode = value;
         try {
-            // URL encode match
-            switch (encodePattern) {
-                case URL_STANDARD: {
-                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(value, "8859_1"))) : charset;
-                    if (guessCode != null) {
-                        applyCharset = guessCode;
-                        decode = TransUtil.decodeUrl(value, guessCode);
-                    } else {
-                        decode = TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1.name());
-                    }
-                }
-                break;
-                // URL Unicode
-                case URL_UNICODE:
-                    decode = toUnocodeUrlDecode(value);
-                    break;
-                // Unicode
-                case UNICODE:
-                    decode = toUnocodeDecode(value);
-                    break;
-                // Byte Hex
-                case BYTE_HEX: {
-                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
-                    if (guessCode != null) {
-                        applyCharset = guessCode;
-                        decode = toByteDecode(value, applyCharset);
-                    } else {
-                        decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
-                    }
-                    break;
-                }
-                case BYTE_OCT: {
-                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
-                    if (guessCode != null) {
-                        applyCharset = guessCode;
-                        decode = toByteDecode(value, applyCharset);
-                    } else {
-                        decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
-                    }
-                    break;
-                }
-                // uuencode
-                case UUENCODE: {
-                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
-                    if (guessCode != null) {
-                        applyCharset = guessCode;
-                        decode = toUudecode(value, guessCode);
-                    } else {
-                        decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
-                    }
-                }
-                break;
-                // QuotedPrintable
-                case QUOTEDPRINTABLE: {
-                    String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
-                    if (guessCode != null) {
-                        applyCharset = guessCode;
-                        decode = toUnQuotedPrintable(value, guessCode);
-                    } else {
-                        decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1.name());
-                    }
-                }
-                break;
-                // Punycode
-                case PUNYCODE: 
-                    decode = toPunycodeDecode(value);
-                    break;
-                // Base64 encode match
-                case BASE64: {
-                    value = value.replaceAll("[\r\n]", ""); // 改行削除
-                    byte[] bytes = DatatypeConverter.parseBase64Binary(value);
-                    String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
-                    if (guessCode != null) {
-                        applyCharset = guessCode;
-                        decode = ConvertUtil.toBase64Decode(value, guessCode);
-                    } else {
-                        decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1.name());
-                    }
-                }
-                break;
-                // Html decode
-                case HTML:
-                    decode = toHtmlDecode(value);
-                    break;
-                // ZLIB
-                case ZLIB:
-                    decode = Util.getRawStr(ConvertUtil.decompressZlib(Util.encodeMessage(value, charset)));
-                    break;
-                // UTF7
-                case UTF7:
-                    decode = TransUtil.toUTF7Decode(value);
-                    break;
-                // UTF8 ILL
-                case UTF8_ILL:
-                    // nothing
-                    break;
-                case C_LANG:
-                    decode = TransUtil.decodeCLangQuote(value);
-                    break;
-                case SQL_LANG:
-                    decode = TransUtil.decodeSQLangQuote(value);
-                    break;
-                default:
-                    break;
+            if (encodePattern == null) {
+                if (charset != null) {
+                    applyCharset = charset;
+                } 
+                decode = Util.getRawByteStr(value, applyCharset);            
             }
+            else {
+                // URL encode match
+                switch (encodePattern) {
+                    case URL_STANDARD: {
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(value, "8859_1"))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = TransUtil.decodeUrl(value, applyCharset);
+                        } else {
+                            decode = TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                    }
+                    break;
+                    // URL Unicode
+                    case URL_UNICODE:
+                        decode = toUnocodeUrlDecode(value);
+                        break;
+                    // Unicode
+                    case UNICODE:
+                        decode = toUnocodeDecode(value);
+                        break;
+                    // Byte Hex
+                    case BYTE_HEX: {
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toByteDecode(value, applyCharset);
+                        } else {
+                            decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                        break;
+                    }
+                    case BYTE_OCT: {
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toByteDecode(value, applyCharset);
+                        } else {
+                            decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                        break;
+                    }
+                    // uuencode
+                    case UUENCODE: {
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toUudecode(value, guessCode);
+                        } else {
+                            decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                    }
+                    break;
+                    // QuotedPrintable
+                    case QUOTEDPRINTABLE: {
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toUnQuotedPrintable(value, guessCode);
+                        } else {
+                            decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                    }
+                    break;
+                    // Punycode
+                    case PUNYCODE: 
+                        decode = toPunycodeDecode(value);
+                        break;
+                    // Base64 encode match
+                    case BASE64: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = DatatypeConverter.parseBase64Binary(value);
+                        String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = ConvertUtil.toBase64Decode(value, guessCode);
+                        } else {
+                            decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                    }
+                    break;
+                    // Html decode
+                    case HTML:
+                        decode = toHtmlDecode(value);
+                        break;
+                    // ZLIB
+                    case ZLIB:
+                        decode = Util.getRawStr(ConvertUtil.decompressZlib(Util.encodeMessage(value, charset)));
+                        break;
+                    // UTF7
+                    case UTF7:
+                        decode = TransUtil.toUTF7Decode(value);
+                        break;
+                    // UTF8 ILL
+                    case UTF8_ILL:
+                        // nothing
+                        break;
+                    case C_LANG:
+                        decode = TransUtil.decodeCLangQuote(value);
+                        break;
+                    case SQL_LANG:
+                        decode = TransUtil.decodeSQLangQuote(value);
+                        break;
+                    default:
+                        break;
+                }            
+            }
+
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1114,27 +1126,44 @@ public class TransUtil {
      * @param stepDate ステップ
      * @return 作成済みのリスト
      */
-    public static String[] dateList(String format, LocalDate startDate, LocalDate endDate, int stepDate) {
+    public static String[] dateList(String format, LocalDate startDate, LocalDate endDate, int stepDate, DateUnit unit) {
         if (stepDate == 0) {
             throw new IllegalArgumentException("You can not specify zero for Step");
         }
         LocalDate startValue = startDate.compareTo(endDate) < 0 ? startDate : endDate;
         LocalDate endValue = startDate.compareTo(endDate) > 0 ? startDate : endDate;
-
-        ArrayList<String> list = new ArrayList<String>();
+        ChronoUnit dateUnit = ChronoUnit.DAYS;
+        switch (unit) {
+        case DAYS:
+            dateUnit = ChronoUnit.DAYS;
+            break;
+        case WEEKS:
+            dateUnit = ChronoUnit.WEEKS;
+            break;
+        case MONTHS:
+            dateUnit = ChronoUnit.MONTHS;
+            break;
+        case YEARS:
+            dateUnit = ChronoUnit.YEARS;
+            break;
+        default:
+            break;
+        }
+        
+        ArrayList<String> list = new ArrayList<>();
         final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(format);
         if (0 < stepDate) {
             LocalDate currentDate = startValue;
             while (currentDate.compareTo(endValue) <= 0) {
                 list.add(currentDate.format(dateFormat));
-                currentDate = currentDate.plus(stepDate, ChronoUnit.DAYS);
+                currentDate = currentDate.plus(stepDate, dateUnit);
             }
         }
         if (0 > stepDate) {
             LocalDate currentDate = endValue;
             while (currentDate.compareTo(startValue) >= 0) {
                 list.add(currentDate.format(dateFormat));
-                currentDate = currentDate.plus(stepDate, ChronoUnit.DAYS);
+                currentDate = currentDate.plus(stepDate, dateUnit);
             }
         }
         return list.toArray(new String[0]);

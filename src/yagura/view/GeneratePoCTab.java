@@ -20,7 +20,6 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +146,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 .addComponent(btnCopyClipbord)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSavetoFile)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlButton);
@@ -259,7 +258,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 .addComponent(rdoMultipart)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoPlain)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlSelect);
@@ -358,6 +357,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     public void setMessageFont(Font font) {
         this.txtGeneratorPoC.setFont(font);
+        this.quickSearchTab.setMessageFont(font);        
     }
 
     private HttpRequest message = null;
@@ -653,6 +653,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String boundary = HttpUtil.generateBoundary();
             buff.append("\tvar xhr = new XMLHttpRequest();\r\n");
             buff.append(String.format("\txhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl)}));
+            buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
             buff.append("\tvar req = '';\r\n");
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
@@ -709,7 +710,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     buff.append("\txhr.send(new Blob([blob]));\r\n");
                 } else {
                     buff.append("\txhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\r\n");
-                    buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
                     List<IParameter> parameters = requestInfo.getParameters();                
                     Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.size:{0}", parameters.size());
                     boolean binaryParam = false;
@@ -747,7 +747,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             } // csrf textplain    
             else {
                 buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');\r\n", csrfEnctype));
-                buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
                 String paramValue = Util.decodeMessage(reqmsg.getBodyBytes());
                 buff.append(String.format("\treq += '%s';\r\n", new Object[]{TransUtil.toByteHexEncode(Util.getRawByte(paramValue), ENCODE_JS, false)}));
                 buff.append("\tvar blob = new Uint8Array(req.length);\r\n");

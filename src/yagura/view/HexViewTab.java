@@ -233,7 +233,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     @Override
     public boolean isEnabled(byte[] content, boolean isRequest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return false;
     }
 
     @Override
@@ -243,7 +243,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     @Override
     public byte[] getMessage() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.data;
     }
 
     @Override
@@ -260,6 +260,10 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         return this.modelHex;
     }
 
+    public void setMessageFont(Font font) {
+        this.tableHex.setFont(font);
+    }
+        
     // TableColumn.createDefaultHeaderRenderer
     class SimpleTableHeaderRenderer extends DefaultTableCellRenderer {
 

@@ -13,12 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JEditorPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.StyleContext;
-import javax.swing.text.html.HTMLDocument;
 
 /**
  *
@@ -119,6 +115,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 
     public void setMessageFont(Font font) {
         this.txtRaw.setFont(font);
+        this.quickSearchTab.setMessageFont(font);
     }
 
     public void setMessageView(String encoding) {

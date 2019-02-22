@@ -247,7 +247,7 @@
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="rdoEncodeDecodeGrp"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="&amp;#xhhhh;"/>
+                            <Property name="text" type="java.lang.String" value="&amp;#xhh;"/>
                           </Properties>
                         </Component>
                       </SubComponents>
@@ -1197,9 +1197,9 @@
                                                           </Group>
                                                           <EmptySpace type="separate" max="-2" attributes="0"/>
                                                           <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Component id="txtNumStep" min="-2" pref="68" max="-2" attributes="0"/>
-                                                              <Component id="txtNumEnd" min="-2" pref="66" max="-2" attributes="0"/>
-                                                              <Component id="txtNumStart" min="-2" pref="66" max="-2" attributes="0"/>
+                                                              <Component id="spnNumStep" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
+                                                              <Component id="spnNumStart" min="-2" pref="110" max="-2" attributes="0"/>
+                                                              <Component id="spnNumEnd" min="-2" pref="110" max="-2" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                   </Group>
@@ -1218,17 +1218,17 @@
                                                   <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="3" attributes="0">
                                                       <Component id="lblNumStart" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="txtNumStart" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="spnNumStart" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   </Group>
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="3" attributes="0">
                                                       <Component id="lblNumEnd" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="txtNumEnd" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="spnNumEnd" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   </Group>
                                                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="3" attributes="0">
-                                                      <Component id="txtNumStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                       <Component id="lblNumStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="spnNumStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   </Group>
                                                   <EmptySpace pref="88" max="32767" attributes="0"/>
                                               </Group>
@@ -1243,22 +1243,6 @@
                                           <Events>
                                             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNumFormatKeyPressed"/>
                                           </Events>
-                                        </Component>
-                                        <Component class="javax.swing.JTextField" name="txtNumStart">
-                                          <Properties>
-                                            <Property name="text" type="java.lang.String" value="0"/>
-                                          </Properties>
-                                        </Component>
-                                        <Component class="javax.swing.JTextField" name="txtNumEnd">
-                                          <Properties>
-                                            <Property name="text" type="java.lang.String" value="1"/>
-                                          </Properties>
-                                        </Component>
-                                        <Component class="javax.swing.JTextField" name="txtNumStep">
-                                          <Properties>
-                                            <Property name="text" type="java.lang.String" value="1"/>
-                                            <Property name="toolTipText" type="java.lang.String" value=""/>
-                                          </Properties>
                                         </Component>
                                         <Component class="javax.swing.JLabel" name="lblNumFormat">
                                           <Properties>
@@ -1280,6 +1264,27 @@
                                             <Property name="text" type="java.lang.String" value="Stop:"/>
                                           </Properties>
                                         </Component>
+                                        <Component class="javax.swing.JSpinner" name="spnNumStep">
+                                          <Properties>
+                                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                              <SpinnerModel initial="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                            </Property>
+                                          </Properties>
+                                        </Component>
+                                        <Component class="javax.swing.JSpinner" name="spnNumStart">
+                                          <Properties>
+                                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                              <SpinnerModel initial="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                            </Property>
+                                          </Properties>
+                                        </Component>
+                                        <Component class="javax.swing.JSpinner" name="spnNumEnd">
+                                          <Properties>
+                                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                              <SpinnerModel initial="100" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                            </Property>
+                                          </Properties>
+                                        </Component>
                                       </SubComponents>
                                     </Container>
                                     <Container class="javax.swing.JPanel" name="pnlDate">
@@ -1295,30 +1300,37 @@
                                         <DimensionLayout dim="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Group type="102" attributes="0">
-                                                  <EmptySpace max="-2" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="lblDateStep" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                          <Component id="txtDateStep" min="-2" pref="51" max="-2" attributes="0"/>
-                                                      </Group>
-                                                      <Group type="102" alignment="0" attributes="0">
+                                                      <Group type="102" attributes="0">
+                                                          <EmptySpace max="-2" attributes="0"/>
                                                           <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Group type="102" alignment="1" attributes="0">
-                                                                  <Component id="lblDateEnd" min="-2" max="-2" attributes="0"/>
-                                                                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                                              <Component id="lblDateStep" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                              <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                                                                  <Group type="102" alignment="1" attributes="0">
+                                                                      <Component id="lblDateEnd" min="-2" max="-2" attributes="0"/>
+                                                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                                                  </Group>
+                                                                  <Component id="lblDateStart" alignment="0" min="-2" max="-2" attributes="0"/>
                                                               </Group>
-                                                              <Component id="lblDateStart" alignment="0" min="-2" max="-2" attributes="0"/>
                                                           </Group>
+                                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                           <Group type="103" groupAlignment="0" attributes="0">
-                                                              <Component id="pnlDateEnd" min="-2" pref="160" max="-2" attributes="0"/>
                                                               <Component id="pnlDateStart" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                                                              <Component id="pnlDateEnd" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                                                              <Group type="102" alignment="0" attributes="0">
+                                                                  <Component id="spnDateStep" min="-2" pref="77" max="-2" attributes="0"/>
+                                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                                                  <Component id="cmbDateUnit" min="-2" max="-2" attributes="0"/>
+                                                              </Group>
                                                           </Group>
                                                       </Group>
-                                                      <Component id="txtDateFormat" min="-2" pref="300" max="-2" attributes="0"/>
+                                                      <Group type="102" attributes="0">
+                                                          <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                                                          <Component id="txtDateFormat" min="-2" pref="300" max="-2" attributes="0"/>
+                                                          <EmptySpace max="-2" attributes="0"/>
+                                                          <Component id="lblDateFormat" min="-2" pref="174" max="-2" attributes="0"/>
+                                                      </Group>
                                                   </Group>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="lblDateFormat" min="-2" pref="174" max="-2" attributes="0"/>
                                                   <EmptySpace pref="680" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
@@ -1352,9 +1364,12 @@
                                                       </Group>
                                                   </Group>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Group type="103" groupAlignment="3" attributes="0">
-                                                      <Component id="txtDateStep" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                      <Component id="lblDateStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="cmbDateUnit" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                      <Group type="103" groupAlignment="3" attributes="0">
+                                                          <Component id="lblDateStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="spnDateStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
                                                   </Group>
                                                   <EmptySpace pref="80" max="32767" attributes="0"/>
                                               </Group>
@@ -1391,12 +1406,6 @@
                                             <Property name="text" type="java.lang.String" value="Stop:"/>
                                           </Properties>
                                         </Component>
-                                        <Component class="javax.swing.JTextField" name="txtDateStep">
-                                          <Properties>
-                                            <Property name="text" type="java.lang.String" value="1"/>
-                                            <Property name="toolTipText" type="java.lang.String" value=""/>
-                                          </Properties>
-                                        </Component>
                                         <Container class="javax.swing.JPanel" name="pnlDateEnd">
 
                                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -1405,6 +1414,28 @@
 
                                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                                         </Container>
+                                        <Component class="javax.swing.JComboBox" name="cmbDateUnit">
+                                          <Properties>
+                                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                                              <StringArray count="4">
+                                                <StringItem index="0" value="DAYS"/>
+                                                <StringItem index="1" value="WEEKS"/>
+                                                <StringItem index="2" value="MONTHS"/>
+                                                <StringItem index="3" value="YEARS"/>
+                                              </StringArray>
+                                            </Property>
+                                          </Properties>
+                                          <AuxValues>
+                                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                                          </AuxValues>
+                                        </Component>
+                                        <Component class="javax.swing.JSpinner" name="spnDateStep">
+                                          <Properties>
+                                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                              <SpinnerModel initial="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                            </Property>
+                                          </Properties>
+                                        </Component>
                                       </SubComponents>
                                     </Container>
                                   </SubComponents>
@@ -1427,15 +1458,15 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="pnlCharacter" min="-2" pref="432" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="pnlCharacter" max="32767" attributes="0"/>
                                           <Group type="102" attributes="0">
-                                              <Component id="pnlStringLength" min="-2" pref="200" max="-2" attributes="0"/>
+                                              <Component id="pnlStringLength" min="-2" pref="240" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="pnlCount" min="-2" pref="200" max="-2" attributes="0"/>
+                                              <Component id="pnlCount" min="-2" pref="240" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="677" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -1572,9 +1603,11 @@
                                     </Property>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JTextField" name="txtLengthNum">
+                                <Component class="javax.swing.JSpinner" name="spnLengthNum">
                                   <Properties>
-                                    <Property name="text" type="java.lang.String" value="10"/>
+                                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                      <SpinnerModel initial="32" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                    </Property>
                                   </Properties>
                                 </Component>
                               </SubComponents>
@@ -1626,9 +1659,11 @@
                                     </Property>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JTextField" name="txtCountNum">
+                                <Component class="javax.swing.JSpinner" name="spnCountNum">
                                   <Properties>
-                                    <Property name="text" type="java.lang.String" value="100"/>
+                                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                      <SpinnerModel initial="100" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                    </Property>
                                   </Properties>
                                 </Component>
                               </SubComponents>
@@ -1662,12 +1697,12 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
-                                  <Component id="btnGenerate" min="-2" pref="21" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="txtListCopy" min="-2" pref="21" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btnSavetoFile" min="-2" pref="21" max="-2" attributes="0"/>
-                                  <EmptySpace pref="144" max="32767" attributes="0"/>
+                                  <Component id="btnGenerate" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                  <Component id="txtListCopy" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                  <Component id="btnSavetoFile" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace pref="156" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>

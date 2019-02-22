@@ -11,6 +11,7 @@ import extend.util.Util;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -337,6 +338,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         return false;
     }
 
+    public void setMessageFont(Font font) {
+        this.tableParams.setFont(font);
+    }
+        
     private byte[] content = null;
     private IRequestInfo reqInfo = null;
 

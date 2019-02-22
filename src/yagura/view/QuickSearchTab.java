@@ -5,6 +5,7 @@ import yagura.model.KeywordHighlighter;
 import yagura.model.StartEndPosion;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
@@ -146,8 +147,12 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private javax.swing.JPopupMenu popQuick;
     // End of variables declaration//GEN-END:variables
 
+    public void setMessageFont(Font font) {
+        this.cmbQuckSearch.setFont(font);
+    }
+        
     private javax.swing.text.JTextComponent txtTextArea;
-
+    
     public void setSelectedTextArea(javax.swing.text.JTextComponent textArea) {
         this.txtTextArea = textArea;
         this.txtTextArea.setHighlighter(this.highlightKeyword);

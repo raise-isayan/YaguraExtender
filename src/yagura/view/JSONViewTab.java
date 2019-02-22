@@ -114,7 +114,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     private javax.swing.JScrollPane scrollJSON;
     private javax.swing.JTextArea txtJSON;
     // End of variables declaration//GEN-END:variables
-
+        
     public void setMessageView(String encoding) {
         Logger.getLogger(JSONViewTab.class.getName()).log(Level.INFO, "encoding:" + encoding);
         try {
@@ -141,6 +141,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
     public void setMessageFont(Font font) {
         this.txtJSON.setFont(font);
+        this.quickSearchTab.setMessageFont(font);
     }
 
     protected JTextComponent getSelectedTextArea() {

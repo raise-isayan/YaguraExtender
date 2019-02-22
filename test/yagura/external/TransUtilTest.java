@@ -92,6 +92,9 @@ public class TransUtilTest {
     
         assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
         assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));        
+
+        assertEquals(null, TransUtil.getSmartDecode("<<<<<"));        
+
     }
     
     /**
@@ -153,13 +156,20 @@ public class TransUtilTest {
             
             assertEquals("あいうえお", TransUtil.toSmartDecode("%u3042%u3044%u3046%u3048%u304a"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("%U3042%U3044%U3046%U3048%U304A"));
-        } catch (UnsupportedEncodingException ex) {
+       } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
         }
                 
     }
-    
-    
+
+    /**
+     * Test of toSmartDecode method, of class TransUtil.
+     */
+    @Test
+    public void testToSmartDecode_unmatch() {
+        assertEquals("<<<<<<<<<<<", TransUtil.toSmartDecode("<<<<<<<<<<<"));                
+    }
+       
     /**
      * Test of toMd5Sum method, of class TransUtil.
      */
@@ -638,7 +648,7 @@ public class TransUtilTest {
     public void testGenerater_DateList() {
         System.out.println("testGenerater_DateList");
         {
-            String list[] = TransUtil.dateList("yyyy/MM/dd", LocalDate.of(2007, Month.OCTOBER, 28), LocalDate.of(2007, Month.NOVEMBER, 2), 1);
+            String list[] = TransUtil.dateList("yyyy/MM/dd", LocalDate.of(2007, Month.OCTOBER, 28), LocalDate.of(2007, Month.NOVEMBER, 2), 1, TransUtil.DateUnit.DAYS);
             assertEquals(list.length, 6);
             assertEquals(list[0], "2007/10/28");
             assertEquals(list[1], "2007/10/29");
@@ -648,7 +658,7 @@ public class TransUtilTest {
             assertEquals(list[5], "2007/11/02");
         }
         {
-            String list[] = TransUtil.dateList("yyyy/MM/dd", LocalDate.of(2007, Month.NOVEMBER, 2), LocalDate.of(2007, Month.OCTOBER, 28), -1);
+            String list[] = TransUtil.dateList("yyyy/MM/dd", LocalDate.of(2007, Month.NOVEMBER, 2), LocalDate.of(2007, Month.OCTOBER, 28), -1, TransUtil.DateUnit.DAYS);
             assertEquals(list.length, 6);
             assertEquals(list[0], "2007/11/02");
             assertEquals(list[1], "2007/11/01");
