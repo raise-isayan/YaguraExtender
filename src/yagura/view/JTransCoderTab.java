@@ -2361,6 +2361,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private void setOutputText(String outputText) {
         this.txtOutputRaw.setText(outputText);
+        this.txtOutputRaw.setCaretPosition(0);        
     }
    
     private byte[] outputByte = new byte[0];
@@ -2386,6 +2387,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 this.tabbetOutput.addTab("XML", this.pnlOutputFormat);
                 this.txtOutputFormat.setText(FormatUtil.prettyXML(outputText));
             }            
+            this.txtOutputFormat.setCaretPosition(0);        
         } catch (IOException ex) {
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
         }

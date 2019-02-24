@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import yagura.external.TransUtil;
@@ -50,8 +52,9 @@ public class QuickSearchTab extends javax.swing.JPanel {
         btnQuckOption = new javax.swing.JButton();
         btnQuickForward = new javax.swing.JButton();
         cmbQuckSearch = new javax.swing.JComboBox();
-        lblMatch = new javax.swing.JLabel();
+        pnlStatus = new javax.swing.JPanel();
         chkUniq = new javax.swing.JCheckBox();
+        lblMatch = new javax.swing.JLabel();
 
         popQuick.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
@@ -119,12 +122,16 @@ public class QuickSearchTab extends javax.swing.JPanel {
         cmbQuckSearch.setEditable(true);
         pnlSearch.add(cmbQuckSearch);
 
-        lblMatch.setText("0 match");
-        pnlSearch.add(lblMatch);
+        pnlStatus.setLayout(new javax.swing.BoxLayout(pnlStatus, javax.swing.BoxLayout.LINE_AXIS));
 
         chkUniq.setSelected(true);
         chkUniq.setText("Uniq");
-        pnlSearch.add(chkUniq);
+        pnlStatus.add(chkUniq);
+
+        lblMatch.setText("0 match");
+        pnlStatus.add(lblMatch);
+
+        pnlSearch.add(pnlStatus);
 
         add(pnlSearch, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -166,6 +173,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private javax.swing.JCheckBoxMenuItem mnuSmartMatch;
     private javax.swing.JPanel pnlEncode;
     private javax.swing.JPanel pnlSearch;
+    private javax.swing.JPanel pnlStatus;
     private javax.swing.JPopupMenu popQuick;
     // End of variables declaration//GEN-END:variables
 
@@ -236,6 +244,21 @@ public class QuickSearchTab extends javax.swing.JPanel {
             }
             ta.requestFocus();
             this.lblMatch.setText(String.format("%d match", high.getPositionCount()));
+            if (high.getPositionCount() > 0) {
+                this.lblMatch.setBackground(Color.ORANGE);
+                this.lblMatch.setOpaque(true);
+                // 解除
+                final Timer timer = new Timer(false);
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        lblMatch.setBackground(null);
+                        lblMatch.setOpaque(false);
+                        timer.cancel();
+                    }
+                };
+                timer.schedule(task, 1000);
+            }
             if (high.getPositionCount() <= 0) {
                 return;
             }

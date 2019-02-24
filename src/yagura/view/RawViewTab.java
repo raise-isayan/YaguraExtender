@@ -54,7 +54,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea(this.txtRaw);
-        this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+        this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
         this.txtRaw.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {

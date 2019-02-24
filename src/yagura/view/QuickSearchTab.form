@@ -126,17 +126,23 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblMatch">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="0 match"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chkUniq">
-          <Properties>
-            <Property name="selected" type="boolean" value="true"/>
-            <Property name="text" type="java.lang.String" value="Uniq"/>
-          </Properties>
-        </Component>
+        <Container class="javax.swing.JPanel" name="pnlStatus">
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JCheckBox" name="chkUniq">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Uniq"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblMatch">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0 match"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>
