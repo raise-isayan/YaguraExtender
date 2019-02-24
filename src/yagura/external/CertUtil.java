@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -53,7 +54,7 @@ public class CertUtil {
     public static String exportToPem(Key privateKey) throws UnsupportedEncodingException {
         StringBuilder pemKey = new StringBuilder();
         byte[] derKey = privateKey.getEncoded();
-        String pemKeyPre = TransUtil.newLine("\n", ConvertUtil.toBase64Encode(Util.getRawStr(derKey),"8859_1"), 64);
+        String pemKeyPre = TransUtil.newLine("\n", ConvertUtil.toBase64Encode(Util.getRawStr(derKey), StandardCharsets.ISO_8859_1), 64);
         pemKey.append(BEGIN_PRIVATE);
         pemKey.append(pemKeyPre);
         pemKey.append("\n");
@@ -64,7 +65,7 @@ public class CertUtil {
     public static String exportToPem(X509Certificate x509cert) throws UnsupportedEncodingException, CertificateEncodingException {
         StringBuilder pemCert = new StringBuilder();
         byte[] derCert = x509cert.getEncoded();
-        String pemCertPre = TransUtil.newLine("\n", ConvertUtil.toBase64Encode(Util.getRawStr(derCert),"8859_1"), 64);
+        String pemCertPre = TransUtil.newLine("\n", ConvertUtil.toBase64Encode(Util.getRawStr(derCert), StandardCharsets.ISO_8859_1), 64);
         pemCert.append(BEGIN_CERTIFICATE);
         pemCert.append(pemCertPre);
         pemCert.append("\n");

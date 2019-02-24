@@ -68,6 +68,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         txtHtmlComment.setColumns(20);
         txtHtmlComment.setLineWrap(true);
         txtHtmlComment.setRows(5);
+        txtHtmlComment.setTabSize(4);
         scrollHtmlComment.setViewportView(txtHtmlComment);
 
         add(scrollHtmlComment, java.awt.BorderLayout.CENTER);
@@ -89,10 +90,6 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             if (this.message == null) {
                 return;
             }
-            BurpExtender burp = BurpExtender.getInstance();
-//            if (burp != null) {
-//                this.setMessageFont(burp.getMessageFont());
-//            }
             if (this.message != null) {
                 // Raw
                 this.setHTMLCommentEncoding(encoding, this.quickSearchTab.getUniqCheckBox().isSelected());
@@ -100,7 +97,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             } else {
                 this.txtHtmlComment.setText("");
             }
-            this.quickSearchTab.clearView();
+//            this.quickSearchTab.clearView();
+            this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
             Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }

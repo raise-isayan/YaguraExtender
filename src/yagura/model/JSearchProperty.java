@@ -8,6 +8,16 @@ import extend.view.base.RegexItem;
  */
 public class JSearchProperty extends RegexItem {
 
+    private boolean smartMatch = false;
+    
+    public void setSmartMatch(boolean value) {
+        this.smartMatch = value;
+    }
+    
+    public boolean isSmartMatch() {
+        return this.smartMatch;
+    }
+    
     private boolean autoRecognise = false;
 
     public boolean isAutoRecogniseEncoding() {
@@ -116,8 +126,10 @@ public class JSearchProperty extends RegexItem {
         this.setResponseHeader(property.isResponseHeader());
         this.setResponseBody(property.isResponseBody());
         this.setComment(property.isComment());
+        this.setSmartMatch(property.isSmartMatch());
         this.setRegexp(property.isRegexp());
         this.setIgnoreCase(property.isIgnoreCase());
     }
+
     
 }

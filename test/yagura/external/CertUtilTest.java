@@ -88,7 +88,7 @@ public class CertUtilTest {
     @Test
     public void testExportToPem_Key_X509Certificate_JKS() throws Exception {
         System.out.println("exportToPem JKS");
-        String storeFileName = CertUtilTest.class.getResource("../../resources/server.keystore").getPath();
+        String storeFileName = CertUtilTest.class.getResource("/resources/server.keystore").getPath();
         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromJKS(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
             Map.Entry<Key, X509Certificate> cert = certMap.get(ailias);
@@ -103,7 +103,7 @@ public class CertUtilTest {
     @Test
     public void testExportToPem_Key_X509Certificate_PKCS12() throws Exception {
         System.out.println("exportToPem PKCS12");
-        String storeFileName = CertUtilTest.class.getResource("../../resources/burpca.p12").getPath();
+        String storeFileName = CertUtilTest.class.getResource("/resources/burpca.p12").getPath();
         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
             System.out.println("ailias:" + ailias);

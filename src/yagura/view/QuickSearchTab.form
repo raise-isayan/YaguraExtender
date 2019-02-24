@@ -3,14 +3,21 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
     <Container class="javax.swing.JPopupMenu" name="popQuick">
+      <Events>
+        <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="popQuickPopupMenuWillBecomeVisible"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuSmartMatch">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Smart Match"/>
+          </Properties>
+        </MenuItem>
         <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuRegex">
           <Properties>
-            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="regex"/>
           </Properties>
         </MenuItem>

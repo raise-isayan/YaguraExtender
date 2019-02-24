@@ -91,6 +91,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         txtJSON.setColumns(20);
         txtJSON.setLineWrap(true);
         txtJSON.setRows(5);
+        txtJSON.setTabSize(4);
         txtJSON.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtJSONMouseClicked(evt);
@@ -122,9 +123,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
                 return;
             }
             BurpExtender burp = BurpExtender.getInstance();
-//            if (burp != null) {
-//                this.setMessageFont(burp.getMessageFont());
-//            }
             if (this.message != null) {
                 // Raw
                 this.txtJSON.setText(FormatUtil.prettyJSON(Util.decodeMessage(this.message.getBodyBytes(), encoding)));
@@ -133,7 +131,8 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             } else {
                 this.txtJSON.setText("");
             }
-            this.quickSearchTab.clearView();
+//            this.quickSearchTab.clearView();
+            this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
             Logger.getLogger(JSONViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
+import yagura.external.TransUtil;
 
 /**
  *
@@ -39,6 +40,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private void initComponents() {
 
         popQuick = new javax.swing.JPopupMenu();
+        mnuSmartMatch = new javax.swing.JCheckBoxMenuItem();
         mnuRegex = new javax.swing.JCheckBoxMenuItem();
         mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
         pnlEncode = new javax.swing.JPanel();
@@ -51,7 +53,19 @@ public class QuickSearchTab extends javax.swing.JPanel {
         lblMatch = new javax.swing.JLabel();
         chkUniq = new javax.swing.JCheckBox();
 
-        mnuRegex.setSelected(true);
+        popQuick.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                popQuickPopupMenuWillBecomeVisible(evt);
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+
+        mnuSmartMatch.setText("Smart Match");
+        popQuick.add(mnuSmartMatch);
+
         mnuRegex.setText("regex");
         popQuick.add(mnuRegex);
 
@@ -130,6 +144,13 @@ public class QuickSearchTab extends javax.swing.JPanel {
         this.quickSearchPerformed(true);
     }//GEN-LAST:event_btnQuickForwardActionPerformed
 
+    private void popQuickPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_popQuickPopupMenuWillBecomeVisible
+        this.mnuRegex.setEnabled(!this.mnuSmartMatch.isSelected());
+        this.smartMatch = this.mnuSmartMatch.isSelected();
+        this.regex = this.mnuRegex.isSelected();
+        this.ignoreCase = this.mnuIgnoreCase.isSelected();
+    }//GEN-LAST:event_popQuickPopupMenuWillBecomeVisible
+
     private final KeywordHighlighter highlightKeyword = new KeywordHighlighter();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -142,6 +163,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private javax.swing.JLabel lblMatch;
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
+    private javax.swing.JCheckBoxMenuItem mnuSmartMatch;
     private javax.swing.JPanel pnlEncode;
     private javax.swing.JPanel pnlSearch;
     private javax.swing.JPopupMenu popQuick;
@@ -181,7 +203,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private void quickSearchPerformed(boolean forward) {
         javax.swing.text.JTextComponent ta = this.getSelectedTextArea();
         String searchText = (String) this.cmbQuckSearch.getEditor().getItem();
-        if (searchText == null || (searchText != null && searchText.length() == 0)) {
+        if (searchText == null || searchText.length() == 0) {
             this.clearView();
             return;
         }
@@ -195,10 +217,13 @@ public class QuickSearchTab extends javax.swing.JPanel {
 
         if (ta.getHighlighter() instanceof KeywordHighlighter) {
             KeywordHighlighter high = (KeywordHighlighter) ta.getHighlighter();
-
-            if (searchText.equals(high.getHighlightKeyword())
-                    && this.regex == this.mnuRegex.isSelected()
-                    && this.ignoreCase == this.mnuIgnoreCase.isSelected()) {
+            if (this.keyword != null 
+                && this.smartMatch == this.mnuSmartMatch.isSelected()
+                && this.regex == this.mnuRegex.isSelected()
+                && this.ignoreCase == this.mnuIgnoreCase.isSelected()
+                && (this.keyword.equals(searchText) 
+                    || (this.mnuSmartMatch.isSelected() 
+                        && keyword.equals(TransUtil.toSmartMatch(searchText))))) {
                 high.searchPosition(forward);
             } else {
                 if (isValidRegex(searchText)) {
@@ -227,25 +252,45 @@ public class QuickSearchTab extends javax.swing.JPanel {
         return RegexItem.compileRegex(text, flags, !this.mnuRegex.isSelected()) != null;
     }
     
-    private boolean regex = true;
+    private String keyword = null;
+    private boolean smartMatch = false;
+    private boolean regex = false;
     private boolean ignoreCase = false;
     
     protected void quickSearch(javax.swing.text.JTextComponent ta, String keyword) {
         if (ta.getHighlighter() instanceof KeywordHighlighter) {
             KeywordHighlighter hc = (KeywordHighlighter) ta.getHighlighter();
-            hc.setHighlightKeyword(ta.getDocument(), keyword, !this.mnuRegex.isSelected(), this.mnuIgnoreCase.isSelected(), Color.RED);
-            //this.keyword = keyword;
+            this.smartMatch = this.mnuSmartMatch.isSelected();
             this.regex = this.mnuRegex.isSelected();
             this.ignoreCase = this.mnuIgnoreCase.isSelected();
+            if (this.mnuSmartMatch.isSelected()) {
+                this.keyword = TransUtil.toSmartMatch(keyword);
+                hc.setHighlightKeyword(ta.getDocument(), this.keyword, false, this.ignoreCase, Color.YELLOW);
+            }
+            else {
+                this.keyword = keyword;                
+                hc.setHighlightKeyword(ta.getDocument(), this.keyword, !this.regex, this.ignoreCase, Color.YELLOW);
+            }
         }
     }
 
     public void clearView() {
-        this.cmbQuckSearch.getEditor().setItem("");
+        this.keyword = null;
         this.highlightKeyword.clearHighlightKeyword();
         this.lblMatch.setText(String.format("%d match", 0));
+        this.cmbQuckSearch.getEditor().setItem("");
     }
 
+    public void clearViewAndSearch() {
+        clearView();
+        String selectItem = "";
+        if (this.cmbQuckSearch.getModel().getSize() > 0) {
+            selectItem = (String)this.cmbQuckSearch.getModel().getElementAt(0);
+        }
+        this.cmbQuckSearch.getEditor().setItem(selectItem);
+        this.quickSearchPerformed(true);
+    }
+    
     public void renewEncodingList(String defaultCharset, List<String> encodingLiest) {
         this.cmbEncoding.removeAllItems();
         for (String enc : encodingLiest) {

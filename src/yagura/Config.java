@@ -307,6 +307,7 @@ public final class Config {
 
         // JSearch Filter
         JSearchProperty jsearch = option.getJSearchProperty();
+        jsearch.setSmartMatch(prop.readEntryBool("jsearch", "smartMatch", false));
         jsearch.setRegexp(prop.readEntryBool("jsearch", "regexp", false));
         jsearch.setIgnoreCase(prop.readEntryBool("jsearch", "ignorecase", false));
         jsearch.setAutoRecogniseEncoding(prop.readEntryBool("jsearch", "autoRecogniseEncoding", false));
@@ -495,6 +496,7 @@ public final class Config {
 
         // JSearch Filter
         JSearchProperty jsearch = option.getJSearchProperty();
+        prop.writeEntryBool("jsearch", "smartMatch", jsearch.isSmartMatch());
         prop.writeEntryBool("jsearch", "regexp", jsearch.isRegexp());
         prop.writeEntryBool("jsearch", "ignorecase", jsearch.isIgnoreCase());
         prop.writeEntryBool("jsearch", "autoRecogniseEncoding", jsearch.isAutoRecogniseEncoding());

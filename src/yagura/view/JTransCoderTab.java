@@ -74,7 +74,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
         JDateComponentFactory componentFactory = new JDateComponentFactory();
         this.datePickerStart = (JDatePickerImpl) componentFactory.createJDatePicker();
         this.datePickerEnd = (JDatePickerImpl) componentFactory.createJDatePicker();
-
+        this.datePickerEnd.getModel().addMonth(1);
+        
         this.pnlDateStart.add(datePickerStart, BorderLayout.CENTER);
         this.pnlDateEnd.add(datePickerEnd, BorderLayout.CENTER);
 
@@ -159,6 +160,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlLang = new javax.swing.JPanel();
         rdoCLang = new javax.swing.JRadioButton();
         rdoSQLLang = new javax.swing.JRadioButton();
+        pnlRegex = new javax.swing.JPanel();
+        btnSmartMatch = new javax.swing.JButton();
         pnlHashTrans = new javax.swing.JPanel();
         btnHashMd2 = new javax.swing.JButton();
         btnHashMd5 = new javax.swing.JButton();
@@ -474,6 +477,19 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlEncodeDecode.add(pnlLang);
 
         pnlTransButton.add(pnlEncodeDecode);
+
+        pnlRegex.setBorder(javax.swing.BorderFactory.createTitledBorder("Regex"));
+        pnlRegex.setLayout(new java.awt.GridLayout(1, 0));
+
+        btnSmartMatch.setText("Smart Match");
+        btnSmartMatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSmartMatchActionPerformed(evt);
+            }
+        });
+        pnlRegex.add(btnSmartMatch);
+
+        pnlTransButton.add(pnlRegex);
 
         pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
         pnlHashTrans.setLayout(new java.awt.GridLayout(3, 2));
@@ -1635,7 +1651,6 @@ public class JTransCoderTab extends javax.swing.JPanel {
             setOutputText(Util.getStackTraceMessage(e1));
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
         }
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnHashMd2ActionPerformed
 
     private void btnHashMd5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd5ActionPerformed
@@ -2036,6 +2051,16 @@ public class JTransCoderTab extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoByteOctActionPerformed
 
+    private void btnSmartMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartMatchActionPerformed
+        try {
+            String inputText = TransUtil.toSmartMatch(getInputText(), this.getSelectEncode());
+            setOutput(inputText);
+        } catch (UnsupportedEncodingException e1) {
+            setOutputText(Util.getStackTraceMessage(e1));
+            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+        }
+    }//GEN-LAST:event_btnSmartMatchActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalyze;
     private javax.swing.JButton btnCalc;
@@ -2064,6 +2089,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JButton btnRadixOct;
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JButton btnSmartDecode;
+    private javax.swing.JButton btnSmartMatch;
     private javax.swing.JToggleButton btnStoreTypeJKS;
     private javax.swing.JToggleButton btnStoreTypePKCS12;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -2125,6 +2151,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JPanel pnlOutputRaw;
     private javax.swing.JPanel pnlOutputToInput;
     private javax.swing.JPanel pnlRadixTrans;
+    private javax.swing.JPanel pnlRegex;
     private javax.swing.JPanel pnlRight;
     private javax.swing.JPanel pnlSelect;
     private javax.swing.JPanel pnlSelectOption;

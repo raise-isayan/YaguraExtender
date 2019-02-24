@@ -36,6 +36,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import yagura.external.TransUtil;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
@@ -82,6 +83,7 @@ public class JSearchTab extends javax.swing.JPanel {
         chkResponseBody = new javax.swing.JCheckBox();
         lblProgress = new javax.swing.JLabel();
         chkScopeOnly = new javax.swing.JCheckBox();
+        chkSmartMatch = new javax.swing.JCheckBox();
         pnlResult = new javax.swing.JPanel();
         pnlResultView = new javax.swing.JPanel();
         lblFilter = new javax.swing.JLabel();
@@ -217,6 +219,13 @@ public class JSearchTab extends javax.swing.JPanel {
 
         chkScopeOnly.setText("in-scope only");
 
+        chkSmartMatch.setText("Smart Match");
+        chkSmartMatch.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkSmartMatchStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlSearchLayout = new javax.swing.GroupLayout(pnlSearch);
         pnlSearch.setLayout(pnlSearchLayout);
         pnlSearchLayout.setHorizontalGroup(
@@ -233,12 +242,14 @@ public class JSearchTab extends javax.swing.JPanel {
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlSearchLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
-                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                        .addComponent(chkScopeOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkSmartMatch)
                             .addComponent(chkRegExp)
-                            .addComponent(chkIgnoreCase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(chkScopeOnly, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(chkIgnoreCase, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
                         .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(pnlSearchLayout.createSequentialGroup()
@@ -256,25 +267,27 @@ public class JSearchTab extends javax.swing.JPanel {
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch)
                     .addComponent(lblProgress))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlSearchLayout.createSequentialGroup()
-                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(pnlSearchLayout.createSequentialGroup()
-                                .addComponent(chkRegExp)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(chkIgnoreCase))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlSearchLayout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(chkComment)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlSearchLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkScopeOnly))
+                        .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(chkScopeOnly)
+                            .addComponent(chkSmartMatch))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkRegExp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkIgnoreCase)
+                        .addGap(0, 11, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlSearchLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(chkComment)
+                        .addGap(30, 30, 30))
                     .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pnlRequest1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addComponent(pnlSearchEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         add(pnlSearch, java.awt.BorderLayout.NORTH);
@@ -545,6 +558,11 @@ public class JSearchTab extends javax.swing.JPanel {
         this.search();
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private void chkSmartMatchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkSmartMatchStateChanged
+        this.chkRegExp.setEnabled(!this.chkSmartMatch.isSelected());
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+    }//GEN-LAST:event_chkSmartMatchStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
@@ -556,6 +574,7 @@ public class JSearchTab extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkResponseBody;
     private javax.swing.JCheckBox chkResponseHeader;
     private javax.swing.JCheckBox chkScopeOnly;
+    private javax.swing.JCheckBox chkSmartMatch;
     private javax.swing.JLabel lblFilter;
     private javax.swing.JLabel lblProgress;
     private javax.swing.JPanel pnlRequest;
@@ -662,7 +681,11 @@ public class JSearchTab extends javax.swing.JPanel {
             flags |= Pattern.CASE_INSENSITIVE;
         }
         Pattern p = RegexItem.compileRegex(text, flags, !this.chkRegExp.isSelected());
-
+        if (this.chkSmartMatch.isSelected()) {
+            String smartRegex = TransUtil.toSmartMatch(text);
+            p = RegexItem.compileRegex(smartRegex, flags, false);            
+        }
+        
         IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
@@ -788,6 +811,7 @@ public class JSearchTab extends javax.swing.JPanel {
     }
 
     public void setProperty(JSearchProperty searchProp) {
+        this.chkSmartMatch.setSelected(searchProp.isSmartMatch());
         this.chkRegExp.setSelected(searchProp.isRegexp());
         this.chkIgnoreCase.setSelected(searchProp.isIgnoreCase());  
         if (searchProp.isAutoRecogniseEncoding()) {
@@ -811,6 +835,7 @@ public class JSearchTab extends javax.swing.JPanel {
     public JSearchProperty getProperty() {
         final JSearchProperty searchProp = new JSearchProperty();
 
+        searchProp.setSmartMatch(this.chkSmartMatch.isSelected());
         searchProp.setRegexp(this.chkRegExp.isSelected());
         searchProp.setIgnoreCase(this.chkIgnoreCase.isSelected());  
         searchProp.setAutoRecogniseEncoding(this.rdoRepEnc_AutoRecognise.isSelected());

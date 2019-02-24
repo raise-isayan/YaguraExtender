@@ -103,6 +103,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         txtRaw.setColumns(20);
         txtRaw.setLineWrap(true);
         txtRaw.setRows(5);
+        txtRaw.setTabSize(4);
         scrollRaw.setViewportView(txtRaw);
 
         add(scrollRaw, java.awt.BorderLayout.CENTER);
@@ -131,7 +132,8 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
             } else {
                 this.txtRaw.setText("");
             }
-            this.quickSearchTab.clearView();
+//            this.quickSearchTab.clearView();
+              this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
             Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }

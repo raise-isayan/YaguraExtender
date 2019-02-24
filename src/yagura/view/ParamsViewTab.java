@@ -411,7 +411,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     }
 
     public void setLocation(IRequestInfo reqInfo) {
-        this.lblLocation.setText(String.format("%s %s", reqInfo.getMethod(), reqInfo.getUrl().toString()));
+        this.lblLocation.setText(String.format("%s %s", reqInfo.getMethod(), reqInfo.getUrl().getPath()));
     }
         
     public void setParams(IRequestInfo reqInfo) {
