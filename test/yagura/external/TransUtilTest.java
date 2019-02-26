@@ -421,15 +421,10 @@ public class TransUtilTest {
      */
     @Test
     public void testToUnocode2Decode() {
-//        try {
-            System.out.println("toUnocode4Decode");
-            assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));        
-            assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
-            assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\41\\42\\43\\44\\45", "8859_1"));        
-
-//        } catch (UnsupportedEncodingException ex) {
-//            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        System.out.println("toUnocode4Decode");
+        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));        
+        assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
+        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\41\\42\\43\\44\\45", "8859_1"));        
     }
     
     /**

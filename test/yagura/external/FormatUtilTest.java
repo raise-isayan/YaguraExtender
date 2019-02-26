@@ -12,22 +12,22 @@ import static org.junit.Assert.*;
  * @author isayan
  */
 public class FormatUtilTest {
-    
+
     public FormatUtilTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -62,7 +62,6 @@ public class FormatUtilTest {
         assertEquals(expResult, result);
     }
 
-    
     /**
      * Test of isXML method, of class FormatUtil.
      */
@@ -99,11 +98,11 @@ public class FormatUtilTest {
             boolean result = FormatUtil.isXML(plainXML);
             assertEquals(expResult, result);
         }
-        
+
         System.out.println("isXML5");
         {
-            String plainXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                "\r\n<root><a/>\r\n<x>z</x><z/><z/>\r\n</root>\r\n";
+            String plainXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "\r\n<root><a/>\r\n<x>z</x><z/><z/>\r\n</root>\r\n";
             boolean expResult = true;
             boolean result = FormatUtil.isXML(plainXML);
             assertEquals(expResult, result);
@@ -121,7 +120,7 @@ public class FormatUtilTest {
             String plainJson = "[1,true,\"word\"]";
             boolean expResult = true;
             boolean result = FormatUtil.isJSON(plainJson);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
 
         System.out.println("isJSON2");
@@ -129,7 +128,7 @@ public class FormatUtilTest {
             String plainJson = "{\"key\":\"value\"}";
             boolean expResult = true;
             boolean result = FormatUtil.isJSON(plainJson);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
 
         System.out.println("isJSON3");
@@ -137,7 +136,7 @@ public class FormatUtilTest {
             String plainJson = "\r\n\t[1,true,\"word\"]\r\n\t";
             boolean expResult = true;
             boolean result = FormatUtil.isJSON(plainJson);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
 
         System.out.println("isJSON4");
@@ -145,15 +144,15 @@ public class FormatUtilTest {
             String plainJson = "\r\n\t[1,true,\r\n\"word\"]\r\n\t";
             boolean expResult = true;
             boolean result = FormatUtil.isJSON(plainJson);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
-        
+
         System.out.println("isJSON5");
         {
             String plainJson = "\r\n\t{\"key\":\"value\"}\t\r\n";
             boolean expResult = true;
             boolean result = FormatUtil.isJSON(plainJson);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
 
         System.out.println("isJSON6");
@@ -161,7 +160,7 @@ public class FormatUtilTest {
             String plainJson = "\r\n\t{\"key\":\r\n\"value\"}\t\r\n";
             boolean expResult = true;
             boolean result = FormatUtil.isJSON(plainJson);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
 
         System.out.println("isJSON7");
@@ -169,9 +168,9 @@ public class FormatUtilTest {
             String plainJson = "[\n    1,\n    true,\n    \"word\"\n]";
             boolean expResult = true;
             boolean result = FormatUtil.isJSON(plainJson);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
-        
+
     }
 
     /**
@@ -185,5 +184,13 @@ public class FormatUtilTest {
         String result = FormatUtil.prettyJSON(plainJson);
         assertEquals(expResult, result);
     }
+
+    @Test
+    public void testIndexOf() throws Exception {
+        String test = "xxxxxxxxx";
+        int idx = test.indexOf("");
+        System.out.print(idx);
+    }
+    
     
 }

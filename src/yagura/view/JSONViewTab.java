@@ -16,7 +16,10 @@ import java.awt.Font;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.StyledEditorKit;
 
 /**
  *
@@ -25,7 +28,15 @@ import javax.swing.text.JTextComponent;
 public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
 
     private boolean isRequest = true;
-
+    
+    private final EditorKit jsonStyleEditorKit = new StyledEditorKit()
+    {
+         public Document createDefaultDocument()
+         {
+              return new JSONSyntaxDocument();
+         }
+    };    
+    
     /**
      * Creates new form JSONView
      */
@@ -40,7 +51,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.isRequest = isResuest;
         initComponents();
         customizeComponents();
-        this.txtJSON.setEditable(false);
     }
 
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
@@ -49,6 +59,12 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea(this.txtJSON);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+
+        this.txtJSON.setEditable(false);
+
+        this.txtJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
+        this.txtJSON.setContentType("text/json");
+
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
@@ -77,7 +93,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         mnuRegex = new javax.swing.JCheckBoxMenuItem();
         mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
         scrollJSON = new javax.swing.JScrollPane();
-        txtJSON = new javax.swing.JTextArea();
+        txtJSON = new javax.swing.JEditorPane();
 
         mnuRegex.setSelected(true);
         mnuRegex.setText("regex");
@@ -88,22 +104,10 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
         setLayout(new java.awt.BorderLayout());
 
-        txtJSON.setColumns(20);
-        txtJSON.setLineWrap(true);
-        txtJSON.setRows(5);
-        txtJSON.setTabSize(4);
-        txtJSON.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtJSONMouseClicked(evt);
-            }
-        });
         scrollJSON.setViewportView(txtJSON);
 
         add(scrollJSON, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txtJSONMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtJSONMouseClicked
-    }//GEN-LAST:event_txtJSONMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -113,7 +117,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     private javax.swing.JPopupMenu popBurpMenu;
     private javax.swing.JPopupMenu popQuick;
     private javax.swing.JScrollPane scrollJSON;
-    private javax.swing.JTextArea txtJSON;
+    private javax.swing.JEditorPane txtJSON;
     // End of variables declaration//GEN-END:variables
         
     public void setMessageView(String encoding) {

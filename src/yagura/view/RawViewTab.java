@@ -15,6 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
+import javax.swing.text.StyledEditorKit;
 
 /**
  *
@@ -27,6 +30,14 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     private boolean editable = false;
     private IMessageEditorController controller = null;
 
+    private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
+    {
+         public Document createDefaultDocument()
+         {
+              return new HTMLSyntaxDocument();
+         }
+    };    
+        
     /**
      * Creates new form RawViewTab
      *
@@ -73,6 +84,10 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 
         });        
         this.txtRaw.setEditable(this.editable);
+
+        this.txtRaw.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
+        this.txtRaw.setContentType("text/html");
+
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
@@ -96,14 +111,11 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     private void initComponents() {
 
         scrollRaw = new javax.swing.JScrollPane();
-        txtRaw = new javax.swing.JTextArea();
+        txtRaw = new javax.swing.JEditorPane();
 
         setLayout(new java.awt.BorderLayout());
 
-        txtRaw.setColumns(20);
-        txtRaw.setLineWrap(true);
-        txtRaw.setRows(5);
-        txtRaw.setTabSize(4);
+        txtRaw.setEditable(false);
         scrollRaw.setViewportView(txtRaw);
 
         add(scrollRaw, java.awt.BorderLayout.CENTER);
@@ -111,7 +123,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane scrollRaw;
-    private javax.swing.JTextArea txtRaw;
+    private javax.swing.JEditorPane txtRaw;
     // End of variables declaration//GEN-END:variables
 
     public void setMessageFont(Font font) {
