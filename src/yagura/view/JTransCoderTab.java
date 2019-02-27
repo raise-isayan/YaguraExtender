@@ -201,6 +201,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlOutputToInput = new javax.swing.JPanel();
         btnOutputToInput = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        btnOutputCopy = new javax.swing.JButton();
         pnlSelectOption = new javax.swing.JPanel();
         pnlEncode = new javax.swing.JPanel();
         rdoAll = new javax.swing.JRadioButton();
@@ -777,6 +778,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
             }
         });
 
+        btnOutputCopy.setText("Output Copy");
+        btnOutputCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOutputCopyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlOutputToInputLayout = new javax.swing.GroupLayout(pnlOutputToInput);
         pnlOutputToInput.setLayout(pnlOutputToInputLayout);
         pnlOutputToInputLayout.setHorizontalGroup(
@@ -785,17 +793,20 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOutputToInput, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnOutputToInput, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOutputCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         pnlOutputToInputLayout.setVerticalGroup(
             pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOutputToInputLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(btnClear)
-                .addGap(8, 8, 8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnOutputToInput)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnOutputCopy)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlInputOutput.add(pnlOutputToInput, java.awt.BorderLayout.PAGE_END);
@@ -2061,6 +2072,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSmartMatchActionPerformed
 
+    private void btnOutputCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutputCopyActionPerformed
+        SwingUtil.systemClipboardCopy(this.txtOutputRaw.getText());
+    }//GEN-LAST:event_btnOutputCopyActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalyze;
     private javax.swing.JButton btnCalc;
@@ -2081,6 +2096,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JButton btnImport;
     private javax.swing.JButton btnInputfile;
     private javax.swing.JPanel btnOutput;
+    private javax.swing.JButton btnOutputCopy;
     private javax.swing.JButton btnOutputToInput;
     private javax.swing.JButton btnOutputfile;
     private javax.swing.JButton btnRadixBin;

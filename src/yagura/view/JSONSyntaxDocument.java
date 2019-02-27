@@ -61,5 +61,5 @@ public class JSONSyntaxDocument extends AbstractSyntaxDocument {
     protected String getEscapeString(String quoteDelimiter) {
         return "\\" + quoteDelimiter;
     }
-
+    
 }

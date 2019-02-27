@@ -104,6 +104,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
         setLayout(new java.awt.BorderLayout());
 
+        txtJSON.setEditable(false);
         scrollJSON.setViewportView(txtJSON);
 
         add(scrollJSON, java.awt.BorderLayout.CENTER);

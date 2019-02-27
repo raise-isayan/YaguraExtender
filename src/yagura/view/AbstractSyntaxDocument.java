@@ -361,6 +361,7 @@ public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
      */
     private int lastIndexOf(String content, String needle, int offset) {
         int index;
+        if (needle == null) return -1;
 
         while ((index = content.lastIndexOf(needle, offset)) != -1) {
             String text = getLine(content, index).trim();

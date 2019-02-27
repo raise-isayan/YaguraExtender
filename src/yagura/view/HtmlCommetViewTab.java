@@ -16,6 +16,9 @@ import java.awt.Font;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
+import javax.swing.text.StyledEditorKit;
 
 /**
  *
@@ -30,14 +33,26 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         initComponents();
         customizeComponents();
     }
-
+    
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
+    private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
+    {
+         public Document createDefaultDocument()
+         {
+              return new HTMLSyntaxDocument();
+         }
+    };    
+    
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea(this.txtHtmlComment);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.getUniqCheckBox().setVisible(true);
         this.quickSearchTab.getUniqCheckBox().addItemListener(encodingItemStateChanged);
+
+        this.txtHtmlComment.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
+        this.txtHtmlComment.setContentType("text/html");
+
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
@@ -61,14 +76,11 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     private void initComponents() {
 
         scrollHtmlComment = new javax.swing.JScrollPane();
-        txtHtmlComment = new javax.swing.JTextArea();
+        txtHtmlComment = new javax.swing.JEditorPane();
 
         setLayout(new java.awt.BorderLayout());
 
-        txtHtmlComment.setColumns(20);
-        txtHtmlComment.setLineWrap(true);
-        txtHtmlComment.setRows(5);
-        txtHtmlComment.setTabSize(4);
+        txtHtmlComment.setEditable(false);
         scrollHtmlComment.setViewportView(txtHtmlComment);
 
         add(scrollHtmlComment, java.awt.BorderLayout.CENTER);
@@ -76,7 +88,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane scrollHtmlComment;
-    private javax.swing.JTextArea txtHtmlComment;
+    private javax.swing.JEditorPane txtHtmlComment;
     // End of variables declaration//GEN-END:variables
 
     public void setMessageFont(Font font) {
