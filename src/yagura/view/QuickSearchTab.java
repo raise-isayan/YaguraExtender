@@ -54,6 +54,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
         cmbQuckSearch = new javax.swing.JComboBox();
         pnlStatus = new javax.swing.JPanel();
         chkUniq = new javax.swing.JCheckBox();
+        mnuSep1 = new javax.swing.JSeparator();
         lblMatch = new javax.swing.JLabel();
 
         popQuick.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
@@ -126,7 +127,15 @@ public class QuickSearchTab extends javax.swing.JPanel {
 
         chkUniq.setSelected(true);
         chkUniq.setText("Uniq");
+        chkUniq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkUniqActionPerformed(evt);
+            }
+        });
         pnlStatus.add(chkUniq);
+
+        mnuSep1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        pnlStatus.add(mnuSep1);
 
         lblMatch.setText("0 match");
         pnlStatus.add(lblMatch);
@@ -158,6 +167,10 @@ public class QuickSearchTab extends javax.swing.JPanel {
         this.ignoreCase = this.mnuIgnoreCase.isSelected();
     }//GEN-LAST:event_popQuickPopupMenuWillBecomeVisible
 
+    private void chkUniqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniqActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkUniqActionPerformed
+
     private final KeywordHighlighter highlightKeyword = new KeywordHighlighter();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -170,6 +183,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private javax.swing.JLabel lblMatch;
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
+    private javax.swing.JSeparator mnuSep1;
     private javax.swing.JCheckBoxMenuItem mnuSmartMatch;
     private javax.swing.JPanel pnlEncode;
     private javax.swing.JPanel pnlSearch;

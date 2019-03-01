@@ -135,6 +135,14 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Uniq"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkUniqActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JSeparator" name="mnuSep1">
+              <Properties>
+                <Property name="orientation" type="int" value="1"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblMatch">
               <Properties>

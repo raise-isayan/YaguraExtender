@@ -57,6 +57,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private void customizeComponents() {
  
+        this.pnlRegex.setLayout(new VerticalFlowLayout());
+//        this.pnlHashTrans.setLayout(new VerticalFlowLayout());
+//        this.pnlRadixTrans.setLayout(new VerticalFlowLayout());
+                
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
         this.hexOutputViewTab.setEnabled(false);
         
@@ -147,7 +151,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlHtmlEnc = new javax.swing.JPanel();
         rdoHtml = new javax.swing.JRadioButton();
         rdoHtmlDec = new javax.swing.JRadioButton();
+        pnlHtmlHex = new javax.swing.JPanel();
         rdoHtmlHex = new javax.swing.JRadioButton();
+        rdoHtmlByteHex = new javax.swing.JRadioButton();
         pnlJSHexEnc = new javax.swing.JPanel();
         rdoByteHex = new javax.swing.JRadioButton();
         rdoByteOct = new javax.swing.JRadioButton();
@@ -169,6 +175,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
         btnHashSha256 = new javax.swing.JButton();
         btnHashSha384 = new javax.swing.JButton();
         btnHashSha512 = new javax.swing.JButton();
+        btnCRC32 = new javax.swing.JButton();
+        btnAdler32 = new javax.swing.JButton();
         pnlRadixTrans = new javax.swing.JPanel();
         btnRadixBin = new javax.swing.JButton();
         btnRadixDec = new javax.swing.JButton();
@@ -302,7 +310,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlTransButton.setLayout(new javax.swing.BoxLayout(pnlTransButton, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(12, 0));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(13, 0));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -398,7 +406,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoPunycode.setText("puyencode");
         pnlEncodeDecode.add(rdoPunycode);
 
-        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 3));
+        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoHtml);
         rdoHtml.setText("HTML(<,>,\",')");
@@ -408,11 +416,29 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoHtmlDec.setText("&#d;");
         pnlHtmlEnc.add(rdoHtmlDec);
 
-        rdoEncodeDecodeGrp.add(rdoHtmlHex);
-        rdoHtmlHex.setText("&#xhh;");
-        pnlHtmlEnc.add(rdoHtmlHex);
-
         pnlEncodeDecode.add(pnlHtmlEnc);
+
+        pnlHtmlHex.setLayout(new java.awt.GridLayout(1, 2));
+
+        rdoEncodeDecodeGrp.add(rdoHtmlHex);
+        rdoHtmlHex.setText("&#xhh;(unicode)");
+        rdoHtmlHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoHtmlHexActionPerformed(evt);
+            }
+        });
+        pnlHtmlHex.add(rdoHtmlHex);
+
+        rdoEncodeDecodeGrp.add(rdoHtmlByteHex);
+        rdoHtmlByteHex.setText("&#xhh;(byte)");
+        rdoHtmlByteHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoHtmlByteHexActionPerformed(evt);
+            }
+        });
+        pnlHtmlHex.add(rdoHtmlByteHex);
+
+        pnlEncodeDecode.add(pnlHtmlHex);
 
         pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
 
@@ -492,8 +518,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlTransButton.add(pnlRegex);
 
-        pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(3, 2));
+        pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash/Checksum"));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(4, 2));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -542,6 +568,22 @@ public class JTransCoderTab extends javax.swing.JPanel {
             }
         });
         pnlHashTrans.add(btnHashSha512);
+
+        btnCRC32.setText("CRC32");
+        btnCRC32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCRC32ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnCRC32);
+
+        btnAdler32.setText("Adler32");
+        btnAdler32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdler32ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnAdler32);
 
         pnlTransButton.add(pnlHashTrans);
 
@@ -1005,7 +1047,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                             .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(727, Short.MAX_VALUE))
+                .addContainerGap(973, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1087,7 +1129,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(txtDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(680, Short.MAX_VALUE))
+                .addContainerGap(926, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1224,7 +1266,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(677, Short.MAX_VALUE))
+                .addContainerGap(923, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1354,7 +1396,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(937, Short.MAX_VALUE))
+                .addContainerGap(1183, Short.MAX_VALUE))
         );
         pnlCertificateLayout.setVerticalGroup(
             pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1441,7 +1483,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1548,6 +1590,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 encode = TransUtil.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlHex.isSelected()) {
                 encode = TransUtil.toHtmlHexEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoHtmlByteHex.isSelected()) {
+                encode = TransUtil.toHtmlByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoZLIB.isSelected()) {
                 encode = Util.getRawStr(ConvertUtil.compressZlib(Util.encodeMessage(value, this.getSelectEncode())));
             } else if (this.rdoUTF7.isSelected()) {
@@ -1604,6 +1648,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
             encodePattern = TransUtil.EncodePattern.BYTE_OCT;
         } else if (this.rdoHtmlDec.isSelected()) {
             encodePattern = TransUtil.EncodePattern.HTML;
+        } else if (this.rdoHtmlByteHex.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BYTE_HTML;
         } else if (this.rdoHtmlHex.isSelected()) {
             encodePattern = TransUtil.EncodePattern.HTML;
         } else if (this.rdoZLIB.isSelected()) {
@@ -1619,15 +1665,6 @@ public class JTransCoderTab extends javax.swing.JPanel {
         }
         this.toSmartDecode(this.getInputText(), encodePattern);
     }//GEN-LAST:event_btnDecodeActionPerformed
-
-    private char getCaretChar(javax.swing.JTextArea textArea) {
-        String caretstrs = getCaretString(textArea);
-        if (caretstrs.length() == 0) {
-            return 0;
-        } else {
-            return caretstrs.charAt(0);
-        }
-    }
 
     private int getCaretCodePoint(javax.swing.JTextArea textArea) {
         String caretstrs = getCaretString(textArea);
@@ -1700,7 +1737,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private void btnHashSha384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha384ActionPerformed
         try {
             String inputText = HashUtil.toSHA384Sum(getInputText(),
-                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+                this.getSelectEncode(), this.rdoUpperCase.isSelected());
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             setOutputText(Util.getStackTraceMessage(e1));
@@ -2076,8 +2113,38 @@ public class JTransCoderTab extends javax.swing.JPanel {
         SwingUtil.systemClipboardCopy(this.txtOutputRaw.getText());
     }//GEN-LAST:event_btnOutputCopyActionPerformed
 
+    private void rdoHtmlHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHtmlHexActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoHtmlHexActionPerformed
+
+    private void rdoHtmlByteHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHtmlByteHexActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoHtmlByteHexActionPerformed
+
+    private void btnCRC32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCRC32ActionPerformed
+        try {
+            String inputText = Long.toString(HashUtil.toCRC32Sum(getInputText(), this.getSelectEncode()));
+            setOutput(inputText);
+        } catch (UnsupportedEncodingException e1) {
+            setOutputText(Util.getStackTraceMessage(e1));
+            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+        }
+    }//GEN-LAST:event_btnCRC32ActionPerformed
+
+    private void btnAdler32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdler32ActionPerformed
+        try {
+            String inputText = Long.toString(HashUtil.toAdler32Sum(getInputText(), this.getSelectEncode()));
+            setOutput(inputText);
+        } catch (UnsupportedEncodingException e1) {
+            setOutputText(Util.getStackTraceMessage(e1));
+            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+        }
+    }//GEN-LAST:event_btnAdler32ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdler32;
     private javax.swing.JButton btnAnalyze;
+    private javax.swing.JButton btnCRC32;
     private javax.swing.JButton btnCalc;
     private javax.swing.JButton btnClear;
     private javax.swing.ButtonGroup btnConvertCase;
@@ -2156,6 +2223,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JPanel pnlGenerate;
     private javax.swing.JPanel pnlHashTrans;
     private javax.swing.JPanel pnlHtmlEnc;
+    private javax.swing.JPanel pnlHtmlHex;
     private javax.swing.JPanel pnlILLUTF8;
     private javax.swing.JPanel pnlInput;
     private javax.swing.JPanel pnlInputOutput;
@@ -2194,6 +2262,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdoCountNum;
     private javax.swing.ButtonGroup rdoEncodeDecodeGrp;
     private javax.swing.JRadioButton rdoHtml;
+    private javax.swing.JRadioButton rdoHtmlByteHex;
     private javax.swing.JRadioButton rdoHtmlDec;
     private javax.swing.JRadioButton rdoHtmlHex;
     private javax.swing.JRadioButton rdoILLUTF8;

@@ -71,7 +71,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG,
+        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG,
     };
 
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
@@ -117,10 +117,10 @@ public class TransUtil {
         } // unicode
         else if (mUNICODE.find()) {
             return EncodePattern.UNICODE;
-        } // byte
+        } // byte hex
         else if (mBYTE_HEX.find()) {
             return EncodePattern.BYTE_HEX;
-        }
+        } // byte oct
         else if (mBYTE_OCT.find()) {
             return EncodePattern.BYTE_OCT;
         } // pyny code
@@ -191,7 +191,7 @@ public class TransUtil {
                         break;
                     // Byte Hex
                     case BYTE_HEX: {
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
                             decode = toByteDecode(value, applyCharset);
@@ -201,7 +201,7 @@ public class TransUtil {
                         break;
                     }
                     case BYTE_OCT: {
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, "8859_1"))) : charset;
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
                             decode = toByteDecode(value, applyCharset);
@@ -215,7 +215,7 @@ public class TransUtil {
                         String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = toUudecode(value, guessCode);
+                            decode = toUudecode(value, applyCharset);
                         } else {
                             decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
                         }
@@ -226,7 +226,7 @@ public class TransUtil {
                         String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = toUnQuotedPrintable(value, guessCode);
+                            decode = toUnQuotedPrintable(value, applyCharset);
                         } else {
                             decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1.name());
                         }
@@ -243,7 +243,7 @@ public class TransUtil {
                         String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = ConvertUtil.toBase64Decode(value, guessCode);
+                            decode = ConvertUtil.toBase64Decode(value, applyCharset);
                         } else {
                             decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
                         }
@@ -252,6 +252,15 @@ public class TransUtil {
                     // Html decode
                     case HTML:
                         decode = toHtmlDecode(value);
+                        break;
+                    case BYTE_HTML:
+                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toHtmlDecode(value, applyCharset);
+                        } else {
+                            decode = toHtmlDecode(value, StandardCharsets.ISO_8859_1.name());
+                        }
                         break;
                     // ZLIB
                     case ZLIB:
@@ -364,13 +373,13 @@ public class TransUtil {
     public static String replaceNewLine(NewLine mode, String selectText) {
         switch (mode) {
             case CRLF: {
-                return selectText.replaceAll("\n", "\r\n");
+                return selectText.replaceAll("(\r\n|\r|\n)", "\r\n");
             }
             case LF: {
-                return selectText.replaceAll("\r\n", "\n");
+                return selectText.replaceAll("(\r\n|\r|\n)", "\n");
             }
             case CR: {
-                return selectText.replaceAll("\r\n", "\r");
+                return selectText.replaceAll("(\r\n|\r|\n)", "\r");
             }
             default: {
                 // nothing
@@ -486,10 +495,7 @@ public class TransUtil {
         ByteBuffer buffer = ByteBuffer.allocate(bytes.length * 3);
 
         for (int i = 0; i < bytes.length; i++) {
-            int b = bytes[i];
-            if (b < 0) {
-                b = 256 + b;
-            }
+            int b = bytes[i] & 0xff;
             Matcher m = pattern.matcher(new String(new char[]{(char) b}));
             if (b == ' ') {
                 b = '+';
@@ -555,10 +561,7 @@ public class TransUtil {
     public static String toByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
-            int b = bytes[i];
-            if (b < 0) {
-                b = 256 + b;
-            }
+            int b = bytes[i] & 0xff;
             Matcher m = pattern.matcher(new String(new char[]{(char) b}));
             if (m.matches()) {
                 if (upperCase) {
@@ -576,10 +579,7 @@ public class TransUtil {
     public static String toByteOctEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
-            int b = bytes[i];
-            if (b < 0) {
-                b = 256 + b;
-            }
+            int b = bytes[i] & 0xff;
             Matcher m = pattern.matcher(new String(new char[]{(char) b}));
             if (m.matches()) {
                 if (upperCase) {
@@ -594,24 +594,6 @@ public class TransUtil {
         return buff.toString();
     }
     
-    public static String toByteArrayJsEncode(byte[] input, boolean upperCase) {
-        StringBuilder buff = new StringBuilder();
-        buff.append("[");
-        for (int i = 0; i < input.length; i++) {
-            int b = (input[i] & 0xff);
-            if (i > 0) {
-                buff.append(",");
-            }
-            if (upperCase) {
-                buff.append(String.format("0X%02X", b));
-            } else {
-                buff.append(String.format("0x%02x", b));
-            }
-        }
-        buff.append("]");
-        return buff.toString();
-    }
-
     private final static Pattern PTN_UNICODE_STR_SURROGATE = Pattern.compile("(\\\\[uU][dD][89abAB][0-9a-fA-F]{2}\\\\[uU][dD][c-fC-F][0-9a-fA-F]{2})|(\\\\[uU][0-9a-fA-F]{4})");
 
     public static String toUnocodeDecode(String input) {
@@ -759,12 +741,35 @@ public class TransUtil {
                     buff.append(String.format("&#x%x;", c));
                 }
             } else {
-                buff.append((char) c);
+                buff.appendCodePoint(c);
             }
         }
         return buff.toString();
     }
 
+    public static String toHtmlByteHexEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
+        return toHtmlByteHexEncode(input.getBytes(charset), pattern, upperCase);
+    }
+    
+    public static String toHtmlByteHexEncode(byte [] bytes, Pattern pattern, boolean upperCase) {
+        StringBuilder buff = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            int b = bytes[i] & 0xff;
+            Matcher m = pattern.matcher(new String(new char[]{(char) b}));
+            if (m.matches()) {
+                if (upperCase) {
+                    buff.append(String.format("&#X%X;", b));
+                } else {
+                    buff.append(String.format("&#x%x;", b));
+                }
+            } else {
+                buff.append(b);
+            }
+        }
+        return buff.toString();
+    }
+    
+    
     public static String toHtmlEncode(String input) {
         StringBuilder buff = new StringBuilder();
         int length = input.length();
@@ -799,8 +804,7 @@ public class TransUtil {
         }
         return buff.toString();        
     }
-    
-    
+        
     public static String toHtmlDecode(String input) {
         StringBuffer buff = new StringBuffer();
         Pattern p = Pattern.compile("(&(?:(#\\d+)|(#[xX][0-9a-fA-F]+)|(\\w+));)");
@@ -841,6 +845,16 @@ public class TransUtil {
         return buff.toString();
     }
 
+    public static String toHtmlDecode(String input, String charset) throws UnsupportedEncodingException {
+        String decode = toHtmlDecode(input);
+        if (charset == null) {
+            return decode;
+        }
+        else {
+            return new String(decode.getBytes(StandardCharsets.ISO_8859_1), charset);    
+        }
+    }    
+    
     public static String toUudecode(String input, String encoding) throws UnsupportedEncodingException {
         return toMimeUtilDecode(input, encoding, "uuencode");
     }
@@ -1247,7 +1261,7 @@ public class TransUtil {
                 hexmod[j++] = hexs[i];
                 if (i > 0 && (j - 1) % 16 == 0) {
                     System.arraycopy(output, row * 16, partout, 0, partout.length);
-                    String hexText = new String(partout, StandardCharsets.ISO_8859_1.name());
+                    String hexText = new String(partout, StandardCharsets.ISO_8859_1);
                     hexmod[0] = FMT_HEX_POSITION.format(row);
                     hexmod[17] = hexText;
                     for (int x = 0; x < hexmod.length; x++) {
@@ -1266,7 +1280,7 @@ public class TransUtil {
              */
             if ((j - 1) > 0) {
                 System.arraycopy(output, row * 16, partout, 0, j - 1);
-                String hexText = new String(partout, StandardCharsets.ISO_8859_1.name());
+                String hexText = new String(partout, StandardCharsets.ISO_8859_1);
                 hexmod[0] = FMT_HEX_POSITION.format(row);
                 hexmod[17] = hexText;
                 for (int x = 0; x < j; x++) {
@@ -1276,8 +1290,6 @@ public class TransUtil {
                 out.println();
             }
             out.flush();
-        } catch (UnsupportedEncodingException e1) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, e1);
         } catch (Exception e2) {
             Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, e2);
         }
