@@ -32,6 +32,108 @@ import org.mozilla.universalchardet.UniversalDetector;
  */
 public class TransUtil {
 
+    private final static HashMap<String, Character> ENTITY = new HashMap();
+
+    static {
+        // see https://www.w3.org/TR/REC-html40/sgml/entities.html
+        ENTITY.put("nbsp", (char) 160); // no-break space = non-breaking space, U+00A0 ISOnum
+        ENTITY.put("iexcl", (char) 161); // inverted exclamation mark, U+00A1 ISOnum
+        ENTITY.put("cent", (char) 162); // cent sign, U+00A2 ISOnum
+        ENTITY.put("pound", (char) 163); // pound sign, U+00A3 ISOnum
+        ENTITY.put("curren", (char) 164); // currency sign, U+00A4 ISOnum
+        ENTITY.put("yen", (char) 165); // yen sign = yuan sign, U+00A5 ISOnum
+        ENTITY.put("brvbar", (char) 166); // broken bar = broken vertical bar, U+00A6 ISOnum
+        ENTITY.put("sect", (char) 167); // section sign, U+00A7 ISOnum
+        ENTITY.put("uml", (char) 168); // diaeresis = spacing diaeresis, U+00A8 ISOdia
+        ENTITY.put("copy", (char) 169); // copyright sign, U+00A9 ISOnum
+        ENTITY.put("ordf", (char) 170); // feminine ordinal indicator, U+00AA ISOnum
+        ENTITY.put("laquo", (char) 171); // left-pointing double angle quotation mark = left pointing guillemet, U+00AB ISOnum
+        ENTITY.put("not", (char) 172); // not sign, U+00AC ISOnum
+        ENTITY.put("shy", (char) 173); // soft hyphen = discretionary hyphen, U+00AD ISOnum
+        ENTITY.put("reg", (char) 174); // registered sign = registered trade mark sign, U+00AE ISOnum
+        ENTITY.put("macr", (char) 175); // macron = spacing macron = overline = APL overbar, U+00AF ISOdia
+        ENTITY.put("deg", (char) 176); // degree sign, U+00B0 ISOnum
+        ENTITY.put("plusmn", (char) 177); // plus-minus sign = plus-or-minus sign, U+00B1 ISOnum
+        ENTITY.put("sup2", (char) 178); // superscript two = superscript digit two = squared, U+00B2 ISOnum
+        ENTITY.put("sup3", (char) 179); // superscript three = superscript digit three = cubed, U+00B3 ISOnum
+        ENTITY.put("acute", (char) 180); // acute accent = spacing acute, U+00B4 ISOdia
+        ENTITY.put("micro", (char) 181); // micro sign, U+00B5 ISOnum
+        ENTITY.put("para", (char) 182); // pilcrow sign = paragraph sign, U+00B6 ISOnum
+        ENTITY.put("middot", (char) 183); // middle dot = Georgian comma = Greek middle dot, U+00B7 ISOnum
+        ENTITY.put("cedil", (char) 184); // cedilla = spacing cedilla, U+00B8 ISOdia
+        ENTITY.put("sup1", (char) 185); // superscript one = superscript digit one, U+00B9 ISOnum
+        ENTITY.put("ordm", (char) 186); // masculine ordinal indicator, U+00BA ISOnum
+        ENTITY.put("raquo", (char) 187); // right-pointing double angle quotation mark = right pointing guillemet, U+00BB ISOnum
+        ENTITY.put("frac14", (char) 188); // vulgar fraction one quarter = fraction one quarter, U+00BC ISOnum
+        ENTITY.put("frac12", (char) 189); // vulgar fraction one half = fraction one half, U+00BD ISOnum
+        ENTITY.put("frac34", (char) 190); // vulgar fraction three quarters = fraction three quarters, U+00BE ISOnum
+        ENTITY.put("iquest", (char) 191); // inverted question mark = turned question mark, U+00BF ISOnum
+        ENTITY.put("Agrave", (char) 192); // latin capital letter A with grave = latin capital letter A grave, U+00C0 ISOlat1
+        ENTITY.put("Aacute", (char) 193); // latin capital letter A with acute, U+00C1 ISOlat1
+        ENTITY.put("Acirc", (char) 194); // latin capital letter A with circumflex, U+00C2 ISOlat1
+        ENTITY.put("Atilde", (char) 195); // latin capital letter A with tilde, U+00C3 ISOlat1
+        ENTITY.put("Auml", (char) 196); // latin capital letter A with diaeresis, U+00C4 ISOlat1
+        ENTITY.put("Aring", (char) 197); // latin capital letter A with ring above = latin capital letter A ring, U+00C5 ISOlat1
+        ENTITY.put("AElig", (char) 198); // latin capital letter AE = latin capital ligature AE, U+00C6 ISOlat1
+        ENTITY.put("Ccedil", (char) 199); // latin capital letter C with cedilla, U+00C7 ISOlat1
+        ENTITY.put("Egrave", (char) 200); // latin capital letter E with grave, U+00C8 ISOlat1
+        ENTITY.put("Eacute", (char) 201); // latin capital letter E with acute, U+00C9 ISOlat1
+        ENTITY.put("Ecirc", (char) 202); // latin capital letter E with circumflex, U+00CA ISOlat1
+        ENTITY.put("Euml", (char) 203); // latin capital letter E with diaeresis, U+00CB ISOlat1
+        ENTITY.put("Igrave", (char) 204); // latin capital letter I with grave, U+00CC ISOlat1
+        ENTITY.put("Iacute", (char) 205); // latin capital letter I with acute, U+00CD ISOlat1
+        ENTITY.put("Icirc", (char) 206); // latin capital letter I with circumflex, U+00CE ISOlat1
+        ENTITY.put("Iuml", (char) 207); // latin capital letter I with diaeresis, U+00CF ISOlat1
+        ENTITY.put("ETH", (char) 208); // latin capital letter ETH, U+00D0 ISOlat1
+        ENTITY.put("Ntilde", (char) 209); // latin capital letter N with tilde, U+00D1 ISOlat1
+        ENTITY.put("Ograve", (char) 210); // latin capital letter O with grave, U+00D2 ISOlat1
+        ENTITY.put("Oacute", (char) 211); // latin capital letter O with acute, U+00D3 ISOlat1
+        ENTITY.put("Ocirc", (char) 212); // latin capital letter O with circumflex, U+00D4 ISOlat1
+        ENTITY.put("Otilde", (char) 213); // latin capital letter O with tilde, U+00D5 ISOlat1
+        ENTITY.put("Ouml", (char) 214); // latin capital letter O with diaeresis, U+00D6 ISOlat1
+        ENTITY.put("times", (char) 215); // multiplication sign, U+00D7 ISOnum
+        ENTITY.put("Oslash", (char) 216); // latin capital letter O with stroke = latin capital letter O slash, U+00D8 ISOlat1
+        ENTITY.put("Ugrave", (char) 217); // latin capital letter U with grave, U+00D9 ISOlat1
+        ENTITY.put("Uacute", (char) 218); // latin capital letter U with acute, U+00DA ISOlat1
+        ENTITY.put("Ucirc", (char) 219); // latin capital letter U with circumflex, U+00DB ISOlat1
+        ENTITY.put("Uuml2", (char) 220); // latin capital letter U with diaeresis, U+00DC ISOlat1
+        ENTITY.put("Yacute", (char) 221); // latin capital letter Y with acute, U+00DD ISOlat1
+        ENTITY.put("THORN", (char) 222); // latin capital letter THORN, U+00DE ISOlat1
+        ENTITY.put("szlig", (char) 223); // latin small letter sharp s = ess-zed, U+00DF ISOlat1
+        ENTITY.put("agrave", (char) 224); // latin small letter a with grave = latin small letter a grave, U+00E0 ISOlat1
+        ENTITY.put("aacute", (char) 225); // latin small letter a with acute, U+00E1 ISOlat1
+        ENTITY.put("acirc", (char) 226); // latin small letter a with circumflex, U+00E2 ISOlat1
+        ENTITY.put("atilde", (char) 227); // latin small letter a with tilde, U+00E3 ISOlat1
+        ENTITY.put("auml", (char) 228); // latin small letter a with diaeresis, U+00E4 ISOlat1
+        ENTITY.put("aring", (char) 229); // latin small letter a with ring above = latin small letter a ring, U+00E5 ISOlat1
+        ENTITY.put("aelig", (char) 230); // latin small letter ae = latin small ligature ae, U+00E6 ISOlat1
+        ENTITY.put("ccedil", (char) 231); // latin small letter c with cedilla, U+00E7 ISOlat1
+        ENTITY.put("egrave", (char) 232); // latin small letter e with grave, U+00E8 ISOlat1
+        ENTITY.put("eacute", (char) 233); // latin small letter e with acute, U+00E9 ISOlat1
+        ENTITY.put("ecirc", (char) 234); // latin small letter e with circumflex, U+00EA ISOlat1
+        ENTITY.put("euml", (char) 235); // latin small letter e with diaeresis, U+00EB ISOlat1
+        ENTITY.put("igrave", (char) 236); // latin small letter i with grave, U+00EC ISOlat1
+        ENTITY.put("iacute", (char) 237); // latin small letter i with acute, U+00ED ISOlat1
+        ENTITY.put("icirc", (char) 238); // latin small letter i with circumflex, U+00EE ISOlat1
+        ENTITY.put("iuml", (char) 239); // latin small letter i with diaeresis, U+00EF ISOlat1
+        ENTITY.put("eth", (char) 240); // latin small letter eth, U+00F0 ISOlat1
+        ENTITY.put("ntilde", (char) 241); // latin small letter n with tilde, U+00F1 ISOlat1
+        ENTITY.put("ograve", (char) 242); // latin small letter o with grave, U+00F2 ISOlat1
+        ENTITY.put("oacute", (char) 243); // latin small letter o with acute, U+00F3 ISOlat1
+        ENTITY.put("ocirc", (char) 244); // latin small letter o with circumflex, U+00F4 ISOlat1
+        ENTITY.put("otilde", (char) 245); // latin small letter o with tilde, U+00F5 ISOlat1
+        ENTITY.put("ouml", (char) 246); // latin small letter o with diaeresis, U+00F6 ISOlat1
+        ENTITY.put("divide", (char) 247); // division sign, U+00F7 ISOnum
+        ENTITY.put("oslash", (char) 248); // latin small letter o with stroke, = latin small letter o slash, U+00F8 ISOlat1
+        ENTITY.put("ugrave", (char) 249); // latin small letter u with grave, U+00F9 ISOlat1
+        ENTITY.put("uacute", (char) 250); // latin small letter u with acute, U+00FA ISOlat1
+        ENTITY.put("ucirc", (char) 251); // latin small letter u with circumflex, U+00FB ISOlat1
+        ENTITY.put("uuml", (char) 252); // latin small letter u with diaeresis, U+00FC ISOlat1
+        ENTITY.put("yacute", (char) 253); // latin small letter y with acute, U+00FD ISOlat1
+        ENTITY.put("thorn", (char) 254); // latin small letter thorn, U+00FE ISOlat1
+        ENTITY.put("yuml", (char) 255); // latin small letter y with diaeresis, U+00FF ISOlat1s
+    }
+
     public enum DateUnit {
         DAYS, WEEKS, MONTHS, YEARS
     }
@@ -43,7 +145,7 @@ public class TransUtil {
     public enum ConvertCase {
         UPPER, LOWLER
     };
-    
+
     public static String toEmpty(Object obj) {
         return (obj == null) ? "" : obj.toString();
     }
@@ -165,10 +267,9 @@ public class TransUtil {
             if (encodePattern == null) {
                 if (charset != null) {
                     applyCharset = charset;
-                } 
-                decode = Util.getRawByteStr(value, applyCharset);            
-            }
-            else {
+                }
+                decode = Util.getRawByteStr(value, applyCharset);
+            } else {
                 // URL encode match
                 switch (encodePattern) {
                     case URL_STANDARD: {
@@ -233,7 +334,7 @@ public class TransUtil {
                     }
                     break;
                     // Punycode
-                    case PUNYCODE: 
+                    case PUNYCODE:
                         decode = toPunycodeDecode(value);
                         break;
                     // Base64 encode match
@@ -282,7 +383,7 @@ public class TransUtil {
                         break;
                     default:
                         break;
-                }            
+                }
             }
 
         } catch (UnsupportedEncodingException ex) {
@@ -301,7 +402,7 @@ public class TransUtil {
     public static String toPunycodeDecode(String value) {
         return IDN.toUnicode(value);
     }
-    
+
     public static String toUTF7Encode(String str) {
         UTF7Charset utf7cs = new UTF7Charset("UTF-7", new String[]{});
         ByteBuffer bb = utf7cs.encode(str);
@@ -440,7 +541,7 @@ public class TransUtil {
     public static String decodeUrl(String pString, Charset charset) {
         return new String(decodeUrl(pString.getBytes(StandardCharsets.US_ASCII)), charset);
     }
-        
+
     public static String decodeUrl(String pString, String charset) throws UnsupportedEncodingException {
         return new String(decodeUrl(pString.getBytes(StandardCharsets.US_ASCII)), charset);
     }
@@ -448,7 +549,7 @@ public class TransUtil {
     public static String encodeUrl(String pString, Charset charset, boolean upperCase) {
         return new String(encodeUrl(pString.getBytes(charset), PTN_ENCODE_ALPHANUM, upperCase), StandardCharsets.US_ASCII);
     }
-    
+
     public static String encodeUrl(String pString, String charset, boolean upperCase) throws UnsupportedEncodingException {
         return new String(encodeUrl(pString.getBytes(charset), PTN_ENCODE_ALPHANUM, upperCase), StandardCharsets.US_ASCII);
     }
@@ -456,12 +557,11 @@ public class TransUtil {
     public static String encodeUrl(String pString, Charset charset, Pattern pattern, boolean upperCase) {
         return new String(encodeUrl(pString.getBytes(charset), pattern, upperCase), StandardCharsets.US_ASCII);
     }
-    
+
     public static String encodeUrl(String pString, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
         return new String(encodeUrl(pString.getBytes(charset), pattern, upperCase), StandardCharsets.US_ASCII);
     }
 
-    
     private static byte[] decodeUrl(byte[] bytes) {
         if (bytes == null) {
             throw new NullPointerException();
@@ -553,11 +653,11 @@ public class TransUtil {
     public static String toByteOctEncode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
         return toByteOctEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
     }
-    
+
     public static String toByteOctEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
         return toByteOctEncode(input.getBytes(charset), pattern, upperCase);
     }
-    
+
     public static String toByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
@@ -593,7 +693,7 @@ public class TransUtil {
         }
         return buff.toString();
     }
-    
+
     private final static Pattern PTN_UNICODE_STR_SURROGATE = Pattern.compile("(\\\\[uU][dD][89abAB][0-9a-fA-F]{2}\\\\[uU][dD][c-fC-F][0-9a-fA-F]{2})|(\\\\[uU][0-9a-fA-F]{4})");
 
     public static String toUnocodeDecode(String input) {
@@ -639,19 +739,18 @@ public class TransUtil {
                     byte[] value = new byte[buf.limit()];
                     buf.get(value);
                     m.appendReplacement(buff, Matcher.quoteReplacement(new String(value, charset)));
-            }
-                else if(oct != null) {
+                } else if (oct != null) {
                     Matcher m3 = PTN_BYTE_OCT.matcher(oct);
                     ByteBuffer buf = ByteBuffer.allocate(oct.length());
                     while (m3.find()) {
                         String octecode = m3.group(1);
-                        buf.put((byte)Integer.parseInt(octecode, 8));
+                        buf.put((byte) Integer.parseInt(octecode, 8));
                     }
-                    buf.flip();                
+                    buf.flip();
                     byte[] value = new byte[buf.limit()];
                     buf.get(value);
                     m.appendReplacement(buff, Matcher.quoteReplacement(new String(value, charset)));
-                }                
+                }
             }
             m.appendTail(buff);
         } catch (UnsupportedEncodingException ex) {
@@ -750,8 +849,8 @@ public class TransUtil {
     public static String toHtmlByteHexEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
         return toHtmlByteHexEncode(input.getBytes(charset), pattern, upperCase);
     }
-    
-    public static String toHtmlByteHexEncode(byte [] bytes, Pattern pattern, boolean upperCase) {
+
+    public static String toHtmlByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
@@ -768,8 +867,7 @@ public class TransUtil {
         }
         return buff.toString();
     }
-    
-    
+
     public static String toHtmlEncode(String input) {
         StringBuilder buff = new StringBuilder();
         int length = input.length();
@@ -802,9 +900,9 @@ public class TransUtil {
                 buff.append(c);
                 break;
         }
-        return buff.toString();        
+        return buff.toString();
     }
-        
+
     public static String toHtmlDecode(String input) {
         StringBuffer buff = new StringBuffer();
         Pattern p = Pattern.compile("(&(?:(#\\d+)|(#[xX][0-9a-fA-F]+)|(\\w+));)");
@@ -834,8 +932,11 @@ public class TransUtil {
                         htmlch = "&";
                     } else if (htmlwd.equals("quot")) {
                         htmlch = "\"";
-                    } else if (htmlwd.equals("nbsp")) {
-                        htmlch = " ";
+                    } else {
+                        htmlch = getHTMLEntity(htmlwd);
+                        if (htmlch == null) {
+                            htmlch = "";
+                        }
                     }
                     m.appendReplacement(buff, htmlch);
                 }
@@ -845,16 +946,32 @@ public class TransUtil {
         return buff.toString();
     }
 
+    /**
+     * @param entityName
+     */
+    public static String getHTMLEntity(String entityName) {
+        Character ch = ENTITY.get(entityName);
+        if (ch == null) {
+            return null;        
+        }
+        return Character.toString(ch);
+    }
+
+    /**
+     * @param input
+     * @param charset
+     * @return
+     * @throws UnsupportedEncodingException
+     */
     public static String toHtmlDecode(String input, String charset) throws UnsupportedEncodingException {
         String decode = toHtmlDecode(input);
         if (charset == null) {
             return decode;
+        } else {
+            return new String(decode.getBytes(StandardCharsets.ISO_8859_1), charset);
         }
-        else {
-            return new String(decode.getBytes(StandardCharsets.ISO_8859_1), charset);    
-        }
-    }    
-    
+    }
+
     public static String toUudecode(String input, String encoding) throws UnsupportedEncodingException {
         return toMimeUtilDecode(input, encoding, "uuencode");
     }
@@ -1079,7 +1196,7 @@ public class TransUtil {
     public static String decodeSQLangQuote(String value) {
         return value.replaceAll("''", "'");
     }
-    
+
     public static String toSmartMatch(String value) {
         try {
             return toSmartMatch(value, null);
@@ -1087,8 +1204,8 @@ public class TransUtil {
             Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    } 
-        
+    }
+
     public static String toSmartMatch(String value, String charset) throws UnsupportedEncodingException {
         StringBuilder buff = new StringBuilder();
         int length = value.length();
@@ -1107,7 +1224,7 @@ public class TransUtil {
                     break;
                 case '\\':
                 case '{':
-                case '}':        
+                case '}':
                 case '(':
                 case ')':
                 case '[':
@@ -1134,22 +1251,21 @@ public class TransUtil {
             if (charset != null) {
                 buff.append('|');
                 String s = value.substring(i, value.offsetByCodePoints(i, 1));
-                byte decode [] = s.getBytes(charset);
+                byte decode[] = s.getBytes(charset);
                 for (int k = 0; k < decode.length; k++) {
                     buff.append(String.format("((\\\\x|%%)%02x)", 0xff & decode[k])); // byte hex
-                }                                            
-            }
-            else {
+                }
+            } else {
                 buff.append('|');
                 if (i + 1 == value.offsetByCodePoints(i, 1)) {
                     buff.append(String.format("((\\\\x|%%)%02x)", 0xff & ch)); // byte hex
-                }            
+                }
             }
             buff.append(')');
         }
         return buff.toString();
     }
-    
+
     /**
      * リストを作成する
      *
@@ -1204,22 +1320,22 @@ public class TransUtil {
         LocalDate endValue = startDate.compareTo(endDate) > 0 ? startDate : endDate;
         ChronoUnit dateUnit = ChronoUnit.DAYS;
         switch (unit) {
-        case DAYS:
-            dateUnit = ChronoUnit.DAYS;
-            break;
-        case WEEKS:
-            dateUnit = ChronoUnit.WEEKS;
-            break;
-        case MONTHS:
-            dateUnit = ChronoUnit.MONTHS;
-            break;
-        case YEARS:
-            dateUnit = ChronoUnit.YEARS;
-            break;
-        default:
-            break;
+            case DAYS:
+                dateUnit = ChronoUnit.DAYS;
+                break;
+            case WEEKS:
+                dateUnit = ChronoUnit.WEEKS;
+                break;
+            case MONTHS:
+                dateUnit = ChronoUnit.MONTHS;
+                break;
+            case YEARS:
+                dateUnit = ChronoUnit.YEARS;
+                break;
+            default:
+                break;
         }
-        
+
         ArrayList<String> list = new ArrayList<>();
         final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(format);
         if (0 < stepDate) {
@@ -1298,7 +1414,7 @@ public class TransUtil {
     public static String getUniversalGuessCode(byte[] bytes) {
         return getUniversalGuessCode(bytes, null);
     }
-            
+
     /**
      *
      * @param bytes 文字コードを調べるデータ
@@ -1335,17 +1451,16 @@ public class TransUtil {
         CHARSET_ALIAS.put("X-ISO-10646-UCS-4-34121", "UTF-32");
         CHARSET_ALIAS.put("X-ISO-10646-UCS-4-21431", "UTF-32");
     }
-    
+
     public static String normalizeCharset(String charsetName) {
         String charset = charsetName;
-        String aliasName = CHARSET_ALIAS.get(charsetName);   
+        String aliasName = CHARSET_ALIAS.get(charsetName);
         if (aliasName == null) {
             charset = HttpUtil.normalizeCharset(charsetName);
-        }
-        else {
+        } else {
             charset = aliasName;
         }
         return charset;
     }
-    
+        
 }

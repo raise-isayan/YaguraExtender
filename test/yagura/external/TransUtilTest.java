@@ -264,6 +264,14 @@ public class TransUtilTest {
         assertEquals(x, TransUtil.toHtmlDecode("&#X6A;&#X6B;&#X66;&#X2000B;&#X2123D;&#X67;&#X68;&#X69;&#X2131B;&#X2146E;&#X218BD;&#X20B9F;&#X216B4;&#X21E34;&#X231C4;&#X235C4;&#X61;&#X62;&#X7A;&#X30;&#X31;&#X39;"));
     }
 
+    private final String entities_html = "&nbsp;&iexcl;&cent;&pound;&curren;&yen;&brvbar;&sect;&uml;&copy;&ordf;&laquo;&not;&shy;&reg;&macr;&deg;&plusmn;&sup2;&sup3;&acute;&micro;&para;&middot;&cedil;&sup1;&ordm;&raquo;&frac14;&frac12;&frac34;&iquest;&Agrave;&Aacute;&Acirc;&Atilde;&Auml;&Aring;&AElig;&Ccedil;&Egrave;&Eacute;&Ecirc;&Euml;&Igrave;&Iacute;&Icirc;&Iuml;&ETH;&Ntilde;&Ograve;&Oacute;&Ocirc;&Otilde;&Ouml;&times;&Oslash;&Ugrave;&Uacute;&Ucirc;&Uuml2;&Yacute;&THORN;&szlig;&agrave;&aacute;&acirc;&atilde;&auml;&aring;&aelig;&ccedil;&egrave;&eacute;&ecirc;&euml;&igrave;&iacute;&icirc;&iuml;&eth;&ntilde;&ograve;&oacute;&ocirc;&otilde;&ouml;&divide;&oslash;&ugrave;&uacute;&ucirc;&uuml;&yacute;&thorn;&yuml;";
+    
+    @Test
+    public void testToHtmlEntityDecode() {
+        char ch[] = new char[]{(char)160,(char)161,(char)162,(char)163,(char)164,(char)165,(char)166,(char)167,(char)168,(char)169,(char)170,(char)171,(char)172,(char)173,(char)174,(char)175,(char)176,(char)177,(char)178,(char)179,(char)180,(char)181,(char)182,(char)183,(char)184,(char)185,(char)186,(char)187,(char)188,(char)189,(char)190,(char)191,(char)192,(char)193,(char)194,(char)195,(char)196,(char)197,(char)198,(char)199,(char)200,(char)201,(char)202,(char)203,(char)204,(char)205,(char)206,(char)207,(char)208,(char)209,(char)210,(char)211,(char)212,(char)213,(char)214,(char)215,(char)216,(char)217,(char)218,(char)219,(char)220,(char)221,(char)222,(char)223,(char)224,(char)225,(char)226,(char)227,(char)228,(char)229,(char)230,(char)231,(char)232,(char)233,(char)234,(char)235,(char)236,(char)237,(char)238,(char)239,(char)240,(char)241,(char)242,(char)243,(char)244,(char)245,(char)246,(char)247,(char)248,(char)249,(char)250,(char)251,(char)252,(char)253,(char)254,(char)255};
+        assertEquals(new String(ch), TransUtil.toHtmlDecode(entities_html));
+    }
+    
     /**
      * Test of toHtmlDecEncode method, of class TransUtil.
      */
@@ -938,14 +946,13 @@ public class TransUtilTest {
         System.out.println(Locale.JAPANESE.getVariant());
         System.out.println(Locale.JAPANESE.toLanguageTag());
     }
-
+            
     @Test
     public void testByte() {
         byte a = -1;
         System.out.println("hex:" + (a & 0xff));
         byte b = -2;
-        System.out.println("hex:" + (b & 0xff));
-        
+        System.out.println("hex:" + (b & 0xff));        
     }
     
 }

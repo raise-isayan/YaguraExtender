@@ -48,13 +48,13 @@ public class QuickSearchTab extends javax.swing.JPanel {
         pnlEncode = new javax.swing.JPanel();
         cmbEncoding = new javax.swing.JComboBox();
         pnlSearch = new javax.swing.JPanel();
+        pnlSearchNavi = new javax.swing.JPanel();
         btnQuickBack = new javax.swing.JButton();
         btnQuckOption = new javax.swing.JButton();
         btnQuickForward = new javax.swing.JButton();
         cmbQuckSearch = new javax.swing.JComboBox();
         pnlStatus = new javax.swing.JPanel();
         chkUniq = new javax.swing.JCheckBox();
-        mnuSep1 = new javax.swing.JSeparator();
         lblMatch = new javax.swing.JLabel();
 
         popQuick.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
@@ -91,7 +91,9 @@ public class QuickSearchTab extends javax.swing.JPanel {
 
         add(pnlEncode, java.awt.BorderLayout.EAST);
 
-        pnlSearch.setLayout(new javax.swing.BoxLayout(pnlSearch, javax.swing.BoxLayout.LINE_AXIS));
+        pnlSearch.setLayout(new java.awt.BorderLayout());
+
+        pnlSearchNavi.setLayout(new javax.swing.BoxLayout(pnlSearchNavi, javax.swing.BoxLayout.LINE_AXIS));
 
         btnQuickBack.setText("<");
         btnQuickBack.setMargin(new java.awt.Insets(2, 6, 2, 6));
@@ -100,7 +102,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
                 btnQuickBackActionPerformed(evt);
             }
         });
-        pnlSearch.add(btnQuickBack);
+        pnlSearchNavi.add(btnQuickBack);
 
         btnQuckOption.setText("+");
         btnQuckOption.setMargin(new java.awt.Insets(2, 6, 2, 6));
@@ -109,7 +111,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
                 btnQuckOptionActionPerformed(evt);
             }
         });
-        pnlSearch.add(btnQuckOption);
+        pnlSearchNavi.add(btnQuckOption);
 
         btnQuickForward.setText(">");
         btnQuickForward.setMargin(new java.awt.Insets(2, 6, 2, 6));
@@ -118,12 +120,19 @@ public class QuickSearchTab extends javax.swing.JPanel {
                 btnQuickForwardActionPerformed(evt);
             }
         });
-        pnlSearch.add(btnQuickForward);
+        pnlSearchNavi.add(btnQuickForward);
+
+        pnlSearch.add(pnlSearchNavi, java.awt.BorderLayout.WEST);
 
         cmbQuckSearch.setEditable(true);
-        pnlSearch.add(cmbQuckSearch);
+        cmbQuckSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbQuckSearchActionPerformed(evt);
+            }
+        });
+        pnlSearch.add(cmbQuckSearch, java.awt.BorderLayout.CENTER);
 
-        pnlStatus.setLayout(new javax.swing.BoxLayout(pnlStatus, javax.swing.BoxLayout.LINE_AXIS));
+        pnlStatus.setLayout(new java.awt.BorderLayout());
 
         chkUniq.setSelected(true);
         chkUniq.setText("Uniq");
@@ -132,15 +141,12 @@ public class QuickSearchTab extends javax.swing.JPanel {
                 chkUniqActionPerformed(evt);
             }
         });
-        pnlStatus.add(chkUniq);
-
-        mnuSep1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        pnlStatus.add(mnuSep1);
+        pnlStatus.add(chkUniq, java.awt.BorderLayout.EAST);
 
         lblMatch.setText("0 match");
-        pnlStatus.add(lblMatch);
+        pnlStatus.add(lblMatch, java.awt.BorderLayout.CENTER);
 
-        pnlSearch.add(pnlStatus);
+        pnlSearch.add(pnlStatus, java.awt.BorderLayout.EAST);
 
         add(pnlSearch, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -171,6 +177,10 @@ public class QuickSearchTab extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_chkUniqActionPerformed
 
+    private void cmbQuckSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbQuckSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbQuckSearchActionPerformed
+
     private final KeywordHighlighter highlightKeyword = new KeywordHighlighter();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -183,10 +193,10 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private javax.swing.JLabel lblMatch;
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
-    private javax.swing.JSeparator mnuSep1;
     private javax.swing.JCheckBoxMenuItem mnuSmartMatch;
     private javax.swing.JPanel pnlEncode;
     private javax.swing.JPanel pnlSearch;
+    private javax.swing.JPanel pnlSearchNavi;
     private javax.swing.JPanel pnlStatus;
     private javax.swing.JPopupMenu popQuick;
     // End of variables declaration//GEN-END:variables

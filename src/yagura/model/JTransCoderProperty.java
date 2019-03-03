@@ -121,6 +121,20 @@ public class JTransCoderProperty {
         this.selectEncoding = selectEncoding;
     }
 
+    private String currentInput = "";
+    
+    /**
+     * 
+     * @param property 
+     */
+    public String getCurrentInput() {
+        return currentInput;
+    }
+    
+    public void setCurrentInput(String currentInput) {
+        this.currentInput = currentInput;    
+    }
+    
     public void setProperty(JTransCoderProperty property) {
         this.setEncodeType(property.getEncodeType());
         this.setNewLine(property.getNewLine());
@@ -129,6 +143,11 @@ public class JTransCoderProperty {
         this.setRawEncoding(property.isRawEncoding());
         this.setGuessEncoding(property.isGuessEncoding());
         this.setSelectEncoding(property.getSelectEncoding());
+        this.setCurrentInput(property.getCurrentInput());
     }
     
+    public String toString() {
+        return this.getCurrentInput();
+    }
+        
 }
