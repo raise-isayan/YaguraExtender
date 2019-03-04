@@ -37,6 +37,10 @@ public final class Config {
         return System.getProperties().getProperty("user.home");
     }
 
+    public static String getExtensionDir() {
+        return ".yaguraextender";
+    }
+    
     public static String getUserDir() {
         return System.getProperties().getProperty("user.dir");
     }

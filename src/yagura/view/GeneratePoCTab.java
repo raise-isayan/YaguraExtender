@@ -327,7 +327,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
         if (this.chkHtml5.isSelected()) {
-//            ta.setText(this.generateHtml5PoC());
             ta.setText(this.generateHTML5PoC());
         } else {
             ta.setText(this.generatePoC());
@@ -608,8 +607,23 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\"%s>\n", 
                     new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, csrfFormTarget}));
                 Map.Entry<String, String> pair = HttpUtil.getParameter(Util.decodeMessage(Util.encodeMessage(reqmsg.getBody()), csrfEncoding));
-                buff.append(String.format("<textarea name=\"%s\">%s</textarea>", 
-                    new Object[]{TransUtil.toHtmlEncode(pair.getKey()), TransUtil.toHtmlEncode(pair.getValue())}));
+                String key = pair.getKey();
+                String val = pair.getValue();
+                if ("".equals(val)) {                
+                    String sp [] = key.split("=", 2);
+                    if (sp.length == 1) {
+                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",                            
+                            new Object[]{TransUtil.toHtmlEncode(sp[0]), ""}));                                        
+                    }
+                    else {
+                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",                            
+                            new Object[]{TransUtil.toHtmlEncode(sp[0]), TransUtil.toHtmlEncode(sp[1])}));                    
+                    }
+                }
+                else {                
+                    buff.append(String.format("<textarea name=\"%s\">%s</textarea>", 
+                        new Object[]{TransUtil.toHtmlEncode(key), TransUtil.toHtmlEncode(val)}));                
+                }
             }
             if (!csrfAutoSubmit) {
                 buff.append(String.format("<input type=\"submit\" value=\"submit\">\n"));
@@ -735,10 +749,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         String paramName = param.getName();
                         String paramValue = param.getValue();
                         byte paramType = param.getType();
-//                        if (HttpUtil.isUrlEencoded(contentType)) {
-//                            paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
-//                            paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
-//                        }
                         if (paramType == IParameter.PARAM_URL || paramType == IParameter.PARAM_COOKIE) {
                             continue;
                         }

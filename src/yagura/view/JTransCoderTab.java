@@ -7,9 +7,12 @@ import extend.util.Util;
 import extend.util.HashUtil;
 import extend.view.model.VerticalFlowLayout;
 import java.awt.BorderLayout;
+import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.im.InputContext;
 import yagura.external.CertUtil;
 import yagura.external.TransUtil;
 import yagura.model.UniversalViewProperty;
@@ -35,8 +38,13 @@ import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComponent;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.TransferHandler;
+import javax.swing.plaf.UIResource;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.impl.JDatePickerImpl;
 import yagura.external.FormatUtil;
@@ -115,10 +123,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.pnlOutputRaw.add(this.quickSearchTabRaw, java.awt.BorderLayout.SOUTH);
         this.pnlOutputFormat.add(this.quickSearchTabFormat, java.awt.BorderLayout.SOUTH);
 
-        this.cmbHistory.addItemListener(this.historyItemStateChanged);        
-        
+        this.cmbHistory.addItemListener(this.historyItemStateChanged);
+
         // Drag and Drop
-        this.txtInputRaw.setTransferHandler(new DropFileHandler());
+        this.txtInputRaw.setTransferHandler(new FileDropAndClipbordTransferHandler());
     }
 
     /**
@@ -2161,13 +2169,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private final java.awt.event.ItemListener historyItemStateChanged = new java.awt.event.ItemListener() {
         @Override
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
-            JTransCoderProperty property = (JTransCoderProperty)cmbHistory.getSelectedItem();
+            JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
             if (property != null) {
                 setInputText(property.getCurrentInput());
             }
         }
     };
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdler32;
     private javax.swing.JButton btnAnalyze;
@@ -2476,19 +2484,19 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.setOutputText(outputText);
         this.setOutputByte(Util.encodeMessage(outputText, encoding));
         this.setOutputFormat(outputText);
-        this.cmbHistory.removeItemListener(this.historyItemStateChanged);        
+        this.cmbHistory.removeItemListener(this.historyItemStateChanged);
         MutableComboBoxModel modelHistory = (MutableComboBoxModel) this.cmbHistory.getModel();
         JTransCoderProperty current = this.getProperty();
-        for (int i = modelHistory.getSize() - 1; i >= 0 ; i--) {
+        for (int i = modelHistory.getSize() - 1; i >= 0; i--) {
             JTransCoderProperty prop = (JTransCoderProperty) modelHistory.getElementAt(i);
             if (current.getCurrentInput().equals(prop.getCurrentInput())) {
                 modelHistory.removeElementAt(i);
                 break;
             }
-        }                
+        }
         modelHistory.insertElementAt(current, 0);
         modelHistory.setSelectedItem(current);
-        this.cmbHistory.addItemListener(this.historyItemStateChanged);        
+        this.cmbHistory.addItemListener(this.historyItemStateChanged);
     }
 
     private void setOutputText(String outputText) {
@@ -2702,58 +2710,122 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.setInputText(transcoderProp.getCurrentInput());
     }
 
-    /**
-     * Drop
-     */
-    private class DropFileHandler extends TransferHandler {
+    protected class FileDropAndClipbordTransferHandler extends TransferHandler {
 
-        /**
-         * ドロップされたものを受け取るか判断 (ファイルのときだけ受け取る)
-         */
         @Override
-        public boolean canImport(TransferHandler.TransferSupport support) {
-            if (!support.isDrop()) {
-                return false;
-            }
+        public void exportToClipboard(JComponent comp, Clipboard clipboard,
+                int action) throws IllegalStateException {
+            if (comp instanceof JTextComponent) {
+                JTextComponent text = (JTextComponent) comp;
+                int p0 = text.getSelectionStart();
+                int p1 = text.getSelectionEnd();
+                if (p0 != p1) {
+                    try {
+                        Document doc = text.getDocument();
+                        String srcData = doc.getText(p0, p1 - p0);
+                        StringSelection contents = new StringSelection(srcData);
+                        clipboard.setContents(contents, null);
 
-            if (!support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                // ファイル以外は拒否
-                return false;
+                        if (action == TransferHandler.MOVE) {
+                            doc.remove(p0, p1 - p0);
+                        }
+                    } catch (BadLocationException ble) {
+                    }
+                }
             }
-
-            return true;
         }
 
-        /**
-         * ドロップされたファイルを受け取る
-         */
+        @Override
+        public boolean importData(JComponent comp, Transferable t) {
+            if (comp instanceof JTextComponent) {
+                DataFlavor flavor = getFlavor(t.getTransferDataFlavors());
+                if (flavor != null) {
+                    InputContext ic = comp.getInputContext();
+                    if (ic != null) {
+                        ic.endComposition();
+                    }
+                    try {
+                        String data = (String) t.getTransferData(flavor);
+                        ((JTextComponent) comp).replaceSelection(data);
+                        return true;
+                    } catch (UnsupportedFlavorException ex) {
+                        Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            return false;
+        }
+                
+        @Override
+        public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
+            JTextComponent c = (JTextComponent) comp;
+            if (!(c.isEditable() && c.isEnabled())) {
+                return false;
+            }            
+            return (getFlavor(transferFlavors) != null);
+        }
+
         @Override
         public boolean importData(TransferHandler.TransferSupport support) {
-            if (!canImport(support)) {
-                return false;
-            }
-
             Transferable t = support.getTransferable();
-            try {
-                // ファイルを受け取る
-                List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
-                byte [] rawData = new byte[0];
-                for (File file : files) {
-                    rawData = Util.readAllBytes(new FileInputStream(file));
-                    break;
-                }
-                // テキストエリアにファイル名のリストを表示する
-                setInputText(Util.getRawStr(rawData));
-            } catch (UnsupportedFlavorException ex) {
-                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+            if (support.isDrop()) {
+                try {
+                    Object data = t.getTransferData(DataFlavor.javaFileListFlavor);
+                    if (data instanceof List) {
+                        List<File> files = (List<File>) data;
+                        byte[] rawData = new byte[0];
+                        for (File file : files) {
+                            rawData = Util.readAllBytes(new FileInputStream(file));
+                            break;
+                        }
+                        setInputText(Util.getRawStr(rawData));                
+                    }
+                } catch (UnsupportedFlavorException ex) {
+                    Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                }            
             }
-            return true;
+            else {
+                return support.getComponent() instanceof JComponent
+                    ? importData((JComponent)support.getComponent(), support.getTransferable())
+                    : false;            
+            }
+            return false;
+        }
+        
+        @Override
+        public boolean canImport(TransferHandler.TransferSupport support) {
+            if (support.isDrop()) {
+                if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    return true;
+                }
+            }
+            else {
+                return support.getComponent() instanceof JComponent
+                    ? canImport((JComponent)support.getComponent(), support.getDataFlavors())
+                    : false;
+            }
+            return false;
+        }
+        
+        @Override
+        public int getSourceActions(JComponent c) {
+            return NONE;
+        }
+
+        private DataFlavor getFlavor(DataFlavor[] flavors) {
+            if (flavors != null) {
+                for (DataFlavor flavor : flavors) {
+                    if (flavor.equals(DataFlavor.stringFlavor)) {
+                        return flavor;
+                    }
+                }
+            }
+            return null;
         }
     }
-    
-    
+
 }
-
-

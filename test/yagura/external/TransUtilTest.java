@@ -953,6 +953,11 @@ public class TransUtilTest {
         System.out.println("hex:" + (a & 0xff));
         byte b = -2;
         System.out.println("hex:" + (b & 0xff));        
+        String s = "abcdefg";
+        String sp[] = s.split("=",2);
+        for (int i = 0; i < sp.length; i++) {
+            System.out.println(i + ":" + sp[i]);
+        }
     }
     
 }
