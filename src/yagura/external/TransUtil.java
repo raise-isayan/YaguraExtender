@@ -173,7 +173,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG,
+        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG,
     };
 
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
@@ -186,6 +186,7 @@ public class TransUtil {
     private final static Pattern PTN_UNICODE = Pattern.compile("\\\\[uU]([0-9a-fA-F]{4})");
     private final static Pattern PTN_BYTE_HEX = Pattern.compile("\\\\[xX]([0-9a-fA-F]{2})");
     private final static Pattern PTN_BYTE_OCT = Pattern.compile("\\\\([0-9]{1,})");
+    private final static Pattern PTN_GZIP = Pattern.compile("\\x1f\\x8b");
 
     public static EncodePattern getSmartDecode(String value) {
         // 判定の順番は検討の余地あり        
@@ -209,6 +210,8 @@ public class TransUtil {
         Matcher mBYTE_HEX = PTN_BYTE_HEX.matcher(value);
         // byte oct
         Matcher mBYTE_OCT = PTN_BYTE_OCT.matcher(value);
+        // gzip
+        Matcher mGZIP = PTN_GZIP.matcher(value);
 
         // URL encode match
         if (mURL.find()) {
@@ -240,7 +243,11 @@ public class TransUtil {
         } // Html decode
         else if (mHTML.find()) {
             return EncodePattern.HTML;
+        } // Gzip
+        else if (mGZIP.lookingAt()) {
+            return EncodePattern.GZIP;            
         }
+         
         return null;
     }
 
@@ -363,6 +370,10 @@ public class TransUtil {
                             decode = toHtmlDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
                         break;
+                    // Gzip
+                    case GZIP:
+                        decode = Util.getRawStr(ConvertUtil.decompressGzip(Util.encodeMessage(value, charset)));
+                        break;
                     // ZLIB
                     case ZLIB:
                         decode = Util.getRawStr(ConvertUtil.decompressZlib(Util.encodeMessage(value, charset)));
@@ -386,7 +397,7 @@ public class TransUtil {
                 }
             }
 
-        } catch (UnsupportedEncodingException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (selectCharset != null) {

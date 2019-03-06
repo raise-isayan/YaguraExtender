@@ -37,11 +37,9 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.util.Map;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.TransferHandler;
-import javax.swing.plaf.UIResource;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -175,8 +173,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoByteHex = new javax.swing.JRadioButton();
         rdoByteOct = new javax.swing.JRadioButton();
         rdoUnicodeHex = new javax.swing.JRadioButton();
-        rdoZLIB = new javax.swing.JRadioButton();
         rdoUTF7 = new javax.swing.JRadioButton();
+        pnlCompress = new javax.swing.JPanel();
+        rdoGzip = new javax.swing.JRadioButton();
+        rdoZLIB = new javax.swing.JRadioButton();
         pnlILLUTF8 = new javax.swing.JPanel();
         rdoILLUTF8 = new javax.swing.JRadioButton();
         cmbIILUTF8 = new javax.swing.JComboBox();
@@ -485,13 +485,21 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlEncodeDecode.add(pnlJSHexEnc);
 
-        rdoEncodeDecodeGrp.add(rdoZLIB);
-        rdoZLIB.setText("ZLIB");
-        pnlEncodeDecode.add(rdoZLIB);
-
         rdoEncodeDecodeGrp.add(rdoUTF7);
         rdoUTF7.setText("UTF-7");
         pnlEncodeDecode.add(rdoUTF7);
+
+        pnlCompress.setLayout(new java.awt.GridLayout(1, 2));
+
+        rdoEncodeDecodeGrp.add(rdoGzip);
+        rdoGzip.setText("Gzip");
+        pnlCompress.add(rdoGzip);
+
+        rdoEncodeDecodeGrp.add(rdoZLIB);
+        rdoZLIB.setText("ZLIB");
+        pnlCompress.add(rdoZLIB);
+
+        pnlEncodeDecode.add(pnlCompress);
 
         pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1442,7 +1450,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoConvertPEM)
                     .addComponent(btnExport))
-                .addContainerGap(558, Short.MAX_VALUE))
+                .addContainerGap(780, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Certificate", pnlCertificate);
@@ -1538,7 +1546,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(458, Short.MAX_VALUE))
+                .addContainerGap(680, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -1617,6 +1625,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 encode = TransUtil.toHtmlHexEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoHtmlByteHex.isSelected()) {
                 encode = TransUtil.toHtmlByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoGzip.isSelected()) {
+                encode = Util.getRawStr(ConvertUtil.compressGzip(Util.encodeMessage(value, this.getSelectEncode())));
             } else if (this.rdoZLIB.isSelected()) {
                 encode = Util.getRawStr(ConvertUtil.compressZlib(Util.encodeMessage(value, this.getSelectEncode())));
             } else if (this.rdoUTF7.isSelected()) {
@@ -1861,8 +1871,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_rdoUuencodeActionPerformed
 
     private void btnOutputToInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutputToInputActionPerformed
-        this.setInputText(this.getOutputText());
-        this.setInputByte(Util.getRawByte(this.getOutputText()));
+        String outputText = this.getOutputText();
+        byte[] outputByte = this.getOutputByte();
+        this.clearText();
+        this.setInputText(outputText);
+        this.setInputByte(outputByte);
     }//GEN-LAST:event_btnOutputToInputActionPerformed
 
     private void rdoQuotedPrintableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoQuotedPrintableActionPerformed
@@ -2171,6 +2184,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
             if (property != null) {
+                clearText();
                 setInputText(property.getCurrentInput());
             }
         }
@@ -2245,6 +2259,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JPanel pnlBase64;
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlCharacter;
+    private javax.swing.JPanel pnlCompress;
     private javax.swing.JPanel pnlConvert;
     private javax.swing.JPanel pnlConvertCase;
     private javax.swing.JPanel pnlCount;
@@ -2298,6 +2313,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdoCount50;
     private javax.swing.JRadioButton rdoCountNum;
     private javax.swing.ButtonGroup rdoEncodeDecodeGrp;
+    private javax.swing.JRadioButton rdoGzip;
     private javax.swing.JRadioButton rdoHtml;
     private javax.swing.JRadioButton rdoHtmlByteHex;
     private javax.swing.JRadioButton rdoHtmlDec;
@@ -2445,6 +2461,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
         this.setOutputByte(new byte[0]);
         this.setOutputFormat("");
         this.tabbetOutput.remove(this.pnlOutputFormat);
+        this.tabbetOutput.setSelectedIndex(this.tabbetOutput.indexOfTab("Raw"));
+        this.tabbetInput.setSelectedIndex(this.tabbetInput.indexOfTab("Raw"));
     }
 
     private String getInputText() {
@@ -2757,13 +2775,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
             }
             return false;
         }
-                
+
         @Override
         public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
             JTextComponent c = (JTextComponent) comp;
             if (!(c.isEditable() && c.isEnabled())) {
                 return false;
-            }            
+            }
             return (getFlavor(transferFlavors) != null);
         }
 
@@ -2780,37 +2798,35 @@ public class JTransCoderTab extends javax.swing.JPanel {
                             rawData = Util.readAllBytes(new FileInputStream(file));
                             break;
                         }
-                        setInputText(Util.getRawStr(rawData));                
+                        setInputText(Util.getRawStr(rawData));
                     }
                 } catch (UnsupportedFlavorException ex) {
                     Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
                     Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-                }            
-            }
-            else {
+                }
+            } else {
                 return support.getComponent() instanceof JComponent
-                    ? importData((JComponent)support.getComponent(), support.getTransferable())
-                    : false;            
+                        ? importData((JComponent) support.getComponent(), support.getTransferable())
+                        : false;
             }
             return false;
         }
-        
+
         @Override
         public boolean canImport(TransferHandler.TransferSupport support) {
             if (support.isDrop()) {
                 if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     return true;
                 }
-            }
-            else {
+            } else {
                 return support.getComponent() instanceof JComponent
-                    ? canImport((JComponent)support.getComponent(), support.getDataFlavors())
-                    : false;
+                        ? canImport((JComponent) support.getComponent(), support.getDataFlavors())
+                        : false;
             }
             return false;
         }
-        
+
         @Override
         public int getSourceActions(JComponent c) {
             return NONE;

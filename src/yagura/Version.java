@@ -1,5 +1,7 @@
 package yagura;
 
+import burp.BurpExtender;
+import static burp.BurpExtender.getExtensionLogDir;
 import extend.util.CustomVersion;
 
 /*
@@ -34,14 +36,14 @@ public final class Version extends CustomVersion {
     }
     
     private final static String VERSION_INFO_FMT = 
-            "Product Version:YaguraExtender %s\n" + 
-//            "Config Path:%s\n" +
-            "User Dir:%s\n";    
+            "Product Version: YaguraExtender %s\n" + 
+            "Log Dir: %s\n" +
+            "User Dir: %s\n";    
 
     public String getVersionInfo() {
         return String.format(VERSION_INFO_FMT, 
                 Version.getInstance().getVersion(), 
-//                Config.getUserPropertyFile().toString(),
+                BurpExtender.getExtensionLogDir().getAbsoluteFile(),
                 Config.getUserDir());    
     }
     

@@ -28,12 +28,18 @@ import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,6 +47,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -68,8 +76,6 @@ public class BurpExtender extends BurpExtenderImpl
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        //  JOptionPane.showMessageDialog(null, "This starting method is not supported.", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
-        //  burp.StartBurp.main(args);
     }
 
     /**
@@ -78,22 +84,18 @@ public class BurpExtender extends BurpExtenderImpl
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
     static {
-        InputStream inStream = null;
-        if (inStream == null) {
-            inStream = BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES);
-        }
-        if (inStream != null) {
-            try {
-                LogManager.getLogManager().readConfiguration(inStream);
-            } catch (IOException e) {
-                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, e);
-            } finally {
-                try {
-                    inStream.close();
-                } catch (IOException e) {
-                    Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, e);
-                }
-            }
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        try {
+            Properties prop = new Properties();
+            prop.load(BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES));
+            String pattern = prop.getProperty(FileHandler.class.getName() + ".pattern");
+            File logDir = getExtensionLogDir();
+            logDir.mkdirs();
+            prop.setProperty(FileHandler.class.getName() + ".pattern", new File(logDir, pattern).getAbsolutePath());
+            prop.store(bout, "");
+            LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(bout.toByteArray()));
+        } catch (IOException ex) {
+            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -101,6 +103,10 @@ public class BurpExtender extends BurpExtenderImpl
         return BurpExtenderImpl.<BurpExtender>getInstance();
     }
   
+    public static File getExtensionLogDir() {
+        return new File(Config.getUserHome(), Config.getExtenderDir());
+    }
+    
     private final TabbetOption tabbetOption = new TabbetOption();
     
     private final HtmlCommetViewTab commentViewTab = new HtmlCommetViewTab();
