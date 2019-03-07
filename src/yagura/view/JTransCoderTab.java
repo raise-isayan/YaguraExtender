@@ -173,11 +173,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoByteHex = new javax.swing.JRadioButton();
         rdoByteOct = new javax.swing.JRadioButton();
         rdoUnicodeHex = new javax.swing.JRadioButton();
-        rdoUTF7 = new javax.swing.JRadioButton();
         pnlCompress = new javax.swing.JPanel();
         rdoGzip = new javax.swing.JRadioButton();
         rdoZLIB = new javax.swing.JRadioButton();
         pnlILLUTF8 = new javax.swing.JPanel();
+        rdoUTF7 = new javax.swing.JRadioButton();
         rdoILLUTF8 = new javax.swing.JRadioButton();
         cmbIILUTF8 = new javax.swing.JComboBox();
         pnlLang = new javax.swing.JPanel();
@@ -329,7 +329,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlTransButton.setLayout(new javax.swing.BoxLayout(pnlTransButton, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(13, 0));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(12, 0));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -485,10 +485,6 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlEncodeDecode.add(pnlJSHexEnc);
 
-        rdoEncodeDecodeGrp.add(rdoUTF7);
-        rdoUTF7.setText("UTF-7");
-        pnlEncodeDecode.add(rdoUTF7);
-
         pnlCompress.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoGzip);
@@ -501,7 +497,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlEncodeDecode.add(pnlCompress);
 
-        pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 2));
+        pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 3));
+
+        rdoEncodeDecodeGrp.add(rdoUTF7);
+        rdoUTF7.setText("UTF-7");
+        pnlILLUTF8.add(rdoUTF7);
 
         rdoEncodeDecodeGrp.add(rdoILLUTF8);
         rdoILLUTF8.setText("UTF-8(URL)");
@@ -819,22 +819,22 @@ public class JTransCoderTab extends javax.swing.JPanel {
             .addGroup(pnlEncodingLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkGuess)
-                    .addComponent(chkRawMode))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cmbEncoding, 0, 113, Short.MAX_VALUE)
-                .addGap(7, 7, 7))
+                    .addGroup(pnlEncodingLayout.createSequentialGroup()
+                        .addComponent(chkRawMode)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(chkGuess))
+                    .addComponent(cmbEncoding, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         pnlEncodingLayout.setVerticalGroup(
             pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEncodingLayout.createSequentialGroup()
-                .addComponent(chkRawMode)
+                .addGroup(pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkRawMode)
+                    .addComponent(chkGuess))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(chkGuess))
-            .addGroup(pnlEncodingLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(cmbEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pnlInputOutput.add(pnlEncoding, java.awt.BorderLayout.CENTER);
@@ -866,11 +866,11 @@ public class JTransCoderTab extends javax.swing.JPanel {
             pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOutputToInputLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOutputToInput, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOutputCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addGroup(pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnOutputToInput, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(btnClear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnOutputCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlOutputToInputLayout.setVerticalGroup(
             pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1687,6 +1687,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
             encodePattern = TransUtil.EncodePattern.BYTE_HTML;
         } else if (this.rdoHtmlHex.isSelected()) {
             encodePattern = TransUtil.EncodePattern.HTML;
+        } else if (this.rdoGzip.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.GZIP;
         } else if (this.rdoZLIB.isSelected()) {
             encodePattern = TransUtil.EncodePattern.ZLIB;
         } else if (this.rdoUTF7.isSelected()) {

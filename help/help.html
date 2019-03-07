@@ -1335,6 +1335,10 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>Outputの内容をInputに送ります。</p>
 </dd>
+<dt class="hdlist1">[Output Copy]ボタン</dt>
+<dd>
+<p>Outputの内容をクリップボードに送ります。</p>
+</dd>
 <dt class="hdlist1">[Smart Decode]ボタン</dt>
 <dd>
 <p>文字列の形式を自動判定しデコードします。</p>
@@ -1397,9 +1401,13 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>16進数形式の実体参照形式のエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">\xhh;</dt>
+<dt class="hdlist1">\xhh;(unicode)</dt>
 <dd>
-<p>16進数形式によるエンコード、デコードを行います。</p>
+<p>unicodeコード単位で16進数形式によるエンコード、デコードを行います。</p>
+</dd>
+<dt class="hdlist1">\xhh;(byte)</dt>
+<dd>
+<p>byteコード単位で16進数形式によるエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">\ooo;</dt>
 <dd>
@@ -1409,9 +1417,13 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>Unicode形式によるエンコード、デコードを行います。</p>
 </dd>
+<dt class="hdlist1">Gzip</dt>
+<dd>
+<p>Gzipによる圧縮、解凍を行います。</p>
+</dd>
 <dt class="hdlist1">ZLIB</dt>
 <dd>
-<p>ZLIBによるdeflate、inflateを行います。</p>
+<p>ZLIBによる圧縮、解凍を行います。</p>
 </dd>
 <dt class="hdlist1">UTF-7</dt>
 <dd>
@@ -1718,7 +1730,7 @@ Content-TypeがMulti part かつファイルアップロードの項目がある
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-03-03 20:21:34 JST
+Last updated 2019-03-07 18:46:09 JST
 </div>
 </div>
 </body>
