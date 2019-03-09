@@ -35,19 +35,30 @@ public class JsonUtil {
         StringWriter sw = new StringWriter();
         try {
             javax.json.spi.JsonProvider jsonProvider = javax.json.spi.JsonProvider.provider();        
-            javax.json.JsonReader jsonReader = jsonProvider.createReader(new StringReader(plainJson));
-            javax.json.JsonStructure json = jsonReader.read();
-            jsonReader.close();
-            Map<String, Boolean> config = new HashMap<String, Boolean>();
-            if (pretty) config.put(javax.json.stream.JsonGenerator.PRETTY_PRINTING, pretty);        
-            javax.json.JsonWriter jsonWriter = jsonProvider.createWriterFactory(config).createWriter(sw);
-            jsonWriter.write(json);
-            jsonWriter.close();        
+            try (javax.json.JsonReader jsonReader = jsonProvider.createReader(new StringReader(plainJson))) {
+                javax.json.JsonStructure json = jsonReader.read();        
+                return prettyJSON(json, pretty);
+            }
         }
         catch (javax.json.stream.JsonParsingException ex) {
             throw new IOException(ex);
         }
-        return sw.getBuffer().toString().trim();
+    }
+
+    public static String prettyJSON(JsonStructure json, boolean pretty) throws IOException {
+        StringWriter sw = new StringWriter();
+        try {
+            javax.json.spi.JsonProvider jsonProvider = javax.json.spi.JsonProvider.provider();        
+            final Map<String, Boolean> config = new HashMap<String, Boolean>();
+            if (pretty) config.put(javax.json.stream.JsonGenerator.PRETTY_PRINTING, pretty);        
+            try (javax.json.JsonWriter jsonWriter = jsonProvider.createWriterFactory(config).createWriter(sw)) {
+                jsonWriter.write(json);            
+            }
+        }
+        catch (javax.json.stream.JsonParsingException ex) {
+            throw new IOException(ex);
+        }
+        return sw.getBuffer().toString().trim();        
     }
     
 }

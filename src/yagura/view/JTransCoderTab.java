@@ -70,9 +70,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private void customizeComponents() {
 
-        this.pnlRegex.setLayout(new VerticalFlowLayout());
-//        this.pnlHashTrans.setLayout(new VerticalFlowLayout());
-//        this.pnlRadixTrans.setLayout(new VerticalFlowLayout());
+        this.pnlTransButton.setLayout(new VerticalFlowLayout());
 
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
         this.hexOutputViewTab.setEnabled(false);
@@ -185,6 +183,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoSQLLang = new javax.swing.JRadioButton();
         pnlRegex = new javax.swing.JPanel();
         btnSmartMatch = new javax.swing.JButton();
+        chkWithByte = new javax.swing.JCheckBox();
         pnlHashTrans = new javax.swing.JPanel();
         btnHashMd2 = new javax.swing.JButton();
         btnHashMd5 = new javax.swing.JButton();
@@ -533,7 +532,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlTransButton.add(pnlEncodeDecode);
 
         pnlRegex.setBorder(javax.swing.BorderFactory.createTitledBorder("Regex"));
-        pnlRegex.setLayout(new java.awt.GridLayout(1, 0));
+        pnlRegex.setLayout(new java.awt.BorderLayout());
 
         btnSmartMatch.setText("Smart Match");
         btnSmartMatch.addActionListener(new java.awt.event.ActionListener() {
@@ -541,7 +540,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 btnSmartMatchActionPerformed(evt);
             }
         });
-        pnlRegex.add(btnSmartMatch);
+        pnlRegex.add(btnSmartMatch, java.awt.BorderLayout.CENTER);
+
+        chkWithByte.setText("with Byte");
+        pnlRegex.add(chkWithByte, java.awt.BorderLayout.EAST);
 
         pnlTransButton.add(pnlRegex);
 
@@ -1943,7 +1945,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void chkGuessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkGuessStateChanged
-        // TODO add your handling code here:
+        this.chkRawMode.setEnabled(!this.chkGuess.isSelected());
+        this.cmbEncoding.setEnabled(!this.chkGuess.isSelected());
     }//GEN-LAST:event_chkGuessStateChanged
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
@@ -2141,7 +2144,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
     private void btnSmartMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartMatchActionPerformed
         try {
-            String inputText = TransUtil.toSmartMatch(getInputText(), this.getSelectEncode());
+            String enc = (this.chkWithByte.isSelected()) ? this.getSelectEncode() : null;                    
+            String inputText = TransUtil.toSmartMatch(getInputText(), enc);
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             setOutputText(Util.getStackTraceMessage(e1));
@@ -2238,6 +2242,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkGuess;
     private javax.swing.JCheckBox chkRawMode;
     private javax.swing.JCheckBox chkViewLineWrap;
+    private javax.swing.JCheckBox chkWithByte;
     private javax.swing.JComboBox<String> cmbDateUnit;
     private javax.swing.JComboBox<String> cmbEncoding;
     private javax.swing.JComboBox<String> cmbHistory;

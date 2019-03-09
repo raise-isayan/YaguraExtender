@@ -136,7 +136,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             } else {
                 this.txtJSON.setText("");
             }
-//            this.quickSearchTab.clearView();
             this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
             Logger.getLogger(JSONViewTab.class.getName()).log(Level.SEVERE, null, ex);

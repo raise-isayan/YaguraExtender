@@ -68,6 +68,7 @@ public class UniversalViewTab extends javax.swing.JPanel {
         chkJSON = new javax.swing.JCheckBox();
         chkHTMLComment = new javax.swing.JCheckBox();
         chkGeneratePoC = new javax.swing.JCheckBox();
+        chkJWT = new javax.swing.JCheckBox();
 
         setName("Encoding"); // NOI18N
         setPreferredSize(new java.awt.Dimension(600, 450));
@@ -159,7 +160,7 @@ public class UniversalViewTab extends javax.swing.JPanel {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEncRightArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEncLerftArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
+                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 64, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
@@ -265,6 +266,14 @@ public class UniversalViewTab extends javax.swing.JPanel {
             }
         });
 
+        chkJWT.setSelected(true);
+        chkJWT.setText("JWT");
+        chkJWT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkJWTActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabMessageViewLayout = new javax.swing.GroupLayout(tabMessageView);
         tabMessageView.setLayout(tabMessageViewLayout);
         tabMessageViewLayout.setHorizontalGroup(
@@ -280,7 +289,8 @@ public class UniversalViewTab extends javax.swing.JPanel {
                         .addGap(34, 34, 34)
                         .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkUniversalParams)
-                            .addComponent(chkUniversalRaw))))
+                            .addComponent(chkUniversalRaw)))
+                    .addComponent(chkJWT))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         tabMessageViewLayout.setVerticalGroup(
@@ -295,7 +305,9 @@ public class UniversalViewTab extends javax.swing.JPanel {
                     .addComponent(chkUniversalParams))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkJSON)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkJWT)
+                .addGap(0, 304, Short.MAX_VALUE))
         );
 
         add(tabMessageView);
@@ -405,6 +417,10 @@ public class UniversalViewTab extends javax.swing.JPanel {
         this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkGeneratePoCActionPerformed
 
+    private void chkJWTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJWTActionPerformed
+        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+    }//GEN-LAST:event_chkJWTActionPerformed
+
     private void renewPopup() {    
         String encodeList[] = {"PlatformDefault", "AutoRecognise", "RawBytes"};
         this.popEncodeMenu.removeAll();
@@ -442,6 +458,7 @@ public class UniversalViewTab extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkGeneratePoC;
     private javax.swing.JCheckBox chkHTMLComment;
     private javax.swing.JCheckBox chkJSON;
+    private javax.swing.JCheckBox chkJWT;
     private javax.swing.JCheckBox chkUniversalParams;
     private javax.swing.JCheckBox chkUniversalRaw;
     private javax.swing.JComboBox<String> cmbDefaultLangEncoding;
@@ -518,6 +535,7 @@ public class UniversalViewTab extends javax.swing.JPanel {
         this.chkGeneratePoC.setSelected(view.contains(UniversalViewProperty.UniversalView.GENERATE_POC));
         this.chkHTMLComment.setSelected(view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT));
         this.chkJSON.setSelected(view.contains(UniversalViewProperty.UniversalView.JSON));
+        this.chkJWT.setSelected(view.contains(UniversalViewProperty.UniversalView.JWT));
         this.chkUniversalRaw.setSelected(view.contains(UniversalViewProperty.UniversalView.JRAW));
         this.chkUniversalParams.setSelected(view.contains(UniversalViewProperty.UniversalView.JPARAM));
     }
@@ -527,6 +545,7 @@ public class UniversalViewTab extends javax.swing.JPanel {
         if (this.chkGeneratePoC.isSelected()) view.add(UniversalViewProperty.UniversalView.GENERATE_POC);
         if (this.chkHTMLComment.isSelected()) view.add(UniversalViewProperty.UniversalView.HTML_COMMENT);
         if (this.chkJSON.isSelected()) view.add(UniversalViewProperty.UniversalView.JSON);
+        if (this.chkJWT.isSelected()) view.add(UniversalViewProperty.UniversalView.JWT);
         if (this.chkUniversalRaw.isSelected()) view.add(UniversalViewProperty.UniversalView.JRAW);
         if (this.chkUniversalParams.isSelected()) view.add(UniversalViewProperty.UniversalView.JPARAM);
         return view;

@@ -58,6 +58,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import yagura.model.UniversalViewProperty;
+import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
 
@@ -108,6 +109,8 @@ public class BurpExtender extends BurpExtenderImpl
     }
     
     private final TabbetOption tabbetOption = new TabbetOption();
+
+    private final JWTViewTab jwtViewTab = new JWTViewTab();
     
     private final HtmlCommetViewTab commentViewTab = new HtmlCommetViewTab();
     private final GeneratePoCTab generatePoCTab = new GeneratePoCTab();
@@ -188,6 +191,7 @@ public class BurpExtender extends BurpExtenderImpl
             cb.registerContextMenuFactory(this.getSendToMenu());
             this.tabbetOption.setProperty(this.option);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
+
             this.renewView();
             
         } else {
@@ -204,6 +208,7 @@ public class BurpExtender extends BurpExtenderImpl
         cb.removeMessageEditorTabFactory(this.commentViewTab);
         cb.removeMessageEditorTabFactory(this.requestJSONTab);
         cb.removeMessageEditorTabFactory(this.responseJSONTab);
+        cb.removeMessageEditorTabFactory(this.jwtViewTab);            
         
         EnumSet<UniversalViewProperty.UniversalView> uview = this.option.getEncodingProperty().getMessageView();
         if (uview.contains(UniversalViewProperty.UniversalView.JRAW)) {
@@ -222,6 +227,9 @@ public class BurpExtender extends BurpExtenderImpl
         if (uview.contains(UniversalViewProperty.UniversalView.JSON)) {
             cb.registerMessageEditorTabFactory(this.requestJSONTab);
             cb.registerMessageEditorTabFactory(this.responseJSONTab);                
+        }                                        
+        if (uview.contains(UniversalViewProperty.UniversalView.JWT)) {
+            cb.registerMessageEditorTabFactory(this.jwtViewTab);            
         }                                        
     }
     

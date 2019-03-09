@@ -1267,8 +1267,8 @@ public class TransUtil {
                     buff.append(String.format("((\\\\x|%%)%02x)", 0xff & decode[k])); // byte hex
                 }
             } else {
-                buff.append('|');
-                if (i + 1 == value.offsetByCodePoints(i, 1)) {
+                if (ch <= 0xff) {
+                    buff.append('|');
                     buff.append(String.format("((\\\\x|%%)%02x)", 0xff & ch)); // byte hex
                 }
             }
