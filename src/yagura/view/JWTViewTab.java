@@ -77,11 +77,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popBurpMenu = new javax.swing.JPopupMenu();
-        grpGene = new javax.swing.ButtonGroup();
-        popQuick = new javax.swing.JPopupMenu();
-        mnuRegex = new javax.swing.JCheckBoxMenuItem();
-        mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
         cmbParam = new javax.swing.JComboBox<>();
         pnlJWT = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
@@ -96,13 +91,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         lblSignature = new javax.swing.JLabel();
         scrollSignatureJSON = new javax.swing.JScrollPane();
         txtSignatureJSON = new javax.swing.JEditorPane();
-
-        mnuRegex.setSelected(true);
-        mnuRegex.setText("regex");
-        popQuick.add(mnuRegex);
-
-        mnuIgnoreCase.setText("case sensitive");
-        popQuick.add(mnuIgnoreCase);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -168,17 +156,12 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Signature;
     private javax.swing.JComboBox<String> cmbParam;
-    private javax.swing.ButtonGroup grpGene;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblPayload;
     private javax.swing.JLabel lblSignature;
-    private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
-    private javax.swing.JCheckBoxMenuItem mnuRegex;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlJWT;
     private javax.swing.JPanel pnlPayload;
-    private javax.swing.JPopupMenu popBurpMenu;
-    private javax.swing.JPopupMenu popQuick;
     private javax.swing.JScrollPane scrollHeaderJSON;
     private javax.swing.JScrollPane scrollPayloadJSON;
     private javax.swing.JScrollPane scrollSignatureJSON;
@@ -187,28 +170,10 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private javax.swing.JEditorPane txtSignatureJSON;
     // End of variables declaration//GEN-END:variables
         
-    public void setMessageView(String encoding) {
-        Logger.getLogger(JWTViewTab.class.getName()).log(Level.INFO, "encoding:" + encoding);
-        try {
-            if (this.message == null) {
-                return;
-            }
-            BurpExtender burp = BurpExtender.getInstance();
-            if (this.message != null) {
-                // Raw
-                this.txtHeaderJSON.setText(FormatUtil.prettyJSON(Util.decodeMessage(this.message.getBodyBytes(), encoding)));
-                this.txtHeaderJSON.setCaretPosition(0);
-                // View                
-            } else {
-                this.txtHeaderJSON.setText("");
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(JWTViewTab.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public void setMessageFont(Font font) {
         this.txtHeaderJSON.setFont(font);
+        this.txtPayloadJSON.setFont(font);
+        this.txtSignatureJSON.setFont(font);
     }
 
     public boolean isExtendVisible() {
@@ -253,12 +218,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         return false;
     }
 
-    private static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
-    private static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s]+?);");
+    private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
+    private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s]+);?");
  
     private final HashMap<String, JWTObject> jwtMap = new HashMap();
      
     public void setJWT(HttpMessage message) {
+        this.jwtMap.clear();
         this.cmbParam.removeAllItems();
         String headers[] = message.getHeaders();
         for (String h : headers) {
@@ -267,9 +233,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                     Matcher m = COOKIE.matcher(h);
                     while (m.find()) {
                         try {
-                            JWTObject jwto = JWTObject.parseJWTObject(m.group(2), true);
-                            jwtMap.put(h, jwto);                 
-                            this.cmbParam.addItem(h);
+                            String cookie = m.group(0);                            
+                            String value = m.group(2);                            
+                            if (JWTObject.isJWTFormat(value)) {
+                                JWTObject jwto = JWTObject.parseJWTObject(value, true);
+                                jwtMap.put(cookie, jwto);                 
+                                this.cmbParam.addItem(cookie);
+                            }
                         }
                         catch (Exception ex) {
                         }

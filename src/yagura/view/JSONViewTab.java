@@ -87,8 +87,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popBurpMenu = new javax.swing.JPopupMenu();
-        grpGene = new javax.swing.ButtonGroup();
         popQuick = new javax.swing.JPopupMenu();
         mnuRegex = new javax.swing.JCheckBoxMenuItem();
         mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
@@ -112,10 +110,8 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup grpGene;
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
-    private javax.swing.JPopupMenu popBurpMenu;
     private javax.swing.JPopupMenu popQuick;
     private javax.swing.JScrollPane scrollJSON;
     private javax.swing.JEditorPane txtJSON;

@@ -28,18 +28,14 @@ import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -168,7 +164,7 @@ public class BurpExtender extends BurpExtenderImpl
             try {
                 String configXML = getCallbacks().loadExtensionSetting("configXML");
                 if (configXML != null) {
-                    Config.loadFromXml(ConvertUtil.decompressZlibBase64(configXML), this.option);
+                    Config.loadFromXml(ConvertUtil.decompressZlibBase64(configXML, StandardCharsets.UTF_8), this.option);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
@@ -767,7 +763,7 @@ public class BurpExtender extends BurpExtenderImpl
 
         try {
             String configXML = Config.saveToXML(this.option);
-            getCallbacks().saveExtensionSetting("configXML", ConvertUtil.compressZlibBase64(configXML));
+            getCallbacks().saveExtensionSetting("configXML", ConvertUtil.compressZlibBase64(configXML, StandardCharsets.UTF_8));
 
         } catch (IOException ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);

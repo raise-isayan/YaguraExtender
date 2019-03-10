@@ -14,7 +14,7 @@ Burp Suiteは主にアジア圏のエンコーディング周りが弱いため�
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。
-* BurpExtlib v1.7.38.2
+* BurpExtlib v1.7.40
 
 ## 注意事項
 このツールは、私個人が勝手に開発したもので、PortSwigger社は一切関係ありません。本ツールを使用したことによる不具合等についてPortSwiggerに問い合わせないようお願いします。

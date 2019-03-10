@@ -12,6 +12,7 @@ import extend.util.IniProp;
 import extend.util.Util;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
@@ -146,7 +147,7 @@ public final class Config {
      */
     public static void loadFromXml(String content, IOptionProperty option) throws IOException {
         IniProp prop = new IniProp();
-        prop.loadFromXML(content);
+        prop.loadFromXML(content, StandardCharsets.UTF_8);
         loadFromXml(prop, option);
     }
 
@@ -370,13 +371,13 @@ public final class Config {
     public static void saveToXML(File fo, IOptionProperty option) throws IOException {
         IniProp prop = new IniProp();
         saveToXML(prop, option);
-        prop.storeToXML(fo, "Temporary Properties", "UTF-8");
+        prop.storeToXML(fo, "Temporary Properties", StandardCharsets.UTF_8.name());
     }
 
     public static String saveToXML(IOptionProperty option) throws IOException {
         IniProp prop = new IniProp();
         saveToXML(prop, option);
-        return prop.storeToXML("Temporary Properties", "UTF-8");
+        return prop.storeToXML("Temporary Properties", StandardCharsets.UTF_8.name());
     }
 
     protected static void saveToXML(IniProp prop, IOptionProperty option) throws IOException {

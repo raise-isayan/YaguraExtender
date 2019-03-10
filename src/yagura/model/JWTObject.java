@@ -31,6 +31,15 @@ public static boolean containsJWTFormat(String value) {
     return false;
 }
 
+public static String findJWTValue(String value) {
+    Matcher m = PTN_JWT.matcher(value);
+    if (m.find()) {
+        return m.group(0);    
+    }
+    return null;
+}
+
+
 public static JWTObject parseJWTObject(String value, boolean matches) {
     JWTObject jwt = new JWTObject();
     Matcher m = PTN_JWT.matcher(value);
