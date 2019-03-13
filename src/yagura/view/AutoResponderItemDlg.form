@@ -55,7 +55,7 @@
                       <Component id="btnCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnOK" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -115,7 +115,7 @@
                           <Component id="chkBodyOnly" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -143,7 +143,7 @@
                       <Component id="cmbContentType" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblReplace1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="14" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

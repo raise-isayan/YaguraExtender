@@ -239,6 +239,7 @@
                 <Property name="text" type="java.lang.String" value="Exlude Filter Extension"/>
               </Properties>
               <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkExludeFilterStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkExludeFilterActionPerformed"/>
               </Events>
             </Component>

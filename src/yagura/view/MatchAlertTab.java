@@ -9,6 +9,7 @@ import extend.model.base.CustomTableModel;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
 import extend.util.SwingUtil;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -18,6 +19,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -90,6 +92,11 @@ public class MatchAlertTab extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableAlert.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tableAlertKeyTyped(evt);
+            }
+        });
         scrollAlert.setViewportView(tableAlert);
         if (tableAlert.getColumnModel().getColumnCount() > 0) {
             tableAlert.getColumnModel().getColumn(0).setResizable(false);
@@ -148,7 +155,7 @@ public class MatchAlertTab extends javax.swing.JPanel {
                         .addComponent(btnAlertRemove)
                         .addGap(10, 10, 10)
                         .addComponent(btnAlertAdd)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabAutoAlert.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -259,6 +266,24 @@ public class MatchAlertTab extends javax.swing.JPanel {
     private void chkEnableAlertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkEnableAlertActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chkEnableAlertActionPerformed
+
+    private void tableAlertKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableAlertKeyTyped
+        if (evt.getKeyChar() == KeyEvent.VK_SPACE) {
+            int[] rowSelect = this.tableAlert.getSelectedRows();
+            for (int i = 0; i < rowSelect.length; i++) {
+                int rowIndex = this.tableAlert.convertRowIndexToModel(rowSelect[i]);
+                DefaultTableModel modelTable = (DefaultTableModel) this.tableAlert.getModel();                
+                Object[] editRows = new Object[this.tableAlert.getColumnCount()];
+                for (int k = 0; k < editRows.length; k++) {
+                    editRows[k] = modelTable.getValueAt(rowIndex, this.tableAlert.convertColumnIndexToModel(k));
+                }
+                MatchAlertItem item = MatchAlertItem.fromObjects(editRows);
+                item.setSelected(!item.isSelected());
+                editRows = MatchAlertItem.toObjects(item);
+                SwingUtil.updateItem(this.tableAlert, editRows, rowSelect[i]);
+            }            
+        }
+    }//GEN-LAST:event_tableAlertKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlertAdd;

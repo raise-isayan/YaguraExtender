@@ -132,6 +132,11 @@ public class LoggingTab extends javax.swing.JPanel {
         });
 
         chkExludeFilter.setText("Exlude Filter Extension");
+        chkExludeFilter.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkExludeFilterStateChanged(evt);
+            }
+        });
         chkExludeFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkExludeFilterActionPerformed(evt);
@@ -274,6 +279,10 @@ public class LoggingTab extends javax.swing.JPanel {
     private void chkToolLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkToolLogActionPerformed
        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkToolLogActionPerformed
+
+    private void chkExludeFilterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExludeFilterStateChanged
+        this.txtExludeFilterExtension.setEnabled(this.chkExludeFilter.isSelected());
+    }//GEN-LAST:event_chkExludeFilterStateChanged
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void customizeComponents() {

@@ -9,6 +9,7 @@ import extend.model.base.CustomTableModel;
 import yagura.model.SendToItem;
 import yagura.model.SendToProperty;
 import extend.util.SwingUtil;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -16,6 +17,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import yagura.model.MatchAlertItem;
 
 /**
  *
@@ -101,6 +104,11 @@ public class SendToTab extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tableSendTo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tableSendToKeyTyped(evt);
+            }
+        });
         scrollSendTo.setViewportView(tableSendTo);
         if (tableSendTo.getColumnModel().getColumnCount() > 0) {
             tableSendTo.getColumnModel().getColumn(2).setResizable(false);
@@ -140,8 +148,8 @@ public class SendToTab extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(scrollSendTo, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
-                        .addGap(32, 32, 32)
+                        .addComponent(scrollSendTo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSendToAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -156,7 +164,7 @@ public class SendToTab extends javax.swing.JPanel {
                         .addGap(30, 30, 30))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(chkSubmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(542, Short.MAX_VALUE))))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,7 +186,7 @@ public class SendToTab extends javax.swing.JPanel {
                         .addComponent(btnSendToDownArraw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSendToAdd)
-                        .addContainerGap(130, Short.MAX_VALUE))))
+                        .addContainerGap(98, Short.MAX_VALUE))))
         );
 
         tabSendTo.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -299,6 +307,24 @@ public class SendToTab extends javax.swing.JPanel {
     private void chkSubmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSubmenuActionPerformed
         this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
     }//GEN-LAST:event_chkSubmenuActionPerformed
+
+    private void tableSendToKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableSendToKeyTyped
+        if (evt.getKeyChar() == KeyEvent.VK_SPACE) {
+            int[] rowSelect = this.tableSendTo.getSelectedRows();
+            for (int i = 0; i < rowSelect.length; i++) {
+                int rowIndex = this.tableSendTo.convertRowIndexToModel(rowSelect[i]);
+                DefaultTableModel modelTable = (DefaultTableModel) this.tableSendTo.getModel();                
+                Object[] editRows = new Object[this.tableSendTo.getColumnCount()];
+                for (int k = 0; k < editRows.length; k++) {
+                    editRows[k] = modelTable.getValueAt(rowIndex, this.tableSendTo.convertColumnIndexToModel(k));
+                }
+                SendToItem item = SendToItem.fromObjects(editRows);
+                item.setSelected(!item.isSelected());
+                editRows = SendToItem.toObjects(item);
+                SwingUtil.updateItem(this.tableSendTo, editRows, rowSelect[i]);
+            }            
+        }
+    }//GEN-LAST:event_tableSendToKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendToAdd;

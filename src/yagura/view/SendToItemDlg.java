@@ -92,7 +92,7 @@ public class SendToItemDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
@@ -234,7 +234,7 @@ public class SendToItemDlg extends CustomDialog {
                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Base", tabBase);
@@ -253,7 +253,7 @@ public class SendToItemDlg extends CustomDialog {
             .addGroup(tabExtendLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmbExtend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Extend", tabExtend);

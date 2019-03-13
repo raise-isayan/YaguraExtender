@@ -8,6 +8,7 @@ import extend.model.base.CustomTableModel;
 import extend.util.SwingUtil;
 import extend.util.Util;
 import java.awt.TrayIcon;
+import java.awt.event.KeyEvent;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.BindException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
 import yagura.AutoResponderServer;
 
 /**
@@ -94,7 +96,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
                 java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, false, false, false, true, true
+                true, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -106,6 +108,11 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
             }
         });
         tableAutoResponder.getTableHeader().setReorderingAllowed(false);
+        tableAutoResponder.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tableAutoResponderKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableAutoResponder);
 
         spnListenPort.setModel(new javax.swing.SpinnerNumberModel(7777, 1024, 65535, 1));
@@ -277,6 +284,24 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
             stopThreadServer();
         }
     }//GEN-LAST:event_chkEnableRuleActionPerformed
+
+    private void tableAutoResponderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableAutoResponderKeyTyped
+        if (evt.getKeyChar() == KeyEvent.VK_SPACE) {
+            int[] rowSelect = this.tableAutoResponder.getSelectedRows();
+            for (int i = 0; i < rowSelect.length; i++) {
+                int rowIndex = this.tableAutoResponder.convertRowIndexToModel(rowSelect[i]);
+                DefaultTableModel modelTable = (DefaultTableModel) this.tableAutoResponder.getModel();                
+                Object[] editRows = new Object[this.tableAutoResponder.getColumnCount()];
+                for (int k = 0; k < editRows.length; k++) {
+                    editRows[k] = modelTable.getValueAt(rowIndex, this.tableAutoResponder.convertColumnIndexToModel(k));
+                }
+                AutoResponderItem item = AutoResponderItem.fromObjects(editRows);
+                item.setSelected(!item.isSelected());
+                editRows = AutoResponderItem.toObjects(item);
+                SwingUtil.updateItem(this.tableAutoResponder, editRows, rowSelect[i]);
+            }            
+        }
+    }//GEN-LAST:event_tableAutoResponderKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

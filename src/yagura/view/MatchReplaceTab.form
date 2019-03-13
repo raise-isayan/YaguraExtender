@@ -179,6 +179,9 @@
                       <StringArray count="0"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="listMatchReplaceKeyTyped"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

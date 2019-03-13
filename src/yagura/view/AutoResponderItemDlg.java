@@ -216,7 +216,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         String mime = TransUtil.toEmpty(this.cmbContentType.getEditor().getItem());
         if (item.getMatch().isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
-        } else if (item.isValidRegex()) {
+        } else if (!item.isValidRegex()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.regex"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);            
         } else if (mime.isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.mime.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
@@ -295,9 +295,9 @@ public class AutoResponderItemDlg extends CustomDialog {
     public AutoResponderItem getItem() {
         AutoResponderItem item = new AutoResponderItem();
         item.setSelected(true);
-        item.setMatch(this.txtRepMatch.getText());
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
+        item.setMatch(this.txtRepMatch.getText());
         item.setReplace(this.txtRepReplace.getText());
         item.setBodyOnly(this.chkBodyOnly.isSelected());
         item.setContentType(TransUtil.toEmpty(this.cmbContentType.getEditor().getItem()));

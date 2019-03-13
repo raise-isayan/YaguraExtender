@@ -6,10 +6,12 @@
 package yagura.view;
 
 import extend.model.base.CustomListModel;
+import extend.util.SwingUtil;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import extend.util.Util;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import javax.swing.table.DefaultTableModel;
+import yagura.model.AutoResponderItem;
 import yagura.model.MatchReplaceGroup;
 
 /**
@@ -111,6 +115,11 @@ public class MatchReplaceTab extends javax.swing.JPanel {
             }
         });
 
+        listMatchReplace.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                listMatchReplaceKeyTyped(evt);
+            }
+        });
         scrollMatchReplace.setViewportView(listMatchReplace);
 
         btnSelect.setText("Selected");
@@ -263,6 +272,12 @@ public class MatchReplaceTab extends javax.swing.JPanel {
         this.listMatchReplace.updateUI();
         firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());        
     }//GEN-LAST:event_btnSelectActionPerformed
+
+    private void listMatchReplaceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_listMatchReplaceKeyTyped
+        if (evt.getKeyChar() == KeyEvent.VK_SPACE) {
+            btnSelectActionPerformed(null);
+        }
+    }//GEN-LAST:event_listMatchReplaceKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRepDownArraw;
