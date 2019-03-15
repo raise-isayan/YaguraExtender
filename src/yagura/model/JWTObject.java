@@ -73,10 +73,22 @@ public static JWTObject parseJWTObject(String value, boolean matches) {
       return Base64.getDecoder().decode(value);
     }
     
-    private static String decodeB64(String value) {
-      return new String(decodeB64Byte(value), StandardCharsets.UTF_8);
+    private static String decodeB64(String src) {
+      return new String(decodeB64Byte(src), StandardCharsets.UTF_8);
     }
-       
+
+    private static String encodeB64Byte(byte [] src) {
+      byte[] encoded = Base64.getEncoder().withoutPadding().encode(src);
+      String value = new String(encoded, StandardCharsets.US_ASCII);
+      value = value.replace('+', '-');
+      value = value.replace('/', '_');
+      return value;
+    }
+    
+    private static String encodeB64(String src) {
+      return encodeB64Byte(src.getBytes(StandardCharsets.UTF_8));
+    }
+    
     /**
      * @return the header
      */

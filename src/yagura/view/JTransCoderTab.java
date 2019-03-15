@@ -181,6 +181,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlLang = new javax.swing.JPanel();
         rdoCLang = new javax.swing.JRadioButton();
         rdoSQLLang = new javax.swing.JRadioButton();
+        rdoRegex = new javax.swing.JRadioButton();
         pnlRegex = new javax.swing.JPanel();
         btnSmartMatch = new javax.swing.JButton();
         chkWithByte = new javax.swing.JCheckBox();
@@ -517,7 +518,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlEncodeDecode.add(pnlILLUTF8);
 
-        pnlLang.setLayout(new java.awt.GridLayout(1, 1));
+        pnlLang.setLayout(new java.awt.GridLayout(1, 3));
 
         rdoEncodeDecodeGrp.add(rdoCLang);
         rdoCLang.setText("C Lang");
@@ -526,6 +527,15 @@ public class JTransCoderTab extends javax.swing.JPanel {
         rdoEncodeDecodeGrp.add(rdoSQLLang);
         rdoSQLLang.setText("SQL");
         pnlLang.add(rdoSQLLang);
+
+        rdoEncodeDecodeGrp.add(rdoRegex);
+        rdoRegex.setText("Regex");
+        rdoRegex.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rdoRegexStateChanged(evt);
+            }
+        });
+        pnlLang.add(rdoRegex);
 
         pnlEncodeDecode.add(pnlLang);
 
@@ -1653,6 +1663,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 encode = TransUtil.encodeCLangQuote(encode);
             } else if (this.rdoSQLLang.isSelected()) {
                 encode = TransUtil.encodeSQLLangQuote(encode);
+            } else if (this.rdoRegex.isSelected()) {
+                encode = TransUtil.toRegexEscape(encode);
             }
             this.setOutput(encode);
         } catch (Exception ex) {
@@ -2185,6 +2197,10 @@ public class JTransCoderTab extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnAdler32ActionPerformed
 
+    private void rdoRegexStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoRegexStateChanged
+        this.btnDecode.setEnabled(!this.rdoRegex.isSelected());
+    }//GEN-LAST:event_rdoRegexStateChanged
+
     private final java.awt.event.ItemListener historyItemStateChanged = new java.awt.event.ItemListener() {
         @Override
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -2338,6 +2354,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     private javax.swing.JRadioButton rdoQuotedPrintable;
     private javax.swing.ButtonGroup rdoRandomCountGrp;
     private javax.swing.ButtonGroup rdoRandomLengthGrp;
+    private javax.swing.JRadioButton rdoRegex;
     private javax.swing.JRadioButton rdoSQLLang;
     private javax.swing.JRadioButton rdoStandard;
     private javax.swing.JRadioButton rdoUTF7;

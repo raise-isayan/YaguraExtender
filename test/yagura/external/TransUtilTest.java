@@ -685,6 +685,22 @@ public class TransUtilTest {
                 Pattern p = Pattern.compile(regex);
                 assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());                        
             }
+            {
+                String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+                String regex = TransUtil.toSmartMatch(expValue, "UTF-8");        
+                Pattern p = Pattern.compile(regex);
+                assertTrue(p.matcher(expValue).matches());                        
+            }
+            {
+                String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+                char[] ch = expValue.toCharArray();
+                for (char c : ch) {
+                    String regex = TransUtil.toSmartMatch(Character.toString(c), "UTF-8");        
+                    Pattern p = Pattern.compile(regex);
+                    assertTrue(p.matcher(Character.toString(c)).matches());                                        
+                }
+            }
+
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
             assertTrue(false);
@@ -948,16 +964,21 @@ public class TransUtilTest {
     }
             
     @Test
-    public void testByte() {
-        byte a = -1;
-        System.out.println("hex:" + (a & 0xff));
-        byte b = -2;
-        System.out.println("hex:" + (b & 0xff));        
-        String s = "abcdefg";
-        String sp[] = s.split("=",2);
-        for (int i = 0; i < sp.length; i++) {
-            System.out.println(i + ":" + sp[i]);
+    public void testToRegexEscape() {
+        String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+        char[] ch = expValue.toCharArray();
+        try {
+            for (char c : ch) {
+                String regex = TransUtil.toRegexEscape(c);
+                Pattern ptn = Pattern.compile(regex);
+                System.out.println(ptn.pattern());
+                assertTrue(ptn.matcher(Character.toString(c)).matches());                
+            }        
         }
-    }
+        catch (java.util.regex.PatternSyntaxException ex) {
+            fail("toRegexEscape");   
+        }
+    }   
+    
     
 }

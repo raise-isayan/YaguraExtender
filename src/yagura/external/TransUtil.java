@@ -173,7 +173,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG,
+        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
@@ -391,6 +391,9 @@ public class TransUtil {
                         break;
                     case SQL_LANG:
                         decode = TransUtil.decodeSQLangQuote(value);
+                        break;
+                    case REGEX:
+                        // nothing
                         break;
                     default:
                         break;
@@ -914,6 +917,50 @@ public class TransUtil {
         return buff.toString();
     }
 
+    public static String toRegexEscape(String input) {
+        StringBuilder buff = new StringBuilder();
+        int length = input.length();
+        for (int i = 0; i < length; i++) {
+            char c = input.charAt(i);
+            buff.append(toRegexEscape(c));
+        }
+        return buff.toString();
+    }
+    
+    /*  . \ + * ? [ ^ ] $ ( ) { } = ! < > | : - */
+    public static String toRegexEscape(char ch) {
+        StringBuilder buff = new StringBuilder();
+        switch (ch) {
+            case '\\':
+            case '.':
+            case '+':
+            case '*':
+            case '?':
+            case '[':
+            case '^':
+            case ']':
+            case '$':
+            case '(':
+            case ')':
+            case '{':
+            case '}':
+            case '=':
+            case '!':
+            case '<':
+            case '>':
+            case '|':
+            case ':':
+            case '-':
+                buff.append('\\');
+                buff.append(ch);
+                break;
+            default:
+                buff.append(ch);
+                break;
+        }
+        return buff.toString();
+    }
+        
     public static String toHtmlDecode(String input) {
         StringBuffer buff = new StringBuffer();
         Pattern p = Pattern.compile("(&(?:(#\\d+)|(#[xX][0-9a-fA-F]+)|(\\w+));)");
@@ -1234,22 +1281,26 @@ public class TransUtil {
                     buff.append(toHtmlEncode(ch));
                     break;
                 case '\\':
-                case '{':
-                case '}':
+                case '.':
+                case '+':
+                case '*':
+                case '?':
+                case '[':
+                case '^':
+                case ']':
+                case '$':
                 case '(':
                 case ')':
-                case '[':
-                case ']':
-                case '^':
-                case '$':
-                case '.':
-                case '*':
-                case '+':
-                case '?':
+                case '{':
+                case '}':
+                case '=':
+                case '!':
+//                case '<':
+//                case '>':
                 case '|':
+                case ':':
                 case '-':
-                    buff.append('\\');
-                    buff.append(ch);
+                    buff.append(toRegexEscape(ch));
                     break;
                 default:
                     buff.appendCodePoint(code);
