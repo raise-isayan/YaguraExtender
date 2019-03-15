@@ -1276,7 +1276,7 @@ public class TransUtil {
                 case '>':
                 case '&':
                 case '"':
-                    buff.append(ch);
+                    buff.append(toRegexEscape(ch));
                     buff.append('|');
                     buff.append(toHtmlEncode(ch));
                     break;

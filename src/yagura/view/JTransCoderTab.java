@@ -123,6 +123,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         // Drag and Drop
         this.txtInputRaw.setTransferHandler(new FileDropAndClipbordTransferHandler());
+
+        doStateDecodeChange();
+
     }
 
     /**
@@ -1736,9 +1739,13 @@ public class JTransCoderTab extends javax.swing.JPanel {
         }
     }
 
-    private void rdoILLUTF8StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoILLUTF8StateChanged
-        this.btnDecode.setEnabled(!this.rdoILLUTF8.isSelected());
+    private void doStateDecodeChange() {
+        this.btnDecode.setEnabled(!(this.rdoILLUTF8.isSelected() || this.rdoRegex.isSelected()));    
         this.cmbIILUTF8.setEnabled(this.rdoILLUTF8.isSelected());
+    }
+    
+    private void rdoILLUTF8StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoILLUTF8StateChanged
+        doStateDecodeChange();
     }//GEN-LAST:event_rdoILLUTF8StateChanged
 
     private void btnHashMd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd2ActionPerformed
@@ -2198,7 +2205,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAdler32ActionPerformed
 
     private void rdoRegexStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoRegexStateChanged
-        this.btnDecode.setEnabled(!this.rdoRegex.isSelected());
+        doStateDecodeChange();
     }//GEN-LAST:event_rdoRegexStateChanged
 
     private final java.awt.event.ItemListener historyItemStateChanged = new java.awt.event.ItemListener() {
