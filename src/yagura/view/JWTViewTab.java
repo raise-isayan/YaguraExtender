@@ -26,6 +26,7 @@ import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
 import yagura.model.JWTObject;
+import yagura.model.JWTToken;
 
 /**
  *
@@ -203,8 +204,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         if (content == null || content.length == 0) {
             return false;
         }
-        boolean mimeJsonType = false;
-        byte[] body = new byte[0];
         if (isMessageRequest) {
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<String> headers = reqInfo.getHeaders();
@@ -219,7 +218,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     }
 
     private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
-    private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s]+);?");
+    private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
  
     private final HashMap<String, JWTObject> jwtMap = new HashMap();
      
@@ -236,8 +235,8 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                             String cookie = m.group(0);                            
                             String value = m.group(2);                            
                             if (JWTObject.isJWTFormat(value)) {
-                                JWTObject jwto = JWTObject.parseJWTObject(value, true);
-                                jwtMap.put(cookie, jwto);                 
+                                JWTToken jwt = JWTObject.parseJWTToken(value, true);
+                                jwtMap.put(cookie, new JWTObject(jwt));                 
                                 this.cmbParam.addItem(cookie);
                             }
                         }
@@ -249,8 +248,8 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                     Matcher m = HEADER.matcher(h);
                     if (m.matches()) {
                         try {
-                            JWTObject jwto = JWTObject.parseJWTObject(m.group(2), false);
-                            jwtMap.put(h, jwto);                                
+                            JWTToken jwto = JWTToken.parseJWTToken(m.group(2), false);
+                            jwtMap.put(h, new JWTObject(jwto));                                
                             this.cmbParam.addItem(h);
                         }
                         catch (Exception ex) {

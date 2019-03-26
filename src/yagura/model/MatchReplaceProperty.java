@@ -81,7 +81,12 @@ public class MatchReplaceProperty {
      */
     public List<MatchReplaceItem> getMatchReplaceList() {
         MatchReplaceGroup group = this.replaceMap.get(this.selectedName);
-        return group.getReplaceList();
+        if (group != null) {
+            return group.getReplaceList();
+        }
+        else {
+            return null;
+        }
     }
 
     public boolean isSelectedMatchReplace() {

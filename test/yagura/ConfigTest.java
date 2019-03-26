@@ -187,7 +187,7 @@ public class ConfigTest {
                 System.out.println("loadFromXml");
                 File fi = new File(System.getProperty("java.io.tmpdir"), "configTest.xml");
                 Config.loadFromXml(fi, optionProperty);
-                assertEquals(4, optionProperty.getEncodingProperty().getEncodingList().size());
+                assertEquals(3, optionProperty.getEncodingProperty().getEncodingList().size());
                 assertEquals(2, optionProperty.getMatchAlertProperty().getMatchAlertItemList().size());
                 assertEquals(0, optionProperty.getMatchReplaceProperty().getReplaceNameList().size());
                 assertEquals("", optionProperty.getMatchReplaceProperty().getSelectedName());

@@ -353,6 +353,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
     public void setAutoResponderItemList(List<AutoResponderItem> list) {
         if (list == null) {
         } else {
+            this.modelAutoResponder.beginUpdate();
             this.modelAutoResponder.removeAll();
             Object editRows[] = new Object[0];
             for (int i = 0; i < list.size(); i++) {
@@ -360,6 +361,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
                 editRows = AutoResponderItem.toObjects(alertItem);
                 this.modelAutoResponder.addRow(editRows);
             }
+            this.modelAutoResponder.endUpdate();
         }
     }
     

@@ -393,7 +393,7 @@ public class TransUtil {
                         decode = TransUtil.decodeSQLangQuote(value);
                         break;
                     case REGEX:
-                        // nothing
+                        decode = TransUtil.toRegexDecode(value);
                         break;
                     default:
                         break;
@@ -917,7 +917,7 @@ public class TransUtil {
         return buff.toString();
     }
 
-    public static String toRegexEscape(String input) {
+    public static String toRegexEncode(String input) {
         StringBuilder buff = new StringBuilder();
         int length = input.length();
         for (int i = 0; i < length; i++) {
@@ -960,7 +960,11 @@ public class TransUtil {
         }
         return buff.toString();
     }
-        
+
+    public static String toRegexDecode(String input) {
+        return input.replaceAll("\\\\([\\\\\\.\\+\\*\\?\\[\\^\\]\\$\\(\\)\\{\\}\\=\\!\\<\\>\\|\\:\\-])", "$1");
+    }
+    
     public static String toHtmlDecode(String input) {
         StringBuffer buff = new StringBuffer();
         Pattern p = Pattern.compile("(&(?:(#\\d+)|(#[xX][0-9a-fA-F]+)|(\\w+));)");

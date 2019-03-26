@@ -342,7 +342,7 @@ public class SendToTab extends javax.swing.JPanel {
     public void setSendToItemList(List<SendToItem> list) {
         if (list == null) {
         } else {
-            //this.clearItem();
+            this.modelSendTo.beginUpdate();
             this.modelSendTo.removeAll();
             Object editRows[] = new Object[0];
             for (int i = 0; i < list.size(); i++) {
@@ -350,6 +350,7 @@ public class SendToTab extends javax.swing.JPanel {
                 editRows = SendToItem.toObjects(sendToItem);
                 this.modelSendTo.addRow(editRows);
             }
+            this.modelSendTo.endUpdate();
         }
     }
 

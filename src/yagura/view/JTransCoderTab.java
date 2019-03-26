@@ -1667,7 +1667,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
             } else if (this.rdoSQLLang.isSelected()) {
                 encode = TransUtil.encodeSQLLangQuote(encode);
             } else if (this.rdoRegex.isSelected()) {
-                encode = TransUtil.toRegexEscape(encode);
+                encode = TransUtil.toRegexEncode(encode);
             }
             this.setOutput(encode);
         } catch (Exception ex) {
@@ -1716,6 +1716,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
             encodePattern = TransUtil.EncodePattern.C_LANG;
         } else if (this.rdoSQLLang.isSelected()) {
             encodePattern = TransUtil.EncodePattern.SQL_LANG;
+        } else if (this.rdoRegex.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.REGEX;
         }
         this.toSmartDecode(this.getInputText(), encodePattern);
     }//GEN-LAST:event_btnDecodeActionPerformed
@@ -1740,7 +1742,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }
 
     private void doStateDecodeChange() {
-        this.btnDecode.setEnabled(!(this.rdoILLUTF8.isSelected() || this.rdoRegex.isSelected()));    
+        this.btnDecode.setEnabled(!(this.rdoILLUTF8.isSelected()));    
         this.cmbIILUTF8.setEnabled(this.rdoILLUTF8.isSelected());
     }
     

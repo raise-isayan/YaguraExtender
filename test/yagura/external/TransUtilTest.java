@@ -47,10 +47,10 @@ public class TransUtilTest {
     }
 
     @Test
-    public void testCharset() {        
+    public void testCharset() {
         System.out.println("char:" + StandardCharsets.ISO_8859_1);
     }
-        
+
     @Test
     public void testHexDump() {
         String output = ">あいうえお<";
@@ -59,11 +59,11 @@ public class TransUtilTest {
 //        TransUtil.hexDump();
     }
 
-
     @Test
     public void testNewLine() {
         System.out.println(TransUtil.newLine("\r\n", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 76));
     }
+
     /**
      * Test of getSmartDecode method, of class TransUtil.
      */
@@ -75,7 +75,7 @@ public class TransUtilTest {
 
         assertEquals(EncodePattern.URL_UNICODE, TransUtil.getSmartDecode("%u3042%u3044%u3046%u3048%u304a"));
         assertEquals(EncodePattern.URL_UNICODE, TransUtil.getSmartDecode("%U3042%U3044%U3046%U3048%U304A"));
-        
+
         assertEquals(EncodePattern.BYTE_HEX, TransUtil.getSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8"));
         assertEquals(EncodePattern.BYTE_HEX, TransUtil.getSmartDecode("\\x82\\xA0\\x82\\xA2\\x82\\xA4\\x82\\xA6\\x82\\xA8"));
 
@@ -87,14 +87,14 @@ public class TransUtilTest {
 
         assertEquals(EncodePattern.HTML, TransUtil.getSmartDecode("&#x21;&#x22;&#x23;&#x24;&#x25;&#x26;&#x27;&#x28;&#x29;&#x3d;&#x7e;&#x7c;&#x60;&#x7b;&#x7d;&#x2a;&#x2b;&#x3c;&#x3e;&#x3f;&#x5f;&#x5c;&#x61;&#x62;&#x63;&#x65;&#x64;&#x66;"));
         assertEquals(EncodePattern.HTML, TransUtil.getSmartDecode("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;&#X5F;&#X5C;&#X61;&#X62;&#X63;&#X65;&#X64;&#X66;"));
-    
-        assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
-        assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));        
 
-        assertEquals(null, TransUtil.getSmartDecode("<<<<<"));        
+        assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
+        assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));
+
+        assertEquals(null, TransUtil.getSmartDecode("<<<<<"));
 
     }
-    
+
     /**
      * Test of toSmartDecode method, of class TransUtil.
      */
@@ -104,60 +104,59 @@ public class TransUtilTest {
             System.out.println("toSmartDecode");
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("%21%22%23%24%25%26%27%28%29%3d%7e%7c%60%7b%7d*%2b%3c%3e%3f_%5cabcedf"));
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("%21%22%23%24%25%26%27%28%29%3D%7E%7C%60%7B%7D*%2B%3C%3E%3F_%5cabcedf"));
-            
+
 //            assertEquals("入口", TransUtil.toSmartDecode("%93%fc%8c%fb"));
 //            assertEquals("入口", TransUtil.toSmartDecode("%93%FC%8C%FB"));
-
             assertEquals("あいうえお", TransUtil.toSmartDecode("%82%a0%82%a2%82%a4%82%a6%82%a8"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("%82%A0%82%A2%82%A4%82%A6%82%A8"));
-            
+
             assertEquals("あいうえお", TransUtil.toSmartDecode("%a4%a2%a4%a4%a4%a6%a4%a8%a4%aa"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("%A4%A2%A4%A4%A4%A6%A4%A8%A4%AA"));
-            
+
             assertEquals("あいうえお", TransUtil.toSmartDecode("%e3%81%82%e3%81%84%e3%81%86%e3%81%88%e3%81%8a"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A"));
-            
+
             assertEquals("かきくけこ", TransUtil.toSmartDecode("gqmCq4Ktgq+CsQ=="));
             assertEquals("かきくけこ", TransUtil.toSmartDecode("pKukraSvpLGksw=="));
             assertEquals("かきくけこ", TransUtil.toSmartDecode("44GL44GN44GP44GR44GT"));
-            
+
             assertEquals("かきくけこ", TransUtil.toSmartDecode("gqmCq\r\n4Ktgq+CsQ=="));
-            
+
             System.out.println("getSmartDecode:" + TransUtil.getSmartDecode("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;&#95;&#92;&#97;&#98;&#99;&#101;&#100;&#102;"));
-            
+
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;&#95;&#92;&#97;&#98;&#99;&#101;&#100;&#102;"));
-            
+
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("&#x21;&#x22;&#x23;&#x24;&#x25;&#x26;&#x27;&#x28;&#x29;&#x3d;&#x7e;&#x7c;&#x60;&#x7b;&#x7d;&#x2a;&#x2b;&#x3c;&#x3e;&#x3f;&#x5f;&#x5c;&#x61;&#x62;&#x63;&#x65;&#x64;&#x66;"));
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;&#X5F;&#X5C;&#X61;&#X62;&#X63;&#X65;&#X64;&#X66;"));
-            
+
             StringBuffer charset = new StringBuffer("Shift_JIS");
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, charset));
             assertEquals("Shift_JIS", charset.toString());
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedfあいうえお!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("!\"#$%&'()=~|`{}*+<>?_\\abcedf\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8!\"#$%&'()=~|`{}*+<>?_\\abcedf", EncodePattern.BYTE_HEX, charset));
             assertEquals("Shift_JIS", charset.toString());
-            
+
             charset = new StringBuffer();
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, charset));
             assertEquals("Shift_JIS", charset.toString());
-            
+
             charset = new StringBuffer("8859_1");
-            byte b[] = new byte[] {(byte)0x82,(byte)0xa0,(byte)0x82,(byte)0xa2,(byte)0x82,(byte)0xa4,(byte)0x82,(byte)0xa6,(byte)0x82,(byte)0xa8};
+            byte b[] = new byte[]{(byte) 0x82, (byte) 0xa0, (byte) 0x82, (byte) 0xa2, (byte) 0x82, (byte) 0xa4, (byte) 0x82, (byte) 0xa6, (byte) 0x82, (byte) 0xa8};
             assertEquals(new String(b, "8859_1"), TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, charset));
             assertEquals("8859_1", charset.toString());
-                        
-            byte o[] = new byte[] {(byte)0202,(byte)0240,(byte)0202,(byte)0242,(byte)0202,(byte)0244,(byte)0202,(byte)0246,(byte)0202,(byte)0250,(byte)012};
+
+            byte o[] = new byte[]{(byte) 0202, (byte) 0240, (byte) 0202, (byte) 0242, (byte) 0202, (byte) 0244, (byte) 0202, (byte) 0246, (byte) 0202, (byte) 0250, (byte) 012};
             assertEquals(new String(o, "8859_1"), TransUtil.toSmartDecode("\\202\\240\\202\\242\\202\\244\\202\\246\\202\\250\\12", EncodePattern.BYTE_OCT, charset));
             assertEquals("8859_1", charset.toString());
-            
+
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));
-            
+
             assertEquals("あいうえお", TransUtil.toSmartDecode("%u3042%u3044%u3046%u3048%u304a"));
             assertEquals("あいうえお", TransUtil.toSmartDecode("%U3042%U3044%U3046%U3048%U304A"));
-       } catch (UnsupportedEncodingException ex) {
+        } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
+
     }
 
     /**
@@ -165,9 +164,9 @@ public class TransUtilTest {
      */
     @Test
     public void testToSmartDecode_unmatch() {
-        assertEquals("<<<<<<<<<<<", TransUtil.toSmartDecode("<<<<<<<<<<<"));                
+        assertEquals("<<<<<<<<<<<", TransUtil.toSmartDecode("<<<<<<<<<<<"));
     }
-       
+
     /**
      * Test of toMd5Sum method, of class TransUtil.
      */
@@ -217,7 +216,7 @@ public class TransUtilTest {
         assertEquals("ee26b0dd4af7e749aa1a8ee3c10ae9923f618980772e473f8819a5d4940e0db27ac185f8a0e1d5f84f88bc887fd67b143732c304cc5fa9ad8e6f57f50028a8ff", HashUtil.toSHA512Sum("test", false));
         assertEquals("cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e", HashUtil.toSHA512Sum("", false));
     }
-       
+
     /**
      * Test of UTF7Decode method, of class TransUtil.
      */
@@ -257,7 +256,7 @@ public class TransUtilTest {
         System.out.println("toHtmlDecode");
         assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toHtmlDecode("!&quot;#$%&amp;&#39;()=~|`{}*+&lt;&gt;?_\\abcedf"));
         assertEquals("'''", TransUtil.toHtmlDecode("&#39;&#x27;&#X27;"));
-        int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
         assertEquals(x, TransUtil.toHtmlDecode("&#106;&#107;&#102;&#131083;&#135741;&#103;&#104;&#105;&#135963;&#136302;&#137405;&#134047;&#136884;&#138804;&#143812;&#144836;&#97;&#98;&#122;&#48;&#49;&#57;"));
         assertEquals(x, TransUtil.toHtmlDecode("&#x6a;&#x6b;&#x66;&#x2000b;&#x2123d;&#x67;&#x68;&#x69;&#x2131b;&#x2146e;&#x218bd;&#x20b9f;&#x216b4;&#x21e34;&#x231c4;&#x235c4;&#x61;&#x62;&#x7a;&#x30;&#x31;&#x39;"));
@@ -265,13 +264,13 @@ public class TransUtilTest {
     }
 
     private final String entities_html = "&nbsp;&iexcl;&cent;&pound;&curren;&yen;&brvbar;&sect;&uml;&copy;&ordf;&laquo;&not;&shy;&reg;&macr;&deg;&plusmn;&sup2;&sup3;&acute;&micro;&para;&middot;&cedil;&sup1;&ordm;&raquo;&frac14;&frac12;&frac34;&iquest;&Agrave;&Aacute;&Acirc;&Atilde;&Auml;&Aring;&AElig;&Ccedil;&Egrave;&Eacute;&Ecirc;&Euml;&Igrave;&Iacute;&Icirc;&Iuml;&ETH;&Ntilde;&Ograve;&Oacute;&Ocirc;&Otilde;&Ouml;&times;&Oslash;&Ugrave;&Uacute;&Ucirc;&Uuml2;&Yacute;&THORN;&szlig;&agrave;&aacute;&acirc;&atilde;&auml;&aring;&aelig;&ccedil;&egrave;&eacute;&ecirc;&euml;&igrave;&iacute;&icirc;&iuml;&eth;&ntilde;&ograve;&oacute;&ocirc;&otilde;&ouml;&divide;&oslash;&ugrave;&uacute;&ucirc;&uuml;&yacute;&thorn;&yuml;";
-    
+
     @Test
     public void testToHtmlEntityDecode() {
-        char ch[] = new char[]{(char)160,(char)161,(char)162,(char)163,(char)164,(char)165,(char)166,(char)167,(char)168,(char)169,(char)170,(char)171,(char)172,(char)173,(char)174,(char)175,(char)176,(char)177,(char)178,(char)179,(char)180,(char)181,(char)182,(char)183,(char)184,(char)185,(char)186,(char)187,(char)188,(char)189,(char)190,(char)191,(char)192,(char)193,(char)194,(char)195,(char)196,(char)197,(char)198,(char)199,(char)200,(char)201,(char)202,(char)203,(char)204,(char)205,(char)206,(char)207,(char)208,(char)209,(char)210,(char)211,(char)212,(char)213,(char)214,(char)215,(char)216,(char)217,(char)218,(char)219,(char)220,(char)221,(char)222,(char)223,(char)224,(char)225,(char)226,(char)227,(char)228,(char)229,(char)230,(char)231,(char)232,(char)233,(char)234,(char)235,(char)236,(char)237,(char)238,(char)239,(char)240,(char)241,(char)242,(char)243,(char)244,(char)245,(char)246,(char)247,(char)248,(char)249,(char)250,(char)251,(char)252,(char)253,(char)254,(char)255};
+        char ch[] = new char[]{(char) 160, (char) 161, (char) 162, (char) 163, (char) 164, (char) 165, (char) 166, (char) 167, (char) 168, (char) 169, (char) 170, (char) 171, (char) 172, (char) 173, (char) 174, (char) 175, (char) 176, (char) 177, (char) 178, (char) 179, (char) 180, (char) 181, (char) 182, (char) 183, (char) 184, (char) 185, (char) 186, (char) 187, (char) 188, (char) 189, (char) 190, (char) 191, (char) 192, (char) 193, (char) 194, (char) 195, (char) 196, (char) 197, (char) 198, (char) 199, (char) 200, (char) 201, (char) 202, (char) 203, (char) 204, (char) 205, (char) 206, (char) 207, (char) 208, (char) 209, (char) 210, (char) 211, (char) 212, (char) 213, (char) 214, (char) 215, (char) 216, (char) 217, (char) 218, (char) 219, (char) 220, (char) 221, (char) 222, (char) 223, (char) 224, (char) 225, (char) 226, (char) 227, (char) 228, (char) 229, (char) 230, (char) 231, (char) 232, (char) 233, (char) 234, (char) 235, (char) 236, (char) 237, (char) 238, (char) 239, (char) 240, (char) 241, (char) 242, (char) 243, (char) 244, (char) 245, (char) 246, (char) 247, (char) 248, (char) 249, (char) 250, (char) 251, (char) 252, (char) 253, (char) 254, (char) 255};
         assertEquals(new String(ch), TransUtil.toHtmlDecode(entities_html));
     }
-    
+
     /**
      * Test of toHtmlDecEncode method, of class TransUtil.
      */
@@ -280,10 +279,10 @@ public class TransUtilTest {
         System.out.println("toHtmlDecEncode");
         assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;_&#92;&#13;&#10;abcdef", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcdef"));
         assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;&#95;&#92;&#13;&#10;&#97;&#98;&#99;&#101;&#100;&#101;&#102;", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedef", TransUtil.PTN_ENCODE_ALL));
-        int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
         assertEquals("jkf&#131083;&#135741;ghi&#135963;&#136302;&#137405;&#134047;&#136884;&#138804;&#143812;&#144836;abz019", TransUtil.toHtmlDecEncode(x));
-        assertEquals("&#106;&#107;&#102;&#131083;&#135741;&#103;&#104;&#105;&#135963;&#136302;&#137405;&#134047;&#136884;&#138804;&#143812;&#144836;&#97;&#98;&#122;&#48;&#49;&#57;", TransUtil.toHtmlDecEncode(x,TransUtil.PTN_ENCODE_ALL));
+        assertEquals("&#106;&#107;&#102;&#131083;&#135741;&#103;&#104;&#105;&#135963;&#136302;&#137405;&#134047;&#136884;&#138804;&#143812;&#144836;&#97;&#98;&#122;&#48;&#49;&#57;", TransUtil.toHtmlDecEncode(x, TransUtil.PTN_ENCODE_ALL));
     }
 
     /**
@@ -295,14 +294,14 @@ public class TransUtilTest {
         assertEquals("&#x21;&#x22;&#x23;&#x24;&#x25;&#x26;&#x27;&#x28;&#x29;&#x3d;&#x7e;&#x7c;&#x60;&#x7b;&#x7d;&#x2a;&#x2b;&#x3c;&#x3e;&#x3f;_&#x5c;&#xd;&#xa;abcedf", TransUtil.toHtmlHexEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf", false));
         assertEquals("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;_&#X5C;&#XD;&#XA;abcedf", TransUtil.toHtmlHexEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf", true));
 
-        int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
         System.out.println("c:" + TransUtil.toHtmlHexEncode(x, false));
         assertEquals("jkf&#x2000b;&#x2123d;ghi&#x2131b;&#x2146e;&#x218bd;&#x20b9f;&#x216b4;&#x21e34;&#x231c4;&#x235c4;abz019", TransUtil.toHtmlHexEncode(x, false));
         assertEquals("jkf&#X2000B;&#X2123D;ghi&#X2131B;&#X2146E;&#X218BD;&#X20B9F;&#X216B4;&#X21E34;&#X231C4;&#X235C4;abz019", TransUtil.toHtmlHexEncode(x, true));
         assertEquals("&#x6a;&#x6b;&#x66;&#x2000b;&#x2123d;&#x67;&#x68;&#x69;&#x2131b;&#x2146e;&#x218bd;&#x20b9f;&#x216b4;&#x21e34;&#x231c4;&#x235c4;&#x61;&#x62;&#x7a;&#x30;&#x31;&#x39;", TransUtil.toHtmlHexEncode(x, TransUtil.PTN_ENCODE_ALL, false));
     }
-    
+
     /**
      * Test of URLDecode method, of class TransUtil.
      */
@@ -311,11 +310,11 @@ public class TransUtilTest {
         System.out.println("URLDecode");
         try {
             assertEquals("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", TransUtil.decodeUrl("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "Shift_JIS"));
-            assertEquals("\r\n\t",  TransUtil.decodeUrl("%0d%0a%09", "Shift_JIS"));
-            assertEquals("\r\n\t",  TransUtil.decodeUrl("%0D%0A%09", "Shift_JIS"));
-            assertEquals("abc",  TransUtil.decodeUrl("%61%62%63", "Shift_JIS"));
-            assertEquals("テスト", TransUtil.decodeUrl("%83e%83X%83g","Shift_JIS"));
-            assertEquals(" + ",  TransUtil.decodeUrl("%20%2B+", "Shift_JIS"));
+            assertEquals("\r\n\t", TransUtil.decodeUrl("%0d%0a%09", "Shift_JIS"));
+            assertEquals("\r\n\t", TransUtil.decodeUrl("%0D%0A%09", "Shift_JIS"));
+            assertEquals("abc", TransUtil.decodeUrl("%61%62%63", "Shift_JIS"));
+            assertEquals("テスト", TransUtil.decodeUrl("%83e%83X%83g", "Shift_JIS"));
+            assertEquals(" + ", TransUtil.decodeUrl("%20%2B+", "Shift_JIS"));
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
             assertTrue(false);
@@ -331,16 +330,16 @@ public class TransUtilTest {
         try {
             assertEquals("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", TransUtil.encodeUrl("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "Shift_JIS", false));
             assertEquals("%61%62%63%64%65%66%67%68%69%6a%6b%6c%6d%6e%6f%70%71%72%73%74%75%76%77%78%79%7a%41%42%43%44%45%46%47%48%49%4a%4b%4c%4d%4e%4f%50%51%52%53%54%55%56%57%58%59%5a%30%31%32%33%34%35%36%37%38%39", TransUtil.encodeUrl("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", "Shift_JIS", TransUtil.PTN_ENCODE_ALL, false));
-            assertEquals("%0D%0A%09",  TransUtil.encodeUrl("\r\n\t", "Shift_JIS", true));
-            assertEquals("%0d%0a%09",  TransUtil.encodeUrl("\r\n\t", "Shift_JIS", false));
-            assertEquals("%83e%83X%83g", TransUtil.encodeUrl("テスト","Shift_JIS", false));
-            assertEquals("+%2b+",  TransUtil.encodeUrl(" + ", "Shift_JIS", false));
+            assertEquals("%0D%0A%09", TransUtil.encodeUrl("\r\n\t", "Shift_JIS", true));
+            assertEquals("%0d%0a%09", TransUtil.encodeUrl("\r\n\t", "Shift_JIS", false));
+            assertEquals("%83e%83X%83g", TransUtil.encodeUrl("テスト", "Shift_JIS", false));
+            assertEquals("+%2b+", TransUtil.encodeUrl(" + ", "Shift_JIS", false));
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
             assertTrue(false);
         }
-   }
-    
+    }
+
     /**
      * Test of toUnocodeEncode method, of class TransUtil.
      */
@@ -350,11 +349,11 @@ public class TransUtilTest {
         assertEquals("abcdef\\u000d\\u000a\\u0021\\u0022ghi\\u0023\\u0024\\u0025jkf", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", false));
         assertEquals("\\u0061\\u0062\\u0063\\u0064\\u0065\\u0066\\u000d\\u000a\\u0021\\u0022\\u0067\\u0068\\u0069\\u0023\\u0024\\u0025\\u006a\\u006b\\u0066", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, false));
         assertEquals("\\U0061\\U0062\\U0063\\U0064\\U0065\\U0066\\U000D\\U000A\\U0021\\U0022\\U0067\\U0068\\U0069\\U0023\\U0024\\U0025\\U006A\\U006B\\U0066", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", TransUtil.PTN_ENCODE_ALL, true));
-        
+
         assertEquals("\\u3042\\u3044\\u3046\\u3048\\u304a", TransUtil.toUnocodeEncode("あいうえお", false));
         assertEquals("\\U3042\\U3044\\U3046\\U3048\\U304A", TransUtil.toUnocodeEncode("あいうえお", true));
 
-        int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
         assertEquals("jkf\\ud840\\udc0b\\ud844\\ude3dghi\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4abz019", TransUtil.toUnocodeEncode(x, false));
         assertEquals("jkf\\UD840\\UDC0B\\UD844\\UDE3Dghi\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4abz019", TransUtil.toUnocodeEncode(x, true));
@@ -375,14 +374,14 @@ public class TransUtilTest {
         assertEquals("あいうえお", TransUtil.toUnocodeDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
         assertEquals("あいうえお", TransUtil.toUnocodeDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));
 
-        int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\ud840\\udc0b\\ud844\\ude3dghi\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4abz019"));
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\UD840\\UDC0B\\UD844\\UDE3Dghi\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4abz019"));
     }
 
     public final static Pattern ENCODE_JS = Pattern.compile("[^ !#-&(-/0-Z\\[\\]^-~]");
-    
+
     /**
      * Test of testToHexEncode method, of class TransUtil.
      */
@@ -392,10 +391,10 @@ public class TransUtilTest {
             System.out.println("testToHexEncode");
             assertEquals("abcdef\\x0d\\x0a\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toByteHexEncode("abcdef\r\n!\"ghi#$%jkf", "8859_1", false));
             assertEquals("abcdef\\X0D\\X0A\\X21\\X22ghi\\X23\\X24\\X25jkf", TransUtil.toByteHexEncode("abcdef\r\n!\"ghi#$%jkf", "8859_1", true));
-            
+
             assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0d\\x0a\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", TransUtil.toByteHexEncode(Util.getRawByte("abcdef\r\n!\"ghi#$%jkf"), TransUtil.PTN_ENCODE_ALL, false));
             assertEquals("\\X61\\X62\\X63\\X64\\X65\\X66\\X0D\\X0A\\X21\\X22\\X67\\X68\\X69\\X23\\X24\\X25\\X6A\\X6B\\X66", TransUtil.toByteHexEncode(Util.getRawByte("abcdef\r\n!\"ghi#$%jkf"), TransUtil.PTN_ENCODE_ALL, true));
-            
+
             System.out.println(TransUtil.toByteHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", "8859_1", ENCODE_JS, false));
             assertEquals(" !\\x22#$%&\\x27()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\x5c]^_`abcdefghijklmnopqrstuvwxyz{|}~", TransUtil.toByteHexEncode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", "8859_1", ENCODE_JS, false));
         } catch (UnsupportedEncodingException ex) {
@@ -423,18 +422,18 @@ public class TransUtilTest {
 //        byte [] b13 = new byte[] {(byte)0x00}; 
 //        assertEquals("[0X00]", TransUtil.toByteArrayJsEncode(b13, true));
     }
-    
+
     /**
      * Test of toByteDecode method, of class TransUtil.
      */
     @Test
     public void testToUnocode2Decode() {
         System.out.println("toUnocode4Decode");
-        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));        
+        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));
         assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
-        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\41\\42\\43\\44\\45", "8859_1"));        
+        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\41\\42\\43\\44\\45", "8859_1"));
     }
-    
+
     /**
      * Test of toUnocodeUrlEncode method, of class TransUtil.
      */
@@ -444,7 +443,7 @@ public class TransUtilTest {
         assertEquals("abcdef%u000d%u000a%u0021%u0022%u0023%u0024%u0025", TransUtil.toUnocodeUrlEncode("abcdef\r\n!\"#$%", false));
         assertEquals("%u3042%u3044%u3046%u3048%u304a", TransUtil.toUnocodeUrlEncode("あいうえお", false));
         assertEquals("%U3042%U3044%U3046%U3048%U304A", TransUtil.toUnocodeUrlEncode("あいうえお", true));
-        int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
         assertEquals("jkf%ud840%udc0b%ud844%ude3dghi%ud844%udf1b%ud845%udc6e%ud846%udcbd%ud842%udf9f%ud845%udeb4%ud847%ude34%ud84c%uddc4%ud84d%uddc4abz019", TransUtil.toUnocodeUrlEncode(x, false));
         assertEquals("jkf%UD840%UDC0B%UD844%UDE3Dghi%UD844%UDF1B%UD845%UDC6E%UD846%UDCBD%UD842%UDF9F%UD845%UDEB4%UD847%UDE34%UD84C%UDDC4%UD84D%UDDC4abz019", TransUtil.toUnocodeUrlEncode(x, true));
@@ -459,7 +458,7 @@ public class TransUtilTest {
         System.out.println("toUnocodeUrlDecode");
         assertEquals("abcdef!\"#$%", TransUtil.toUnocodeUrlDecode("abcdef%u0021%u0022%u0023%u0024%u0025"));
         assertEquals("あいうえお", TransUtil.toUnocodeUrlDecode("%u3042%u3044%u3046%u3048%u304a"));
-        int ch[] = new int[]{(int)'j', (int)'k', (int)'f', 0x2000B, 0x2123D, (int)'g', (int)'h', (int)'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int)'a', (int)'b', (int)'z', (int)'0', (int)'1', (int)'9'};
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
         assertEquals(x, TransUtil.toUnocodeUrlDecode("jkf%ud840%udc0b%ud844%ude3dghi%ud844%udf1b%ud845%udc6e%ud846%udcbd%ud842%udf9f%ud845%udeb4%ud847%ude34%ud84c%uddc4%ud84d%uddc4abz019"));
     }
@@ -507,15 +506,15 @@ public class TransUtilTest {
     public void testGetGuessCode() {
         try {
             System.out.println("TransUtil");
-            String str1 = new String(new byte [] {(byte)0xff}, StandardCharsets.ISO_8859_1);
-            String str2 = new String(new byte [] {(byte)0x7f}, StandardCharsets.ISO_8859_1);
-            String str3 = new String(new byte [] {(byte)0x01, (byte)0x02, (byte)0x03, (byte)0x04, (byte)0x05, (byte)0x06}, StandardCharsets.ISO_8859_1);
-            String str4 = new String(new byte [] {(byte)0x1a, (byte)0x0a, (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x0d, (byte)0x49, (byte)0x48, (byte)0x44, (byte)0x52}, "8859_1");
+            String str1 = new String(new byte[]{(byte) 0xff}, StandardCharsets.ISO_8859_1);
+            String str2 = new String(new byte[]{(byte) 0x7f}, StandardCharsets.ISO_8859_1);
+            String str3 = new String(new byte[]{(byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x06}, StandardCharsets.ISO_8859_1);
+            String str4 = new String(new byte[]{(byte) 0x1a, (byte) 0x0a, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x0d, (byte) 0x49, (byte) 0x48, (byte) 0x44, (byte) 0x52}, "8859_1");
             assertEquals(null, HttpUtil.getGuessCode(str1.getBytes(StandardCharsets.ISO_8859_1)));
             assertEquals(null, HttpUtil.getGuessCode(str2.getBytes(StandardCharsets.ISO_8859_1)));
             assertEquals(null, HttpUtil.getGuessCode(str3.getBytes(StandardCharsets.ISO_8859_1)));
             assertEquals(null, HttpUtil.getGuessCode(str4.getBytes(StandardCharsets.ISO_8859_1)));
-            
+
             assertEquals("US-ASCII", HttpUtil.getGuessCode("0123456ABCDEF".getBytes("UTF-8")));
             assertEquals("Shift_JIS", HttpUtil.getGuessCode("入口入口入口入口".getBytes("Shift_JIS")));
             assertEquals("EUC-JP", HttpUtil.getGuessCode("入口入口入口入口".getBytes("EUC-JP")));
@@ -536,17 +535,17 @@ public class TransUtilTest {
     public void testJsLangMeta() {
         System.out.println("JsLangMeta");
         assertEquals("abc\rdef\nghi\tfgh\\IJK", TransUtil.decodeJsLangMeta("abc\\rdef\\nghi\\tfgh\\\\IJK"));
-        assertEquals("abc" + Character.toString((char)0x08) + "def" + Character.toString((char)0x0c) +  "ghi"  + Character.toString((char)0x0b) + "IJK" , TransUtil.decodeJsLangMeta("abc\\bdef\\fghi\\vIJK"));
-        assertEquals("abcdefghi\tIJK" , TransUtil.decodeJsLangMeta("\\x61bcdefghi\\x09I\\x4A\\x4b"));
-        assertEquals("abcdefghi\tIJK" , TransUtil.decodeJsLangMeta("\\u0061bcdefghi\\u0009I\\u004A\\u004b"));
-        assertEquals("あいうえお" , TransUtil.decodeJsLangMeta("\\u3042\\u3044\\u3046\\u3048\\u304a"));
-        assertEquals("あ\r\nいうえお" , TransUtil.decodeJsLangMeta("\\u3042\\r\\n\\u3044\\u3046\\u3048\\u304a"));
+        assertEquals("abc" + Character.toString((char) 0x08) + "def" + Character.toString((char) 0x0c) + "ghi" + Character.toString((char) 0x0b) + "IJK", TransUtil.decodeJsLangMeta("abc\\bdef\\fghi\\vIJK"));
+        assertEquals("abcdefghi\tIJK", TransUtil.decodeJsLangMeta("\\x61bcdefghi\\x09I\\x4A\\x4b"));
+        assertEquals("abcdefghi\tIJK", TransUtil.decodeJsLangMeta("\\u0061bcdefghi\\u0009I\\u004A\\u004b"));
+        assertEquals("あいうえお", TransUtil.decodeJsLangMeta("\\u3042\\u3044\\u3046\\u3048\\u304a"));
+        assertEquals("あ\r\nいうえお", TransUtil.decodeJsLangMeta("\\u3042\\r\\n\\u3044\\u3046\\u3048\\u304a"));
         // regexp        
         assertEquals("\\$1", Matcher.quoteReplacement(TransUtil.decodeJsLangMeta("$1")));
         assertEquals("\\\\\\$1", Matcher.quoteReplacement(TransUtil.decodeJsLangMeta("\\$1")));
-        assertEquals("\r\\\\\\$1", Matcher.quoteReplacement(TransUtil.decodeJsLangMeta("\\r\\$1")));        
+        assertEquals("\r\\\\\\$1", Matcher.quoteReplacement(TransUtil.decodeJsLangMeta("\\r\\$1")));
     }
-    
+
     /**
      * Test of encodeJsLangQuote,decodeJsLangQuote method, of class TransUtil.
      */
@@ -559,7 +558,7 @@ public class TransUtilTest {
         assertEquals("\\123\"456\\", TransUtil.decodeJsLangQuote("\\\\123\\\"456\\\\"));
         assertEquals("\\123\'456\\", TransUtil.decodeJsLangQuote("\\\\123\\\'456\\\\"));
     }
-    
+
     /**
      * Test of encodeCLangQuote,decodeCLangQuote method, of class TransUtil.
      */
@@ -587,52 +586,52 @@ public class TransUtilTest {
     public void testToSmartMatch() {
         System.out.println("ToSmartMatch");
         {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());            
+            assertTrue(p.matcher("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%21%22%23%24%25%26%27%28%29%3d%2d%5e%7e%5c%7c%40%7b%7d%3a%2a%3b%2b%3f%5f%3c%3e%2c%2e%2f").matches());            
+            assertTrue(p.matcher("%21%22%23%24%25%26%27%28%29%3d%2d%5e%7e%5c%7c%40%7b%7d%3a%2a%3b%2b%3f%5f%3c%3e%2c%2e%2f").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%u0021%u0022%u0023%u0024%u0025%u0026%u0027%u0028%u0029%u003d%u002d%u005e%u007e%u005c%u007c%u0040%u007b%u007d%u003a%u002a%u003b%u002b%u003f%u005f%u003c%u003e%u002c%u002e%u002f").matches());            
+            assertTrue(p.matcher("%u0021%u0022%u0023%u0024%u0025%u0026%u0027%u0028%u0029%u003d%u002d%u005e%u007e%u005c%u007c%u0040%u007b%u007d%u003a%u002a%u003b%u002b%u003f%u005f%u003c%u003e%u002c%u002e%u002f").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("!&quot;#$%&amp;&#39;()=-^~\\|@{}:*;+?_&lt;&gt;,./").matches());            
+            assertTrue(p.matcher("!&quot;#$%&amp;&#39;()=-^~\\|@{}:*;+?_&lt;&gt;,./").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("\\u0021\\u0022\\u0023\\u0024\\u0025\\u0026\\u0027\\u0028\\u0029\\u003d\\u002d\\u005e\\u007e\\u005c\\u007c\\u0040\\u007b\\u007d\\u003a\\u002a\\u003b\\u002b\\u003f\\u005f\\u003c\\u003e\\u002c\\u002e\\u002f").matches());            
+            assertTrue(p.matcher("\\u0021\\u0022\\u0023\\u0024\\u0025\\u0026\\u0027\\u0028\\u0029\\u003d\\u002d\\u005e\\u007e\\u005c\\u007c\\u0040\\u007b\\u007d\\u003a\\u002a\\u003b\\u002b\\u003f\\u005f\\u003c\\u003e\\u002c\\u002e\\u002f").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());            
+            assertTrue(p.matcher("\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());                        
+            assertTrue(p.matcher("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());                        
+            assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
         }
         {
-            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");        
+            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
             Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());                        
+            assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
         }
     }
-        
+
     /**
      * Test of ToSmartMatch_charset method, of class TransUtil.
      */
@@ -641,63 +640,63 @@ public class TransUtilTest {
         System.out.println("ToSmartMatch_charset");
         try {
             {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());            
+                assertTrue(p.matcher("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%21%22%23%24%25%26%27%28%29%3d%2d%5e%7e%5c%7c%40%7b%7d%3a%2a%3b%2b%3f%5f%3c%3e%2c%2e%2f").matches());            
+                assertTrue(p.matcher("%21%22%23%24%25%26%27%28%29%3d%2d%5e%7e%5c%7c%40%7b%7d%3a%2a%3b%2b%3f%5f%3c%3e%2c%2e%2f").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%u0021%u0022%u0023%u0024%u0025%u0026%u0027%u0028%u0029%u003d%u002d%u005e%u007e%u005c%u007c%u0040%u007b%u007d%u003a%u002a%u003b%u002b%u003f%u005f%u003c%u003e%u002c%u002e%u002f").matches());            
+                assertTrue(p.matcher("%u0021%u0022%u0023%u0024%u0025%u0026%u0027%u0028%u0029%u003d%u002d%u005e%u007e%u005c%u007c%u0040%u007b%u007d%u003a%u002a%u003b%u002b%u003f%u005f%u003c%u003e%u002c%u002e%u002f").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("!&quot;#$%&amp;&#39;()=-^~\\|@{}:*;+?_&lt;&gt;,./").matches());            
+                assertTrue(p.matcher("!&quot;#$%&amp;&#39;()=-^~\\|@{}:*;+?_&lt;&gt;,./").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("\\u0021\\u0022\\u0023\\u0024\\u0025\\u0026\\u0027\\u0028\\u0029\\u003d\\u002d\\u005e\\u007e\\u005c\\u007c\\u0040\\u007b\\u007d\\u003a\\u002a\\u003b\\u002b\\u003f\\u005f\\u003c\\u003e\\u002c\\u002e\\u002f").matches());            
+                assertTrue(p.matcher("\\u0021\\u0022\\u0023\\u0024\\u0025\\u0026\\u0027\\u0028\\u0029\\u003d\\u002d\\u005e\\u007e\\u005c\\u007c\\u0040\\u007b\\u007d\\u003a\\u002a\\u003b\\u002b\\u003f\\u005f\\u003c\\u003e\\u002c\\u002e\\u002f").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());            
+                assertTrue(p.matcher("\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());                        
+                assertTrue(p.matcher("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());                        
+                assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
             }
             {
-                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");        
+                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());                        
+                assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
             }
             {
                 String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-                String regex = TransUtil.toSmartMatch(expValue, "UTF-8");        
+                String regex = TransUtil.toSmartMatch(expValue, "UTF-8");
                 Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher(expValue).matches());                        
+                assertTrue(p.matcher(expValue).matches());
             }
             {
                 String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
                 char[] ch = expValue.toCharArray();
                 for (char c : ch) {
-                    String regex = TransUtil.toSmartMatch(Character.toString(c), "UTF-8");        
+                    String regex = TransUtil.toSmartMatch(Character.toString(c), "UTF-8");
                     Pattern p = Pattern.compile(regex);
-                    assertTrue(p.matcher(Character.toString(c)).matches());                                        
+                    assertTrue(p.matcher(Character.toString(c)).matches());
                 }
             }
 
@@ -706,7 +705,7 @@ public class TransUtilTest {
             assertTrue(false);
         }
     }
-    
+
     /**
      * // * Test of generaterList method, of class TransUtil.
      */
@@ -730,7 +729,7 @@ public class TransUtilTest {
             assertEquals(list[3], "abc05");
         }
         {
-            String list[] = TransUtil.generaterList("abc%02d",11, 4, -2);
+            String list[] = TransUtil.generaterList("abc%02d", 11, 4, -2);
             assertEquals(list.length, 4);
             assertEquals(list[0], "abc11");
             assertEquals(list[1], "abc09");
@@ -767,7 +766,7 @@ public class TransUtilTest {
         } catch (Exception e) {
             assertTrue(e.getMessage(), true);
         }
-    }    
+    }
 
     /**
      * // * Test of generaterList method, of class TransUtil.
@@ -796,24 +795,25 @@ public class TransUtilTest {
             assertEquals(list[5], "2007/10/28");
         }
     }
-    
+
     @Test
     public void testByteBuffer() {
         ByteBuffer buff = ByteBuffer.allocate(10);
-        buff.put((byte)10);
-        buff.put((byte)20);
-        buff.put((byte)30);
+        buff.put((byte) 10);
+        buff.put((byte) 20);
+        buff.put((byte) 30);
         buff.flip();
-        byte [] b = buff.array();
+        byte[] b = buff.array();
         for (int i = 0; i < b.length; i++) {
             System.out.printf("\\%x\n", b[i]);
         }
-    } 
+    }
 
     private final static Pattern REQUEST_URI = Pattern.compile("^(.*?\\s+)(.*?)(\\s+.*?)");
-    
+
     @Test
     public void testURI() {
+        System.out.println("testURI");
         String requestLine = "GET / HTTP/1.1\r\nHost: example.com\r\n";
         Matcher m = REQUEST_URI.matcher(requestLine);
         StringBuffer sb = new StringBuffer();
@@ -823,14 +823,14 @@ public class TransUtilTest {
             sb.append(m.group(3));
         }
         m.appendTail(sb);
-    System.out.println(sb.toString());
+        System.out.println(sb.toString());
     }
 
     /**
      */
     @Test
     public void testGetUniversalGuessCode() {
-
+        System.out.println("testGetUniversalGuessCode");
         {
             try {
                 assertEquals("US-ASCII", TransUtil.getUniversalGuessCode("0123456ABCDEF".getBytes("UTF-8"), "US-ASCII"));
@@ -853,7 +853,7 @@ public class TransUtilTest {
                 assertEquals(expResult, guessCharset);
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }        
+            }
         }
 
         {
@@ -864,9 +864,9 @@ public class TransUtilTest {
                 assertEquals(expResult, guessCharset);
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }        
+            }
         }
-        
+
         {
             try {
                 String expResult = "EUC-JP";
@@ -875,7 +875,7 @@ public class TransUtilTest {
                 assertEquals(expResult, guessCharset);
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }        
+            }
         }
 
         {
@@ -886,17 +886,18 @@ public class TransUtilTest {
                 assertEquals(expResult, guessCharset);
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }        
+            }
         }
 
     }
-    
+
     /**
      */
     @Test
     public void testUniversalCharCode() {
+        System.out.println("testUniversalCharCode");
         // Chinese
-        String [] list = {
+        String[] list = {
             "ISO-2022-CN",
             "BIG5",
             "EUC-TW",
@@ -931,27 +932,25 @@ public class TransUtilTest {
             "X-ISO-10646-UCS-4-34121", // unk
             "X-ISO-10646-UCS-4-21431", // unk
             // Others
-            "WINDOWS-1252",
-        };
-        for (String l: list) {
-            String normChar = HttpUtil.normalizeCharset(l);        
+            "WINDOWS-1252",};
+        for (String l : list) {
+            String normChar = HttpUtil.normalizeCharset(l);
             if (normChar == null) {
-                    System.out.println("unk="  + l);            
-            
-            }
-            else {
+                System.out.println("unk=" + l);
+
+            } else {
                 if (l.compareToIgnoreCase(normChar) != 0) {
-                    System.out.println(l + "="  + normChar);            
-                }            
+                    System.out.println(l + "=" + normChar);
+                }
             }
-            
+
         }
-        
+
     }
 
     @Test
     public void testLocale() {
-        System.out.println(Locale.JAPANESE.toString());        
+        System.out.println(Locale.JAPANESE.toString());
         System.out.println(Locale.JAPANESE.getCountry());
         System.out.println(Locale.JAPANESE.getDisplayLanguage());
         System.out.println(Locale.JAPANESE.getDisplayName());
@@ -962,23 +961,35 @@ public class TransUtilTest {
         System.out.println(Locale.JAPANESE.getVariant());
         System.out.println(Locale.JAPANESE.toLanguageTag());
     }
-            
+
     @Test
     public void testToRegexEscape() {
+        System.out.println("testToRegexEscape");
         String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
         char[] ch = expValue.toCharArray();
         try {
             for (char c : ch) {
                 String regex = TransUtil.toRegexEscape(c);
                 Pattern ptn = Pattern.compile(regex);
-                System.out.println(ptn.pattern());
-                assertTrue(ptn.matcher(Character.toString(c)).matches());                
-            }        
+                assertTrue(ptn.matcher(Character.toString(c)).matches());
+            }
+        } catch (java.util.regex.PatternSyntaxException ex) {
+            fail("toRegexEscape");
         }
-        catch (java.util.regex.PatternSyntaxException ex) {
-            fail("toRegexEscape");   
+
+    }
+
+    @Test
+    public void testToRegexEncodeDecode() {
+        System.out.println("testToRegexEncode");
+        String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+        {
+            String regex = TransUtil.toRegexEncode(expValue);
+            Pattern ptn = Pattern.compile(regex);
+            String expResult = TransUtil.toRegexDecode(regex);
+            assertEquals(expResult, expValue);        
         }
-    }   
+    }
     
     
 }

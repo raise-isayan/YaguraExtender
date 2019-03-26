@@ -299,6 +299,7 @@ public class MatchAlertTab extends javax.swing.JPanel {
     public void setMatchAlertItemList(List<MatchAlertItem> list) {
         if (list == null) {
         } else {
+            this.modelAlert.beginUpdate();
             this.modelAlert.removeAll();
             Object editRows[] = new Object[0];
             for (int i = 0; i < list.size(); i++) {
@@ -306,6 +307,7 @@ public class MatchAlertTab extends javax.swing.JPanel {
                 editRows = MatchAlertItem.toObjects(alertItem);
                 this.modelAlert.addRow(editRows);
             }
+            this.modelAlert.endUpdate();
         }
     }
 
