@@ -304,11 +304,9 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     private void toJSONTreeNode(JsonValue json, DefaultMutableTreeNode parentNode) {
         switch (json.getValueType()) {
             case ARRAY: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("[]");
-                parentNode.add(node);
                 JsonArray jsonArray = (JsonArray) json;
                 for (int i = 0; i < jsonArray.size(); i++) {
-                    toJSONTreeNode(jsonArray.get(i), node);                    
+                    toJSONTreeNode(jsonArray.get(i), parentNode);                    
                 }
                 break;                
             }
@@ -333,17 +331,24 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
                             break;                            
                         }                        
                         case TRUE: {
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "TRUE");                            
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "true");                            
                             node.add(jsonKeySet);
                             break;                            
                         }
                         case FALSE: {
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "FALSE");                            
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "false");                            
+                            node.add(jsonKeySet);
+                            break;                            
+                        }
+                        case NULL: {
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "null");                            
                             node.add(jsonKeySet);
                             break;                            
                         }
                         default: {
-                            toJSONTreeNode(value, node);                            
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey());                            
+                            node.add(jsonKeySet);
+                            toJSONTreeNode(value, jsonKeySet);                            
                             break;                            
                         }
                     }
@@ -363,12 +368,17 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
                 break;                
             }            
             case TRUE: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("TRUE");
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode("true");
                 parentNode.add(node);
                 break;                
             }
             case FALSE: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("FALSE");
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode("false");
+                parentNode.add(node);
+                break;                
+            }
+            case NULL: {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode("null");
                 parentNode.add(node);
                 break;                
             }
