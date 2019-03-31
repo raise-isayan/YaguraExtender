@@ -133,7 +133,7 @@
                               <Component id="txtShowOnly" pref="197" max="32767" attributes="0"/>
                               <Component id="txtHide" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="250" max="32767" attributes="0"/>
+                          <EmptySpace pref="179" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -256,7 +256,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="chkComment" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="21" max="32767" attributes="0"/>
+                          <EmptySpace pref="72" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -281,11 +281,11 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="pnlHighlighColor">
+            <Container class="javax.swing.JPanel" name="pnlHighlightColor">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                    <TitledBorder title="HighlighColor"/>
+                    <TitledBorder title="Highlight Color"/>
                   </Border>
                 </Property>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -309,9 +309,9 @@
                 <Property name="axis" type="int" value="1"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JCheckBox" name="chkNoselect">
+                <Component class="javax.swing.JCheckBox" name="chkWhite">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="noselect"/>
+                    <Property name="text" type="java.lang.String" value="white (unselect)"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkRed">

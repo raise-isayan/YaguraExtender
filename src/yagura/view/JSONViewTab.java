@@ -5,6 +5,7 @@ import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
+import extend.model.base.DefaultObjectTableModel;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
@@ -13,13 +14,27 @@ import yagura.external.FormatUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.text.ParseException;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonArray;
+import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.json.JsonString;
+import javax.json.JsonStructure;
+import javax.json.JsonValue;
+import javax.swing.Icon;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import yagura.external.JsonUtil;
 
 /**
  *
@@ -53,6 +68,8 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         customizeComponents();
     }
 
+    private DefaultTreeModel modelJSON;
+    
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     @SuppressWarnings("unchecked")
@@ -65,6 +82,13 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.txtJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
         this.txtJSON.setContentType("text/json");
 
+        Icon emptyIcon = new EmptyIcon();
+        DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) this.treeJSON.getCellRenderer();
+        renderer.setOpenIcon(emptyIcon);
+        renderer.setClosedIcon(emptyIcon);
+        renderer.setLeafIcon(emptyIcon);
+        this.modelJSON = (DefaultTreeModel)this.treeJSON.getModel();
+                
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
@@ -90,8 +114,12 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         popQuick = new javax.swing.JPopupMenu();
         mnuRegex = new javax.swing.JCheckBoxMenuItem();
         mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
+        tabbetJSON = new javax.swing.JTabbedPane();
         scrollJSON = new javax.swing.JScrollPane();
         txtJSON = new javax.swing.JEditorPane();
+        pnlTree = new javax.swing.JPanel();
+        scrollTree = new javax.swing.JScrollPane();
+        treeJSON = new javax.swing.JTree();
 
         mnuRegex.setSelected(true);
         mnuRegex.setText("regex");
@@ -105,15 +133,33 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         txtJSON.setEditable(false);
         scrollJSON.setViewportView(txtJSON);
 
-        add(scrollJSON, java.awt.BorderLayout.CENTER);
+        tabbetJSON.addTab("pretty", scrollJSON);
+
+        pnlTree.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        treeJSON.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        scrollTree.setViewportView(treeJSON);
+
+        pnlTree.add(scrollTree, java.awt.BorderLayout.CENTER);
+
+        tabbetJSON.addTab("Tree", pnlTree);
+
+        add(tabbetJSON, java.awt.BorderLayout.CENTER);
+        tabbetJSON.getAccessibleContext().setAccessibleName("");
+        tabbetJSON.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
+    private javax.swing.JPanel pnlTree;
     private javax.swing.JPopupMenu popQuick;
     private javax.swing.JScrollPane scrollJSON;
+    private javax.swing.JScrollPane scrollTree;
+    private javax.swing.JTabbedPane tabbetJSON;
+    private javax.swing.JTree treeJSON;
     private javax.swing.JEditorPane txtJSON;
     // End of variables declaration//GEN-END:variables
         
@@ -125,12 +171,19 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             }
             BurpExtender burp = BurpExtender.getInstance();
             if (this.message != null) {
+                String msg = Util.decodeMessage(this.message.getBodyBytes(), encoding);
                 // Raw
-                this.txtJSON.setText(FormatUtil.prettyJSON(Util.decodeMessage(this.message.getBodyBytes(), encoding)));
+                this.txtJSON.setText(FormatUtil.prettyJSON(msg));
                 this.txtJSON.setCaretPosition(0);
-                // View                
+                // Tree View
+                DefaultTreeModel model = toJSONTreeModel(JsonUtil.parse(msg));
+
+                DefaultObjectTableModel.allNodesChanged(this.treeJSON);
+                this.treeJSON.setModel(model);                
             } else {
                 this.txtJSON.setText("");
+                DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelJSON.getRoot();
+                root.removeAllChildren();
             }
             this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
@@ -241,4 +294,103 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.quickSearchTab.clearView();
     }
 
+    public DefaultTreeModel toJSONTreeModel(JsonStructure json) {
+        DefaultMutableTreeNode rootJSON = new DefaultMutableTreeNode("JSON");
+        DefaultTreeModel model = new DefaultTreeModel(rootJSON);
+        toJSONTreeNode(json, rootJSON);
+        return model;
+    }
+    
+    private void toJSONTreeNode(JsonValue json, DefaultMutableTreeNode parentNode) {
+        switch (json.getValueType()) {
+            case ARRAY: {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode("[]");
+                parentNode.add(node);
+                JsonArray jsonArray = (JsonArray) json;
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    toJSONTreeNode(jsonArray.get(i), node);                    
+                }
+                break;                
+            }
+            case OBJECT: {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode("{}");
+                parentNode.add(node);                
+                JsonObject jsonObject = (JsonObject) json;
+                Set<Map.Entry<String, JsonValue>> set = jsonObject.entrySet();
+                for (Map.Entry<String, JsonValue> s : set) {
+                    JsonValue value = s.getValue();
+                    switch (value.getValueType()) {
+                        case STRING: {                            
+                            JsonString jsonValue = (JsonString) value;
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + jsonValue.getString());                            
+                            node.add(jsonKeySet);                            
+                            break;                            
+                        }
+                        case NUMBER: {
+                            JsonNumber jsonValue = (JsonNumber) value;
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + jsonValue.bigDecimalValue());                            
+                            node.add(jsonKeySet);
+                            break;                            
+                        }                        
+                        case TRUE: {
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "TRUE");                            
+                            node.add(jsonKeySet);
+                            break;                            
+                        }
+                        case FALSE: {
+                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "FALSE");                            
+                            node.add(jsonKeySet);
+                            break;                            
+                        }
+                        default: {
+                            toJSONTreeNode(value, node);                            
+                            break;                            
+                        }
+                    }
+                }
+                break;                
+            }
+            case STRING: {
+                JsonString jsonValue = (JsonString) json;
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode(jsonValue.getString());
+                parentNode.add(node);
+                break;
+            }            
+            case NUMBER: {
+                JsonNumber jsonValue = (JsonNumber) json;
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode(jsonValue.bigDecimalValue());
+                parentNode.add(node);
+                break;                
+            }            
+            case TRUE: {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode("TRUE");
+                parentNode.add(node);
+                break;                
+            }
+            case FALSE: {
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode("FALSE");
+                parentNode.add(node);
+                break;                
+            }
+        }
+    }
+
+    class EmptyIcon implements Icon {
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            /* Empty icon */ }
+        
+        @Override
+        public int getIconWidth() {
+            return 2;
+        }
+        
+        @Override
+        public int getIconHeight() {
+            return 0;
+        }
+        
+    }
+    
 }

@@ -64,8 +64,8 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         pnlRight = new javax.swing.JPanel();
         pnlComment = new javax.swing.JPanel();
         chkComment = new javax.swing.JCheckBox();
-        pnlHighlighColor = new javax.swing.JPanel();
-        chkNoselect = new javax.swing.JCheckBox();
+        pnlHighlightColor = new javax.swing.JPanel();
+        chkWhite = new javax.swing.JCheckBox();
         chkRed = new javax.swing.JCheckBox();
         chkOrange = new javax.swing.JCheckBox();
         chkYellow = new javax.swing.JCheckBox();
@@ -140,7 +140,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtShowOnly, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                     .addComponent(txtHide))
-                .addContainerGap(250, Short.MAX_VALUE))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
         pnlExtensionLayout.setVerticalGroup(
             pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,7 +204,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
             .addGroup(pnlCommentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(chkComment)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         pnlCommentLayout.setVerticalGroup(
             pnlCommentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,44 +216,44 @@ public class ResultFilterPopup extends javax.swing.JFrame {
 
         pnlRight.add(pnlComment, java.awt.BorderLayout.SOUTH);
 
-        pnlHighlighColor.setBorder(javax.swing.BorderFactory.createTitledBorder("HighlighColor"));
-        pnlHighlighColor.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        pnlHighlighColor.setMinimumSize(new java.awt.Dimension(100, 250));
-        pnlHighlighColor.setName(""); // NOI18N
-        pnlHighlighColor.setPreferredSize(new java.awt.Dimension(100, 250));
-        pnlHighlighColor.setLayout(new javax.swing.BoxLayout(pnlHighlighColor, javax.swing.BoxLayout.Y_AXIS));
+        pnlHighlightColor.setBorder(javax.swing.BorderFactory.createTitledBorder("Highlight Color"));
+        pnlHighlightColor.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        pnlHighlightColor.setMinimumSize(new java.awt.Dimension(100, 250));
+        pnlHighlightColor.setName(""); // NOI18N
+        pnlHighlightColor.setPreferredSize(new java.awt.Dimension(100, 250));
+        pnlHighlightColor.setLayout(new javax.swing.BoxLayout(pnlHighlightColor, javax.swing.BoxLayout.Y_AXIS));
 
-        chkNoselect.setText("noselect");
-        pnlHighlighColor.add(chkNoselect);
+        chkWhite.setText("white (unselect)");
+        pnlHighlightColor.add(chkWhite);
 
         chkRed.setText("red");
-        pnlHighlighColor.add(chkRed);
+        pnlHighlightColor.add(chkRed);
 
         chkOrange.setText("orange");
-        pnlHighlighColor.add(chkOrange);
+        pnlHighlightColor.add(chkOrange);
 
         chkYellow.setText("yellow");
-        pnlHighlighColor.add(chkYellow);
+        pnlHighlightColor.add(chkYellow);
 
         chkGreen.setText("green");
-        pnlHighlighColor.add(chkGreen);
+        pnlHighlightColor.add(chkGreen);
 
         chkCyan.setText("cyan");
-        pnlHighlighColor.add(chkCyan);
+        pnlHighlightColor.add(chkCyan);
 
         chkBlue.setText("blue");
-        pnlHighlighColor.add(chkBlue);
+        pnlHighlightColor.add(chkBlue);
 
         chkPink.setText("pink");
-        pnlHighlighColor.add(chkPink);
+        pnlHighlightColor.add(chkPink);
 
         chkMagenta.setText("magenta");
-        pnlHighlighColor.add(chkMagenta);
+        pnlHighlightColor.add(chkMagenta);
 
         chkGray.setText("gray");
-        pnlHighlighColor.add(chkGray);
+        pnlHighlightColor.add(chkGray);
 
-        pnlRight.add(pnlHighlighColor, java.awt.BorderLayout.CENTER);
+        pnlRight.add(pnlHighlightColor, java.awt.BorderLayout.CENTER);
 
         pnlMain.add(pnlRight, java.awt.BorderLayout.EAST);
 
@@ -307,7 +307,6 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkHide;
     private javax.swing.JCheckBox chkHideItemsWithoutResponses;
     private javax.swing.JCheckBox chkMagenta;
-    private javax.swing.JCheckBox chkNoselect;
     private javax.swing.JCheckBox chkOrange;
     private javax.swing.JCheckBox chkPink;
     private javax.swing.JCheckBox chkRed;
@@ -317,12 +316,13 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkStat3xx;
     private javax.swing.JCheckBox chkStat4xx;
     private javax.swing.JCheckBox chkStat5xx;
+    private javax.swing.JCheckBox chkWhite;
     private javax.swing.JCheckBox chkYellow;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlComment;
     private javax.swing.JPanel pnlExtension;
     private javax.swing.JPanel pnlFilterByRequest;
-    private javax.swing.JPanel pnlHighlighColor;
+    private javax.swing.JPanel pnlHighlightColor;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnlRight;
     private javax.swing.JPanel pnlStatus;
@@ -364,7 +364,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
 
     public EnumSet<HighlightColor> getHighlightColors() {
         EnumSet<MatchItem.HighlightColor> colors = EnumSet.noneOf(MatchItem.HighlightColor.class);
-        if (this.chkNoselect.isSelected()) {
+        if (this.chkWhite.isSelected()) {
             colors.add(HighlightColor.WHITE);
         }
         if (this.chkRed.isSelected()) {
@@ -398,7 +398,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     }
     
     public void setHighlightColors(EnumSet<HighlightColor> colors) {
-        this.chkNoselect.setSelected(colors.contains(HighlightColor.WHITE));
+        this.chkWhite.setSelected(colors.contains(HighlightColor.WHITE));
         this.chkRed.setSelected(colors.contains(HighlightColor.RED));
         this.chkOrange.setSelected(colors.contains(HighlightColor.ORANGE));
         this.chkYellow.setSelected(colors.contains(HighlightColor.YELLOW));
