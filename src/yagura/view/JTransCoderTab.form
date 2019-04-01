@@ -980,9 +980,9 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnClear" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnOutputToInput" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnOutputCopy" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnOutputToInput" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -991,6 +991,9 @@
                           <SubComponents>
                             <Component class="javax.swing.JButton" name="btnOutputToInput">
                               <Properties>
+                                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                                  <Image iconType="3" name="/yagura/resources/arrow_up.png"/>
+                                </Property>
                                 <Property name="text" type="java.lang.String" value="Output =&gt; Input"/>
                               </Properties>
                               <Events>

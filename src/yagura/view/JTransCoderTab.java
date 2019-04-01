@@ -854,6 +854,7 @@ public class JTransCoderTab extends javax.swing.JPanel {
 
         pnlInputOutput.add(pnlEncoding, java.awt.BorderLayout.CENTER);
 
+        btnOutputToInput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
         btnOutputToInput.setText("Output => Input");
         btnOutputToInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -893,9 +894,9 @@ public class JTransCoderTab extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(btnClear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnOutputToInput)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnOutputCopy)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnOutputToInput)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 

@@ -80,6 +80,7 @@ public class MatchReplaceTab extends javax.swing.JPanel {
         rdoRepEnc_AutoRecognise.setEnabled(false);
         pnlRepEnc.add(rdoRepEnc_AutoRecognise);
 
+        btnRepDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
         btnRepDownArraw.setText("down");
         btnRepDownArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,7 +88,10 @@ public class MatchReplaceTab extends javax.swing.JPanel {
             }
         });
 
+        btnRepUpArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
         btnRepUpArraw.setText("up");
+        btnRepUpArraw.setHideActionText(true);
+        btnRepUpArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnRepUpArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRepUpArrawActionPerformed(evt);
@@ -136,19 +140,23 @@ public class MatchReplaceTab extends javax.swing.JPanel {
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(scrollMatchReplace, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                        .addGap(0, 12, Short.MAX_VALUE)
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRepUpArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRepDownArraw))
+                        .addGap(23, 23, 23))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnRepDownArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRepUpArraw, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnRepRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRepEdit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRepNew, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlRepEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                            .addComponent(btnRepEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnRepNew, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSelect, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(pnlRepEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,14 +169,14 @@ public class MatchReplaceTab extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnRepNew)
                         .addGap(18, 18, 18)
-                        .addComponent(btnRepEdit)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRepRemove)
-                        .addGap(28, 28, 28)
-                        .addComponent(btnRepUpArraw)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRepDownArraw)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                        .addComponent(btnRepEdit)))
+                .addGap(18, 18, 18)
+                .addComponent(btnRepRemove)
+                .addGap(18, 18, 18)
+                .addComponent(btnRepUpArraw)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnRepDownArraw)
+                .addContainerGap(38, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(scrollMatchReplace, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)

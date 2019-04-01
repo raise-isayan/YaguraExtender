@@ -86,14 +86,15 @@ public class UniversalViewTab extends javax.swing.JPanel {
 
         scrollTarget.setViewportView(listTarget);
 
-        btnEncRightArraw.setText(">");
+        btnEncRightArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_right.png"))); // NOI18N
+        btnEncRightArraw.setActionCommand("");
         btnEncRightArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEncRightArrawActionPerformed(evt);
             }
         });
 
-        btnEncLerftArraw.setText("<");
+        btnEncLerftArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_left.png"))); // NOI18N
         btnEncLerftArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEncLerftArrawActionPerformed(evt);
@@ -102,14 +103,19 @@ public class UniversalViewTab extends javax.swing.JPanel {
 
         scrollSelect.setViewportView(listSelect);
 
+        pop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
         pop.setText("up");
+        pop.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         pop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popActionPerformed(evt);
             }
         });
 
+        btnEncDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
         btnEncDownArraw.setText("down");
+        btnEncDownArraw.setHideActionText(true);
+        btnEncDownArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnEncDownArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEncDownArrawActionPerformed(evt);
@@ -181,7 +187,7 @@ public class UniversalViewTab extends javax.swing.JPanel {
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(lblTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(482, Short.MAX_VALUE)))
+                    .addContainerGap(490, Short.MAX_VALUE)))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
