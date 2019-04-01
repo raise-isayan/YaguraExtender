@@ -10,6 +10,7 @@ import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
 import extend.util.BurpWrap;
+import extend.util.SwingUtil;
 import yagura.external.FormatUtil;
 import extend.util.Util;
 import java.awt.Component;
@@ -82,7 +83,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.txtJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
         this.txtJSON.setContentType("text/json");
 
-        Icon emptyIcon = new EmptyIcon();
+        Icon emptyIcon = SwingUtil.createEmptyIcon();
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) this.treeJSON.getCellRenderer();
         renderer.setOpenIcon(emptyIcon);
         renderer.setClosedIcon(emptyIcon);
@@ -383,24 +384,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
                 break;                
             }
         }
-    }
-
-    class EmptyIcon implements Icon {
-
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            /* Empty icon */ }
-        
-        @Override
-        public int getIconWidth() {
-            return 2;
-        }
-        
-        @Override
-        public int getIconHeight() {
-            return 0;
-        }
-        
     }
     
 }
