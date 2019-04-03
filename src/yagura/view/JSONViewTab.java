@@ -28,6 +28,8 @@ import javax.json.JsonString;
 import javax.json.JsonStructure;
 import javax.json.JsonValue;
 import javax.swing.Icon;
+import javax.swing.JTree;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
@@ -35,6 +37,7 @@ import javax.swing.text.StyledEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import yagura.external.JsonUtil;
 
 /**
@@ -121,6 +124,9 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         pnlTree = new javax.swing.JPanel();
         scrollTree = new javax.swing.JScrollPane();
         treeJSON = new javax.swing.JTree();
+        jPanel1 = new javax.swing.JPanel();
+        btnExpand = new javax.swing.JButton();
+        btnCollapse = new javax.swing.JButton();
 
         mnuRegex.setSelected(true);
         mnuRegex.setText("regex");
@@ -144,6 +150,26 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
         pnlTree.add(scrollTree, java.awt.BorderLayout.CENTER);
 
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+
+        btnExpand.setText("expand");
+        btnExpand.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExpandActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnExpand);
+
+        btnCollapse.setText("collapse");
+        btnCollapse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCollapseActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCollapse);
+
+        pnlTree.add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
         tabbetJSON.addTab("Tree", pnlTree);
 
         add(tabbetJSON, java.awt.BorderLayout.CENTER);
@@ -151,8 +177,19 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         tabbetJSON.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExpandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpandActionPerformed
+        expandJsonTree();
+    }//GEN-LAST:event_btnExpandActionPerformed
+
+    private void btnCollapseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCollapseActionPerformed
+        collapseJsonTree();
+    }//GEN-LAST:event_btnCollapseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCollapse;
+    private javax.swing.JButton btnExpand;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
     private javax.swing.JPanel pnlTree;
@@ -170,20 +207,20 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             if (this.message == null) {
                 return;
             }
-            BurpExtender burp = BurpExtender.getInstance();
             if (this.message != null) {
                 String msg = Util.decodeMessage(this.message.getBodyBytes(), encoding);
                 // Raw
                 this.txtJSON.setText(FormatUtil.prettyJSON(msg));
                 this.txtJSON.setCaretPosition(0);
                 // Tree View
-                DefaultTreeModel model = toJSONTreeModel(JsonUtil.parse(msg));
+                this.modelJSON = toJSONTreeModel(JsonUtil.parse(msg));
 
-                DefaultObjectTableModel.allNodesChanged(this.treeJSON);
-                this.treeJSON.setModel(model);                
+                SwingUtil.allNodesChanged(this.treeJSON);
+                this.treeJSON.setModel(this.modelJSON);                
+                this.expandJsonTree();
             } else {
                 this.txtJSON.setText("");
-                DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelJSON.getRoot();
+                DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
                 root.removeAllChildren();
             }
             this.quickSearchTab.clearViewAndSearch();
@@ -295,6 +332,24 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.quickSearchTab.clearView();
     }
 
+    public void expandJsonTree() {
+        TreePath path = this.treeJSON.getSelectionPath();
+        if (path == null) {
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
+            path = new TreePath(root.getPath());
+        }
+        SwingUtil.expandAll(this.treeJSON, path);                
+    }
+
+    public void collapseJsonTree() {
+        TreePath path = this.treeJSON.getSelectionPath();
+        if (path == null) {
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
+            path = new TreePath(root.getPath());
+        }
+        SwingUtil.collapseAll(this.treeJSON, path);                
+    }
+        
     public DefaultTreeModel toJSONTreeModel(JsonStructure json) {
         DefaultMutableTreeNode rootJSON = new DefaultMutableTreeNode("JSON");
         DefaultTreeModel model = new DefaultTreeModel(rootJSON);

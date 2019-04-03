@@ -1016,11 +1016,6 @@ public class JTransCoderTab extends javax.swing.JPanel {
         pnlWrap.setLayout(new java.awt.GridLayout(4, 0));
 
         chkViewLineWrap.setText("lineWrap");
-        chkViewLineWrap.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkViewLineWrapStateChanged(evt);
-            }
-        });
         chkViewLineWrap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkViewLineWrapActionPerformed(evt);
@@ -2033,11 +2028,6 @@ public class JTransCoderTab extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_chk76NewlineActionPerformed
 
-    private void chkViewLineWrapStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkViewLineWrapStateChanged
-        this.txtInputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
-        this.txtOutputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
-    }//GEN-LAST:event_chkViewLineWrapStateChanged
-
     private void rdoAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoAllActionPerformed
         firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoAllActionPerformed
@@ -2059,6 +2049,8 @@ public class JTransCoderTab extends javax.swing.JPanel {
     }//GEN-LAST:event_rdoLFActionPerformed
 
     private void chkViewLineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewLineWrapActionPerformed
+        this.txtInputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
+        this.txtOutputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
         firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkViewLineWrapActionPerformed
 

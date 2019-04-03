@@ -7,17 +7,11 @@ import burp.IMessageEditorTabFactory;
 import burp.IRequestInfo;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
-import yagura.external.FormatUtil;
-import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.IOException;
 import java.text.ParseException;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -67,6 +61,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.txtPayloadJSON.setEditable(false);
         this.txtPayloadJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
         this.txtPayloadJSON.setContentType("text/json");
+        
     }
 
     /**
@@ -128,10 +123,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
         pnlJWT.add(pnlPayload, java.awt.BorderLayout.CENTER);
 
+        Signature.setPreferredSize(new java.awt.Dimension(108, 60));
         Signature.setLayout(new java.awt.BorderLayout());
 
         lblSignature.setText("Signature");
         Signature.add(lblSignature, java.awt.BorderLayout.PAGE_START);
+
+        scrollSignatureJSON.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         txtSignatureJSON.setEditable(false);
         scrollSignatureJSON.setViewportView(txtSignatureJSON);
