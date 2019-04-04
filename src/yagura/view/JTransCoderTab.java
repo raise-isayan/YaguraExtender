@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.ITab;
 import extend.model.base.CustomTableModel;
 import extend.util.ConvertUtil;
 import extend.util.SwingUtil;
@@ -7,6 +8,7 @@ import extend.util.Util;
 import extend.util.HashUtil;
 import extend.view.model.VerticalFlowLayout;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -56,7 +58,7 @@ import yagura.model.JTransCoderProperty;
  *
  * @author isayan
  */
-public class JTransCoderTab extends javax.swing.JPanel {
+public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     /**
      * Creates new form JTransCoder
@@ -1565,8 +1567,16 @@ public class JTransCoderTab extends javax.swing.JPanel {
         add(tabbetTranscoder, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    @SuppressWarnings("unchecked")
+    @Override
+    public String getTabCaption() {
+        return "JTransCoder";
+    }
 
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+    
     private CustomTableModel modelHex = null;
 
     private JDatePickerImpl datePickerStart;

@@ -5,9 +5,11 @@
  */
 package yagura.view;
 
+import burp.ITab;
 import yagura.model.LoggingProperty;
 import extend.util.SwingUtil;
 import extend.util.Util;
+import java.awt.Component;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -16,7 +18,7 @@ import javax.swing.JOptionPane;
  *
  * @author isayan
  */
-public class LoggingTab extends javax.swing.JPanel {
+public class LoggingTab extends javax.swing.JPanel implements ITab {
 
     /**
      * Creates new form LoggingTab
@@ -227,6 +229,16 @@ public class LoggingTab extends javax.swing.JPanel {
         add(tabLogging, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public String getTabCaption() {
+        return "Logging";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+        
     private void chkAutoLoggingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAutoLoggingActionPerformed
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkAutoLoggingActionPerformed

@@ -5,7 +5,6 @@ import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
-import extend.model.base.DefaultObjectTableModel;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
@@ -15,8 +14,8 @@ import yagura.external.FormatUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.text.ParseException;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -28,8 +27,6 @@ import javax.json.JsonString;
 import javax.json.JsonStructure;
 import javax.json.JsonValue;
 import javax.swing.Icon;
-import javax.swing.JTree;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
@@ -39,6 +36,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import yagura.external.JsonUtil;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -262,6 +260,10 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         if (content == null || content.length == 0) {
             return false;
         }
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
+            return false;
+        }        
         boolean mimeJsonType = false;
         byte[] body = new byte[0];
         if (this.isRequest && isMessageRequest) {

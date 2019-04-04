@@ -14,11 +14,13 @@ import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
 import java.text.ParseException;
+import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -196,6 +198,10 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         if (content == null || content.length == 0) {
             return false;
         }
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
+            return false;
+        }        
         boolean mimeHTMLType = false;
         byte [] body = new byte [0]; 
         if (!isMessageRequest) {

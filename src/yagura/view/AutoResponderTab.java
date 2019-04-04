@@ -3,10 +3,12 @@ package yagura.view;
 import yagura.model.AutoResponderProperty;
 import burp.BurpExtender;
 import burp.IExtensionStateListener;
+import burp.ITab;
 import yagura.model.AutoResponderItem;
 import extend.model.base.CustomTableModel;
 import extend.util.SwingUtil;
 import extend.util.Util;
+import java.awt.Component;
 import java.awt.TrayIcon;
 import java.awt.event.KeyEvent;
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -29,7 +31,7 @@ import yagura.AutoResponderServer;
  *
  * @author isayan
  */
-public class AutoResponderTab extends javax.swing.JPanel implements IExtensionStateListener, UncaughtExceptionHandler {
+public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExtensionStateListener, UncaughtExceptionHandler {
 
     /**
      * Creates new form AutoResponder
@@ -158,6 +160,16 @@ public class AutoResponderTab extends javax.swing.JPanel implements IExtensionSt
                 .addContainerGap(15, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    public String getTabCaption() {
+        return "AutoResponder";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
     
     private CustomTableModel modelAutoResponder = null;
     private final AutoResponderItemDlg autoResponderDlg = new AutoResponderItemDlg(null, true);

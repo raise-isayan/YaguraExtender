@@ -5,9 +5,11 @@
  */
 package yagura.view;
 
+import burp.ITab;
 import extend.model.base.CustomListModel;
 import yagura.model.UniversalViewProperty;
 import extend.util.Util;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -25,7 +27,7 @@ import javax.swing.event.ListDataListener;
  *
  * @author isayan
  */
-public class UniversalViewTab extends javax.swing.JPanel {
+public class UniversalViewTab extends javax.swing.JPanel implements ITab {
 
     /**
      * Creates new form EncodingTab
@@ -318,6 +320,17 @@ public class UniversalViewTab extends javax.swing.JPanel {
 
         add(tabMessageView);
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    public String getTabCaption() {
+        return "CJK View";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+
     private final CustomListModel modelTarget = new CustomListModel();
     private final CustomListModel modelSelect = new CustomListModel();
 

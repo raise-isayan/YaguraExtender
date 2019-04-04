@@ -4,6 +4,7 @@ import burp.BurpExtender;
 import burp.IHttpRequestResponse;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
+import burp.ITab;
 import extend.model.base.DefaultObjectTableModel;
 import extend.util.Util;
 import extend.view.base.MatchItem;
@@ -46,7 +47,7 @@ import yagura.model.ResultView;
  *
  * @author isayan
  */
-public class JSearchTab extends javax.swing.JPanel {
+public class JSearchTab extends javax.swing.JPanel implements ITab {
 
     /**
      * Creates new form JSerchTab
@@ -352,6 +353,16 @@ public class JSearchTab extends javax.swing.JPanel {
         add(pnlResult, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public String getTabCaption() {
+        return "JSearch";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+    
     private DefaultObjectTableModel<ResultView> modelSearch = null;
     private MessageViewTab tabMessageView = new MessageViewTab();
     private JComboBox cmbColor = new JComboBox();

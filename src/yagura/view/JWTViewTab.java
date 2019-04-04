@@ -10,6 +10,7 @@ import extend.view.base.HttpRequest;
 import java.awt.Component;
 import java.awt.Font;
 import java.text.ParseException;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
 import yagura.model.JWTObject;
 import yagura.model.JWTToken;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -203,6 +205,10 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             return false;
         }
         if (isMessageRequest) {
+            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
+                return false;
+            }        
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<String> headers = reqInfo.getHeaders();
             for (String h : headers) {

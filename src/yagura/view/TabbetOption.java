@@ -54,16 +54,16 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.addTab("CJK View", this.tabUniversalView);
-        this.addTab("MatchReplace", this.tabMatchReplace);
-        this.addTab("MatchAlert", this.tabMatchAlert);
-        this.addTab("AutoResponder", this.tabAutoResponder);
-        this.addTab("SendTo", this.tabSendTo);
-        this.addTab("Logging", this.tabLogging);
-        this.addTab("JSearch", this.tabJSearch);
-        this.addTab("JTransCoder", this.tabJTransCoder);
+        this.addTab(this.tabUniversalView.getTabCaption(), this.tabUniversalView);
+        this.addTab(this.tabMatchReplace.getTabCaption(), this.tabMatchReplace);
+        this.addTab(this.tabMatchAlert.getTabCaption(), this.tabMatchAlert);
+        this.addTab(this.tabAutoResponder.getTabCaption(), this.tabAutoResponder);
+        this.addTab(this.tabSendTo.getTabCaption(), this.tabSendTo);
+        this.addTab(this.tabLogging.getTabCaption(), this.tabLogging);
+        this.addTab(this.tabJSearch.getTabCaption(), this.tabJSearch);
+        this.addTab(this.tabJTransCoder.getTabCaption(), this.tabJTransCoder);
 //        this.addTab("RapidFire", this.tabRapidFireTab);
-        this.addTab("Version", this.tabVersion);
+        this.addTab(this.tabVersion.getTabCaption(), this.tabVersion);
 
         this.tabUniversalView.addPropertyChangeListener(CJK_VIEW_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MATCHREPLACE_PROPERTY, this);

@@ -5,8 +5,8 @@
  */
 package yagura.view;
 
+import burp.ITab;
 import extend.model.base.CustomListModel;
-import extend.util.SwingUtil;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import extend.util.Util;
@@ -21,15 +21,13 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import javax.swing.table.DefaultTableModel;
-import yagura.model.AutoResponderItem;
 import yagura.model.MatchReplaceGroup;
 
 /**
  *
  * @author isayan
  */
-public class MatchReplaceTab extends javax.swing.JPanel {
+public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
 
     /**
      * Creates new form MatchReplace
@@ -187,6 +185,17 @@ public class MatchReplaceTab extends javax.swing.JPanel {
 
         add(tabMatchReplace, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    public String getTabCaption() {
+        return "MatchReplace";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final CustomListModel modelReplace = new CustomListModel();
     private final ListDataListener listDataListener = new ListDataListener() {

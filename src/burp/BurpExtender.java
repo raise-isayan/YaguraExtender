@@ -188,45 +188,23 @@ public class BurpExtender extends BurpExtenderImpl
             this.tabbetOption.setProperty(this.option);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
 
-            this.renewView();
+            this.registerView();
             
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    public void renewView() {
+    public void registerView() {
         IBurpExtenderCallbacks cb = getCallbacks();        
-        cb.removeMessageEditorTabFactory(this.requestRawTab);
-        cb.removeMessageEditorTabFactory(this.responseRawTab);
-        cb.removeMessageEditorTabFactory(this.requestParamsTab);
-        cb.removeMessageEditorTabFactory(this.generatePoCTab);
-        cb.removeMessageEditorTabFactory(this.commentViewTab);
-        cb.removeMessageEditorTabFactory(this.requestJSONTab);
-        cb.removeMessageEditorTabFactory(this.responseJSONTab);
-        cb.removeMessageEditorTabFactory(this.jwtViewTab);            
-        
-        EnumSet<UniversalViewProperty.UniversalView> uview = this.option.getEncodingProperty().getMessageView();
-        if (uview.contains(UniversalViewProperty.UniversalView.JRAW)) {
-            cb.registerMessageEditorTabFactory(this.requestRawTab);
-            cb.registerMessageEditorTabFactory(this.responseRawTab);
-        }
-        if (uview.contains(UniversalViewProperty.UniversalView.JPARAM)) {
-            cb.registerMessageEditorTabFactory(this.requestParamsTab);            
-        }
-        if (uview.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
-            cb.registerMessageEditorTabFactory(this.generatePoCTab);                
-        }
-        if (uview.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
-            cb.registerMessageEditorTabFactory(this.commentViewTab);            
-        }
-        if (uview.contains(UniversalViewProperty.UniversalView.JSON)) {
-            cb.registerMessageEditorTabFactory(this.requestJSONTab);
-            cb.registerMessageEditorTabFactory(this.responseJSONTab);                
-        }                                        
-        if (uview.contains(UniversalViewProperty.UniversalView.JWT)) {
-            cb.registerMessageEditorTabFactory(this.jwtViewTab);            
-        }                                        
+        cb.registerMessageEditorTabFactory(this.requestRawTab);
+        cb.registerMessageEditorTabFactory(this.responseRawTab);
+        cb.registerMessageEditorTabFactory(this.requestParamsTab);
+        cb.registerMessageEditorTabFactory(this.generatePoCTab);
+        cb.registerMessageEditorTabFactory(this.commentViewTab);
+        cb.registerMessageEditorTabFactory(this.requestJSONTab);
+        cb.registerMessageEditorTabFactory(this.responseJSONTab);
+        cb.registerMessageEditorTabFactory(this.jwtViewTab);            
     }
     
     
@@ -709,7 +687,6 @@ public class BurpExtender extends BurpExtenderImpl
                 if (TabbetOption.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setEncodingProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
-                    renewView();
                     applyOptionProperty();
                 } else if (TabbetOption.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());

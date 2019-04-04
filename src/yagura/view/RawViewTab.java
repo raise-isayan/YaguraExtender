@@ -11,6 +11,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.DocumentEvent;
@@ -18,6 +19,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -163,6 +165,13 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 
     @Override
     public boolean isEnabled(byte[] content, boolean isRequest) {
+        if (content == null || content.length == 0) {
+            return false;
+        }
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
+            return false;
+        }        
         if (this.request && isRequest && content != null && content.length > 0) {
             return true;
         } else if (!this.request && !isRequest && content != null && content.length > 0) {

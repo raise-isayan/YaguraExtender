@@ -1,14 +1,11 @@
- /*
- * VersionTab.java
- *
- * Created on 2010/11/27, 15:00:30
- */
 package yagura.view;
 
 import burp.BurpExtender;
+import burp.ITab;
 import yagura.Config;
 import yagura.Version;
 import extend.view.model.VerticalFlowLayout;
+import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -16,13 +13,12 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import yagura.model.IOptionProperty;
 
 /**
  *
  * @author isayan
  */
-public class VersionTab extends javax.swing.JPanel {
+public class VersionTab extends javax.swing.JPanel implements ITab {
 
     /**
      * Creates new form VersionTab
@@ -173,6 +169,16 @@ public class VersionTab extends javax.swing.JPanel {
     private javax.swing.JTextArea txtVersion;
     // End of variables declaration//GEN-END:variables
 
+   @Override
+    public String getTabCaption() {
+        return "Version";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+    
     public boolean getDebugMode() {
         return this.chkDebugMode.getModel().isSelected();
     }

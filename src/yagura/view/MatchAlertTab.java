@@ -5,10 +5,12 @@
  */
 package yagura.view;
 
+import burp.ITab;
 import extend.model.base.CustomTableModel;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
 import extend.util.SwingUtil;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author isayan
  */
-public class MatchAlertTab extends javax.swing.JPanel {
+public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
 
     /**
      * Creates new form MatchAlertTab
@@ -163,6 +165,16 @@ public class MatchAlertTab extends javax.swing.JPanel {
         add(tabAutoAlert, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public String getTabCaption() {
+        return "MatchAlert";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+    
     private CustomTableModel modelAlert = null;
     private final MatchAlertItemDlg matchAlertDlg = new MatchAlertItemDlg(null, true);
 

@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +34,7 @@ import yagura.external.TransUtil;
 import yagura.model.Parameter;
 import yagura.model.ParamsView;
 import yagura.model.ParamsViewModel;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -320,6 +322,13 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     @Override
     public boolean isEnabled(byte[] content, boolean isRequest) {
         if (isRequest) {
+            if (content == null || content.length == 0) {
+                return false;
+            }
+            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
+                return false;
+            }        
             IRequestInfo requestInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<IParameter> params = requestInfo.getParameters();
             int count = 0;

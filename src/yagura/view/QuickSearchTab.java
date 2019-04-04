@@ -6,11 +6,16 @@ import yagura.model.StartEndPosion;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.text.JTextComponent;
 import yagura.external.TransUtil;
 
 /**
@@ -30,6 +35,24 @@ public class QuickSearchTab extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.chkUniq.setVisible(false);
+        if (this.cmbQuckSearch.getEditor().getEditorComponent() instanceof JTextComponent) {
+             JTextComponent tc = (JTextComponent)this.cmbQuckSearch.getEditor().getEditorComponent();
+             tc.addFocusListener(new FocusAdapter() {
+                 @Override
+                 public void focusLost(FocusEvent e) {
+                    clearView();
+                    quickSearchPerformed(true);
+                 }             
+             });
+             tc.addKeyListener(new KeyAdapter() {
+                 @Override
+                 public void keyReleased(KeyEvent e) {
+                    clearView();
+                    quickSearchPerformed(true, false);
+                 }             
+             });             
+             
+        }        
     }
 
     /**
@@ -125,22 +148,12 @@ public class QuickSearchTab extends javax.swing.JPanel {
         pnlSearch.add(pnlSearchNavi, java.awt.BorderLayout.WEST);
 
         cmbQuckSearch.setEditable(true);
-        cmbQuckSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbQuckSearchActionPerformed(evt);
-            }
-        });
         pnlSearch.add(cmbQuckSearch, java.awt.BorderLayout.CENTER);
 
         pnlStatus.setLayout(new java.awt.BorderLayout());
 
         chkUniq.setSelected(true);
         chkUniq.setText("Uniq");
-        chkUniq.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkUniqActionPerformed(evt);
-            }
-        });
         pnlStatus.add(chkUniq, java.awt.BorderLayout.EAST);
 
         lblMatch.setText("0 match");
@@ -172,14 +185,6 @@ public class QuickSearchTab extends javax.swing.JPanel {
         this.regex = this.mnuRegex.isSelected();
         this.ignoreCase = this.mnuIgnoreCase.isSelected();
     }//GEN-LAST:event_popQuickPopupMenuWillBecomeVisible
-
-    private void chkUniqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniqActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkUniqActionPerformed
-
-    private void cmbQuckSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbQuckSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbQuckSearchActionPerformed
 
     private final KeywordHighlighter highlightKeyword = new KeywordHighlighter();
 
@@ -231,8 +236,12 @@ public class QuickSearchTab extends javax.swing.JPanel {
     public javax.swing.JPanel getSearchPanel() {
         return this.pnlSearch;
     }
-        
+
     private void quickSearchPerformed(boolean forward) {
+        quickSearchPerformed(forward, true);
+    }
+    
+    private void quickSearchPerformed(boolean forward, boolean appendHistory) {
         javax.swing.text.JTextComponent ta = this.getSelectedTextArea();
         String searchText = (String) this.cmbQuckSearch.getEditor().getItem();
         if (searchText == null || searchText.length() == 0) {
@@ -240,12 +249,14 @@ public class QuickSearchTab extends javax.swing.JPanel {
             return;
         }
         // history
-        this.cmbQuckSearch.setVisible(false);
-        DefaultComboBoxModel model = (DefaultComboBoxModel) this.cmbQuckSearch.getModel();
-        model.removeElement(searchText);
-        model.insertElementAt(searchText, 0);
-        this.cmbQuckSearch.setSelectedIndex(0);
-        this.cmbQuckSearch.setVisible(true);
+        if (appendHistory) {
+            this.cmbQuckSearch.setVisible(false);
+            DefaultComboBoxModel model = (DefaultComboBoxModel) this.cmbQuckSearch.getModel();
+            model.removeElement(searchText);
+            model.insertElementAt(searchText, 0);
+            this.cmbQuckSearch.setSelectedIndex(0);
+            this.cmbQuckSearch.setVisible(true);        
+        }
 
         if (ta.getHighlighter() instanceof KeywordHighlighter) {
             KeywordHighlighter high = (KeywordHighlighter) ta.getHighlighter();
@@ -266,7 +277,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
                     return;
                 }
             }
-            ta.requestFocus();
+            //ta.requestFocus();
             this.lblMatch.setText(String.format("%d match", high.getPositionCount()));
             if (high.getPositionCount() > 0) {
                 this.lblMatch.setBackground(Color.ORANGE);
@@ -325,16 +336,16 @@ public class QuickSearchTab extends javax.swing.JPanel {
         this.keyword = null;
         this.highlightKeyword.clearHighlightKeyword();
         this.lblMatch.setText(String.format("%d match", 0));
-        this.cmbQuckSearch.getEditor().setItem("");
+//        this.cmbQuckSearch.getEditor().setItem("");
     }
 
     public void clearViewAndSearch() {
         clearView();
-        String selectItem = "";
-        if (this.cmbQuckSearch.getModel().getSize() > 0) {
-            selectItem = (String)this.cmbQuckSearch.getModel().getElementAt(0);
-        }
-        this.cmbQuckSearch.getEditor().setItem(selectItem);
+//        String selectItem = "";
+//        if (this.cmbQuckSearch.getModel().getSize() > 0) {
+//            selectItem = (String)this.cmbQuckSearch.getModel().getElementAt(0);
+//        }
+//        this.cmbQuckSearch.getEditor().setItem(selectItem);
         this.quickSearchPerformed(true);
     }
     

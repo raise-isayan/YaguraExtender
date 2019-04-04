@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,6 +32,7 @@ import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -417,6 +419,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     @Override
     public boolean isEnabled(byte[] content, boolean isMessageRequest) {
         if (isMessageRequest) {
+            if (content == null || content.length == 0) {
+                return false;
+            }
+            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+                return false;
+            }        
             try {
                 HttpRequest request = HttpRequest.parseHttpRequest(content);
                 String host = request.getHost();
@@ -430,9 +439,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             } catch (ParseException ex) {
                 return false;
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
     @Override
