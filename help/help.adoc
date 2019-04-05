@@ -29,9 +29,10 @@
 * JDatePicker
 ** https://github.com/JDatePicker/JDatePicker
 ** BSD ライセンス
- 
-* MPL 1.1、GPL 2. 
-* https://github.com/albfernandez/juniversalchardet
+
+* Universal Chardet for java
+** https://github.com/albfernandez/juniversalchardet
+** MPL 1.1、GPL 2. 
 
 * Use Icon
 ** http://www.famfamfam.com/lab/icons/silk/
@@ -68,6 +69,9 @@ Select::
     選択したエンコーディングの順番を移動します。
     ここでの順番が、エンコーディングに表示される順番になります。
 
+[Reset]ボタン::
+    選択された言語のエンコーディングをデフォルトに設定します。
+
 clip bord auto decode:: 
     チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
     クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。 +
@@ -83,6 +87,9 @@ HTML Comment::
 
 JSON:: 
    メッセージタブにJSONタブを表示するようにします。
+
+JWT:: 
+   メッセージタブにJWTタブを表示するようにします。
 
 Universal Raw:: 
    メッセージタブにCJKに対応したRawタブを表示するようにします。
@@ -538,6 +545,9 @@ Encodeing::
 [Encode]/[Decode]ボタン:: 
      選択した変換方式でエンコード、デコード変換を行います。
 
+Historyコンボボックス:: 
+     変換した履歴が記録されており、選択すると以前の変換を取得できます。
+
 ===== Encode/Decode
 
 チェックしたエンコード/デコードを行います。
@@ -601,10 +611,13 @@ UTF-8::
     UTF-8のエンコードを行います。2バイト表現、3バイト表現、4バイト表現をURLエンコードします。
 
 C Lang:: 
-    C言語形式のエスケープお行います。
+    C言語形式のエスケープを行います。
 
 SQL:: 
-    SQL言語形式のエスケープお行います。
+    SQL言語形式のエスケープを行います。
+
+Regex:: 
+    正規表現のエスケープを行います。
 
 ===== Regex
 
@@ -734,7 +747,6 @@ generator count::
 [Save to file]ボタン::
   生成したリストをファイルに出力します。
 
-
 === Generate CSRF PoC
 
 CSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。
@@ -790,7 +802,7 @@ plain:: text area を利用してPoCを作成します。 +
 バージョン情報を表示します。
 
 [Import]ボタン:: 
-     設定をXML形式にてExportします。
+     設定をXML形式にてImportします。
 [Export]ボタン:: 
-     XML形式の設定をImportします。
+     XML形式の設定をExportします。
 

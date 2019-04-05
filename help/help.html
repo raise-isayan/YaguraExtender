@@ -527,10 +527,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </li>
 <li>
-<p>MPL 1.1、GPL 2.</p>
-</li>
+<p>Universal Chardet for java</p>
+<div class="ulist">
+<ul>
 <li>
 <p><a href="https://github.com/albfernandez/juniversalchardet" class="bare">https://github.com/albfernandez/juniversalchardet</a></p>
+</li>
+<li>
+<p>MPL 1.1、GPL 2.</p>
+</li>
+</ul>
+</div>
 </li>
 <li>
 <p>Use Icon</p>
@@ -595,6 +602,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>選択したエンコーディングの順番を移動します。
 ここでの順番が、エンコーディングに表示される順番になります。</p>
 </dd>
+<dt class="hdlist1">[Reset]ボタン</dt>
+<dd>
+<p>選択された言語のエンコーディングをデフォルトに設定します。</p>
+</dd>
 <dt class="hdlist1">clip bord auto decode</dt>
 <dd>
 <p>チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
@@ -619,6 +630,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dt class="hdlist1">JSON</dt>
 <dd>
 <p>メッセージタブにJSONタブを表示するようにします。</p>
+</dd>
+<dt class="hdlist1">JWT</dt>
+<dd>
+<p>メッセージタブにJWTタブを表示するようにします。</p>
 </dd>
 <dt class="hdlist1">Universal Raw</dt>
 <dd>
@@ -1347,6 +1362,10 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>選択した変換方式でエンコード、デコード変換を行います。</p>
 </dd>
+<dt class="hdlist1">Historyコンボボックス</dt>
+<dd>
+<p>変換した履歴が記録されており、選択すると以前の変換を取得できます。</p>
+</dd>
 </dl>
 </div>
 <div class="sect4">
@@ -1435,11 +1454,15 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </dd>
 <dt class="hdlist1">C Lang</dt>
 <dd>
-<p>C言語形式のエスケープお行います。</p>
+<p>C言語形式のエスケープを行います。</p>
 </dd>
 <dt class="hdlist1">SQL</dt>
 <dd>
-<p>SQL言語形式のエスケープお行います。</p>
+<p>SQL言語形式のエスケープを行います。</p>
+</dd>
+<dt class="hdlist1">Regex</dt>
+<dd>
+<p>正規表現のエスケープを行います。</p>
 </dd>
 </dl>
 </div>
@@ -1731,11 +1754,11 @@ Content-TypeがMulti part かつファイルアップロードの項目がある
 <dl>
 <dt class="hdlist1">[Import]ボタン</dt>
 <dd>
-<p>設定をXML形式にてExportします。</p>
+<p>設定をXML形式にてImportします。</p>
 </dd>
 <dt class="hdlist1">[Export]ボタン</dt>
 <dd>
-<p>XML形式の設定をImportします。</p>
+<p>XML形式の設定をExportします。</p>
 </dd>
 </dl>
 </div>
@@ -1745,7 +1768,7 @@ Content-TypeがMulti part かつファイルアップロードの項目がある
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-03-09 17:44:01 JST
+Last updated 2019-04-05 19:56:49 JST
 </div>
 </div>
 </body>
