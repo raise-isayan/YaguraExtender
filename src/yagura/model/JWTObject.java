@@ -14,6 +14,7 @@ public class JWTObject extends JWTToken {
     }
     
         /**
+     * @param pretty
      * @return the header
      */
     public String getHeaderJSON(boolean pretty) {
@@ -25,6 +26,7 @@ public class JWTObject extends JWTToken {
     }
 
     /**
+     * @param pretty
      * @return the payload
      */
     public String getPayloadJSON(boolean pretty) {
@@ -38,6 +40,7 @@ public class JWTObject extends JWTToken {
     /**
      * @return the signature
      */
+    @Override
     public byte [] getSignatureByte() {
         return decodeB64Byte(this.getSignature());
     }

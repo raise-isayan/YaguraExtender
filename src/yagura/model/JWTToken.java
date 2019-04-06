@@ -46,15 +46,15 @@ public class JWTToken {
         PS256(""),
         PS384(""),
         PS512("");
-                
-        private String ident;
 
-        Algorithm(String ident) {
-            this.ident = ident;
+        private String signAlgorithm;
+
+        Algorithm(String signAlgorithm) {
+            this.signAlgorithm = signAlgorithm;
         }
 
-        public String getIdent() {
-            return ident;
+        public String getSignAlgorithm() {
+            return signAlgorithm;
         }
 
     };
@@ -169,7 +169,7 @@ public class JWTToken {
     }
 
     /**
-     * @return the algorithm
+     * @return the signAlgorithm
      */
     public Algorithm getAlgorithm() {
         return algorithm;
@@ -203,7 +203,7 @@ public class JWTToken {
         return this.signatureByte;
     }
 
-    public static boolean signatureEqual(final JWTToken token, final String secret) {
+    public static boolean signatureEqual(final JWTToken token, final String secret) throws NoSuchAlgorithmException {
         return signatureEqual(token.getAlgorithm(), token.getData(), token.getSignatureByte(), secret);
     }
 
@@ -213,27 +213,31 @@ public class JWTToken {
 
     static {
         try {
-            mac256 = Mac.getInstance(Algorithm.HS256.getIdent());
-            mac384 = Mac.getInstance(Algorithm.HS384.getIdent());
-            mac512 = Mac.getInstance(Algorithm.HS512.getIdent());
+            mac256 = Mac.getInstance(Algorithm.HS256.getSignAlgorithm());
+            mac384 = Mac.getInstance(Algorithm.HS384.getSignAlgorithm());
+            mac512 = Mac.getInstance(Algorithm.HS512.getSignAlgorithm());
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
-    public static boolean signatureEqual(Algorithm algo, final String encrypt, final byte[] signature, final String secret) {
+    public static boolean signatureEqual(Algorithm algo, final String encrypt, final byte[] signature, final String secret) throws NoSuchAlgorithmException {
         try {
             Mac mac = mac256;
             switch (algo) {
+                case HS256:
+                    mac = mac256;
+                    break;
                 case HS384:
                     mac = mac384;
                     break;
                 case HS512:
                     mac = mac512;
                     break;
+                default:
+                    throw new NoSuchAlgorithmException(algo.name());
             }
-            final SecretKeySpec sk = new SecretKeySpec(Util.getRawByte(secret), algo.getIdent());
+            final SecretKeySpec sk = new SecretKeySpec(Util.getRawByte(secret), algo.getSignAlgorithm());
             mac.init(sk);
             mac.reset();
             final byte[] mac_bytes = mac.doFinal(Util.getRawByte(encrypt));
