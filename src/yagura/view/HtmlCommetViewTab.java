@@ -9,7 +9,7 @@ import extend.view.base.HttpMessage;
 import extend.view.base.HttpResponse;
 import extend.util.BurpWrap;
 import extend.util.HttpUtil;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;

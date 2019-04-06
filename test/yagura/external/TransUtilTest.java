@@ -1,8 +1,9 @@
 package yagura.external;
 
+import extend.util.external.TransUtil;
 import extend.util.HttpUtil;
 import extend.util.Util;
-import yagura.external.TransUtil.EncodePattern;
+import extend.util.external.TransUtil.EncodePattern;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;

@@ -87,14 +87,14 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 
             },
             new String [] {
-                "", "MenuCaption", "Server", "Target", "Req Header", "Req Body", "Res Header", "Res Body", "Extend"
+                "", "MenuCaption", "Server", "Target", "Req Header", "Req Body", "Res Header", "Res Body", "Rev Order", "Extend"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -118,6 +118,8 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
             tableSendTo.getColumnModel().getColumn(6).setResizable(false);
             tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(0);
             tableSendTo.getColumnModel().getColumn(7).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(8).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(9).setResizable(false);
         }
 
         btnSendToDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
@@ -280,10 +282,15 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         this.tableSendTo.getColumnModel().getColumn(7).setPreferredWidth(30);
         this.tableSendTo.getColumnModel().getColumn(7).setMaxWidth(60);
         
-        // Extend
+        // reverse order
         this.tableSendTo.getColumnModel().getColumn(8).setMinWidth(0);
         this.tableSendTo.getColumnModel().getColumn(8).setPreferredWidth(0);
         this.tableSendTo.getColumnModel().getColumn(8).setMaxWidth(0);
+
+        // Extend
+        this.tableSendTo.getColumnModel().getColumn(9).setMinWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(9).setPreferredWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(9).setMaxWidth(0);
 
         // 
         this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

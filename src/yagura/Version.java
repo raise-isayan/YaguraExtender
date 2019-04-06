@@ -1,13 +1,8 @@
 package yagura;
 
 import burp.BurpExtender;
-import static burp.BurpExtender.getExtensionLogDir;
 import extend.util.CustomVersion;
 
-/*
- * To change this template, choose Tools | Templates and open the template in
- * the editor.
- */
 /**
  *
  * @author isayan

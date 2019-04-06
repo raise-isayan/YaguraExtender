@@ -1,4 +1,4 @@
-package yagura.external;
+package extend.util.external;
 
 import extend.util.ConvertUtil;
 import extend.util.HttpUtil;

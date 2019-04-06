@@ -1,5 +1,6 @@
 package yagura.external;
 
+import extend.util.external.FormatUtil;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

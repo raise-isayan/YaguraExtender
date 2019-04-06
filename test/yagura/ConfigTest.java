@@ -1,4 +1,3 @@
-
 package yagura;
 
 import burp.BurpExtender;
@@ -7,10 +6,14 @@ import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
 import extend.view.base.MatchItem;
 import extend.util.IniProp;
+import extend.util.external.JsonUtil;
+import extend.util.Util;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -18,6 +21,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonStructure;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -80,17 +84,22 @@ public class ConfigTest {
         assertEquals(expResult, result);
     }
 
-
-    /**
-     * Test of getToolLogName method, of class Config.
-     */
     @Test
-    public void testZLIB() {
+    public void testConfig() {
+        try {
+            URL url = this.getClass().getResource("/resources/default_project_burp.json");
+            byte [] test = Util.bytesFromFile(new File(url.toURI()));
+            JsonStructure json = JsonUtil.parse(Util.decodeMessage(test, "UTF-8")); 
+            String value = JsonUtil.prettyJSON(json, true);
+            System.out.println(value);
+        } catch (IOException ex) {
+            Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
-            
-    
-    
+                
 //    /**
 //     * Test of toCharsetMode method, of class Config.
 //     */

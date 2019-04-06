@@ -39,9 +39,16 @@ public class SendToServer extends SendToMenuItem {
     }
 
     public void sendToEvent(IHttpRequestResponse[] messageInfo) {
-        for (int i = 0; i < messageInfo.length; i++) {
-            sendToServer(messageInfo[i]);
-        }        
+        if (this.isReverseOrder()) {
+            for (int i = messageInfo.length - 1; i >= 0 ; i--) {
+                sendToServer(messageInfo[i]);
+            }                        
+        }
+        else {
+            for (int i = 0; i < messageInfo.length; i++) {
+                sendToServer(messageInfo[i]);
+            }                
+        }
     }
     
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();    

@@ -1,7 +1,7 @@
 package yagura.model;
 
 import extend.view.base.MatchItem;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 import java.util.regex.Matcher;
 
 /**

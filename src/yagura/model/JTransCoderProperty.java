@@ -1,8 +1,8 @@
 package yagura.model;
 
-import yagura.external.TransUtil.ConvertCase;
-import yagura.external.TransUtil.EncodeType;
-import yagura.external.TransUtil.NewLine;
+import extend.util.external.TransUtil.ConvertCase;
+import extend.util.external.TransUtil.EncodeType;
+import extend.util.external.TransUtil.NewLine;
 
 /**
  *

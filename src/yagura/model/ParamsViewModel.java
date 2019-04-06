@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 
 /**
  *

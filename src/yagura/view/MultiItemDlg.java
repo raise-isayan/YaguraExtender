@@ -1,7 +1,7 @@
 package yagura.view;
 
 import extend.view.base.CustomDialog;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 import javax.swing.JOptionPane;
 
 /**

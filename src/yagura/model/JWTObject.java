@@ -1,7 +1,7 @@
 package yagura.model;
 
 import java.io.IOException;
-import yagura.external.JsonUtil;
+import extend.util.external.JsonUtil;
 
 /**
  *

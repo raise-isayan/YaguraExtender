@@ -37,7 +37,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;

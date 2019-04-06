@@ -11,7 +11,7 @@ import burp.IScannerInsertionPoint;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
 

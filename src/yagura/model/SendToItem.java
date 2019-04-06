@@ -45,6 +45,7 @@ public class SendToItem {
         this.requestBody = item.requestBody;
         this.responseHeader = item.responseHeader;
         this.responseBody = item.responseBody;
+        this.reverseOrder = item.reverseOrder;
         this.sendExtend = item.sendExtend;
     }
     
@@ -188,6 +189,22 @@ public class SendToItem {
         this.responseBody = responseBody;
     }
     
+    private boolean reverseOrder = false;
+    
+    /**
+     * @return the reverseOrder
+     */
+    public boolean isReverseOrder() {
+        return reverseOrder;
+    }
+
+    /**
+     * @param reverseOrder the reverseOrder to set
+     */
+    public void setReverseOrder(boolean reverseOrder) {
+        this.reverseOrder = reverseOrder;
+    }
+        
     /**
      * @return the extend
      */
@@ -240,7 +257,7 @@ public class SendToItem {
     }
     
     public static Object[] toObjects(SendToItem sendTo) {
-        Object[] beans = new Object[9];
+        Object[] beans = new Object[10];
         beans[0] = sendTo.isSelected();
         beans[1] = sendTo.getCaption();
         beans[2] = sendTo.isServer();
@@ -249,7 +266,8 @@ public class SendToItem {
         beans[5] = sendTo.isRequestBody();
         beans[6] = sendTo.isResponseHeader();
         beans[7] = sendTo.isResponseBody();
-        beans[8] = sendTo.getExtend();
+        beans[8] = sendTo.isReverseOrder();
+        beans[9] = sendTo.getExtend();
         return beans;
     }
 
@@ -263,7 +281,8 @@ public class SendToItem {
         sendTo.setRequestBody((Boolean)rows[5]);
         sendTo.setResponseHeader((Boolean)rows[6]);
         sendTo.setResponseBody((Boolean)rows[7]);
-        sendTo.setExtend((ExtendType)rows[8]);
+        sendTo.setReverseOrder((Boolean)rows[8]);
+        sendTo.setExtend((ExtendType)rows[9]);
         return sendTo;
     }
     

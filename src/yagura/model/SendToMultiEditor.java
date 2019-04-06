@@ -31,8 +31,15 @@ public class SendToMultiEditor extends SendToMenuItem {
     public void sendToEvent(IHttpRequestResponse[] messageInfo) {
         if (messageInfo.length > 0) {
             File [] msgFiles = new File[messageInfo.length];
-            for (int i = 0; i < messageInfo.length; i++) {
-                msgFiles[i] = tempMessageFile(messageInfo[i], i);
+            if (this.isReverseOrder()) {
+                for (int i = messageInfo.length - 1; i >= 0; i--) {
+                   msgFiles[i] = tempMessageFile(messageInfo[i], i);
+               }              
+            }
+            else {
+                for (int i = 0; i < messageInfo.length; i++) {
+                    msgFiles[i] = tempMessageFile(messageInfo[i], i);
+                }            
             }
             try {
                 String [] args = new String[msgFiles.length];

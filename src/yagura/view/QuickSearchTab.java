@@ -16,7 +16,7 @@ import java.util.TimerTask;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.text.JTextComponent;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 
 /**
  *

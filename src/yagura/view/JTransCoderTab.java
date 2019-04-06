@@ -15,8 +15,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.im.InputContext;
-import yagura.external.CertUtil;
-import yagura.external.TransUtil;
+import extend.util.external.CertUtil;
+import extend.util.external.TransUtil;
 import yagura.model.UniversalViewProperty;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,11 +47,11 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.jdatepicker.JDateComponentFactory;
 import org.jdatepicker.impl.JDatePickerImpl;
-import yagura.external.FormatUtil;
-import yagura.external.TransUtil.ConvertCase;
-import yagura.external.TransUtil.DateUnit;
-import yagura.external.TransUtil.EncodeType;
-import yagura.external.TransUtil.NewLine;
+import extend.util.external.FormatUtil;
+import extend.util.external.TransUtil.ConvertCase;
+import extend.util.external.TransUtil.DateUnit;
+import extend.util.external.TransUtil.EncodeType;
+import extend.util.external.TransUtil.NewLine;
 import yagura.model.JTransCoderProperty;
 
 /**

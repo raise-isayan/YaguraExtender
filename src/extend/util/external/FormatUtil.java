@@ -1,4 +1,4 @@
-package yagura.external;
+package extend.util.external;
 
 import java.io.IOException;
 import java.io.StringReader;

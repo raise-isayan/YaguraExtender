@@ -10,7 +10,7 @@ import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
 import extend.util.BurpWrap;
 import extend.util.SwingUtil;
-import yagura.external.FormatUtil;
+import extend.util.external.FormatUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
@@ -35,7 +35,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
-import yagura.external.JsonUtil;
+import extend.util.external.JsonUtil;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -211,7 +211,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
                 this.txtJSON.setText(FormatUtil.prettyJSON(msg));
                 this.txtJSON.setCaretPosition(0);
                 // Tree View
-                this.modelJSON = toJSONTreeModel(JsonUtil.parse(msg));
+                this.modelJSON = (DefaultTreeModel) JsonUtil.toJSONTreeModel(JsonUtil.parse(msg));
 
                 SwingUtil.allNodesChanged(this.treeJSON);
                 this.treeJSON.setModel(this.modelJSON);                
@@ -351,96 +351,5 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         }
         SwingUtil.collapseAll(this.treeJSON, path);                
     }
-        
-    public DefaultTreeModel toJSONTreeModel(JsonStructure json) {
-        DefaultMutableTreeNode rootJSON = new DefaultMutableTreeNode("JSON");
-        DefaultTreeModel model = new DefaultTreeModel(rootJSON);
-        toJSONTreeNode(json, rootJSON);
-        return model;
-    }
-    
-    private void toJSONTreeNode(JsonValue json, DefaultMutableTreeNode parentNode) {
-        switch (json.getValueType()) {
-            case ARRAY: {
-                JsonArray jsonArray = (JsonArray) json;
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    toJSONTreeNode(jsonArray.get(i), parentNode);                    
-                }
-                break;                
-            }
-            case OBJECT: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("{}");
-                parentNode.add(node);                
-                JsonObject jsonObject = (JsonObject) json;
-                Set<Map.Entry<String, JsonValue>> set = jsonObject.entrySet();
-                for (Map.Entry<String, JsonValue> s : set) {
-                    JsonValue value = s.getValue();
-                    switch (value.getValueType()) {
-                        case STRING: {                            
-                            JsonString jsonValue = (JsonString) value;
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + jsonValue.getString());                            
-                            node.add(jsonKeySet);                            
-                            break;                            
-                        }
-                        case NUMBER: {
-                            JsonNumber jsonValue = (JsonNumber) value;
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + jsonValue.bigDecimalValue());                            
-                            node.add(jsonKeySet);
-                            break;                            
-                        }                        
-                        case TRUE: {
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "true");                            
-                            node.add(jsonKeySet);
-                            break;                            
-                        }
-                        case FALSE: {
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "false");                            
-                            node.add(jsonKeySet);
-                            break;                            
-                        }
-                        case NULL: {
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey() + ":" + "null");                            
-                            node.add(jsonKeySet);
-                            break;                            
-                        }
-                        default: {
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s.getKey());                            
-                            node.add(jsonKeySet);
-                            toJSONTreeNode(value, jsonKeySet);                            
-                            break;                            
-                        }
-                    }
-                }
-                break;                
-            }
-            case STRING: {
-                JsonString jsonValue = (JsonString) json;
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(jsonValue.getString());
-                parentNode.add(node);
-                break;
-            }            
-            case NUMBER: {
-                JsonNumber jsonValue = (JsonNumber) json;
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(jsonValue.bigDecimalValue());
-                parentNode.add(node);
-                break;                
-            }            
-            case TRUE: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("true");
-                parentNode.add(node);
-                break;                
-            }
-            case FALSE: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("false");
-                parentNode.add(node);
-                break;                
-            }
-            case NULL: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("null");
-                parentNode.add(node);
-                break;                
-            }
-        }
-    }
-    
+            
 }

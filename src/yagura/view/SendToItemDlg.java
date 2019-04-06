@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 
 /**
  *
@@ -53,6 +53,7 @@ public class SendToItemDlg extends CustomDialog {
         pnlRequest1 = new javax.swing.JPanel();
         chkResponseHeader = new javax.swing.JCheckBox();
         chkResponseBody = new javax.swing.JCheckBox();
+        chkReverseOrder = new javax.swing.JCheckBox();
         tabExtend = new javax.swing.JPanel();
         cmbExtend = new javax.swing.JComboBox();
 
@@ -191,6 +192,8 @@ public class SendToItemDlg extends CustomDialog {
                 .addComponent(chkResponseBody))
         );
 
+        chkReverseOrder.setText("reverse order");
+
         javax.swing.GroupLayout tabBaseLayout = new javax.swing.GroupLayout(tabBase);
         tabBase.setLayout(tabBaseLayout);
         tabBaseLayout.setHorizontalGroup(
@@ -202,6 +205,7 @@ public class SendToItemDlg extends CustomDialog {
                     .addComponent(lblMenuCaption, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkReverseOrder)
                     .addGroup(tabBaseLayout.createSequentialGroup()
                         .addComponent(cmbTargetLocal, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -211,7 +215,7 @@ public class SendToItemDlg extends CustomDialog {
                         .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         tabBaseLayout.setVerticalGroup(
             tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,7 +238,9 @@ public class SendToItemDlg extends CustomDialog {
                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkReverseOrder)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Base", tabBase);
@@ -253,7 +259,7 @@ public class SendToItemDlg extends CustomDialog {
             .addGroup(tabExtendLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmbExtend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Extend", tabExtend);
@@ -380,6 +386,7 @@ public class SendToItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkRequestHeader;
     private javax.swing.JCheckBox chkResponseBody;
     private javax.swing.JCheckBox chkResponseHeader;
+    private javax.swing.JCheckBox chkReverseOrder;
     private javax.swing.JCheckBox chkServer;
     private javax.swing.JComboBox cmbExtend;
     private javax.swing.JComboBox<String> cmbTargetLocal;
@@ -411,6 +418,7 @@ public class SendToItemDlg extends CustomDialog {
             item.setRequestBody(this.chkRequestBody.isSelected());
             item.setResponseHeader(this.chkResponseHeader.isSelected());
             item.setResponseBody(this.chkResponseBody.isSelected());
+            item.setReverseOrder(this.chkReverseOrder.isSelected());
         } else {
             SendToItem.ExtendType sendToExtend = (SendToItem.ExtendType) this.modelExtend.getSelectedItem();
             item.setCaption(sendToExtend.toString());
@@ -433,6 +441,7 @@ public class SendToItemDlg extends CustomDialog {
             this.chkRequestBody.setSelected(item.isRequestBody());
             this.chkResponseHeader.setSelected(item.isResponseHeader());
             this.chkResponseBody.setSelected(item.isResponseBody());
+            this.chkReverseOrder.setSelected(item.isReverseOrder());
         } else {
             this.tabbetSendTo.setSelectedIndex(this.tabbetSendTo.indexOfTab("Extend"));
             SendToItem.ExtendType sendToExtend = item.getExtend();

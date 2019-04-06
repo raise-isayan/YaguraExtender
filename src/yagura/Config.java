@@ -18,7 +18,7 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import yagura.external.TransUtil;
+import extend.util.external.TransUtil;
 import yagura.model.FilterProperty;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
@@ -247,6 +247,7 @@ public final class Config {
             boolean response = prop.readEntryBool("sendto", String.format("item[%d].response", i), false);
             item.setResponseHeader(prop.readEntryBool("sendto", String.format("item[%d].responseHeader", i), response));
             item.setResponseBody(prop.readEntryBool("sendto", String.format("item[%d].responseBody", i), response));
+            item.setReverseOrder(prop.readEntryBool("sendto", String.format("item[%d].reverseOrder", i), false));
             item.setServer(HttpUtil.startsWithHttp(item.getTarget()));
             String sendExtend = prop.readEntry("sendto", String.format("item[%d].extend", i), "null");
             SendToItem.ExtendType sendExtendType = null;
@@ -415,6 +416,7 @@ public final class Config {
 //            prop.writeEntryBool("sendto", String.format("item[%d].response", i), item.isResponse());
             prop.writeEntryBool("sendto", String.format("item[%d].responseHeader", i), item.isRequestHeader());
             prop.writeEntryBool("sendto", String.format("item[%d].responseBody", i), item.isResponseBody());
+            prop.writeEntryBool("sendto", String.format("item[%d].reverseOrder", i), item.isReverseOrder());
             if (item.getExtend() != null) {
                 prop.writeEntry("sendto", String.format("item[%d].extend", i), item.getExtend().name());
             }

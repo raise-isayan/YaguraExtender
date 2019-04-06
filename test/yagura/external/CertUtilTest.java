@@ -1,5 +1,6 @@
 package yagura.external;
 
+import extend.util.external.CertUtil;
 import java.io.File;
 import java.security.Key;
 import java.security.cert.X509Certificate;
