@@ -1,4 +1,4 @@
-package yagura.signature;
+package passive.signature;
 
 import burp.BurpExtender;
 import burp.IHttpRequestResponse;
@@ -7,24 +7,27 @@ import burp.IHttpService;
 import burp.IRequestInfo;
 import burp.IScanIssue;
 import burp.IScannerCheck;
-import burp.IScannerInsertionPoint;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import extend.util.external.TransUtil;
-import yagura.model.MatchAlertItem;
+import extend.view.base.MatchItem;
+import passive.IssueItem;
+import passive.PassiveCheckAdapter;
+import passive.SignatureItem;
 import yagura.model.MatchAlertProperty;
 
 /**
  *
  * @author isayan
  */
-public class MatchAlert implements Signature<MatchAlertIssue> {
+public class MatchAlert extends SignatureItem<IssueItem> {
 
     private final String toolName;
     private final MatchAlertProperty option;
     
     public MatchAlert(final String toolName, final MatchAlertProperty option) {
+        super("MatchAlert", MatchItem.Severity.HIGH);
         this.toolName = toolName;
         this.option = option;
     }
@@ -35,12 +38,20 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
     public String getToolName() {
         return toolName;
     }
-    
+
     @Override
-    public IScanIssue makeScanIssue(final IHttpRequestResponse messageInfo, final MatchAlertIssue issue) {
-        MatchAlertItem item = issue.getMatchAlertItem();                
+    public IScanIssue makeScanIssue(IHttpRequestResponse messageInfo, List<IssueItem> issueItem) {
         
         return new IScanIssue() {
+
+            public IssueItem getItem() {
+                if (issueItem.size() > 0) {
+                    return issueItem.get(0);
+                } else {
+                    return null;
+                }
+            }
+
             @Override
             public URL getUrl() {
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo.getHttpService(), messageInfo.getRequest());
@@ -49,7 +60,7 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
 
             @Override
             public String getIssueName() {
-                return String.format("Match Alert(%s)", item.getIssueName());
+                return String.format("Match Alert(%s)", getItem().getType());
             }
 
             @Override
@@ -63,12 +74,12 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
 
             @Override
             public String getSeverity() {
-                return item.getSeverity().name();
+                return getItem().getServerity().name();
             }
 
             @Override
             public String getConfidence() {
-                return item.getConfidence().name();
+                return getItem().getConfidence().name();
             }
 
             @Override
@@ -112,34 +123,14 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
 
     @Override
     public IScannerCheck passiveScanCheck() {
-        return new IScannerCheck() {
-            @Override
-            public List<IScanIssue> doPassiveScan(IHttpRequestResponse baseRequestResponse) {
-                return null;
-            }
-
-            @Override
-            public List<IScanIssue> doActiveScan(IHttpRequestResponse baseRequestResponse, IScannerInsertionPoint insertionPoint) {
-                return null;
-            }
-
-            @Override
-            public int consolidateDuplicateIssues(IScanIssue existingIssue, IScanIssue newIssue) {
-                if (existingIssue.getIssueName().equals(newIssue.getIssueName())) {
-                    // 同一とみなせる場合は報告をスキップ                    
-                    return -1;
-                }
-                return 0;
-            }
-            
-        };
+        return new PassiveCheckAdapter();               
     }
-
-    public List<IScanIssue> makeIssueList(boolean messageIsRequest, IHttpRequestResponse baseRequestResponse, MatchAlertIssue issue, List<MarkIssue> markIssueList) {
+       
+    public List<IScanIssue> makeIssueList(boolean messageIsRequest, IHttpRequestResponse baseRequestResponse, List<IssueItem> markIssueList) {
         List<int[]> requestResponseMarkers = new ArrayList<>();
         for (int i = 0; i < markIssueList.size(); i++) {
-            MarkIssue pos = markIssueList.get(i);
-            requestResponseMarkers.add(new int[]{pos.getStartPos(), pos.getEndPos()});
+            IssueItem pos = markIssueList.get(i);
+            requestResponseMarkers.add(new int[]{pos.start(), pos.end()});
         }
         IHttpRequestResponseWithMarkers messageInfoMark = null;
         if (messageIsRequest) {
@@ -147,11 +138,9 @@ public class MatchAlert implements Signature<MatchAlertIssue> {
         } else {
             messageInfoMark = BurpExtender.getCallbacks().applyMarkers(baseRequestResponse, null, requestResponseMarkers);
         }
-        
+      
         List<IScanIssue> issues = new ArrayList<>();
-        issues.add(makeScanIssue(messageInfoMark, issue));
+        issues.add(makeScanIssue(messageInfoMark, markIssueList));
         return issues;
     }
-
-    
 }

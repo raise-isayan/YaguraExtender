@@ -277,7 +277,7 @@ public class HTMLSyntaxDocument extends AbstractSyntaxDocument {
         String operands = ";:{}()[]+-/%<=>!&|^~*";
 
         if (Character.isWhitespace(character.charAt(0))
-                || operands.indexOf(character) != -1) {
+                || operands.contains(character)) {
             return true;
         } else {
             return false;
@@ -287,12 +287,7 @@ public class HTMLSyntaxDocument extends AbstractSyntaxDocument {
     @Override
     protected boolean isQuoteDelimiter(String character) {
         String quoteDelimiters = "\"'";
-
-        if (quoteDelimiters.indexOf(character) < 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return quoteDelimiters.contains(character);
     }
 
     @Override

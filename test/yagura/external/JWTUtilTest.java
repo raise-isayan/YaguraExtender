@@ -54,8 +54,69 @@ public class JWTUtilTest {
             boolean result = JWTObject.isJWTFormat(value);
             assertEquals(expResult, result);        
         }
+        {
+            String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoiPj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8iLCJzdWIiOiLjg4bjgrnjg4gifQ.X3cI5c0oMucE4ysk-hfpqn6OSjmS-xXMVhhR_FpHJMQ";
+            boolean expResult = true;
+            boolean result = JWTObject.isJWTFormat(value);
+            assertEquals(expResult, result);                    
+        }
+        {
+            String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.Et9HFtf9R3GEMA0IICOfFMVXY7kkTX1wr4qCyhIf58U";
+            boolean expResult = true;
+            boolean result = JWTObject.isJWTFormat(value);
+            assertEquals(expResult, result);                    
+        }
+        {
+            String value = "xeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
+            //value = value.replace("-_", "+/");
+            boolean expResult = false;
+            boolean result = JWTObject.isJWTFormat(value);
+            assertEquals(expResult, result);        
+        }
     }
 
+    
+    /**
+     * Test of parseJWTToken method, of class JWTUtil.
+     */
+    @Test
+    public void testParseJWTToken() {
+        System.out.println("parseJWTToken");
+        {
+            String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
+            JWTToken expResult = null;
+            //value = value.replace("-_", "+/");
+            JWTToken result = JWTObject.parseJWTToken(value, true);
+            assertNotEquals(expResult, result);        
+        }
+        {
+            String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
+            //value = value.replace("-_", "+/");
+            JWTToken expResult = null;
+            JWTToken result = JWTObject.parseJWTToken(value, true);
+            assertEquals(expResult, result);        
+        }
+        {
+            String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoiPj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8iLCJzdWIiOiLjg4bjgrnjg4gifQ.X3cI5c0oMucE4ysk-hfpqn6OSjmS-xXMVhhR_FpHJMQ";
+            JWTToken expResult = null;
+            JWTToken result = JWTObject.parseJWTToken(value, true);
+            assertNotEquals(expResult, result);                    
+        }
+        {
+            String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.Et9HFtf9R3GEMA0IICOfFMVXY7kkTX1wr4qCyhIf58U";
+            JWTToken expResult = null;
+            JWTToken result = JWTObject.parseJWTToken(value, true);
+            assertNotEquals(expResult, result);                    
+        }
+        {
+            String value = "xeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
+            //value = value.replace("-_", "+/");
+            JWTToken expResult = null;
+            JWTToken result = JWTObject.parseJWTToken(value, false);
+            assertEquals(expResult, result);        
+        }
+    }
+    
     /**
      * Test of ContainsJWTFormat method, of class JWTUtil.
      */

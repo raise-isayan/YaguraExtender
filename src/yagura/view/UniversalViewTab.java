@@ -89,7 +89,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         scrollTarget.setViewportView(listTarget);
 
         btnEncRightArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_right.png"))); // NOI18N
-        btnEncRightArraw.setActionCommand("");
         btnEncRightArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEncRightArrawActionPerformed(evt);
@@ -203,9 +202,9 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
                             .addComponent(scrollTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                             .addComponent(scrollSelect)))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addGap(61, 61, 61)
+                        .addGap(56, 56, 56)
                         .addComponent(pop)
-                        .addGap(36, 36, 36)
+                        .addGap(41, 41, 41)
                         .addComponent(btnEncDownArraw))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(59, 59, 59)
@@ -222,7 +221,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSelectEncode, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSelectDown))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()

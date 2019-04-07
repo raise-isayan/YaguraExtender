@@ -30,7 +30,7 @@ public class JWTToken {
         this.header = token.header;
         this.payload = token.payload;
         this.signature = token.signature;
-        this.signatureByte = decodeB64Byte(token.signature);
+        this.signatureByte = decodeBase64Byte(token.signature);
     }
     
     public enum Algorithm {
@@ -62,7 +62,7 @@ public class JWTToken {
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
 
     private static Algorithm findAlgorithm(String header) {
-        String decodeHeader = decodeB64(header);
+        String decodeHeader = decodeBase64(header);
         Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
         try {
             if (m.find()) {
@@ -79,7 +79,9 @@ public class JWTToken {
     public static boolean isJWTFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
         if (m.matches()) {
-            return true;
+            if (JWTToken.parseJWTToken(value, true) != null) {
+                return true;            
+            }
         }
         return false;
     }
@@ -87,7 +89,7 @@ public class JWTToken {
     public static boolean containsJWTFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
         if (m.find()) {
-            return true;
+            return isJWTFormat(m.group(0));
         }
         return false;
     }
@@ -96,11 +98,14 @@ public class JWTToken {
         List<CaptureItem> tokens = new ArrayList<>();
         Matcher m = PTN_JWT.matcher(value);
         while (m.find()) {
-            CaptureItem item = new CaptureItem();
-            item.setCaptureValue(m.group(0));
-            item.setStart(m.start());
-            item.setEnd(m.end());
-            tokens.add(item);
+            String capture = m.group(0);
+            if (isJWTFormat(capture)) {
+                CaptureItem item = new CaptureItem();
+                item.setCaptureValue(capture);
+                item.setStart(m.start());
+                item.setEnd(m.end());
+                tokens.add(item);            
+            }
         }
         return tokens.toArray(new CaptureItem[0]);
     }
@@ -112,7 +117,7 @@ public class JWTToken {
     private byte[] signatureByte;
 
     public static JWTToken parseJWTToken(String value, boolean matches) {
-        JWTToken jwt = new JWTToken();
+        JWTToken jwt = null;
         Matcher m = PTN_JWT.matcher(value);
         boolean find = false;
         if (matches) {
@@ -122,6 +127,7 @@ public class JWTToken {
         }
 
         if (find) {
+            jwt = new JWTToken();
             String header = m.group(1);
             String payload = m.group(2);
             String signature = m.group(3);
@@ -129,19 +135,19 @@ public class JWTToken {
             jwt.header = header;
             jwt.payload = payload;
             jwt.signature = signature;
-            jwt.signatureByte = decodeB64Byte(signature);
+            jwt.signatureByte = decodeBase64Byte(signature);
         }
         return jwt;
     }
 
-    public static byte[] decodeB64Byte(String value) {
+    public static byte[] decodeBase64Byte(String value) {
         value = value.replace('-', '+');
         value = value.replace('_', '/');
         return Base64.getDecoder().decode(value);
     }
 
-    protected static String decodeB64(String value) {
-        return new String(decodeB64Byte(value), StandardCharsets.UTF_8);
+    protected static String decodeBase64(String value) {
+        return new String(decodeBase64Byte(value), StandardCharsets.UTF_8);
     }
 
     /**

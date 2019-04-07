@@ -151,9 +151,9 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
                         .addContainerGap())
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnRepDownArraw)
-                            .addComponent(btnRepUpArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(btnRepUpArraw, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRepDownArraw, javax.swing.GroupLayout.Alignment.LEADING))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pnlCenterLayout.setVerticalGroup(

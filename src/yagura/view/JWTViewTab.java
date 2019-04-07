@@ -88,7 +88,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         Signature = new javax.swing.JPanel();
         lblSignature = new javax.swing.JLabel();
         scrollSignatureJSON = new javax.swing.JScrollPane();
-        txtSignatureJSON = new javax.swing.JEditorPane();
+        txtSignatureSign = new javax.swing.JEditorPane();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -133,8 +133,8 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
         scrollSignatureJSON.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        txtSignatureJSON.setEditable(false);
-        scrollSignatureJSON.setViewportView(txtSignatureJSON);
+        txtSignatureSign.setEditable(false);
+        scrollSignatureJSON.setViewportView(txtSignatureSign);
 
         Signature.add(scrollSignatureJSON, java.awt.BorderLayout.CENTER);
 
@@ -149,7 +149,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         if (jwt != null) {
             this.txtHeaderJSON.setText(jwt.getHeaderJSON(true));
             this.txtPayloadJSON.setText(jwt.getPayloadJSON(true));
-            this.txtSignatureJSON.setText(jwt.getSignature());
+            this.txtSignatureSign.setText(jwt.getSignature());
         }
     }//GEN-LAST:event_cmbParamItemStateChanged
 
@@ -168,13 +168,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private javax.swing.JScrollPane scrollSignatureJSON;
     private javax.swing.JEditorPane txtHeaderJSON;
     private javax.swing.JEditorPane txtPayloadJSON;
-    private javax.swing.JEditorPane txtSignatureJSON;
+    private javax.swing.JEditorPane txtSignatureSign;
     // End of variables declaration//GEN-END:variables
         
     public void setMessageFont(Font font) {
         this.txtHeaderJSON.setFont(font);
         this.txtPayloadJSON.setFont(font);
-        this.txtSignatureJSON.setFont(font);
+        this.txtSignatureSign.setFont(font);
     }
 
     public boolean isExtendVisible() {
@@ -185,7 +185,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
         this.txtHeaderJSON.setEditable(false);
         this.txtPayloadJSON.setEditable(false);
-        this.txtSignatureJSON.setEditable(false);
+        this.txtSignatureSign.setEditable(false);
         return this;
     }
     

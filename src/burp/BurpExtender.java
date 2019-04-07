@@ -11,9 +11,7 @@ import yagura.view.HtmlCommetViewTab;
 import yagura.view.JSONViewTab;
 import yagura.view.TabbetOption;
 import yagura.model.MatchReplaceGroup;
-import yagura.signature.MarkIssue;
-import yagura.signature.MatchAlert;
-import yagura.signature.MatchAlertIssue;
+import passive.signature.MatchAlert;
 import yagura.model.OptionProperty;
 import extend.view.base.HttpMessage;
 import extend.view.base.MatchItem;
@@ -39,7 +37,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +50,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
-import yagura.model.UniversalViewProperty;
+import passive.IssueItem;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
@@ -536,11 +533,17 @@ public class BurpExtender extends BurpExtenderImpl
                 } else if (bean.isResponse() && !messageIsRequest) {
                     decodeMessage = Util.decodeMessage(messageInfo.getResponse());
                 }
-                List<MarkIssue> markList = new ArrayList<>();
+                List<IssueItem> markList = new ArrayList<>();
                 Matcher m = p.matcher(decodeMessage);
                 int count = 0;
                 while (m.find()) {
-                    markList.add(new MarkIssue(messageIsRequest, m.start(), m.end()));
+                    IssueItem issue = new IssueItem();
+                    issue.setMessageIsRequest(messageIsRequest);
+                    issue.setServerity(bean.getSeverity()); 
+                    issue.setConfidence(bean.getConfidence()); 
+                    issue.setStart(m.start());
+                    issue.setEnd(m.end());
+                    markList.add(issue);
                     count++;
                 }
                 if (count > 0) {
@@ -558,8 +561,7 @@ public class BurpExtender extends BurpExtenderImpl
                     }
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.SCANNER_ISSUE)) {
                         MatchAlert alert = new MatchAlert(toolName, this.option.getMatchAlertProperty());
-                        MatchAlertIssue issue = new MatchAlertIssue(bean, markList);
-                        List<IScanIssue> issues = alert.makeIssueList(messageIsRequest, messageInfo, issue, markList);
+                        List<IScanIssue> issues = alert.makeIssueList(messageIsRequest, messageInfo, markList);
                         for (IScanIssue scanissue : issues) {
                             BurpExtender.getCallbacks().addScanIssue(scanissue);
                         }
