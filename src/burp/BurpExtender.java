@@ -776,7 +776,7 @@ public class BurpExtender extends BurpExtenderImpl
             for (IHttpRequestResponse messageInfo : messageInfoList) {
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
                 URL url = reqInfo.getUrl();
-                buff.append(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()).toString());
+                buff.append(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
                 buff.append("\t");
                 buff.append(url.getQuery());
                 buff.append("\t");

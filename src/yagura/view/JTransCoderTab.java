@@ -2758,6 +2758,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.setConvertCase(transcoderProp.getConvertCase());
         this.setNewLine(transcoderProp.getNewLine());
         this.chkViewLineWrap.setSelected(transcoderProp.isLineWrap());
+        this.chkViewLineWrapActionPerformed(null);
         this.chkRawMode.setSelected(transcoderProp.isRawEncoding());
         this.chkGuess.setSelected(transcoderProp.isGuessEncoding());
         this.cmbEncoding.setSelectedItem(transcoderProp.getSelectEncoding());

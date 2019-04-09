@@ -2,12 +2,14 @@ package yagura.model;
 
 import extend.util.Util;
 import extend.view.base.CaptureItem;
+import extend.view.base.MatchItem;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +36,7 @@ public class JWTToken {
     }
     
     public enum Algorithm {
+        NONE(""),
         HS256("HmacSHA256"),
         HS384("HmacSHA384"),
         HS512("HmacSHA512"),
@@ -57,6 +60,11 @@ public class JWTToken {
             return signAlgorithm;
         }
 
+        public static Algorithm parseValue(String s) {
+            return Algorithm.valueOf(s.toUpperCase());
+        }
+        
+        
     };
 
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
@@ -66,7 +74,8 @@ public class JWTToken {
         Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
         try {
             if (m.find()) {
-                return Enum.valueOf(Algorithm.class, m.group(1));
+//                return Enum.valueOf(Algorithm.class, m.group(1));
+                return Algorithm.parseValue(m.group(1));
             }
         } catch (java.lang.IllegalArgumentException ex) {
 
@@ -74,7 +83,7 @@ public class JWTToken {
         return null;
     }
 
-    private final static Pattern PTN_JWT = Pattern.compile("(e(?:[0-9a-zA-Z_-]){10,})\\.(e(?:[0-9a-zA-Z_-]){2,})\\.((?:[0-9a-zA-Z_-]){20,})");
+    private final static Pattern PTN_JWT = Pattern.compile("(e(?:[0-9a-zA-Z_-]){10,})\\.(e(?:[0-9a-zA-Z_-]){2,})\\.((?:[0-9a-zA-Z_-]){30,})?");
 
     public static boolean isJWTFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
@@ -130,7 +139,7 @@ public class JWTToken {
             jwt = new JWTToken();
             String header = m.group(1);
             String payload = m.group(2);
-            String signature = m.group(3);
+            String signature = (m.group(3) != null) ? m.group(3) : "";
             jwt.algorithm = findAlgorithm(header);
             jwt.header = header;
             jwt.payload = payload;

@@ -24,11 +24,11 @@ import org.xml.sax.SAXException;
  * @author isayan
  */
 public class FormatUtil {
-       
+
     private final static Pattern URL_TYPE = Pattern.compile("^https?://.");
     private final static Pattern JSON_TYPE = Pattern.compile("[\\s\r\n]*((\\[(.*)\\])|(\\{(.*)\\}))[\\s\r\n]*", Pattern.DOTALL);
     private final static Pattern XML_TYPE = Pattern.compile("^[\\s\r\n]*((<!(.*?)>)|(<\\?(.*?)\\?>)|(<\\w+>)|(<!--(.*?)-->}))", Pattern.DOTALL);
-    
+
     public static boolean isURL(String plainURL) {
         Matcher m = URL_TYPE.matcher(plainURL);
         return m.find();
@@ -38,27 +38,25 @@ public class FormatUtil {
         Matcher m = XML_TYPE.matcher(plainXML);
         return m.lookingAt();
     }
-    
+
     public static boolean isJSON(String plainJson) {
         Matcher m = JSON_TYPE.matcher(plainJson);
         if (m.lookingAt()) {
             try {
                 JsonUtil.prettyJSON(plainJson, false);
                 return true;
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 return false;
-            }       
-        }
-        else {
+            }
+        } else {
             return false;
-        }       
+        }
     }
 
     public static String prettyXML(String plainXML) throws IOException {
         return prettyXML(plainXML, true);
     }
-    
+
     public static String prettyXML(String plainXML, boolean pretty) throws IOException {
         StringWriter sw = new StringWriter();
         Transformer transformer;
@@ -70,7 +68,7 @@ public class FormatUtil {
                     .newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, pretty ? "yes" : "no");
             transformer.transform(new DOMSource(document),
-                                  new StreamResult(sw));
+                    new StreamResult(sw));
         } catch (TransformerConfigurationException ex) {
             throw new IOException(ex);
         } catch (ParserConfigurationException ex) {
@@ -82,10 +80,9 @@ public class FormatUtil {
         }
         return sw.toString();
     }
-    
+
     public static String prettyJSON(String plainJson) throws IOException {
         return JsonUtil.prettyJSON(plainJson, true);
     }
-    
-    
+
 }
