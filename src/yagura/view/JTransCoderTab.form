@@ -16,8 +16,6 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="rdoCetificateGrp">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
-    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -76,7 +74,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="0"/>
-                    <Property name="rows" type="int" value="12"/>
+                    <Property name="rows" type="int" value="13"/>
                   </Layout>
                   <SubComponents>
                     <Component class="javax.swing.JButton" name="btnSmartDecode">
@@ -150,7 +148,7 @@
                     <Container class="javax.swing.JPanel" name="pnlBase64">
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                        <Property name="columns" type="int" value="2"/>
+                        <Property name="columns" type="int" value="4"/>
                         <Property name="rows" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
@@ -177,6 +175,29 @@
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chk76NewlineActionPerformed"/>
                           </Events>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="chkPadding">
+                          <Properties>
+                            <Property name="selected" type="boolean" value="true"/>
+                            <Property name="text" type="java.lang.String" value="Padding"/>
+                          </Properties>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="pnlBase64URLSafe">
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                        <Property name="columns" type="int" value="0"/>
+                        <Property name="rows" type="int" value="1"/>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JRadioButton" name="rdoBase64URLSafe">
+                          <Properties>
+                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                              <ComponentRef name="rdoEncodeDecodeGrp"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="Base64URLSafe"/>
+                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -222,7 +243,7 @@
                     <Container class="javax.swing.JPanel" name="pnlHtmlEnc">
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                        <Property name="columns" type="int" value="2"/>
+                        <Property name="columns" type="int" value="4"/>
                         <Property name="rows" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
@@ -1987,7 +2008,7 @@
             <Component class="javax.swing.JToggleButton" name="btnStoreTypeJKS">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="buttonGroup1"/>
+                  <ComponentRef name="rdoCetificateGrp"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="JKS"/>
               </Properties>
@@ -1998,7 +2019,7 @@
             <Component class="javax.swing.JToggleButton" name="btnStoreTypePKCS12">
               <Properties>
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="buttonGroup1"/>
+                  <ComponentRef name="rdoCetificateGrp"/>
                 </Property>
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="PKCS12"/>

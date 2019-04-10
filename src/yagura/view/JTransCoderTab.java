@@ -146,7 +146,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         rdoRandomLengthGrp = new javax.swing.ButtonGroup();
         rdoRandomCountGrp = new javax.swing.ButtonGroup();
         rdoCetificateGrp = new javax.swing.ButtonGroup();
-        buttonGroup1 = new javax.swing.ButtonGroup();
         tabbetTranscoder = new javax.swing.JTabbedPane();
         tabTransrator = new javax.swing.JPanel();
         pnlTransButton = new javax.swing.JPanel();
@@ -162,6 +161,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         rdoBase64 = new javax.swing.JRadioButton();
         chk64Newline = new javax.swing.JCheckBox();
         chk76Newline = new javax.swing.JCheckBox();
+        chkPadding = new javax.swing.JCheckBox();
+        pnlBase64URLSafe = new javax.swing.JPanel();
+        rdoBase64URLSafe = new javax.swing.JRadioButton();
         pnlMail = new javax.swing.JPanel();
         rdoUuencode = new javax.swing.JRadioButton();
         rdoQuotedPrintable = new javax.swing.JRadioButton();
@@ -334,7 +336,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlTransButton.setLayout(new javax.swing.BoxLayout(pnlTransButton, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(12, 0));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(13, 0));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -380,7 +382,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         pnlEncodeDecode.add(pnlUrl);
 
-        pnlBase64.setLayout(new java.awt.GridLayout(1, 2));
+        pnlBase64.setLayout(new java.awt.GridLayout(1, 4));
 
         rdoEncodeDecodeGrp.add(rdoBase64);
         rdoBase64.setText("Base64");
@@ -402,7 +404,19 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         });
         pnlBase64.add(chk76Newline);
 
+        chkPadding.setSelected(true);
+        chkPadding.setText("Padding");
+        pnlBase64.add(chkPadding);
+
         pnlEncodeDecode.add(pnlBase64);
+
+        pnlBase64URLSafe.setLayout(new java.awt.GridLayout(1, 0));
+
+        rdoEncodeDecodeGrp.add(rdoBase64URLSafe);
+        rdoBase64URLSafe.setText("Base64URLSafe");
+        pnlBase64URLSafe.add(rdoBase64URLSafe);
+
+        pnlEncodeDecode.add(pnlBase64URLSafe);
 
         pnlMail.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -430,7 +444,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         rdoPunycode.setText("puyencode");
         pnlEncodeDecode.add(rdoPunycode);
 
-        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 2));
+        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 4));
 
         rdoEncodeDecodeGrp.add(rdoHtml);
         rdoHtml.setText("HTML(<,>,\",')");
@@ -1408,7 +1422,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         jLabel5.setText("Password:");
 
-        buttonGroup1.add(btnStoreTypeJKS);
+        rdoCetificateGrp.add(btnStoreTypeJKS);
         btnStoreTypeJKS.setText("JKS");
         btnStoreTypeJKS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1416,7 +1430,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        buttonGroup1.add(btnStoreTypePKCS12);
+        rdoCetificateGrp.add(btnStoreTypePKCS12);
         btnStoreTypePKCS12.setSelected(true);
         btnStoreTypePKCS12.setText("PKCS12");
 
@@ -1620,12 +1634,19 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     encode = encode.toUpperCase();
                 }
             } else if (this.rdoBase64.isSelected()) {
-                encode = ConvertUtil.toBase64Encode(value, this.getSelectEncode());
+                encode = ConvertUtil.toBase64Encode(value, this.getSelectEncode(), this.chkPadding.isSelected());
                 if (this.chk76Newline.isSelected()) {
                     encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
                 } else if (this.chk64Newline.isSelected()) {
                     encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
                 }
+            } else if (this.rdoBase64URLSafe.isSelected()) {
+                encode = ConvertUtil.toBase64URLSafeEncode(value, this.getSelectEncode());
+                if (this.chk76Newline.isSelected()) {
+                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
+                } else if (this.chk64Newline.isSelected()) {
+                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
+                }                
             } else if (this.rdoUuencode.isSelected()) {
                 encode = TransUtil.toUuencode(value, this.getSelectEncode());
             } else if (this.rdoQuotedPrintable.isSelected()) {
@@ -1690,6 +1711,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             encodePattern = TransUtil.EncodePattern.URL_UNICODE;
         } else if (this.rdoBase64.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BASE64;
+        } else if (this.rdoBase64URLSafe.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BASE64_URLSAFE;
         } else if (this.rdoUuencode.isSelected()) {
             encodePattern = TransUtil.EncodePattern.UUENCODE;
         } else if (this.rdoQuotedPrintable.isSelected()) {
@@ -2258,7 +2281,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JButton btnSmartMatch;
     private javax.swing.JToggleButton btnStoreTypeJKS;
     private javax.swing.JToggleButton btnStoreTypePKCS12;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chk64Newline;
     private javax.swing.JCheckBox chk76Newline;
     private javax.swing.JCheckBox chkCharacterCustom;
@@ -2268,6 +2290,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JCheckBox chkCharacterUnderline;
     private javax.swing.JCheckBox chkCharacterUpperCase;
     private javax.swing.JCheckBox chkGuess;
+    private javax.swing.JCheckBox chkPadding;
     private javax.swing.JCheckBox chkRawMode;
     private javax.swing.JCheckBox chkViewLineWrap;
     private javax.swing.JCheckBox chkWithByte;
@@ -2292,6 +2315,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JLabel lblPositionStatus;
     private javax.swing.JLabel lblmaximum;
     private javax.swing.JPanel pnlBase64;
+    private javax.swing.JPanel pnlBase64URLSafe;
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlCharacter;
     private javax.swing.JPanel pnlCompress;
@@ -2336,6 +2360,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JRadioButton rdoAll;
     private javax.swing.JRadioButton rdoAlphaNum;
     private javax.swing.JRadioButton rdoBase64;
+    private javax.swing.JRadioButton rdoBase64URLSafe;
     private javax.swing.JRadioButton rdoByteHex;
     private javax.swing.JRadioButton rdoByteOct;
     private javax.swing.JRadioButton rdoCLang;

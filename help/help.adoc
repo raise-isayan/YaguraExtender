@@ -567,6 +567,12 @@ Base64::
 76 newline:: 
     Base64形式のエンコード時に76文字で改行を行う場合に指定します。
 
+Padding:: 
+    Base64形式のエンコード時にパディングするかを指定します。
+
+Base64URLSafe:: 
+    Base64 URLSafe形式のエンコード、デコードを行います。
+
 uuencode::
     uuencode形式のエンコード、デコードを行います。
 

@@ -173,10 +173,11 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        BASE64, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
+        BASE64, BASE64_URLSAFE, BASE64_MIME, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
+    private final static Pattern PTN_B64_URLSAFE = Pattern.compile("([0-9a-zA-Z_\\-\r\n])");
     private final static Pattern PTN_UUENCODE = Pattern.compile("begin\\s[0-6]{3}\\s\\w+");
     private final static Pattern PTN_QUOTEDPRINTABLE = Pattern.compile("=([0-9a-fA-F]{2})");
     private final static Pattern PTN_PUNYCODE = Pattern.compile("xn--[0-9a-zA-Z_\\.]+");
@@ -194,6 +195,8 @@ public class TransUtil {
         Matcher mURL = PTN_URL.matcher(value);
         // base64
         Matcher m64 = PTN_B64.matcher(value);
+        // base64 UrlSafe
+        Matcher m64_URLSafe = PTN_B64_URLSAFE.matcher(value);
         // uuencode
         Matcher mUUENCODE = PTN_UUENCODE.matcher(value);
         // QuotedPrintable
@@ -239,7 +242,10 @@ public class TransUtil {
             return EncodePattern.QUOTEDPRINTABLE;
         } // Base64 encode match
         else if (m64.matches()) {
-            return EncodePattern.BASE64;
+            return EncodePattern.BASE64;        
+        } // Base64 URLSafe
+        else if (m64_URLSafe.matches()) {
+            return EncodePattern.BASE64_URLSAFE;
         } // Html decode
         else if (mHTML.find()) {
             return EncodePattern.HTML;
@@ -355,8 +361,21 @@ public class TransUtil {
                         } else {
                             decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
                         }
+                       break;
                     }
-                    break;
+                    // Base64 URLSafe
+                    case BASE64_URLSAFE: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = Base64.getUrlDecoder().decode(value);
+                        String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = ConvertUtil.toBase64URLSafeDecode(value, applyCharset);
+                        } else {
+                            decode = ConvertUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
+                        }                        
+                       break;
+                    }
                     // Html decode
                     case HTML:
                         decode = toHtmlDecode(value);
