@@ -94,24 +94,24 @@ public class LoggingProperty {
         return this.logTimestampDateFormat;
     }
 
-    private boolean exludeFilter = false;
+    private boolean excludeFilter = false;
     
-    public boolean isExludeFilter() {
-        return this.exludeFilter;
+    public boolean isExclude() {
+        return this.excludeFilter;
     }
 
-    public void setExludeFilter(boolean exludeFilter) {
-        this.exludeFilter = exludeFilter;
+    public void setExclude(boolean excludeFilter) {
+        this.excludeFilter = excludeFilter;
     }
 
-    private String exludeFilterExtension = "gif,jpg,png,css,ico";
+    private String excludeFilterExtension = "gif,jpg,png,css,ico";
     
-    public String getExludeFilterExtension() {
-        return this.exludeFilterExtension;
+    public String getExcludeExtension() {
+        return this.excludeFilterExtension;
     }
 
-    public void setExludeFilterExtension(String exludeFilterExtension) {
-        this.exludeFilterExtension = exludeFilterExtension;
+    public void setExcludeExtension(String excludeFilterExtension) {
+        this.excludeFilterExtension = excludeFilterExtension;
     }
 
     public void setProperty(LoggingProperty property) {
@@ -122,8 +122,8 @@ public class LoggingProperty {
         this.setToolLog(property.isToolLog());
         this.setLogDirFormat(property.getLogDirFormat());
         this.setLogTimestampFormat(property.getLogTimestampFormat());
-        this.setExludeFilter(property.isExludeFilter());
-        this.setExludeFilterExtension(getExludeFilterExtension());
+        this.setExclude(property.isExclude());
+        this.setExcludeExtension(getExcludeExtension());
     }
         
 }

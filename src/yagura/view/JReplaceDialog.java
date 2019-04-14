@@ -503,7 +503,6 @@ public class JReplaceDialog extends CustomDialog {
         if (editMode) {
             this.matchReplaceItemDlg.setItem(getEditItem());
         } else {
-//System.out.println("btnRepAddActionPerformed");
             MatchReplaceItem item = new MatchReplaceItem();
             this.matchReplaceItemDlg.setItem(item);
         }

@@ -74,12 +74,12 @@ public class MatchAlert extends SignatureItem<IssueItem> {
 
             @Override
             public String getSeverity() {
-                return getItem().getServerity().name();
+                return getItem().getServerity().toString();
             }
 
             @Override
             public String getConfidence() {
-                return getItem().getConfidence().name();
+                return getItem().getConfidence().toString();
             }
 
             @Override
@@ -98,7 +98,7 @@ public class MatchAlert extends SignatureItem<IssueItem> {
             @Override
             public String getIssueDetail() {
                 StringBuilder buff = new StringBuilder();
-                buff.append("<h4>Datail:</h4>");
+                buff.append("<h4>Match:</h4>");
                 buff.append(String.format("<p>toolName: %s</p>", TransUtil.toHtmlEncode(toolName)));
                 buff.append(String.format("<p>Scan Date: %s</p>", BurpExtender.getInstance().getCurrentLogTimestamp()));
                 return buff.toString();

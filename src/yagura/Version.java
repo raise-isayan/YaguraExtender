@@ -9,7 +9,7 @@ import extend.util.CustomVersion;
  */
 public final class Version extends CustomVersion {
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/release");
+    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/release");
 
     private Version() {
         String ver = BUNDLE.getString("version");

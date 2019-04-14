@@ -606,7 +606,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>選択された言語のエンコーディングをデフォルトに設定します。</p>
 </dd>
-<dt class="hdlist1">clip bord auto decode</dt>
+<dt class="hdlist1">[clip bord auto decode]チェックボックス</dt>
 <dd>
 <p>チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
 クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。<br>
@@ -619,28 +619,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_cjk_message_view">3.1.2. CJK Message View</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Cenerate PoC</dt>
+<dt class="hdlist1">[Cenerate PoC]チェックボックス</dt>
 <dd>
 <p>メッセージタブにCenerate PoCタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">HTML Comment</dt>
+<dt class="hdlist1">[HTML Comment]チェックボックス</dt>
 <dd>
 <p>メッセージタブにHTML Commentタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">JSON</dt>
+<dt class="hdlist1">[JSON]チェックボックス</dt>
 <dd>
 <p>メッセージタブにJSONタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">JWT</dt>
+<dt class="hdlist1">[JWT]チェックボックス</dt>
 <dd>
 <p>メッセージタブにJWTタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">Universal Raw</dt>
+<dt class="hdlist1">[Universal Raw]チェックボックス</dt>
 <dd>
 <p>メッセージタブにCJKに対応したRawタブを表示するようにします。
 現時点ではリードオンリーです。</p>
 </dd>
-<dt class="hdlist1">Universal Param</dt>
+<dt class="hdlist1">[Universal Param]チェックボックス</dt>
 <dd>
 <p>メッセージタブにCJKに対応したParamタブを表示するようにします。
 現時点ではリードオンリーです。</p>
@@ -695,7 +695,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">in-scope only</dt>
+<dt class="hdlist1">[in-scope only]チェックボックス</dt>
 <dd>
 <p>ターゲットをBurpのTargetタブのscopeにマッチするものに限定します。</p>
 </dd>
@@ -750,15 +750,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
 アスキー文字以外を指定する場合は、メタ文字を利用します。</p>
 </dd>
-<dt class="hdlist1">Regexp</dt>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
 <dd>
 <p>チェック時、正規表現を有効にします。</p>
 </dd>
-<dt class="hdlist1">IgnoreCase</dt>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
 <dd>
 <p>チェック時、大文字小文字を無視します。</p>
 </dd>
-<dt class="hdlist1">Metachar</dt>
+<dt class="hdlist1">[Metachar]チェックボックス</dt>
 <dd>
 <p>メタ文字を有効にします。
 以下のメタ文字が利用可能です。</p>
@@ -887,34 +887,34 @@ proxyにチェックが入っている場合にしか意味がありません。
 <p>proxy,repeater,spider,intruder,scanner,sequencer
 チェックした対象がMatchAlertの対象になります。</p>
 </dd>
-<dt class="hdlist1">Regexp</dt>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
 <dd>
 <p>チェック時正規表現を有効にします。</p>
 </dd>
-<dt class="hdlist1">IgnoreCase</dt>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
 <dd>
 <p>チェック時大文字小文字を無視します。</p>
 </dd>
-<dt class="hdlist1">alert tabs</dt>
+<dt class="hdlist1">[alert tabs]チェックボックス</dt>
 <dd>
 <p>Burp suite のalertsが通知先になります。</p>
 </dd>
-<dt class="hdlist1">try message</dt>
+<dt class="hdlist1">[try message]チェックボックス</dt>
 <dd>
 <p>トレイのメッセージが通知先になります。
 現在のバージョンではサポートされていません。</p>
 </dd>
-<dt class="hdlist1">Highlight Color</dt>
+<dt class="hdlist1">[Highlight Color]チェックボックス</dt>
 <dd>
 <p>文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります<br>
 proxyログにチェックした場合のみ有効です。</p>
 </dd>
-<dt class="hdlist1">comment</dt>
+<dt class="hdlist1">[comment]チェックボックス</dt>
 <dd>
 <p>文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります<br>
 proxyログにチェックした場合のみ有効です。</p>
 </dd>
-<dt class="hdlist1">scanner issue</dt>
+<dt class="hdlist1">[scanner issue]チェックボックス</dt>
 <dd>
 <p>文字列がマッチした場合、該当のScannerのIssueを作成します。</p>
 </dd>
@@ -969,11 +969,11 @@ FidderのAutoResponderに似た機能を持ちますがBurp suiteのAPIでは完
 <p>マッチさせたいURLを入力します。
 マッチ方法は前方一致にになります。</p>
 </dd>
-<dt class="hdlist1">Regexp</dt>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
 <dd>
 <p>チェック時正規表現を有効にします。</p>
 </dd>
-<dt class="hdlist1">IgnoreCase</dt>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
 <dd>
 <p>チェック時大文字小文字を無視します。</p>
 </dd>
@@ -1053,12 +1053,12 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 <p>任意のバイナリエディタやファイル比較ツール等の実行パスを記載します。
 serverにチェックが入ってる場合は、http:// または https:// で始まるURLを書きます。</p>
 </dd>
-<dt class="hdlist1">server</dt>
+<dt class="hdlist1">[server]チェックボックス</dt>
 <dd>
 <p>サーバに送信する場合にチェックします。
 serverにチェックが入ってる場合は、Target に記載されたURLに対してmultipartのデータを送ります。</p>
 </dd>
-<dt class="hdlist1">requset、response</dt>
+<dt class="hdlist1">[requset]、[response]チェックボックス</dt>
 <dd>
 <p>リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。<br>
 リクエストおよびレスポンスはヘッダも含みます。</p>
@@ -1205,7 +1205,7 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 <h4 id="_logging">3.6.1. Logging</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">auto logging</dt>
+<dt class="hdlist1">[auto logging]チェックボックス</dt>
 <dd>
 <p>チェックすると自動でログを記録します。LogDirで指定したディレクトリに作成されます。</p>
 </dd>
@@ -1237,15 +1237,15 @@ proxy-message.log.2
 <h5 id="_logging_target">Logging target</h5>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">ProxyLog</dt>
+<dt class="hdlist1">[ProxyLog]チェックボックス</dt>
 <dd>
 <p>Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。</p>
 </dd>
-<dt class="hdlist1">ToolLog</dt>
+<dt class="hdlist1">[ToolLog]チェックボックス</dt>
 <dd>
 <p>各種Toolのログの値が記録されます。</p>
 </dd>
-<dt class="hdlist1">history is included</dt>
+<dt class="hdlist1">[history is included]チェックボックス</dt>
 <dd>
 <p>auto loggingがオフの状態でのみチェックできます。
 チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。</p>
@@ -1271,20 +1271,20 @@ proxy-message.log.2
 <dd>
 <p>ProxyのHistory一覧からテキストボックスに入力した値で検索します。</p>
 </dd>
-<dt class="hdlist1">Smart Match</dt>
+<dt class="hdlist1">[Smart Match]チェックボックス</dt>
 <dd>
 <p>HTMLエスケープ、URLエンコードなど複数のエスケープ考慮した検索を実行します。
 正規表現は有効にできません。</p>
 </dd>
-<dt class="hdlist1">Regexp</dt>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
 <dd>
 <p>チェック時正規表現を有効にします。</p>
 </dd>
-<dt class="hdlist1">IgnoreCase</dt>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
 <dd>
 <p>チェック時大文字小文字を無視します。</p>
 </dd>
-<dt class="hdlist1">in-scope only</dt>
+<dt class="hdlist1">[in-scope only]チェックボックス</dt>
 <dd>
 <p>検索をBurpのTargetタブのscopeにマッチするものに限定します。</p>
 </dd>
@@ -1296,9 +1296,9 @@ proxy-message.log.2
 <dd>
 <p>検索対象をレスポンス(Header,Body)に限定します。</p>
 </dd>
-<dt class="hdlist1">commint</dt>
+<dt class="hdlist1">[comment]チェックボックス</dt>
 <dd>
-<p>検索対象をコメントに限定します。</p>
+<p>検索対象にコメントを含めます。</p>
 </dd>
 <dt class="hdlist1">Search Encoding</dt>
 <dd>
@@ -1776,7 +1776,7 @@ Content-TypeがMulti part かつファイルアップロードの項目がある
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-10 22:39:23 JST
+Last updated 2019-04-14 22:30:54 JST
 </div>
 </div>
 </body>

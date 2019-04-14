@@ -158,7 +158,7 @@ public class MatchAlertItem extends MatchItem {
     @SuppressWarnings("unchecked")
     public static MatchAlertItem fromObjects(Object[] rows) {
         MatchAlertItem matchAlert = new MatchAlertItem();
-        matchAlert.setSelected(((Boolean) rows[0]).booleanValue());
+        matchAlert.setSelected(((Boolean) rows[0]));
         matchAlert.setType((String) rows[1]);
         matchAlert.setMatch((String) rows[2]);
         matchAlert.setRegexp((Boolean) rows[3]);

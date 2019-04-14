@@ -34,7 +34,6 @@ public class FilterProperty {
     public void setHideItemsWithoutResponses(boolean hideItemsWithoutResponses) {
         this.hideItemsWithoutResponses = hideItemsWithoutResponses;
     }
-
     
     private boolean showOnly = false;
 
@@ -136,5 +135,4 @@ public class FilterProperty {
         this.comments = comments;
     }
 
-    
 }

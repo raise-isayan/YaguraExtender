@@ -20,6 +20,7 @@ public class AutoResponderItem extends MatchItem {
     /**
      * @return the replace
      */
+    @Override
     public String getReplace() {
         return this.getReplace(false);
     }
@@ -28,6 +29,7 @@ public class AutoResponderItem extends MatchItem {
      * @param quote
      * @return the replace
      */
+    @Override
     public String getReplace(boolean quote) {
         return getReplace(quote, false);
     }
@@ -58,6 +60,7 @@ public class AutoResponderItem extends MatchItem {
     /**
      * @param replace the replace to set
      */
+    @Override
     public void setReplace(String replace) {
         this.replace = replace;
     }
@@ -103,11 +106,11 @@ public class AutoResponderItem extends MatchItem {
 
     public static AutoResponderItem fromObjects(Object[] rows) {
         AutoResponderItem autoResponder = new AutoResponderItem();
-        autoResponder.setSelected(((Boolean) rows[0]).booleanValue());
+        autoResponder.setSelected(((Boolean) rows[0]));
         autoResponder.setMatch((String) rows[1]);
         autoResponder.setRegexp((Boolean) rows[2]);
         autoResponder.setIgnoreCase((Boolean) rows[3]);
-        autoResponder.setBodyOnly(((Boolean) rows[4]).booleanValue());
+        autoResponder.setBodyOnly(((Boolean) rows[4]));
         autoResponder.setContentType(((String) rows[5]));
         autoResponder.setReplace((String) rows[6]);
         return autoResponder;

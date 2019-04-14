@@ -126,6 +126,7 @@ public class JTransCoderProperty {
     /**
      * 
      * @param property 
+     * @return  
      */
     public String getCurrentInput() {
         return currentInput;
@@ -146,6 +147,7 @@ public class JTransCoderProperty {
         this.setCurrentInput(property.getCurrentInput());
     }
     
+    @Override
     public String toString() {
         return this.getCurrentInput();
     }

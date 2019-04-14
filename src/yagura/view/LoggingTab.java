@@ -51,8 +51,8 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
         lblLogDir2 = new javax.swing.JLabel();
         lblLogDir1 = new javax.swing.JLabel();
         chkAutoLogging = new javax.swing.JCheckBox();
-        txtExludeFilterExtension = new javax.swing.JTextField();
-        chkExludeFilter = new javax.swing.JCheckBox();
+        txtExcludeExtension = new javax.swing.JTextField();
+        chkExclude = new javax.swing.JCheckBox();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -125,23 +125,28 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        txtExludeFilterExtension.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        txtExludeFilterExtension.setEnabled(false);
-        txtExludeFilterExtension.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtExcludeExtension.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        txtExcludeExtension.setEnabled(false);
+        txtExcludeExtension.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                txtExludeFilterExtensionFocusLost(evt);
+                txtExcludeExtensionFocusLost(evt);
+            }
+        });
+        txtExcludeExtension.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtExcludeExtensionActionPerformed(evt);
             }
         });
 
-        chkExludeFilter.setText("Exlude Filter Extension");
-        chkExludeFilter.addChangeListener(new javax.swing.event.ChangeListener() {
+        chkExclude.setText("Exclude Extension");
+        chkExclude.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkExludeFilterStateChanged(evt);
+                chkExcludeStateChanged(evt);
             }
         });
-        chkExludeFilter.addActionListener(new java.awt.event.ActionListener() {
+        chkExclude.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkExludeFilterActionPerformed(evt);
+                chkExcludeActionPerformed(evt);
             }
         });
 
@@ -164,7 +169,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkToolLog)
                             .addComponent(chkProxyLog)))
-                    .addComponent(chkExludeFilter, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkExclude, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblLogDir2, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
                         .addComponent(lblLogDir1)
@@ -177,7 +182,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
                     .addComponent(chkHistoryLogInclude, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(txtExludeFilterExtension, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtExcludeExtension, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(222, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
@@ -213,9 +218,9 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkHistoryLogInclude)
                 .addGap(2, 2, 2)
-                .addComponent(chkExludeFilter)
+                .addComponent(chkExclude)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtExludeFilterExtension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtExcludeExtension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(219, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
@@ -264,9 +269,9 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_btnSelectImageActionPerformed
 
-    private void txtExludeFilterExtensionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExludeFilterExtensionFocusLost
+    private void txtExcludeExtensionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExcludeExtensionFocusLost
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_txtExludeFilterExtensionFocusLost
+    }//GEN-LAST:event_txtExcludeExtensionFocusLost
 
     private void txtLogDirFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLogDirFocusLost
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
@@ -280,9 +285,9 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkHistoryLogIncludeActionPerformed
 
-    private void chkExludeFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExludeFilterActionPerformed
+    private void chkExcludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExcludeActionPerformed
        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_chkExludeFilterActionPerformed
+    }//GEN-LAST:event_chkExcludeActionPerformed
 
     private void chkProxyLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkProxyLogActionPerformed
        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
@@ -292,9 +297,13 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkToolLogActionPerformed
 
-    private void chkExludeFilterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExludeFilterStateChanged
-        this.txtExludeFilterExtension.setEnabled(this.chkExludeFilter.isSelected());
-    }//GEN-LAST:event_chkExludeFilterStateChanged
+    private void chkExcludeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExcludeStateChanged
+        this.txtExcludeExtension.setEnabled(this.chkExclude.isSelected());
+    }//GEN-LAST:event_chkExcludeStateChanged
+
+    private void txtExcludeExtensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExcludeExtensionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtExcludeExtensionActionPerformed
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void customizeComponents() {
@@ -306,7 +315,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSelectImage;
     private javax.swing.JCheckBox chkAutoLogging;
-    private javax.swing.JCheckBox chkExludeFilter;
+    private javax.swing.JCheckBox chkExclude;
     private javax.swing.JCheckBox chkHistoryLogInclude;
     private javax.swing.JCheckBox chkProxyLog;
     private javax.swing.JCheckBox chkToolLog;
@@ -317,7 +326,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JLabel lblToolTip;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel tabLogging;
-    private javax.swing.JTextField txtExludeFilterExtension;
+    private javax.swing.JTextField txtExcludeExtension;
     private javax.swing.JTextField txtFileLimitSize;
     private javax.swing.JTextField txtLogDir;
     // End of variables declaration//GEN-END:variables
@@ -407,31 +416,31 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
     }
 
     /**
-     * @return the ExludeFilter
+     * @return the ExcludeFilter
      */
-    public boolean isExludeFilter() {
-        return this.chkExludeFilter.isSelected();
+    public boolean isExclude() {
+        return this.chkExclude.isSelected();
     }
 
     /**
-     * @param exludeFilter
+     * @param exclude
      */
-    public void setExludeFilter(boolean exludeFilter) {
-        this.chkExludeFilter.setSelected(exludeFilter);
+    public void setExclude(boolean exclude) {
+        this.chkExclude.setSelected(exclude);
     }
 
     /**
-     * @return the ExludeFilter
+     * @return the Exclude
      */
-    public String getExludeFilterExtension() {
-        return this.txtExludeFilterExtension.getText();
+    public String getExcludeExtension() {
+        return this.txtExcludeExtension.getText();
     }
 
     /**
      * @param extensionFilter
      */
-    public void setExludeFilterExtension(String extensionFilter) {
-        this.txtExludeFilterExtension.setText(extensionFilter);
+    public void setExcludeExtension(String extensionFilter) {
+        this.txtExcludeExtension.setText(extensionFilter);
     }
 
     public void setLoggingProperty(LoggingProperty loggingProperty) {
@@ -440,8 +449,8 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
         this.setLogFileLimitSize(loggingProperty.getLogFileLimitSize());
         this.setProxyLog(loggingProperty.isProxyLog());
         this.setToolLog(loggingProperty.isToolLog());
-        this.setExludeFilter(loggingProperty.isExludeFilter());
-        this.setExludeFilterExtension(loggingProperty.getExludeFilterExtension());
+        this.setExclude(loggingProperty.isExclude());
+        this.setExcludeExtension(loggingProperty.getExcludeExtension());
     }
 
     public LoggingProperty getLoggingProperty() {
@@ -451,8 +460,8 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
         loggingProperty.setLogFileLimitSize(this.getLogFileLimitSize());
         loggingProperty.setProxyLog(this.isProxyLog());
         loggingProperty.setToolLog(this.isToolLog());
-        loggingProperty.setExludeFilter(this.isExludeFilter());
-        loggingProperty.setExludeFilterExtension(this.getExludeFilterExtension());
+        loggingProperty.setExclude(this.isExclude());
+        loggingProperty.setExcludeExtension(this.getExcludeExtension());
         return loggingProperty;
     }
 

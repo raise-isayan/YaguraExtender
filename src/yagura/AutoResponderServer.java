@@ -91,7 +91,6 @@ public class AutoResponderServer {
     public static String getRequestURL(HttpExchange he) {
         String url = null;
         if (he.getRequestHeaders().containsKey("X-AutoResponder")) {
-            String protocol = he.getProtocol();
             url = he.getRequestHeaders().getFirst("X-AutoResponder");       
         }        
         return url;

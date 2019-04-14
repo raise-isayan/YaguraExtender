@@ -96,15 +96,14 @@ public class BurpExtender extends BurpExtenderImpl
     public static BurpExtender getInstance() {
         return BurpExtenderImpl.<BurpExtender>getInstance();
     }
-  
+
     public static File getExtensionLogDir() {
         return new File(Config.getUserHome(), Config.getExtenderDir());
     }
-    
-    private final TabbetOption tabbetOption = new TabbetOption();
 
+    private final TabbetOption tabbetOption = new TabbetOption();
     private final JWTViewTab jwtViewTab = new JWTViewTab();
-    
+
     private final HtmlCommetViewTab commentViewTab = new HtmlCommetViewTab();
     private final GeneratePoCTab generatePoCTab = new GeneratePoCTab();
 
@@ -112,16 +111,14 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, true);
-//            getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
         }
     };
-    
+
     private final IMessageEditorTabFactory responseRawTab = new IMessageEditorTabFactory() {
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, false);
-//            getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
         }
     };
@@ -130,29 +127,26 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final ParamsViewTab tab = new ParamsViewTab(controller, editable);
-  //          getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
-        }    
+        }
     };
 
     private final IMessageEditorTabFactory requestJSONTab = new IMessageEditorTabFactory() {
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, true);
- //           getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
         }
     };
 
     private final IMessageEditorTabFactory responseJSONTab = new IMessageEditorTabFactory() {
         @Override
-         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+        public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, false);
- //         getCallbacks().customizeUiComponent(tab.getUiComponent());            
             return tab;
-         }
-     };
-    
+        }
+    };
+
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
@@ -184,16 +178,15 @@ public class BurpExtender extends BurpExtenderImpl
             cb.registerContextMenuFactory(this.getSendToMenu());
             this.tabbetOption.setProperty(this.option);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
-
             this.registerView();
-            
+
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     public void registerView() {
-        IBurpExtenderCallbacks cb = getCallbacks();        
+        IBurpExtenderCallbacks cb = getCallbacks();
         cb.registerMessageEditorTabFactory(this.requestRawTab);
         cb.registerMessageEditorTabFactory(this.responseRawTab);
         cb.registerMessageEditorTabFactory(this.requestParamsTab);
@@ -201,10 +194,9 @@ public class BurpExtender extends BurpExtenderImpl
         cb.registerMessageEditorTabFactory(this.commentViewTab);
         cb.registerMessageEditorTabFactory(this.requestJSONTab);
         cb.registerMessageEditorTabFactory(this.responseJSONTab);
-        cb.registerMessageEditorTabFactory(this.jwtViewTab);            
+        cb.registerMessageEditorTabFactory(this.jwtViewTab);
     }
-    
-    
+
     @Override
     public void processHttpMessage(int toolFlag, boolean messageIsRequest, IHttpRequestResponse messageInfo) {
         String toolName = getCallbacks().getToolName(toolFlag);
@@ -314,10 +306,10 @@ public class BurpExtender extends BurpExtenderImpl
                         fname.renameTo(renameFile);
                     }
                     boolean includeLog = true;
-                    if (this.option.getLoggingProperty().isExludeFilter()) {
-                        Pattern patternExlude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExludeFilterExtension()));
-                        Matcher matchExlude = patternExlude.matcher(BurpWrap.getURL(request).getFile());
-                        if (matchExlude.find()) {
+                    if (this.option.getLoggingProperty().isExclude()) {
+                        Pattern patternExclude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExcludeExtension()));
+                        Matcher matchExclude = patternExclude.matcher(BurpWrap.getURL(request).getFile());
+                        if (matchExclude.find()) {
                             includeLog = false;
                         }
                     }
@@ -378,10 +370,10 @@ public class BurpExtender extends BurpExtenderImpl
                     fname.renameTo(renameFile);
                 }
                 boolean includeLog = true;
-                if (this.option.getLoggingProperty().isExludeFilter()) {
-                    Pattern patternExlude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExludeFilterExtension()));
-                    Matcher matchExlude = patternExlude.matcher(BurpWrap.getURL(messageInfo).getFile());
-                    if (matchExlude.find()) {
+                if (this.option.getLoggingProperty().isExclude()) {
+                    Pattern patternExclude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExcludeExtension()));
+                    Matcher matchExclude = patternExclude.matcher(BurpWrap.getURL(messageInfo).getFile());
+                    if (matchExclude.find()) {
                         includeLog = false;
                     }
                 }
@@ -410,7 +402,6 @@ public class BurpExtender extends BurpExtenderImpl
         }
     }
     private final static Pattern REQUEST_URI = Pattern.compile("^(.*?\\s+)(.*?)(\\s+.*)");
-
     private final static Pattern HTTP_LINESEP = Pattern.compile("\\r\\n\\r\\n");
 
     private boolean autoresponderProxyMessage(
@@ -539,8 +530,9 @@ public class BurpExtender extends BurpExtenderImpl
                 while (m.find()) {
                     IssueItem issue = new IssueItem();
                     issue.setMessageIsRequest(messageIsRequest);
-                    issue.setServerity(bean.getSeverity()); 
-                    issue.setConfidence(bean.getConfidence()); 
+                    issue.setType(bean.getIssueName());
+                    issue.setServerity(bean.getSeverity());
+                    issue.setConfidence(bean.getConfidence());
                     issue.setStart(m.start());
                     issue.setEnd(m.end());
                     markList.add(issue);
@@ -590,7 +582,7 @@ public class BurpExtender extends BurpExtenderImpl
 //        }
         return charSetMode;
     }
-    
+
     /**
      * 選択可能なエンコーディングリストの取得
      *
@@ -672,15 +664,15 @@ public class BurpExtender extends BurpExtenderImpl
 
     public void setSendToMenu(SendToMenu sendToMenu) {
         this.sendToMenu = sendToMenu;
-        
+
     }
 
     public final OptionProperty option = new OptionProperty();
-    
+
     public OptionProperty getProperty() {
         return option;
     }
-    
+
     public PropertyChangeListener newPropertyChangeListener() {
         return new PropertyChangeListener() {
             @Override
@@ -750,7 +742,7 @@ public class BurpExtender extends BurpExtenderImpl
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-        
+
     /**
      * ***********************************************************************
      * Send to JTransCoder
@@ -763,7 +755,7 @@ public class BurpExtender extends BurpExtenderImpl
     public byte[] receiveFromJTransCoder() {
         return this.tabbetOption.receiveFromJTransCoder();
     }
-    
+
     /**
      * ***********************************************************************
      * Message Info Copy

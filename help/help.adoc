@@ -72,30 +72,30 @@ Select::
 [Reset]ボタン::
     選択された言語のエンコーディングをデフォルトに設定します。
 
-clip bord auto decode:: 
+[clip bord auto decode]チェックボックス:: 
     チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
     クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。 +
     現在のバージョンではサポートされていません。
 
 ==== CJK Message View
 
-Cenerate PoC:: 
+[Cenerate PoC]チェックボックス:: 
    メッセージタブにCenerate PoCタブを表示するようにします。
    
-HTML Comment:: 
+[HTML Comment]チェックボックス:: 
    メッセージタブにHTML Commentタブを表示するようにします。
 
-JSON:: 
+[JSON]チェックボックス:: 
    メッセージタブにJSONタブを表示するようにします。
 
-JWT:: 
+[JWT]チェックボックス:: 
    メッセージタブにJWTタブを表示するようにします。
 
-Universal Raw:: 
+[Universal Raw]チェックボックス:: 
    メッセージタブにCJKに対応したRawタブを表示するようにします。
    現時点ではリードオンリーです。
 
-Universal Param:: 
+[Universal Param]チェックボックス:: 
    メッセージタブにCJKに対応したParamタブを表示するようにします。
    現時点ではリードオンリーです。
 
@@ -129,7 +129,7 @@ Burp sute 本体の Proxy => OptionタブのMatch and Replaceの拡張になり�
 ==== MatchReplace ダイヤログ
 image:images/custom_matchreplace_edit.png[MatchReplaceItemダイヤログ]
 
-in-scope only::
+[in-scope only]チェックボックス::
     ターゲットをBurpのTargetタブのscopeにマッチするものに限定します。
 
 [burp import match and replace rule]ボタン:: 
@@ -167,13 +167,13 @@ Replace(置換後)::
     いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
     アスキー文字以外を指定する場合は、メタ文字を利用します。
 
-Regexp:: 
+[Regexp]チェックボックス:: 
     チェック時、正規表現を有効にします。
 
-IgnoreCase::
+[IgnoreCase]チェックボックス::
     チェック時、大文字小文字を無視します。
 
-Metachar:: 
+[Metachar]チェックボックス:: 
      メタ文字を有効にします。
      以下のメタ文字が利用可能です。
 
@@ -231,28 +231,28 @@ Target(アラート対象)::
     proxy,repeater,spider,intruder,scanner,sequencer
     チェックした対象がMatchAlertの対象になります。
 
-Regexp:: 
+[Regexp]チェックボックス:: 
     チェック時正規表現を有効にします。
 
-IgnoreCase:: 
+[IgnoreCase]チェックボックス:: 
     チェック時大文字小文字を無視します。
 
-alert tabs:: 
+[alert tabs]チェックボックス:: 
      Burp suite のalertsが通知先になります。
 
-try message:: 
+[try message]チェックボックス:: 
     トレイのメッセージが通知先になります。
     現在のバージョンではサポートされていません。
 
-Highlight Color::
+[Highlight Color]チェックボックス::
      文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
      proxyログにチェックした場合のみ有効です。
 
-comment:: 
+[comment]チェックボックス:: 
      文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
      proxyログにチェックした場合のみ有効です。
 
-scanner issue:: 
+[scanner issue]チェックボックス:: 
      文字列がマッチした場合、該当のScannerのIssueを作成します。
      
 
@@ -285,10 +285,10 @@ Match(検索文字列)::
     マッチさせたいURLを入力します。
     マッチ方法は前方一致にになります。
 
-Regexp:: 
+[Regexp]チェックボックス:: 
     チェック時正規表現を有効にします。
 
-IgnoreCase:: 
+[IgnoreCase]チェックボックス:: 
     チェック時大文字小文字を無視します。
 
 Content-Type:: 
@@ -340,11 +340,11 @@ Target::
     任意のバイナリエディタやファイル比較ツール等の実行パスを記載します。
     serverにチェックが入ってる場合は、http:// または https:// で始まるURLを書きます。
 
-server::
+[server]チェックボックス::
     サーバに送信する場合にチェックします。
     serverにチェックが入ってる場合は、Target に記載されたURLに対してmultipartのデータを送ります。
 
-requset、response:: 
+[requset]、[response]チェックボックス:: 
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
     リクエストおよびレスポンスはヘッダも含みます。
 
@@ -441,7 +441,7 @@ image:images/custom_logging.png[Loggingタブ]
 
 ==== Logging
 
-auto logging:: 
+[auto logging]チェックボックス:: 
     チェックすると自動でログを記録します。LogDirで指定したディレクトリに作成されます。
 
 Log Dir:: 
@@ -463,11 +463,11 @@ proxy-message.log.2
 
 ===== Logging target
 
-ProxyLog:: 
+[ProxyLog]チェックボックス:: 
      Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。
-ToolLog:: 
+[ToolLog]チェックボックス:: 
      各種Toolのログの値が記録されます。
-history is included:: 
+[history is included]チェックボックス:: 
      auto loggingがオフの状態でのみチェックできます。
      チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。
 
@@ -482,17 +482,17 @@ JSearch タブはProxyのHistory一覧から文字を検索するための機能
 [Search]ボタン:: 
      ProxyのHistory一覧からテキストボックスに入力した値で検索します。
 
-Smart Match:: 
+[Smart Match]チェックボックス:: 
     HTMLエスケープ、URLエンコードなど複数のエスケープ考慮した検索を実行します。
     正規表現は有効にできません。
 
-Regexp:: 
+[Regexp]チェックボックス:: 
     チェック時正規表現を有効にします。
 
-IgnoreCase:: 
+[IgnoreCase]チェックボックス:: 
     チェック時大文字小文字を無視します。
 
-in-scope only:: 
+[in-scope only]チェックボックス:: 
     検索をBurpのTargetタブのscopeにマッチするものに限定します。
 
 request::
@@ -501,8 +501,8 @@ request::
 response::
     検索対象をレスポンス(Header,Body)に限定します。
 
-commint::
-    検索対象をコメントに限定します。
+[comment]チェックボックス::
+    検索対象にコメントを含めます。
 
 Search Encoding::
     検索時のエンコーディングを指定します。

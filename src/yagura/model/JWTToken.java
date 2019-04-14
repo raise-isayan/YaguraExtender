@@ -2,14 +2,12 @@ package yagura.model;
 
 import extend.util.Util;
 import extend.view.base.CaptureItem;
-import extend.view.base.MatchItem;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

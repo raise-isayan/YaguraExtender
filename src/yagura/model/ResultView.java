@@ -52,10 +52,11 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
     }
     
 
-    boolean[] canEdit = new boolean [] {
+    private final boolean[] canEdit = new boolean [] {
         false, true, false, false, false, false, false, true
     };
 
+    @Override
     public boolean isCellEditable(int columnIndex) {
         return canEdit [columnIndex];
     }

@@ -126,7 +126,7 @@ public class MatchReplaceItem extends MatchItem {
 
     public static MatchReplaceItem fromObjects(Object[] rows) {
         MatchReplaceItem matchReplace = new MatchReplaceItem();
-        matchReplace.setSelected(((Boolean) rows[0]).booleanValue());
+        matchReplace.setSelected(((Boolean) rows[0]));
         matchReplace.setType((String) rows[1]);
         matchReplace.setMatch((String) rows[2]);
         matchReplace.setRegexp((Boolean) rows[3]);

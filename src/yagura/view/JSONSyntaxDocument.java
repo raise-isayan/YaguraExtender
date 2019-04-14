@@ -22,7 +22,6 @@ public class JSONSyntaxDocument extends AbstractSyntaxDocument {
     @Override
     protected boolean isDelimiter(String character) {
         String operands = ":{}[](),";
-
         if (Character.isWhitespace(character.charAt(0))
                 || operands.indexOf(character) != -1) {
             return true;
@@ -34,7 +33,6 @@ public class JSONSyntaxDocument extends AbstractSyntaxDocument {
     @Override
     protected boolean isQuoteDelimiter(String character) {
         String quoteDelimiters = "\"";
-
         if (quoteDelimiters.indexOf(character) < 0) {
             return false;
         } else {

@@ -18,16 +18,16 @@ import javax.swing.text.StyleConstants;
  */
 public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
 
-    private DefaultStyledDocument doc;
-    private Element rootElement;
+    private final DefaultStyledDocument doc;
+    private final Element rootElement;
 
     private boolean multiLineComment;
-    private MutableAttributeSet normal;
-    private MutableAttributeSet keyword;
-    private MutableAttributeSet comment;
-    private MutableAttributeSet quote;
+    private final MutableAttributeSet normal;
+    private final MutableAttributeSet keyword;
+    private final MutableAttributeSet comment;
+    private final MutableAttributeSet quote;
 
-    private HashSet keywords;
+    private final HashSet keywords;
 
     public AbstractSyntaxDocument() {
         doc = this;

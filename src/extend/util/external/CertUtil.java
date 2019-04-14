@@ -26,21 +26,17 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class CertUtil {
-       
+
     private final static Pattern PEM_PRIVATE = Pattern.compile("-{2,}BEGIN PRIVATE KEY-{2,}\n(.*?)-{2,}END PRIVATE KEY-{2,}\n", Pattern.DOTALL);
     private final static Pattern PEM_CERTIFICATE = Pattern.compile("-{2,}BEGIN CERTIFICATE KEY-{2,}\n(.*?)-{2,}END CERTIFICATE KEY-{2,}\n", Pattern.DOTALL);
-
-    // PKCS#8 format
-    private final static String PEM_PRIVATE_START = "-----BEGIN PRIVATE KEY-----";
-    private final static String PEM_PRIVATE_END = "-----END PRIVATE KEY-----";
 
     // PKCS#1 format
     private final static String PEM_RSA_PRIVATE_START = "-----BEGIN RSA PRIVATE KEY-----";
     private final static String PEM_RSA_PRIVATE_END = "-----END RSA PRIVATE KEY-----";
-    
 
     private final static String BEGIN_PRIVATE = "-----BEGIN PRIVATE KEY-----\n";
     private final static String END_PRIVATE = "-----END PRIVATE KEY-----\n";
+
     private final static String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----\n";
     private final static String END_CERTIFICATE = "-----END CERTIFICATE-----\n";
 
@@ -48,7 +44,7 @@ public class CertUtil {
         StringBuilder pemCert = new StringBuilder();
         pemCert.append(exportToPem(privateKey));
         pemCert.append(exportToPem(x509cert));
-        return pemCert.toString();        
+        return pemCert.toString();
     }
 
     public static String exportToPem(Key privateKey) throws UnsupportedEncodingException {
@@ -61,7 +57,7 @@ public class CertUtil {
         pemKey.append(END_PRIVATE);
         return pemKey.toString();
     }
-    
+
     public static String exportToPem(X509Certificate x509cert) throws UnsupportedEncodingException, CertificateEncodingException {
         StringBuilder pemCert = new StringBuilder();
         byte[] derCert = x509cert.getEncoded();
@@ -72,11 +68,12 @@ public class CertUtil {
         pemCert.append(END_CERTIFICATE);
         return pemCert.toString();
     }
+
     public static String exportToDer(Key privateKey) throws CertificateEncodingException {
         byte[] derKey = privateKey.getEncoded();
-        return Util.getRawStr(derKey);        
+        return Util.getRawStr(derKey);
     }
-   
+
     public static String exportToDer(X509Certificate x509cert) throws CertificateEncodingException {
         byte[] derCert = x509cert.getEncoded();
         return Util.getRawStr(derCert);
@@ -92,7 +89,7 @@ public class CertUtil {
             Key key = ks.getKey(alias, keyPassword.toCharArray());
             X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
             certMap.put(alias, new AbstractMap.SimpleEntry<>(key, cert));
-        }    
+        }
         return certMap;
     }
 
@@ -128,5 +125,5 @@ public class CertUtil {
         }
         return alias;
     }
-    
+
 }

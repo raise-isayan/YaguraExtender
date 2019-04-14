@@ -5,7 +5,6 @@ import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import extend.model.base.CustomTableModel;
 import extend.util.ConvertUtil;
-import extend.util.external.TransUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;

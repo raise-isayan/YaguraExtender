@@ -20,10 +20,12 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
 
     private boolean editable = false;
 
+    @Override
     public void setCellEditable(boolean enable) {
         this.editable = enable;
     }
 
+    @Override
     public boolean getCellEditable() {
         return this.editable;
     }

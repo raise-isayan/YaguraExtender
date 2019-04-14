@@ -41,7 +41,7 @@ public final class Config {
     public static String getExtenderDir() {
         return ".yaguraextender";
     }
-    
+
     public static String getUserDir() {
         return System.getProperties().getProperty("user.dir");
     }
@@ -170,7 +170,7 @@ public final class Config {
         viewset.addAll(UniversalViewProperty.UniversalView.enumSetValueOf(universal));
         encProp.setMessageView(viewset);
         option.setEncodingProperty(encProp);
-                
+
         // Log
         LoggingProperty logProp = new LoggingProperty();
         logProp.setAutoLogging(prop.readEntryBool("log", "autologging", false));
@@ -183,8 +183,8 @@ public final class Config {
         logProp.setLogDirFormat(prop.readEntry("log", "format", logProp.getLogDirFormat()));
         logProp.setLogFileLimitSize(prop.readEntryInt("log", "limitSize", 0));
         logProp.setLogTimestampFormat(prop.readEntry("log", "timestampformat", logProp.getLogTimestampFormat()));
-        logProp.setExludeFilter(prop.readEntryBool("log", "exludeFilter", false));
-        logProp.setExludeFilterExtension(prop.readEntry("log", "exludeFilterExtension", logProp.getExludeFilterExtension()));
+        logProp.setExclude(prop.readEntryBool("log", "excludeFilter", false));
+        logProp.setExcludeExtension(prop.readEntry("log", "excludeFilterExtension", logProp.getExcludeExtension()));
         option.setLoggingProperty(logProp);
 
         // Match and Rreplace Property list
@@ -388,8 +388,8 @@ public final class Config {
         prop.writeEntryList("encoding", "list", option.getEncodingProperty().getEncodingList());
 
         EnumSet<UniversalViewProperty.UniversalView> universal = option.getEncodingProperty().getMessageView();
-        prop.writeEntry("encoding", "universal.view", Util.enumSetToString(universal));        
-        
+        prop.writeEntry("encoding", "universal.view", Util.enumSetToString(universal));
+
         // Log
         prop.writeEntryBool("log", "autologging", option.getLoggingProperty().isAutoLogging());
         prop.writeEntryBool("log", "proxylog", option.getLoggingProperty().isProxyLog());
@@ -399,8 +399,8 @@ public final class Config {
         prop.writeEntry("log", "format", option.getLoggingProperty().getLogDirFormat());
         prop.writeEntryInt("log", "limitSize", option.getLoggingProperty().getLogFileLimitSize());
         prop.writeEntry("log", "timestampformat", option.getLoggingProperty().getLogTimestampFormat());
-        prop.writeEntryBool("log", "exludeFilter", option.getLoggingProperty().isExludeFilter());
-        prop.writeEntry("log", "exludeFilterExtension", option.getLoggingProperty().getExludeFilterExtension());
+        prop.writeEntryBool("log", "excludeFilter", option.getLoggingProperty().isExclude());
+        prop.writeEntry("log", "excludeFilterExtension", option.getLoggingProperty().getExcludeExtension());
 
         // SendToItem
         List<SendToItem> sendToList = option.getSendToProperty().getSendToItemList();

@@ -20,7 +20,7 @@ public class AutoResponderProperty {
     }
 
     /**
-     * @param redirectTo the redirectPort to set
+     * @param redirectPort
      */
     public void setRedirectPort(int redirectPort) {
         this.redirectPort = redirectPort;
