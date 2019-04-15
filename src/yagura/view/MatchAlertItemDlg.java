@@ -130,11 +130,6 @@ public class MatchAlertItemDlg extends CustomDialog {
         lblType.setText("Type:");
 
         cmbAlertType.setToolTipText("");
-        cmbAlertType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbAlertTypeActionPerformed(evt);
-            }
-        });
 
         chkIgnoreCase.setText("IgnoreCase");
 
@@ -146,9 +141,9 @@ public class MatchAlertItemDlg extends CustomDialog {
         txtComment.setEnabled(false);
 
         chkComment.setText("comment");
-        chkComment.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkCommentStateChanged(evt);
+        chkComment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkCommentActionPerformed(evt);
             }
         });
 
@@ -161,9 +156,9 @@ public class MatchAlertItemDlg extends CustomDialog {
         });
 
         chkItem_highlight.setText("item highlight");
-        chkItem_highlight.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkItem_highlightStateChanged(evt);
+        chkItem_highlight.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkItem_highlightActionPerformed(evt);
             }
         });
 
@@ -173,9 +168,9 @@ public class MatchAlertItemDlg extends CustomDialog {
         chkAlerts_tab.setText("alerts tab");
 
         chkScannerIssue.setText("scanner issue");
-        chkScannerIssue.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkScannerIssueStateChanged(evt);
+        chkScannerIssue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkScannerIssueActionPerformed(evt);
             }
         });
 
@@ -352,27 +347,23 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
-    private void chkCommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCommentStateChanged
-        this.txtComment.setEnabled(this.chkComment.isSelected());
-    }//GEN-LAST:event_chkCommentStateChanged
-
-    private void chkItem_highlightStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkItem_highlightStateChanged
-        this.cmbAlertColor.setEnabled(this.chkItem_highlight.isSelected());
-    }//GEN-LAST:event_chkItem_highlightStateChanged
-
     private void cmbAlertColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlertColorActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbAlertColorActionPerformed
 
-    private void cmbAlertTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlertTypeActionPerformed
-
-    }//GEN-LAST:event_cmbAlertTypeActionPerformed
-
-    private void chkScannerIssueStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkScannerIssueStateChanged
+    private void chkScannerIssueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkScannerIssueActionPerformed
         this.txtIssueName.setEnabled(this.chkScannerIssue.isSelected());
         this.cmbSeverity.setEnabled(this.chkScannerIssue.isSelected());
         this.cmbConfidence.setEnabled(this.chkScannerIssue.isSelected());
-    }//GEN-LAST:event_chkScannerIssueStateChanged
+    }//GEN-LAST:event_chkScannerIssueActionPerformed
+
+    private void chkCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCommentActionPerformed
+        this.txtComment.setEnabled(this.chkComment.isSelected());
+    }//GEN-LAST:event_chkCommentActionPerformed
+
+    private void chkItem_highlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkItem_highlightActionPerformed
+        this.cmbAlertColor.setEnabled(this.chkItem_highlight.isSelected());
+    }//GEN-LAST:event_chkItem_highlightActionPerformed
 
     /**
      * @param args the command line arguments
@@ -465,11 +456,11 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
 
         this.cmbAlertColor.setModel(
-                new DefaultComboBoxModel(
-                        new MatchItem.HighlightColor[]{MatchItem.HighlightColor.RED, MatchItem.HighlightColor.ORANGE,
-                            MatchItem.HighlightColor.YELLOW, MatchItem.HighlightColor.GREEN, MatchItem.HighlightColor.CYAN,
-                            MatchItem.HighlightColor.BLUE, MatchItem.HighlightColor.PINK, MatchItem.HighlightColor.MAGENTA,
-                            MatchItem.HighlightColor.GRAY}));
+            new DefaultComboBoxModel(
+                new MatchItem.HighlightColor[]{MatchItem.HighlightColor.RED, MatchItem.HighlightColor.ORANGE,
+                    MatchItem.HighlightColor.YELLOW, MatchItem.HighlightColor.GREEN, MatchItem.HighlightColor.CYAN,
+                    MatchItem.HighlightColor.BLUE, MatchItem.HighlightColor.PINK, MatchItem.HighlightColor.MAGENTA,
+                    MatchItem.HighlightColor.GRAY}));
 
         this.cmbAlertColor.setEnabled(false);
 
@@ -497,9 +488,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                 SwingUtil.setContainerEnable(pnlScannerIssue, BurpExtender.getInstance().getBurpVersion().isProfessional());
             }
         });
-        
-//        SwingUtil.setContainerEnable(this.pnlScannerIssue, false);
-        
+                
     }
 
     /**
@@ -577,7 +566,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.txtAlertMatch.setText(item.getMatch());
         this.chkRegExp.setSelected(item.isRegexp());
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
-        //this.cmbAlertNotify.setSelectedItem(alertItem.getNotifyType());
+
         EnumSet<MatchAlertItem.NotifyType> notifys = item.getNotifyTypes();
         this.chkAlerts_tab.setSelected(notifys.contains(MatchAlertItem.NotifyType.ALERTS_TAB));
         this.chkTray_message.setSelected(notifys.contains(MatchAlertItem.NotifyType.TRAY_MESSAGE));
@@ -596,14 +585,15 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (item.getNotifyTypes().contains(MatchItem.NotifyType.ITEM_HIGHLIGHT)) {
             this.cmbAlertColor.setSelectedItem(item.getHighlightColor());
         }
-//        if (item.getNotifyTypes().contains(MatchItem.NotifyType.COMMENT)) {
-            this.txtComment.setText(item.getComment());
-//        }
-//        if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
-            this.txtIssueName.setText(item.getIssueName());
-            this.cmbSeverity.setSelectedItem(item.getSeverity().name());
-            this.cmbConfidence.setSelectedItem(item.getConfidence().name());
-//        }
-
+        chkItem_highlightActionPerformed(null);
+        
+        this.txtComment.setText(item.getComment());
+        this.chkCommentActionPerformed(null);
+        
+        this.txtIssueName.setText(item.getIssueName());
+        this.cmbSeverity.setSelectedItem(item.getSeverity().name());
+        this.cmbConfidence.setSelectedItem(item.getConfidence().name());
+        this.chkScannerIssueActionPerformed(null);
+        
     }
 }

@@ -458,7 +458,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">Java</div>
 <ul>
 <li>
-<p>JRE(JDK) 1.8以上(Oracle JRE を推奨)( <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" class="bare">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a>)</p>
+<p>JRE(JDK) 1.8以上(Oracle JRE を推奨)(<a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" class="bare">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a>)</p>
 </li>
 </ul>
 </div>
@@ -655,8 +655,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><span class="image"><img src="./images/custom_matchreplace.png" alt="MatchReplaceタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>Burp sute 本体の Proxy &#8658; OptionタブのMatch and Replaceの拡張になります。複数のMatch and Replace を作成して切り替えられます。
-置換文字列として正規表現の前方参照を指定できます。Burp本体のMatch and Replaceとは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。</p>
+<p>Burp sute 本体の Proxy &#8658; Optionタブの <strong> Match and Replace </strong> の拡張になります。複数の <strong> Match and Replace </strong> を作成して切り替えられます。
+置換文字列として正規表現の前方参照を指定できます。Burp本体の <strong> Match and Replace </strong> とは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。</p>
 </div>
 <div class="sect3">
 <h4 id="_matchreplace">3.2.1. MatchReplace</h4>
@@ -746,7 +746,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <dd>
 <p>置換対象の置換後の文字列を入力します。
 置換対象に request heder,response hederが選択されている場合でかつ置換後の文字のみを入力した場合はHeder行の追加になります。
-また、$1、$2などの前方参照を指定することができます。
+また、$1、$2などのキャプチャグループを指定することができます。
 いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
 アスキー文字以外を指定する場合は、メタ文字を利用します。</p>
 </dd>
@@ -779,11 +779,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\r</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">CR(0xD) に変換</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CR(0x0d) に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\n</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">LF(0xA) に変換</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LF(0x0a) に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\b</p></td>
@@ -791,7 +791,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\f</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">0x0C に変換</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0c に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\t</p></td>
@@ -1250,6 +1250,10 @@ proxy-message.log.2
 <p>auto loggingがオフの状態でのみチェックできます。
 チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。</p>
 </dd>
+<dt class="hdlist1">[Exclude Extension]チェックボックス</dt>
+<dd>
+<p>設定された拡張子をロギングから除外します。</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -1354,14 +1358,6 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>Outputの内容をクリップボードに送ります。</p>
 </dd>
-<dt class="hdlist1">[Smart Decode]ボタン</dt>
-<dd>
-<p>文字列の形式を自動判定しデコードします。</p>
-</dd>
-<dt class="hdlist1">[Encode]/[Decode]ボタン</dt>
-<dd>
-<p>選択した変換方式でエンコード、デコード変換を行います。</p>
-</dd>
 <dt class="hdlist1">Historyコンボボックス</dt>
 <dd>
 <p>変換した履歴が記録されており、選択すると以前の変換を取得できます。</p>
@@ -1370,6 +1366,18 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 <div class="sect4">
 <h5 id="_encode_decode">Encode/Decode</h5>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Smart Decode]ボタン</dt>
+<dd>
+<p>文字列の形式を自動判定しデコードします。</p>
+</dd>
+<dt class="hdlist1">[Encode]/[Decode]ボタン</dt>
+<dd>
+<p>選択した変換方式でエンコード、デコード変換を行います。</p>
+</dd>
+</dl>
+</div>
 <div class="paragraph">
 <p>チェックしたエンコード/デコードを行います。</p>
 </div>
@@ -1776,7 +1784,7 @@ Content-TypeがMulti part かつファイルアップロードの項目がある
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-04-14 22:30:54 JST
+Last updated 2019-04-15 20:33:08 JST
 </div>
 </div>
 </body>

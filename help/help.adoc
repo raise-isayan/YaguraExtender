@@ -7,7 +7,7 @@
 == 動作環境
 
 .Java
-* JRE(JDK) 1.8以上(Oracle JRE を推奨)( http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* JRE(JDK) 1.8以上(Oracle JRE を推奨)(http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
 .Burp suite
 * 1.7以上 (http://www.portswigger.net/burp/)
@@ -103,8 +103,8 @@ Select::
 
 image:images/custom_matchreplace.png[MatchReplaceタブ]
 
-Burp sute 本体の Proxy => OptionタブのMatch and Replaceの拡張になります。複数のMatch and Replace を作成して切り替えられます。
-置換文字列として正規表現の前方参照を指定できます。Burp本体のMatch and Replaceとは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。
+Burp sute 本体の Proxy => Optionタブの ** Match and Replace ** の拡張になります。複数の ** Match and Replace ** を作成して切り替えられます。
+置換文字列として正規表現の前方参照を指定できます。Burp本体の ** Match and Replace ** とは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。
 
 ==== MatchReplace
 
@@ -163,7 +163,7 @@ Match(置換前)::
 Replace(置換後)::
     置換対象の置換後の文字列を入力します。
     置換対象に request heder,response hederが選択されている場合でかつ置換後の文字のみを入力した場合はHeder行の追加になります。
-    また、$1、$2などの前方参照を指定することができます。
+    また、$1、$2などのキャプチャグループを指定することができます。
     いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
     アスキー文字以外を指定する場合は、メタ文字を利用します。
 
@@ -180,10 +180,10 @@ Replace(置換後)::
 [options="header", cols="2,8"]
 |=======================
 |メタ文字|変換文字
-|\r      |CR(0xD) に変換
-|\n      |LF(0xA) に変換
+|\r      |CR(0x0d) に変換
+|\n      |LF(0x0a) に変換
 |\b      |0x08 に変換
-|\f      |0x0C に変換
+|\f      |0x0c に変換
 |\t      |TAB(0x08) に変換
 |\v      |0x0B に変換
 |\xhh    |16進表記、 hhには16進文字を2桁指定する。バイト列そのままに変換したい場合に利用します。
@@ -470,6 +470,8 @@ proxy-message.log.2
 [history is included]チェックボックス:: 
      auto loggingがオフの状態でのみチェックできます。
      チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。
+[Exclude Extension]チェックボックス:: 
+     設定された拡張子をロギングから除外します。
 
 === JSearchタブ
 
@@ -539,16 +541,16 @@ Encodeing::
 [Output Copy]ボタン:: 
      Outputの内容をクリップボードに送ります。
 
+Historyコンボボックス:: 
+     変換した履歴が記録されており、選択すると以前の変換を取得できます。
+
+===== Encode/Decode
+
 [Smart Decode]ボタン:: 
      文字列の形式を自動判定しデコードします。
 
 [Encode]/[Decode]ボタン:: 
      選択した変換方式でエンコード、デコード変換を行います。
-
-Historyコンボボックス:: 
-     変換した履歴が記録されており、選択すると以前の変換を取得できます。
-
-===== Encode/Decode
 
 チェックしたエンコード/デコードを行います。
 
