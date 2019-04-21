@@ -11,7 +11,6 @@ import yagura.model.SendToItem;
 import yagura.model.SendToProperty;
 import extend.util.SwingUtil;
 import java.awt.Component;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -19,7 +18,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -49,11 +47,12 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         btnSendToEdit = new javax.swing.JButton();
         btnSendToRemove = new javax.swing.JButton();
         btnSendToAdd = new javax.swing.JButton();
-        scrollSendTo = new javax.swing.JScrollPane();
-        tableSendTo = new javax.swing.JTable();
         btnSendToDownArraw = new javax.swing.JButton();
         btnSendToUpArraw = new javax.swing.JButton();
         chkSubmenu = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableSendTo = new javax.swing.JTable();
+        btnEditHotkey = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -82,46 +81,6 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        tableSendTo.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "", "MenuCaption", "Server", "Target", "Req Header", "Req Body", "Res Header", "Res Body", "Rev Order", "Extend"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableSendTo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tableSendToKeyTyped(evt);
-            }
-        });
-        scrollSendTo.setViewportView(tableSendTo);
-        if (tableSendTo.getColumnModel().getColumnCount() > 0) {
-            tableSendTo.getColumnModel().getColumn(2).setResizable(false);
-            tableSendTo.getColumnModel().getColumn(4).setResizable(false);
-            tableSendTo.getColumnModel().getColumn(5).setResizable(false);
-            tableSendTo.getColumnModel().getColumn(6).setResizable(false);
-            tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(0);
-            tableSendTo.getColumnModel().getColumn(7).setResizable(false);
-            tableSendTo.getColumnModel().getColumn(8).setResizable(false);
-            tableSendTo.getColumnModel().getColumn(9).setResizable(false);
-        }
-
         btnSendToDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
         btnSendToDownArraw.setText("down");
         btnSendToDownArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
@@ -147,6 +106,50 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
             }
         });
 
+        tableSendTo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "select", "MenuCaption", "Server", "Target", "Req Header", "Req Bod", "Res Header", "Res Body", "Rev Order", "HotKey", "Extend"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableSendTo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tableSendToKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableSendTo);
+        if (tableSendTo.getColumnModel().getColumnCount() > 0) {
+            tableSendTo.getColumnModel().getColumn(0).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(7).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(8).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(9).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(10).setResizable(false);
+        }
+
+        btnEditHotkey.setText("Edit Hotkey");
+        btnEditHotkey.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditHotkeyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
@@ -155,34 +158,32 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                 .addContainerGap()
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(scrollSendTo)
+                        .addGap(1, 1, 1)
+                        .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(btnSendToEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSendToRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnSendToDownArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(btnSendToUpArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(btnSendToAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnSendToEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSendToRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                            .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnSendToDownArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
+                                    .addGap(10, 10, 10)
+                                    .addComponent(btnSendToUpArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnSendToAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
+                            .addComponent(btnEditHotkey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(22, 22, 22))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(chkSubmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(560, Short.MAX_VALUE))))
+                        .addContainerGap(564, Short.MAX_VALUE))))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(chkSubmenu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(scrollSendTo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(4, 4, 4))
-                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addGap(11, 11, 11)
                         .addComponent(btnSendToEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSendToRemove)
@@ -192,7 +193,13 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                         .addComponent(btnSendToDownArraw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSendToAdd)
-                        .addContainerGap(98, Short.MAX_VALUE))))
+                        .addGap(85, 85, 85)
+                        .addComponent(btnEditHotkey)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         tabSendTo.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -209,17 +216,17 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
     public Component getUiComponent() {
         return this;
     }
-    
+
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private CustomTableModel modelSendTo = null;
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
+
+    private final HotkeyDlg hotkeyDlg = new HotkeyDlg(null, true);
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
         // SendTo Tab
-//        this.lblSendToTip.setText(BUNDLE.getString("view.sendto.tip"));
-
         this.modelSendTo = new CustomTableModel(this.tableSendTo.getModel());
         this.tableSendTo.setModel(this.modelSendTo);
         this.btnSendToEdit.setEnabled(this.tableSendTo.getSelectedRowCount() > 0);
@@ -243,14 +250,17 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
             }
         });
 
+        this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
         // selected
         this.tableSendTo.getColumnModel().getColumn(0).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(0).setPreferredWidth(20);
         this.tableSendTo.getColumnModel().getColumn(0).setMaxWidth(30);
 
         // Caption
-        this.tableSendTo.getColumnModel().getColumn(1).setPreferredWidth(80);
-        this.tableSendTo.getColumnModel().getColumn(1).setMaxWidth(180);
+        this.tableSendTo.getColumnModel().getColumn(1).setMinWidth(80);
+        this.tableSendTo.getColumnModel().getColumn(1).setPreferredWidth(150);
+        this.tableSendTo.getColumnModel().getColumn(1).setMaxWidth(300);
 
         // server
         this.tableSendTo.getColumnModel().getColumn(2).setMinWidth(20);
@@ -258,39 +268,43 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         this.tableSendTo.getColumnModel().getColumn(2).setMaxWidth(40);
 
         // Target
-        this.tableSendTo.getColumnModel().getColumn(3).setMinWidth(50);
-        this.tableSendTo.getColumnModel().getColumn(3).setPreferredWidth(180);
-        this.tableSendTo.getColumnModel().getColumn(3).setMaxWidth(250);
+        this.tableSendTo.getColumnModel().getColumn(3).setMinWidth(80);
+        this.tableSendTo.getColumnModel().getColumn(3).setPreferredWidth(200);
+        this.tableSendTo.getColumnModel().getColumn(3).setMaxWidth(300);
 
         // request header
         this.tableSendTo.getColumnModel().getColumn(4).setMinWidth(20);
-        this.tableSendTo.getColumnModel().getColumn(4).setPreferredWidth(30);
+        this.tableSendTo.getColumnModel().getColumn(4).setPreferredWidth(50);
         this.tableSendTo.getColumnModel().getColumn(4).setMaxWidth(60);
 
         // request body
         this.tableSendTo.getColumnModel().getColumn(5).setMinWidth(20);
-        this.tableSendTo.getColumnModel().getColumn(5).setPreferredWidth(30);
+        this.tableSendTo.getColumnModel().getColumn(5).setPreferredWidth(50);
         this.tableSendTo.getColumnModel().getColumn(5).setMaxWidth(60);
-        
+
         // response header
         this.tableSendTo.getColumnModel().getColumn(6).setMinWidth(20);
-        this.tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(30);
+        this.tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(50);
         this.tableSendTo.getColumnModel().getColumn(6).setMaxWidth(60);
 
         // response body
         this.tableSendTo.getColumnModel().getColumn(7).setMinWidth(20);
-        this.tableSendTo.getColumnModel().getColumn(7).setPreferredWidth(30);
+        this.tableSendTo.getColumnModel().getColumn(7).setPreferredWidth(50);
         this.tableSendTo.getColumnModel().getColumn(7).setMaxWidth(60);
-        
+
         // reverse order
         this.tableSendTo.getColumnModel().getColumn(8).setMinWidth(0);
         this.tableSendTo.getColumnModel().getColumn(8).setPreferredWidth(0);
         this.tableSendTo.getColumnModel().getColumn(8).setMaxWidth(0);
 
+        // Hotkey
+//        this.tableSendTo.getColumnModel().getColumn(9).setMinWidth(100);
+//        this.tableSendTo.getColumnModel().getColumn(9).setPreferredWidth(80);
+//        this.tableSendTo.getColumnModel().getColumn(9).setMaxWidth(180);
         // Extend
-        this.tableSendTo.getColumnModel().getColumn(9).setMinWidth(0);
-        this.tableSendTo.getColumnModel().getColumn(9).setPreferredWidth(0);
-        this.tableSendTo.getColumnModel().getColumn(9).setMaxWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(10).setMinWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(10).setPreferredWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(10).setMaxWidth(0);
 
         // 
         this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -323,40 +337,31 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 
     private void btnSendToAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToAddActionPerformed
         this.showSendToItemDlg(false);
-        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());                
 }//GEN-LAST:event_btnSendToAddActionPerformed
 
     private void chkSubmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSubmenuActionPerformed
         this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
     }//GEN-LAST:event_chkSubmenuActionPerformed
 
-    private void tableSendToKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableSendToKeyTyped
-        if (evt.getKeyChar() == KeyEvent.VK_SPACE) {
-            int[] rowSelect = this.tableSendTo.getSelectedRows();
-            for (int i = 0; i < rowSelect.length; i++) {
-                int rowIndex = this.tableSendTo.convertRowIndexToModel(rowSelect[i]);
-                DefaultTableModel modelTable = (DefaultTableModel) this.tableSendTo.getModel();                
-                Object[] editRows = new Object[this.tableSendTo.getColumnCount()];
-                for (int k = 0; k < editRows.length; k++) {
-                    editRows[k] = modelTable.getValueAt(rowIndex, this.tableSendTo.convertColumnIndexToModel(k));
-                }
-                SendToItem item = SendToItem.fromObjects(editRows);
-                item.setSelected(!item.isSelected());
-                editRows = SendToItem.toObjects(item);
-                SwingUtil.updateItem(this.tableSendTo, editRows, rowSelect[i]);
-            }            
-        }
-    }//GEN-LAST:event_tableSendToKeyTyped
+    private void tableSendToKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableSendToKeyPressed
+    }//GEN-LAST:event_tableSendToKeyPressed
+
+    private void btnEditHotkeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditHotkeyActionPerformed
+        editHotkeyDlg();
+        this.tableSendTo.updateUI();
+        this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
+    }//GEN-LAST:event_btnEditHotkeyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditHotkey;
     private javax.swing.JButton btnSendToAdd;
     private javax.swing.JButton btnSendToDownArraw;
     private javax.swing.JButton btnSendToEdit;
     private javax.swing.JButton btnSendToRemove;
     private javax.swing.JButton btnSendToUpArraw;
     private javax.swing.JCheckBox chkSubmenu;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlCenter;
-    private javax.swing.JScrollPane scrollSendTo;
     private javax.swing.JPanel tabSendTo;
     private javax.swing.JTable tableSendTo;
     // End of variables declaration//GEN-END:variables
@@ -427,6 +432,16 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         sendToProperty.setSendToItemList(this.getSendToItemList());
         sendToProperty.setSubMenu(this.chkSubmenu.isSelected());
         return sendToProperty;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void editHotkeyDlg() {
+        this.hotkeyDlg.setLocationRelativeTo(this);
+        this.hotkeyDlg.setItemList(this.getSendToItemList());
+        this.hotkeyDlg.setVisible(true);
+        if (this.hotkeyDlg.getModalResult() == JOptionPane.OK_OPTION) {
+            this.setSendToItemList(this.hotkeyDlg.getItemList());
+        }
     }
 
 }

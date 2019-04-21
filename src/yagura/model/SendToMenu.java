@@ -1,19 +1,28 @@
 package yagura.model;
 
+import burp.BurpExtender;
 import burp.IBurpExtenderCallbacks;
 import burp.IContextMenuFactory;
 import burp.IContextMenuInvocation;
 import burp.IHttpRequestResponse;
 import burp.IHttpService;
+import burp.IScanIssue;
 import extend.util.BurpWrap;
 import extend.util.HttpUtil;
+import extend.util.Util;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.FocusManager;
 import javax.swing.JMenuItem;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
 
 /**
  * burp new IF
@@ -34,6 +43,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
 
     }
     private final List<JMenuItem> menuList = new ArrayList<JMenuItem>();
+    private final List<SendToMenuItem> sendToList = new ArrayList<>();
 
     @Override
     public List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
@@ -44,6 +54,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
     
     public void renewMenu(SendToProperty property) {
         this.mnuSendTo.setText("Send To");
+        this.sendToList.clear();
         this.menuList.clear();
         if (property.isSubMenu()) {
             this.mnuSendTo.removeAll();
@@ -56,6 +67,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
                 mnuItem.setText(item.getCaption());
                 if (item.getExtend() != null) {
                     SendToExtend sendToItem = new SendToExtend(item, this.invocation);
+                    sendToList.add(sendToItem);
                     mnuItem.addActionListener(sendToItem);
                     if (property.isSubMenu()) {
                         if (sendToItem.isEnabled()) this.mnuSendTo.add(mnuItem);                                                
@@ -65,6 +77,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
                 } else {
                     if (item.isServer()) {
                         SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
+                        sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
                             if (sendToItem.isEnabled()) this.mnuSendTo.add(mnuItem);                                                
@@ -73,6 +86,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
                         }                    
                     } else {
                         SendToMenuItem sendToItem = new SendToMultiEditor(item, this.invocation);
+                        sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
                             if (sendToItem.isEnabled()) this.mnuSendTo.add(mnuItem);                                                
@@ -169,6 +183,74 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
     }
     
     private int repeternum = 0;
+
+    public void doKeyEventAction(KeyEvent evt) {
+        List<IHttpRequestResponse> historyList = new ArrayList<>();
+        FocusManager mgr = FocusManager.getCurrentManager();
+        Component owner = mgr.getFocusOwner();
+        if (owner instanceof JTable) {
+            JTable table = (JTable)owner;
+            int[] rowSelect = table.getSelectedRows();
+            for (int i = 0; i < rowSelect.length; i++) {
+                int rowIndex = table.convertRowIndexToModel(rowSelect[i]);
+                TableModel modelTable = table.getModel(); 
+                int historyIndex = Util.parseIntDefault(String.valueOf(modelTable.getValueAt(rowIndex, 0)), -1);
+                if (historyIndex > 0) {
+                    IHttpRequestResponse[] history = BurpExtender.getCallbacks().getProxyHistory();
+                    historyList.add(history[historyIndex - 1]);
+                }
+            }
+        }                    
+        createMenuItems(getContextMenuInvocation(evt, historyList.toArray(new IHttpRequestResponse[0])));
+        //
+        for (SendToMenuItem item : sendToList) {
+            if (item.isSelected() && item.getHotkey() != null) {
+                KeyEvent hotKey = item.getHotkey();
+                if (evt.getModifiers() == hotKey.getModifiers() &&
+                    evt.getKeyCode() == hotKey.getKeyCode()) {
+                    if (historyList.size() > 0) {
+                        IHttpRequestResponse[] messageInfo = historyList.toArray(new IHttpRequestResponse[0]);
+                        item.menuItemClicked("#", messageInfo);                        
+                    }
+                }
+             }
+        }        
+    }
+
+    private IContextMenuInvocation getContextMenuInvocation(KeyEvent evt, IHttpRequestResponse[] messageInfo) {
+        return new IContextMenuInvocation() {
+            @Override
+            public InputEvent getInputEvent() {
+                return evt;
+            }
+
+            @Override
+            public int getToolFlag() {
+                return IBurpExtenderCallbacks.TOOL_PROXY;
+            }
+
+            @Override
+            public byte getInvocationContext() {
+                return IContextMenuInvocation.CONTEXT_PROXY_HISTORY;
+            }
+
+            @Override
+            public int[] getSelectionBounds() {
+                return null;
+            }
+
+            @Override
+            public IHttpRequestResponse[] getSelectedMessages() {
+                return messageInfo;
+            }
+
+            @Override
+            public IScanIssue[] getSelectedIssues() {
+                return null;
+            }
+        
+        };
+    }
     
     public void sendToRepeater(SendToMessage message) {
         try {

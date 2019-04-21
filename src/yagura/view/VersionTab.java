@@ -2,7 +2,7 @@ package yagura.view;
 
 import burp.BurpExtender;
 import burp.ITab;
-import yagura.Config;
+import yagura.LegacyConfig;
 import yagura.Version;
 import extend.view.model.VerticalFlowLayout;
 import java.awt.Component;
@@ -124,7 +124,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = filechooser.getSelectedFile();
-                Config.loadFromXml(file, BurpExtender.getInstance().getProperty());
+                LegacyConfig.loadFromXml(file, BurpExtender.getInstance().getProperty());
             } catch (IOException ex) {
                 Logger.getLogger(VersionTab.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -144,7 +144,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 if (!BURP_CONFIG_FILTER.accept(file)) {
                     file = new File(file.getAbsolutePath() + ".bcxml");
                 }
-                Config.saveToXML(file, BurpExtender.getInstance().getProperty());
+                LegacyConfig.saveToXML(file, BurpExtender.getInstance().getProperty());
             } catch (IOException ex) {
                 Logger.getLogger(VersionTab.class.getName()).log(Level.SEVERE, null, ex);
             }

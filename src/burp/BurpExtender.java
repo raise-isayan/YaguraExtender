@@ -1,7 +1,7 @@
 package burp;
 
 import static burp.BurpExtenderImpl.getCallbacks;
-import yagura.Config;
+import yagura.LegacyConfig;
 import yagura.model.AutoResponderItem;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchReplaceItem;
@@ -22,8 +22,12 @@ import extend.util.SwingUtil;
 import extend.util.Util;
 import extend.view.base.HttpResponse;
 import java.awt.Component;
+import java.awt.DefaultKeyboardFocusManager;
+import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.ByteArrayInputStream;
@@ -59,23 +63,17 @@ import yagura.view.RawViewTab;
  * @author isayan
  */
 public class BurpExtender extends BurpExtenderImpl
-        implements IHttpListener, IProxyListener {
+        implements IHttpListener, IProxyListener,IExtensionStateListener {
 
     private Class<? extends String> c;
 
     public BurpExtender() {
     }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-    }
-
+    
     /**
      * ログ設定プロパティファイルのファイル名
      */
-    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
+    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + LegacyConfig.getLoggingPropertyName();
 
     static {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -97,8 +95,12 @@ public class BurpExtender extends BurpExtenderImpl
         return BurpExtenderImpl.<BurpExtender>getInstance();
     }
 
+    public Component getUiComponent() {
+        return this.tabbetOption;
+    }
+    
     public static File getExtensionLogDir() {
-        return new File(Config.getUserHome(), Config.getExtenderDir());
+        return new File(LegacyConfig.getUserHome(), LegacyConfig.getExtenderDir());
     }
 
     private final TabbetOption tabbetOption = new TabbetOption();
@@ -146,7 +148,16 @@ public class BurpExtender extends BurpExtenderImpl
             return tab;
         }
     };
-
+    
+    private final KeyEventPostProcessor  dispatcher = new KeyEventPostProcessor() {
+        @Override
+        public boolean postProcessKeyEvent(KeyEvent e) {
+            SendToMenu menu = getSendToMenu();
+            menu.doKeyEventAction(e);
+            return false;
+        }
+    };
+        
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
@@ -155,7 +166,7 @@ public class BurpExtender extends BurpExtenderImpl
             try {
                 String configXML = getCallbacks().loadExtensionSetting("configXML");
                 if (configXML != null) {
-                    Config.loadFromXml(ConvertUtil.decompressZlibBase64(configXML, StandardCharsets.UTF_8), this.option);
+                    LegacyConfig.loadFromXml(ConvertUtil.decompressZlibBase64(configXML, StandardCharsets.UTF_8), this.option);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
@@ -175,16 +186,25 @@ public class BurpExtender extends BurpExtenderImpl
             cb.registerProxyListener(this);
             cb.addSuiteTab(this.tabbetOption);
             cb.registerExtensionStateListener(this.tabbetOption);
+            cb.registerExtensionStateListener(this);
             cb.registerContextMenuFactory(this.getSendToMenu());
             this.tabbetOption.setProperty(this.option);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
             this.registerView();
 
+            //
+            DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
+                                    
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
+    @Override
+    public void extensionUnloaded() {
+        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventPostProcessor(dispatcher);
+    }
+    
     public void registerView() {
         IBurpExtenderCallbacks cb = getCallbacks();
         cb.registerMessageEditorTabFactory(this.requestRawTab);
@@ -213,9 +233,7 @@ public class BurpExtender extends BurpExtenderImpl
         } else {
             messageByte = message.getMessageInfo().getResponse();
         }
-
         resultBytes = messageByte;
-
         IHttpRequestResponse msgInfo = message.getMessageInfo();
 
         // Autoresponder
@@ -299,10 +317,10 @@ public class BurpExtender extends BurpExtenderImpl
             byte[] request = this.proxyLogs.get(messageReference);
             if (request != null) {
                 try {
-                    File fname = new File(this.getLogDir(), Config.getProxyLogMessageName());
+                    File fname = new File(this.getLogDir(), LegacyConfig.getProxyLogMessageName());
                     if (fname.length() > this.option.getLoggingProperty().getLogFileByteLimitSize()
                             && this.option.getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                        File renameFile = Util.rotateFile(this.getLogDir(), Config.getProxyLogMessageName());
+                        File renameFile = Util.rotateFile(this.getLogDir(), LegacyConfig.getProxyLogMessageName());
                         fname.renameTo(renameFile);
                     }
                     boolean includeLog = true;
@@ -360,7 +378,7 @@ public class BurpExtender extends BurpExtenderImpl
             String toolName,
             boolean messageIsRequest,
             IHttpRequestResponse messageInfo) {
-        String baselogfname = Config.getToolLogName(toolName);
+        String baselogfname = LegacyConfig.getToolLogName(toolName);
         try {
             if (!messageIsRequest) {
                 File fname = new File(this.getLogDir(), baselogfname);
@@ -593,7 +611,7 @@ public class BurpExtender extends BurpExtenderImpl
         List<String> list = new ArrayList<String>();
         list.addAll(this.option.getEncodingProperty().getEncodingList());
         // リストにない場合追加
-        if (!this.option.getEncodingProperty().getEncodingList().contains(charsetMode) && Config.isEncodingName(charsetMode)) {
+        if (!this.option.getEncodingProperty().getEncodingList().contains(charsetMode) && LegacyConfig.isEncodingName(charsetMode)) {
             list.add(charsetMode);
         }
         return list;
@@ -664,7 +682,6 @@ public class BurpExtender extends BurpExtenderImpl
 
     public void setSendToMenu(SendToMenu sendToMenu) {
         this.sendToMenu = sendToMenu;
-
     }
 
     public final OptionProperty option = new OptionProperty();
@@ -733,7 +750,7 @@ public class BurpExtender extends BurpExtenderImpl
         }
 
         try {
-            String configXML = Config.saveToXML(this.option);
+            String configXML = LegacyConfig.saveToXML(this.option);
             getCallbacks().saveExtensionSetting("configXML", ConvertUtil.compressZlibBase64(configXML, StandardCharsets.UTF_8));
 
         } catch (IOException ex) {
@@ -744,9 +761,8 @@ public class BurpExtender extends BurpExtenderImpl
     }
 
     /**
-     * ***********************************************************************
      * Send to JTransCoder
-     * ***********************************************************************
+     * @param text
      */
     public void sendToJTransCoder(String text) {
         tabbetOption.sendToJTransCoder(text);
@@ -757,9 +773,9 @@ public class BurpExtender extends BurpExtenderImpl
     }
 
     /**
-     * ***********************************************************************
      * Message Info Copy
-     * ***********************************************************************
+     * @param contextMenu
+     * @param messageInfoList
      */
     public void sendToMessageInfoCopy(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
         StringBuilder buff = new StringBuilder();
@@ -837,9 +853,9 @@ public class BurpExtender extends BurpExtenderImpl
     }
 
     /**
-     * ***********************************************************************
      * Add Host To Scope
-     * ***********************************************************************
+     * @param contextMenu
+     * @param messageInfoList
      */
     public void sendToAddHostToScope(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
         try {

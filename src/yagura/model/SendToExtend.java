@@ -1,7 +1,7 @@
 package yagura.model;
 
 import burp.*;
-import yagura.Config;
+import yagura.LegacyConfig;
 import burp.BurpExtender;
 import burp.IContextMenuInvocation;
 import extend.util.BurpWrap;
@@ -22,7 +22,7 @@ import javax.swing.JFileChooser;
  */
 public class SendToExtend extends SendToMenuItem {
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    private File currentDirectory = new File(Config.getUserHome());
+    private File currentDirectory = new File(LegacyConfig.getUserHome());
     private int repeternum = 0; 
     
     public SendToExtend(SendToItem item, IContextMenuInvocation contextMenu) {
@@ -58,7 +58,6 @@ public class SendToExtend extends SendToMenuItem {
             break;
         }
         case MESSAGE_INFO_COPY: {
-//            BurpExtender.getInstance().sendToMessageInfoCopy(this.contextMenu, messageInfo);                                    
             BurpExtender.getInstance().sendToTableInfoCopy(this.contextMenu, messageInfo);                                    
             break;
         }

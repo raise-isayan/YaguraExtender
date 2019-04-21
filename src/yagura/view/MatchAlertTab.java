@@ -94,6 +94,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
                 return canEdit [columnIndex];
             }
         });
+        tableAlert.getTableHeader().setReorderingAllowed(false);
         tableAlert.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 tableAlertKeyTyped(evt);

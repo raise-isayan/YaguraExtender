@@ -73,14 +73,14 @@ public class ConfigTest {
     }
 
     /**
-     * Test of getToolLogName method, of class Config.
+     * Test of getToolLogName method, of class LegacyConfig.
      */
     @Test
     public void testGetToolLogName() {
         System.out.println("getToolLogName");
         String toolName = "Proxy";
         String expResult = "burp_tool_Proxy.log";
-        String result = Config.getToolLogName(toolName);
+        String result = LegacyConfig.getToolLogName(toolName);
         assertEquals(expResult, result);
     }
 
@@ -101,7 +101,7 @@ public class ConfigTest {
     }
                 
 //    /**
-//     * Test of toCharsetMode method, of class Config.
+//     * Test of toCharsetMode method, of class LegacyConfig.
 //     */
 //    @Test
 //    public void testToCharsetMode() {
@@ -109,25 +109,25 @@ public class ConfigTest {
 //        {
 //            String encodeName = "PlatformDefault";
 //            String expResult = "__CharsetUsePlatformDefault";
-//            String result = Config.toCharsetMode(encodeName);
+//            String result = LegacyConfig.toCharsetMode(encodeName);
 //            assertEquals(expResult, result);            
 //        }
 //        {
 //            String encodeName = "AutoRecognise";
 //            String expResult = "__CharsetAutoRecognise";
-//            String result = Config.toCharsetMode(encodeName);
+//            String result = LegacyConfig.toCharsetMode(encodeName);
 //            assertEquals(expResult, result);            
 //        }
 //        {
 //            String encodeName = "RawBytes";
 //            String expResult = "__CharsetRawBytes";
-//            String result = Config.toCharsetMode(encodeName);
+//            String result = LegacyConfig.toCharsetMode(encodeName);
 //            assertEquals(expResult, result);            
 //        }
 //    }
 
 //    /**
-//     * Test of toEncodingName method, of class Config.
+//     * Test of toEncodingName method, of class LegacyConfig.
 //     */
 //    @Test
 //    public void testToEncodingName() {
@@ -135,25 +135,25 @@ public class ConfigTest {
 //        {
 //            String charSetMode = "__CharsetUsePlatformDefault";
 //            String expResult = "PlatformDefault";
-//            String result = Config.toEncodingName(charSetMode);
+//            String result = LegacyConfig.toEncodingName(charSetMode);
 //            assertEquals(expResult, result);        
 //        }
 //        {
 //            String charSetMode = "__CharsetAutoRecognise";
 //            String expResult = "AutoRecognise";
-//            String result = Config.toEncodingName(charSetMode);
+//            String result = LegacyConfig.toEncodingName(charSetMode);
 //            assertEquals(expResult, result);        
 //        }
 //        {
 //            String charSetMode = "__CharsetRawBytes";
 //            String expResult = "RawBytes";
-//            String result = Config.toEncodingName(charSetMode);
+//            String result = LegacyConfig.toEncodingName(charSetMode);
 //            assertEquals(expResult, result);        
 //        }
 //    }
 
 //    /**
-//     * Test of isEncodingName method, of class Config.
+//     * Test of isEncodingName method, of class LegacyConfig.
 //     */
 //    @Test
 //    public void testIsEncodingName() {
@@ -161,13 +161,13 @@ public class ConfigTest {
 //        {
 //            String charSetMode = "__CharsetUsePlatformDefault";
 //            boolean expResult = false;
-//            boolean result = Config.isEncodingName(charSetMode);
+//            boolean result = LegacyConfig.isEncodingName(charSetMode);
 //            assertEquals(expResult, result);        
 //        }
 //        {
 //            String charSetMode = "PlatformDefault";
 //            boolean expResult = true;
-//            boolean result = Config.isEncodingName(charSetMode);
+//            boolean result = LegacyConfig.isEncodingName(charSetMode);
 //            assertEquals(expResult, result);        
 //        }        
 //    }
@@ -175,7 +175,7 @@ public class ConfigTest {
     private final IOptionProperty optionProperty = new OptionProperty();
     
     /**
-     * Test of saveToXML method, of class Config.
+     * Test of saveToXML method, of class LegacyConfig.
      */
     @Test
     public void testLoadSaveXML() {
@@ -184,7 +184,7 @@ public class ConfigTest {
                 System.out.println("saveToXML");
                 File fo = new File(System.getProperty("java.io.tmpdir"), "configTest.xml");
                 System.out.println("Path:" + fo);
-                Config.saveToXML(fo, optionProperty);                        
+                LegacyConfig.saveToXML(fo, optionProperty);                        
                 assertTrue(fo.exists());
             } catch (IOException ex) {
                 Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -195,7 +195,7 @@ public class ConfigTest {
             try {
                 System.out.println("loadFromXml");
                 File fi = new File(System.getProperty("java.io.tmpdir"), "configTest.xml");
-                Config.loadFromXml(fi, optionProperty);
+                LegacyConfig.loadFromXml(fi, optionProperty);
                 assertEquals(3, optionProperty.getEncodingProperty().getEncodingList().size());
                 assertEquals(2, optionProperty.getMatchAlertProperty().getMatchAlertItemList().size());
                 assertEquals(0, optionProperty.getMatchReplaceProperty().getReplaceNameList().size());
@@ -229,10 +229,10 @@ public class ConfigTest {
         
     }
 
-    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
+    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + LegacyConfig.getLoggingPropertyName();
 
     /**
-     * Test of saveToXML method, of class Config.
+     * Test of saveToXML method, of class LegacyConfig.
      */
     @Test
     public void testLoadLogPropertyXML() {
