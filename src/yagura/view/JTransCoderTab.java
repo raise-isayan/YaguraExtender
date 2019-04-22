@@ -116,8 +116,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtOutputRaw.setEditable(false);
         this.txtOutputFormat.setEditable(false);
 
+        this.scrollOutputFormat.setViewportView(this.txtOutputFormat);
         this.pnlOutputFormat.setLayout(new BorderLayout());
-        this.pnlOutputFormat.add(this.txtOutputFormat, BorderLayout.CENTER);
+        this.pnlOutputFormat.add(this.scrollOutputFormat, BorderLayout.CENTER);
         this.pnlOutputRaw.add(this.quickSearchTabRaw, java.awt.BorderLayout.SOUTH);
         this.pnlOutputFormat.add(this.quickSearchTabFormat, java.awt.BorderLayout.SOUTH);
 
@@ -189,6 +190,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         rdoCLang = new javax.swing.JRadioButton();
         rdoSQLLang = new javax.swing.JRadioButton();
         rdoRegex = new javax.swing.JRadioButton();
+        btnSmartFormat = new javax.swing.JButton();
         pnlRegex = new javax.swing.JPanel();
         btnSmartMatch = new javax.swing.JButton();
         chkWithByte = new javax.swing.JCheckBox();
@@ -336,7 +338,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlTransButton.setLayout(new javax.swing.BoxLayout(pnlTransButton, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(13, 0));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(14, 0));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -557,6 +559,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlLang.add(rdoRegex);
 
         pnlEncodeDecode.add(pnlLang);
+
+        btnSmartFormat.setText("Smart Format");
+        btnSmartFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSmartFormatActionPerformed(evt);
+            }
+        });
+        pnlEncodeDecode.add(btnSmartFormat);
 
         pnlTransButton.add(pnlEncodeDecode);
 
@@ -1599,6 +1609,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final HexViewTab hexInputViewTab = new HexViewTab();
     private final HexViewTab hexOutputViewTab = new HexViewTab();
 
+    private final javax.swing.JScrollPane scrollOutputFormat = new javax.swing.JScrollPane();
     private final javax.swing.JPanel pnlOutputFormat = new javax.swing.JPanel();
     private final javax.swing.JTextArea txtOutputFormat = new javax.swing.JTextArea();
 
@@ -2236,6 +2247,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         doStateDecodeChange();
     }//GEN-LAST:event_rdoRegexStateChanged
 
+    private void btnSmartFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartFormatActionPerformed
+        this.toSmartDecode(this.getInputText(), null);
+    }//GEN-LAST:event_btnSmartFormatActionPerformed
+
     private final java.awt.event.ItemListener historyItemStateChanged = new java.awt.event.ItemListener() {
         @Override
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -2278,6 +2293,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JButton btnRadixOct;
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JButton btnSmartDecode;
+    private javax.swing.JButton btnSmartFormat;
     private javax.swing.JButton btnSmartMatch;
     private javax.swing.JToggleButton btnStoreTypeJKS;
     private javax.swing.JToggleButton btnStoreTypePKCS12;

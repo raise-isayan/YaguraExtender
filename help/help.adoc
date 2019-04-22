@@ -627,6 +627,9 @@ SQL::
 Regex:: 
     正規表現のエスケープを行います。
 
+[Smart Format]ボタン:: 
+     文字列を整形します。XMLおよびJSONの整形に対応しています。
+
 ===== Regex
 
 Smart Math:: 
