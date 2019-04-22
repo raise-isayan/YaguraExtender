@@ -18,7 +18,7 @@ public class JSearchProperty extends RegexItem {
         return this.smartMatch;
     }
     
-    private boolean autoRecognise = false;
+    private boolean autoRecognise = true;
 
     public boolean isAutoRecogniseEncoding() {
         return this.autoRecognise;

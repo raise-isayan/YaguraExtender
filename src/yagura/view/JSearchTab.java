@@ -129,11 +129,11 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         pnlSearchEnc.setLayout(new javax.swing.BoxLayout(pnlSearchEnc, javax.swing.BoxLayout.Y_AXIS));
 
         rdoEncodeingGrp.add(rdoRepEnc_8859_1);
-        rdoRepEnc_8859_1.setSelected(true);
         rdoRepEnc_8859_1.setText("Raw(8859_1)");
         pnlSearchEnc.add(rdoRepEnc_8859_1);
 
         rdoEncodeingGrp.add(rdoRepEnc_AutoRecognise);
+        rdoRepEnc_AutoRecognise.setSelected(true);
         rdoRepEnc_AutoRecognise.setText("AutoRecognise");
         rdoRepEnc_AutoRecognise.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {

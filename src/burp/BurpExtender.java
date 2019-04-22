@@ -26,7 +26,6 @@ import java.awt.DefaultKeyboardFocusManager;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -64,8 +63,6 @@ import yagura.view.RawViewTab;
  */
 public class BurpExtender extends BurpExtenderImpl
         implements IHttpListener, IProxyListener,IExtensionStateListener {
-
-    private Class<? extends String> c;
 
     public BurpExtender() {
     }
@@ -694,7 +691,6 @@ public class BurpExtender extends BurpExtenderImpl
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                String charsetMode = getCharsetMode();
                 if (TabbetOption.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setEncodingProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());

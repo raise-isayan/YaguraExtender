@@ -1014,7 +1014,7 @@ public class TransUtil {
                     } else if (htmlwd.equals("quot")) {
                         htmlch = "\"";
                     } else {
-                        htmlch = getHTMLEntity(htmlwd);
+                        htmlch = fromHTMLEntity(htmlwd);
                         if (htmlch == null) {
                             htmlch = "";
                         }
@@ -1029,8 +1029,9 @@ public class TransUtil {
 
     /**
      * @param entityName
+     * @return 
      */
-    public static String getHTMLEntity(String entityName) {
+    protected static String fromHTMLEntity(String entityName) {
         Character ch = ENTITY.get(entityName);
         if (ch == null) {
             return null;        
