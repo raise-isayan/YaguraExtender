@@ -53,7 +53,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
         tableAlert = new javax.swing.JTable();
         btnAlertRemove = new javax.swing.JButton();
         btnAlertEdit = new javax.swing.JButton();
-        chkEnableAlert = new javax.swing.JCheckBox();
+        btnEnable = new javax.swing.JToggleButton();
 
         setName(""); // NOI18N
         setPreferredSize(new java.awt.Dimension(550, 300));
@@ -122,10 +122,10 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
             }
         });
 
-        chkEnableAlert.setText("Enable Alert");
-        chkEnableAlert.addActionListener(new java.awt.event.ActionListener() {
+        btnEnable.setText("Enable");
+        btnEnable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkEnableAlertActionPerformed(evt);
+                btnEnableActionPerformed(evt);
             }
         });
 
@@ -135,13 +135,22 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollAlert, javax.swing.GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrollAlert, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAlertEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkEnableAlert, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnAlertRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAlertAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlCenterLayout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEnable, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnAlertEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnAlertRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAlertAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlCenterLayout.setVerticalGroup(
@@ -151,7 +160,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollAlert, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(chkEnableAlert)
+                        .addComponent(btnEnable)
                         .addGap(11, 11, 11)
                         .addComponent(btnAlertEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -186,12 +195,6 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
         // MatchAlert Tab
         this.modelAlert = new CustomTableModel(this.tableAlert.getModel());
         this.tableAlert.setModel(this.modelAlert);
-        this.chkEnableAlert.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                firePropertyChange(TabbetOption.MATCHALERT_PROPERTY, null, getMatchAlertProperty());
-            }
-        } );        
         this.btnAlertEdit.setEnabled(this.tableAlert.getSelectedRowCount() > 0);
         this.modelAlert.addTableModelListener(new TableModelListener() {
             @Override
@@ -276,10 +279,6 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
         //this.firePropertyChange(TabbetOption.MATCHALERT_PROPERTY, null, this.getMatchAlertProperty());        
     }//GEN-LAST:event_btnAlertAddActionPerformed
 
-    private void chkEnableAlertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkEnableAlertActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkEnableAlertActionPerformed
-
     private void tableAlertKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableAlertKeyTyped
         if (evt.getKeyChar() == KeyEvent.VK_SPACE) {
             int[] rowSelect = this.tableAlert.getSelectedRows();
@@ -298,11 +297,15 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
         }
     }//GEN-LAST:event_tableAlertKeyTyped
 
+    private void btnEnableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnableActionPerformed
+        firePropertyChange(TabbetOption.MATCHALERT_PROPERTY, null, getMatchAlertProperty());
+    }//GEN-LAST:event_btnEnableActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlertAdd;
     private javax.swing.JButton btnAlertEdit;
     private javax.swing.JButton btnAlertRemove;
-    private javax.swing.JCheckBox chkEnableAlert;
+    private javax.swing.JToggleButton btnEnable;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JScrollPane scrollAlert;
     private javax.swing.JPanel tabAutoAlert;
@@ -366,13 +369,13 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
 
     public MatchAlertProperty getMatchAlertProperty() {
         MatchAlertProperty matchAlertProperty = new MatchAlertProperty();
-        matchAlertProperty.setMatchAlertEnable(this.chkEnableAlert.isSelected());
+        matchAlertProperty.setMatchAlertEnable(this.btnEnable.isSelected());
         matchAlertProperty.setMatchAlertItemList(this.getMatchAlertItemList());
         return matchAlertProperty;
     }
 
     public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty) {
-        this.chkEnableAlert.setSelected(matchAlertProperty.isMatchAlertEnable());
+        this.btnEnable.setSelected(matchAlertProperty.isMatchAlertEnable());
         this.setMatchAlertItemList(matchAlertProperty.getMatchAlertItemList());
     }
 

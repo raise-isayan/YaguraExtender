@@ -62,12 +62,31 @@
 	</dependencies>
 
 	<build>
+		<finalName>YaguraExtender</finalName>
 		<sourceDirectory>${project.basedir}/src/</sourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>BurpExtlib</groupId>
-				<artifactId>burp.burpExtlib</artifactId>
-				<version>${project.version}</version>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>burp.BurpExtender</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>sample</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

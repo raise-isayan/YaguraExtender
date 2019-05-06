@@ -53,10 +53,10 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
         btnAutoResponderAdd = new javax.swing.JButton();
         btnAutoResponderRemove = new javax.swing.JButton();
         btnAutoResponderEdit = new javax.swing.JButton();
-        chkEnableRule = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAutoResponder = new javax.swing.JTable();
         spnListenPort = new javax.swing.JSpinner();
+        btnEnable = new javax.swing.JToggleButton();
 
         btnAutoResponderAdd.setText("Add");
         btnAutoResponderAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -76,13 +76,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
         btnAutoResponderEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAutoResponderEditActionPerformed(evt);
-            }
-        });
-
-        chkEnableRule.setText("Enable rule");
-        chkEnableRule.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkEnableRuleActionPerformed(evt);
             }
         });
 
@@ -125,21 +118,28 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
             }
         });
 
+        btnEnable.setText("Enable");
+        btnEnable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnableActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chkEnableRule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAutoResponderEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnEnable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAutoResponderEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnListenPort)
                     .addComponent(btnAutoResponderRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAutoResponderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spnListenPort))
-                .addGap(15, 15, 15))
+                    .addComponent(btnAutoResponderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,10 +147,10 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(chkEnableRule)
-                        .addGap(6, 6, 6)
+                        .addComponent(btnEnable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(btnAutoResponderEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAutoResponderRemove)
@@ -179,12 +179,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
        // AutoResponder
         this.modelAutoResponder = new CustomTableModel(this.tableAutoResponder.getModel());
         this.tableAutoResponder.setModel(this.modelAutoResponder);
-        this.chkEnableRule.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getProperty());
-            }
-        } );        
         this.btnAutoResponderEdit.setEnabled(this.tableAutoResponder.getSelectedRowCount() > 0);
         this.modelAutoResponder.addTableModelListener(new TableModelListener() {
             @Override
@@ -247,16 +241,16 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
     public AutoResponderProperty getProperty() {
         AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
         autoResponderProperty.setRedirectPort((int) this.spnListenPort.getValue());
-        autoResponderProperty.setAutoResponderEnable(this.chkEnableRule.isSelected());
+        autoResponderProperty.setAutoResponderEnable(this.btnEnable.isSelected());
         autoResponderProperty.setAutoResponderItemList(this.getAutoResponderItemList());
         return autoResponderProperty;
     }
     
     public void setProperty(AutoResponderProperty autoResponderProperty) {
-        this.chkEnableRule.setSelected(autoResponderProperty.getAutoResponderEnable());
+        this.btnEnable.setSelected(autoResponderProperty.getAutoResponderEnable());
         this.spnListenPort.setValue(autoResponderProperty.getRedirectPort());
         this.setAutoResponderItemList(autoResponderProperty.getAutoResponderItemList());
-        this.chkEnableRuleActionPerformed(null);
+        this.enableRule();
     }
     
     private void btnAutoResponderAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoResponderAddActionPerformed
@@ -277,26 +271,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
 
     private AutoResponderServer.ThreadWrap thredServer = null;
         
-    private void chkEnableRuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkEnableRuleActionPerformed
-        if (this.chkEnableRule.isSelected()) {
-            if (this.thredServer == null || (this.thredServer != null && !this.thredServer.isRunning())) {
-                try {
-                    this.thredServer = new AutoResponderServer.ThreadWrap((int) this.spnListenPort.getValue());
-                    this.thredServer.setUncaughtExceptionHandler(this);
-                    this.thredServer.startServer();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
-                    BurpExtender.issueAlert("AutoResponder", Util.getStackTraceMessage(ex), TrayIcon.MessageType.ERROR);
-                    this.chkEnableRule.setSelected(false);
-                    Logger.getLogger(AutoResponderTab.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }        
-        }
-        else {
-            stopThreadServer();
-        }
-    }//GEN-LAST:event_chkEnableRuleActionPerformed
-
     private void tableAutoResponderKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableAutoResponderKeyTyped
         if (evt.getKeyChar() == KeyEvent.VK_SPACE) {
             int[] rowSelect = this.tableAutoResponder.getSelectedRows();
@@ -315,12 +289,38 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
         }
     }//GEN-LAST:event_tableAutoResponderKeyTyped
 
+    private void btnEnableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnableActionPerformed
+        enableRule();
+        firePropertyChange(TabbetOption.AUTO_RESPONDER_PROPERTY, null, getProperty());
+    }//GEN-LAST:event_btnEnableActionPerformed
 
+
+    protected void enableRule() {
+        if (this.btnEnable.isSelected()) {
+            if (this.thredServer == null || (this.thredServer != null && !this.thredServer.isRunning())) {
+                try {
+                    this.thredServer = new AutoResponderServer.ThreadWrap((int) this.spnListenPort.getValue());
+                    this.thredServer.setUncaughtExceptionHandler(this);
+                    this.thredServer.startServer();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
+                    BurpExtender.issueAlert("AutoResponder", Util.getStackTraceMessage(ex), TrayIcon.MessageType.ERROR);
+                    this.btnEnable.setSelected(false);
+                    Logger.getLogger(AutoResponderTab.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }        
+        }
+        else {
+            stopThreadServer();
+        }    
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAutoResponderAdd;
     private javax.swing.JButton btnAutoResponderEdit;
     private javax.swing.JButton btnAutoResponderRemove;
-    private javax.swing.JCheckBox chkEnableRule;
+    private javax.swing.JToggleButton btnEnable;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner spnListenPort;
     private javax.swing.JTable tableAutoResponder;
@@ -390,7 +390,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements ITab, IExten
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         if (e instanceof BindException) {
-            this.chkEnableRule.setSelected(false);
+            this.btnEnable.setSelected(false);
             JOptionPane.showMessageDialog(this, e.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
             BurpExtender.issueAlert("AutoResponder", e.getMessage(), TrayIcon.MessageType.ERROR);
         } else {
