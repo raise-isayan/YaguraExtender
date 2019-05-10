@@ -1,4 +1,4 @@
-use license
+Use license
 =============
  
 ### JDatePicker
@@ -20,3 +20,11 @@ use license
 - https://javaee.github.io/javamail/
 #### LICENSE
 - https://github.com/javaee/javamail/blob/master/LICENSE.txt
+
+Use Icon
+=============
+
+### famfamfam.com
+- http://www.famfamfam.com/lab/icons/silk/
+
+

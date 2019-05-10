@@ -21,22 +21,27 @@
 * JSON
 ** https://javaee.github.io/jsonp/
 ** CDDL 1.1、GPL 2.0 デュアルライセンス
+** https://github.com/javaee/json-processing-spec/blob/master/LICENSE
 
 * Java Mail
 ** https://javaee.github.io/javamail/
 ** CDDL 1.1、GPL 2.0 デュアルライセンス
+** https://github.com/javaee/javamail/blob/master/LICENSE.txt
 
 * JDatePicker
 ** https://github.com/JDatePicker/JDatePicker
 ** BSD ライセンス
+** https://github.com/JDatePicker/JDatePicker/blob/master/LICENSE.md
 
 * Universal Chardet for java
-** https://github.com/albfernandez/juniversalchardet
-** MPL 1.1、GPL 2. 
+** https://code.google.com/archive/p/juniversalchardet/
+** MPL 1.1、GPL 2.0 デュアルライセンス
+** https://code.google.com/archive/p/juniversalchardet/
 
 * Use Icon
 ** http://www.famfamfam.com/lab/icons/silk/
 ** Creative Commons Attribution 2.5 ライセンス
+** http://www.famfamfam.com/lab/icons/silk/
 
 == Start up 
 Burp suiteの「Extender」タブから「Add」ボタンを押下後、YaguraExtender.jar を追加します。
