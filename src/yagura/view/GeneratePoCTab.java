@@ -32,6 +32,7 @@ import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
+import javax.swing.tree.DefaultTreeModel;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -50,12 +51,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
     {
+         @Override
          public Document createDefaultDocument()
          {
               return new HTMLSyntaxDocument();
          }
     };    
-    
+
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     private void customizeComponents() {
@@ -463,8 +465,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 if (guessCharset == null) {
                     guessCharset = request.getGuessCharset();
                 }
+                this.message = request;
             }
-            this.message = request;
             if (this.controller != null) {
                 this.chkUseHttps.setSelected(HttpUtil.isSSL(this.controller.getHttpService().getProtocol()));
             } else if (request != null) {

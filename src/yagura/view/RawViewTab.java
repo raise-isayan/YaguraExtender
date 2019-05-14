@@ -34,6 +34,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 
     private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
     {
+         @Override
          public Document createDefaultDocument()
          {
               return new HTMLSyntaxDocument();
@@ -172,9 +173,9 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
             return false;
         }        
-        if (this.request && isRequest && content != null && content.length > 0) {
+        if (this.request && isRequest && content.length > 0) {
             return true;
-        } else if (!this.request && !isRequest && content != null && content.length > 0) {
+        } else if (!this.request && !isRequest && content.length > 0) {
             return true;
         }
         return false;

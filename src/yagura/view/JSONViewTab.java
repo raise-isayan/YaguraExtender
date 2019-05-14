@@ -9,7 +9,6 @@ import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
 import extend.util.BurpWrap;
-import extend.util.SwingUtil;
 import extend.util.external.FormatUtil;
 import extend.util.Util;
 import java.awt.Component;
@@ -18,16 +17,11 @@ import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-import extend.util.external.JsonUtil;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -40,6 +34,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     
     private final EditorKit jsonStyleEditorKit = new StyledEditorKit()
     {
+         @Override
          public Document createDefaultDocument()
          {
               return new JSONSyntaxDocument();
@@ -62,27 +57,16 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         customizeComponents();
     }
 
-    private DefaultTreeModel modelJSON;
-    
+    private JSONView jsonView = new JSONView();
+    private DefaultTreeModel modelJSON;    
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.quickSearchTab.setSelectedTextArea(this.txtJSON);
+        this.quickSearchTab.setSelectedTextArea(this.jsonView.getTextArea());
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
 
-        this.txtJSON.setEditable(false);
-
-        this.txtJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
-        this.txtJSON.setContentType("text/json");
-
-        Icon emptyIcon = SwingUtil.createEmptyIcon();
-        DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) this.treeJSON.getCellRenderer();
-        renderer.setOpenIcon(emptyIcon);
-        renderer.setClosedIcon(emptyIcon);
-        renderer.setLeafIcon(emptyIcon);
-        this.modelJSON = (DefaultTreeModel)this.treeJSON.getModel();
-                
+        this.add(jsonView, java.awt.BorderLayout.CENTER);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
@@ -108,15 +92,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         popQuick = new javax.swing.JPopupMenu();
         mnuRegex = new javax.swing.JCheckBoxMenuItem();
         mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
-        tabbetJSON = new javax.swing.JTabbedPane();
-        scrollJSON = new javax.swing.JScrollPane();
-        txtJSON = new javax.swing.JEditorPane();
-        pnlTree = new javax.swing.JPanel();
-        scrollTree = new javax.swing.JScrollPane();
-        treeJSON = new javax.swing.JTree();
-        jPanel1 = new javax.swing.JPanel();
-        btnExpand = new javax.swing.JButton();
-        btnCollapse = new javax.swing.JButton();
 
         mnuRegex.setSelected(true);
         mnuRegex.setText("regex");
@@ -126,92 +101,24 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         popQuick.add(mnuIgnoreCase);
 
         setLayout(new java.awt.BorderLayout());
-
-        txtJSON.setEditable(false);
-        scrollJSON.setViewportView(txtJSON);
-
-        tabbetJSON.addTab("pretty", scrollJSON);
-
-        pnlTree.setLayout(new java.awt.BorderLayout());
-
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        treeJSON.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        scrollTree.setViewportView(treeJSON);
-
-        pnlTree.add(scrollTree, java.awt.BorderLayout.CENTER);
-
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-
-        btnExpand.setText("expand");
-        btnExpand.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExpandActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnExpand);
-
-        btnCollapse.setText("collapse");
-        btnCollapse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCollapseActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnCollapse);
-
-        pnlTree.add(jPanel1, java.awt.BorderLayout.PAGE_START);
-
-        tabbetJSON.addTab("Tree", pnlTree);
-
-        add(tabbetJSON, java.awt.BorderLayout.CENTER);
-        tabbetJSON.getAccessibleContext().setAccessibleName("");
-        tabbetJSON.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnExpandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpandActionPerformed
-        expandJsonTree();
-    }//GEN-LAST:event_btnExpandActionPerformed
-
-    private void btnCollapseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCollapseActionPerformed
-        collapseJsonTree();
-    }//GEN-LAST:event_btnCollapseActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCollapse;
-    private javax.swing.JButton btnExpand;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
     private javax.swing.JCheckBoxMenuItem mnuRegex;
-    private javax.swing.JPanel pnlTree;
     private javax.swing.JPopupMenu popQuick;
-    private javax.swing.JScrollPane scrollJSON;
-    private javax.swing.JScrollPane scrollTree;
-    private javax.swing.JTabbedPane tabbetJSON;
-    private javax.swing.JTree treeJSON;
-    private javax.swing.JEditorPane txtJSON;
     // End of variables declaration//GEN-END:variables
         
     public void setMessageView(String encoding) {
         Logger.getLogger(JSONViewTab.class.getName()).log(Level.INFO, "encoding:" + encoding);
         try {
-            if (this.message == null) {
-                return;
-            }
             if (this.message != null) {
                 String msg = Util.decodeMessage(this.message.getBodyBytes(), encoding);
                 // Raw
-                this.txtJSON.setText(FormatUtil.prettyJSON(msg));
-                this.txtJSON.setCaretPosition(0);
-                // Tree View
-                this.modelJSON = (DefaultTreeModel) JsonUtil.toJSONTreeModel(JsonUtil.parse(msg));
-
-                SwingUtil.allNodesChanged(this.treeJSON);
-                this.treeJSON.setModel(this.modelJSON);                
-                this.expandJsonTree();
+                this.jsonView.setMessage(msg);
             } else {
-                this.txtJSON.setText("");
-                DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
-                root.removeAllChildren();
+                this.jsonView.setMessage(null);
             }
             this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
@@ -220,12 +127,12 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     }
 
     public void setMessageFont(Font font) {
-        this.txtJSON.setFont(font);
+        this.jsonView.setMessageFont(font);
         this.quickSearchTab.setMessageFont(font);
     }
 
     protected JTextComponent getSelectedTextArea() {
-        return this.txtJSON;
+        return this.jsonView.getTextArea();
     }
 
     public String getSelectedText() {
@@ -324,24 +231,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
     public void clearView() {
         this.quickSearchTab.clearView();
-    }
-
-    public void expandJsonTree() {
-        TreePath path = this.treeJSON.getSelectionPath();
-        if (path == null) {
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
-            path = new TreePath(root.getPath());
-        }
-        SwingUtil.expandAll(this.treeJSON, path);                
-    }
-
-    public void collapseJsonTree() {
-        TreePath path = this.treeJSON.getSelectionPath();
-        if (path == null) {
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
-            path = new TreePath(root.getPath());
-        }
-        SwingUtil.collapseAll(this.treeJSON, path);                
     }
             
 }

@@ -4,6 +4,7 @@ import burp.BurpExtender;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
+import burp.IParameter;
 import burp.IRequestInfo;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
@@ -28,16 +29,17 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab  {
-    
-    private final EditorKit jsonStyleEditorKit = new StyledEditorKit()
-    {
-         public Document createDefaultDocument()
-         {
-              return new JSONSyntaxDocument();
-         }
-    };    
-    
+public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+
+    private IMessageEditorController controller = null;
+
+    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
+        @Override
+        public Document createDefaultDocument() {
+            return new JSONSyntaxDocument();
+        }
+    };
+
     /**
      * Creates new form JWTView
      */
@@ -49,12 +51,17 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
      * Creates new form JWTView
      */
     public JWTViewTab(IMessageEditorController controller, boolean editable) {
+        this.controller = controller;
         initComponents();
         customizeComponents();
     }
-
+    
+//    private final JSONView jsonHeaderView = new JSONView();
+//    private final JSONView jsonPayloadView = new JSONView();
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
+//        this.pnlHeader.add(this.jsonHeaderView, java.awt.BorderLayout.CENTER);
+//        this.pnlPayload.add(this.jsonPayloadView, java.awt.BorderLayout.CENTER);
 
         this.txtHeaderJSON.setEditable(false);
         this.txtHeaderJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
@@ -63,7 +70,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.txtPayloadJSON.setEditable(false);
         this.txtPayloadJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
         this.txtPayloadJSON.setContentType("text/json");
-        
+
     }
 
     /**
@@ -80,11 +87,11 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         pnlHeader = new javax.swing.JPanel();
         lblHeader = new javax.swing.JLabel();
         scrollHeaderJSON = new javax.swing.JScrollPane();
-        txtHeaderJSON = new javax.swing.JEditorPane();
+        txtHeaderJSON = new javax.swing.JTextPane();
         pnlPayload = new javax.swing.JPanel();
         lblPayload = new javax.swing.JLabel();
         scrollPayloadJSON = new javax.swing.JScrollPane();
-        txtPayloadJSON = new javax.swing.JEditorPane();
+        txtPayloadJSON = new javax.swing.JTextPane();
         Signature = new javax.swing.JPanel();
         lblSignature = new javax.swing.JLabel();
         scrollSignatureJSON = new javax.swing.JScrollPane();
@@ -106,7 +113,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         lblHeader.setText("Header");
         pnlHeader.add(lblHeader, java.awt.BorderLayout.PAGE_START);
 
-        txtHeaderJSON.setEditable(false);
         scrollHeaderJSON.setViewportView(txtHeaderJSON);
 
         pnlHeader.add(scrollHeaderJSON, java.awt.BorderLayout.CENTER);
@@ -118,7 +124,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         lblPayload.setText("Payload");
         pnlPayload.add(lblPayload, java.awt.BorderLayout.PAGE_START);
 
-        txtPayloadJSON.setEditable(false);
         scrollPayloadJSON.setViewportView(txtPayloadJSON);
 
         pnlPayload.add(scrollPayloadJSON, java.awt.BorderLayout.CENTER);
@@ -144,9 +149,11 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbParamItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbParamItemStateChanged
-        String key = (String)this.cmbParam.getSelectedItem();
+        String key = (String) this.cmbParam.getSelectedItem();
         JWTObject jwt = this.jwtMap.get(key);
         if (jwt != null) {
+//            this.jsonHeaderView.setMessage(jwt.getHeaderJSON(true));
+//            this.jsonPayloadView.setMessage(jwt.getPayloadJSON(true));
             this.txtHeaderJSON.setText(jwt.getHeaderJSON(true));
             this.txtPayloadJSON.setText(jwt.getPayloadJSON(true));
             this.txtSignatureSign.setText(jwt.getSignature());
@@ -166,13 +173,15 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private javax.swing.JScrollPane scrollHeaderJSON;
     private javax.swing.JScrollPane scrollPayloadJSON;
     private javax.swing.JScrollPane scrollSignatureJSON;
-    private javax.swing.JEditorPane txtHeaderJSON;
-    private javax.swing.JEditorPane txtPayloadJSON;
+    private javax.swing.JTextPane txtHeaderJSON;
+    private javax.swing.JTextPane txtPayloadJSON;
     private javax.swing.JEditorPane txtSignatureSign;
     // End of variables declaration//GEN-END:variables
-        
+
     public void setMessageFont(Font font) {
-        this.txtHeaderJSON.setFont(font);
+//        this.jsonHeaderView.setMessageFont(font);
+//        this.jsonPayloadView.setMessageFont(font);        
+        this.txtPayloadJSON.setFont(font);
         this.txtPayloadJSON.setFont(font);
         this.txtSignatureSign.setFont(font);
     }
@@ -183,12 +192,12 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     @Override
     public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-        this.txtHeaderJSON.setEditable(false);
+        this.txtPayloadJSON.setEditable(false);
         this.txtPayloadJSON.setEditable(false);
         this.txtSignatureSign.setEditable(false);
         return this;
     }
-    
+
     @Override
     public String getTabCaption() {
         return "JWT";
@@ -208,7 +217,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
                 return false;
-            }        
+            }
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<String> headers = reqInfo.getHeaders();
             for (String h : headers) {
@@ -216,54 +225,101 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                     return true;
                 }
             }
-                        
+            List<IParameter> parameters = reqInfo.getParameters();
+            for (IParameter p : parameters) {
+                if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) { 
+                    return JWTObject.isJWTFormat(p.getValue());
+                }
+            }
         }
         return false;
     }
 
     private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
     private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
- 
+
     private final HashMap<String, JWTObject> jwtMap = new HashMap();
-     
-    public void setJWT(HttpMessage message) {
+
+//    public void setJWT(HttpMessage message) {
+//        this.jwtMap.clear();
+//        this.cmbParam.removeAllItems();
+//        String headers[] = message.getHeaders();
+//        for (String h : headers) {
+//            if (JWTObject.containsJWTFormat(h)) {
+//                if (h.startsWith("Cookie:")) {
+//                    Matcher m = COOKIE.matcher(h);
+//                    while (m.find()) {
+//                        try {
+//                            String cookie = m.group(0);
+//                            String value = m.group(2);
+//                            if (JWTObject.isJWTFormat(value)) {
+//                                JWTToken jwt = JWTObject.parseJWTToken(value, true);
+//                                jwtMap.put(cookie, new JWTObject(jwt));
+//                                this.cmbParam.addItem(cookie);
+//                            }
+//                        } catch (Exception ex) {
+//                        }
+//                    }
+//                } else {
+//                    Matcher m = HEADER.matcher(h);
+//                    if (m.matches()) {
+//                        try {
+//                            JWTToken jwto = JWTToken.parseJWTToken(m.group(2), false);
+//                            jwtMap.put(h, new JWTObject(jwto));
+//                            this.cmbParam.addItem(h);
+//                        } catch (Exception ex) {
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    private final static String[] TYPES = {"(URL)", "(Body)", "(Cookie)", "(XML)", "-", "(file)", "(JSON)"};
+    
+    public void setJWT(byte[] message) {
         this.jwtMap.clear();
         this.cmbParam.removeAllItems();
-        String headers[] = message.getHeaders();
+        IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(message);
+        List<String> headers = reqInfo.getHeaders();
         for (String h : headers) {
-            if (JWTObject.containsJWTFormat(h)) {
-                if (h.startsWith("Cookie:")) {
-                    Matcher m = COOKIE.matcher(h);
-                    while (m.find()) {
-                        try {
-                            String cookie = m.group(0);                            
-                            String value = m.group(2);                            
-                            if (JWTObject.isJWTFormat(value)) {
-                                JWTToken jwt = JWTObject.parseJWTToken(value, true);
-                                jwtMap.put(cookie, new JWTObject(jwt));                 
-                                this.cmbParam.addItem(cookie);
-                            }
-                        }
-                        catch (Exception ex) {
-                        }
+            Matcher m = HEADER.matcher(h);
+            if (m.matches()) {
+                try {
+                    JWTToken jwto = JWTToken.parseJWTToken(m.group(2), false);
+                    jwtMap.put(h, new JWTObject(jwto));
+                    this.cmbParam.addItem(h);
+                } catch (Exception ex) {
+                }
+            }
+        }
+        List<IParameter> parameters = reqInfo.getParameters();
+        for (IParameter p : parameters) {
+            if (JWTObject.containsJWTFormat(p.getValue())) {
+                if (p.getType() == IParameter.PARAM_COOKIE) {
+                    String name = p.getName();
+                    String value = p.getValue();
+                    String key = TYPES[p.getType()] + " " + name;
+                    if (JWTObject.isJWTFormat(value)) {
+                        JWTToken jwt = JWTObject.parseJWTToken(value, true);
+                        jwtMap.put(key, new JWTObject(jwt));
+                        this.cmbParam.addItem(key);
                     }
                 }
-                else {
-                    Matcher m = HEADER.matcher(h);
-                    if (m.matches()) {
-                        try {
-                            JWTToken jwto = JWTToken.parseJWTToken(m.group(2), false);
-                            jwtMap.put(h, new JWTObject(jwto));                                
-                            this.cmbParam.addItem(h);
-                        }
-                        catch (Exception ex) {
-                        }
+                else if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
+                    String name = p.getName();
+                    String value = p.getValue();
+                    String key = TYPES[p.getType()] + " " + name;
+                    if (JWTObject.isJWTFormat(value)) {
+                        JWTToken jwt = JWTObject.parseJWTToken(value, true);
+                        jwtMap.put(key, new JWTObject(jwt));
+                        this.cmbParam.addItem(key);
                     }
                 }
-            }            
-        }                
+            }
+        }
     }
-    
+
     private HttpMessage message = null;
 
     @Override
@@ -273,7 +329,8 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             if (isMessageRequest) {
                 HttpRequest request = HttpRequest.parseHttpRequest(content);
                 httpmessage = request;
-                this.setJWT(httpmessage);                
+                this.setJWT(content);
+//                this.setJWT(httpmessage);
             }
             this.message = httpmessage;
         } catch (ParseException ex) {

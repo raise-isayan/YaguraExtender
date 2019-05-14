@@ -40,6 +40,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 
     private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
     {
+         @Override
          public Document createDefaultDocument()
          {
               return new HTMLSyntaxDocument();
@@ -142,8 +143,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                 HttpResponse response = HttpResponse.parseHttpResponse(content);
                 httpmessage = response;
                 guessCharset = response.getGuessCharset();
+                this.message = httpmessage;
             }
-            this.message = httpmessage;
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
             encodingItemStateChanged.itemStateChanged(null);
