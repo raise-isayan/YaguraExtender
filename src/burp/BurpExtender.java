@@ -78,7 +78,7 @@ public class BurpExtender extends BurpExtenderImpl
             Properties prop = new Properties();
             prop.load(BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES));
             String pattern = prop.getProperty(FileHandler.class.getName() + ".pattern");
-            File logDir = getExtensionLogDir();
+            File logDir = LegacyConfig.getExtensionHomeDir();
             logDir.mkdirs();
             prop.setProperty(FileHandler.class.getName() + ".pattern", new File(logDir, pattern).getAbsolutePath());
             prop.store(bout, "");
@@ -96,10 +96,6 @@ public class BurpExtender extends BurpExtenderImpl
         return this.tabbetOption;
     }
     
-    public static File getExtensionLogDir() {
-        return new File(LegacyConfig.getUserHome(), LegacyConfig.getExtenderDir());
-    }
-
     private final TabbetOption tabbetOption = new TabbetOption();
     private final JWTViewTab jwtViewTab = new JWTViewTab();
 

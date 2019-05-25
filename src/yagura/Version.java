@@ -38,7 +38,7 @@ public final class Version extends CustomVersion {
     public String getVersionInfo() {
         return String.format(VERSION_INFO_FMT, 
                 Version.getInstance().getVersion(), 
-                BurpExtender.getExtensionLogDir().getAbsoluteFile(),
+                LegacyConfig.getExtensionHomeDir().getAbsoluteFile(),
                 LegacyConfig.getUserDir());    
     }
     

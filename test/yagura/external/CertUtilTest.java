@@ -1,9 +1,16 @@
 package yagura.external;
 
+import extend.util.Util;
 import extend.util.external.CertUtil;
 import java.io.File;
 import java.security.Key;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.X509Certificate;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.After;
@@ -114,19 +121,36 @@ public class CertUtilTest {
         }
     }
     
-//    /**
-//     * Test of exportToPem method, of class CertUtil.
-//     */
-//    @Test
-//    public void testExportToPem_Key() throws Exception {
-//        System.out.println("exportToPem");
-//        Key privateKey = null;
-//        String expResult = "";
-//        String result = CertUtil.exportToPem(privateKey);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    /**
+     * Test of exportToPem method, of class CertUtil.
+     */
+    @Test
+    public void testExportToPem_Key() throws Exception {
+        System.out.println("exportToPem");
+        String storeFileName = CertUtilTest.class.getResource("/resources/server.keystore").getPath();
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromJKS(new File(storeFileName), "testca");
+        for (String ailias : certMap.keySet()) {
+            Map.Entry<Key, X509Certificate> cert = certMap.get(ailias);
+            PKCS8EncodedKeySpec pkcs8Key = new PKCS8EncodedKeySpec(cert.getKey().getEncoded());
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PrivateKey privateKey = keyFactory.generatePrivate(pkcs8Key);
+        }        
+    }
+
+    @Test
+    public void testPemToPrivateKey() throws Exception {
+        System.out.println("pemToPrivateKey");
+        String storeFileName = CertUtilTest.class.getResource("/resources/burpca.pem").getPath();
+        PrivateKey priKey = CertUtil.pemToPrivateKey(Util.getRawStr(Util.bytesFromFile(new File(storeFileName))));
+    }
+    
+    @Test
+    public void testPemToCertificate() throws Exception {
+        System.out.println("pemToCerficate");
+        String storeFileName = CertUtilTest.class.getResource("/resources/burpca.pem").getPath();
+        X509Certificate x509Cert = CertUtil.pemToCertificate(Util.getRawStr(Util.bytesFromFile(new File(storeFileName))));
+    }
+
 //
 //    /**
 //     * Test of exportToPem method, of class CertUtil.

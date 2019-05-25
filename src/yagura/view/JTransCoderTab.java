@@ -126,7 +126,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         // Drag and Drop
         this.txtInputRaw.setTransferHandler(new FileDropAndClipbordTransferHandler());
-
         doStateDecodeChange();
 
     }
@@ -830,11 +829,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         });
 
         chkRawMode.setText("Raw(8859_1)");
-        chkRawMode.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkRawModeStateChanged(evt);
-            }
-        });
         chkRawMode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkRawModeActionPerformed(evt);
@@ -842,11 +836,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         });
 
         chkGuess.setText("Guess");
-        chkGuess.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkGuessStateChanged(evt);
-            }
-        });
         chkGuess.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkGuessActionPerformed(evt);
@@ -1997,18 +1986,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.setInputByte(Util.getRawByte(TransUtil.replaceNewLine(getSelectNewLine(), this.txtInputRaw.getText())));
     }//GEN-LAST:event_tabbetInputStateChanged
 
-    private void chkRawModeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRawModeStateChanged
-        this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
-    }//GEN-LAST:event_chkRawModeStateChanged
-
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         this.clearText();
     }//GEN-LAST:event_btnClearActionPerformed
-
-    private void chkGuessStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkGuessStateChanged
-        this.chkRawMode.setEnabled(!this.chkGuess.isSelected());
-        this.cmbEncoding.setEnabled(!this.chkGuess.isSelected());
-    }//GEN-LAST:event_chkGuessStateChanged
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         JFileChooser filechooser = new JFileChooser();
@@ -2021,7 +2001,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnImportActionPerformed
 
     private void txtStoreFileKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStoreFileKeyPressed
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtStoreFileKeyPressed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
@@ -2095,15 +2074,24 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void chkViewLineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewLineWrapActionPerformed
         this.txtInputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
         this.txtOutputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        if (evt != null) {
+            firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        }
     }//GEN-LAST:event_chkViewLineWrapActionPerformed
 
     private void chkRawModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRawModeActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        this.cmbEncoding.setEnabled(!(this.chkRawMode.isSelected() || this.chkGuess.isSelected()));
+        if (evt != null) {
+            firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        }
     }//GEN-LAST:event_chkRawModeActionPerformed
 
     private void chkGuessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGuessActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        this.chkRawMode.setEnabled(!this.chkGuess.isSelected());
+        this.cmbEncoding.setEnabled(!(this.chkRawMode.isSelected() || this.chkGuess.isSelected()));
+        if (evt != null) {         
+            firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        }
     }//GEN-LAST:event_chkGuessActionPerformed
 
     private void cmbEncodingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEncodingActionPerformed
@@ -2804,6 +2792,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.chkGuess.setSelected(transcoderProp.isGuessEncoding());
         this.cmbEncoding.setSelectedItem(transcoderProp.getSelectEncoding());
         this.setInputText(transcoderProp.getCurrentInput());
+        chkRawModeActionPerformed(null);
+        chkGuessActionPerformed(null);
+        chkViewLineWrapActionPerformed(null);
     }
 
     protected class FileDropAndClipbordTransferHandler extends TransferHandler {

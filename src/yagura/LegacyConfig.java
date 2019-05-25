@@ -38,6 +38,10 @@ public final class LegacyConfig {
         return System.getProperties().getProperty("user.home");
     }
 
+    public static File getExtensionHomeDir() {
+        return new File(getUserHome(), getExtenderDir());
+    }
+        
     public static String getExtenderDir() {
         return ".yaguraextender";
     }
