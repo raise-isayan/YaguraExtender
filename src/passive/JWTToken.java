@@ -1,4 +1,4 @@
-package yagura.model;
+package passive;
 
 import extend.util.Util;
 import extend.view.base.CaptureItem;
@@ -148,9 +148,7 @@ public class JWTToken {
     }
 
     public static byte[] decodeBase64Byte(String value) {
-        value = value.replace('-', '+');
-        value = value.replace('_', '/');
-        return Base64.getDecoder().decode(value);
+        return Base64.getUrlDecoder().decode(value);
     }
 
     protected static String decodeBase64(String value) {

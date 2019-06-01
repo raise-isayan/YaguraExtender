@@ -15,7 +15,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.im.InputContext;
-import extend.util.external.CertUtil;
+import extend.util.CertUtil;
 import extend.util.external.TransUtil;
 import yagura.model.UniversalViewProperty;
 import java.io.File;

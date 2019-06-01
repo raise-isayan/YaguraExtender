@@ -1,4 +1,4 @@
-package yagura.model;
+package passive;
 
 import java.io.IOException;
 import extend.util.external.JsonUtil;

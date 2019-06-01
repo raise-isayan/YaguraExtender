@@ -523,14 +523,7 @@ public class TransUtil {
     }
 
     public static String newLine(String separator, String value, int length) {
-        Pattern p = Pattern.compile(String.format("(.{%d})", length));
-        StringBuffer sb = new StringBuffer();
-        Matcher m = p.matcher(value);
-        while (m.find()) {
-            m.appendReplacement(sb, m.group(1) + separator);
-        }
-        m.appendTail(sb);
-        return sb.toString();
+        return ConvertUtil.newLine(separator, value, length);
     }
 
     public static String join(String separator, String[] lines) {

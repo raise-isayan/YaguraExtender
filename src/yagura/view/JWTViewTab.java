@@ -21,8 +21,8 @@ import java.util.regex.Pattern;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
-import yagura.model.JWTObject;
-import yagura.model.JWTToken;
+import passive.JWTObject;
+import passive.JWTToken;
 import yagura.model.UniversalViewProperty;
 
 /**
