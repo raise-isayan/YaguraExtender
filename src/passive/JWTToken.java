@@ -1,10 +1,14 @@
 package passive;
 
+import extend.util.CertUtil;
 import extend.util.Util;
 import extend.view.base.CaptureItem;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -15,6 +19,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.Signature;
+import java.security.SignatureException;
 
 /**
  *
@@ -30,7 +36,7 @@ public class JWTToken {
         this.header = token.header;
         this.payload = token.payload;
         this.signature = token.signature;
-        this.signatureByte = decodeBase64Byte(token.signature);
+        this.signatureByte = decodeUrlSafeByte(token.signature);
     }
     
     public enum Algorithm {
@@ -68,7 +74,7 @@ public class JWTToken {
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
 
     private static Algorithm findAlgorithm(String header) {
-        String decodeHeader = decodeBase64(header);
+        String decodeHeader = decodeUrlSafe(header);
         Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
         try {
             if (m.find()) {
@@ -142,17 +148,37 @@ public class JWTToken {
             jwt.header = header;
             jwt.payload = payload;
             jwt.signature = signature;
-            jwt.signatureByte = decodeBase64Byte(signature);
+            jwt.signatureByte = decodeUrlSafeByte(signature);
         }
         return jwt;
     }
 
-    public static byte[] decodeBase64Byte(String value) {
+    public static byte[] decodeUrlSafeByte(String value) {
         return Base64.getUrlDecoder().decode(value);
     }
 
-    protected static String decodeBase64(String value) {
-        return new String(decodeBase64Byte(value), StandardCharsets.UTF_8);
+    protected static String decodeUrlSafe(byte [] value) {
+        return new String(Base64.getUrlDecoder().decode(value), StandardCharsets.UTF_8);
+    }
+    
+    protected static String decodeUrlSafe(String value) {
+        return new String(decodeUrlSafeByte(value), StandardCharsets.UTF_8);
+    }
+
+    public static byte[] encodeUrlSafeByte(byte [] value) {
+        return Base64.getUrlEncoder().withoutPadding().encode(value);
+    }
+    
+    public static byte[] encodeUrlSafeByte(String value) {
+        return encodeUrlSafeByte(value.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public static String encodeUrlSafe(byte [] value) {
+        return new String(encodeUrlSafeByte(value), StandardCharsets.UTF_8);
+    }
+
+    protected static String encodeUrlSafe(String value) {
+        return new String(encodeUrlSafeByte(value), StandardCharsets.UTF_8);
     }
 
     /**
@@ -218,45 +244,75 @@ public class JWTToken {
         return signatureEqual(token.getAlgorithm(), token.getData(), token.getSignatureByte(), secret);
     }
 
-    public static Mac mac256 = null;
-    public static Mac mac384 = null;
-    public static Mac mac512 = null;
-
-    static {
-        try {
-            mac256 = Mac.getInstance(Algorithm.HS256.getSignAlgorithm());
-            mac384 = Mac.getInstance(Algorithm.HS384.getSignAlgorithm());
-            mac512 = Mac.getInstance(Algorithm.HS512.getSignAlgorithm());
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public static boolean signatureEqual(Algorithm algo, final String encrypt, final byte[] signature, final String secret) throws NoSuchAlgorithmException {
         try {
-            Mac mac = mac256;
             switch (algo) {
                 case HS256:
-                    mac = mac256;
-                    break;
                 case HS384:
-                    mac = mac384;
-                    break;
                 case HS512:
-                    mac = mac512;
-                    break;
+                    Mac mac = Mac.getInstance(algo.getSignAlgorithm());
+                    final SecretKeySpec sk = new SecretKeySpec(Util.getRawByte(secret), algo.getSignAlgorithm());
+                    mac.init(sk);
+                    mac.reset();
+                    final byte[] mac_bytes = mac.doFinal(Util.getRawByte(encrypt));
+                    return Arrays.equals(mac_bytes, signature);
                 default:
                     throw new NoSuchAlgorithmException(algo.name());
             }
-            final SecretKeySpec sk = new SecretKeySpec(Util.getRawByte(secret), algo.getSignAlgorithm());
-            mac.init(sk);
-            mac.reset();
-            final byte[] mac_bytes = mac.doFinal(Util.getRawByte(encrypt));
-            return Arrays.equals(mac_bytes, signature);
         } catch (InvalidKeyException ex) {
             Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
+    public static byte [] sign(Algorithm algo, final String encrypt, final String secret) throws NoSuchAlgorithmException {
+        try {
+            switch (algo) {
+                case NONE:
+                    return new byte [] {};
+                case HS256:
+                case HS384:
+                case HS512: {
+                    Mac mac = Mac.getInstance(algo.getSignAlgorithm());
+                    final SecretKeySpec sk = new SecretKeySpec(Util.getRawByte(secret), algo.getSignAlgorithm());
+                    mac.init(sk);
+                    mac.reset();
+                    final byte[] mac_bytes = mac.doFinal(Util.getRawByte(encrypt));
+                    return mac_bytes;                
+                }
+                case RS256:
+                case RS384:
+                case RS512: {
+                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
+                    PrivateKey privateKey = CertUtil.loadPrivateKey(secret);
+                    rsaSignature.initSign(privateKey);
+                    rsaSignature.update(Util.getRawByte(encrypt));
+                    byte[] mac_bytes = rsaSignature.sign();
+                    return mac_bytes;                
+                }
+                case ES256:
+                case ES384:
+                case ES512: {
+                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
+                    PrivateKey privateKey = CertUtil.loadPrivateKey(secret);
+                    rsaSignature.initSign(privateKey);
+                    rsaSignature.update(Util.getRawByte(encrypt));
+                    byte[] mac_bytes = rsaSignature.sign();
+                    return mac_bytes;                                    
+                }
+                default:
+                    throw new NoSuchAlgorithmException(algo.name());
+            }
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SignatureException ex) {
+            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (GeneralSecurityException ex) {
+            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        throw new NoSuchAlgorithmException(algo.name());
+    }
+       
 }

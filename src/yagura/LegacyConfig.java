@@ -136,7 +136,7 @@ public final class LegacyConfig {
         //encProp.setClipbordAutoDecode(prop.readEntryBool("encoding", "clipbordAutoDecode", false));
         encProp.setClipbordAutoDecode(false);
         List<String> encList = prop.readEntryList("encoding", "list", UniversalViewProperty.getDefaultEncodingList());
-        List<String> encSupportList = new ArrayList<String>();
+        List<String> encSupportList = new ArrayList<>();
         for (String enc : encList) {
             if (Util.lookupCharset(enc) != null) {
                 encSupportList.add(enc);
@@ -169,13 +169,13 @@ public final class LegacyConfig {
         // Match and Rreplace Property list
         String selectedName = prop.readEntry("matchreplace", "selectedName", "(Empty)");
         option.getMatchReplaceProperty().setSelectedName(selectedName);
-        Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>();
+        Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<>();
         List replaceList = prop.readEntryList("matchreplace", "nameList");
         for (Object name : replaceList) {
             String sectionName = String.format("matchreplace.%s", name);
             int count = prop.readEntryInt(sectionName, "count", 0);
             boolean inScopeOnly = prop.readEntryBool(sectionName, "inScopeOnly", false);
-            List<MatchReplaceItem> list = new ArrayList<MatchReplaceItem>();
+            List<MatchReplaceItem> list = new ArrayList<>();
             for (int i = 0; i < count; i++) {
                 MatchReplaceItem bean = new MatchReplaceItem();
                 bean.setSelected(prop.readEntryBool(sectionName, String.format("item[%d].selected", i), false));
@@ -195,7 +195,7 @@ public final class LegacyConfig {
         option.getMatchReplaceProperty().setReplaceMap(replaceMap);
 
         // AutoResponder
-        List<AutoResponderItem> responderList = new ArrayList<AutoResponderItem>();
+        List<AutoResponderItem> responderList = new ArrayList<>();
         option.getAutoResponderProperty().setAutoResponderEnable(prop.readEntryBool("autoresponder", "enable", false));
         option.getAutoResponderProperty().setRedirectPort(prop.readEntryInt("autoresponder", "redirectPort", 7777));
         int autoresponder_count = prop.readEntryInt("autoresponder", "count", 0);
@@ -213,7 +213,7 @@ public final class LegacyConfig {
         option.getAutoResponderProperty().setAutoResponderItemList(responderList);
 
         // SendToItem
-        List<SendToItem> sendToList = new ArrayList<SendToItem>();
+        List<SendToItem> sendToList = new ArrayList<>();
         int sendto_count = prop.readEntryInt("sendto", "count", 0);
         for (int i = 0; i < sendto_count; i++) {
             SendToItem item = new SendToItem();
@@ -251,7 +251,7 @@ public final class LegacyConfig {
         option.getSendToProperty().setSubMenu(sendto_submenu);
 
         // matchalert
-        List<MatchAlertItem> alertItemList = new ArrayList<MatchAlertItem>();
+        List<MatchAlertItem> alertItemList = new ArrayList<>();
         option.getMatchAlertProperty().setMatchAlertEnable(prop.readEntryBool("matchalert", "enable", false));
 
         int alerts_count = prop.readEntryInt("matchalert", "count", 0);

@@ -12,6 +12,7 @@ import yagura.model.OptionProperty;
  */
 public class Config {
 
+    
     public static void saveToXML(File fi, OptionProperty option) throws IOException {
         JAXB.marshal(option, fi);
     }

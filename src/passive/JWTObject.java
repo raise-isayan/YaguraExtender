@@ -19,7 +19,7 @@ public class JWTObject extends JWTToken {
      */
     public String getHeaderJSON(boolean pretty) {
         try {
-            return JsonUtil.prettyJSON(decodeBase64(this.getHeader()), pretty);
+            return JsonUtil.prettyJSON(decodeUrlSafe(this.getHeader()), pretty);
         } catch (IOException ex) {
             return null;
         }
@@ -31,7 +31,7 @@ public class JWTObject extends JWTToken {
      */
     public String getPayloadJSON(boolean pretty) {
         try {
-            return JsonUtil.prettyJSON(decodeBase64(this.getPayload()), pretty);
+            return JsonUtil.prettyJSON(decodeUrlSafe(this.getPayload()), pretty);
         } catch (IOException ex) {
             return null;
         }
