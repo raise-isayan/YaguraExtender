@@ -92,9 +92,7 @@ public class JWTToken {
     public static boolean isJWTFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
         if (m.matches()) {
-            if (JWTToken.parseJWTToken(value, true) != null) {
-                return true;            
-            }
+            return (JWTToken.parseJWTToken(value, true) != null);
         }
         return false;
     }
@@ -102,7 +100,7 @@ public class JWTToken {
     public static boolean containsJWTFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
         if (m.find()) {
-            return isJWTFormat(m.group(0));
+            return (JWTToken.parseJWTToken(m.group(0), true) != null);
         }
         return false;
     }

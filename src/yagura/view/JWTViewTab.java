@@ -6,11 +6,14 @@ import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
+import extend.util.Util;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import java.awt.Component;
 import java.awt.Font;
+import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -213,6 +216,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         if (content == null || content.length == 0) {
             return false;
         }
+        boolean find = false;
         if (isMessageRequest) {
             EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
@@ -226,54 +230,24 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 }
             }
             List<IParameter> parameters = reqInfo.getParameters();
-            for (IParameter p : parameters) {
+            for (IParameter p : parameters) {                
                 if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) { 
-                    return JWTObject.isJWTFormat(p.getValue());
+                    find = JWTObject.isJWTFormat(p.getValue());
+                    if (find) break; 
                 }
             }
+            if (!find) {
+                String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
+                find = JWTObject.containsJWTFormat(body);                                
+            }            
         }
-        return false;
+        return find;
     }
 
     private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
     private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
 
     private final HashMap<String, JWTObject> jwtMap = new HashMap();
-
-//    public void setJWT(HttpMessage message) {
-//        this.jwtMap.clear();
-//        this.cmbParam.removeAllItems();
-//        String headers[] = message.getHeaders();
-//        for (String h : headers) {
-//            if (JWTObject.containsJWTFormat(h)) {
-//                if (h.startsWith("Cookie:")) {
-//                    Matcher m = COOKIE.matcher(h);
-//                    while (m.find()) {
-//                        try {
-//                            String cookie = m.group(0);
-//                            String value = m.group(2);
-//                            if (JWTObject.isJWTFormat(value)) {
-//                                JWTToken jwt = JWTObject.parseJWTToken(value, true);
-//                                jwtMap.put(cookie, new JWTObject(jwt));
-//                                this.cmbParam.addItem(cookie);
-//                            }
-//                        } catch (Exception ex) {
-//                        }
-//                    }
-//                } else {
-//                    Matcher m = HEADER.matcher(h);
-//                    if (m.matches()) {
-//                        try {
-//                            JWTToken jwto = JWTToken.parseJWTToken(m.group(2), false);
-//                            jwtMap.put(h, new JWTObject(jwto));
-//                            this.cmbParam.addItem(h);
-//                        } catch (Exception ex) {
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     private final static String[] TYPES = {"(URL)", "(Body)", "(Cookie)", "(XML)", "-", "(file)", "(JSON)"};
     
@@ -293,6 +267,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 }
             }
         }
+        boolean find = false;
         List<IParameter> parameters = reqInfo.getParameters();
         for (IParameter p : parameters) {
             if (JWTObject.containsJWTFormat(p.getValue())) {
@@ -314,10 +289,20 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                         JWTToken jwt = JWTObject.parseJWTToken(value, true);
                         jwtMap.put(key, new JWTObject(jwt));
                         this.cmbParam.addItem(key);
+                        find = true;
                     }
                 }
             }
         }
+        if (!find) {
+            String body = Util.getRawStr(Arrays.copyOfRange(message, reqInfo.getBodyOffset(), message.length));
+            if (JWTObject.containsJWTFormat(body)) {
+                JWTToken jwt = JWTObject.parseJWTToken(body, false);
+                String key = "(body)";
+                jwtMap.put(key, new JWTObject(jwt));
+                this.cmbParam.addItem(key);                
+            }        
+        }        
     }
 
     private HttpMessage message = null;
