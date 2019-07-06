@@ -175,9 +175,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         rdoHtmlHex = new javax.swing.JRadioButton();
         rdoHtmlByteHex = new javax.swing.JRadioButton();
         pnlJSHexEnc = new javax.swing.JPanel();
+        rdoUnicodeHex = new javax.swing.JRadioButton();
         rdoByteHex = new javax.swing.JRadioButton();
         rdoByteOct = new javax.swing.JRadioButton();
-        rdoUnicodeHex = new javax.swing.JRadioButton();
         pnlCompress = new javax.swing.JPanel();
         rdoGzip = new javax.swing.JRadioButton();
         rdoZLIB = new javax.swing.JRadioButton();
@@ -481,6 +481,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
 
+        rdoEncodeDecodeGrp.add(rdoUnicodeHex);
+        rdoUnicodeHex.setText("\\uhhhh");
+        pnlJSHexEnc.add(rdoUnicodeHex);
+
         rdoEncodeDecodeGrp.add(rdoByteHex);
         rdoByteHex.setText("\\xhh(hex)");
         rdoByteHex.addActionListener(new java.awt.event.ActionListener() {
@@ -498,10 +502,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
         pnlJSHexEnc.add(rdoByteOct);
-
-        rdoEncodeDecodeGrp.add(rdoUnicodeHex);
-        rdoUnicodeHex.setText("\\uhhhh");
-        pnlJSHexEnc.add(rdoUnicodeHex);
 
         pnlEncodeDecode.add(pnlJSHexEnc);
 

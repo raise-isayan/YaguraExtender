@@ -303,6 +303,14 @@
                         <Property name="rows" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
+                        <Component class="javax.swing.JRadioButton" name="rdoUnicodeHex">
+                          <Properties>
+                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                              <ComponentRef name="rdoEncodeDecodeGrp"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="\u005cuhhhh" containsInvalidXMLChars="true"/>
+                          </Properties>
+                        </Component>
                         <Component class="javax.swing.JRadioButton" name="rdoByteHex">
                           <Properties>
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -324,14 +332,6 @@
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteOctActionPerformed"/>
                           </Events>
-                        </Component>
-                        <Component class="javax.swing.JRadioButton" name="rdoUnicodeHex">
-                          <Properties>
-                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                              <ComponentRef name="rdoEncodeDecodeGrp"/>
-                            </Property>
-                            <Property name="text" type="java.lang.String" value="\u005cuhhhh" containsInvalidXMLChars="true"/>
-                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
