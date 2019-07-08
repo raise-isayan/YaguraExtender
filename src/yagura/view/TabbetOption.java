@@ -44,7 +44,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     private final UniversalViewTab tabUniversalView = new UniversalViewTab();
     private final MatchReplaceTab tabMatchReplace = new MatchReplaceTab();
     private final MatchAlertTab tabMatchAlert = new MatchAlertTab();
-    private final AutoResponderTab tabAutoResponder = new AutoResponderTab();
+//    private final AutoResponderTab tabAutoResponder = new AutoResponderTab();
     private final SendToTab tabSendTo = new SendToTab();
     private final LoggingTab tabLogging = new LoggingTab();
     private final JSearchTab tabJSearch = new JSearchTab();
@@ -57,7 +57,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.addTab(this.tabUniversalView.getTabCaption(), this.tabUniversalView);
         this.addTab(this.tabMatchReplace.getTabCaption(), this.tabMatchReplace);
         this.addTab(this.tabMatchAlert.getTabCaption(), this.tabMatchAlert);
-        this.addTab(this.tabAutoResponder.getTabCaption(), this.tabAutoResponder);
+  //      this.addTab(this.tabAutoResponder.getTabCaption(), this.tabAutoResponder);
         this.addTab(this.tabSendTo.getTabCaption(), this.tabSendTo);
         this.addTab(this.tabLogging.getTabCaption(), this.tabLogging);
         this.addTab(this.tabJSearch.getTabCaption(), this.tabJSearch);
@@ -68,7 +68,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.tabUniversalView.addPropertyChangeListener(CJK_VIEW_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MATCHREPLACE_PROPERTY, this);
         this.tabMatchAlert.addPropertyChangeListener(MATCHALERT_PROPERTY, this);
-        this.tabAutoResponder.addPropertyChangeListener(AUTO_RESPONDER_PROPERTY, this);
+//        this.tabAutoResponder.addPropertyChangeListener(AUTO_RESPONDER_PROPERTY, this);
         this.tabSendTo.addPropertyChangeListener(SENDTO_PROPERTY, this);
         this.tabLogging.addPropertyChangeListener(LOGGING_PROPERTY, this);
         this.tabJSearch.addPropertyChangeListener(JSEARCH_FILTER_PROPERTY, this);
@@ -106,7 +106,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.setEncodingProperty(property.getEncodingProperty());
         this.setLoggingProperty(property.getLoggingProperty());
         this.setMatchReplaceProperty(property.getMatchReplaceProperty());
-        this.setAutoResponderProperty(property.getAutoResponderProperty());
+//        this.setAutoResponderProperty(property.getAutoResponderProperty());
         this.setMatchAlertProperty(property.getMatchAlertProperty());
         this.setSendToProperty(property.getSendToProperty());
         this.setJSearchProperty(property.getJSearchProperty());
@@ -180,12 +180,13 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 
     @Override
     public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
-        this.tabAutoResponder.setProperty(autoResponderProperty);
+//        this.tabAutoResponder.setProperty(autoResponderProperty);
     }
 
     @Override
-    public AutoResponderProperty getAutoResponderProperty() {
-        return this.tabAutoResponder.getProperty();
+    public AutoResponderProperty getAutoResponderProperty() {        
+        return new AutoResponderProperty();
+        //return this.tabAutoResponder.getProperty();
     }
 
     @Override
@@ -256,7 +257,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 
     @Override
     public void extensionUnloaded() {
-        this.tabAutoResponder.extensionUnloaded();
+//        this.tabAutoResponder.extensionUnloaded();
     }
 
 }

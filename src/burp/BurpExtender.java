@@ -154,6 +154,12 @@ public class BurpExtender extends BurpExtenderImpl
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, e);
+            }               
+        });      
         if (this.getBurpVersion().isExtendSupport()) {
             // 設定ファイル読み込み
             try {
