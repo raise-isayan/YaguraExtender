@@ -1,100 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>burp</groupId>
+    <artifactId>YaguraExtender</artifactId>
+    <version>1.9</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <releaseVersion>${project.version}.2.0</releaseVersion>
+    </properties>
+    <!-- ビルド設定 -->
+    <build>
+        <finalName>${project.artifactId}</finalName>        
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/java/</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>burp/resources/**</include>
+                    <include>yagura/resources/**</include>
+                </includes>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/java/</directory>
+                <includes>
+                    <include>resources/**</include>
+                </includes>
+            </testResource>
+        </testResources>
+        <plugins>
+            <!-- asciidoc -->
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>1.5.8</version>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/help</sourceDirectory>
+                    <sourceDocumentName>help.adoc</sourceDocumentName>
+                    <outputDirectory>${project.basedir}/help</outputDirectory>
+                    <sourceHighlighter>rouge</sourceHighlighter>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html5</backend>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <finalName>${project.artifactId}-v${project.version}</finalName>
+                    <outputDirectory>${project.basedir}/release</outputDirectory>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>                       
 
-	<groupId>burp.Extender</groupId>
-	<artifactId>YaguraExtender</artifactId>
-	<name>YaguraExtender</name>
-	<version>1.0</version>
-	<description>YaguraExtender</description>
-	<packaging>jar</packaging>
-
-	<properties>
-		<category>burp.Extender</category>
-		<title>YaguraExtender</title>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.8</java.version>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-	</properties>
-
-	<dependencies>
-
-		<dependency>
-			<groupId>burp</groupId>
-			<artifactId>BurpExtlib</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-		<dependency>
-		    <groupId>javax.json</groupId>
-		    <artifactId>javax.json-api</artifactId>
-		    <version>1.1</version>
-		</dependency>
-
-		<dependency>
-		    <groupId>org.glassfish</groupId>
-		    <artifactId>javax.json</artifactId>
-		    <version>1.1</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mailapi</artifactId>
-			<version>1.4.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.jdatepicker</groupId>
-			<artifactId>jdatepicker</artifactId>
-			<version>1.3.4</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.googlecode.juniversalchardet</groupId>
-			<artifactId>juniversalchardet</artifactId>
-			<version>1.0.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
-	</dependencies>
-
-	<build>
-		<finalName>YaguraExtender</finalName>
-		<sourceDirectory>${project.basedir}/src/</sourceDirectory>
-		<plugins>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>burp.BurpExtender</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<id>sample</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifact</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <zip destfile="${project.artifactId}-v${releaseVersion}.zip"  basedir=".">
+                                    <include name="**"/>
+                                    <exclude name="nbproject/configs/**"/>
+                                    <exclude name="nbproject/private/**"/>
+                                    <exclude name="**/.git"/>
+                                    <exclude name="*.zip"/>
+                                    <exclude name="target/**"/>
+                                </zip>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+      
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>burp</groupId>
+            <artifactId>BurpExtlib</artifactId>
+            <version>1.9</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.json</groupId>
+            <artifactId>javax.json-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mailapi</artifactId>
+            <version>1.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jdatepicker</groupId>
+            <artifactId>jdatepicker</artifactId>
+            <version>1.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.juniversalchardet</groupId>
+            <artifactId>juniversalchardet</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+            <version>4.11</version>
+        </dependency>
+    </dependencies>
 </project>
