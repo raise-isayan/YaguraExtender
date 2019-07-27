@@ -6,10 +6,10 @@
     <version>1.9</version>
     <packaging>jar</packaging>
     <properties>
+        <releaseVersion>${project.version}.3.0</releaseVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <releaseVersion>${project.version}.2.0</releaseVersion>
     </properties>
     <!-- ビルド設定 -->
     <build>
@@ -78,7 +78,6 @@
                     </execution>
                 </executions>
             </plugin>                       
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -105,7 +104,6 @@
                     </execution>
                 </executions>
             </plugin>
-      
         </plugins>
     </build>
     <dependencies>

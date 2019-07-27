@@ -29,17 +29,23 @@ public final class Version extends CustomVersion {
         }
         return version;
     }
+
+    private String getProjectName() {
+        String projname = BUNDLE.getString("projname");
+        return projname;
+    }
     
     private final static String VERSION_INFO_FMT = 
-            "Product Version: YaguraExtender %s\n" + 
+            "Product Version: %s %s\n" + 
             "Log Dir: %s\n" +
             "User Dir: %s\n";    
 
     public String getVersionInfo() {
-        return String.format(VERSION_INFO_FMT, 
-                Version.getInstance().getVersion(), 
-                LegacyConfig.getExtensionHomeDir().getAbsoluteFile(),
-                LegacyConfig.getUserDir());    
+        return String.format(VERSION_INFO_FMT,
+            getProjectName(),
+            Version.getInstance().getVersion(), 
+            LegacyConfig.getExtensionHomeDir().getAbsoluteFile(),
+            LegacyConfig.getUserDir());    
     }
     
 }
