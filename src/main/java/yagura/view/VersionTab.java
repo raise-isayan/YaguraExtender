@@ -169,7 +169,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JTextArea txtVersion;
     // End of variables declaration//GEN-END:variables
 
-   @Override
+    @Override
     public String getTabCaption() {
         return "Version";
     }
@@ -178,7 +178,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
     public Component getUiComponent() {
         return this;
     }
-    
+
     public boolean getDebugMode() {
         return this.chkDebugMode.getModel().isSelected();
     }

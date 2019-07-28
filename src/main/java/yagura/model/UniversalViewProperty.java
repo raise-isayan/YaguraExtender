@@ -18,40 +18,35 @@ import java.util.regex.Pattern;
 public class UniversalViewProperty {
 
     /**
-     * https://l0.cm/encodings/table/
-     * http://userguide.icu-project.org/conversion/detection
+     * https://l0.cm/encodings/table/ http://userguide.icu-project.org/conversion/detection
      * https://code.google.com/archive/p/juniversalchardet/
      */
     private static final String[] ENCODING_DEFAULT_JAPANESE_LIST = {
-                StandardCharsets.UTF_8.name(),
-                "Shift_JIS",
-                "EUC-JP",
-                "ISO-2022-JP",
-                StandardCharsets.ISO_8859_1.name(),
-    };
+        StandardCharsets.UTF_8.name(),
+        "Shift_JIS",
+        "EUC-JP",
+        "ISO-2022-JP",
+        StandardCharsets.ISO_8859_1.name(),};
 
     private static final String[] ENCODING_DEFAULT_KOREAN_LIST = {
-                StandardCharsets.UTF_8.name(),
-                "EUC-KR",
-                "ISO-2022-KR",
-                StandardCharsets.ISO_8859_1.name(),
-    };
+        StandardCharsets.UTF_8.name(),
+        "EUC-KR",
+        "ISO-2022-KR",
+        StandardCharsets.ISO_8859_1.name(),};
 
     private static final String[] ENCODING_DEFAULT_CHINESE_LIST = {
-                StandardCharsets.UTF_8.name(),
-                "BIG5",
-                "x-EUC-TW",
-                "GB18030",
-                "GB2312", // HZ-GB-2312 (GBK/EUC-CN)
-                "ISO-2022-CN",
-                StandardCharsets.ISO_8859_1.name(),
-    };
+        StandardCharsets.UTF_8.name(),
+        "BIG5",
+        "x-EUC-TW",
+        "GB18030",
+        "GB2312", // HZ-GB-2312 (GBK/EUC-CN)
+        "ISO-2022-CN",
+        StandardCharsets.ISO_8859_1.name(),};
 
     private static final String[] ENCODING_DEFAULT_OTHER_LIST = {
         StandardCharsets.UTF_8.name(),
         StandardCharsets.US_ASCII.name(),
-        StandardCharsets.ISO_8859_1.name(),
-    };
+        StandardCharsets.ISO_8859_1.name(),};
 
     // Encoding tab
     public static List<String> getDefaultEncodingList() {
@@ -83,7 +78,7 @@ public class UniversalViewProperty {
         return this.clipbordAutoDecode;
     }
 
-    private final List<String> encodingList = new ArrayList(getDefaultEncodingList());
+    private final List<String> encodingList = new ArrayList<>(getDefaultEncodingList());
 
     public void setEncodingList(List<String> encodingList) {
         this.encodingList.clear();

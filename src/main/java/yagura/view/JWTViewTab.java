@@ -11,7 +11,6 @@ import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import java.awt.Component;
 import java.awt.Font;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -58,7 +57,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         initComponents();
         customizeComponents();
     }
-    
+
 //    private final JSONView jsonHeaderView = new JSONView();
 //    private final JSONView jsonPayloadView = new JSONView();
     @SuppressWarnings("unchecked")
@@ -230,16 +229,18 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 }
             }
             List<IParameter> parameters = reqInfo.getParameters();
-            for (IParameter p : parameters) {                
-                if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) { 
+            for (IParameter p : parameters) {
+                if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
                     find = JWTObject.isJWTFormat(p.getValue());
-                    if (find) break; 
+                    if (find) {
+                        break;
+                    }
                 }
             }
             if (!find) {
                 String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
-                find = JWTObject.containsJWTFormat(body);                                
-            }            
+                find = JWTObject.containsJWTFormat(body);
+            }
         }
         return find;
     }
@@ -247,10 +248,10 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
     private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
 
-    private final HashMap<String, JWTObject> jwtMap = new HashMap();
+    private final HashMap<String, JWTObject> jwtMap = new HashMap<>();
 
     private final static String[] TYPES = {"(URL)", "(Body)", "(Cookie)", "(XML)", "-", "(file)", "(JSON)"};
-    
+
     public void setJWT(byte[] message) {
         this.jwtMap.clear();
         this.cmbParam.removeAllItems();
@@ -280,8 +281,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                         jwtMap.put(key, new JWTObject(jwt));
                         this.cmbParam.addItem(key);
                     }
-                }
-                else if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
+                } else if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
                     String name = p.getName();
                     String value = p.getValue();
                     String key = TYPES[p.getType()] + " " + name;
@@ -300,9 +300,9 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 JWTToken jwt = JWTObject.parseJWTToken(body, false);
                 String key = "(body)";
                 jwtMap.put(key, new JWTObject(jwt));
-                this.cmbParam.addItem(key);                
-            }        
-        }        
+                this.cmbParam.addItem(key);
+            }
+        }
     }
 
     private HttpMessage message = null;

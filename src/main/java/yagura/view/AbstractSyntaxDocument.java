@@ -13,8 +13,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 /**
- * base code
- * https://community.oracle.com/thread/2105230
+ * base code https://community.oracle.com/thread/2105230
  */
 public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
 
@@ -53,7 +52,7 @@ public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
         keywords = getKeywords();
     }
 
-    public abstract HashSet getKeywords();
+    public abstract HashSet<String> getKeywords();
 
     /*
       *  Override to apply syntax highlighting after the document has been updated
@@ -207,7 +206,7 @@ public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
         doc.setCharacterAttributes(startOffset, lineLength, normal, true);
 
         //  check for single line comment
-        if (getSingleLineDelimiter() != null) {        
+        if (getSingleLineDelimiter() != null) {
             int index = content.indexOf(getSingleLineDelimiter(), startOffset);
             if ((index > -1) && (index < endOffset)) {
                 doc.setCharacterAttributes(index, endOffset - index + 1, comment, false);
@@ -341,8 +340,10 @@ public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
      */
     private int indexOf(String content, String needle, int offset) {
         int index;
-        if (needle == null) return -1;
-        
+        if (needle == null) {
+            return -1;
+        }
+
         while ((index = content.indexOf(needle, offset)) != -1) {
             String text = getLine(content, index).trim();
 
@@ -361,7 +362,9 @@ public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
      */
     private int lastIndexOf(String content, String needle, int offset) {
         int index;
-        if (needle == null) return -1;
+        if (needle == null) {
+            return -1;
+        }
 
         while ((index = content.lastIndexOf(needle, offset)) != -1) {
             String text = getLine(content, index).trim();

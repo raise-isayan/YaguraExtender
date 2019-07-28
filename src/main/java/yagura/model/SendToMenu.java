@@ -29,7 +29,7 @@ import javax.swing.table.TableModel;
  *
  * @author isayan
  */
-public class SendToMenu implements IContextMenuFactory,SendToListener {
+public class SendToMenu implements IContextMenuFactory, SendToListener {
 
     private final SendToProperty property;
     private final IBurpExtenderCallbacks callbacks;
@@ -51,7 +51,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
         this.renewMenu(this.property);
         return this.menuList;
     }
-    
+
     public void renewMenu(SendToProperty property) {
         this.mnuSendTo.setText("Send To");
         this.sendToList.clear();
@@ -70,48 +70,60 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
                     sendToList.add(sendToItem);
                     mnuItem.addActionListener(sendToItem);
                     if (property.isSubMenu()) {
-                        if (sendToItem.isEnabled()) this.mnuSendTo.add(mnuItem);                                                
+                        if (sendToItem.isEnabled()) {
+                            this.mnuSendTo.add(mnuItem);
+                        }
                     } else {
-                        if (sendToItem.isEnabled()) this.menuList.add(mnuItem);                        
-                    }                    
+                        if (sendToItem.isEnabled()) {
+                            this.menuList.add(mnuItem);
+                        }
+                    }
                 } else {
                     if (item.isServer()) {
                         SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
                         sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
-                            if (sendToItem.isEnabled()) this.mnuSendTo.add(mnuItem);                                                
+                            if (sendToItem.isEnabled()) {
+                                this.mnuSendTo.add(mnuItem);
+                            }
                         } else {
-                            if (sendToItem.isEnabled()) this.menuList.add(mnuItem);                        
-                        }                    
+                            if (sendToItem.isEnabled()) {
+                                this.menuList.add(mnuItem);
+                            }
+                        }
                     } else {
                         SendToMenuItem sendToItem = new SendToMultiEditor(item, this.invocation);
                         sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
-                            if (sendToItem.isEnabled()) this.mnuSendTo.add(mnuItem);                                                
+                            if (sendToItem.isEnabled()) {
+                                this.mnuSendTo.add(mnuItem);
+                            }
                         } else {
-                            if (sendToItem.isEnabled()) this.menuList.add(mnuItem);                        
-                        }                    
+                            if (sendToItem.isEnabled()) {
+                                this.menuList.add(mnuItem);
+                            }
+                        }
                     }
-                }                        
-            }            
-        }            
-        
+                }
+            }
+        }
+
     }
 
     private final javax.swing.JPopupMenu popBurpMenu = new javax.swing.JPopupMenu();
-    
+
     public void showBurpMenu(SendToMessage message, java.awt.event.MouseEvent evt) {
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
             this.getPopupMenu(message);
             this.popBurpMenu.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }
-    
+
     protected javax.swing.JPopupMenu getPopupMenu(final SendToMessage message) {
         this.popBurpMenu.removeAll();
-        javax.swing.JMenuItem mnuRepeater = new javax.swing.JMenuItem();      
+        javax.swing.JMenuItem mnuRepeater = new javax.swing.JMenuItem();
         mnuRepeater.setText("Sendto Repeater");
         mnuRepeater.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -120,7 +132,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
             }
         });
         this.popBurpMenu.add(mnuRepeater);
-        javax.swing.JMenuItem mnuIntruder = new javax.swing.JMenuItem();      
+        javax.swing.JMenuItem mnuIntruder = new javax.swing.JMenuItem();
         mnuIntruder.setText("Sndto Intruder");
         mnuIntruder.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -129,7 +141,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
             }
         });
         this.popBurpMenu.add(mnuIntruder);
-        javax.swing.JMenuItem mnuSpider = new javax.swing.JMenuItem();      
+        javax.swing.JMenuItem mnuSpider = new javax.swing.JMenuItem();
         mnuSpider.setText("Sendto Spider");
         mnuSpider.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -150,10 +162,10 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
                         mnuItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                 sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());   
-                            }                        
+                                sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());
+                            }
                         });
-                        this.popBurpMenu.add(mnuItem);                        
+                        this.popBurpMenu.add(mnuItem);
                     } else {
                         if (item.isServer()) {
                             final SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
@@ -161,19 +173,19 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                     sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());   
-                                }                        
+                                    sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());
+                                }
                             });
-                            this.popBurpMenu.add(mnuItem);                        
+                            this.popBurpMenu.add(mnuItem);
                         } else {
                             final SendToMenuItem sendToItem = new SendToMultiEditor(item, this.invocation);
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                     sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());   
-                                }                        
+                                    sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());
+                                }
                             });
-                            this.popBurpMenu.add(mnuItem);                        
+                            this.popBurpMenu.add(mnuItem);
                         }
                     }
                 }
@@ -181,7 +193,7 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
         }
         return popBurpMenu;
     }
-    
+
     private int repeternum = 0;
 
     public void doKeyEventAction(KeyEvent evt) {
@@ -189,32 +201,32 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
         FocusManager mgr = FocusManager.getCurrentManager();
         Component owner = mgr.getFocusOwner();
         if (owner instanceof JTable) {
-            JTable table = (JTable)owner;
+            JTable table = (JTable) owner;
             int[] rowSelect = table.getSelectedRows();
             for (int i = 0; i < rowSelect.length; i++) {
                 int rowIndex = table.convertRowIndexToModel(rowSelect[i]);
-                TableModel modelTable = table.getModel(); 
+                TableModel modelTable = table.getModel();
                 int historyIndex = Util.parseIntDefault(String.valueOf(modelTable.getValueAt(rowIndex, 0)), -1);
                 if (historyIndex > 0) {
                     IHttpRequestResponse[] history = BurpExtender.getCallbacks().getProxyHistory();
                     historyList.add(history[historyIndex - 1]);
                 }
             }
-        }                    
+        }
         createMenuItems(getContextMenuInvocation(evt, historyList.toArray(new IHttpRequestResponse[0])));
         //
         for (SendToMenuItem item : sendToList) {
             if (item.isSelected() && item.getHotkey() != null) {
                 KeyEvent hotKey = item.getHotkey();
-                if (evt.getModifiers() == hotKey.getModifiers() &&
-                    evt.getKeyCode() == hotKey.getKeyCode()) {
+                if (evt.getModifiers() == hotKey.getModifiers()
+                        && evt.getKeyCode() == hotKey.getKeyCode()) {
                     if (historyList.size() > 0) {
                         IHttpRequestResponse[] messageInfo = historyList.toArray(new IHttpRequestResponse[0]);
-                        item.menuItemClicked("#", messageInfo);                        
+                        item.menuItemClicked("#", messageInfo);
                     }
                 }
-             }
-        }        
+            }
+        }
     }
 
     private IContextMenuInvocation getContextMenuInvocation(KeyEvent evt, IHttpRequestResponse[] messageInfo) {
@@ -248,32 +260,32 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
             public IScanIssue[] getSelectedIssues() {
                 return null;
             }
-        
+
         };
     }
-    
+
     public void sendToRepeater(SendToMessage message) {
         try {
             IHttpRequestResponse[] messageItem = message.getSelectedMessages();
             IHttpService httpService = messageItem[0].getHttpService();
-            callbacks.sendToRepeater(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),  
+            callbacks.sendToRepeater(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
                     messageItem[0].getRequest(), "v" + this.repeternum++);
         } catch (Exception ex) {
             Logger.getLogger(SendToMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void sendToIntruder(SendToMessage message) {
         try {
             IHttpRequestResponse[] messageItem = message.getSelectedMessages();
             IHttpService httpService = messageItem[0].getHttpService();
-            callbacks.sendToIntruder(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()), 
+            callbacks.sendToIntruder(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
                     messageItem[0].getRequest());
         } catch (Exception ex) {
             Logger.getLogger(SendToMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void sendToSpider(SendToMessage message) {
         try {
             IHttpRequestResponse[] messageItem = message.getSelectedMessages();
@@ -295,5 +307,5 @@ public class SendToMenu implements IContextMenuFactory,SendToListener {
     public void error(SendToEvent evt) {
         this.callbacks.issueAlert(evt.getMessage());
     }
-    
+
 }

@@ -12,8 +12,8 @@ public class JWTObject extends JWTToken {
     public JWTObject(JWTToken token) {
         super(token);
     }
-    
-        /**
+
+    /**
      * @param pretty
      * @return the header
      */
@@ -36,5 +36,5 @@ public class JWTObject extends JWTToken {
             return null;
         }
     }
-        
+
 }

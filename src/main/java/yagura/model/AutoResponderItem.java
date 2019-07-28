@@ -9,12 +9,13 @@ import java.util.regex.Matcher;
  * @author isayan
  */
 public class AutoResponderItem extends MatchItem {
+
     public static final String TYPE_AUTO_RESPONDER = "auto responder";
-    
+
     public AutoResponderItem() {
         setType(TYPE_AUTO_RESPONDER);
     }
-        
+
     private String replace = "";
 
     /**
@@ -43,20 +44,18 @@ public class AutoResponderItem extends MatchItem {
         if (quote) {
             if (metachar) {
                 return Matcher.quoteReplacement(TransUtil.decodeJsLangMeta(this.replace));
-            }
-            else {
+            } else {
                 return Matcher.quoteReplacement(this.replace);
             }
         } else {
             if (metachar) {
                 return TransUtil.decodeJsLangMeta(this.replace);
-            }
-            else {
+            } else {
                 return this.replace;
             }
         }
     }
-    
+
     /**
      * @param replace the replace to set
      */
@@ -69,12 +68,13 @@ public class AutoResponderItem extends MatchItem {
 
     /**
      * body only
-     * @return 
+     *
+     * @return
      */
     public boolean getBodyOnly() {
         return this.bodyOnly;
     }
-    
+
     /**
      * @param bodyOnly body only
      */
@@ -83,15 +83,15 @@ public class AutoResponderItem extends MatchItem {
     }
 
     private String contentType = "";
-    
+
     public String getContentType() {
         return contentType;
     }
-    
+
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
-    
+
     public static Object[] toObjects(AutoResponderItem matchReplace) {
         Object[] beans = new Object[7];
         beans[0] = matchReplace.isSelected();
@@ -115,5 +115,5 @@ public class AutoResponderItem extends MatchItem {
         autoResponder.setReplace((String) rows[6]);
         return autoResponder;
     }
-    
+
 }

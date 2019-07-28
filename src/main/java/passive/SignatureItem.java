@@ -72,7 +72,7 @@ public class SignatureItem<M extends IssueItem> implements ISignatureItem {
                     responseMarkers.add(new int[]{issue.start(), issue.end()});
                 }
             }
-        }        
+        }
         List<int[]> applyRequestMarkers = (requestMarkers.size() > 0) ? requestMarkers : null;
         List<int[]> applyResponseMarkers = (responseMarkers.size() > 0) ? responseMarkers : null;
         return BurpExtender.getCallbacks().applyMarkers(baseRequestResponse, applyRequestMarkers, applyResponseMarkers);
@@ -80,65 +80,43 @@ public class SignatureItem<M extends IssueItem> implements ISignatureItem {
 
     private final static Comparator<int[]> COMPARE_MARKS = new Comparator<int[]>() {
         @Override
-        public int compare(int[] o1, int[] o2) {            
-            if (!(o1.length == 2 && o2.length == 2)) return 0;
+        public int compare(int[] o1, int[] o2) {
+            if (!(o1.length == 2 && o2.length == 2)) {
+                return 0;
+            }
             int cmp = Integer.compare(o1[0], o2[0]);
-            if (cmp == 0)
+            if (cmp == 0) {
                 return Integer.compare(o2[1], o1[1]);
-            else    
+            } else {
                 return cmp;
-        }    
+            }
+        }
     };
-    
+
     protected static void markerSortOrder(List<int[]> applyRequestMarkers, List<int[]> applyResponseMarkers) {
         // ソートする
-        if (applyRequestMarkers != null) applyRequestMarkers.sort(COMPARE_MARKS);
-        if (applyResponseMarkers != null) applyResponseMarkers.sort(COMPARE_MARKS);
+        if (applyRequestMarkers != null) {
+            applyRequestMarkers.sort(COMPARE_MARKS);
+        }
+        if (applyResponseMarkers != null) {
+            applyResponseMarkers.sort(COMPARE_MARKS);
+        }
     }
 
     protected static List<int[]> markerUnionRegion(List<int[]> markers) {
         // 領域が重なってる場合に除外
         // A の領域のなかに B が一部でも含まれる場合にはBを含めない
-        List<int[]> regions= new ArrayList<>();
-        NEXT: for (int[] mark : markers) {
+        List<int[]> regions = new ArrayList<>();
+        NEXT:
+        for (int[] mark : markers) {
             for (int[] reg : regions) {
-                if (reg[0] <= mark[0] && mark[0] <= reg[1]) continue NEXT;
+                if (reg[0] <= mark[0] && mark[0] <= reg[1]) {
+                    continue NEXT;
+                }
             }
-            regions.add(mark);                
+            regions.add(mark);
         }
         return regions;
-    }
-        
-    public static String toHtmlEncode(String input) {
-        StringBuilder buff = new StringBuilder();
-        int length = input.length();
-        for (int i = 0; i < length; i++) {
-            char c = input.charAt(i);
-            buff.append(toHtmlEncode(c));
-        }
-        return buff.toString();
-    }
-
-    public static String toHtmlEncode(char c) {
-        StringBuilder buff = new StringBuilder();
-        switch (c) {
-            case '<':
-                buff.append("&lt;");
-                break;
-            case '>':
-                buff.append("&gt;");
-                break;
-            case '&':
-                buff.append("&amp;");
-                break;
-            case '"':
-                buff.append("&quot;");
-                break;
-            default:
-                buff.append(c);
-                break;
-        }
-        return buff.toString();
     }
 
 }

@@ -15,8 +15,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -27,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author isayan
  */
-public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
+public class MatchAlertTab extends javax.swing.JPanel implements ITab {
 
     /**
      * Creates new form MatchAlertTab
@@ -177,7 +175,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
     public Component getUiComponent() {
         return this;
     }
-    
+
     private CustomTableModel modelAlert = null;
     private final MatchAlertItemDlg matchAlertDlg = new MatchAlertItemDlg(null, true);
 
@@ -254,7 +252,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
         this.tableAlert.getColumnModel().getColumn(11).setMinWidth(0);
         this.tableAlert.getColumnModel().getColumn(11).setPreferredWidth(0);
         this.tableAlert.getColumnModel().getColumn(11).setMaxWidth(0);
-        
+
     }
 
     private void btnAlertEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlertEditActionPerformed
@@ -277,7 +275,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
             int[] rowSelect = this.tableAlert.getSelectedRows();
             for (int i = 0; i < rowSelect.length; i++) {
                 int rowIndex = this.tableAlert.convertRowIndexToModel(rowSelect[i]);
-                DefaultTableModel modelTable = (DefaultTableModel) this.tableAlert.getModel();                
+                DefaultTableModel modelTable = (DefaultTableModel) this.tableAlert.getModel();
                 Object[] editRows = new Object[this.tableAlert.getColumnCount()];
                 for (int k = 0; k < editRows.length; k++) {
                     editRows[k] = modelTable.getValueAt(rowIndex, this.tableAlert.convertColumnIndexToModel(k));
@@ -286,7 +284,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab  {
                 item.setSelected(!item.isSelected());
                 editRows = MatchAlertItem.toObjects(item);
                 SwingUtil.updateItem(this.tableAlert, editRows, rowSelect[i]);
-            }            
+            }
         }
     }//GEN-LAST:event_tableAlertKeyTyped
 

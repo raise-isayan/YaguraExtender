@@ -243,7 +243,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
     public Component getUiComponent() {
         return this;
     }
-        
+
     private void chkAutoLoggingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAutoLoggingActionPerformed
         this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkAutoLoggingActionPerformed
@@ -282,19 +282,19 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_txtFileLimitSizeFocusLost
 
     private void chkHistoryLogIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHistoryLogIncludeActionPerformed
-       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkHistoryLogIncludeActionPerformed
 
     private void chkExcludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExcludeActionPerformed
-       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkExcludeActionPerformed
 
     private void chkProxyLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkProxyLogActionPerformed
-       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkProxyLogActionPerformed
 
     private void chkToolLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkToolLogActionPerformed
-       this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkToolLogActionPerformed
 
     private void chkExcludeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExcludeStateChanged

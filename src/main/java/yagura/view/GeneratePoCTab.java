@@ -49,14 +49,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         customizeComponents();
     }
 
-    private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
-    {
-         @Override
-         public Document createDefaultDocument()
-         {
-              return new HTMLSyntaxDocument();
-         }
-    };    
+    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
+        @Override
+        public Document createDefaultDocument() {
+            return new HTMLSyntaxDocument();
+        }
+    };
 
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
@@ -70,7 +68,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
         this.txtGeneratorPoC.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
         this.txtGeneratorPoC.setContentType("text/html");
-        
+
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
@@ -373,7 +371,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     public void setMessageFont(Font font) {
         this.txtGeneratorPoC.setFont(font);
-        this.quickSearchTab.setMessageFont(font);        
+        this.quickSearchTab.setMessageFont(font);
     }
 
     private HttpRequest message = null;
@@ -427,7 +425,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
                 return false;
-            }        
+            }
             try {
                 HttpRequest request = HttpRequest.parseHttpRequest(content);
                 String host = request.getHost();
@@ -457,10 +455,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
             if (isMessageRequest) {
                 if (this.controller != null) {
-                    request = HttpRequest.parseHttpRequest(content, HttpUtil.isSSL(this.controller.getHttpService().getProtocol()));                
-                }
-                else {
-                    request = HttpRequest.parseHttpRequest(content);                                
+                    request = HttpRequest.parseHttpRequest(content, HttpUtil.isSSL(this.controller.getHttpService().getProtocol()));
+                } else {
+                    request = HttpRequest.parseHttpRequest(content);
                 }
                 if (guessCharset == null) {
                     guessCharset = request.getGuessCharset();
@@ -508,7 +505,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     }
 
     private final static Pattern ENCODE_JS = Pattern.compile("[^ !#-&(-/0-Z\\[\\]^-~]");
-    
+
     private String generatePoC() {
         StringBuilder buff = new StringBuilder();
         try {
@@ -534,8 +531,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     }
                 }
                 Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "multipart:{0}", csrfMultiPart);
-            }
-            else {
+            } else {
                 // select multipart
                 if (csrfMultiPart && !HttpUtil.isMaltiPart(contentType)) {
                     csrfEnctype = "multipart/form-data";
@@ -543,35 +539,34 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 // select text/plain
                 if (csrfTextPlain) {
                     csrfEnctype = "text/plain"; // 固定
-                }                
+                }
             }
             String csrfFormMethod = this.chkGETmethod.isSelected() ? "GET" : reqmsg.getMethod();
             String csrfFormTarget = this.chkTimeDelay.isSelected() ? " target=\"_blank\"" : "";
-            
+
             IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), chkUseHttps.isSelected());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");
-            buff.append(String.format("<head><meta http-equiv=\"content-type\" content=\"text/html; charset='%s'\"></head>\n", 
-                new Object[]{csrfEncoding}));
+            buff.append(String.format("<head><meta http-equiv=\"content-type\" content=\"text/html; charset='%s'\"></head>\n",
+                    new Object[]{csrfEncoding}));
             String autoSubmit = "";
-            if (csrfAutoSubmit) { 
+            if (csrfAutoSubmit) {
                 autoSubmit = " onload=\"document.forms[0].submit();\"";
                 if (this.chkTimeDelay.isSelected()) {
-                    autoSubmit = String.format(" onload=\"setTimeout({document.forms[0].submit();}, %d);\"", 
-                        new Object[]{ timeOutValue });
+                    autoSubmit = String.format(" onload=\"setTimeout({document.forms[0].submit();}, %d);\"",
+                            new Object[]{timeOutValue});
                 }
             }
             buff.append(String.format("<body%s>\n", new Object[]{autoSubmit}));
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
                 if (HttpUtil.isUrlEencoded(csrfEnctype)) {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\"%s>\n", 
-                        new Object[]{csrfUrl, csrfFormMethod, csrfFormTarget}));
-                }
-                else {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\"%s>\n", 
-                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, csrfFormTarget}));
+                    buff.append(String.format("<form action=\"%s\" method=\"%s\"%s>\n",
+                            new Object[]{csrfUrl, csrfFormMethod, csrfFormTarget}));
+                } else {
+                    buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\"%s>\n",
+                            new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, csrfFormTarget}));
                 }
                 List<IParameter> parameters = requestInfo.getParameters();
                 Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.length:{0}", parameters.size());
@@ -590,14 +585,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         if (HttpUtil.isUrlEencoded(contentType)) {
                             paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
                             paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
-                        }
-                        else if (HttpUtil.isMaltiPart(contentType)) {
+                        } else if (HttpUtil.isMaltiPart(contentType)) {
                             paramName = Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
                             paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
                         }
-                        String decodename = TransUtil.toHtmlEncode(paramName);
-                        String decodevalue = TransUtil.toHtmlEncode(paramValue);
-                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">\n", 
+                        String decodename = HttpUtil.toHtmlEncode(paramName);
+                        String decodevalue = HttpUtil.toHtmlEncode(paramValue);
+                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">\n",
                                 new Object[]{decodename, decodevalue}));
                     } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {
                         binaryParam = true;
@@ -605,34 +599,32 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     } else {
                         String file_encoding = csrfEncoding;
                         String decodevalue = Util.decodeMessage(Util.encodeMessage(paramValue), file_encoding);
-                        buff.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">", 
+                        buff.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
                                 new Object[]{paramName, filename, file_encoding}));
-                        buff.append(TransUtil.toHtmlEncode(decodevalue));
+                        buff.append(HttpUtil.toHtmlEncode(decodevalue));
                         buff.append("</textarea>");
                         binaryParam = false;
                     }
                 }
-            // csrf textplain    
+                // csrf textplain    
             } else {
-                buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\"%s>\n", 
-                    new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, csrfFormTarget}));
+                buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\"%s>\n",
+                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, csrfFormTarget}));
                 Map.Entry<String, String> pair = HttpUtil.getParameter(Util.decodeMessage(Util.encodeMessage(reqmsg.getBody()), csrfEncoding));
                 String key = pair.getKey();
                 String val = pair.getValue();
-                if ("".equals(val)) {                
-                    String sp [] = key.split("=", 2);
+                if ("".equals(val)) {
+                    String sp[] = key.split("=", 2);
                     if (sp.length == 1) {
-                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",                            
-                            new Object[]{TransUtil.toHtmlEncode(sp[0]), ""}));                                        
+                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                                new Object[]{HttpUtil.toHtmlEncode(sp[0]), ""}));
+                    } else {
+                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                                new Object[]{HttpUtil.toHtmlEncode(sp[0]), HttpUtil.toHtmlEncode(sp[1])}));
                     }
-                    else {
-                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",                            
-                            new Object[]{TransUtil.toHtmlEncode(sp[0]), TransUtil.toHtmlEncode(sp[1])}));                    
-                    }
-                }
-                else {                
-                    buff.append(String.format("<textarea name=\"%s\">%s</textarea>", 
-                        new Object[]{TransUtil.toHtmlEncode(key), TransUtil.toHtmlEncode(val)}));                
+                } else {
+                    buff.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                            new Object[]{HttpUtil.toHtmlEncode(key), HttpUtil.toHtmlEncode(val)}));
                 }
             }
             if (!csrfAutoSubmit) {
@@ -645,7 +637,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         }
         return buff.toString();
     }
-    
+
     private String generateHTML5PoC() {
         StringBuilder buff = new StringBuilder();
         try {
@@ -654,7 +646,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             boolean csrfMultiPart = this.rdoMultipart.isSelected();
             boolean csrfTextPlain = this.rdoPlain.isSelected();
             boolean csrfHtml5Binaly = this.chkHtml5Binaly.isSelected();
-            String csrfEncoding = this.quickSearchTab.getSelectedEncoding();            
+            String csrfEncoding = this.quickSearchTab.getSelectedEncoding();
             IBurpExtenderCallbacks callback = BurpExtender.getCallbacks();
             final HttpRequest reqmsg = this.message;
             String contentType = reqmsg.getEnctype();
@@ -670,14 +662,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     }
                 }
                 Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "multipart:{0}", csrfMultiPart);
-            }
-            else {
+            } else {
                 if (csrfMultiPart && !HttpUtil.isMaltiPart(contentType)) {
                     csrfEnctype = "multipart/form-data";
                 }
                 if (csrfTextPlain && !HttpUtil.isPlain(contentType)) {
                     csrfEnctype = "text/plain";
-                }                
+                }
             }
             String csrfFormMethod = this.chkGETmethod.isSelected() ? "GET" : reqmsg.getMethod();
             String csrfFormTarget = this.chkTimeDelay.isSelected() ? " target=\"_blank\"" : "";
@@ -704,7 +695,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.length:{0}", parameters.size());
                     boolean binaryParam = false;
                     String filename = "";
-                    StringBuilder parambuff = new StringBuilder();        
+                    StringBuilder parambuff = new StringBuilder();
                     for (int i = 0; i < parameters.size(); i++) {
                         IParameter param = parameters.get(i);
                         String paramName = param.getName();
@@ -746,11 +737,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     buff.append(parambuff.toString());
                     buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
                     buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
-                    buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n"); 
+                    buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n");
                     buff.append("\txhr.send(new Blob([blob]));\r\n");
                 } else {
                     buff.append("\txhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\r\n");
-                    List<IParameter> parameters = requestInfo.getParameters();                
+                    List<IParameter> parameters = requestInfo.getParameters();
                     Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.size:{0}", parameters.size());
                     boolean binaryParam = false;
                     boolean first = true;
@@ -767,9 +758,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             if (!first) {
                                 buff.append(" + '&'");
                             }
-                            buff.append(String.format("'%s' + '=' + '%s';\r\n", 
-                                    new Object[]{TransUtil.encodeJsLangQuote(paramName), 
-                                                 TransUtil.encodeJsLangQuote(paramValue)}));
+                            buff.append(String.format("'%s' + '=' + '%s';\r\n",
+                                    new Object[]{TransUtil.encodeJsLangQuote(paramName),
+                                        TransUtil.encodeJsLangQuote(paramValue)}));
                             first = false;
                         } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {
                             binaryParam = true;
@@ -777,7 +768,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     }
                     buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
                     buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
-                    buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n"); 
+                    buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n");
                     buff.append("\txhr.send(new Blob([blob]));\r\n");
                 }
             } // csrf textplain    
@@ -787,19 +778,19 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 buff.append(String.format("\treq += '%s';\r\n", new Object[]{TransUtil.toByteHexEncode(Util.getRawByte(paramValue), ENCODE_JS, false)}));
                 buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
                 buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
-                buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n"); 
+                buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n");
                 buff.append("\txhr.send(new Blob([blob]));\r\n");
             }
             buff.append("}\n");
             buff.append("</script></head>\n");
             String autoSubmit = "";
-            if (csrfAutoSubmit) { 
-                autoSubmit= " onload=\"html5_csrf()\"";
+            if (csrfAutoSubmit) {
+                autoSubmit = " onload=\"html5_csrf()\"";
                 if (this.chkTimeDelay.isSelected()) {
-                    autoSubmit = String.format(" onload=\"setTimeout({html5_csrf();}, %d);\"", new Object[]{ timeOutValue });
+                    autoSubmit = String.format(" onload=\"setTimeout({html5_csrf();}, %d);\"", new Object[]{timeOutValue});
                 }
             }
-            buff.append(String.format("<body%s>\n", new Object[]{ autoSubmit }));
+            buff.append(String.format("<body%s>\n", new Object[]{autoSubmit}));
             if (!csrfAutoSubmit) {
                 buff.append(String.format("<input type=\"button\" value=\"Submit\" onClick=\"html5_csrf()\">\n"));
             }
@@ -809,7 +800,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         }
         return buff.toString();
     }
-
 
     public void clearView() {
         this.quickSearchTab.clearView();

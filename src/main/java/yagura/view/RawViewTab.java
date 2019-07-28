@@ -32,15 +32,13 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     private boolean editable = false;
     private IMessageEditorController controller = null;
 
-    private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
-    {
-         @Override
-         public Document createDefaultDocument()
-         {
-              return new HTMLSyntaxDocument();
-         }
-    };    
-        
+    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
+        @Override
+        public Document createDefaultDocument() {
+            return new HTMLSyntaxDocument();
+        }
+    };
+
     /**
      * Creates new form RawViewTab
      *
@@ -61,11 +59,11 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.editable = editable;
         this.editable = false;
         initComponents();
-        customizeComponents();        
+        customizeComponents();
     }
-        
+
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
-    
+
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea(this.txtRaw);
         this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
@@ -85,7 +83,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 textModified = true;
             }
 
-        });        
+        });
         this.txtRaw.setEditable(this.editable);
 
         this.txtRaw.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
@@ -148,7 +146,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 this.txtRaw.setText("");
             }
 //            this.quickSearchTab.clearView();
-              this.quickSearchTab.clearViewAndSearch();
+            this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
             Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -172,7 +170,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
             return false;
-        }        
+        }
         if (this.request && isRequest && content.length > 0) {
             return true;
         } else if (!this.request && !isRequest && content.length > 0) {
@@ -182,14 +180,13 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     }
 
     private byte[] content = null;
-    
+
     @Override
     public void setMessage(byte[] content, boolean isRequest) {
         try {
             if (content == null) {
-                this.clearView();                
-            }
-            else {
+                this.clearView();
+            } else {
                 this.content = content;
                 BurpExtender extenderImpl = BurpExtender.getInstance();
                 String guessCharset = null;
@@ -205,14 +202,14 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 }
                 if (guessCharset == null) {
                     guessCharset = StandardCharsets.ISO_8859_1.name();
-                }             
+                }
                 this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
                 this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
                 this.encodingItemStateChanged.itemStateChanged(null);
                 this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
 
-                this.textModified = false;            
-            }            
+                this.textModified = false;
+            }
         } catch (ParseException ex) {
             Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -225,14 +222,12 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 String modifiedText = this.txtRaw.getText();
                 String encoding = quickSearchTab.getSelectedEncoding();
                 if (encoding != null) {
-                    return Util.encodeMessage(modifiedText, encoding);                
+                    return Util.encodeMessage(modifiedText, encoding);
+                } else {
+                    return this.content;
                 }
-                else {
-                    return this.content;        
-                }
-            }
-            else {
-                return this.content;        
+            } else {
+                return this.content;
             }
         } else {
             return new byte[]{};

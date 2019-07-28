@@ -10,20 +10,20 @@ import java.util.logging.Logger;
  *
  * @author isayan
  */
-public class ParamsView extends Parameter implements ObjectTableMapping  {
+public class ParamsView extends Parameter implements ObjectTableMapping {
 
     public ParamsView(IParameter parameter) {
         super(parameter);
     }
-        
+
     public ParamsView() {
         super(Parameter.newPameter());
     }
-    
-    private final String [] columns = new String [] {
+
+    private final String[] columns = new String[]{
         "Data", "Type", "Name", "Value"
     };
-    
+
     public ObjectTableColumn getColumn() {
         return new ObjectTableColumn() {
             @Override
@@ -39,11 +39,11 @@ public class ParamsView extends Parameter implements ObjectTableMapping  {
             @Override
             public int getColumnCount() {
                 return columns.length;
-            }        
+            }
         };
     }
 
-    private final boolean[] canEdit = new boolean [] {
+    private final boolean[] canEdit = new boolean[]{
         false, false, false, false
     };
 
@@ -95,13 +95,13 @@ public class ParamsView extends Parameter implements ObjectTableMapping  {
                 case 0: // Data
                     break;
                 case 1: // Type
-                    param.setType((parseType((String)value)));
+                    param.setType((parseType((String) value)));
                     break;
                 case 2: // Name
-                    param.setName((String)value);
+                    param.setName((String) value);
                     break;
                 case 3: // Value
-                    param.setValue((String)value);                    
+                    param.setValue((String) value);
                     break;
             }
         } catch (Exception ex) {
@@ -117,9 +117,11 @@ public class ParamsView extends Parameter implements ObjectTableMapping  {
 
     public static byte parseType(String type) {
         for (int i = 0; i < TYPES.length; i++) {
-            if (TYPES[i].equals(type)) return (byte)i;
+            if (TYPES[i].equals(type)) {
+                return (byte) i;
+            }
         }
-        return (byte)-1;
+        return (byte) -1;
     }
-    
+
 }

@@ -450,8 +450,10 @@ public class SendToItemDlg extends CustomDialog {
     public void setItemList(List<SendToItem> sendToItemList) {
         this.cmbTargetLocal.removeAllItems();
         for (SendToItem item : sendToItemList) {
-            if (item.getExtend() != null) continue;
-            this.cmbTargetLocal.addItem(item.getTarget());        
+            if (item.getExtend() != null) {
+                continue;
+            }
+            this.cmbTargetLocal.addItem(item.getTarget());
         }
     }
 }

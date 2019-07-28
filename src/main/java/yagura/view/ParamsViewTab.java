@@ -26,14 +26,10 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import extend.util.external.TransUtil;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-import javax.swing.TransferHandler;
 import yagura.model.Parameter;
 import yagura.model.ParamsView;
 import yagura.model.ParamsViewModel;
@@ -194,7 +190,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         add(pnlEdit, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final JComboBox cmbParamType = new JComboBox();
+    private final JComboBox<String> cmbParamType = new JComboBox<>();
 
     private void btnDecodeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnDecodeStateChanged
         this.modelParams.setUrlDeocde(this.btnDecode.isSelected());
@@ -230,7 +226,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
 
     private final Action copyAction = new AbstractAction() {
         public void actionPerformed(ActionEvent evt) {
-            System.out.println("JTable copy 1");
             SwingUtil.systemClipboardCopy(CustomTableModel.tableCopy(tableParams, true));
         }
     };

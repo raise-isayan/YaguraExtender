@@ -41,7 +41,7 @@ public final class LegacyConfig {
     public static File getExtensionHomeDir() {
         return new File(getUserHome(), getExtenderDir());
     }
-        
+
     public static String getExtenderDir() {
         return ".yaguraextender";
     }

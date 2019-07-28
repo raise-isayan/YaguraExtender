@@ -9,15 +9,15 @@ import extend.view.base.RegexItem;
 public class JSearchProperty extends RegexItem {
 
     private boolean smartMatch = false;
-    
+
     public void setSmartMatch(boolean value) {
         this.smartMatch = value;
     }
-    
+
     public boolean isSmartMatch() {
         return this.smartMatch;
     }
-    
+
     private boolean autoRecognise = true;
 
     public boolean isAutoRecogniseEncoding() {
@@ -29,15 +29,15 @@ public class JSearchProperty extends RegexItem {
     }
 
     private FilterProperty filterProp = new FilterProperty();
-    
+
     public FilterProperty getFilterProperty() {
         return this.filterProp;
     }
-    
+
     public void setFilterProperty(FilterProperty filterProp) {
         this.filterProp = filterProp;
     }
-    
+
     private boolean requestHeader = true;
 
     /**
@@ -69,7 +69,7 @@ public class JSearchProperty extends RegexItem {
     public void setRequestBody(boolean requestBody) {
         this.requestBody = requestBody;
     }
-    
+
     private boolean responseHeader = true;
 
     /**
@@ -87,7 +87,7 @@ public class JSearchProperty extends RegexItem {
     }
 
     private boolean responseBody = true;
-    
+
     /**
      * @return the responseBody
      */
@@ -101,7 +101,7 @@ public class JSearchProperty extends RegexItem {
     public void setResponseBody(boolean responseBody) {
         this.responseBody = responseBody;
     }
-    
+
     private boolean comment = true;
 
     /**
@@ -117,7 +117,7 @@ public class JSearchProperty extends RegexItem {
     public void setComment(boolean comment) {
         this.comment = comment;
     }
-                
+
     public void setProperty(JSearchProperty property) {
         this.setAutoRecogniseEncoding(property.isAutoRecogniseEncoding());
         this.setFilterProperty(property.getFilterProperty());
@@ -131,5 +131,4 @@ public class JSearchProperty extends RegexItem {
         this.setIgnoreCase(property.isIgnoreCase());
     }
 
-    
 }

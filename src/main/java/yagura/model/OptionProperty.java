@@ -8,11 +8,10 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * Encoding
-     * ***********************************************************************
+     * Encoding ***********************************************************************
      */
     private final UniversalViewProperty encodingProperty = new UniversalViewProperty();
-    
+
     @Override
     public UniversalViewProperty getEncodingProperty() {
         return this.encodingProperty;
@@ -25,8 +24,7 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * MatchReplace
-     * ***********************************************************************
+     * MatchReplace ***********************************************************************
      */
     private final MatchReplaceProperty matchReplaceProperty = new MatchReplaceProperty();
 
@@ -34,7 +32,7 @@ public class OptionProperty implements IOptionProperty {
     public MatchReplaceProperty getMatchReplaceProperty() {
         return this.matchReplaceProperty;
     }
-    
+
     @Override
     public void setMatchReplaceProperty(MatchReplaceProperty matchReplaceProperty) {
         this.matchReplaceProperty.setProperty(matchReplaceProperty);
@@ -42,11 +40,10 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * MatchAlert
-     * ***********************************************************************
+     * MatchAlert ***********************************************************************
      */
     private final MatchAlertProperty matchAlertProperty = new MatchAlertProperty();
-    
+
     @Override
     public MatchAlertProperty getMatchAlertProperty() {
         return this.matchAlertProperty;
@@ -59,11 +56,10 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * AutoResponder
-     * ***********************************************************************
+     * AutoResponder ***********************************************************************
      */
     private final AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
-    
+
     @Override
     public AutoResponderProperty getAutoResponderProperty() {
         return this.autoResponderProperty;
@@ -76,8 +72,7 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * SendTo
-     * ***********************************************************************
+     * SendTo ***********************************************************************
      */
     private final SendToProperty sendToProperty = new SendToProperty();
 
@@ -85,7 +80,7 @@ public class OptionProperty implements IOptionProperty {
     public SendToProperty getSendToProperty() {
         return this.sendToProperty;
     }
-    
+
     @Override
     public void setSendToProperty(SendToProperty sendtoProperty) {
         this.sendToProperty.setProperty(sendtoProperty);
@@ -93,8 +88,7 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * Logging
-     * ***********************************************************************
+     * Logging ***********************************************************************
      */
     private final LoggingProperty logProperty = new LoggingProperty();
 
@@ -102,7 +96,7 @@ public class OptionProperty implements IOptionProperty {
     public LoggingProperty getLoggingProperty() {
         return this.logProperty;
     }
-    
+
     @Override
     public void setLoggingProperty(LoggingProperty loggingProperty) {
         this.logProperty.setProperty(loggingProperty);
@@ -110,11 +104,10 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * JSearch
-     * ***********************************************************************
+     * JSearch ***********************************************************************
      */
     private final JSearchProperty searchProperty = new JSearchProperty();
-    
+
     @Override
     public JSearchProperty getJSearchProperty() {
         return this.searchProperty;
@@ -127,11 +120,10 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * JTransCoder
-     * ***********************************************************************
+     * JTransCoder ***********************************************************************
      */
     private final JTransCoderProperty transcoderProperty = new JTransCoderProperty();
-    
+
     @Override
     public JTransCoderProperty getJTransCoderProperty() {
         return this.transcoderProperty;
@@ -141,7 +133,7 @@ public class OptionProperty implements IOptionProperty {
     public void setJTransCoderProperty(JTransCoderProperty transcoderProperty) {
         this.transcoderProperty.setProperty(transcoderProperty);
     }
-    
+
     /**
      * debugModeの取得
      */
@@ -159,8 +151,7 @@ public class OptionProperty implements IOptionProperty {
 
     /**
      * ***********************************************************************
-     * OptionProperty
-     * ***********************************************************************
+     * OptionProperty ***********************************************************************
      */
     /**
      * @param property
@@ -176,5 +167,5 @@ public class OptionProperty implements IOptionProperty {
         this.setDebugMode(property.getDebugMode());
         this.setDebugMode(getDebugMode());
     }
-    
+
 }

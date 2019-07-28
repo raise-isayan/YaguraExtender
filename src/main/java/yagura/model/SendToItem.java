@@ -159,16 +159,16 @@ public class SendToItem {
 
         static {
             for (int key = VK_0; key <= VK_9; key++) {
-                HOT_KEY_MAP.put(KeyEvent.getKeyText(key), key);            
+                HOT_KEY_MAP.put(KeyEvent.getKeyText(key), key);
             }
             for (int key = VK_A; key <= VK_Z; key++) {
-                HOT_KEY_MAP.put(KeyEvent.getKeyText(key), key);            
+                HOT_KEY_MAP.put(KeyEvent.getKeyText(key), key);
             }
             for (int key : KEY_CODES) {
                 HOT_KEY_MAP.put(KeyEvent.getKeyText(key), key);
             }
             for (int key = VK_NUMPAD0; key <= VK_NUMPAD9; key++) {
-                HOT_KEY_MAP.put(KeyEvent.getKeyText(key), key);            
+                HOT_KEY_MAP.put(KeyEvent.getKeyText(key), key);
             }
         }
 
@@ -183,45 +183,44 @@ public class SendToItem {
 
         public static KeyEvent parseHotkey(String value) {
             String hotkeys[] = value.split("\\+");
-            int modifiers  = 0;
+            int modifiers = 0;
             int keyCode = 0;
             for (String hotkey : hotkeys) {
                 Integer key = HOT_KEY_MAP.get(hotkey);
                 if (key != null) {
-                    int mask =getKeyModifierMask(key);
+                    int mask = getKeyModifierMask(key);
                     if (mask != 0) {
                         modifiers |= mask;
-                    }
-                    else {
+                    } else {
                         keyCode = key;
                     }
-                }                
-            }          
-            return new KeyEvent(BurpExtender.getInstance().getUiComponent(), KEY_PRESSED, System.currentTimeMillis(), modifiers, keyCode, (char)keyCode);
+                }
+            }
+            return new KeyEvent(BurpExtender.getInstance().getUiComponent(), KEY_PRESSED, System.currentTimeMillis(), modifiers, keyCode, (char) keyCode);
         }
 
         public static int getKeyModifierMask(int keyCode) {
             int mask = 0;
             switch (keyCode) {
-            case VK_SHIFT:
-                mask = InputEvent.SHIFT_MASK;
-                break;
-            case VK_CONTROL:
-                mask = InputEvent.CTRL_MASK;
-                break;
-            case VK_ALT:
-                mask = InputEvent.ALT_MASK;
-                break;
-            case VK_META:
-                mask = InputEvent.META_MASK;
-                break;
-            case VK_ALT_GRAPH:
-                mask = InputEvent.ALT_GRAPH_MASK;
-                break;
+                case VK_SHIFT:
+                    mask = InputEvent.SHIFT_MASK;
+                    break;
+                case VK_CONTROL:
+                    mask = InputEvent.CTRL_MASK;
+                    break;
+                case VK_ALT:
+                    mask = InputEvent.ALT_MASK;
+                    break;
+                case VK_META:
+                    mask = InputEvent.META_MASK;
+                    break;
+                case VK_ALT_GRAPH:
+                    mask = InputEvent.ALT_GRAPH_MASK;
+                    break;
             }
             return mask;
         }
-        
+
     }
 
     public SendToItem() {

@@ -31,16 +31,14 @@ import yagura.model.UniversalViewProperty;
 public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
 
     private boolean isRequest = true;
-    
-    private final EditorKit jsonStyleEditorKit = new StyledEditorKit()
-    {
-         @Override
-         public Document createDefaultDocument()
-         {
-              return new JSONSyntaxDocument();
-         }
-    };    
-    
+
+    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
+        @Override
+        public Document createDefaultDocument() {
+            return new JSONSyntaxDocument();
+        }
+    };
+
     /**
      * Creates new form JSONView
      */
@@ -58,7 +56,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     }
 
     private JSONView jsonView = new JSONView();
-    private DefaultTreeModel modelJSON;    
+    private DefaultTreeModel modelJSON;
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     @SuppressWarnings("unchecked")
@@ -109,7 +107,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     private javax.swing.JCheckBoxMenuItem mnuRegex;
     private javax.swing.JPopupMenu popQuick;
     // End of variables declaration//GEN-END:variables
-        
+
     public void setMessageView(String encoding) {
         Logger.getLogger(JSONViewTab.class.getName()).log(Level.INFO, "encoding:" + encoding);
         try {
@@ -162,7 +160,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
-        }        
+        }
         boolean mimeJsonType = false;
         byte[] body = new byte[0];
         if (this.isRequest && isMessageRequest) {
@@ -232,5 +230,5 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     public void clearView() {
         this.quickSearchTab.clearView();
     }
-            
+
 }

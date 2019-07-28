@@ -21,20 +21,20 @@ import java.util.logging.Logger;
  */
 public abstract class SendToMenuItem
         extends SendToItem implements java.awt.event.ActionListener {
-    
+
     protected IContextMenuInvocation contextMenu = null;
 
     public SendToMenuItem(SendToItem item) {
         super(item);
-        
+
     }
 
     public SendToMenuItem(SendToItem item, IContextMenuInvocation contextMenu) {
         super(item);
         this.contextMenu = contextMenu;
     }
-    
-   /**
+
+    /**
      * @return the contextMenu
      */
     protected IContextMenuInvocation getContextMenu() {
@@ -47,10 +47,10 @@ public abstract class SendToMenuItem
     protected void setContextMenu(IContextMenuInvocation contextMenu) {
         this.contextMenu = contextMenu;
     }
-     
+
     protected File tempMessageFile(IHttpRequestResponse messageInfo, int index) {
         File file = null;
-        try {      
+        try {
             file = File.createTempFile(HttpUtil.getBaseName(BurpWrap.getURL(messageInfo)) + "." + index + ".", ".tmp");
             file.deleteOnExit();
             try (FileOutputStream fostm = new FileOutputStream(file, true)) {
@@ -60,10 +60,9 @@ public abstract class SendToMenuItem
                         IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo.getRequest());
                         if (this.isRequestHeader()) {
                             reqMessage = Arrays.copyOfRange(messageInfo.getRequest(), 0, reqInfo.getBodyOffset());
+                        } else if (this.isRequestBody()) {
+                            reqMessage = Arrays.copyOfRange(messageInfo.getRequest(), reqInfo.getBodyOffset(), messageInfo.getRequest().length);
                         }
-                        else if (this.isRequestBody()) {
-                            reqMessage = Arrays.copyOfRange(messageInfo.getRequest(), reqInfo.getBodyOffset(), messageInfo.getRequest().length);                            
-                        }                                                    
                     }
                     fostm.write(reqMessage);
                     fostm.write(Util.getRawByte(Util.NEW_LINE));
@@ -74,10 +73,9 @@ public abstract class SendToMenuItem
                         IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(resMessage);
                         if (this.isResponseHeader()) {
                             resMessage = Arrays.copyOfRange(messageInfo.getResponse(), 0, resInfo.getBodyOffset());
+                        } else if (this.isResponseBody()) {
+                            resMessage = Arrays.copyOfRange(messageInfo.getResponse(), resInfo.getBodyOffset(), messageInfo.getResponse().length);
                         }
-                        else if (this.isResponseBody()) {
-                            resMessage = Arrays.copyOfRange(messageInfo.getResponse(), resInfo.getBodyOffset(), messageInfo.getResponse().length);                            
-                        }                                                    
                     }
                     fostm.write(resMessage);
                     fostm.write(Util.getRawByte(Util.NEW_LINE));
@@ -92,7 +90,7 @@ public abstract class SendToMenuItem
     }
 
     public abstract void menuItemClicked(String menuItemCaption, IHttpRequestResponse[] messageInfo);
-    
+
     public abstract boolean isEnabled();
-    
+
 }

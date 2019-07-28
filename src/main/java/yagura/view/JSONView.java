@@ -30,17 +30,15 @@ public class JSONView extends javax.swing.JPanel {
         customizeComponents();
     }
 
-    private final EditorKit jsonStyleEditorKit = new StyledEditorKit()
-    {
-         @Override
-         public Document createDefaultDocument()
-         {
-              return new JSONSyntaxDocument();
-         }
-    };    
-    
+    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
+        @Override
+        public Document createDefaultDocument() {
+            return new JSONSyntaxDocument();
+        }
+    };
+
     private DefaultTreeModel modelJSON;
-        
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -100,7 +98,7 @@ public class JSONView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     @SuppressWarnings("unchecked")
-    private void customizeComponents() {        
+    private void customizeComponents() {
         this.txtJSON.setEditable(false);
 
         this.txtJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
@@ -111,10 +109,10 @@ public class JSONView extends javax.swing.JPanel {
         renderer.setOpenIcon(emptyIcon);
         renderer.setClosedIcon(emptyIcon);
         renderer.setLeafIcon(emptyIcon);
-        this.modelJSON = (DefaultTreeModel)this.treeJSON.getModel();
-        
+        this.modelJSON = (DefaultTreeModel) this.treeJSON.getModel();
+
     }
-    
+
     private void btnExpandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpandActionPerformed
         expandJsonTree();
     }//GEN-LAST:event_btnExpandActionPerformed
@@ -146,39 +144,38 @@ public class JSONView extends javax.swing.JPanel {
                 this.modelJSON = (DefaultTreeModel) JsonUtil.toJSONTreeModel(JsonUtil.parse(content));
 
                 SwingUtil.allNodesChanged(this.treeJSON);
-                this.treeJSON.setModel(this.modelJSON);        
+                this.treeJSON.setModel(this.modelJSON);
                 this.expandJsonTree();
-            }
-            else {
+            } else {
                 this.txtJSON.setText("");
                 DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
-                root.removeAllChildren();        
-            }        
+                root.removeAllChildren();
+            }
         } catch (IOException ex) {
             Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public String getMessage() {
-        return this.txtJSON.getText();        
+        return this.txtJSON.getText();
     }
-    
+
     public javax.swing.text.JTextComponent getTextArea() {
         return this.txtJSON;
-    } 
+    }
 
-public void setMessageFont(Font font) {
+    public void setMessageFont(Font font) {
         this.txtJSON.setFont(font);
         this.treeJSON.setFont(font);
     }
-        
+
     public void expandJsonTree() {
         TreePath path = this.treeJSON.getSelectionPath();
         if (path == null) {
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
             path = new TreePath(root.getPath());
         }
-        SwingUtil.expandAll(this.treeJSON, path);                
+        SwingUtil.expandAll(this.treeJSON, path);
     }
 
     public void collapseJsonTree() {
@@ -187,8 +184,7 @@ public void setMessageFont(Font font) {
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
             path = new TreePath(root.getPath());
         }
-        SwingUtil.collapseAll(this.treeJSON, path);                
+        SwingUtil.collapseAll(this.treeJSON, path);
     }
-
 
 }

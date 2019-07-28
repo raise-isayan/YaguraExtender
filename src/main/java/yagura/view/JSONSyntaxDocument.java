@@ -11,8 +11,8 @@ public class JSONSyntaxDocument extends AbstractSyntaxDocument {
     private final static String KEYWORDS[] = {};
 
     @Override
-    public HashSet getKeywords() {
-        final HashSet keywords = new HashSet();
+    public HashSet<String> getKeywords() {
+        final HashSet<String> keywords = new HashSet<String>();
         for (String kw : KEYWORDS) {
             keywords.add(kw);
         }
@@ -23,7 +23,7 @@ public class JSONSyntaxDocument extends AbstractSyntaxDocument {
     protected boolean isDelimiter(String character) {
         String operands = ":{}[](),";
         if (Character.isWhitespace(character.charAt(0))
-                || operands.indexOf(character) != -1) {
+                || operands.contains(character)) {
             return true;
         } else {
             return false;
@@ -33,7 +33,7 @@ public class JSONSyntaxDocument extends AbstractSyntaxDocument {
     @Override
     protected boolean isQuoteDelimiter(String character) {
         String quoteDelimiters = "\"";
-        if (quoteDelimiters.indexOf(character) < 0) {
+        if (!quoteDelimiters.contains(character)) {
             return false;
         } else {
             return true;

@@ -30,7 +30,7 @@ public class JWTToken {
 
     public JWTToken() {
     }
-    
+
     public JWTToken(JWTToken token) {
         this.algorithm = token.algorithm;
         this.header = token.header;
@@ -38,7 +38,7 @@ public class JWTToken {
         this.signature = token.signature;
         this.signatureByte = decodeUrlSafeByte(token.signature);
     }
-    
+
     public enum Algorithm {
         NONE(""),
         HS256("HmacSHA256"),
@@ -67,8 +67,7 @@ public class JWTToken {
         public static Algorithm parseValue(String s) {
             return Algorithm.valueOf(s.toUpperCase());
         }
-        
-        
+
     };
 
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
@@ -115,7 +114,7 @@ public class JWTToken {
                 item.setCaptureValue(capture);
                 item.setStart(m.start());
                 item.setEnd(m.end());
-                tokens.add(item);            
+                tokens.add(item);
             }
         }
         return tokens.toArray(new CaptureItem[0]);
@@ -155,23 +154,23 @@ public class JWTToken {
         return Base64.getUrlDecoder().decode(value);
     }
 
-    protected static String decodeUrlSafe(byte [] value) {
+    protected static String decodeUrlSafe(byte[] value) {
         return new String(Base64.getUrlDecoder().decode(value), StandardCharsets.UTF_8);
     }
-    
+
     protected static String decodeUrlSafe(String value) {
         return new String(decodeUrlSafeByte(value), StandardCharsets.UTF_8);
     }
 
-    public static byte[] encodeUrlSafeByte(byte [] value) {
+    public static byte[] encodeUrlSafeByte(byte[] value) {
         return Base64.getUrlEncoder().withoutPadding().encode(value);
     }
-    
+
     public static byte[] encodeUrlSafeByte(String value) {
         return encodeUrlSafeByte(value.getBytes(StandardCharsets.UTF_8));
     }
 
-    public static String encodeUrlSafe(byte [] value) {
+    public static String encodeUrlSafe(byte[] value) {
         return new String(encodeUrlSafeByte(value), StandardCharsets.UTF_8);
     }
 
@@ -263,11 +262,11 @@ public class JWTToken {
         return false;
     }
 
-    public static byte [] sign(Algorithm algo, final String encrypt, final String secret) throws NoSuchAlgorithmException {
+    public static byte[] sign(Algorithm algo, final String encrypt, final String secret) throws NoSuchAlgorithmException {
         try {
             switch (algo) {
                 case NONE:
-                    return new byte [] {};
+                    return new byte[]{};
                 case HS256:
                 case HS384:
                 case HS512: {
@@ -276,7 +275,7 @@ public class JWTToken {
                     mac.init(sk);
                     mac.reset();
                     final byte[] mac_bytes = mac.doFinal(Util.getRawByte(encrypt));
-                    return mac_bytes;                
+                    return mac_bytes;
                 }
                 case RS256:
                 case RS384:
@@ -286,7 +285,7 @@ public class JWTToken {
                     rsaSignature.initSign(privateKey);
                     rsaSignature.update(Util.getRawByte(encrypt));
                     byte[] mac_bytes = rsaSignature.sign();
-                    return mac_bytes;                
+                    return mac_bytes;
                 }
                 case ES256:
                 case ES384:
@@ -296,7 +295,7 @@ public class JWTToken {
                     rsaSignature.initSign(privateKey);
                     rsaSignature.update(Util.getRawByte(encrypt));
                     byte[] mac_bytes = rsaSignature.sign();
-                    return mac_bytes;                                    
+                    return mac_bytes;
                 }
                 default:
                     throw new NoSuchAlgorithmException(algo.name());
@@ -312,5 +311,5 @@ public class JWTToken {
         }
         throw new NoSuchAlgorithmException(algo.name());
     }
-       
+
 }

@@ -9,9 +9,9 @@ import burp.IHttpRequestResponse;
 public interface SendToMessage {
 
     public IHttpRequestResponse[] getSelectedMessages();
-    
+
     public String getSelectedText();
-    
+
     public boolean isExtendVisible();
-    
+
 }

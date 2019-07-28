@@ -316,7 +316,7 @@ public class JReplaceDialog extends CustomDialog {
         this.tableReplace.getColumnModel().getColumn(6).setMinWidth(0);
         this.tableReplace.getColumnModel().getColumn(6).setPreferredWidth(0);
         this.tableReplace.getColumnModel().getColumn(6).setMaxWidth(0);
-                
+
         this.tableReplace.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
 //        SwingUtil.setContainerKeyMap(this);
@@ -440,7 +440,7 @@ public class JReplaceDialog extends CustomDialog {
         this.beforeListName = name;
         this.txtListName.setText(name);
     }
-    
+
     public void setInScopeOnly(boolean scopeOnly) {
         this.chkScopeOnly.setSelected(scopeOnly);
     }
@@ -448,7 +448,7 @@ public class JReplaceDialog extends CustomDialog {
     public boolean isInScopeOnly() {
         return this.chkScopeOnly.isSelected();
     }
-    
+
     private List<String> replaceNameList = new ArrayList<String>();
 
     protected void setReplaceNameList(List<String> replaceNameList) {
@@ -499,33 +499,32 @@ public class JReplaceDialog extends CustomDialog {
     @SuppressWarnings("unchecked")
     private void showMatchReplaceItemDlg(boolean editMode) {
         try {
-        this.matchReplaceItemDlg.setLocationRelativeTo(this);
-        if (editMode) {
-            this.matchReplaceItemDlg.setItem(getEditItem());
-        } else {
-            MatchReplaceItem item = new MatchReplaceItem();
-            this.matchReplaceItemDlg.setItem(item);
-        }
-        this.matchReplaceItemDlg.setVisible(true);
-        if (this.matchReplaceItemDlg.getModalResult() == JOptionPane.OK_OPTION) {
-            MatchReplaceItem item = this.matchReplaceItemDlg.getItem();
-            this.setEditItem(item, editMode);
-        }
-        }
-        catch (Exception ex) {
+            this.matchReplaceItemDlg.setLocationRelativeTo(this);
+            if (editMode) {
+                this.matchReplaceItemDlg.setItem(getEditItem());
+            } else {
+                MatchReplaceItem item = new MatchReplaceItem();
+                this.matchReplaceItemDlg.setItem(item);
+            }
+            this.matchReplaceItemDlg.setVisible(true);
+            if (this.matchReplaceItemDlg.getModalResult() == JOptionPane.OK_OPTION) {
+                MatchReplaceItem item = this.matchReplaceItemDlg.getItem();
+                this.setEditItem(item, editMode);
+            }
+        } catch (Exception ex) {
             Logger.getLogger(JReplaceDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     private final MultiItemDlg multiItemDlg = new MultiItemDlg(null, true);
-            
+
     private void showMatchReplaceAllItemDlg() {
         try {
             this.multiItemDlg.setLocationRelativeTo(this);
-            this.multiItemDlg.setMultiLine(new String[] {""});
+            this.multiItemDlg.setMultiLine(new String[]{""});
             this.multiItemDlg.setVisible(true);
             if (this.multiItemDlg.getModalResult() == JOptionPane.OK_OPTION) {
-                String [] lines = this.multiItemDlg.getMultiLine();
+                String[] lines = this.multiItemDlg.getMultiLine();
                 for (String line : lines) {
                     MatchReplaceItem item = new MatchReplaceItem();
                     item.setType(MatchReplaceItem.TYPE_REQUEST_HEADER);
@@ -535,11 +534,10 @@ public class JReplaceDialog extends CustomDialog {
                     item.setRegexp(false);
                     item.setReplace(line);
                     item.setMetaChar(false);
-                    this.setEditItem(item, false);                        
+                    this.setEditItem(item, false);
                 }
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             Logger.getLogger(JReplaceDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

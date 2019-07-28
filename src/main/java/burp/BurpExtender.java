@@ -62,11 +62,11 @@ import yagura.view.RawViewTab;
  * @author isayan
  */
 public class BurpExtender extends BurpExtenderImpl
-        implements IHttpListener, IProxyListener,IExtensionStateListener {
+        implements IHttpListener, IProxyListener, IExtensionStateListener {
 
     public BurpExtender() {
     }
-    
+
     /**
      * ログ設定プロパティファイルのファイル名
      */
@@ -95,7 +95,7 @@ public class BurpExtender extends BurpExtenderImpl
     public Component getUiComponent() {
         return this.tabbetOption;
     }
-    
+
     private final TabbetOption tabbetOption = new TabbetOption();
     private final JWTViewTab jwtViewTab = new JWTViewTab();
 
@@ -141,8 +141,8 @@ public class BurpExtender extends BurpExtenderImpl
             return tab;
         }
     };
-    
-    private final KeyEventPostProcessor  dispatcher = new KeyEventPostProcessor() {
+
+    private final KeyEventPostProcessor dispatcher = new KeyEventPostProcessor() {
         @Override
         public boolean postProcessKeyEvent(KeyEvent e) {
             SendToMenu menu = getSendToMenu();
@@ -150,7 +150,7 @@ public class BurpExtender extends BurpExtenderImpl
             return false;
         }
     };
-        
+
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
         super.registerExtenderCallbacks(cb);
@@ -158,8 +158,8 @@ public class BurpExtender extends BurpExtenderImpl
             @Override
             public void uncaughtException(Thread t, Throwable e) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, e);
-            }               
-        });      
+            }
+        });
         if (this.getBurpVersion().isExtendSupport()) {
             // 設定ファイル読み込み
             try {
@@ -193,7 +193,7 @@ public class BurpExtender extends BurpExtenderImpl
 
             //
             DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
-                                    
+
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -203,7 +203,7 @@ public class BurpExtender extends BurpExtenderImpl
     public void extensionUnloaded() {
         DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventPostProcessor(dispatcher);
     }
-    
+
     public void registerView() {
         IBurpExtenderCallbacks cb = getCallbacks();
         cb.registerMessageEditorTabFactory(this.requestRawTab);
@@ -760,6 +760,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     /**
      * Send to JTransCoder
+     *
      * @param text
      */
     public void sendToJTransCoder(String text) {
@@ -772,6 +773,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     /**
      * Message Info Copy
+     *
      * @param contextMenu
      * @param messageInfoList
      */
@@ -852,6 +854,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     /**
      * Add Host To Scope
+     *
      * @param contextMenu
      * @param messageInfoList
      */

@@ -9,6 +9,7 @@ import extend.util.external.TransUtil.NewLine;
  * @author isayan
  */
 public class JTransCoderProperty {
+
     private EncodeType encodeType = EncodeType.ALL;
 
     /**
@@ -42,7 +43,7 @@ public class JTransCoderProperty {
     }
 
     private ConvertCase convertCase = ConvertCase.LOWLER;
-    
+
     /**
      * @return the convertCase
      */
@@ -56,7 +57,7 @@ public class JTransCoderProperty {
     public void setConvertCase(ConvertCase convertCase) {
         this.convertCase = convertCase;
     }
-    
+
     private boolean lineWrap = false;
 
     /**
@@ -88,7 +89,7 @@ public class JTransCoderProperty {
     public void setRawEncoding(boolean rawEncoding) {
         this.rawEncoding = rawEncoding;
     }
-    
+
     private boolean guessEncoding = false;
 
     /**
@@ -122,20 +123,20 @@ public class JTransCoderProperty {
     }
 
     private String currentInput = "";
-    
+
     /**
-     * 
-     * @param property 
-     * @return  
+     *
+     * @param property
+     * @return
      */
     public String getCurrentInput() {
         return currentInput;
     }
-    
+
     public void setCurrentInput(String currentInput) {
-        this.currentInput = currentInput;    
+        this.currentInput = currentInput;
     }
-    
+
     public void setProperty(JTransCoderProperty property) {
         this.setEncodeType(property.getEncodeType());
         this.setNewLine(property.getNewLine());
@@ -146,10 +147,10 @@ public class JTransCoderProperty {
         this.setSelectEncoding(property.getSelectEncoding());
         this.setCurrentInput(property.getCurrentInput());
     }
-    
+
     @Override
     public String toString() {
         return this.getCurrentInput();
     }
-        
+
 }

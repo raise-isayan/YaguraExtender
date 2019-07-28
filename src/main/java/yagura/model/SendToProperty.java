@@ -9,13 +9,14 @@ import java.util.List;
  * @author isayan
  */
 public class SendToProperty {
+
     private final List<SendToItem> sendToItemList = new ArrayList<SendToItem>();
 
     /**
      * @return the sendToList
      */
     public List<SendToItem> getSendToItemList() {
-        return  Collections.unmodifiableList(this.sendToItemList);
+        return Collections.unmodifiableList(this.sendToItemList);
     }
 
     /**
@@ -25,7 +26,7 @@ public class SendToProperty {
         this.sendToItemList.clear();
         this.sendToItemList.addAll(sendToItemList);
     }
-    
+
     private boolean submenu = false;
 
     public boolean isSubMenu() {
@@ -40,5 +41,5 @@ public class SendToProperty {
         this.setSendToItemList(property.getSendToItemList());
         this.setSubMenu(property.isSubMenu());
     }
-    
+
 }

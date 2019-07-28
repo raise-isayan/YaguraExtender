@@ -82,8 +82,7 @@ public class MatchAlertItem extends MatchItem {
     }
 
     private String issueName = "";
-    
-    
+
     /**
      * @return the issueName
      */
@@ -97,7 +96,7 @@ public class MatchAlertItem extends MatchItem {
     public void setIssueName(String issueName) {
         this.issueName = issueName;
     }
-        
+
     private Severity serverity = Severity.INFORMATION;
 
     /**
@@ -129,7 +128,7 @@ public class MatchAlertItem extends MatchItem {
     public void setConfidence(MatchItem.Confidence confidence) {
         this.confidence = confidence;
     }
-        
+
     public boolean isRequest() {
         return this.getType().startsWith("request");
     }
@@ -168,8 +167,8 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setHighlightColor((HighlightColor) rows[7]);
         matchAlert.setComment((String) rows[8]);
         matchAlert.setIssueName((String) rows[9]);
-        matchAlert.setSeverity((Severity) rows[10]); 
-        matchAlert.setConfidence((Confidence)rows[11]); 
+        matchAlert.setSeverity((Severity) rows[10]);
+        matchAlert.setConfidence((Confidence) rows[11]);
         return matchAlert;
     }
 

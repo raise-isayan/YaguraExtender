@@ -32,7 +32,7 @@ import org.mozilla.universalchardet.UniversalDetector;
  */
 public class TransUtil {
 
-    private final static HashMap<String, Character> ENTITY = new HashMap();
+    private final static HashMap<String, Character> ENTITY = new HashMap<>();
 
     static {
         // see https://www.w3.org/TR/REC-html40/sgml/entities.html
@@ -242,7 +242,7 @@ public class TransUtil {
             return EncodePattern.QUOTEDPRINTABLE;
         } // Base64 encode match
         else if (m64.matches()) {
-            return EncodePattern.BASE64;        
+            return EncodePattern.BASE64;
         } // Base64 URLSafe
         else if (m64_URLSafe.matches()) {
             return EncodePattern.BASE64_URLSAFE;
@@ -251,9 +251,9 @@ public class TransUtil {
             return EncodePattern.HTML;
         } // Gzip
         else if (mGZIP.lookingAt()) {
-            return EncodePattern.GZIP;            
+            return EncodePattern.GZIP;
         }
-         
+
         return null;
     }
 
@@ -361,7 +361,7 @@ public class TransUtil {
                         } else {
                             decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
                         }
-                       break;
+                        break;
                     }
                     // Base64 URLSafe
                     case BASE64_URLSAFE: {
@@ -373,8 +373,8 @@ public class TransUtil {
                             decode = ConvertUtil.toBase64URLSafeDecode(value, applyCharset);
                         } else {
                             decode = ConvertUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
-                        }                        
-                       break;
+                        }
+                        break;
                     }
                     // Html decode
                     case HTML:
@@ -894,41 +894,6 @@ public class TransUtil {
         return buff.toString();
     }
 
-    public static String toHtmlEncode(String input) {
-        StringBuilder buff = new StringBuilder();
-        int length = input.length();
-        for (int i = 0; i < length; i++) {
-            char c = input.charAt(i);
-            buff.append(toHtmlEncode(c));
-        }
-        return buff.toString();
-    }
-
-    public static String toHtmlEncode(char c) {
-        StringBuilder buff = new StringBuilder();
-        switch (c) {
-            case '<':
-                buff.append("&lt;");
-                break;
-            case '>':
-                buff.append("&gt;");
-                break;
-            case '&':
-                buff.append("&amp;");
-                break;
-            case '"':
-                buff.append("&quot;");
-                break;
-            case '\'':
-                buff.append("&#39;");
-                break;
-            default:
-                buff.append(c);
-                break;
-        }
-        return buff.toString();
-    }
-
     public static String toRegexEncode(String input) {
         StringBuilder buff = new StringBuilder();
         int length = input.length();
@@ -938,7 +903,7 @@ public class TransUtil {
         }
         return buff.toString();
     }
-    
+
     /*  . \ + * ? [ ^ ] $ ( ) { } = ! < > | : - */
     public static String toRegexEscape(char ch) {
         StringBuilder buff = new StringBuilder();
@@ -976,7 +941,7 @@ public class TransUtil {
     public static String toRegexDecode(String input) {
         return input.replaceAll("\\\\([\\\\\\.\\+\\*\\?\\[\\^\\]\\$\\(\\)\\{\\}\\=\\!\\<\\>\\|\\:\\-])", "$1");
     }
-    
+
     public static String toHtmlDecode(String input) {
         StringBuffer buff = new StringBuffer();
         Pattern p = Pattern.compile("(&(?:(#\\d+)|(#[xX][0-9a-fA-F]+)|(\\w+));)");
@@ -1022,12 +987,12 @@ public class TransUtil {
 
     /**
      * @param entityName
-     * @return 
+     * @return
      */
     protected static String fromHTMLEntity(String entityName) {
         Character ch = ENTITY.get(entityName);
         if (ch == null) {
-            return null;        
+            return null;
         }
         return Character.toString(ch);
     }
@@ -1295,7 +1260,7 @@ public class TransUtil {
                 case '"':
                     buff.append(toRegexEscape(ch));
                     buff.append('|');
-                    buff.append(toHtmlEncode(ch));
+                    buff.append(HttpUtil.toHtmlEncode(ch));
                     break;
                 case '\\':
                 case '.':
@@ -1521,7 +1486,7 @@ public class TransUtil {
         return normalizeCharset(guessCharset);
     }
 
-    private final static Map<String, String> CHARSET_ALIAS = new HashMap();
+    private final static Map<String, String> CHARSET_ALIAS = new HashMap<>();
 
     static {
         // universalchardet unknown support
@@ -1541,5 +1506,5 @@ public class TransUtil {
         }
         return charset;
     }
-        
+
 }

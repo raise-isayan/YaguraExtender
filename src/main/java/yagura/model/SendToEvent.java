@@ -7,6 +7,7 @@ import java.util.EventObject;
  * @author isayan
  */
 public class SendToEvent extends EventObject {
+
     private String message;
 
     public SendToEvent(Object source) {

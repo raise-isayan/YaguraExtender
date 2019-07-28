@@ -53,7 +53,7 @@ public class KeywordHighlighter extends DefaultHighlighter {
             if (ignore) {
                 flags |= Pattern.CASE_INSENSITIVE;
             }
-            Pattern p = RegexItem.compileRegex(keyword, flags, quote);                        
+            Pattern p = RegexItem.compileRegex(keyword, flags, quote);
             this.setHighlight(doc, p, color);
         } catch (BadLocationException ex) {
             Logger.getLogger(KeywordHighlighter.class.getName()).log(Level.SEVERE, null, ex);
@@ -69,7 +69,7 @@ public class KeywordHighlighter extends DefaultHighlighter {
         while (m.find(lastPosition)) {
             String s = m.group(0);
             lastPosition = m.end();
-            this.addHighlight(lastPosition - s.length(), lastPosition, highlightPainter);            
+            this.addHighlight(lastPosition - s.length(), lastPosition, highlightPainter);
         }
     }
 
@@ -83,7 +83,7 @@ public class KeywordHighlighter extends DefaultHighlighter {
         this.position = 0;
         super.removeAllHighlights();
     }
-        
+
     public StartEndPosion[] getHighlightPositions() {
         Highlighter.Highlight[] hs = this.getHighlights();
         List<StartEndPosion> list = new ArrayList<StartEndPosion>();
@@ -118,7 +118,8 @@ public class KeywordHighlighter extends DefaultHighlighter {
 
     /**
      * 選択された開始終了位置
-     * @return 
+     *
+     * @return
      */
     public StartEndPosion getSelectPosition() {
         Highlighter.Highlight[] hs = this.getHighlights();
@@ -133,41 +134,40 @@ public class KeywordHighlighter extends DefaultHighlighter {
 
     @Override
     public void paintLayeredHighlights(Graphics g, int p0, int p1,
-                                       Shape viewBounds,
-                                       JTextComponent editor, View view) {
+            Shape viewBounds,
+            JTextComponent editor, View view) {
         super.paintLayeredHighlights(g, p0, p1, viewBounds, editor, view);
         paintLayeredSelection(g, p0, p1, viewBounds, editor, view);
     }
 
     protected void paintLayeredSelection(Graphics g, int p0, int p1,
-                                       Shape viewBounds,
-                                       JTextComponent editor, View view) {
+            Shape viewBounds,
+            JTextComponent editor, View view) {
 
-        Rectangle r;        
+        Rectangle r;
         int sel0 = editor.getSelectionStart();
         int sel1 = editor.getSelectionEnd();
         if ((p0 < sel0 && p1 > sel0) || (p0 >= sel0 && p0 < sel1)) {
             if (sel0 == sel1) {
                 r = null;
-            }
-            else {
+            } else {
                 int m0 = Math.max(sel0, p0);
                 int m1 = Math.min(sel1, p1);
                 try {
                     Shape shape = view.modelToView(m0, Position.Bias.Forward,
-                                                   m1,Position.Bias.Backward,
-                                                   viewBounds);
-                    r = (shape instanceof Rectangle) ?
-                                  (Rectangle)shape : shape.getBounds();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                            m1, Position.Bias.Backward,
+                            viewBounds);
+                    r = (shape instanceof Rectangle)
+                            ? (Rectangle) shape : shape.getBounds();
                 } catch (BadLocationException e) {
                     r = null;
-                }                
+                }
             }
             if (r != null) {
                 r.width = Math.max(r.width, 1);
                 g.setColor(editor.getSelectionColor());
                 g.fillRect(r.x, r.y, r.width, r.height);
-            }                    
-        }        
+            }
+        }
     }
 }

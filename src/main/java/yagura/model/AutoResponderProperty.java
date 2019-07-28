@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class AutoResponderProperty {
+
     private int redirectPort = 7777;
 
     /**
@@ -27,7 +28,7 @@ public class AutoResponderProperty {
     }
 
     private boolean autoResponderEnable = false;
-    
+
     public void setAutoResponderEnable(boolean selected) {
         autoResponderEnable = selected;
     }
@@ -35,9 +36,9 @@ public class AutoResponderProperty {
     public boolean getAutoResponderEnable() {
         return autoResponderEnable;
     }
-    
+
     private final List<AutoResponderItem> autoResponderList = new ArrayList<AutoResponderItem>();
-    
+
     public void setAutoResponderItemList(List<AutoResponderItem> autoResponderItemList) {
         this.autoResponderList.clear();
         this.autoResponderList.addAll(autoResponderItemList);
@@ -56,11 +57,11 @@ public class AutoResponderProperty {
             }
             Pattern p = bean.getRegexPattern();
             Matcher m = p.matcher(url);
-            if (m.lookingAt()) {            
+            if (m.lookingAt()) {
                 matchItem = bean;
                 break;
             }
-        }        
+        }
         return matchItem;
     }
 
@@ -69,5 +70,5 @@ public class AutoResponderProperty {
         this.setAutoResponderEnable(property.getAutoResponderEnable());
         this.setAutoResponderItemList(property.getAutoResponderItemList());
     }
-    
+
 }

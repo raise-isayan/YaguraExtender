@@ -57,7 +57,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.addTab(this.tabUniversalView.getTabCaption(), this.tabUniversalView);
         this.addTab(this.tabMatchReplace.getTabCaption(), this.tabMatchReplace);
         this.addTab(this.tabMatchAlert.getTabCaption(), this.tabMatchAlert);
-  //      this.addTab(this.tabAutoResponder.getTabCaption(), this.tabAutoResponder);
+        //      this.addTab(this.tabAutoResponder.getTabCaption(), this.tabAutoResponder);
         this.addTab(this.tabSendTo.getTabCaption(), this.tabSendTo);
         this.addTab(this.tabLogging.getTabCaption(), this.tabLogging);
         this.addTab(this.tabJSearch.getTabCaption(), this.tabJSearch);
@@ -184,7 +184,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     }
 
     @Override
-    public AutoResponderProperty getAutoResponderProperty() {        
+    public AutoResponderProperty getAutoResponderProperty() {
         return new AutoResponderProperty();
         //return this.tabAutoResponder.getProperty();
     }
@@ -212,7 +212,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     public void setJTransCoderProperty(JTransCoderProperty transcoder) {
         this.tabJTransCoder.setProperty(transcoder);
     }
-    
+
     @Override
     public boolean getDebugMode() {
         return this.tabVersion.getDebugMode();

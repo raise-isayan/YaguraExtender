@@ -36,23 +36,23 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private void customizeComponents() {
         this.chkUniq.setVisible(false);
         if (this.cmbQuckSearch.getEditor().getEditorComponent() instanceof JTextComponent) {
-             JTextComponent tc = (JTextComponent)this.cmbQuckSearch.getEditor().getEditorComponent();
-             tc.addFocusListener(new FocusAdapter() {
-                 @Override
-                 public void focusLost(FocusEvent e) {
+            JTextComponent tc = (JTextComponent) this.cmbQuckSearch.getEditor().getEditorComponent();
+            tc.addFocusListener(new FocusAdapter() {
+                @Override
+                public void focusLost(FocusEvent e) {
                     clearView();
                     quickSearchPerformed(true);
-                 }             
-             });
-             tc.addKeyListener(new KeyAdapter() {
-                 @Override
-                 public void keyReleased(KeyEvent e) {
+                }
+            });
+            tc.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyReleased(KeyEvent e) {
                     clearView();
                     quickSearchPerformed(true, false);
-                 }             
-             });             
-             
-        }        
+                }
+            });
+
+        }
     }
 
     /**
@@ -165,7 +165,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    
+
     private void btnQuckOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuckOptionActionPerformed
         Dimension sz = this.btnQuckOption.getSize();
         this.popQuick.show(this.btnQuckOption, 0, sz.height);
@@ -209,9 +209,9 @@ public class QuickSearchTab extends javax.swing.JPanel {
     public void setMessageFont(Font font) {
         this.cmbQuckSearch.setFont(font);
     }
-        
+
     private javax.swing.text.JTextComponent txtTextArea;
-    
+
     public void setSelectedTextArea(javax.swing.text.JTextComponent textArea) {
         this.txtTextArea = textArea;
         this.txtTextArea.setHighlighter(this.highlightKeyword);
@@ -240,7 +240,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private void quickSearchPerformed(boolean forward) {
         quickSearchPerformed(forward, true);
     }
-    
+
     private void quickSearchPerformed(boolean forward, boolean appendHistory) {
         javax.swing.text.JTextComponent ta = this.getSelectedTextArea();
         String searchText = (String) this.cmbQuckSearch.getEditor().getItem();
@@ -255,24 +255,23 @@ public class QuickSearchTab extends javax.swing.JPanel {
             model.removeElement(searchText);
             model.insertElementAt(searchText, 0);
             this.cmbQuckSearch.setSelectedIndex(0);
-            this.cmbQuckSearch.setVisible(true);        
+            this.cmbQuckSearch.setVisible(true);
         }
 
         if (ta.getHighlighter() instanceof KeywordHighlighter) {
             KeywordHighlighter high = (KeywordHighlighter) ta.getHighlighter();
-            if (this.keyword != null 
-                && this.smartMatch == this.mnuSmartMatch.isSelected()
-                && this.regex == this.mnuRegex.isSelected()
-                && this.ignoreCase == this.mnuIgnoreCase.isSelected()
-                && (this.keyword.equals(searchText) 
-                    || (this.mnuSmartMatch.isSelected() 
-                        && keyword.equals(TransUtil.toSmartMatch(searchText))))) {
+            if (this.keyword != null
+                    && this.smartMatch == this.mnuSmartMatch.isSelected()
+                    && this.regex == this.mnuRegex.isSelected()
+                    && this.ignoreCase == this.mnuIgnoreCase.isSelected()
+                    && (this.keyword.equals(searchText)
+                    || (this.mnuSmartMatch.isSelected()
+                    && keyword.equals(TransUtil.toSmartMatch(searchText))))) {
                 high.searchPosition(forward);
             } else {
                 if (isValidRegex(searchText)) {
                     this.quickSearch(ta, searchText);
-                }
-                else {
+                } else {
                     this.lblMatch.setText(BUNDLE.getString("view.invalid.regex"));
                     return;
                 }
@@ -309,12 +308,12 @@ public class QuickSearchTab extends javax.swing.JPanel {
         }
         return RegexItem.compileRegex(text, flags, !this.mnuRegex.isSelected()) != null;
     }
-    
+
     private String keyword = null;
     private boolean smartMatch = false;
     private boolean regex = false;
     private boolean ignoreCase = false;
-    
+
     protected void quickSearch(javax.swing.text.JTextComponent ta, String keyword) {
         if (ta.getHighlighter() instanceof KeywordHighlighter) {
             KeywordHighlighter hc = (KeywordHighlighter) ta.getHighlighter();
@@ -324,9 +323,8 @@ public class QuickSearchTab extends javax.swing.JPanel {
             if (this.mnuSmartMatch.isSelected()) {
                 this.keyword = TransUtil.toSmartMatch(keyword);
                 hc.setHighlightKeyword(ta.getDocument(), this.keyword, false, this.ignoreCase, Color.YELLOW);
-            }
-            else {
-                this.keyword = keyword;                
+            } else {
+                this.keyword = keyword;
                 hc.setHighlightKeyword(ta.getDocument(), this.keyword, !this.regex, this.ignoreCase, Color.YELLOW);
             }
         }
@@ -341,14 +339,9 @@ public class QuickSearchTab extends javax.swing.JPanel {
 
     public void clearViewAndSearch() {
         clearView();
-//        String selectItem = "";
-//        if (this.cmbQuckSearch.getModel().getSize() > 0) {
-//            selectItem = (String)this.cmbQuckSearch.getModel().getElementAt(0);
-//        }
-//        this.cmbQuckSearch.getEditor().setItem(selectItem);
         this.quickSearchPerformed(true);
     }
-    
+
     public void renewEncodingList(String defaultCharset, List<String> encodingLiest) {
         this.cmbEncoding.removeAllItems();
         for (String enc : encodingLiest) {

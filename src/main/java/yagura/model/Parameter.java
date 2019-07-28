@@ -15,31 +15,29 @@ public class Parameter implements IParameter {
     private byte type = -1;
     private String name = null;
     private String value = null;
-    
+
     public Parameter(IParameter parameter) {
         this.parameter = parameter;
     }
-    
+
     @Override
     public byte getType() {
         if (this.type >= 0) {
-            return this.type;        
-        }
-        else {
-            return this.parameter.getType();    
+            return this.type;
+        } else {
+            return this.parameter.getType();
         }
     }
 
     public void setType(byte type) {
         this.type = type;
     }
-        
+
     @Override
     public String getName() {
         if (this.name != null) {
             return this.name;
-        }
-        else {
+        } else {
             return this.parameter.getName();
         }
     }
@@ -47,13 +45,12 @@ public class Parameter implements IParameter {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     @Override
     public String getValue() {
         if (this.value != null) {
             return this.value;
-        }
-        else {
+        } else {
             return this.parameter.getValue();
         }
     }
@@ -61,7 +58,7 @@ public class Parameter implements IParameter {
     public void setValue(String value) {
         this.value = value;
     }
-    
+
     @Override
     public int getNameStart() {
         return this.parameter.getNameStart();
@@ -85,22 +82,20 @@ public class Parameter implements IParameter {
     public String getUniversalName() {
         if (this.encoding != null) {
             return Util.decodeMessage(Util.getRawByte(parameter.getName()), this.encoding);
-        }
-        else {
-            return Util.decodeMessage(Util.getRawByte(parameter.getName()), StandardCharsets.ISO_8859_1.name());        
-        }
-    }
-        
-    public String getUniversalValue() {
-        if (this.encoding != null) {
-            return Util.decodeMessage(Util.getRawByte(parameter.getValue()), this.encoding);
-        }
-        else {
+        } else {
             return Util.decodeMessage(Util.getRawByte(parameter.getName()), StandardCharsets.ISO_8859_1.name());
         }
     }
-            
-    private  String encoding = null;
+
+    public String getUniversalValue() {
+        if (this.encoding != null) {
+            return Util.decodeMessage(Util.getRawByte(parameter.getValue()), this.encoding);
+        } else {
+            return Util.decodeMessage(Util.getRawByte(parameter.getName()), StandardCharsets.ISO_8859_1.name());
+        }
+    }
+
+    private String encoding = null;
 
     /**
      * @return the encoding
@@ -119,7 +114,7 @@ public class Parameter implements IParameter {
     public boolean isModified() {
         return (this.type >= 0 || this.name != null || this.value != null);
     }
- 
+
     public static Parameter newPameter() {
         Parameter p = new Parameter(new IParameter() {
             @Override
@@ -156,9 +151,9 @@ public class Parameter implements IParameter {
             public int getValueEnd() {
                 return -1;
             }
-        
+
         });
-        return p;        
+        return p;
     }
-        
+
 }

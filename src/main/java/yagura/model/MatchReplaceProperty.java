@@ -13,7 +13,7 @@ import java.util.Map;
 public class MatchReplaceProperty {
 
     private String selectedName = "";
-    
+
     /**
      * @return the selectedName
      */
@@ -27,8 +27,8 @@ public class MatchReplaceProperty {
     public void setSelectedName(String selectedName) {
         this.selectedName = selectedName;
     }
-        
-    private final Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>(16, (float)0.75, true);
+
+    private final Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>(16, (float) 0.75, true);
 
     /**
      * @return the replaceMap
@@ -46,7 +46,7 @@ public class MatchReplaceProperty {
         }
         this.replaceMap.clear();
         this.replaceMap.putAll(replaceMap);
-   }
+    }
 
     /**
      *
@@ -55,7 +55,8 @@ public class MatchReplaceProperty {
      */
     public MatchReplaceGroup getReplaceSelectedGroup(String selectedName) {
         return this.replaceMap.get(selectedName);
-    }    
+    }
+
     /**
      *
      * @param selectedName
@@ -69,13 +70,14 @@ public class MatchReplaceProperty {
             return group.getReplaceList();
         }
     }
+
     /**
      * @return the matchReplaceGroup
      */
     public MatchReplaceGroup getMatchReplaceGroup() {
         return this.replaceMap.get(this.selectedName);
     }
-    
+
     /**
      * @return the matchReplaceList
      */
@@ -83,8 +85,7 @@ public class MatchReplaceProperty {
         MatchReplaceGroup group = this.replaceMap.get(this.selectedName);
         if (group != null) {
             return group.getReplaceList();
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -97,7 +98,7 @@ public class MatchReplaceProperty {
     public List<String> getReplaceNameList() {
         return Util.toList(this.replaceMap.keySet().iterator());
     }
-    
+
     private boolean autoRecognise = false;
 
     public boolean getAutoRecogniseEncoding() {
@@ -113,5 +114,5 @@ public class MatchReplaceProperty {
         this.setReplaceMap(property.getReplaceMap());
         this.setAutoRecogniseEncoding(property.getAutoRecogniseEncoding());
     }
-    
+
 }

@@ -16,6 +16,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.im.InputContext;
 import extend.util.CertUtil;
+import extend.util.HttpUtil;
 import extend.util.external.TransUtil;
 import yagura.model.UniversalViewProperty;
 import java.io.File;
@@ -52,6 +53,7 @@ import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
+import java.util.HashSet;
 import yagura.model.JTransCoderProperty;
 
 /**
@@ -1589,7 +1591,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     public Component getUiComponent() {
         return this;
     }
-    
+
     private CustomTableModel modelHex = null;
 
     private JDatePickerImpl datePickerStart;
@@ -1646,7 +1648,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
                 } else if (this.chk64Newline.isSelected()) {
                     encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
-                }                
+                }
             } else if (this.rdoUuencode.isSelected()) {
                 encode = TransUtil.toUuencode(value, this.getSelectEncode());
             } else if (this.rdoQuotedPrintable.isSelected()) {
@@ -1654,7 +1656,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             } else if (this.rdoPunycode.isSelected()) {
                 encode = TransUtil.toPunycodeEncode(value);
             } else if (this.rdoHtml.isSelected()) {
-                encode = TransUtil.toHtmlEncode(value);
+                encode = HttpUtil.toHtmlEncode(value);
             } else if (this.rdoUnicodeHex.isSelected()) {
                 encode = TransUtil.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex.isSelected()) {
@@ -1771,10 +1773,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }
 
     private void doStateDecodeChange() {
-        this.btnDecode.setEnabled(!(this.rdoILLUTF8.isSelected()));    
+        this.btnDecode.setEnabled(!(this.rdoILLUTF8.isSelected()));
         this.cmbIILUTF8.setEnabled(this.rdoILLUTF8.isSelected());
     }
-    
+
     private void rdoILLUTF8StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoILLUTF8StateChanged
         doStateDecodeChange();
     }//GEN-LAST:event_rdoILLUTF8StateChanged
@@ -1952,16 +1954,16 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnAnalyzeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalyzeActionPerformed
         String[] tokenList = this.txtTokenList.getText().split("\n");
-        HashMap map = new HashMap();
+        HashSet<Character> map = new HashSet<>();
         int sum_len = 0;
         for (int i = 0; i < tokenList.length; i++) {
             sum_len += tokenList[i].length();
             for (int j = 0; j < tokenList[i].length(); j++) {
                 char c = tokenList[i].charAt(j);
-                map.put(c, true);
+                map.add(c);
             }
         }
-        this.txtBase.setText(String.valueOf(map.entrySet().toArray().length));
+        this.txtBase.setText(String.valueOf(map.toArray().length));
         this.txtExponent.setText(String.valueOf(sum_len / tokenList.length));
         btnCalcActionPerformed(evt);
     }//GEN-LAST:event_btnAnalyzeActionPerformed
@@ -2089,7 +2091,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void chkGuessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGuessActionPerformed
         this.chkRawMode.setEnabled(!this.chkGuess.isSelected());
         this.cmbEncoding.setEnabled(!(this.chkRawMode.isSelected() || this.chkGuess.isSelected()));
-        if (evt != null) {         
+        if (evt != null) {
             firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
         }
     }//GEN-LAST:event_chkGuessActionPerformed
@@ -2190,7 +2192,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnSmartMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartMatchActionPerformed
         try {
-            String enc = (this.chkWithByte.isSelected()) ? this.getSelectEncode() : null;                    
+            String enc = (this.chkWithByte.isSelected()) ? this.getSelectEncode() : null;
             String inputText = TransUtil.toSmartMatch(getInputText(), enc);
             setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
@@ -2566,8 +2568,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void setOutput(String outputText, String encoding) {
         this.setOutputText(outputText);
         if (encoding == null) {
-            encoding =  StandardCharsets.ISO_8859_1.name();
-        }        
+            encoding = StandardCharsets.ISO_8859_1.name();
+        }
         this.setOutputByte(Util.encodeMessage(outputText, encoding));
         this.setOutputFormat(outputText);
         this.cmbHistory.removeItemListener(this.historyItemStateChanged);
@@ -2864,7 +2866,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 try {
                     Object data = t.getTransferData(DataFlavor.javaFileListFlavor);
                     if (data instanceof List) {
-                        List<File> files = (List<File>) data;
+                        List<File> files = (List) data;
                         byte[] rawData = new byte[0];
                         for (File file : files) {
                             rawData = Util.readAllBytes(new FileInputStream(file));

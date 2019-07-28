@@ -13,7 +13,7 @@ public class MatchReplaceItem extends MatchItem {
         super();
         this.setType(types[0]);
     }
-    
+
     public static final String TYPE_REQUEST_HEADER = "request header";
     public static final String TYPE_REQUEST_BODY = "request body";
     public static final String TYPE_RESPONSE_HEADER = "response header";
@@ -21,9 +21,9 @@ public class MatchReplaceItem extends MatchItem {
 
     public static final String TYPE_REQUEST_PARAM_NAME = "request param name";
     public static final String TYPE_REQUEST_PARAM_VALUE = "request param value";
-    
+
     public static final String TYPE_REQUEST_FIRST_LINE = "request first line";
-    
+
     private static final String types[] = {TYPE_REQUEST_HEADER, TYPE_REQUEST_BODY, TYPE_RESPONSE_HEADER, TYPE_RESPONSE_BODY};
 
     public static String[] getTypes() {
@@ -55,20 +55,18 @@ public class MatchReplaceItem extends MatchItem {
         if (quote) {
             if (metachar) {
                 return Matcher.quoteReplacement(TransUtil.decodeJsLangMeta(this.replace));
-            }
-            else {
+            } else {
                 return Matcher.quoteReplacement(this.replace);
             }
         } else {
             if (metachar) {
                 return TransUtil.decodeJsLangMeta(this.replace);
-            }
-            else {
+            } else {
                 return this.replace;
             }
         }
     }
-    
+
     /**
      * @param replace the replace to set
      */
@@ -91,15 +89,15 @@ public class MatchReplaceItem extends MatchItem {
     public void setMetaChar(boolean metachar) {
         this.metachar = metachar;
     }
-    
+
     public boolean isRequestLine() {
         return this.getType().startsWith(TYPE_REQUEST_FIRST_LINE);
     }
-    
+
     public boolean isRequest() {
         return this.getType().startsWith("request");
     }
-    
+
     public boolean isResponse() {
         return this.getType().startsWith("response");
     }

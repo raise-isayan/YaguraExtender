@@ -18,49 +18,48 @@ import java.util.logging.Logger;
 public class ResultView extends HttpMessageItem implements ObjectTableMapping {
 
     public ResultView() {
-    }  
-    
+    }
+
     public ResultView(HttpMessageItem item) {
         super(item);
-    }  
+    }
 
     public ResultView(IHttpRequestResponse item, int ordinal) {
-        super(item, ordinal);        
+        super(item, ordinal);
     }
-    
-    private final String [] columns = new String [] {
+
+    private final String[] columns = new String[]{
         "Data", "#", "host", "method", "URL", "status", "length", "comment"
     };
 
     public ObjectTableColumn getColumn() {
         return new ObjectTableColumn() {
-        
+
             public String getColumnName(int column) {
                 return columns[column];
             }
 
             public int getColumnCount() {
                 return columns.length;
-            }        
+            }
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return Object.class;
             }
-        
-        };           
-    }
-    
 
-    private final boolean[] canEdit = new boolean [] {
+        };
+    }
+
+    private final boolean[] canEdit = new boolean[]{
         false, true, false, false, false, false, false, true
     };
 
     @Override
     public boolean isCellEditable(int columnIndex) {
-        return canEdit [columnIndex];
+        return canEdit[columnIndex];
     }
-        
+
     @Override
     public Object getObject(int column) {
         Object value = null;
@@ -113,7 +112,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
             Logger.getLogger(ResultView.class.getName()).log(Level.SEVERE, null, ex);
         }
         return value;
-               
+
     }
 
     @Override
@@ -149,5 +148,5 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
             Logger.getLogger(ResultView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
 }

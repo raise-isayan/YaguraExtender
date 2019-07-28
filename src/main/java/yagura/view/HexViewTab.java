@@ -111,27 +111,27 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         public void actionPerformed(ActionEvent evt) {
             System.out.println("JTable copy 0");
             //選択されている行の列コピーの値を取得
-            JTable table = (JTable)evt.getSource();
+            JTable table = (JTable) evt.getSource();
             SwingUtil.systemClipboardCopy(CustomTableModel.tableCopy(table, true));
-        } 
-    };     
-    
+        }
+    };
+
     private void customizeComponents() {
         this.modelHex = new CustomTableModel(this.tableHex.getModel()) {
-        
+
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
-        
+
         };
-        this.tableHex.getActionMap().put("copy", copyAction); 
+        this.tableHex.getActionMap().put("copy", copyAction);
         this.tableHex.setColumnSelectionAllowed(false);
 
         this.tableHex.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         this.tableHex.setCellSelectionEnabled(true);
         this.tableHex.setRowSelectionAllowed(true);
-    
+
         this.tableHex.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         this.tableHex.setShowGrid(true);
         this.tableHex.setFont(new Font("DialogInput", Font.PLAIN, 12));
@@ -264,7 +264,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     public void setMessageFont(Font font) {
         this.tableHex.setFont(font);
     }
-        
+
     // TableColumn.createDefaultHeaderRenderer
     class SimpleTableHeaderRenderer extends DefaultTableCellRenderer {
 

@@ -264,8 +264,8 @@ public class HTMLSyntaxDocument extends AbstractSyntaxDocument {
         "xmp"};
 
     @Override
-    public HashSet getKeywords() {
-        final HashSet keywords = new HashSet();
+    public HashSet<String> getKeywords() {
+        final HashSet<String> keywords = new HashSet<>();
         for (String kw : KEYWORDS) {
             keywords.add(kw);
         }

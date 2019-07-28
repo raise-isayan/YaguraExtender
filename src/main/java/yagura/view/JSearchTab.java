@@ -364,7 +364,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
     public Component getUiComponent() {
         return this;
     }
-    
+
     private DefaultObjectTableModel<ResultView> modelSearch = null;
     private MessageViewTab tabMessageView = new MessageViewTab();
     private JComboBox cmbColor = new JComboBox();
@@ -454,7 +454,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
             }
 
         });
-        
+
         this.pnlView.add(this.tabMessageView, BorderLayout.CENTER);
         this.tabMessageView.setVisible(false);
 
@@ -524,7 +524,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.tableResult.getColumnModel().getColumn(7).setPreferredWidth(80);
 
         this.tableResult.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        
+
     }
 
     private void lblFilterMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFilterMousePressed
@@ -647,9 +647,9 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
     private volatile boolean cancel = false;
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    
-    private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();    
-    
+
+    private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
     public void search() {
         if (!this.cancel && this.querying) {
             // キャンセル前かつ検索中
@@ -659,7 +659,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
             if (queryText.length() > 0) {
                 if (!isValidRegex(queryText)) {
                     lblProgress.setText(BUNDLE.getString("view.invalid.regex"));
-                    return ;
+                    return;
                 }
                 Runnable search = new Runnable() {
 
@@ -683,7 +683,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         }
         return RegexItem.compileRegex(text, flags, !this.chkRegExp.isSelected()) != null;
     }
-    
+
     public /*synchronized*/ void search(String text) {
         this.querying = true;
         this.btnSearch.setText("Stop");
@@ -696,9 +696,9 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         Pattern p = RegexItem.compileRegex(text, flags, !this.chkRegExp.isSelected());
         if (this.chkSmartMatch.isSelected()) {
             String smartRegex = TransUtil.toSmartMatch(text);
-            p = RegexItem.compileRegex(smartRegex, flags, false);            
+            p = RegexItem.compileRegex(smartRegex, flags, false);
         }
-        
+
         IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
@@ -711,21 +711,20 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                     if (this.getAutoRecogniseEncoding()) {
                         encoding = item.getGuessCharset();
                     }
-                    if(this.chkScopeOnly.isSelected()) {
+                    if (this.chkScopeOnly.isSelected()) {
                         if (!BurpExtender.getCallbacks().isInScope(item.getUrl())) {
                             continue;
                         }
-                    }                    
+                    }
                     if ((this.chkRequestHeader.isSelected() || this.chkRequestBody.isSelected()) && item.getRequest() != null) {
                         byte reqMessage[] = item.getRequest();
                         if (!(this.chkRequestHeader.isSelected() && this.chkRequestBody.isSelected())) {
                             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(reqMessage);
                             if (this.chkRequestHeader.isSelected()) {
                                 reqMessage = Arrays.copyOfRange(item.getRequest(), 0, reqInfo.getBodyOffset());
+                            } else if (this.chkRequestBody.isSelected()) {
+                                reqMessage = Arrays.copyOfRange(item.getRequest(), reqInfo.getBodyOffset(), item.getRequest().length);
                             }
-                            else if (this.chkRequestBody.isSelected()) {
-                                reqMessage = Arrays.copyOfRange(item.getRequest(), reqInfo.getBodyOffset(), item.getRequest().length);                            
-                            }                                                    
                         }
                         String req = Util.decodeMessage(reqMessage, encoding);
                         m = p.matcher(req);
@@ -740,10 +739,9 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                             IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(resMessage);
                             if (this.chkResponseHeader.isSelected()) {
                                 resMessage = Arrays.copyOfRange(item.getResponse(), 0, resInfo.getBodyOffset());
+                            } else if (this.chkResponseBody.isSelected()) {
+                                resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getResponse().length);
                             }
-                            else if (this.chkResponseBody.isSelected()) {
-                                resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getResponse().length);                            
-                            }                                                    
                         }
                         String res = Util.decodeMessage(resMessage, encoding);
                         m = p.matcher(res);
@@ -759,7 +757,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                             break;
                         }
                     }
-                    this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double)i / messageInfo.length * 100.0));
+                    this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double) i / messageInfo.length * 100.0));
                 } while (false);
                 if (m != null && find) {
                     //item.dump(); // debug
@@ -820,18 +818,17 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         TableRowSorter<TableModel> sorter = new ResultFilterPopup.PropertyRowSorter<TableModel>(model);
         sorter.setRowFilter(new ResultFilterPopup.PropertyRowFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());        
+        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }
 
     public void setProperty(JSearchProperty searchProp) {
         this.chkSmartMatch.setSelected(searchProp.isSmartMatch());
         this.chkRegExp.setSelected(searchProp.isRegexp());
-        this.chkIgnoreCase.setSelected(searchProp.isIgnoreCase());  
+        this.chkIgnoreCase.setSelected(searchProp.isIgnoreCase());
         if (searchProp.isAutoRecogniseEncoding()) {
-            this.rdoRepEnc_AutoRecognise.setSelected(true);    
-        }
-        else {
-            this.rdoRepEnc_8859_1.setSelected(true);            
+            this.rdoRepEnc_AutoRecognise.setSelected(true);
+        } else {
+            this.rdoRepEnc_8859_1.setSelected(true);
         }
 
         this.chkRequestHeader.setSelected(searchProp.isRequestHeader());
@@ -840,7 +837,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.chkResponseBody.setSelected(searchProp.isResponseBody());
 
         this.chkComment.setSelected(searchProp.isComment());
-        
+
         this.filterPopup.setProperty(searchProp.getFilterProperty());
         this.hideFilter();
     }
@@ -850,7 +847,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
 
         searchProp.setSmartMatch(this.chkSmartMatch.isSelected());
         searchProp.setRegexp(this.chkRegExp.isSelected());
-        searchProp.setIgnoreCase(this.chkIgnoreCase.isSelected());  
+        searchProp.setIgnoreCase(this.chkIgnoreCase.isSelected());
         searchProp.setAutoRecogniseEncoding(this.rdoRepEnc_AutoRecognise.isSelected());
 
         searchProp.setRequestHeader(this.chkRequestHeader.isSelected());
@@ -859,13 +856,13 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         searchProp.setResponseBody(this.chkResponseBody.isSelected());
 
         searchProp.setComment(this.chkComment.isSelected());
-        
-        searchProp.setFilterProperty(this.filterPopup.getProperty());        
-        return searchProp;        
+
+        searchProp.setFilterProperty(this.filterPopup.getProperty());
+        return searchProp;
     }
 
     private void showBurpMenu(MouseEvent evt) {
         this.tabMessageView.showBurpMenu(evt);
     }
-        
+
 }

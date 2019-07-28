@@ -26,7 +26,7 @@ public class HotkeyDlg extends CustomDialog {
     }
 
     private CustomTableModel modelHotkey = null;
-    
+
     private void customizeComponents() {
 
         // SendTo Tab
@@ -42,9 +42,9 @@ public class HotkeyDlg extends CustomDialog {
         // Caption
         this.tableHotkey.getColumnModel().getColumn(1).setPreferredWidth(80);
         this.tableHotkey.getColumnModel().getColumn(1).setMaxWidth(180);
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,22 +151,20 @@ public class HotkeyDlg extends CustomDialog {
 
     private void tableHotkeyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableHotkeyKeyPressed
         KeyEvent keyEvent = null;
-        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE ||
-            evt.getKeyCode() ==  java.awt.event.KeyEvent.VK_DELETE) {
-        }
-        else if (evt.getKeyCode() != java.awt.event.KeyEvent.CHAR_UNDEFINED
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META
-            && (evt.getModifiers() == 0)) {
-        }
-        else if (evt.getKeyCode() != java.awt.event.KeyEvent.CHAR_UNDEFINED
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
-            && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META
-            && (evt.getModifiers() & java.awt.event.KeyEvent.CTRL_MASK) != 0) {
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE
+                || evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
+        } else if (evt.getKeyCode() != java.awt.event.KeyEvent.CHAR_UNDEFINED
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META
+                && (evt.getModifiers() == 0)) {
+        } else if (evt.getKeyCode() != java.awt.event.KeyEvent.CHAR_UNDEFINED
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
+                && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META
+                && (evt.getModifiers() & java.awt.event.KeyEvent.CTRL_MASK) != 0) {
             keyEvent = evt;
         }
         if (keyEvent != null) {
@@ -241,7 +239,6 @@ public class HotkeyDlg extends CustomDialog {
     private javax.swing.JTable tableHotkey;
     // End of variables declaration//GEN-END:variables
 
-
     public static Object[] toObjects(SendToItem item) {
         Object[] beans = new Object[3];
         beans[0] = item;
@@ -251,7 +248,7 @@ public class HotkeyDlg extends CustomDialog {
     }
 
     public static SendToItem fromObjects(Object[] rows) {
-        SendToItem item = (SendToItem)rows[0];
+        SendToItem item = (SendToItem) rows[0];
         return item;
     }
 
@@ -279,5 +276,5 @@ public class HotkeyDlg extends CustomDialog {
         }
         return list;
     }
-    
+
 }

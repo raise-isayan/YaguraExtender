@@ -8,12 +8,13 @@ import java.text.SimpleDateFormat;
  * @author isayan
  */
 public class LoggingProperty {
+
     private final static String DEFAULT_LOG_TIMESTAMP_FORMAT = "yyyyMMdd HH:mm:ss";
     private final static String DEFAULT_LOG_DIR_FORMAT = "yyyyMMdd";
     private String logTimestampFormat = DEFAULT_LOG_TIMESTAMP_FORMAT;
 
     private boolean autoLogging = false;
-    
+
     public boolean isAutoLogging() {
         return this.autoLogging;
     }
@@ -21,19 +22,19 @@ public class LoggingProperty {
     public void setAutoLogging(boolean autoLogging) {
         this.autoLogging = autoLogging;
     }
-    
+
     private String logBaseDir = LegacyConfig.getUserDir();
-    
+
     public String getBaseDir() {
         return this.logBaseDir;
     }
-    
+
     public void setBaseDir(String logBaseDir) {
         this.logBaseDir = logBaseDir;
     }
 
     private int logFileLimitSize = 0;
-    
+
     public int getLogFileLimitSize() {
         return this.logFileLimitSize;
     }
@@ -41,7 +42,7 @@ public class LoggingProperty {
     public void setLogFileLimitSize(int logFileLimitSize) {
         this.logFileLimitSize = logFileLimitSize;
     }
-    
+
     /**
      * @return the logFileLimitSize
      */
@@ -54,27 +55,27 @@ public class LoggingProperty {
     public boolean isProxyLog() {
         return this.proxyLog;
     }
-    
+
     public void setProxyLog(boolean proxyLog) {
         this.proxyLog = proxyLog;
     }
 
     private boolean toolLog = true;
-    
+
     public boolean isToolLog() {
         return this.toolLog;
     }
-    
+
     public void setToolLog(boolean toolLog) {
         this.toolLog = toolLog;
     }
 
     private String logDirFormat = DEFAULT_LOG_DIR_FORMAT;
-    
+
     public String getLogDirFormat() {
         return this.logDirFormat;
     }
-    
+
     public void setLogDirFormat(String logDirFormat) {
         this.logDirFormat = logDirFormat;
     }
@@ -87,7 +88,7 @@ public class LoggingProperty {
 
     public void setLogTimestampFormat(String logTimestampFormat) {
         this.logTimestampFormat = logTimestampFormat;
-        this.logTimestampDateFormat = new SimpleDateFormat(logTimestampFormat);       
+        this.logTimestampDateFormat = new SimpleDateFormat(logTimestampFormat);
     }
 
     public SimpleDateFormat getLogTimestampDateFormat() {
@@ -95,7 +96,7 @@ public class LoggingProperty {
     }
 
     private boolean excludeFilter = false;
-    
+
     public boolean isExclude() {
         return this.excludeFilter;
     }
@@ -105,7 +106,7 @@ public class LoggingProperty {
     }
 
     private String excludeFilterExtension = "gif,jpg,png,css,ico";
-    
+
     public String getExcludeExtension() {
         return this.excludeFilterExtension;
     }
@@ -125,5 +126,5 @@ public class LoggingProperty {
         this.setExclude(property.isExclude());
         this.setExcludeExtension(getExcludeExtension());
     }
-        
+
 }

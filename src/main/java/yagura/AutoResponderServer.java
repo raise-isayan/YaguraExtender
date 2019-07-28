@@ -49,6 +49,7 @@ public class AutoResponderServer {
     }
 
     static class MyHandler implements HttpHandler {
+
         private AutoResponderProperty autoResponder = null;
 
         public MyHandler() {
@@ -76,7 +77,7 @@ public class AutoResponderServer {
                 if (item != null) {
                     File replaceFile = new File(item.getReplace());
                     if (replaceFile.exists()) {
-                        byte [] responseBody = Util.bytesFromFile(replaceFile);
+                        byte[] responseBody = Util.bytesFromFile(replaceFile);
                         he.getResponseHeaders().add("Content-Type", item.getContentType());
                         he.sendResponseHeaders(HttpURLConnection.HTTP_OK, responseBody.length);
                         try (OutputStream os = he.getResponseBody()) {
@@ -91,11 +92,11 @@ public class AutoResponderServer {
     public static String getRequestURL(HttpExchange he) {
         String url = null;
         if (he.getRequestHeaders().containsKey("X-AutoResponder")) {
-            url = he.getRequestHeaders().getFirst("X-AutoResponder");       
-        }        
+            url = he.getRequestHeaders().getFirst("X-AutoResponder");
+        }
         return url;
     }
-    
+
     public static class ThreadWrap extends Thread {
 
         private final AutoResponderServer server = new AutoResponderServer();

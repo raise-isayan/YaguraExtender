@@ -5,6 +5,7 @@ package yagura.model;
  * @author isayan
  */
 public interface IOptionProperty {
+
     public final static String LOAD_CONFIG_PROPERTY = "LoadConfigProperty";
     public final static String CJK_VIEW_PROPERTY = "EncodingProperty";
     public final static String MATCHREPLACE_PROPERTY = "MatchReplaceProperty";
@@ -28,19 +29,19 @@ public interface IOptionProperty {
 
     // MatchAlert
     public MatchAlertProperty getMatchAlertProperty();
-    
+
     public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty);
 
     // AutoResponder
     public AutoResponderProperty getAutoResponderProperty();
 
     public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty);
-    
+
     // SendTo
     public void setSendToProperty(SendToProperty sendToProperty);
 
     public SendToProperty getSendToProperty();
-        
+
     // Logging
     public void setLoggingProperty(LoggingProperty loggingProperty);
 
@@ -55,10 +56,10 @@ public interface IOptionProperty {
     public JTransCoderProperty getJTransCoderProperty();
 
     public void setJTransCoderProperty(JTransCoderProperty transcoder);
-        
+
     // all
     public boolean getDebugMode();
 
     public void setDebugMode(boolean debugMode);
-    
+
 }

@@ -35,18 +35,16 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         initComponents();
         customizeComponents();
     }
-    
+
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
-    private final EditorKit htmlStyleEditorKit = new StyledEditorKit()
-    {
-         @Override
-         public Document createDefaultDocument()
-         {
-              return new HTMLSyntaxDocument();
-         }
-    };    
-    
+    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
+        @Override
+        public Document createDefaultDocument() {
+            return new HTMLSyntaxDocument();
+        }
+    };
+
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea(this.txtHtmlComment);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
@@ -202,16 +200,16 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
             return false;
-        }        
+        }
         boolean mimeHTMLType = false;
-        byte [] body = new byte [0]; 
+        byte[] body = new byte[0];
         if (!isMessageRequest) {
             IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
             String mimeType = resInfo.getInferredMimeType();
             mimeHTMLType = ("HTML".equals(mimeType) || "XML".equals(mimeType));
             body = BurpWrap.getResponseBody(resInfo, content);
         }
-        if (body.length > 0 && mimeHTMLType)  {
+        if (body.length > 0 && mimeHTMLType) {
             return HttpUtil.existsHTMLComments(Util.getRawStr(body));
         } else {
             return false;

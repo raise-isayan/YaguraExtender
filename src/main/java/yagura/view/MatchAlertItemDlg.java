@@ -331,7 +331,7 @@ public class MatchAlertItemDlg extends CustomDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);
@@ -456,11 +456,11 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
 
         this.cmbAlertColor.setModel(
-            new DefaultComboBoxModel(
-                new MatchItem.HighlightColor[]{MatchItem.HighlightColor.RED, MatchItem.HighlightColor.ORANGE,
-                    MatchItem.HighlightColor.YELLOW, MatchItem.HighlightColor.GREEN, MatchItem.HighlightColor.CYAN,
-                    MatchItem.HighlightColor.BLUE, MatchItem.HighlightColor.PINK, MatchItem.HighlightColor.MAGENTA,
-                    MatchItem.HighlightColor.GRAY}));
+                new DefaultComboBoxModel(
+                        new MatchItem.HighlightColor[]{MatchItem.HighlightColor.RED, MatchItem.HighlightColor.ORANGE,
+                            MatchItem.HighlightColor.YELLOW, MatchItem.HighlightColor.GREEN, MatchItem.HighlightColor.CYAN,
+                            MatchItem.HighlightColor.BLUE, MatchItem.HighlightColor.PINK, MatchItem.HighlightColor.MAGENTA,
+                            MatchItem.HighlightColor.GRAY}));
 
         this.cmbAlertColor.setEnabled(false);
 
@@ -481,14 +481,14 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.txtIssueName.setEnabled(false);
         this.cmbSeverity.setEnabled(false);
         this.cmbConfidence.setEnabled(false);
-        
+
         // FreeVersion only
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(ComponentEvent e) {
                 SwingUtil.setContainerEnable(pnlScannerIssue, BurpExtender.getInstance().getBurpVersion().isProfessional());
             }
         });
-                
+
     }
 
     /**
@@ -547,12 +547,12 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
         if (item.getNotifyTypes().contains(MatchItem.NotifyType.COMMENT)) {
             item.setComment(this.txtComment.getText());
-        }        
+        }
         if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
             item.setIssueName(this.txtIssueName.getText());
-            String serverty = (String)this.cmbSeverity.getSelectedItem();
+            String serverty = (String) this.cmbSeverity.getSelectedItem();
             item.setSeverity(MatchItem.Severity.parseEnum(serverty));
-            String confidence = (String)this.cmbConfidence.getSelectedItem();
+            String confidence = (String) this.cmbConfidence.getSelectedItem();
             item.setConfidence(MatchItem.Confidence.parseEnum(confidence));
         }
         return item;
@@ -586,14 +586,14 @@ public class MatchAlertItemDlg extends CustomDialog {
             this.cmbAlertColor.setSelectedItem(item.getHighlightColor());
         }
         chkItem_highlightActionPerformed(null);
-        
+
         this.txtComment.setText(item.getComment());
         this.chkCommentActionPerformed(null);
-        
+
         this.txtIssueName.setText(item.getIssueName());
         this.cmbSeverity.setSelectedItem(item.getSeverity().name());
         this.cmbConfidence.setSelectedItem(item.getConfidence().name());
         this.chkScannerIssueActionPerformed(null);
-        
+
     }
 }

@@ -335,7 +335,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        
+
         // Encoding Tab
         this.listTarget.setModel(this.modelTarget);
         for (String item : Util.getAvailableEncodingList()) {
@@ -358,7 +358,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
             public void contentsChanged(ListDataEvent e) {
                 renewPopup();
             }
-        
+
         });
         this.listSelect.setModel(this.modelSelect);
         this.lblSelectEncode.setVisible(false);
@@ -399,20 +399,17 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnSelectDownActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        String encoding = (String)this.cmbDefaultLangEncoding.getSelectedItem();
+        String encoding = (String) this.cmbDefaultLangEncoding.getSelectedItem();
         if (encoding.equals("Japanese")) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE));
-        }
-        else if (encoding.equals("Chinese")) {
+        } else if (encoding.equals("Chinese")) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.CHINESE));
-        }
-        else if (encoding.equals("Korean")) {
+        } else if (encoding.equals("Korean")) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.KOREAN));
+        } else if (encoding.equals("Other")) {
+            setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.US));
         }
-        else if (encoding.equals("Other")) {
-            setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.US));       
-        }
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());        
+        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void chkUniversalParamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniversalParamsActionPerformed
@@ -439,33 +436,33 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkJWTActionPerformed
 
-    private void renewPopup() {    
+    private void renewPopup() {
         String encodeList[] = {"PlatformDefault", "AutoRecognise", "RawBytes"};
         this.popEncodeMenu.removeAll();
         ButtonGroup group = new ButtonGroup();
-        for (String enc: encodeList) {
+        for (String enc : encodeList) {
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
             group.add(item);
             this.popEncodeMenu.add(item);
         }
         if (this.listSelect.getModel().getSize() > 0) {
-            this.popEncodeMenu.addSeparator();            
-        }        
+            this.popEncodeMenu.addSeparator();
+        }
         for (int i = 0; i < this.listSelect.getModel().getSize(); i++) {
             String enc = String.valueOf(this.listSelect.getModel().getElementAt(i));
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
             item.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    JMenuItem menuItem = (JMenuItem)e.getSource();
+                    JMenuItem menuItem = (JMenuItem) e.getSource();
                     menuItem.getText();
-                }            
+                }
             });
             group.add(item);
-            this.popEncodeMenu.add(item);            
+            this.popEncodeMenu.add(item);
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;
     private javax.swing.JButton btnEncLerftArraw;
@@ -503,7 +500,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
     }
 
     public List<String> getEncodingList() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         for (int index = 0; index < this.modelSelect.size(); index++) {
             list.add((String) this.modelSelect.getElementAt(index));
         }
@@ -544,8 +541,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         for (int index : indexs) {
             modelDst.addElement(modelSrc.getElementAt(index));
         }
-        for (int index = indexs.length; index > 0 ; index--) {
-            modelSrc.removeElementAt(indexs[index-1]);
+        for (int index = indexs.length; index > 0; index--) {
+            modelSrc.removeElementAt(indexs[index - 1]);
         }
     }
 
@@ -557,16 +554,28 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         this.chkUniversalRaw.setSelected(view.contains(UniversalViewProperty.UniversalView.JRAW));
         this.chkUniversalParams.setSelected(view.contains(UniversalViewProperty.UniversalView.JPARAM));
     }
-    
+
     private EnumSet<UniversalViewProperty.UniversalView> getMessageView() {
         EnumSet<UniversalViewProperty.UniversalView> view = EnumSet.noneOf(UniversalViewProperty.UniversalView.class);
-        if (this.chkGeneratePoC.isSelected()) view.add(UniversalViewProperty.UniversalView.GENERATE_POC);
-        if (this.chkHTMLComment.isSelected()) view.add(UniversalViewProperty.UniversalView.HTML_COMMENT);
-        if (this.chkJSON.isSelected()) view.add(UniversalViewProperty.UniversalView.JSON);
-        if (this.chkJWT.isSelected()) view.add(UniversalViewProperty.UniversalView.JWT);
-        if (this.chkUniversalRaw.isSelected()) view.add(UniversalViewProperty.UniversalView.JRAW);
-        if (this.chkUniversalParams.isSelected()) view.add(UniversalViewProperty.UniversalView.JPARAM);
+        if (this.chkGeneratePoC.isSelected()) {
+            view.add(UniversalViewProperty.UniversalView.GENERATE_POC);
+        }
+        if (this.chkHTMLComment.isSelected()) {
+            view.add(UniversalViewProperty.UniversalView.HTML_COMMENT);
+        }
+        if (this.chkJSON.isSelected()) {
+            view.add(UniversalViewProperty.UniversalView.JSON);
+        }
+        if (this.chkJWT.isSelected()) {
+            view.add(UniversalViewProperty.UniversalView.JWT);
+        }
+        if (this.chkUniversalRaw.isSelected()) {
+            view.add(UniversalViewProperty.UniversalView.JRAW);
+        }
+        if (this.chkUniversalParams.isSelected()) {
+            view.add(UniversalViewProperty.UniversalView.JPARAM);
+        }
         return view;
     }
-    
+
 }

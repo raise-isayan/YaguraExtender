@@ -9,13 +9,14 @@ import java.util.List;
  * @author isayan
  */
 public class MatchAlertProperty {
+
     private boolean selectedMatchAlert = false;
     private boolean matchAlertEnable = false;
 
     public boolean isSelectedMatchAlert() {
         return (this.selectedMatchAlert && this.matchAlertEnable);
     }
-    
+
     public boolean isMatchAlertEnable() {
         return this.matchAlertEnable;
     }
@@ -25,11 +26,11 @@ public class MatchAlertProperty {
     }
 
     private final List<MatchAlertItem> matchAlertItemList = new ArrayList<MatchAlertItem>();
-    
+
     public List<MatchAlertItem> getMatchAlertItemList() {
-        return Collections.unmodifiableList(this.matchAlertItemList); 
+        return Collections.unmodifiableList(this.matchAlertItemList);
     }
-    
+
     public void setMatchAlertItemList(List<MatchAlertItem> list) {
         boolean find = false;
         this.matchAlertItemList.clear();
@@ -47,5 +48,5 @@ public class MatchAlertProperty {
         this.setMatchAlertEnable(property.isMatchAlertEnable());
         this.setMatchAlertItemList(property.getMatchAlertItemList());
     }
-    
+
 }

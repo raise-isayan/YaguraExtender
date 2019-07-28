@@ -103,15 +103,15 @@ public class MultiItemDlg extends CustomDialog {
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    public void setMultiLine(String []lines) {
+    public void setMultiLine(String[] lines) {
         this.txtMultiLine.setText(TransUtil.join("\n", lines));
     }
 
-    public String [] getMultiLine() {
+    public String[] getMultiLine() {
         String s = this.txtMultiLine.getText();
         return s.split("\n");
     }
-    
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);

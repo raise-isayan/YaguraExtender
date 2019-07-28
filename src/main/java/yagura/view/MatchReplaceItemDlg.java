@@ -179,7 +179,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    
+
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         for (String t : MatchReplaceItem.getTypes()) {
@@ -288,7 +288,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
     public MatchReplaceItem getItem() {
         MatchReplaceItem item = new MatchReplaceItem();
         item.setSelected(true);
-        item.setType((String)this.cmbRepType.getSelectedItem());
+        item.setType((String) this.cmbRepType.getSelectedItem());
         item.setMatch(this.txtRepMatch.getText());
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());

@@ -237,11 +237,10 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
                 if (Util.equalsString(name, selectedName)) {
                     l.setIcon(image_check);
                     l.setIconTextGap(2);
-                }
-                else {
+                } else {
                     l.setIcon(image_uncheck);
                     l.setIconTextGap(2);
-                }                
+                }
                 return l;
             }
         });
@@ -258,7 +257,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
 
     private void btnRepRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepRemoveActionPerformed
         if (JOptionPane.showConfirmDialog(this, BUNDLE.getString("view.matchreplace.remove"), "Match and Replace", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            String name = this.getReplaceSelectedName();           
+            String name = this.getReplaceSelectedName();
             this.modelReplace.removeElement(name);
             this.replaceMap.remove(name);
             firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
@@ -279,15 +278,14 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
 }//GEN-LAST:event_btnRepDownArrawActionPerformed
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
-        String name  = this.getReplaceSelectedName();
+        String name = this.getReplaceSelectedName();
         if (Util.equalsString(this.selectedName, name)) {
             this.selectedName = "";
-        }
-        else {
-            this.selectedName = name;        
+        } else {
+            this.selectedName = name;
         }
         this.listMatchReplace.updateUI();
-        firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());        
+        firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
     }//GEN-LAST:event_btnSelectActionPerformed
 
     private void listMatchReplaceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_listMatchReplaceKeyTyped
@@ -360,7 +358,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
         }
         firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
     }
-       
+
     private final Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>();
 
     private Map<String, MatchReplaceGroup> renewReplaceMap() {
@@ -387,11 +385,12 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
         }
         return name;
     }
+
     protected MatchReplaceGroup getSelectedReplaceGroup() {
         String name = this.getReplaceSelectedName();
         return this.replaceMap.get(name);
     }
-    
+
     protected List<MatchReplaceItem> getSelectedReplaceList() {
         String name = this.getReplaceSelectedName();
         MatchReplaceGroup group = this.replaceMap.get(name);

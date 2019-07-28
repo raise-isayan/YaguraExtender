@@ -7,14 +7,14 @@
 == 動作環境
 
 .Java
-* JRE(JDK) 1.8以上(Oracle JRE を推奨)(http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* JRE(JDK) 8 (Open JDK を推奨)(https://openjdk.java.net/)
 
 .Burp suite
 * 1.7以上 (http://www.portswigger.net/burp/)
 
 .開発環境
-* NetBean 8.2 (http://netbeans.org/)
-* Apache ant 1.9 (http://ant.apache.org/)
+* NetBean 11.0 (https://netbeans.apache.org/)
+* Meven 3.6.1 (https://maven.apache.org/)
 * asciidoc (http://asciidoc.org/) 
 
 .利用ライブラリ

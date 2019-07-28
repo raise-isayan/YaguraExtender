@@ -353,7 +353,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         filterProp.setShowOnlyExtension(this.txtShowOnly.getText());
         filterProp.setHide(this.chkHide.isSelected());
         filterProp.setHideExtension(this.txtHide.getText());
-        filterProp.setStat2xx(this.chkStat2xx.getModel().isSelected());        
+        filterProp.setStat2xx(this.chkStat2xx.getModel().isSelected());
         filterProp.setStat3xx(this.chkStat3xx.getModel().isSelected());
         filterProp.setStat4xx(this.chkStat4xx.getModel().isSelected());
         filterProp.setStat5xx(this.chkStat5xx.getModel().isSelected());
@@ -396,7 +396,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         }
         return colors;
     }
-    
+
     public void setHighlightColors(EnumSet<HighlightColor> colors) {
         this.chkWhite.setSelected(colors.contains(HighlightColor.WHITE));
         this.chkRed.setSelected(colors.contains(HighlightColor.RED));
@@ -417,7 +417,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     public void setComments(boolean comment) {
         this.chkComment.setSelected(comment);
     }
-    
+
     public static class PropertyRowFilter extends RowFilter<Object, Object> {
 
         private final FilterProperty filterProp;
@@ -475,12 +475,12 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 }
                 // comment filter
                 boolean commentFilter = true;
-                if (statusFilter && showOnlyScopFilter) {                
+                if (statusFilter && showOnlyScopFilter) {
                     // comment
                     if (this.filterProp.getComments()) {
-                        commentFilter = (item.getComment() != null);                        
+                        commentFilter = (item.getComment() != null);
                     }
-                }               
+                }
                 // showOnly Filter
                 boolean matchFilter = true;
                 if (statusFilter && showOnlyScopFilter && colorFilter) {
@@ -510,7 +510,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
 
     }
 
-    public static class PropertyRowSorter<M extends TableModel> extends TableRowSorter {
+    public static class PropertyRowSorter<M extends TableModel> extends TableRowSorter<M> {
 
         public PropertyRowSorter(M model) {
             super(model);
