@@ -44,8 +44,8 @@ public final class Version extends CustomVersion {
         return String.format(VERSION_INFO_FMT,
             getProjectName(),
             Version.getInstance().getVersion(), 
-            LegacyConfig.getExtensionHomeDir().getAbsoluteFile(),
-            LegacyConfig.getUserDir());    
+            Config.getExtensionHomeDir().getAbsoluteFile(),
+            Config.getUserDir());    
     }
     
 }

@@ -2,6 +2,7 @@ package yagura.model;
 
 import yagura.LegacyConfig;
 import java.text.SimpleDateFormat;
+import yagura.Config;
 
 /**
  *
@@ -23,7 +24,7 @@ public class LoggingProperty {
         this.autoLogging = autoLogging;
     }
 
-    private String logBaseDir = LegacyConfig.getUserDir();
+    private String logBaseDir = Config.getUserDir();
 
     public String getBaseDir() {
         return this.logBaseDir;

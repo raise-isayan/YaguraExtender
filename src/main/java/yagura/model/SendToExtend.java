@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import yagura.Config;
 
 /**
  *
@@ -23,7 +24,7 @@ import javax.swing.JFileChooser;
 public class SendToExtend extends SendToMenuItem {
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    private File currentDirectory = new File(LegacyConfig.getUserHome());
+    private File currentDirectory = new File(Config.getUserHome());
     private int repeternum = 0;
 
     public SendToExtend(SendToItem item, IContextMenuInvocation contextMenu) {

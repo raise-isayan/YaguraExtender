@@ -6,7 +6,7 @@
     <version>1.9</version>
     <packaging>jar</packaging>
     <properties>
-        <releaseVersion>${project.version}.4.0</releaseVersion>
+        <releaseVersion>${project.version}.5.0</releaseVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -77,6 +77,11 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <archive>
+                    <manifest>
+                        <mainClass>yagura.view.MainFrame</mainClass>
+                    </manifest>
+                    </archive>
                 </configuration>
                 <executions>
                     <execution>

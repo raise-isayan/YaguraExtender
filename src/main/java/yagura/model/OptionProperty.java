@@ -159,13 +159,13 @@ public class OptionProperty implements IOptionProperty {
     public void setProperty(IOptionProperty property) {
         this.setEncodingProperty(property.getEncodingProperty());
         this.setMatchReplaceProperty(property.getMatchReplaceProperty());
+        this.setMatchAlertProperty(property.getMatchAlertProperty());
         this.setAutoResponderProperty(property.getAutoResponderProperty());
         this.setSendToProperty(property.getSendToProperty());
         this.setLoggingProperty(property.getLoggingProperty());
-        this.setMatchAlertProperty(property.getMatchAlertProperty());
         this.setJSearchProperty(property.getJSearchProperty());
+        this.setJTransCoderProperty(property.getJTransCoderProperty());
         this.setDebugMode(property.getDebugMode());
-        this.setDebugMode(getDebugMode());
     }
 
 }

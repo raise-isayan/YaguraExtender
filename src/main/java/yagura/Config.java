@@ -12,6 +12,34 @@ import yagura.model.OptionProperty;
  */
 public class Config {
 
+    public static String getUserHome() {
+        return System.getProperties().getProperty("user.home");
+    }
+
+    public static File getExtensionHomeDir() {
+        return new File(getUserHome(), getExtenderDir());
+    }
+
+    public static String getExtenderDir() {
+        return ".yaguraextender";
+    }
+
+    public static String getUserDir() {
+        return System.getProperties().getProperty("user.dir");
+    }
+
+    public static String getLoggingPropertyName() {
+        return "logging.properties";
+    }
+
+    public static String getProxyLogMessageName() {
+        return "proxy-message.log";
+    }
+
+    public static String getToolLogName(String toolName) {
+        return String.format("burp_tool_%s.log", toolName);
+    }
+    
     public static void saveToXML(File fi, OptionProperty option) throws IOException {
         JAXB.marshal(option, fi);
     }
