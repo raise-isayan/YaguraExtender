@@ -1,5 +1,7 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
+
 /**
  *
  * @author raise.isayan
@@ -7,25 +9,25 @@ package yagura.model;
 public class OptionProperty implements IOptionProperty {
 
     /**
-     * ***********************************************************************
-     * Encoding ***********************************************************************
+     * implements UniversalViewProperty 
      */
-    private final UniversalViewProperty encodingProperty = new UniversalViewProperty();
+    @Expose
+    private final UniversalViewProperty universalViewProperty = new UniversalViewProperty();
 
     @Override
     public UniversalViewProperty getEncodingProperty() {
-        return this.encodingProperty;
+        return this.universalViewProperty;
     }
 
     @Override
     public void setEncodingProperty(UniversalViewProperty encodingProperty) {
-        this.encodingProperty.setProperty(encodingProperty);
+        this.universalViewProperty.setProperty(encodingProperty);
     }
 
     /**
-     * ***********************************************************************
-     * MatchReplace ***********************************************************************
+     * implements MatchReplaceProperty 
      */
+    @Expose
     private final MatchReplaceProperty matchReplaceProperty = new MatchReplaceProperty();
 
     @Override
@@ -39,9 +41,9 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * ***********************************************************************
-     * MatchAlert ***********************************************************************
+     * implements MatchAlertProperty 
      */
+    @Expose
     private final MatchAlertProperty matchAlertProperty = new MatchAlertProperty();
 
     @Override
@@ -55,9 +57,9 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * ***********************************************************************
-     * AutoResponder ***********************************************************************
+     * implements AutoResponderProperty 
      */
+    // non Expose
     private final AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
 
     @Override
@@ -71,9 +73,9 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * ***********************************************************************
-     * SendTo ***********************************************************************
+     * implements SendToProperty 
      */
+    @Expose
     private final SendToProperty sendToProperty = new SendToProperty();
 
     @Override
@@ -87,9 +89,9 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * ***********************************************************************
-     * Logging ***********************************************************************
+     * implements LoggingProperty 
      */
+    @Expose
     private final LoggingProperty logProperty = new LoggingProperty();
 
     @Override
@@ -103,9 +105,9 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * ***********************************************************************
-     * JSearch ***********************************************************************
+     * implements JSearchProperty 
      */
+    @Expose
     private final JSearchProperty searchProperty = new JSearchProperty();
 
     @Override
@@ -119,9 +121,9 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * ***********************************************************************
-     * JTransCoder ***********************************************************************
+     * implements JTransCoderProperty 
      */
+    @Expose
     private final JTransCoderProperty transcoderProperty = new JTransCoderProperty();
 
     @Override
@@ -150,10 +152,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * ***********************************************************************
-     * OptionProperty ***********************************************************************
-     */
-    /**
+     * IOptionProperty
      * @param property
      */
     public void setProperty(IOptionProperty property) {

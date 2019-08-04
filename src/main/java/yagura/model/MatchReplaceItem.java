@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import extend.view.base.MatchItem;
 import extend.util.external.TransUtil;
 import java.util.regex.Matcher;
@@ -29,22 +30,6 @@ public class MatchReplaceItem extends MatchItem {
     public static String[] getTypes() {
         return types;
     }
-    private String replace = "";
-
-    /**
-     * @return the replace
-     */
-    public String getReplace() {
-        return this.getReplace(false);
-    }
-
-    /**
-     * @param quote
-     * @return the replace
-     */
-    public String getReplace(boolean quote) {
-        return getReplace(quote, false);
-    }
 
     /**
      * @param quote
@@ -54,40 +39,34 @@ public class MatchReplaceItem extends MatchItem {
     public String getReplace(boolean quote, boolean metachar) {
         if (quote) {
             if (metachar) {
-                return Matcher.quoteReplacement(TransUtil.decodeJsLangMeta(this.replace));
+                return Matcher.quoteReplacement(TransUtil.decodeJsLangMeta(this.getReplace()));
             } else {
-                return Matcher.quoteReplacement(this.replace);
+                return Matcher.quoteReplacement(this.getReplace());
             }
         } else {
             if (metachar) {
-                return TransUtil.decodeJsLangMeta(this.replace);
+                return TransUtil.decodeJsLangMeta(this.getReplace());
             } else {
-                return this.replace;
+                return this.getReplace();
             }
         }
     }
 
-    /**
-     * @param replace the replace to set
-     */
-    public void setReplace(String replace) {
-        this.replace = replace;
-    }
-
-    private boolean metachar = false;
+    @Expose
+    private boolean metaChar = false;
 
     /**
-     * @return the metachar
+     * @return the metaChar
      */
     public boolean isMetaChar() {
-        return this.metachar;
+        return this.metaChar;
     }
 
     /**
-     * @param metachar the metachar to set
+     * @param metachar the metaChar to set
      */
     public void setMetaChar(boolean metachar) {
-        this.metachar = metachar;
+        this.metaChar = metachar;
     }
 
     public boolean isRequestLine() {
@@ -110,6 +89,20 @@ public class MatchReplaceItem extends MatchItem {
         return this.getType().endsWith("body");
     }
 
+    public void setProperty(MatchItem item) {
+        this.setSelected(item.isSelected());
+        this.setType(item.getType());
+        this.setMatch(item.getMatch());
+        this.setIgnoreCase(item.isIgnoreCase());
+        this.setRegexp(item.isRegexp());
+        this.setReplace(item.getReplace());
+    }
+    
+    public void setProperty(MatchReplaceItem item) {
+        this.setProperty((MatchItem)item);
+        this.setMetaChar(item.isMetaChar());
+    }
+    
     public static Object[] toObjects(MatchReplaceItem matchReplace) {
         Object[] beans = new Object[7];
         beans[0] = matchReplace.isSelected();

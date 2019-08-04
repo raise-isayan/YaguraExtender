@@ -174,9 +174,9 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             body = BurpWrap.getResponseBody(resInfo, content);
         }
         if (body.length > 0 && mimeJsonType) {
-            return FormatUtil.isJSON(Util.getRawStr(body));
+            return FormatUtil.isJson(Util.getRawStr(body));
         } else {
-            return FormatUtil.isJSON(Util.getRawStr(body));
+            return FormatUtil.isJson(Util.getRawStr(body));
         }
     }
 

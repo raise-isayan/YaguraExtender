@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,13 +11,16 @@ import java.util.List;
  */
 public class MatchAlertProperty {
 
+    @Expose
     private boolean selectedMatchAlert = false;
-    private boolean matchAlertEnable = false;
 
     public boolean isSelectedMatchAlert() {
         return (this.selectedMatchAlert && this.matchAlertEnable);
     }
 
+    @Expose
+    private boolean matchAlertEnable = false;
+    
     public boolean isMatchAlertEnable() {
         return this.matchAlertEnable;
     }
@@ -25,6 +29,7 @@ public class MatchAlertProperty {
         this.matchAlertEnable = enable;
     }
 
+    @Expose
     private final List<MatchAlertItem> matchAlertItemList = new ArrayList<MatchAlertItem>();
 
     public List<MatchAlertItem> getMatchAlertItemList() {

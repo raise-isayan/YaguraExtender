@@ -138,10 +138,10 @@ public class JSONView extends javax.swing.JPanel {
         try {
             if (content != null) {
                 // Raw
-                this.txtJSON.setText(FormatUtil.prettyJSON(content));
+                this.txtJSON.setText(JsonUtil.prettyJson(content));
                 this.txtJSON.setCaretPosition(0);
                 // Tree View
-                this.modelJSON = (DefaultTreeModel) JsonUtil.toJSONTreeModel(JsonUtil.parse(content));
+                this.modelJSON = (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
 
                 SwingUtil.allNodesChanged(this.treeJSON);
                 this.treeJSON.setModel(this.modelJSON);

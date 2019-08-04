@@ -1,19 +1,21 @@
 package extend.util.external;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonStructure;
-import javax.json.JsonValue;
-import javax.json.JsonWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -23,101 +25,127 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class JsonUtil {
 
-    public static String stringify(JsonStructure jsonStructure) {
-        StringWriter stWriter = new StringWriter();
-        try (JsonWriter jsonWriter = Json.createWriter(stWriter)) {
-            jsonWriter.write(jsonStructure);
+    public static String stringify(JsonElement jsonElement) {
+        return prettyJson(jsonElement, false);
+    }
+
+    public static JsonElement parse(String jsonElementString)  throws JsonSyntaxException {
+        JsonParser jp = new JsonParser();
+        return jp.parse(jsonElementString);
+    }
+
+    public static String prettyJson(String jsonString) throws IOException {
+        return prettyJson(jsonString, true);
+    }
+    
+    public static String prettyJson(String jsonElementString, boolean pretty)  throws JsonSyntaxException {
+        return prettyJson(parse(jsonElementString), pretty);
+    }
+
+    public static String prettyJson(JsonElement jsonElement, boolean pretty) {
+        if (pretty) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().create();
+            return gson.toJson(jsonElement);
+        } else {
+            Gson gson = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
+            return gson.toJson(jsonElement);
         }
-        String jsonString = stWriter.toString();
-        return jsonString;
     }
 
-    public static JsonStructure parse(String jsonObjectString) {
-        JsonReader jsonReader = Json.createReader(new StringReader(jsonObjectString));
-        return jsonReader.read();
-    }
-
-    public static String prettyJSON(String plainJson, boolean pretty) throws IOException {
-        StringWriter sw = new StringWriter();
-        try {
-            javax.json.spi.JsonProvider jsonProvider = javax.json.spi.JsonProvider.provider();
-            try (javax.json.JsonReader jsonReader = jsonProvider.createReader(new StringReader(plainJson))) {
-                javax.json.JsonStructure json = jsonReader.read();
-                return prettyJSON(json, pretty);
-            }
-        } catch (javax.json.stream.JsonParsingException ex) {
-            throw new IOException(ex);
-        }
-    }
-
-    public static String prettyJSON(JsonStructure json, boolean pretty) throws IOException {
-        StringWriter sw = new StringWriter();
-        try {
-            javax.json.spi.JsonProvider jsonProvider = javax.json.spi.JsonProvider.provider();
-            final Map<String, Boolean> config = new HashMap<String, Boolean>();
-            if (pretty) {
-                config.put(javax.json.stream.JsonGenerator.PRETTY_PRINTING, pretty);
-            }
-            try (javax.json.JsonWriter jsonWriter = jsonProvider.createWriterFactory(config).createWriter(sw)) {
-                jsonWriter.write(json);
-            }
-        } catch (javax.json.stream.JsonParsingException ex) {
-            throw new IOException(ex);
-        }
-        return sw.getBuffer().toString().trim();
-    }
-
-    public static DefaultTreeModel toJSONTreeModel(JsonStructure json) {
-        DefaultMutableTreeNode rootJSON = new DefaultMutableTreeNode("JSON");
-        DefaultTreeModel model = new DefaultTreeModel(rootJSON);
-        toJSONTreeNode(json, rootJSON);
+    public static DefaultTreeModel toJsonTreeModel(JsonElement jsonElement) {
+        DefaultMutableTreeNode rootJson = new DefaultMutableTreeNode("JSON");
+        DefaultTreeModel model = new DefaultTreeModel(rootJson);
+        toJsonTreeNode(jsonElement, rootJson);
         return model;
     }
 
-    private static void toJSONTreeNode(JsonValue json, DefaultMutableTreeNode parentNode) {
-        switch (json.getValueType()) {
-            case ARRAY: {
-                JsonArray jsonArray = (JsonArray) json;
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JsonValue value = jsonArray.get(i);
-                    toJSONTreeNode(value, parentNode);
+    private static void toJsonTreeNode(JsonElement jsonElement, DefaultMutableTreeNode parentNode) {
+        if (jsonElement.isJsonObject()) {
+            DefaultMutableTreeNode node = new DefaultMutableTreeNode("{}");
+            parentNode.add(node);
+            JsonObject jsonObject = (JsonObject) jsonElement;
+            Set<Map.Entry<String, JsonElement>> set = jsonObject.entrySet();
+            for (Map.Entry<String, JsonElement> s : set) {
+                JsonElement value = s.getValue();
+                if (value.isJsonNull()) {
+                    DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s);
+                    node.add(jsonKeySet);
+                } else if (value.isJsonPrimitive()) {
+                    DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s);
+                    node.add(jsonKeySet);
+                } else {
+                    DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(s.getKey());
+                    node.add(childNode);
+                    toJsonTreeNode(value, childNode);
                 }
-                break;
             }
-            case OBJECT: {
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode("{}");
-                parentNode.add(node);
-                JsonObject jsonObject = (JsonObject) json;
-                Set<Map.Entry<String, JsonValue>> set = jsonObject.entrySet();
-                for (Map.Entry<String, JsonValue> s : set) {
-                    JsonValue value = s.getValue();
-                    switch (value.getValueType()) {
-                        case STRING:
-                        case NUMBER:
-                        case TRUE:
-                        case FALSE:
-                        case NULL:
-                            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(s);
-                            node.add(jsonKeySet);
-                            break;
-                        default: {
-                            DefaultMutableTreeNode childNode = new DefaultMutableTreeNode(s.getKey());
-                            node.add(childNode);
-                            toJSONTreeNode(value, childNode);
-                            break;
-                        }
-                    }
-                }
-                break;
+        } else if (jsonElement.isJsonArray()) {
+            JsonArray jsonArray = (JsonArray) jsonElement.getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement value = jsonArray.get(i);
+                toJsonTreeNode(value, parentNode);
             }
-            case STRING:
-            case NUMBER:
-            case TRUE:
-            case FALSE:
-            case NULL:
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(json);
-                parentNode.add(node);
-                break;
+        } else if (jsonElement.isJsonNull()) {
+            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(jsonElement);
+            parentNode.add(jsonKeySet);
+        } else if (jsonElement.isJsonPrimitive()) {
+            DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(jsonElement);
+            parentNode.add(jsonKeySet);
+        }
+
+    }
+
+    private final static Pattern JSON_TYPE = Pattern.compile("[\\s\r\n]*((\\[(.*)\\])|(\\{(.*)\\}))[\\s\r\n]*", Pattern.DOTALL);
+    
+    public static boolean isJson(String jsonString) {
+        Matcher m = JSON_TYPE.matcher(jsonString);
+        try {
+            if (m.lookingAt()) {
+                JsonUtil.prettyJson(jsonString, false);
+                return true;
+            } else {
+                return false;
+            }        
+        } catch (JsonSyntaxException ex) {
+            return false;
         }
     }
+
+    private static final Map<Class<?>, Object> typeAdapterMap = new HashMap<>();
+    
+    public static void registerTypeAdapter(Class<?> baseType, Object typeAdapter) {
+        typeAdapterMap.put(baseType, typeAdapter);
+    }
+
+    public static void removeTypeAdapter(Class<?> baseType) {
+        typeAdapterMap.remove(baseType);
+    }
+    
+    public static void saveToJson(File fo, Object bean, boolean exludeFields) throws IOException {
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
+    //        gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
+            gsonBuilder.registerTypeAdapter(set.getKey(), set.getValue());
+        }
+        if (exludeFields) {            
+            gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        }        
+        Gson gson = gsonBuilder.create();
+        String jsonString = gson.toJson(bean);
+        Files.writeString(fo.toPath(), jsonString, StandardCharsets.UTF_8);
+    }
+
+    public static <T> T loadFromJson(File fi, Class<T> classOfT, boolean exludeFields) throws IOException {
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
+            gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
+        }
+        if (exludeFields) {            
+            gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        }                
+        Gson gson = gsonBuilder.create();
+        String jsonString = Files.readString(fi.toPath(), StandardCharsets.UTF_8);
+        return gson.fromJson(jsonString, classOfT);
+    }
+
 }

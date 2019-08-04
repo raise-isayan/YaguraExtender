@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import extend.view.base.RegexItem;
 
 /**
@@ -8,6 +9,7 @@ import extend.view.base.RegexItem;
  */
 public class JSearchProperty extends RegexItem {
 
+    @Expose
     private boolean smartMatch = false;
 
     public void setSmartMatch(boolean value) {
@@ -18,6 +20,7 @@ public class JSearchProperty extends RegexItem {
         return this.smartMatch;
     }
 
+    @Expose
     private boolean autoRecognise = true;
 
     public boolean isAutoRecogniseEncoding() {
@@ -28,6 +31,7 @@ public class JSearchProperty extends RegexItem {
         this.autoRecognise = autoRecognise;
     }
 
+    @Expose
     private FilterProperty filterProp = new FilterProperty();
 
     public FilterProperty getFilterProperty() {
@@ -38,6 +42,7 @@ public class JSearchProperty extends RegexItem {
         this.filterProp = filterProp;
     }
 
+    @Expose
     private boolean requestHeader = true;
 
     /**
@@ -54,6 +59,7 @@ public class JSearchProperty extends RegexItem {
         this.requestHeader = request;
     }
 
+    @Expose
     private boolean requestBody = true;
 
     /**
@@ -70,6 +76,7 @@ public class JSearchProperty extends RegexItem {
         this.requestBody = requestBody;
     }
 
+    @Expose
     private boolean responseHeader = true;
 
     /**
@@ -102,6 +109,7 @@ public class JSearchProperty extends RegexItem {
         this.responseBody = responseBody;
     }
 
+    @Expose
     private boolean comment = true;
 
     /**

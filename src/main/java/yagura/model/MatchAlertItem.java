@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import extend.view.base.MatchItem;
 import java.util.EnumSet;
 
@@ -8,9 +9,6 @@ import java.util.EnumSet;
  * @author isayan
  */
 public class MatchAlertItem extends MatchItem {
-
-    private EnumSet<TargetTool> targetTools = EnumSet.allOf(TargetTool.class);
-    private EnumSet<NotifyType> notifyTypes = EnumSet.noneOf(NotifyType.class);
     private static final String[] MESSAGE_TYPE = new String[]{"request", "response"};
 
     public MatchAlertItem() {
@@ -21,6 +19,9 @@ public class MatchAlertItem extends MatchItem {
     public static String[] getTypes() {
         return MESSAGE_TYPE;
     }
+
+    @Expose
+    private EnumSet<NotifyType> notifyTypes = EnumSet.noneOf(NotifyType.class);
 
     /**
      * @return the notifyTypes
@@ -36,6 +37,9 @@ public class MatchAlertItem extends MatchItem {
         this.notifyTypes = notifyTypes;
     }
 
+    @Expose
+    private EnumSet<TargetTool> targetTools = EnumSet.allOf(TargetTool.class);
+    
     /**
      * @return the targetTools
      */
@@ -49,6 +53,8 @@ public class MatchAlertItem extends MatchItem {
     public void setTargetTools(EnumSet<TargetTool> targetTools) {
         this.targetTools = targetTools;
     }
+
+    @Expose
     private MatchItem.HighlightColor highlightColor = null;
 
     /**
@@ -65,6 +71,7 @@ public class MatchAlertItem extends MatchItem {
         this.highlightColor = highlightColor;
     }
 
+    @Expose
     private String comment = "";
 
     /**
@@ -97,6 +104,7 @@ public class MatchAlertItem extends MatchItem {
         this.issueName = issueName;
     }
 
+    @Expose
     private Severity serverity = Severity.INFORMATION;
 
     /**
@@ -113,6 +121,7 @@ public class MatchAlertItem extends MatchItem {
         this.serverity = serverity;
     }
 
+    @Expose
     private MatchItem.Confidence confidence = MatchItem.Confidence.CERTAIN;
 
     /**
@@ -172,4 +181,24 @@ public class MatchAlertItem extends MatchItem {
         return matchAlert;
     }
 
+    public void setProperty(MatchItem item) {
+        this.setSelected(item.isSelected());
+        this.setType(item.getType());
+        this.setMatch(item.getMatch());
+        this.setIgnoreCase(item.isIgnoreCase());
+        this.setRegexp(item.isRegexp());
+        this.setReplace(item.getReplace());
+    }
+    
+    public void setProperty(MatchAlertItem item) {
+        this.setProperty((MatchItem)item);
+        this.setIssueName(item.getIssueName());
+        this.setSeverity(item.getSeverity());
+        this.setConfidence(item.getConfidence());
+        this.setTargetTools(item.getTargetTools());
+        this.setHighlightColor(item.getHighlightColor());
+        this.setNotifyTypes(item.getNotifyTypes());
+        this.setComment(item.getComment());
+    }
+        
 }

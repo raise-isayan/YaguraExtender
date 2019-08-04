@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import extend.util.Util;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
  */
 public class MatchReplaceProperty {
 
+    @Expose
     private String selectedName = "";
 
     /**
@@ -28,6 +30,7 @@ public class MatchReplaceProperty {
         this.selectedName = selectedName;
     }
 
+    @Expose
     private final Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>(16, (float) 0.75, true);
 
     /**
@@ -65,7 +68,7 @@ public class MatchReplaceProperty {
     public List<MatchReplaceItem> getReplaceSelectedList(String selectedName) {
         MatchReplaceGroup group = this.replaceMap.get(selectedName);
         if (group == null) {
-            return new ArrayList<MatchReplaceItem>();
+            return new ArrayList<>();
         } else {
             return group.getReplaceList();
         }
@@ -99,6 +102,7 @@ public class MatchReplaceProperty {
         return Util.toList(this.replaceMap.keySet().iterator());
     }
 
+    @Expose
     private boolean autoRecognise = false;
 
     public boolean getAutoRecogniseEncoding() {

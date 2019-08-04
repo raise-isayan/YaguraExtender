@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import extend.view.base.MatchItem;
 import java.util.EnumSet;
 
@@ -9,6 +10,7 @@ import java.util.EnumSet;
  */
 public class FilterProperty {
 
+    @Expose
     private boolean showOnlyScopeItems = false;
 
     public boolean getShowOnlyScopeItems() {
@@ -19,6 +21,7 @@ public class FilterProperty {
         this.showOnlyScopeItems = value;
     }
 
+    @Expose
     private boolean hideItemsWithoutResponses = false;
 
     /**
@@ -35,6 +38,7 @@ public class FilterProperty {
         this.hideItemsWithoutResponses = hideItemsWithoutResponses;
     }
 
+    @Expose
     private boolean showOnly = false;
 
     public boolean getShowOnly() {
@@ -45,6 +49,7 @@ public class FilterProperty {
         this.showOnly = value;
     }
 
+    @Expose
     private boolean hide = false;
 
     public boolean getHide() {
@@ -55,6 +60,7 @@ public class FilterProperty {
         this.hide = value;
     }
 
+    @Expose
     private String showOnlyExtension = "asp,aspx,jsp,php";
 
     public String getShowOnlyExtension() {
@@ -65,6 +71,7 @@ public class FilterProperty {
         this.showOnlyExtension = value;
     }
 
+    @Expose
     private String hideExtension = "js,gif,jpg,png,css";
 
     public String getHideExtension() {
@@ -75,6 +82,7 @@ public class FilterProperty {
         this.hideExtension = value;
     }
 
+    @Expose
     private boolean stat2xx = true;
 
     public boolean getStat2xx() {
@@ -85,6 +93,7 @@ public class FilterProperty {
         this.stat2xx = value;
     }
 
+    @Expose
     private boolean stat3xx = true;
 
     public boolean getStat3xx() {
@@ -95,6 +104,7 @@ public class FilterProperty {
         this.stat3xx = value;
     }
 
+    @Expose
     private boolean stat4xx = true;
 
     public boolean getStat4xx() {
@@ -105,6 +115,7 @@ public class FilterProperty {
         this.stat4xx = value;
     }
 
+    @Expose
     private boolean stat5xx = true;
 
     public boolean getStat5xx() {
@@ -115,6 +126,7 @@ public class FilterProperty {
         this.stat5xx = value;
     }
 
+    @Expose
     private EnumSet<MatchItem.HighlightColor> colors = EnumSet.allOf(MatchItem.HighlightColor.class);
 
     public EnumSet<MatchItem.HighlightColor> getHighlightColors() {
@@ -125,6 +137,7 @@ public class FilterProperty {
         this.colors = colors;
     }
 
+    @Expose
     private boolean comments = false;
 
     public boolean getComments() {

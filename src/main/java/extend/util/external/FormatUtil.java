@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -26,44 +27,33 @@ import org.xml.sax.SAXException;
 public class FormatUtil {
 
     private final static Pattern URL_TYPE = Pattern.compile("^https?://.");
-    private final static Pattern JSON_TYPE = Pattern.compile("[\\s\r\n]*((\\[(.*)\\])|(\\{(.*)\\}))[\\s\r\n]*", Pattern.DOTALL);
     private final static Pattern XML_TYPE = Pattern.compile("^[\\s\r\n]*((<!(.*?)>)|(<\\?(.*?)\\?>)|(<\\w+>)|(<!--(.*?)-->}))", Pattern.DOTALL);
 
-    public static boolean isURL(String plainURL) {
+    public static boolean isUrl(String plainURL) {
         Matcher m = URL_TYPE.matcher(plainURL);
         return m.find();
     }
 
-    public static boolean isXML(String plainXML) {
+    public static boolean isXml(String plainXML) {
         Matcher m = XML_TYPE.matcher(plainXML);
         return m.lookingAt();
     }
 
-    public static boolean isJSON(String plainJson) {
-        Matcher m = JSON_TYPE.matcher(plainJson);
-        if (m.lookingAt()) {
-            try {
-                JsonUtil.prettyJSON(plainJson, false);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
+    public static boolean isJson(String jsonString) {
+        return JsonUtil.isJson(jsonString);
     }
 
-    public static String prettyXML(String plainXML) throws IOException {
-        return prettyXML(plainXML, true);
+    public static String prettyXml(String xmlString) throws IOException {
+        return prettyXml(xmlString, true);
     }
 
-    public static String prettyXML(String plainXML, boolean pretty) throws IOException {
+    public static String prettyXml(String xmlString, boolean pretty) throws IOException {
         StringWriter sw = new StringWriter();
         Transformer transformer;
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-            Document document = docBuilder.parse(new InputSource(new StringReader(plainXML)));
+            Document document = docBuilder.parse(new InputSource(new StringReader(xmlString)));
             transformer = TransformerFactory.newInstance()
                     .newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, pretty ? "yes" : "no");
@@ -81,8 +71,8 @@ public class FormatUtil {
         return sw.toString();
     }
 
-    public static String prettyJSON(String plainJson) throws IOException {
-        return JsonUtil.prettyJSON(plainJson, true);
+    public static String prettyJson(String jsonString) throws IOException {
+        return JsonUtil.prettyJson(jsonString, true);
     }
 
 }

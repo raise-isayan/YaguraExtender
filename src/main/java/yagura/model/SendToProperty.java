@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
  */
 public class SendToProperty {
 
-    private final List<SendToItem> sendToItemList = new ArrayList<SendToItem>();
+    @Expose
+    private final List<SendToItem> sendToItemList = new ArrayList<>();
 
     /**
      * @return the sendToList
@@ -27,6 +29,7 @@ public class SendToProperty {
         this.sendToItemList.addAll(sendToItemList);
     }
 
+    @Expose
     private boolean submenu = false;
 
     public boolean isSubMenu() {

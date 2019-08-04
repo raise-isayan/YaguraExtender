@@ -1,7 +1,6 @@
 package burp;
 
 import static burp.BurpExtenderImpl.getCallbacks;
-import yagura.LegacyConfig;
 import yagura.model.AutoResponderItem;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchReplaceItem;
@@ -16,10 +15,11 @@ import yagura.model.OptionProperty;
 import extend.view.base.HttpMessage;
 import extend.view.base.MatchItem;
 import extend.util.BurpWrap;
-import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.Util;
+import extend.util.external.JsonUtil;
+import extend.util.external.gson.XMatchItemAdapter;
 import extend.view.base.HttpResponse;
 import java.awt.Component;
 import java.awt.DefaultKeyboardFocusManager;
@@ -36,7 +36,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,7 +55,6 @@ import javax.swing.table.TableModel;
 import passive.IssueItem;
 import yagura.Config;
 import yagura.view.JWTViewTab;
-import yagura.view.MainFrame;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
 
@@ -69,11 +67,13 @@ public class BurpExtender extends BurpExtenderImpl
     public BurpExtender() {
     }
 
+    private final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
+
     /**
      * ログ設定プロパティファイルのファイル名
      */
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
-
+    
     static {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         try {
@@ -88,6 +88,7 @@ public class BurpExtender extends BurpExtenderImpl
         } catch (IOException ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
+        JsonUtil.registerTypeAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
     public static BurpExtender getInstance() {
@@ -165,12 +166,13 @@ public class BurpExtender extends BurpExtenderImpl
         if (this.getBurpVersion().isExtendSupport()) {
             // 設定ファイル読み込み
             try {
-                String configXML = getCallbacks().loadExtensionSetting("configXML");
-                if (configXML != null) {
-                    LegacyConfig.loadFromXml(ConvertUtil.decompressZlibBase64(configXML, StandardCharsets.UTF_8), this.option);
-                }
+                if (CONFIG_FILE.exists()) {
+                    Config.loadFromJson(CONFIG_FILE, this.option);                            
+                }                             
             } catch (IOException ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (RuntimeException ex) {
+                Logger.getLogger(BurpExtender.class.getName()).log(Level.WARNING, null, ex);
             }
 
             try {
@@ -585,35 +587,17 @@ public class BurpExtender extends BurpExtenderImpl
     }
 
     /**
-     * CharsetModeの取得
-     *
-     * @return CharSetMode
-     */
-    public String getCharsetMode() {
-        String charSetMode = Util.DEFAULT_ENCODING;
-//        if (getCallbacks() != null) {
-//            BurpPreferences pref = new BurpPreferences(getCallbacks().saveConfig());
-//            pref.dump();
-//            String json = getCallbacks().saveConfigAsJson("");
-//            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, json);
-//            charSetMode = pref.getCharsetMode();
-//            outPrintln("charsetMode:" + charSetMode);
-//        }
-        return charSetMode;
-    }
-
-    /**
      * 選択可能なエンコーディングリストの取得
      *
      * @return リスト
      */
     public List<String> getSelectEncodingList() {
-        String charsetMode = this.getCharsetMode();
-        List<String> list = new ArrayList<String>();
+        String defaultCharset = Util.DEFAULT_ENCODING;
+        List<String> list = new ArrayList<>();
         list.addAll(this.option.getEncodingProperty().getEncodingList());
         // リストにない場合追加
-        if (!this.option.getEncodingProperty().getEncodingList().contains(charsetMode) && LegacyConfig.isEncodingName(charsetMode)) {
-            list.add(charsetMode);
+        if (!this.option.getEncodingProperty().getEncodingList().contains(defaultCharset)) {
+            list.add(defaultCharset);
         }
         return list;
     }
@@ -750,9 +734,7 @@ public class BurpExtender extends BurpExtenderImpl
         }
 
         try {
-            String configXML = LegacyConfig.saveToXML(this.option);
-            getCallbacks().saveExtensionSetting("configXML", ConvertUtil.compressZlibBase64(configXML, StandardCharsets.UTF_8));
-
+            Config.saveToJson(CONFIG_FILE, this.option);
         } catch (IOException ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {

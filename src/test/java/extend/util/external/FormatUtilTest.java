@@ -1,4 +1,4 @@
-package yagura.external;
+package extend.util.external;
 
 import extend.util.external.FormatUtil;
 import org.junit.After;
@@ -41,7 +41,7 @@ public class FormatUtilTest {
         System.out.println("isURL");
         String plainURL = "http://example.com/";
         boolean expResult = true;
-        boolean result = FormatUtil.isURL(plainURL);
+        boolean result = FormatUtil.isUrl(plainURL);
         assertEquals(expResult, result);
     }
 
@@ -50,7 +50,7 @@ public class FormatUtilTest {
         System.out.println("isURL");
         String plainURL = "https://example.com/";
         boolean expResult = true;
-        boolean result = FormatUtil.isURL(plainURL);
+        boolean result = FormatUtil.isUrl(plainURL);
         assertEquals(expResult, result);
     }
 
@@ -59,7 +59,7 @@ public class FormatUtilTest {
         System.out.println("isURL");
         String plainURL = "file://example.com/";
         boolean expResult = false;
-        boolean result = FormatUtil.isURL(plainURL);
+        boolean result = FormatUtil.isUrl(plainURL);
         assertEquals(expResult, result);
     }
 
@@ -72,7 +72,7 @@ public class FormatUtilTest {
         {
             String plainXML = "<root><a/><x>z</x></root>";
             boolean expResult = true;
-            boolean result = FormatUtil.isXML(plainXML);
+            boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
         }
 
@@ -80,7 +80,7 @@ public class FormatUtilTest {
         {
             String plainXML = "<root><a/>\r\n<x>z</x>\r\n</root>";
             boolean expResult = true;
-            boolean result = FormatUtil.isXML(plainXML);
+            boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
         }
 
@@ -88,7 +88,7 @@ public class FormatUtilTest {
         {
             String plainXML = "<root><a/>\r\n<x>z</x><z/><z/>\r\n</root>";
             boolean expResult = true;
-            boolean result = FormatUtil.isXML(plainXML);
+            boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
         }
 
@@ -96,7 +96,7 @@ public class FormatUtilTest {
         {
             String plainXML = "\r\n<root><a/>\r\n<x>z</x><z/><z/>\r\n</root>\r\n";
             boolean expResult = true;
-            boolean result = FormatUtil.isXML(plainXML);
+            boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
         }
 
@@ -105,7 +105,7 @@ public class FormatUtilTest {
             String plainXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                     + "\r\n<root><a/>\r\n<x>z</x><z/><z/>\r\n</root>\r\n";
             boolean expResult = true;
-            boolean result = FormatUtil.isXML(plainXML);
+            boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
         }
 
@@ -120,7 +120,7 @@ public class FormatUtilTest {
         {
             String plainJson = "[1,true,\"word\"]";
             boolean expResult = true;
-            boolean result = FormatUtil.isJSON(plainJson);
+            boolean result = FormatUtil.isJson(plainJson);
             assertEquals(expResult, result);
         }
 
@@ -128,7 +128,7 @@ public class FormatUtilTest {
         {
             String plainJson = "{\"key\":\"value\"}";
             boolean expResult = true;
-            boolean result = FormatUtil.isJSON(plainJson);
+            boolean result = FormatUtil.isJson(plainJson);
             assertEquals(expResult, result);
         }
 
@@ -136,7 +136,7 @@ public class FormatUtilTest {
         {
             String plainJson = "\r\n\t[1,true,\"word\"]\r\n\t";
             boolean expResult = true;
-            boolean result = FormatUtil.isJSON(plainJson);
+            boolean result = FormatUtil.isJson(plainJson);
             assertEquals(expResult, result);
         }
 
@@ -144,7 +144,7 @@ public class FormatUtilTest {
         {
             String plainJson = "\r\n\t[1,true,\r\n\"word\"]\r\n\t";
             boolean expResult = true;
-            boolean result = FormatUtil.isJSON(plainJson);
+            boolean result = FormatUtil.isJson(plainJson);
             assertEquals(expResult, result);
         }
 
@@ -152,7 +152,7 @@ public class FormatUtilTest {
         {
             String plainJson = "\r\n\t{\"key\":\"value\"}\t\r\n";
             boolean expResult = true;
-            boolean result = FormatUtil.isJSON(plainJson);
+            boolean result = FormatUtil.isJson(plainJson);
             assertEquals(expResult, result);
         }
 
@@ -160,7 +160,7 @@ public class FormatUtilTest {
         {
             String plainJson = "\r\n\t{\"key\":\r\n\"value\"}\t\r\n";
             boolean expResult = true;
-            boolean result = FormatUtil.isJSON(plainJson);
+            boolean result = FormatUtil.isJson(plainJson);
             assertEquals(expResult, result);
         }
 
@@ -168,7 +168,7 @@ public class FormatUtilTest {
         {
             String plainJson = "[\n    1,\n    true,\n    \"word\"\n]";
             boolean expResult = true;
-            boolean result = FormatUtil.isJSON(plainJson);
+            boolean result = FormatUtil.isJson(plainJson);
             assertEquals(expResult, result);
         }
 
@@ -181,8 +181,8 @@ public class FormatUtilTest {
     public void testPrettyJSON() throws Exception {
         System.out.println("prettyJSON");
         String plainJson = "[1,true,\"word\"]";
-        String expResult = "[\n    1,\n    true,\n    \"word\"\n]";
-        String result = FormatUtil.prettyJSON(plainJson);
+        String expResult = "[\n  1,\n  true,\n  \"word\"\n]";
+        String result = FormatUtil.prettyJson(plainJson);
         assertEquals(expResult, result);
     }
 

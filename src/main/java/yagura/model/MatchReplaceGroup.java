@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
  */
 public class MatchReplaceGroup {
 
-    private final List<MatchReplaceItem> replaceList = new ArrayList<MatchReplaceItem>();
+    @Expose
+    private final List<MatchReplaceItem> replaceList = new ArrayList<>();
 
     /**
      * @return the replaceMap
@@ -27,6 +29,7 @@ public class MatchReplaceGroup {
         this.replaceList.addAll(replaceList);
     }
 
+    @Expose
     private boolean inScopeOnly = false;
 
     /**

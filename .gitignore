@@ -2,3 +2,4 @@
 /build
 /target
 *.zip
+/nbproject/

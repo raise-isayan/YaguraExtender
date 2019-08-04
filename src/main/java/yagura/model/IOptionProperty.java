@@ -17,7 +17,7 @@ public interface IOptionProperty {
     public final static String JTRANS_CODER_PROPERTY = "JTransCoderProperty";
     public final static String VERSION_PROPERTY = "VersionProperty";
 
-    // Encoding
+    // UniversalViewProperty
     public UniversalViewProperty getEncodingProperty();
 
     public void setEncodingProperty(UniversalViewProperty encodingProperty);

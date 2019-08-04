@@ -1,13 +1,15 @@
 package yagura;
 
 import burp.BurpExtender;
-import yagura.model.UniversalViewProperty;
-import yagura.model.MatchAlertItem;
-import yagura.model.MatchAlertProperty;
-import extend.view.base.MatchItem;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import extend.util.IniProp;
-import extend.util.external.JsonUtil;
 import extend.util.Util;
+import extend.util.external.JsonUtil;
+import extend.util.external.MatchItemAdapter;
+import extend.util.external.gson.XMatchItemAdapter;
+import extend.view.base.MatchItem;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -17,19 +19,28 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.json.JsonStructure;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import yagura.Config;
 import yagura.model.IOptionProperty;
+import yagura.model.MatchAlertItem;
+import yagura.model.MatchAlertProperty;
+import yagura.model.MatchReplaceGroup;
+import yagura.model.MatchReplaceItem;
+import yagura.model.MatchReplaceProperty;
 import yagura.model.OptionProperty;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -50,26 +61,15 @@ public class ConfigTest {
     
     @Before
     public void setUp() {
-        MatchAlertProperty matchAlert = optionProperty.getMatchAlertProperty();
-        List<MatchAlertItem> matchAlertList = new ArrayList<MatchAlertItem>();
-
-        MatchAlertItem matchAlertItem0 = new MatchAlertItem();
-        matchAlertItem0.setNotifyTypes(EnumSet.allOf(MatchItem.NotifyType.class));
-        matchAlertItem0.setHighlightColor(MatchItem.HighlightColor.CYAN);
-        matchAlertItem0.setComment("comment");
-        matchAlertItem0.setTargetTools(EnumSet.allOf(MatchItem.TargetTool.class));
-        matchAlertList.add(matchAlertItem0);
-
-        MatchAlertItem matchAlertItem1 = new MatchAlertItem();
-        matchAlertItem1.setNotifyTypes(EnumSet.noneOf(MatchItem.NotifyType.class));
-        matchAlertItem1.setTargetTools(EnumSet.noneOf(MatchItem.TargetTool.class));
-        matchAlertList.add(matchAlertItem1);
-        
-        matchAlert.setMatchAlertItemList(matchAlertList);
+//        JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
+        JsonUtil.registerTypeAdapter(MatchAlertItem.class, new XMatchItemAdapter());
+        JsonUtil.registerTypeAdapter(MatchReplaceItem.class, new XMatchItemAdapter());
     }
     
     @After
     public void tearDown() {
+        JsonUtil.removeTypeAdapter(MatchAlertItem.class);
+        JsonUtil.removeTypeAdapter(MatchReplaceItem.class);
     }
 
     /**
@@ -80,7 +80,7 @@ public class ConfigTest {
         System.out.println("getToolLogName");
         String toolName = "Proxy";
         String expResult = "burp_tool_Proxy.log";
-        String result = LegacyConfig.getToolLogName(toolName);
+        String result = Config.getToolLogName(toolName);
         assertEquals(expResult, result);
     }
 
@@ -89,8 +89,8 @@ public class ConfigTest {
         try {
             URL url = this.getClass().getResource("/resources/default_project_burp.json");
             byte [] test = Util.bytesFromFile(new File(url.toURI()));
-            JsonStructure json = JsonUtil.parse(Util.decodeMessage(test, "UTF-8")); 
-            String value = JsonUtil.prettyJSON(json, true);
+            JsonElement json = JsonUtil.parse(Util.decodeMessage(test, "UTF-8")); 
+            String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
         } catch (IOException ex) {
             Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -197,7 +197,7 @@ public class ConfigTest {
                 File fi = new File(System.getProperty("java.io.tmpdir"), "configTest.xml");
                 LegacyConfig.loadFromXml(fi, optionProperty);
                 assertEquals(3, optionProperty.getEncodingProperty().getEncodingList().size());
-                assertEquals(2, optionProperty.getMatchAlertProperty().getMatchAlertItemList().size());
+                assertEquals(0, optionProperty.getMatchAlertProperty().getMatchAlertItemList().size());
                 assertEquals(0, optionProperty.getMatchReplaceProperty().getReplaceNameList().size());
                 assertEquals("", optionProperty.getMatchReplaceProperty().getSelectedName());
                 assertEquals(null, optionProperty.getMatchReplaceProperty().getMatchReplaceList());
@@ -229,7 +229,7 @@ public class ConfigTest {
         
     }
 
-    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + LegacyConfig.getLoggingPropertyName();
+    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
     /**
      * Test of saveToXML method, of class LegacyConfig.
@@ -248,5 +248,98 @@ public class ConfigTest {
         }
     }
 
+    @Test
+    public void testMatchAlertProperty() {
+        MatchAlertProperty matchAlert = optionProperty.getMatchAlertProperty();
+        List<MatchAlertItem> matchAlertList = new ArrayList<MatchAlertItem>();
+
+        MatchAlertItem matchAlertItem0 = new MatchAlertItem();
+        matchAlertItem0.setNotifyTypes(EnumSet.allOf(MatchItem.NotifyType.class));
+        matchAlertItem0.setHighlightColor(MatchItem.HighlightColor.CYAN);
+        matchAlertItem0.setComment("comment");
+        matchAlertItem0.setTargetTools(EnumSet.allOf(MatchItem.TargetTool.class));
+        matchAlertList.add(matchAlertItem0);
+
+        MatchAlertItem matchAlertItem1 = new MatchAlertItem();
+        matchAlertItem1.setNotifyTypes(EnumSet.noneOf(MatchItem.NotifyType.class));
+        matchAlertItem1.setTargetTools(EnumSet.noneOf(MatchItem.TargetTool.class));
+        matchAlertList.add(matchAlertItem1);
+        
+        matchAlert.setMatchAlertItemList(matchAlertList);
+        
+    }
+    
+    @Test
+    public void testMatchItem() throws Exception {
+        System.out.println("matchItem");
+        MatchItem item = new MatchItem();
+        item.setType("test");
+        item.setReplace("replace");
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().serializeNulls();
+        gsonBuilder.registerTypeAdapter(MatchItem.class, new XMatchItemAdapter());
+        Gson gson = gsonBuilder.create();
+        String json = gson.toJson(item);
+        System.out.println(json);
+    }
+    
+
+    @Test
+    public void testMatchReplaceItem() throws Exception {
+        System.out.println("matchReplaceItem");
+        MatchReplaceItem item = new MatchReplaceItem();
+        item.setType("test");
+        item.setReplace("replace");
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().serializeNulls();
+        gsonBuilder.registerTypeAdapter(MatchItem.class, new MatchItemAdapter());
+        Gson gson = gsonBuilder.create();
+        String json = gson.toJson(item);
+        System.out.println(json);
+    }
+
+    @Test
+    public void testMatchReplaceItemHierarchy() throws Exception {
+        System.out.println("matchReplaceItemHierarchy");
+        MatchReplaceItem item = new MatchReplaceItem();
+        item.setType("test");
+        item.setReplace("replace");
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().serializeNulls();
+        gsonBuilder.registerTypeHierarchyAdapter(MatchItem.class, new MatchItemAdapter());
+        Gson gson = gsonBuilder.create();
+        String json = gson.toJson(item);
+        System.out.println(json);
+    }
+
+    @Test
+    public void testSaveOptionHierarchy() throws Exception {
+        System.out.println("saveOoptionHierarchy");
+        OptionProperty option = new OptionProperty();
+        MatchReplaceProperty matchReplaceProperty = new MatchReplaceProperty();
+        Map<String, MatchReplaceGroup> replaceMap = new HashMap<>();
+        MatchReplaceGroup group = new MatchReplaceGroup();
+        group.setInScopeOnly(true);
+        List<MatchReplaceItem> replaceList = new ArrayList<>();
+        MatchReplaceItem item = new MatchReplaceItem();
+        item.setType("test");
+        item.setReplace("replace");
+        replaceList.add(item);
+        group.setReplaceList(replaceList);
+        replaceMap.put("test", group);
+        matchReplaceProperty.setReplaceMap(replaceMap);
+        option.setMatchReplaceProperty(matchReplaceProperty);
+        GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().serializeNulls();
+        Gson gson = gsonBuilder.create();
+        String json = gson.toJson(option);
+        System.out.println(json);
+    }
+
+    @Test
+    public void testLoadOptionHierarchy() throws Exception {
+        System.out.println("loadOptionHierarchy");
+        URL url = this.getClass().getResource("/resources/YaguraExtender.json");
+        File fi = new File(url.toURI());
+        if (fi.exists()) {
+            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);        
+        }        
+    }
     
 }

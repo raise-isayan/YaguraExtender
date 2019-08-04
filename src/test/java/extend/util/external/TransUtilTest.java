@@ -1,4 +1,4 @@
-package yagura.external;
+package extend.util.external;
 
 import extend.util.external.TransUtil;
 import extend.util.HttpUtil;
@@ -246,7 +246,7 @@ public class TransUtilTest {
     @Test
     public void testToHtmlEncode() {
         System.out.println("toHtmlEncode");
-        assertEquals("!&quot;#$%&amp;&#39;()=~|`{}*+&lt;&gt;?_\\\r\nabcedf", TransUtil.toHtmlEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf"));
+        assertEquals("!&quot;#$%&amp;'()=~|`{}*+&lt;&gt;?_\\\r\nabcedf", HttpUtil.toHtmlEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf"));
     }
 
     /**

@@ -6,7 +6,7 @@
     <version>1.9</version>
     <packaging>jar</packaging>
     <properties>
-        <releaseVersion>${project.version}.5.0</releaseVersion>
+        <releaseVersion>${project.version}.6.0</releaseVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -51,7 +51,7 @@
                     <outputDirectory>${project.basedir}/help</outputDirectory>
                     <sourceHighlighter>rouge</sourceHighlighter>
                     <attributes>
-                       <imagesdir>./</imagesdir>
+                        <imagesdir>./</imagesdir>
                     </attributes>
                 </configuration>
                 <executions>
@@ -67,6 +67,42 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>yagura.view.MainFrame</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+<!--
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/lib
+                            </outputDirectory>
+                            <includeScope>compile</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>            
+-->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.0</version>
@@ -78,9 +114,9 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <archive>
-                    <manifest>
-                        <mainClass>yagura.view.MainFrame</mainClass>
-                    </manifest>
+                        <manifest>
+                            <mainClass>yagura.view.MainFrame</mainClass>
+                        </manifest>
                     </archive>
                 </configuration>
                 <executions>
@@ -88,11 +124,11 @@
                         <id>make-assembly</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>                       
+                        <goal>single</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>                       
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
@@ -127,16 +163,13 @@
             <artifactId>BurpExtlib</artifactId>
             <version>1.9.2</version>
         </dependency>
+
         <dependency>
-            <groupId>javax.json</groupId>
-            <artifactId>javax.json-api</artifactId>
-            <version>1.1</version>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.8.5</version>
         </dependency>
-        <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <version>1.1</version>
-        </dependency>
+
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mailapi</artifactId>
@@ -147,11 +180,13 @@
             <artifactId>jdatepicker</artifactId>
             <version>1.3.4</version>
         </dependency>
+
         <dependency>
             <groupId>com.googlecode.juniversalchardet</groupId>
             <artifactId>juniversalchardet</artifactId>
             <version>1.0.3</version>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

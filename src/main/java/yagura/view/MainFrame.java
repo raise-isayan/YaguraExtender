@@ -1,14 +1,11 @@
 package yagura.view;
 
-import extend.util.ConvertUtil;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +18,6 @@ import javax.swing.UIManager;
 
 import javax.swing.*;
 import yagura.Config;
-import yagura.model.JTransCoderProperty;
 import yagura.model.OptionProperty;
 import yagura.model.UniversalViewProperty;
 
@@ -31,6 +27,11 @@ import yagura.model.UniversalViewProperty;
  */
 public class MainFrame extends javax.swing.JFrame {
 
+    static {
+        File logDir = Config.getExtensionHomeDir();
+        logDir.mkdirs();
+    }
+    
     /**
      * Creates new form MainFrame
      */
@@ -106,19 +107,19 @@ public class MainFrame extends javax.swing.JFrame {
  
     public final OptionProperty option = new OptionProperty();
 
-    final File CONFIG_XML = new File(Config.getExtensionHomeDir(), "YaguraExtender.xml");
+    private final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
     
     private void customizeComponents() {
         this.setTitle("JTranscoder");
 
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                try {
-                    option.setJTransCoderProperty(jTransCoder.getProperty());            
-                    Config.saveToXML(CONFIG_XML, option);
-                } catch (IOException ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try {
+//                    option.setJTransCoderProperty(jTransCoder.getProperty());            
+//                    Config.saveToJson(CONFIG_FILE, option);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                }
             }        
         });
 
@@ -126,8 +127,8 @@ public class MainFrame extends javax.swing.JFrame {
         this.pnlMain.add(jTransCoder, java.awt.BorderLayout.CENTER);
         
         try {
-            if (CONFIG_XML.exists()) {
-                Config.loadFromXML(CONFIG_XML, option);        
+            if (CONFIG_FILE.exists()) {
+                Config.loadFromJson(CONFIG_FILE, option);        
             }
             this.jTransCoder.setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE), "UTF-8");
             this.jTransCoder.setProperty(option.getJTransCoderProperty());

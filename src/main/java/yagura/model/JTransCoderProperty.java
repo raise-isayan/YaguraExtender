@@ -1,8 +1,10 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
+import java.nio.charset.StandardCharsets;
 
 /**
  *
@@ -10,6 +12,7 @@ import extend.util.external.TransUtil.NewLine;
  */
 public class JTransCoderProperty {
 
+    @Expose
     private EncodeType encodeType = EncodeType.ALL;
 
     /**
@@ -26,6 +29,7 @@ public class JTransCoderProperty {
         this.encodeType = encodeType;
     }
 
+    @Expose
     private NewLine newLine = NewLine.NONE;
 
     /**
@@ -42,6 +46,7 @@ public class JTransCoderProperty {
         this.newLine = newLine;
     }
 
+    @Expose
     private ConvertCase convertCase = ConvertCase.LOWLER;
 
     /**
@@ -58,6 +63,7 @@ public class JTransCoderProperty {
         this.convertCase = convertCase;
     }
 
+    @Expose
     private boolean lineWrap = false;
 
     /**
@@ -74,6 +80,7 @@ public class JTransCoderProperty {
         this.lineWrap = lineWrap;
     }
 
+    @Expose
     private boolean rawEncoding = false;
 
     /**
@@ -90,6 +97,7 @@ public class JTransCoderProperty {
         this.rawEncoding = rawEncoding;
     }
 
+    @Expose
     private boolean guessEncoding = false;
 
     /**
@@ -106,7 +114,8 @@ public class JTransCoderProperty {
         this.guessEncoding = guessEncoding;
     }
 
-    private String selectEncoding = "UTF-8";
+    @Expose
+    private String selectEncoding = StandardCharsets.UTF_8.toString();
 
     /**
      * @return the selectEncoding

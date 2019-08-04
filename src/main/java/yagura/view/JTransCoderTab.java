@@ -2607,12 +2607,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         try {
             this.txtOutputFormat.setText("");
             this.tabbetOutput.remove(this.pnlOutputFormat);
-            if (FormatUtil.isJSON(outputText)) {
+            if (FormatUtil.isJson(outputText)) {
                 this.tabbetOutput.addTab("JSON", this.pnlOutputFormat);
-                this.txtOutputFormat.setText(FormatUtil.prettyJSON(outputText));
-            } else if (FormatUtil.isXML(outputText)) {
+                this.txtOutputFormat.setText(FormatUtil.prettyJson(outputText));
+            } else if (FormatUtil.isXml(outputText)) {
                 this.tabbetOutput.addTab("XML", this.pnlOutputFormat);
-                this.txtOutputFormat.setText(FormatUtil.prettyXML(outputText));
+                this.txtOutputFormat.setText(FormatUtil.prettyXml(outputText));
             }
             this.txtOutputFormat.setCaretPosition(0);
         } catch (IOException ex) {

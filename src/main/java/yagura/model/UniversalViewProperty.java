@@ -1,5 +1,6 @@
 package yagura.model;
 
+import com.google.gson.annotations.Expose;
 import extend.util.Util;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class UniversalViewProperty {
         return Collections.unmodifiableList(list);
     }
 
-    // Encoding
+    // non Expose
     private boolean clipbordAutoDecode = true;
 
     public void setClipbordAutoDecode(boolean value) {
@@ -78,6 +79,7 @@ public class UniversalViewProperty {
         return this.clipbordAutoDecode;
     }
 
+    @Expose
     private final List<String> encodingList = new ArrayList<>(getDefaultEncodingList());
 
     public void setEncodingList(List<String> encodingList) {
@@ -120,14 +122,15 @@ public class UniversalViewProperty {
 
     };
 
-    private EnumSet<UniversalView> view = EnumSet.of(UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON);
+    @Expose
+    private EnumSet<UniversalView> mesageView = EnumSet.of(UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON);
 
     public EnumSet<UniversalView> getMessageView() {
-        return view;
+        return mesageView;
     }
 
     public void setMessageView(EnumSet<UniversalView> view) {
-        this.view = view;
+        this.mesageView = view;
     }
 
     public void setProperty(UniversalViewProperty property) {

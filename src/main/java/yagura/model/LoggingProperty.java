@@ -1,6 +1,6 @@
 package yagura.model;
 
-import yagura.LegacyConfig;
+import com.google.gson.annotations.Expose;
 import java.text.SimpleDateFormat;
 import yagura.Config;
 
@@ -12,8 +12,8 @@ public class LoggingProperty {
 
     private final static String DEFAULT_LOG_TIMESTAMP_FORMAT = "yyyyMMdd HH:mm:ss";
     private final static String DEFAULT_LOG_DIR_FORMAT = "yyyyMMdd";
-    private String logTimestampFormat = DEFAULT_LOG_TIMESTAMP_FORMAT;
 
+    @Expose
     private boolean autoLogging = false;
 
     public boolean isAutoLogging() {
@@ -24,6 +24,7 @@ public class LoggingProperty {
         this.autoLogging = autoLogging;
     }
 
+    @Expose
     private String logBaseDir = Config.getUserDir();
 
     public String getBaseDir() {
@@ -34,6 +35,7 @@ public class LoggingProperty {
         this.logBaseDir = logBaseDir;
     }
 
+    @Expose
     private int logFileLimitSize = 0;
 
     public int getLogFileLimitSize() {
@@ -47,10 +49,11 @@ public class LoggingProperty {
     /**
      * @return the logFileLimitSize
      */
-    public int getLogFileByteLimitSize() {
-        return this.logFileLimitSize * 1024 * 1024;
+    public long getLogFileByteLimitSize() {
+        return this.logFileLimitSize * 1024L * 1024L;
     }
 
+    @Expose
     private boolean proxyLog = true;
 
     public boolean isProxyLog() {
@@ -61,6 +64,7 @@ public class LoggingProperty {
         this.proxyLog = proxyLog;
     }
 
+    @Expose
     private boolean toolLog = true;
 
     public boolean isToolLog() {
@@ -71,6 +75,7 @@ public class LoggingProperty {
         this.toolLog = toolLog;
     }
 
+    @Expose
     private String logDirFormat = DEFAULT_LOG_DIR_FORMAT;
 
     public String getLogDirFormat() {
@@ -80,9 +85,12 @@ public class LoggingProperty {
     public void setLogDirFormat(String logDirFormat) {
         this.logDirFormat = logDirFormat;
     }
-
+    
     private SimpleDateFormat logTimestampDateFormat = new SimpleDateFormat(DEFAULT_LOG_TIMESTAMP_FORMAT);
 
+    @Expose
+    private String logTimestampFormat = DEFAULT_LOG_TIMESTAMP_FORMAT;
+    
     public String getLogTimestampFormat() {
         return this.logTimestampFormat;
     }
@@ -96,6 +104,7 @@ public class LoggingProperty {
         return this.logTimestampDateFormat;
     }
 
+    @Expose
     private boolean excludeFilter = false;
 
     public boolean isExclude() {
@@ -106,6 +115,7 @@ public class LoggingProperty {
         this.excludeFilter = excludeFilter;
     }
 
+    @Expose
     private String excludeFilterExtension = "gif,jpg,png,css,ico";
 
     public String getExcludeExtension() {
