@@ -7,7 +7,7 @@ import com.google.gson.JsonElement;
 import extend.util.IniProp;
 import extend.util.Util;
 import extend.util.external.JsonUtil;
-import extend.util.external.MatchItemAdapter;
+import extend.util.external.gson.HotKeyAdapter;
 import extend.util.external.gson.XMatchItemAdapter;
 import extend.view.base.MatchItem;
 import java.io.ByteArrayOutputStream;
@@ -32,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import yagura.Config;
+import yagura.model.HotKey;
 import yagura.model.IOptionProperty;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
@@ -41,6 +41,7 @@ import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import yagura.model.OptionProperty;
 import yagura.model.UniversalViewProperty;
+import yagura.model.UniversalViewProperty.UniversalView;
 
 /**
  *
@@ -61,15 +62,13 @@ public class ConfigTest {
     
     @Before
     public void setUp() {
-//        JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
-        JsonUtil.registerTypeAdapter(MatchAlertItem.class, new XMatchItemAdapter());
-        JsonUtil.registerTypeAdapter(MatchReplaceItem.class, new XMatchItemAdapter());
+        JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
+        JsonUtil.registerTypeHierarchyAdapter(HotKey.class, new HotKeyAdapter());
     }
     
     @After
     public void tearDown() {
-        JsonUtil.removeTypeAdapter(MatchAlertItem.class);
-        JsonUtil.removeTypeAdapter(MatchReplaceItem.class);
+        JsonUtil.removeTypeHierarchyAdapter(MatchItem.class);
     }
 
     /**
@@ -100,78 +99,6 @@ public class ConfigTest {
         
     }
                 
-//    /**
-//     * Test of toCharsetMode method, of class LegacyConfig.
-//     */
-//    @Test
-//    public void testToCharsetMode() {
-//        System.out.println("toCharsetMode");
-//        {
-//            String encodeName = "PlatformDefault";
-//            String expResult = "__CharsetUsePlatformDefault";
-//            String result = LegacyConfig.toCharsetMode(encodeName);
-//            assertEquals(expResult, result);            
-//        }
-//        {
-//            String encodeName = "AutoRecognise";
-//            String expResult = "__CharsetAutoRecognise";
-//            String result = LegacyConfig.toCharsetMode(encodeName);
-//            assertEquals(expResult, result);            
-//        }
-//        {
-//            String encodeName = "RawBytes";
-//            String expResult = "__CharsetRawBytes";
-//            String result = LegacyConfig.toCharsetMode(encodeName);
-//            assertEquals(expResult, result);            
-//        }
-//    }
-
-//    /**
-//     * Test of toEncodingName method, of class LegacyConfig.
-//     */
-//    @Test
-//    public void testToEncodingName() {
-//        System.out.println("toEncodingName");
-//        {
-//            String charSetMode = "__CharsetUsePlatformDefault";
-//            String expResult = "PlatformDefault";
-//            String result = LegacyConfig.toEncodingName(charSetMode);
-//            assertEquals(expResult, result);        
-//        }
-//        {
-//            String charSetMode = "__CharsetAutoRecognise";
-//            String expResult = "AutoRecognise";
-//            String result = LegacyConfig.toEncodingName(charSetMode);
-//            assertEquals(expResult, result);        
-//        }
-//        {
-//            String charSetMode = "__CharsetRawBytes";
-//            String expResult = "RawBytes";
-//            String result = LegacyConfig.toEncodingName(charSetMode);
-//            assertEquals(expResult, result);        
-//        }
-//    }
-
-//    /**
-//     * Test of isEncodingName method, of class LegacyConfig.
-//     */
-//    @Test
-//    public void testIsEncodingName() {
-//        System.out.println("isEncodingName");
-//        {
-//            String charSetMode = "__CharsetUsePlatformDefault";
-//            boolean expResult = false;
-//            boolean result = LegacyConfig.isEncodingName(charSetMode);
-//            assertEquals(expResult, result);        
-//        }
-//        {
-//            String charSetMode = "PlatformDefault";
-//            boolean expResult = true;
-//            boolean result = LegacyConfig.isEncodingName(charSetMode);
-//            assertEquals(expResult, result);        
-//        }        
-//    }
-
     private final IOptionProperty optionProperty = new OptionProperty();
     
     /**
@@ -251,7 +178,7 @@ public class ConfigTest {
     @Test
     public void testMatchAlertProperty() {
         MatchAlertProperty matchAlert = optionProperty.getMatchAlertProperty();
-        List<MatchAlertItem> matchAlertList = new ArrayList<MatchAlertItem>();
+        List<MatchAlertItem> matchAlertList = new ArrayList<>();
 
         MatchAlertItem matchAlertItem0 = new MatchAlertItem();
         matchAlertItem0.setNotifyTypes(EnumSet.allOf(MatchItem.NotifyType.class));
@@ -290,7 +217,7 @@ public class ConfigTest {
         item.setType("test");
         item.setReplace("replace");
         GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().serializeNulls();
-        gsonBuilder.registerTypeAdapter(MatchItem.class, new MatchItemAdapter());
+        gsonBuilder.registerTypeAdapter(MatchItem.class, new XMatchItemAdapter());
         Gson gson = gsonBuilder.create();
         String json = gson.toJson(item);
         System.out.println(json);
@@ -303,7 +230,7 @@ public class ConfigTest {
         item.setType("test");
         item.setReplace("replace");
         GsonBuilder gsonBuilder = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().disableHtmlEscaping().serializeNulls();
-        gsonBuilder.registerTypeHierarchyAdapter(MatchItem.class, new MatchItemAdapter());
+        gsonBuilder.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
         Gson gson = gsonBuilder.create();
         String json = gson.toJson(item);
         System.out.println(json);
@@ -339,7 +266,14 @@ public class ConfigTest {
         File fi = new File(url.toURI());
         if (fi.exists()) {
             OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);        
+            assertEquals(5, option.getEncodingProperty().getEncodingList().size());
+            assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
+            assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());
+            assertEquals(1, option.getMatchReplaceProperty().getReplaceMap().size());
+            assertEquals(null, option.getMatchReplaceProperty().getReplaceSelectedGroup(option.getMatchReplaceProperty().getSelectedName()));
+            assertEquals(false, option.getMatchReplaceProperty().getReplaceSelectedGroup("xxx").isInScopeOnly());
+            assertEquals(1, option.getMatchReplaceProperty().getReplaceSelectedList("xxx").size());
         }        
     }
-    
+   
 }

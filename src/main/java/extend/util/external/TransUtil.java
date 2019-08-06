@@ -4,6 +4,7 @@ import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
 import extend.util.UTF7Charset;
 import extend.util.Util;
+import extend.view.base.RegexItem;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.IDN;
@@ -1310,6 +1311,19 @@ public class TransUtil {
         return buff.toString();
     }
 
+    public static Pattern compileRegex(String text, boolean smartMatch, boolean regexp, boolean ignoreCase) {
+        int flags = 0;
+        if (ignoreCase) {
+            flags |= Pattern.CASE_INSENSITIVE;
+        }
+        Pattern p = RegexItem.compileRegex(text, flags, !regexp);
+        if (smartMatch) {
+            String smartRegex = TransUtil.toSmartMatch(text);
+            p = RegexItem.compileRegex(smartRegex, flags, false);
+        }
+        return p;
+    }
+            
     /**
      * リストを作成する
      *

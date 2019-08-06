@@ -179,7 +179,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
     private CustomTableModel modelAlert = null;
     private final MatchAlertItemDlg matchAlertDlg = new MatchAlertItemDlg(null, true);
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {

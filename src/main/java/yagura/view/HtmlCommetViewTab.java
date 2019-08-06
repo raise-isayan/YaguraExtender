@@ -36,7 +36,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         customizeComponents();
     }
 
-    private QuickSearchTab quickSearchTab = new QuickSearchTab();
+    private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
         @Override
@@ -62,7 +62,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             String encoding = quickSearchTab.getSelectedEncoding();
             if (encoding != null) {
-                setMessageView(encoding);
+                setMessageEncoding(encoding);
             }
         }
     };
@@ -98,7 +98,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 
     private HttpMessage message = null;
 
-    public void setMessageView(String encoding) {
+    public void setMessageEncoding(String encoding) {
         try {
             if (this.message == null) {
                 return;

@@ -25,6 +25,17 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class JsonUtil {
 
+    public static boolean validJson(String jsonElementString) {
+        try {
+            JsonParser jp = new JsonParser();
+            jp.parse(jsonElementString);        
+            return true;
+        }
+        catch (JsonSyntaxException ex) {
+            return false;
+        }
+    }
+    
     public static String stringify(JsonElement jsonElement) {
         return prettyJson(jsonElement, false);
     }
@@ -99,33 +110,27 @@ public class JsonUtil {
     
     public static boolean isJson(String jsonString) {
         Matcher m = JSON_TYPE.matcher(jsonString);
-        try {
-            if (m.lookingAt()) {
-                JsonUtil.prettyJson(jsonString, false);
-                return true;
-            } else {
-                return false;
-            }        
-        } catch (JsonSyntaxException ex) {
+        if (m.lookingAt()) {
+            return JsonUtil.validJson(jsonString);
+        } else {
             return false;
-        }
+        }        
     }
 
     private static final Map<Class<?>, Object> typeAdapterMap = new HashMap<>();
     
-    public static void registerTypeAdapter(Class<?> baseType, Object typeAdapter) {
+    public static void registerTypeHierarchyAdapter(Class<?> baseType, Object typeAdapter) {
         typeAdapterMap.put(baseType, typeAdapter);
     }
 
-    public static void removeTypeAdapter(Class<?> baseType) {
+    public static void removeTypeHierarchyAdapter(Class<?> baseType) {
         typeAdapterMap.remove(baseType);
     }
     
     public static void saveToJson(File fo, Object bean, boolean exludeFields) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
         for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
-    //        gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
-            gsonBuilder.registerTypeAdapter(set.getKey(), set.getValue());
+            gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
         }
         if (exludeFields) {            
             gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();

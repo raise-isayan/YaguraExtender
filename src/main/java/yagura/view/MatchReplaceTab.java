@@ -216,8 +216,8 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
         }
     };
 
-    private javax.swing.ImageIcon image_check = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/tick.png"));
-    private javax.swing.ImageIcon image_uncheck = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/untick.png"));
+    private final javax.swing.ImageIcon image_check = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/tick.png"));
+    private final javax.swing.ImageIcon image_uncheck = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/untick.png"));
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {

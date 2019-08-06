@@ -97,7 +97,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             String encoding = quickSearchTab.getSelectedEncoding();
             if (encoding != null) {
-                setMessageView(encoding);
+                setMessageEncoding(encoding);
             }
         }
     };
@@ -132,7 +132,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.quickSearchTab.setMessageFont(font);
     }
 
-    public void setMessageView(String encoding) {
+    public void setMessageEncoding(String encoding) {
         try {
             if (this.content == null) {
                 return;

@@ -1,6 +1,5 @@
 package yagura;
 
-import burp.BurpExtender;
 import extend.util.CustomVersion;
 
 /**

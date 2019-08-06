@@ -1,7 +1,6 @@
 package yagura;
 
 import extend.util.external.JsonUtil;
-import extend.view.base.MatchItem;
 import java.io.File;
 import java.io.IOException;
 import yagura.model.OptionProperty;

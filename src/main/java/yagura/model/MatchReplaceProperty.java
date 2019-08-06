@@ -75,13 +75,6 @@ public class MatchReplaceProperty {
     }
 
     /**
-     * @return the matchReplaceGroup
-     */
-    public MatchReplaceGroup getMatchReplaceGroup() {
-        return this.replaceMap.get(this.selectedName);
-    }
-
-    /**
      * @return the matchReplaceList
      */
     public List<MatchReplaceItem> getMatchReplaceList() {

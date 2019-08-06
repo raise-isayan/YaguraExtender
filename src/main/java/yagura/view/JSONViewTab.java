@@ -17,11 +17,9 @@ import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
-import javax.swing.text.StyledEditorKit;
-import javax.swing.tree.DefaultTreeModel;
+import yagura.model.QuickSearchEvent;
+import yagura.model.QuickSearchListener;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -31,13 +29,6 @@ import yagura.model.UniversalViewProperty;
 public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
 
     private boolean isRequest = true;
-
-    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
-        @Override
-        public Document createDefaultDocument() {
-            return new JSONSyntaxDocument();
-        }
-    };
 
     /**
      * Creates new form JSONView
@@ -55,15 +46,15 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         customizeComponents();
     }
 
-    private JSONView jsonView = new JSONView();
-    private DefaultTreeModel modelJSON;
-    private QuickSearchTab quickSearchTab = new QuickSearchTab();
+    private final JSONView jsonView = new JSONView();
+    private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea(this.jsonView.getTextArea());
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
-
+        this.quickSearchTab.addQuickSearchListener(quickSerchStateChanged);
+        
         this.add(jsonView, java.awt.BorderLayout.CENTER);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
@@ -73,11 +64,26 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             String encoding = quickSearchTab.getSelectedEncoding();
             if (encoding != null) {
-                setMessageView(encoding);
+                setMessageEncoding(encoding);
             }
         }
     };
 
+    private final QuickSearchListener quickSerchStateChanged = new QuickSearchListener() {
+       
+        @Override
+        public void quickBackPerformed(QuickSearchEvent evt) {
+
+        }
+
+        @Override
+        public void quickForwardPerformed(QuickSearchEvent evt) {
+            
+        }    
+
+    };
+
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,8 +114,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     private javax.swing.JPopupMenu popQuick;
     // End of variables declaration//GEN-END:variables
 
-    public void setMessageView(String encoding) {
-        Logger.getLogger(JSONViewTab.class.getName()).log(Level.INFO, "encoding:" + encoding);
+    public void setMessageEncoding(String encoding) {
         try {
             if (this.message != null) {
                 String msg = Util.decodeMessage(this.message.getBodyBytes(), encoding);

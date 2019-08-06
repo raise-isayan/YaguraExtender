@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import yagura.model.HotKey;
 import yagura.model.SendToItem;
 
 /**
@@ -158,13 +159,13 @@ public class HotkeyDlg extends CustomDialog {
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META
-                && (evt.getModifiers() == 0)) {
+                && (evt.getModifiersEx() == 0)) {
         } else if (evt.getKeyCode() != java.awt.event.KeyEvent.CHAR_UNDEFINED
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_CONTROL
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_SHIFT
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_ALT
                 && evt.getKeyCode() != java.awt.event.KeyEvent.VK_META
-                && (evt.getModifiers() & java.awt.event.KeyEvent.CTRL_MASK) != 0) {
+                && (evt.getModifiersEx() & java.awt.event.KeyEvent.CTRL_DOWN_MASK) != 0) {
             keyEvent = evt;
         }
         if (keyEvent != null) {
@@ -178,7 +179,7 @@ public class HotkeyDlg extends CustomDialog {
                     editRows[k] = modelTable.getValueAt(rowIndex, this.tableHotkey.convertColumnIndexToModel(k));
                 }
                 SendToItem item = fromObjects(editRows);
-                item.setHotkey(keyEvent);
+                item.setHotkey(new HotKey(keyEvent));
                 editRows[2] = keyEventText;
                 SwingUtil.updateItem(this.tableHotkey, editRows, rowSelect[i]);
             }
@@ -268,7 +269,7 @@ public class HotkeyDlg extends CustomDialog {
 
     public List<SendToItem> getItemList() {
         javax.swing.JTable srcTable = this.tableHotkey;
-        List<SendToItem> list = new ArrayList<SendToItem>();
+        List<SendToItem> list = new ArrayList<>();
         for (int i = 0; i < srcTable.getRowCount(); i++) {
             Object editRows[] = this.modelHotkey.getRows(i);
             SendToItem sendToItem = fromObjects(editRows);

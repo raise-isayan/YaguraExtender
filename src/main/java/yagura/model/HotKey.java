@@ -144,7 +144,7 @@ public class HotKey extends KeyEvent {
     }
 
     public HotKey(KeyEvent evt) {
-        super(evt.getComponent(), evt.getID(), evt.getWhen(), evt.getModifiers(), evt.getKeyCode(), evt.getKeyChar(), evt.getKeyLocation());
+        super(evt.getComponent(), evt.getID(), evt.getWhen(), evt.getModifiersEx(), evt.getKeyCode(), evt.getKeyChar(), evt.getKeyLocation());
     }
 
     @Override
@@ -152,7 +152,7 @@ public class HotKey extends KeyEvent {
         return SwingUtil.getKeyText(this);
     }
 
-    public static KeyEvent parseHotkey(String value) {
+    public static HotKey parseHotkey(String value) {
         String hotkeys[] = value.split("\\+");
         int modifiers = 0;
         int keyCode = 0;
@@ -167,7 +167,8 @@ public class HotKey extends KeyEvent {
                 }
             }
         }
-        return new KeyEvent(BurpExtender.getInstance().getUiComponent(), KEY_PRESSED, System.currentTimeMillis(), modifiers, keyCode, (char) keyCode);
+        KeyEvent key = new KeyEvent(BurpExtender.getInstance().getUiComponent(), KEY_PRESSED, System.currentTimeMillis(), modifiers, keyCode, (char) keyCode);
+        return new HotKey(key);
     }
 
     public static int getKeyModifierMask(int keyCode) {

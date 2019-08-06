@@ -38,10 +38,12 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import extend.util.external.TransUtil;
+import java.util.EnumSet;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
 import yagura.model.ResultView;
+import yagura.model.UniversalViewProperty.UniversalView;
 
 /**
  *
@@ -366,9 +368,9 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
     }
 
     private DefaultObjectTableModel<ResultView> modelSearch = null;
-    private MessageViewTab tabMessageView = new MessageViewTab();
-    private JComboBox cmbColor = new JComboBox();
-    private DefaultTableCellRenderer colorTableRenderer = new DefaultTableCellRenderer() {
+    private final MessageViewTab tabMessageView = new MessageViewTab();
+    private final JComboBox cmbColor = new JComboBox();
+    private final DefaultTableCellRenderer colorTableRenderer = new DefaultTableCellRenderer() {
 
         @Override
         public Component getTableCellRendererComponent(JTable table,
@@ -457,7 +459,8 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
 
         this.pnlView.add(this.tabMessageView, BorderLayout.CENTER);
         this.tabMessageView.setVisible(false);
-
+        this.tabMessageView.setMessageView(EnumSet.of(UniversalView.JRAW));
+        
         this.modelSearch = new DefaultObjectTableModel<>(this.tableResult.getModel());
         this.modelSearch.setCellEditable(true);
         this.tableResult.setModel(this.modelSearch);
@@ -689,16 +692,18 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.btnSearch.setText("Stop");
         // all clear
         this.modelSearch.removeAll();
-        int flags = 0;
-        if (this.chkIgnoreCase.isSelected()) {
-            flags |= Pattern.CASE_INSENSITIVE;
-        }
-        Pattern p = RegexItem.compileRegex(text, flags, !this.chkRegExp.isSelected());
-        if (this.chkSmartMatch.isSelected()) {
-            String smartRegex = TransUtil.toSmartMatch(text);
-            p = RegexItem.compileRegex(smartRegex, flags, false);
-        }
+        Pattern p = TransUtil.compileRegex(text, this.chkSmartMatch.isSelected(), this.chkRegExp.isSelected(), this.chkRegExp.isSelected());
 
+//        int flags = 0;
+//        if (this.chkRegExp.isSelected()) {
+//            flags |= Pattern.CASE_INSENSITIVE;
+//        }
+//        Pattern p = RegexItem.compileRegex(text, flags, !this.chkRegExp.isSelected());
+//        if (this.chkSmartMatch.isSelected()) {
+//            String smartRegex = TransUtil.toSmartMatch(text);
+//            p = RegexItem.compileRegex(smartRegex, flags, false);
+//        }
+        
         IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));

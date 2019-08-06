@@ -1,7 +1,6 @@
 package yagura.view;
 
 import extend.util.SwingUtil;
-import extend.util.external.FormatUtil;
 import extend.util.external.JsonUtil;
 import java.awt.Font;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import javax.swing.text.StyledEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 /**
@@ -187,4 +187,16 @@ public class JSONView extends javax.swing.JPanel {
         SwingUtil.collapseAll(this.treeJSON, path);
     }
 
+    public void quickSearch(String keyword) {
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
+        quickSearch(root, keyword);
+    }
+
+    protected void quickSearch(DefaultMutableTreeNode node, String keyword) {
+       for (int i = 0; i < node.getChildCount(); i++) {
+           TreeNode child = node.getChildAt(i);
+           child.toString();
+       }
+    }
+    
 }

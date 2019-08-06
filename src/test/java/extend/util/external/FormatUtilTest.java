@@ -1,6 +1,9 @@
 package extend.util.external;
 
 import extend.util.external.FormatUtil;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -57,10 +60,18 @@ public class FormatUtilTest {
     @Test
     public void testIsURL_file() {
         System.out.println("isURL");
-        String plainURL = "file://example.com/";
-        boolean expResult = false;
-        boolean result = FormatUtil.isUrl(plainURL);
-        assertEquals(expResult, result);
+        {
+            String plainURL = "file://example.com/";
+            boolean expResult = false;
+            boolean result = FormatUtil.isUrl(plainURL);
+            assertEquals(expResult, result);
+        }
+        {
+            String plainURL = "httpsfile://example.com/";
+            boolean expResult = false;
+            boolean result = FormatUtil.isUrl(plainURL);
+            assertEquals(expResult, result);        
+        }
     }
 
     /**
@@ -74,6 +85,11 @@ public class FormatUtilTest {
             boolean expResult = true;
             boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
+            try {
+                FormatUtil.prettyXml(plainXML, false);
+            } catch (IOException ex) {
+                fail();
+            }
         }
 
         System.out.println("isXML2");
@@ -82,6 +98,11 @@ public class FormatUtilTest {
             boolean expResult = true;
             boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
+            try {
+                FormatUtil.prettyXml(plainXML, false);
+            } catch (IOException ex) {
+                fail();
+            }
         }
 
         System.out.println("isXML3");
@@ -90,6 +111,11 @@ public class FormatUtilTest {
             boolean expResult = true;
             boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
+            try {
+                FormatUtil.prettyXml(plainXML, false);
+            } catch (IOException ex) {
+                fail();
+            }
         }
 
         System.out.println("isXML4");
@@ -98,6 +124,11 @@ public class FormatUtilTest {
             boolean expResult = true;
             boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
+            try {
+                FormatUtil.prettyXml(plainXML, false);
+            } catch (IOException ex) {
+                fail();
+            }
         }
 
         System.out.println("isXML5");
@@ -107,10 +138,41 @@ public class FormatUtilTest {
             boolean expResult = true;
             boolean result = FormatUtil.isXml(plainXML);
             assertEquals(expResult, result);
+            try {
+                FormatUtil.prettyXml(plainXML, false);
+            } catch (IOException ex) {
+                fail();
+            }
         }
 
+        System.out.println("isXML6");
+        {
+            String plainXML = "<root><a/>\r>>>>\n<x>z</x><z/><z/>\r\n</root>\r\n";
+            boolean expResult = true;
+            boolean result = FormatUtil.isXml(plainXML);
+            assertEquals(expResult, result);
+            try {
+                FormatUtil.prettyXml(plainXML, false);
+            } catch (IOException ex) {
+                fail();
+            }
+        }
+        
+        System.out.println("isXML7");
+        {
+            String plainXML = "<root><a/>\r<<<<\n<x>z</x><z/><z/>\r\n</root>\r\n";
+            boolean expResult = false;
+            boolean result = FormatUtil.isXml(plainXML);
+            assertEquals(expResult, result);
+            try {
+                FormatUtil.prettyXml(plainXML, false);
+            } catch (IOException ex) {
+                assertTrue(true);
+            }
+        }
+        
     }
-
+    
     /**
      * Test of isJSON method, of class FormatUtil.
      */
@@ -172,6 +234,23 @@ public class FormatUtilTest {
             assertEquals(expResult, result);
         }
 
+        System.out.println("isJSON8");
+        {
+            // 本来はJSONとして有効だが falseを返す仕様
+            String plainJson = "\"key\"";
+            boolean expResult = false;
+            boolean result = FormatUtil.isJson(plainJson);
+            assertEquals(expResult, result);
+        }
+
+        System.out.println("isJSON9");
+        {
+            String plainJson = "\"key\"";
+            boolean expResult = true;
+            boolean result = JsonUtil.validJson(plainJson);
+            assertEquals(expResult, result);
+        }
+        
     }
 
     /**
@@ -186,12 +265,7 @@ public class FormatUtilTest {
         assertEquals(expResult, result);
     }
 
-    @Test
-    public void testIndexOf() throws Exception {
-        String test = "xxxxxxxxx";
-        int idx = test.indexOf("");
-        System.out.print(idx);
-    }
+
     
     
 }

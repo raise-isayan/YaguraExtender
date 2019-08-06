@@ -1,12 +1,7 @@
 package yagura.model;
 
-import burp.BurpExtender;
 import com.google.gson.annotations.Expose;
-import extend.util.SwingUtil;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.event.EventListenerList;
 
 /**
@@ -226,14 +221,14 @@ public class SendToItem {
     }
 
    @Expose
-    private KeyEvent hotkey = null;
+    private HotKey hotkey = null;
 
-    public KeyEvent getHotkey() {
+    public HotKey getHotkey() {
         return (hotkey == null) ? null : new HotKey(hotkey);
     }
 
-    public void setHotkey(KeyEvent keyEvent) {
-        this.hotkey = keyEvent;
+    public void setHotkey(HotKey hotKey) {
+        this.hotkey = hotKey;
     }
 
     /**
@@ -250,7 +245,7 @@ public class SendToItem {
         this.sendExtend = sendExtend;
     }
 
-    public static KeyEvent parseHotkey(String value) {
+    public static HotKey parseHotkey(String value) {
         return HotKey.parseHotkey(value);
     }
 
@@ -318,7 +313,7 @@ public class SendToItem {
         sendTo.setResponseHeader((Boolean) rows[6]);
         sendTo.setResponseBody((Boolean) rows[7]);
         sendTo.setReverseOrder((Boolean) rows[8]);
-        sendTo.setHotkey((KeyEvent) rows[9]);
+        sendTo.setHotkey((HotKey) rows[9]);
         sendTo.setExtend((ExtendType) rows[10]);
         return sendTo;
     }

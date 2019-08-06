@@ -19,6 +19,7 @@ import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.Util;
 import extend.util.external.JsonUtil;
+import extend.util.external.gson.HotKeyAdapter;
 import extend.util.external.gson.XMatchItemAdapter;
 import extend.view.base.HttpResponse;
 import java.awt.Component;
@@ -54,6 +55,7 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import passive.IssueItem;
 import yagura.Config;
+import yagura.model.HotKey;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
@@ -88,7 +90,8 @@ public class BurpExtender extends BurpExtenderImpl
         } catch (IOException ex) {
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JsonUtil.registerTypeAdapter(MatchItem.class, new XMatchItemAdapter());
+        JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
+        JsonUtil.registerTypeHierarchyAdapter(HotKey.class, new HotKeyAdapter());
     }
 
     public static BurpExtender getInstance() {
@@ -249,7 +252,7 @@ public class BurpExtender extends BurpExtenderImpl
 
         // Match and Replace
         if (this.option.getMatchReplaceProperty().isSelectedMatchReplace()) {
-            MatchReplaceGroup group = this.option.getMatchReplaceProperty().getMatchReplaceGroup();
+            MatchReplaceGroup group = this.option.getMatchReplaceProperty().getReplaceSelectedGroup(this.option.getMatchReplaceProperty().getSelectedName());
             if (group != null && group.isInScopeOnly()) {
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(msgInfo.getHttpService(), messageByte);
                 if (BurpExtender.getCallbacks().isInScope(reqInfo.getUrl())) {

@@ -77,7 +77,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             String encoding = quickSearchTab.getSelectedEncoding();
             if (encoding != null) {
-                setMessageView(encoding);
+                setMessageEncoding(encoding);
             }
         }
     };
@@ -290,7 +290,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         add(splitGeneratorPoC, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
@@ -376,7 +376,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private HttpRequest message = null;
 
-    public void setMessageView(String encoding) {
+    public void setMessageEncoding(String encoding) {
         try {
             if (this.message == null) {
                 return;

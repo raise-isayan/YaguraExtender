@@ -4,8 +4,10 @@ import burp.IHttpRequestResponse;
 import burp.BurpExtender;
 import yagura.model.*;
 import java.awt.Font;
+import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import yagura.model.UniversalViewProperty.UniversalView;
 
 /**
  *
@@ -100,6 +102,17 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         this.tabGeneratePoC.setFont(font);
     }
 
+    private final EnumSet<UniversalView> mesageView = EnumSet.noneOf(UniversalView.class);
+
+    public EnumSet<UniversalView> getMessageView() {
+        return mesageView;
+    }
+
+    public void setMessageView(EnumSet<UniversalView> view) {
+        this.mesageView.clear();
+        this.mesageView.addAll(view);
+    }
+        
     private HttpMessageItem messageItem = null;
 
     /**
@@ -147,28 +160,28 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         }
     }
 
-    public void setMessageView(String encoding) {
+    public void setMessageEncoding(String encoding) {
         try {
             if (this.messageItem == null) {
                 return;
             }
             if (messageItem.getRequest() != null) {
                 if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabRequestRawView.getTabCaption())) {
-                    this.tabRequestRawView.setMessageView(encoding);
+                    this.tabRequestRawView.setMessageEncoding(encoding);
                     this.tabRequestRawView.clearView();
                 } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabResponseRawView.getTabCaption())) {
-                    this.tabResponseRawView.setMessageView(encoding);
+                    this.tabResponseRawView.setMessageEncoding(encoding);
                     this.tabResponseRawView.clearView();
                 } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab("JSON")) {
-                    this.tabRequestJSONViewTab.setMessageView(encoding);
+                    this.tabRequestJSONViewTab.setMessageEncoding(encoding);
                     this.tabRequestJSONViewTab.clearView();
-                    this.tabResponseJSONViewTab.setMessageView(encoding);
+                    this.tabResponseJSONViewTab.setMessageEncoding(encoding);
                     this.tabResponseJSONViewTab.clearView();
                 } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabHtmlComment.getTabCaption())) {
-                    this.tabHtmlComment.setMessageView(encoding);
+                    this.tabHtmlComment.setMessageEncoding(encoding);
                     this.tabHtmlComment.clearView();
                 } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabGeneratePoC.getTabCaption())) {
-                    this.tabGeneratePoC.setMessageView(encoding);
+                    this.tabGeneratePoC.setMessageEncoding(encoding);
                     this.tabGeneratePoC.clearView();
                 }
             }
@@ -180,24 +193,24 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     public void setEnabled(byte[] content, boolean isMessageRequest) {
         if (isMessageRequest) {
             this.tabbetRequestView.removeAll();
-            if (this.tabRequestRawView.isEnabled(content, isMessageRequest)) {
+            if (this.tabRequestRawView.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JRAW)) {
                 this.tabbetRequestView.addTab("Raw", this.tabRequestRawView);
             }
-            if (this.tabRequestJSONViewTab.isEnabled(content, isMessageRequest)) {
+            if (this.tabRequestJSONViewTab.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JSON)) {
                 this.tabbetRequestView.addTab(this.tabRequestJSONViewTab.getTabCaption(), this.tabRequestJSONViewTab);
             }
-            if (this.tabGeneratePoC.isEnabled(content, isMessageRequest)) {
+            if (this.tabGeneratePoC.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.GENERATE_POC)) {
                 this.tabbetRequestView.addTab(this.tabGeneratePoC.getTabCaption(), this.tabGeneratePoC);
             }
         } else {
             this.tabbetResponseView.removeAll();
-            if (this.tabResponseRawView.isEnabled(content, isMessageRequest)) {
+            if (this.tabResponseRawView.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JRAW)) {
                 this.tabbetResponseView.addTab("Raw", this.tabResponseRawView);
             }
-            if (this.tabResponseJSONViewTab.isEnabled(content, isMessageRequest)) {
+            if (this.tabResponseJSONViewTab.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JSON)) {
                 this.tabbetResponseView.addTab(this.tabResponseJSONViewTab.getTabCaption(), this.tabResponseJSONViewTab);
             }
-            if (this.tabHtmlComment.isEnabled(content, isMessageRequest)) {
+            if (this.tabHtmlComment.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.HTML_COMMENT)) {
                 this.tabbetResponseView.addTab(this.tabHtmlComment.getTabCaption(), this.tabHtmlComment);
             }
         }

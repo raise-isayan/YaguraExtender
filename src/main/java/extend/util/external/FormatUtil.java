@@ -4,6 +4,8 @@ import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
@@ -34,15 +36,32 @@ public class FormatUtil {
         return m.find();
     }
 
-    public static boolean isXml(String plainXML) {
-        Matcher m = XML_TYPE.matcher(plainXML);
-        return m.lookingAt();
+    public static boolean isXml(String xmlString) {
+        Matcher m = XML_TYPE.matcher(xmlString);
+        if (m.lookingAt()) {
+            return validXml(xmlString);
+        }        
+        return false;
     }
 
+    public static boolean validXml(String xmlString) {
+        StringWriter sw = new StringWriter();
+        try {
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
+            Document document = docBuilder.parse(new InputSource(new StringReader(xmlString)));
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            return false;
+        }
+        return true;
+    }
+    
     public static boolean isJson(String jsonString) {
         return JsonUtil.isJson(jsonString);
     }
 
+    
+    
     public static String prettyXml(String xmlString) throws IOException {
         return prettyXml(xmlString, true);
     }

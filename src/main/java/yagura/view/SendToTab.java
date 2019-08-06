@@ -217,10 +217,10 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         return this;
     }
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private CustomTableModel modelSendTo = null;
-    private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
 
+    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
     private final HotkeyDlg hotkeyDlg = new HotkeyDlg(null, true);
 
     @SuppressWarnings("unchecked")
@@ -383,7 +383,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 
     public List<SendToItem> getSendToItemList() {
         javax.swing.JTable srcTable = this.tableSendTo;
-        List<SendToItem> list = new ArrayList<SendToItem>();
+        List<SendToItem> list = new ArrayList<>();
         for (int i = 0; i < srcTable.getRowCount(); i++) {
             Object editRows[] = this.modelSendTo.getRows(i);
             list.add(SendToItem.fromObjects(editRows));

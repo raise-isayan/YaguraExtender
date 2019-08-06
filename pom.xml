@@ -6,7 +6,7 @@
     <version>1.9</version>
     <packaging>jar</packaging>
     <properties>
-        <releaseVersion>${project.version}.6.0</releaseVersion>
+        <releaseVersion>${project.version}.7.0</releaseVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -44,7 +44,7 @@
             <plugin>
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.8</version>
+                <version>1.6.0</version>
                 <configuration>
                     <sourceDirectory>${project.basedir}/src/main/help</sourceDirectory>
                     <sourceDocumentName>help.adoc</sourceDocumentName>
@@ -163,13 +163,11 @@
             <artifactId>BurpExtlib</artifactId>
             <version>1.9.2</version>
         </dependency>
-
         <dependency>
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>
         <version>2.8.5</version>
         </dependency>
-
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mailapi</artifactId>
@@ -180,13 +178,11 @@
             <artifactId>jdatepicker</artifactId>
             <version>1.3.4</version>
         </dependency>
-
         <dependency>
             <groupId>com.googlecode.juniversalchardet</groupId>
             <artifactId>juniversalchardet</artifactId>
             <version>1.0.3</version>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
