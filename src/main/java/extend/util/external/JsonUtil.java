@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import extend.util.Util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -137,7 +138,7 @@ public class JsonUtil {
         }        
         Gson gson = gsonBuilder.create();
         String jsonString = gson.toJson(bean);
-        Files.writeString(fo.toPath(), jsonString, StandardCharsets.UTF_8);
+        Util.bytesToFile(Util.encodeMessage(jsonString, StandardCharsets.UTF_8), fo);
     }
 
     public static <T> T loadFromJson(File fi, Class<T> classOfT, boolean exludeFields) throws IOException {
@@ -149,7 +150,7 @@ public class JsonUtil {
             gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         }                
         Gson gson = gsonBuilder.create();
-        String jsonString = Files.readString(fi.toPath(), StandardCharsets.UTF_8);
+        String jsonString = Util.decodeMessage(Util.bytesFromFile(fi), StandardCharsets.UTF_8);
         return gson.fromJson(jsonString, classOfT);
     }
 

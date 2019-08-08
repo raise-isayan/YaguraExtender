@@ -1,11 +1,8 @@
 package extend.util.external;
 
-import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
