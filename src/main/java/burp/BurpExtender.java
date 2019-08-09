@@ -23,7 +23,6 @@ import extend.util.external.gson.HotKeyAdapter;
 import extend.util.external.gson.XMatchItemAdapter;
 import extend.view.base.HttpResponse;
 import java.awt.Component;
-import java.awt.DefaultKeyboardFocusManager;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
@@ -199,7 +198,7 @@ public class BurpExtender extends BurpExtenderImpl
             this.registerView();
 
             //
-            DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
+//            DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
 
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
@@ -208,7 +207,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     @Override
     public void extensionUnloaded() {
-        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventPostProcessor(dispatcher);
+//        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventPostProcessor(dispatcher);
     }
 
     public void registerView() {
@@ -332,7 +331,7 @@ public class BurpExtender extends BurpExtenderImpl
                     boolean includeLog = true;
                     if (this.option.getLoggingProperty().isExclude()) {
                         Pattern patternExclude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExcludeExtension()));
-                        Matcher matchExclude = patternExclude.matcher(BurpWrap.getURL(request).getFile());
+                        Matcher matchExclude = patternExclude.matcher(BurpWrap.getURL(httpService, request).getFile());
                         if (matchExclude.find()) {
                             includeLog = false;
                         }

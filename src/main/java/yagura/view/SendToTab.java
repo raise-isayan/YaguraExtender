@@ -144,6 +144,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         }
 
         btnEditHotkey.setText("Edit Hotkey");
+        btnEditHotkey.setDoubleBuffered(true);
         btnEditHotkey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditHotkeyActionPerformed(evt);
@@ -298,9 +299,10 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         this.tableSendTo.getColumnModel().getColumn(8).setMaxWidth(0);
 
         // Hotkey
-//        this.tableSendTo.getColumnModel().getColumn(9).setMinWidth(100);
+        this.tableSendTo.getColumnModel().getColumn(9).setMinWidth(0);
 //        this.tableSendTo.getColumnModel().getColumn(9).setPreferredWidth(80);
-//        this.tableSendTo.getColumnModel().getColumn(9).setMaxWidth(180);
+        this.tableSendTo.getColumnModel().getColumn(9).setMaxWidth(0);
+
         // Extend
         this.tableSendTo.getColumnModel().getColumn(10).setMinWidth(0);
         this.tableSendTo.getColumnModel().getColumn(10).setPreferredWidth(0);
@@ -308,7 +310,8 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 
         // 
         this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
+        this.btnEditHotkey.setVisible(false);
+        
     }
 
     private void btnSendToEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToEditActionPerformed

@@ -88,7 +88,7 @@ public class ConfigTest {
         try {
             URL url = this.getClass().getResource("/resources/default_project_burp.json");
             byte [] test = Util.bytesFromFile(new File(url.toURI()));
-            JsonElement json = JsonUtil.parse(Util.decodeMessage(test, "UTF-8")); 
+            JsonElement json = JsonUtil.parse(Util.decodeMessage(test, StandardCharsets.UTF_8)); 
             String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
         } catch (IOException ex) {

@@ -7,7 +7,7 @@
 == 動作環境
 
 .Java
-* JRE(JDK) 8 (Open JDK を推奨)(https://openjdk.java.net/)
+* JRE(JDK) 8, 11 (Open JDK を推奨)(https://openjdk.java.net/)
 
 .Burp suite
 * 1.7以上 (http://www.portswigger.net/burp/)
@@ -37,6 +37,11 @@
 ** https://code.google.com/archive/p/juniversalchardet/
 ** MPL 1.1, GPL 2.0 License
 ** https://code.google.com/archive/p/juniversalchardet/
+
+* gson
+** https://github.com/google/gson
+** Apache +License
+** https://github.com/google/gson/blob/master/LICENSE
 
 * Use Icon
 ** http://www.famfamfam.com/lab/icons/silk/

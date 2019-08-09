@@ -218,7 +218,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
         for (SendToMenuItem item : sendToList) {
             if (item.isSelected() && item.getHotkey() != null) {
                 KeyEvent hotKey = item.getHotkey();
-                if (evt.getModifiers() == hotKey.getModifiers()
+                if (evt.getModifiersEx() == hotKey.getModifiersEx()
                         && evt.getKeyCode() == hotKey.getKeyCode()) {
                     if (historyList.size() > 0) {
                         IHttpRequestResponse[] messageInfo = historyList.toArray(new IHttpRequestResponse[0]);

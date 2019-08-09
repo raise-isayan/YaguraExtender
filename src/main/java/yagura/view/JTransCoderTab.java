@@ -2462,9 +2462,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
 
             String sttmsg = STATUS_TEXT_FORMAT.format(new Object[]{
-                new Integer(this.txtInputRaw.getText().length()),
-                new Integer(this.txtInputRaw.getCaret().getDot()),
-                new Integer(this.txtInputRaw.getSelectionEnd() - this.txtInputRaw.getSelectionStart())});
+                this.txtInputRaw.getText().length(), this.txtInputRaw.getCaret().getDot(), this.txtInputRaw.getSelectionEnd() - this.txtInputRaw.getSelectionStart()});
             this.lblPositionStatus.setText(sttmsg);
 
             /*
