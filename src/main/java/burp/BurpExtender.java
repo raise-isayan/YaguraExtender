@@ -36,6 +36,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -201,7 +202,7 @@ public class BurpExtender extends BurpExtenderImpl
 //            DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
 
         } else {
-            JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "Burp Extension", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "YaguraExtender", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -278,7 +279,7 @@ public class BurpExtender extends BurpExtenderImpl
     }
 
     public synchronized String getCurrentLogTimestamp() {
-        SimpleDateFormat format = this.option.getLoggingProperty().getLogTimestampDateFormat();
+        DateFormat format = this.option.getLoggingProperty().getLogTimestampDateFormat();
         return format.format(new java.util.Date());
     }
 
@@ -301,7 +302,7 @@ public class BurpExtender extends BurpExtenderImpl
         }
     }
 
-    private final Map<Integer, byte[]> proxyLogs = new HashMap<Integer, byte[]>();
+    private final Map<Integer, byte[]> proxyLogs = new HashMap<>();
 
     /**
      * プロキシログの出力
@@ -594,7 +595,7 @@ public class BurpExtender extends BurpExtenderImpl
      * @return リスト
      */
     public List<String> getSelectEncodingList() {
-        String defaultCharset = Util.DEFAULT_ENCODING;
+        String defaultCharset = HttpUtil.normalizeCharset(Util.DEFAULT_ENCODING);
         List<String> list = new ArrayList<>();
         list.addAll(this.option.getEncodingProperty().getEncodingList());
         // リストにない場合追加
@@ -731,7 +732,9 @@ public class BurpExtender extends BurpExtenderImpl
                     this.historyLogAppend();
                 }
             } catch (IOException ex) {
-                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex.getMessage() , "YaguraExtender", JOptionPane.INFORMATION_MESSAGE);
+                this.option.getLoggingProperty().setAutoLogging(false);
+                this.tabbetOption.setLoggingProperty(this.option.getLoggingProperty());
             }
         }
 

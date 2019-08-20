@@ -190,15 +190,15 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 this.content = content;
                 BurpExtender extenderImpl = BurpExtender.getInstance();
                 String guessCharset = null;
-                HttpMessage httpmessage = null;
+                HttpMessage httpMessage = null;
                 if (isRequest) {
-                    HttpRequest request = HttpRequest.parseHttpRequest(content);
-                    httpmessage = request;
-                    guessCharset = request.getGuessCharset();
+                    HttpRequest httpRequest = HttpRequest.parseHttpRequest(content);
+                    httpMessage = httpRequest;
+                    guessCharset = httpRequest.getGuessCharset();
                 } else {
-                    HttpResponse response = HttpResponse.parseHttpResponse(content);
-                    httpmessage = response;
-                    guessCharset = response.getGuessCharset();
+                    HttpResponse httpResponse = HttpResponse.parseHttpResponse(content);
+                    httpMessage = httpResponse;
+                    guessCharset = httpResponse.getGuessCharset();
                 }
                 if (guessCharset == null) {
                     guessCharset = StandardCharsets.ISO_8859_1.name();

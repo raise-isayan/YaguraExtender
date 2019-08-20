@@ -145,7 +145,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
 
         lblSelectEncode.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        cmbDefaultLangEncoding.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Japanese", "Chinese", "Korean", "Other" }));
+        cmbDefaultLangEncoding.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Japanese", "Chinese", "Korean", "Other" }));
+        cmbDefaultLangEncoding.setSelectedItem("Japanese");
 
         btnReset.setText("Reset");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
@@ -167,7 +168,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEncRightArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEncLerftArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 64, Short.MAX_VALUE))
+                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
@@ -400,7 +401,10 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         String encoding = (String) this.cmbDefaultLangEncoding.getSelectedItem();
-        if (encoding.equals("Japanese")) {
+        if (encoding.equals("Default")) {
+            setEncodingList(UniversalViewProperty.getDefaultEncodingList(null));
+        }
+        else if (encoding.equals("Japanese")) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE));
         } else if (encoding.equals("Chinese")) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.CHINESE));

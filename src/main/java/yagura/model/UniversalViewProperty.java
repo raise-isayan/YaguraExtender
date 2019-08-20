@@ -56,7 +56,10 @@ public class UniversalViewProperty {
 
     public static List<String> getDefaultEncodingList(Locale lang) {
         List<String> list = new ArrayList<>();
-        if (lang.equals(Locale.JAPANESE)) {
+        if (lang == null) {
+            list.addAll(Arrays.asList(ENCODING_DEFAULT_OTHER_LIST));        
+        }
+        else if (lang.equals(Locale.JAPANESE)) {
             list.addAll(Arrays.asList(ENCODING_DEFAULT_JAPANESE_LIST));
         } else if (lang.equals(Locale.CHINESE)) {
             list.addAll(Arrays.asList(ENCODING_DEFAULT_CHINESE_LIST));

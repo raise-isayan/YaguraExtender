@@ -1,7 +1,11 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
+import java.util.Locale;
 import yagura.Config;
 
 /**
@@ -85,6 +89,8 @@ public class LoggingProperty {
     public void setLogDirFormat(String logDirFormat) {
         this.logDirFormat = logDirFormat;
     }
+
+    private DateTimeFormatter logDateTimeFormat = DateTimeFormatter.ofPattern(DEFAULT_LOG_TIMESTAMP_FORMAT).withLocale(Locale.ENGLISH).withResolverStyle(ResolverStyle.STRICT);    
     
     private SimpleDateFormat logTimestampDateFormat = new SimpleDateFormat(DEFAULT_LOG_TIMESTAMP_FORMAT);
 
@@ -100,7 +106,7 @@ public class LoggingProperty {
         this.logTimestampDateFormat = new SimpleDateFormat(logTimestampFormat);
     }
 
-    public SimpleDateFormat getLogTimestampDateFormat() {
+    public DateFormat getLogTimestampDateFormat() {
         return this.logTimestampDateFormat;
     }
 

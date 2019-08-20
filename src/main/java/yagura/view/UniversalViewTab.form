@@ -269,12 +269,16 @@
             <Component class="javax.swing.JComboBox" name="cmbDefaultLangEncoding">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Japanese"/>
-                    <StringItem index="1" value="Chinese"/>
-                    <StringItem index="2" value="Korean"/>
-                    <StringItem index="3" value="Other"/>
+                  <StringArray count="5">
+                    <StringItem index="0" value="Default"/>
+                    <StringItem index="1" value="Japanese"/>
+                    <StringItem index="2" value="Chinese"/>
+                    <StringItem index="3" value="Korean"/>
+                    <StringItem index="4" value="Other"/>
                   </StringArray>
+                </Property>
+                <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;Japanese&quot;" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>

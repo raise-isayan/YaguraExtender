@@ -756,7 +756,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         if (paramType == IParameter.PARAM_BODY && !binaryParam) {
                             buff.append("\treq += ");
                             if (!first) {
-                                buff.append(" + '&'");
+                                buff.append("'&' + ");
                             }
                             buff.append(String.format("'%s' + '=' + '%s';\r\n",
                                     new Object[]{TransUtil.encodeJsLangQuote(paramName),
