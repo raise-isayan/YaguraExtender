@@ -87,6 +87,10 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.txtRaw.setEditable(this.editable);
 
         this.txtRaw.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
+        this.txtRaw.setEditorKitForContentType("application/xhtml+xml", this.htmlStyleEditorKit);
+        this.txtRaw.setEditorKitForContentType("text/xml", this.htmlStyleEditorKit);
+        this.txtRaw.setEditorKitForContentType("application/xml", this.htmlStyleEditorKit);
+        this.txtRaw.setEditorKitForContentType("image/svg+xml", this.htmlStyleEditorKit);
         this.txtRaw.setContentType("text/html");
 
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
@@ -186,6 +190,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         try {
             if (content == null) {
                 this.clearView();
+                this.txtRaw.setContentType("text/html");
             } else {
                 this.content = content;
                 BurpExtender extenderImpl = BurpExtender.getInstance();
@@ -199,6 +204,8 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                     HttpResponse httpResponse = HttpResponse.parseHttpResponse(content);
                     httpMessage = httpResponse;
                     guessCharset = httpResponse.getGuessCharset();
+                    String contentType = httpResponse.getContentMimeType();
+                    this.txtRaw.setContentType(contentType == null ? "text/html" : contentType);
                 }
                 if (guessCharset == null) {
                     guessCharset = StandardCharsets.ISO_8859_1.name();

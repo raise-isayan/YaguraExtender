@@ -101,8 +101,8 @@ public class JSONView extends javax.swing.JPanel {
     private void customizeComponents() {
         this.txtJSON.setEditable(false);
 
-        this.txtJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
-        this.txtJSON.setContentType("text/json");
+        this.txtJSON.setEditorKitForContentType("application/json", this.jsonStyleEditorKit);
+        this.txtJSON.setContentType("application/json");
 
         Icon emptyIcon = SwingUtil.createEmptyIcon();
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) this.treeJSON.getCellRenderer();

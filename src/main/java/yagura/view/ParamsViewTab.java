@@ -332,17 +332,24 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
             }
             IRequestInfo requestInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<IParameter> params = requestInfo.getParameters();
+            boolean isQueryParam = false;
             int count = 0;
             for (IParameter p : params) {
-                if (p.getType() == IParameter.PARAM_URL
-                        || p.getType() == IParameter.PARAM_COOKIE
-                        || p.getType() == IParameter.PARAM_BODY
-                        || p.getType() == IParameter.PARAM_MULTIPART_ATTR) {
-                    count++;
+                switch (p.getType()) {
+                    case IParameter.PARAM_URL:
+                        isQueryParam = true;
+                        count++;
+                        break;
+                    case IParameter.PARAM_COOKIE:
+                    case IParameter.PARAM_BODY:
+                    case IParameter.PARAM_MULTIPART_ATTR:
+                        count++;
+                        break;
                 }
             }
             this.btnDecode.setSelected(false);
-            this.btnDecode.setEnabled(requestInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED);
+            boolean enabled = (requestInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) || (requestInfo.getContentType() == IRequestInfo.CONTENT_TYPE_NONE && isQueryParam);
+            this.btnDecode.setEnabled(enabled);
             return count > 0;
         }
         return false;
