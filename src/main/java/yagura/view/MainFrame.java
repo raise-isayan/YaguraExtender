@@ -167,7 +167,7 @@ public class MainFrame extends javax.swing.JFrame {
     protected boolean isAvailableLookAndFeel(LookAndFeelUI lafUI) {
         try {
             Class lnfClass = Class.forName(lafUI.getClassName());
-            LookAndFeel newLAF = (LookAndFeel) (lnfClass.newInstance());
+            LookAndFeel newLAF = (LookAndFeel) (lnfClass.getDeclaredConstructor().newInstance());
             return newLAF.isSupportedLookAndFeel();
         } catch (Exception ex) { 
             Logger.getLogger(MainFrame.class.getName()).log(Level.WARNING, null, ex);

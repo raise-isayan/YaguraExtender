@@ -13,6 +13,7 @@ import extend.util.external.FormatUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.logging.Level;
@@ -201,6 +202,9 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
                 HttpResponse response = HttpResponse.parseHttpResponse(content);
                 httpmessage = response;
                 guessCharset = response.getGuessCharset();
+            }
+            if (guessCharset == null) {
+                guessCharset = StandardCharsets.ISO_8859_1.name();
             }
             this.message = httpmessage;
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);

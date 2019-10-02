@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.List;
@@ -461,6 +462,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 }
                 if (guessCharset == null) {
                     guessCharset = request.getGuessCharset();
+                }
+                if (guessCharset == null) {
+                    guessCharset = StandardCharsets.ISO_8859_1.name();
                 }
                 this.message = request;
             }
