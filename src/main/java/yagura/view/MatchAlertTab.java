@@ -149,7 +149,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollAlert, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(scrollAlert, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(btnEnable)
                         .addGap(11, 11, 11)
@@ -158,7 +158,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
                         .addComponent(btnAlertRemove)
                         .addGap(10, 10, 10)
                         .addComponent(btnAlertAdd)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         tabAutoAlert.add(pnlCenter, java.awt.BorderLayout.CENTER);

@@ -174,7 +174,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        BASE64, BASE64_URLSAFE, BASE64_MIME, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
@@ -283,19 +283,24 @@ public class TransUtil {
                     applyCharset = charset;
                 }
                 decode = Util.getRawByteStr(value, applyCharset);
-            } else {
+            } 
+            else {
                 // URL encode match
                 switch (encodePattern) {
-                    case URL_STANDARD: {
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = TransUtil.decodeUrl(value, applyCharset);
-                        } else {
-                            decode = TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1);
+                    case NONE: 
+                        decode = value;
+                        break;
+                    case URL_STANDARD: 
+                        {
+                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = TransUtil.decodeUrl(value, applyCharset);
+                            } else {
+                                decode = TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1);
+                            }
                         }
-                    }
-                    break;
+                        break;
                     // URL Unicode
                     case URL_UNICODE:
                         decode = toUnocodeUrlDecode(value);
@@ -305,89 +310,97 @@ public class TransUtil {
                         decode = toUnocodeDecode(value);
                         break;
                     // Byte Hex
-                    case BYTE_HEX: {
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = toByteDecode(value, applyCharset);
-                        } else {
-                            decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+                    case BYTE_HEX: 
+                        {
+                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = toByteDecode(value, applyCharset);
+                            } else {
+                                decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+                            }
                         }
                         break;
-                    }
-                    case BYTE_OCT: {
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = toByteDecode(value, applyCharset);
-                        } else {
-                            decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+                    case BYTE_OCT: 
+                        {
+                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = toByteDecode(value, applyCharset);
+                            } else {
+                                decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+                            }
                         }
                         break;
-                    }
                     // uuencode
-                    case UUENCODE: {
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = toUudecode(value, applyCharset);
-                        } else {
-                            decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
+                    case UUENCODE: 
+                        {
+                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = toUudecode(value, applyCharset);
+                            } else {
+                                decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
+                            }
                         }
-                    }
-                    break;
+                        break;
                     // QuotedPrintable
-                    case QUOTEDPRINTABLE: {
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = toUnQuotedPrintable(value, applyCharset);
-                        } else {
-                            decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1.name());
+                    case QUOTEDPRINTABLE: 
+                        {
+                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = toUnQuotedPrintable(value, applyCharset);
+                            } else {
+                                decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1.name());
+                            }
                         }
-                    }
-                    break;
+                        break;
                     // Punycode
                     case PUNYCODE:
                         decode = toPunycodeDecode(value);
                         break;
                     // Base64 encode match
-                    case BASE64: {
-                        value = value.replaceAll("[\r\n]", ""); // 改行削除
-                        byte[] bytes = Base64.getDecoder().decode(value);
-                        String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = ConvertUtil.toBase64Decode(value, applyCharset);
-                        } else {
-                            decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
+                    case BASE64: 
+                        {
+                            value = value.replaceAll("[\r\n]", ""); // 改行削除
+                            byte[] bytes = Base64.getDecoder().decode(value);
+                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = ConvertUtil.toBase64Decode(value, applyCharset);
+                            } else {
+                                decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
+                            }
                         }
                         break;
-                    }
                     // Base64 URLSafe
-                    case BASE64_URLSAFE: {
-                        value = value.replaceAll("[\r\n]", ""); // 改行削除
-                        byte[] bytes = Base64.getUrlDecoder().decode(value);
-                        String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = ConvertUtil.toBase64URLSafeDecode(value, applyCharset);
-                        } else {
-                            decode = ConvertUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
+                    case BASE64_URLSAFE: 
+                        {
+                            value = value.replaceAll("[\r\n]", ""); // 改行削除
+                            byte[] bytes = Base64.getUrlDecoder().decode(value);
+                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = ConvertUtil.toBase64URLSafeDecode(value, applyCharset);
+                            } else {
+                                decode = ConvertUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
+                            }
                         }
                         break;
-                    }
                     // Html decode
                     case HTML:
                         decode = toHtmlDecode(value);
                         break;
                     case BYTE_HTML:
-                        String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
-                        if (guessCode != null) {
-                            applyCharset = guessCode;
-                            decode = toHtmlDecode(value, applyCharset);
-                        } else {
-                            decode = toHtmlDecode(value, StandardCharsets.ISO_8859_1.name());
+                        {
+                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = toHtmlDecode(value, applyCharset);
+                            } else {
+                                decode = toHtmlDecode(value, StandardCharsets.ISO_8859_1.name());
+                            }
                         }
                         break;
                     // Gzip

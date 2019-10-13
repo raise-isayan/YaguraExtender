@@ -6,7 +6,7 @@
     <version>1.9</version>
     <packaging>jar</packaging>
     <properties>
-        <releaseVersion>${project.version}.9.3</releaseVersion>
+        <releaseVersion>${project.version}.9.5</releaseVersion>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -68,41 +68,40 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>yagura.view.MainFrame</mainClass>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib</classpathPrefix>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
             <!--
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <id>copy</id>
-                                    <phase>install</phase>
-                                    <goals>
-                                        <goal>copy-dependencies</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>
-                                            ${project.build.directory}/lib
-                                        </outputDirectory>
-                                        <includeScope>compile</includeScope>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>            
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>yagura.view.MainFrame</mainClass>
+                                <addClasspath>true</addClasspath>
+                                <classpathPrefix>lib</classpathPrefix>
+                            </manifest>
+                        </archive>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>copy</id>
+                            <phase>install</phase>
+                            <goals>
+                                <goal>copy-dependencies</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>
+                                    ${project.build.directory}/lib
+                                </outputDirectory>
+                                <includeScope>compile</includeScope>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>            
             -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>

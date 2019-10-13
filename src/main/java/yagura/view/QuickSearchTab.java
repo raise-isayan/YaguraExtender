@@ -85,12 +85,12 @@ public class QuickSearchTab extends javax.swing.JPanel {
         lblMatch = new javax.swing.JLabel();
 
         popQuick.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
-                popQuickPopupMenuWillBecomeVisible(evt);
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
             }
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                popQuickPopupMenuWillBecomeVisible(evt);
             }
         });
 
@@ -103,27 +103,41 @@ public class QuickSearchTab extends javax.swing.JPanel {
         mnuIgnoreCase.setText("case sensitive");
         popQuick.add(mnuIgnoreCase);
 
+        setMaximumSize(new java.awt.Dimension(2147483647, 30));
+        setMinimumSize(new java.awt.Dimension(381, 32));
+        setName(""); // NOI18N
+        setPreferredSize(new java.awt.Dimension(401, 30));
         setLayout(new java.awt.BorderLayout());
 
+        pnlEncode.setMaximumSize(new java.awt.Dimension(150, 30));
         pnlEncode.setLayout(new javax.swing.BoxLayout(pnlEncode, javax.swing.BoxLayout.LINE_AXIS));
 
         cmbEncoding.setMaximumRowCount(10);
         cmbEncoding.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Shift_JIS" }));
         cmbEncoding.setToolTipText("");
         cmbEncoding.setMaximumSize(new java.awt.Dimension(150, 32767));
-        cmbEncoding.setMinimumSize(new java.awt.Dimension(100, 19));
+        cmbEncoding.setMinimumSize(new java.awt.Dimension(100, 18));
         cmbEncoding.setName(""); // NOI18N
-        cmbEncoding.setPreferredSize(new java.awt.Dimension(120, 19));
+        cmbEncoding.setPreferredSize(new java.awt.Dimension(120, 20));
         pnlEncode.add(cmbEncoding);
 
         add(pnlEncode, java.awt.BorderLayout.EAST);
 
+        pnlSearch.setMaximumSize(new java.awt.Dimension(2147483647, 30));
         pnlSearch.setLayout(new java.awt.BorderLayout());
 
+        pnlSearchNavi.setMaximumSize(new java.awt.Dimension(69, 30));
         pnlSearchNavi.setLayout(new javax.swing.BoxLayout(pnlSearchNavi, javax.swing.BoxLayout.LINE_AXIS));
 
+        btnQuickBack.setFont(new java.awt.Font("MS UI Gothic", 0, 10)); // NOI18N
         btnQuickBack.setText("<");
+        btnQuickBack.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnQuickBack.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQuickBack.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        btnQuickBack.setMaximumSize(new java.awt.Dimension(40, 36));
+        btnQuickBack.setMinimumSize(new java.awt.Dimension(23, 18));
+        btnQuickBack.setName(""); // NOI18N
+        btnQuickBack.setPreferredSize(new java.awt.Dimension(40, 30));
         btnQuickBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnQuickBackActionPerformed(evt);
@@ -131,8 +145,14 @@ public class QuickSearchTab extends javax.swing.JPanel {
         });
         pnlSearchNavi.add(btnQuickBack);
 
+        btnQuckOption.setFont(new java.awt.Font("MS UI Gothic", 0, 10)); // NOI18N
         btnQuckOption.setText("+");
+        btnQuckOption.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnQuckOption.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQuckOption.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        btnQuckOption.setMaximumSize(new java.awt.Dimension(40, 36));
+        btnQuckOption.setMinimumSize(new java.awt.Dimension(23, 18));
+        btnQuckOption.setPreferredSize(new java.awt.Dimension(40, 30));
         btnQuckOption.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnQuckOptionActionPerformed(evt);
@@ -140,8 +160,14 @@ public class QuickSearchTab extends javax.swing.JPanel {
         });
         pnlSearchNavi.add(btnQuckOption);
 
+        btnQuickForward.setFont(new java.awt.Font("MS UI Gothic", 0, 10)); // NOI18N
         btnQuickForward.setText(">");
+        btnQuickForward.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnQuickForward.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQuickForward.setMargin(new java.awt.Insets(2, 6, 2, 6));
+        btnQuickForward.setMaximumSize(new java.awt.Dimension(40, 36));
+        btnQuickForward.setMinimumSize(new java.awt.Dimension(23, 18));
+        btnQuickForward.setPreferredSize(new java.awt.Dimension(40, 30));
         btnQuickForward.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnQuickForwardActionPerformed(evt);
@@ -152,15 +178,24 @@ public class QuickSearchTab extends javax.swing.JPanel {
         pnlSearch.add(pnlSearchNavi, java.awt.BorderLayout.WEST);
 
         cmbQuckSearch.setEditable(true);
+        cmbQuckSearch.setMaximumSize(new java.awt.Dimension(32767, 30));
+        cmbQuckSearch.setMinimumSize(new java.awt.Dimension(122, 18));
+        cmbQuckSearch.setPreferredSize(new java.awt.Dimension(122, 20));
         pnlSearch.add(cmbQuckSearch, java.awt.BorderLayout.CENTER);
 
+        pnlStatus.setMaximumSize(new java.awt.Dimension(2147483647, 30));
         pnlStatus.setLayout(new java.awt.BorderLayout());
 
         chkUniq.setSelected(true);
         chkUniq.setText("Uniq");
+        chkUniq.setMaximumSize(new java.awt.Dimension(49, 18));
+        chkUniq.setMinimumSize(new java.awt.Dimension(49, 20));
+        chkUniq.setPreferredSize(new java.awt.Dimension(49, 20));
         pnlStatus.add(chkUniq, java.awt.BorderLayout.EAST);
 
         lblMatch.setText("0 match");
+        lblMatch.setMaximumSize(new java.awt.Dimension(41, 18));
+        lblMatch.setMinimumSize(new java.awt.Dimension(41, 20));
         pnlStatus.add(lblMatch, java.awt.BorderLayout.CENTER);
 
         pnlSearch.add(pnlStatus, java.awt.BorderLayout.EAST);

@@ -91,4 +91,9 @@ public class FormatUtil {
         return JsonUtil.prettyJson(jsonString, true);
     }
 
+    public static String prettyJson(String jsonString, boolean pretty) throws IOException {
+        return JsonUtil.prettyJson(jsonString, pretty);
+    }
+    
+    
 }

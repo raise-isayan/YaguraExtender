@@ -552,7 +552,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");
-            buff.append(String.format("<head><meta http-equiv=\"content-type\" content=\"text/html; charset='%s'\"></head>\n",
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\"></head>\n",
                     new Object[]{csrfEncoding}));
             String autoSubmit = "";
             if (csrfAutoSubmit) {
@@ -682,7 +682,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");
-            buff.append(String.format("<head><meta http-equiv=\"content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{csrfEncoding}));
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{csrfEncoding}));
             buff.append("<script type=\"text/javascript\">\n");
             buff.append("function html5_csrf() {\n");
             String boundary = HttpUtil.generateBoundary();
