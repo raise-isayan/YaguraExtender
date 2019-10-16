@@ -177,6 +177,8 @@ public class TransUtil {
         NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
+    private final static Pattern PTN_URLENCODE = Pattern.compile("([0-9a-zA-Z\\*_\\+\\.-]|%([0-9a-fA-F]{2}))+");
+        
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
     private final static Pattern PTN_B64_URLSAFE = Pattern.compile("([0-9a-zA-Z_\\-\r\n])");
     private final static Pattern PTN_UUENCODE = Pattern.compile("begin\\s[0-6]{3}\\s\\w+");
@@ -258,6 +260,11 @@ public class TransUtil {
         return null;
     }
 
+    public static boolean isUrlencoded(String value) {
+        Matcher m = PTN_URLENCODE.matcher(value);
+        return m.matches();
+    }
+    
     public static String toSmartDecode(String value) {
         return toSmartDecode(value, getSmartDecode(value), (String) null);
     }

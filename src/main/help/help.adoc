@@ -264,48 +264,6 @@ Target(アラート対象)::
 
 [scanner issue]チェックボックス:: 
      文字列がマッチした場合、該当のScannerのIssueを作成します。
-     
-
-=== AutoResponderタブ
-
-image:images/custom_autoresponder.png[AutoResponderタブ]
-
-指定したURLにマッチする場合に指定したファイルの内容でレスポンスを返します。
-FidderのAutoResponderに似た機能を持ちますがBurp suiteのAPIでは完全にシュミュレートは
-困難なため疑似的に挙動をまねています。
-
-==== AutoResponder
-
-[Enable rule]チェックボックス::
-     AutoResponderを有効にします。
-     有効にすると指定したポート番号でローカルサーバが起動されます。
-     起動されたローカルは、指定したResponseを返却するために使われます。
-     
-[Edit]ボタン:: 
-    選択した AutoResponder Itemを編集します。
-[Remove]ボタン:: 
-    選択した AutoResponder Itemを削除します。
-[Add]、[Update]ボタン:: 
-    AutoResponder temを追加します。編集中時は更新します。
-
-==== AutoResponder Item 編集ダイヤログ
-image:images/custom_autoresponder_item.png[AutoResponder Item 編集ダイヤログ]
-
-Match(検索文字列):: 
-    マッチさせたいURLを入力します。
-    マッチ方法は前方一致にになります。
-
-[Regexp]チェックボックス:: 
-    チェック時正規表現を有効にします。
-
-[IgnoreCase]チェックボックス:: 
-    チェック時大文字小文字を無視します。
-
-Content-Type:: 
-    ResponseのContent-Typeを指定します。
-
-Replace:: 
-    置き換える対象のファイルのパスを指定します。
 
 === SendToタブ
 
@@ -354,9 +312,12 @@ Target::
     サーバに送信する場合にチェックします。
     serverにチェックが入ってる場合は、Target に記載されたURLに対してmultipartのデータを送ります。
 
+[reverse order]チェックボックス::
+    選択したリストの逆順に送信をおこないます。
+
 [requset]、[response]チェックボックス:: 
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
-    リクエストおよびレスポンスはヘッダも含みます。
+    リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。
 
 ===== 送信される multipart のデータ
      host :: 
@@ -376,7 +337,8 @@ Target::
      highlight:: 
            選択した Highlight Color
            以下のいずれかの値になります。 +
-           red, orange, yellow, green, cyan, blue, pink, magenta, gray
+           white, red, orange, yellow, green, cyan, blue, pink, magenta, gray +
+           white は選択されていない状態と等価です。
      encoding:: 
             推測エンコーディング
 
@@ -637,6 +599,14 @@ SQL::
 Regex:: 
     正規表現のエスケープを行います。
 
+===== Format
+
+Minify:
+    XMLやJSONを圧縮します。
+
+Beautify:
+    XMLやJSONを整形します。
+
 [Smart Format]ボタン:: 
      文字列を整形します。XMLおよびJSONの整形に対応しています。
 
@@ -770,7 +740,7 @@ generator count::
 
 === Generate CSRF PoC
 
-CSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。
+主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。
 
 ProxyのHistoryタブなどのリクエストを確認可能な箇所において、
 選択したリクエストがPOSTリクエスト場合に表示されます。
@@ -805,15 +775,15 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
    
 [HTML5]チェックボックス::
    PoCの罠をHTML5の機能を利用して作成します。
+   バイナリアップロードを行う場合ここをチェックします。
    
 [Binay]チェックボックス::
-   チェック時、バイナリアップロードを可能とします。 +
-   [HTML5]チェック時のみ有効になります。
+   現在のバージョンではチェックは不要です。
+   [HTML5]にチェックすれば、バイナリアップロードについてはデフォルトで可能となっています。
 
 .Content-Type
 auto:: Content-Typeを自動判定します。
-text field:: text フィールドを利用してPoCを作成します。 +
-              Content-TypeがMulti Partの場合にこの選択を行ってもうまく生成できません。
+urlencode:: text フィールドを利用してPoCを作成します。 +
 multi part:: Content-TypeがMulti partの場合にこの選択を行います。 +
 plain:: text area を利用してPoCを作成します。 +
         Content-TypeがMulti part かつファイルアップロードの項目がある場合にこの選択を行います。 +

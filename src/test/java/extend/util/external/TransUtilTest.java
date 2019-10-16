@@ -65,6 +65,29 @@ public class TransUtilTest {
         System.out.println(TransUtil.newLine("\r\n", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 76));
     }
 
+    @Test
+    public void testIsUrlencoded() {
+        assertEquals(false, TransUtil.isUrlencoded("あああ"));
+        assertEquals(true, TransUtil.isUrlencoded("0abcAZz9%23%Ff"));
+        assertEquals(false, TransUtil.isUrlencoded("0abc AZz9"));
+        assertEquals(true, TransUtil.isUrlencoded("0abcAZz9%25"));
+        assertEquals(false, TransUtil.isUrlencoded("<0abcAZz9%25>"));
+    }
+    
+
+    @Test
+    public void testDecodeTest() {
+        try {
+            String paramValue = TransUtil.decodeUrl("%82%a0%82%a2%82%a4%82%a6%82%a8", "Shift_JIS");
+            System.out.println("paramValue:" + paramValue);
+            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue, "Shift_JIS"), TransUtil.PTN_ENCODE_ALPHANUM, false);
+            System.out.println(String.format("%s", new Object[]{encodeHex}));
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    
     /**
      * Test of getSmartDecode method, of class TransUtil.
      */

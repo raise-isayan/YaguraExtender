@@ -225,7 +225,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="rdoTextField" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="rdoUrlencode" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="rdoAuto" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="rdoMultipart" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="rdoPlain" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -240,7 +240,7 @@
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Component id="rdoAuto" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="rdoTextField" min="-2" max="-2" attributes="0"/>
+                          <Component id="rdoUrlencode" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="rdoMultipart" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -261,9 +261,9 @@
                     <Property name="text" type="java.lang.String" value="multi part"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JRadioButton" name="rdoTextField">
+                <Component class="javax.swing.JRadioButton" name="rdoUrlencode">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="text field"/>
+                    <Property name="text" type="java.lang.String" value="urlencode"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="rdoAuto">
