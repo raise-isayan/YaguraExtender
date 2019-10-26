@@ -10,7 +10,7 @@ Burp Suiteは主にアジア圏のエンコーディング周りが弱いため�
 ## ヘルプ
 利用方法等の詳細なヘルプは、help ディレクトリの help.html を参照してください。
 
-オンラインの場合は、[help](https://github.com/raise-isayan/YaguraExtender/blob/master/help/help.adoc)を参照して下さい。
+オンラインの場合は、[help](https://github.com/raise-isayan/YaguraExtender/blob/master/src/main/help/help.adoc)を参照して下さい。
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。

@@ -24,6 +24,7 @@ public class SendToItem {
         REQUEST_AND_RESPONSE_TO_FILE,
         SEND_TO_JTRANSCODER,
         PASTE_FROM_JTRANSCODER,
+        PASTE_FROM_CLIPBOARD,
         MESSAGE_INFO_COPY,
         ADD_HOST_TO_SCOPE;
 

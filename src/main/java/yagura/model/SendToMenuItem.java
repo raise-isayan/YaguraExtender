@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public abstract class SendToMenuItem
-        extends SendToItem implements java.awt.event.ActionListener {
+        extends SendToItem implements java.awt.event.ActionListener  {
 
     protected IContextMenuInvocation contextMenu = null;
 

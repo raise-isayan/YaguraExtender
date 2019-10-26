@@ -760,6 +760,12 @@ public class BurpExtender extends BurpExtenderImpl
         return this.tabbetOption.receiveFromJTransCoder();
     }
 
+    public byte[] receiveFromClipbord(String encoding) {
+        String clipbord = SwingUtil.systemClipboardPaste();
+        return Util.encodeMessage(clipbord, encoding);
+    }
+    
+    
     /**
      * Message Info Copy
      *

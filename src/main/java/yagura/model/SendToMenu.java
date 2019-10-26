@@ -63,22 +63,47 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
         List<SendToItem> sendToItemList = property.getSendToItemList();
         for (SendToItem item : sendToItemList) {
             if (item.isSelected()) {
-                javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
-                mnuItem.setText(item.getCaption());
                 if (item.getExtend() != null) {
                     SendToExtend sendToItem = new SendToExtend(item, this.invocation);
-                    sendToList.add(sendToItem);
-                    mnuItem.addActionListener(sendToItem);
-                    if (property.isSubMenu()) {
-                        if (sendToItem.isEnabled()) {
-                            this.mnuSendTo.add(mnuItem);
+                    if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
+                        javax.swing.JMenu mnuItem = new javax.swing.JMenu();
+                        mnuItem.setText(item.getCaption());
+                        List<String> encodingList = BurpExtender.getInstance().getSelectEncodingList();
+                        for (String encoding : encodingList) {
+                            javax.swing.JMenuItem mnuItemEncoding = new javax.swing.JMenuItem();
+                            mnuItemEncoding.setText(encoding);
+                            mnuItemEncoding.addActionListener(sendToItem);                    
+                            mnuItem.add(mnuItemEncoding);
                         }
-                    } else {
-                        if (sendToItem.isEnabled()) {
-                            this.menuList.add(mnuItem);
+                        if (property.isSubMenu()) {
+                            if (sendToItem.isEnabled()) {
+                                this.mnuSendTo.add(mnuItem);
+                            }
+                        } else {
+                            if (sendToItem.isEnabled()) {
+                                this.menuList.add(mnuItem);
+                            }
                         }
                     }
+                    else {
+                        javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
+                        mnuItem.setText(item.getCaption());
+                        sendToList.add(sendToItem);
+                        mnuItem.addActionListener(sendToItem);
+                        if (property.isSubMenu()) {
+                            if (sendToItem.isEnabled()) {
+                                this.mnuSendTo.add(mnuItem);
+                            }
+                        } else {
+                            if (sendToItem.isEnabled()) {
+                                this.menuList.add(mnuItem);
+                            }
+                        }                    
+                    }
+
                 } else {
+                    javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
+                    mnuItem.setText(item.getCaption());
                     if (item.isServer()) {
                         SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
                         sendToList.add(sendToItem);
@@ -162,7 +187,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                         mnuItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());
+                                sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
                             }
                         });
                         this.popBurpMenu.add(mnuItem);
@@ -173,7 +198,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());
+                                    sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
                                 }
                             });
                             this.popBurpMenu.add(mnuItem);
@@ -182,7 +207,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    sendToItem.menuItemClicked(sendToItem.getCaption(), message.getSelectedMessages());
+                                    sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
                                 }
                             });
                             this.popBurpMenu.add(mnuItem);

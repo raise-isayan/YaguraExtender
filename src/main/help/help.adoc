@@ -399,6 +399,8 @@ image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
           JTransCoder のInputに選択した文字列を送ります。
      paste from jtranscoder:: 
           JTransCoder のOutputから文字列を貼り付けます。
+     paste from clipboard:: 
+          クリップボードから指定したエンコーディングにて文字列を貼り付けます。
      message info copy:: 
           message の情報をクリップボードにコピーします。
      add host to scope:: 

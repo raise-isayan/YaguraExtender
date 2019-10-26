@@ -1,7 +1,6 @@
 package yagura.model;
 
 import burp.*;
-import yagura.LegacyConfig;
 import burp.BurpExtender;
 import burp.IContextMenuInvocation;
 import extend.util.BurpWrap;
@@ -33,10 +32,10 @@ public class SendToExtend extends SendToMenuItem {
 
     @Override
     public void menuItemClicked(String menuItemCaption, IHttpRequestResponse[] messageInfo) {
-        sendToEvent(messageInfo);
+        sendToEvent(menuItemCaption, messageInfo);
     }
 
-    public void sendToEvent(IHttpRequestResponse[] messageInfo) {
+    public void sendToEvent(String menuItemCaption, IHttpRequestResponse[] messageInfo) {
         if (messageInfo.length == 0) {
             return;
         }
@@ -54,6 +53,13 @@ public class SendToExtend extends SendToMenuItem {
             }
             case PASTE_FROM_JTRANSCODER: {
                 byte[] text = BurpExtender.getInstance().receiveFromJTransCoder();
+                if (text != null) {
+                    BurpWrap.pasteSelectionData(this.contextMenu, Util.getRawStr(text), true);
+                }
+                break;
+            }
+            case PASTE_FROM_CLIPBOARD: {
+                byte[] text = BurpExtender.getInstance().receiveFromClipbord(menuItemCaption);
                 if (text != null) {
                     BurpWrap.pasteSelectionData(this.contextMenu, Util.getRawStr(text), true);
                 }
@@ -108,8 +114,9 @@ public class SendToExtend extends SendToMenuItem {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        javax.swing.JMenuItem item = (javax.swing.JMenuItem)e.getSource();
         IHttpRequestResponse[] messageInfo = this.contextMenu.getSelectedMessages();
-        sendToEvent(messageInfo);
+        sendToEvent(item.getText(), messageInfo);
     }
 
     @Override
@@ -125,6 +132,12 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case PASTE_FROM_JTRANSCODER: {
+                enabled = (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_PAYLOAD_POSITIONS);
+                break;
+            }
+            case PASTE_FROM_CLIPBOARD: {
                 enabled = (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST)
                         || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE)
                         || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_PAYLOAD_POSITIONS);
