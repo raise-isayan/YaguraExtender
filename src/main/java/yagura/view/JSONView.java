@@ -4,9 +4,12 @@ import extend.util.SwingUtil;
 import extend.util.external.JsonUtil;
 import java.awt.Font;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
+import javax.swing.SwingWorker;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
@@ -135,24 +138,65 @@ public class JSONView extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void setMessage(String content) {
-        try {
-            if (content != null) {
-                // Raw
-                this.txtJSON.setText(JsonUtil.prettyJson(content));
-                this.txtJSON.setCaretPosition(0);
-                // Tree View
-                this.modelJSON = (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
+        if (content != null) {
 
-                SwingUtil.allNodesChanged(this.treeJSON);
-                this.treeJSON.setModel(this.modelJSON);
-                this.expandJsonTree();
-            } else {
-                this.txtJSON.setText("");
-                DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
-                root.removeAllChildren();
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+            // Raw
+            SwingWorker swRaw = new SwingWorker<String, Object>() {
+                @Override
+                protected String doInBackground() throws Exception {
+                    publish("\"heavy processing\"");
+                    return JsonUtil.prettyJson(content);
+                }
+
+                protected void process(List<Object> chunks) {
+                    txtJSON.setText("\"heavy processing\"");
+                }
+                
+                protected void done() {
+                    try {
+                        txtJSON.setText(get());
+                        txtJSON.setCaretPosition(0);                        
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            };
+            swRaw.execute();
+
+            // Tree View
+            SwingWorker swTree = new SwingWorker<DefaultTreeModel, Object>() {
+                @Override
+                protected DefaultTreeModel doInBackground() throws Exception {
+                    publish("\"heavy processing\"");
+                    return (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
+                }
+
+                protected void process(List<Object> chunks) {
+                    modelJSON.setRoot(new DefaultMutableTreeNode("\"heavy processing\""));
+                }
+                
+                protected void done() {
+                    try {
+                        modelJSON = get();
+                        SwingUtil.allNodesChanged(treeJSON);
+                        treeJSON.setModel(modelJSON);
+                        expandJsonTree();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ExecutionException ex) {
+                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }            
+            };
+            swTree.execute();
+
+        } else {
+            this.txtJSON.setText("");
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
+            root.removeAllChildren();
         }
     }
 

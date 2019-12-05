@@ -71,6 +71,17 @@ public class UniversalViewProperty {
         return Collections.unmodifiableList(list);
     }
 
+    @Expose
+    private int dispayMaxLength = 3000000;
+    
+    public int getDispayMaxLength() {
+        return this.dispayMaxLength;
+    }
+
+    public void setDispayMaxLength(int dispayMaxLength) {
+        this.dispayMaxLength = dispayMaxLength;
+    }
+    
     // non Expose
     private boolean clipbordAutoDecode = true;
 
@@ -140,6 +151,7 @@ public class UniversalViewProperty {
         this.setClipbordAutoDecode(property.getClipbordAutoDecode());
         this.setEncodingList(property.getEncodingList());
         this.setMessageView(property.getMessageView());
+        this.setDispayMaxLength(property.getDispayMaxLength());
     }
 
 }

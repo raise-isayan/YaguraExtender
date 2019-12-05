@@ -171,8 +171,12 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         if (content == null || content.length == 0) {
             return false;
         }
+        // "This message is too large to display"
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
+            return false;
+        }
+        if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
             return false;
         }
         if (this.request && isRequest && content.length > 0) {

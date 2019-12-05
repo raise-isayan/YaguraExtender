@@ -330,6 +330,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
             if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
                 return false;
             }
+            if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+                return false;
+            }
             IRequestInfo requestInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<IParameter> params = requestInfo.getParameters();
             boolean isQueryParam = false;

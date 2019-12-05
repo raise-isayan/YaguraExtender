@@ -221,6 +221,9 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
                 return false;
             }
+            if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+                return false;
+            }
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<String> headers = reqInfo.getHeaders();
             for (String h : headers) {
