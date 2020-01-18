@@ -69,10 +69,14 @@ public class SendToExtend extends SendToMenuItem {
                 BurpExtender.getInstance().sendToTableInfoCopy(this.contextMenu, messageInfo);
                 break;
             }
-            case ADD_HOST_TO_SCOPE: {
-                BurpExtender.getInstance().sendToAddHostToScope(this.contextMenu, messageInfo);
-                break;
-            }
+//            case ADD_HOST_TO_INCLUDE_SCOPE: {
+//                BurpExtender.getInstance().sendToAddHostIncludeToScope(this.contextMenu, messageInfo);
+//                break;
+//            }
+//            case ADD_HOST_TO_EXCLUDE_SCOPE: {
+//                BurpExtender.getInstance().sendToAddHostToExcludeScope(this.contextMenu, messageInfo);
+//                break;
+//            }
             default:
                 // ここには現状こない
                 break;
@@ -144,7 +148,8 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case MESSAGE_INFO_COPY:
-            case ADD_HOST_TO_SCOPE: {
+            case ADD_HOST_TO_INCLUDE_SCOPE:
+            case ADD_HOST_TO_EXCLUDE_SCOPE: {
                 enabled = (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_PROXY_HISTORY)
                         || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_SEARCH_RESULTS)
                         || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_ATTACK_RESULTS)

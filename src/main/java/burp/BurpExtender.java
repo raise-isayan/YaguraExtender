@@ -853,7 +853,7 @@ public class BurpExtender extends BurpExtenderImpl
      * @param contextMenu
      * @param messageInfoList
      */
-    public void sendToAddHostToScope(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
+    public void sendToAddHostIncludeToScope(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
         try {
             for (IHttpRequestResponse messageInfo : messageInfoList) {
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
@@ -865,6 +865,25 @@ public class BurpExtender extends BurpExtenderImpl
         }
     }
 
+    /**
+     * Add Host To Exclude Scope
+     *
+     * @param contextMenu
+     * @param messageInfoList
+     */
+    public void sendToAddHostToExcludeScope(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
+        try {
+            for (IHttpRequestResponse messageInfo : messageInfoList) {
+                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
+                URL url = reqInfo.getUrl();
+                BurpExtender.getCallbacks().excludeFromScope(new URL(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort())));
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
