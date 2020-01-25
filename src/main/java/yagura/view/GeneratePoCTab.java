@@ -15,6 +15,7 @@ import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.external.TransUtil;
 import extend.util.Util;
+import extend.util.external.JsonUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.io.File;
@@ -25,10 +26,12 @@ import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
+import javax.swing.SwingWorker;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
@@ -329,11 +332,31 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
-        if (this.chkHtml5.isSelected()) {
-            ta.setText(this.generateHTML5PoC());
-        } else {
-            ta.setText(this.generatePoC());
-        }
+        GenerateCsrfParameter csrfParam  = getGenerateCsrfParameter();
+        SwingWorker swPoC = new SwingWorker<String, Object>() {
+            @Override
+            protected String doInBackground() throws Exception {
+                if (csrfParam.isCsrfHtml5()) {
+                    return generateHTML5PoC(csrfParam);
+                } else {
+                    return generatePoC(csrfParam);
+                }
+            }
+
+            protected void process(List<Object> chunks) {
+            }
+
+            protected void done() {
+                try {
+                    ta.setText(get());
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        swPoC.execute();
     }//GEN-LAST:event_btnGenerateActionPerformed
 
     private void chkHtml5StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHtml5StateChanged
@@ -510,22 +533,224 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private final static Pattern ENCODE_JS = Pattern.compile("[^ !#-&(-/0-Z\\[\\]^-~]");
 
-    private String generatePoC() {
+    protected class GenerateCsrfParameter  {
+
+        private boolean csrfAutoSubmit = false;
+        private int timeOutValue = 1000;
+        public boolean csrfAuto = false;
+        private boolean csrfUrlencode = false;
+        private boolean csrfMultiPart = false;
+        private boolean csrfTextPlain = false;
+        private String csrfEncoding = StandardCharsets.ISO_8859_1.name();
+        public boolean csrfHtml5 = false;
+        private boolean csrfHtml5Binaly = false;
+        private boolean csrfGetMethod = false;
+        public boolean useHttps = false;
+        private boolean csrfTimeDelay = false;
+        
+        /**
+         * @return the csrfAutoSubmit
+         */
+        public boolean isCsrfAutoSubmit() {
+            return csrfAutoSubmit;
+        }
+
+        /**
+         * @param csrfAutoSubmit the csrfAutoSubmit to set
+         */
+        public void setCsrfAutoSubmit(boolean csrfAutoSubmit) {
+            this.csrfAutoSubmit = csrfAutoSubmit;
+        }
+
+        /**
+         * @return the timeOutValue
+         */
+        public int getTimeOutValue() {
+            return timeOutValue;
+        }
+                
+        /**
+         * @param timeOutValue the timeOutValue to set
+         */
+        public void setTimeOutValue(int timeOutValue) {
+            this.timeOutValue = timeOutValue;
+        }
+
+        /**
+         * @return the csrfAuto
+         */
+        public boolean isCsrfAuto() {
+            return csrfAuto;
+        }
+
+        /**
+         * @param csrfAuto the csrfAuto to set
+         */
+        public void setCsrfAuto(boolean csrfAuto) {
+            this.csrfAuto = csrfAuto;
+        }
+
+        /**
+         * @return the csrfUrlencode
+         */
+        public boolean isCsrfUrlencode() {
+            return csrfUrlencode;
+        }
+
+        /**
+         * @param csrfUrlencode the csrfUrlencode to set
+         */
+        public void setCsrfUrlencode(boolean csrfUrlencode) {
+            this.csrfUrlencode = csrfUrlencode;
+        }
+
+        /**
+         * @return the csrfMultiPart
+         */
+        public boolean isCsrfMultiPart() {
+            return csrfMultiPart;
+        }
+
+        /**
+         * @param csrfMultiPart the csrfMultiPart to set
+         */
+        public void setCsrfMultiPart(boolean csrfMultiPart) {
+            this.csrfMultiPart = csrfMultiPart;
+        }
+
+        /**
+         * @return the csrfTextPlain
+         */
+        public boolean isCsrfTextPlain() {
+            return csrfTextPlain;
+        }
+
+        /**
+         * @param csrfTextPlain the csrfTextPlain to set
+         */
+        public void setCsrfTextPlain(boolean csrfTextPlain) {
+            this.csrfTextPlain = csrfTextPlain;
+        }
+
+        /**
+         * @return the csrfEncoding
+         */
+        public String getCsrfEncoding() {
+            return csrfEncoding;
+        }
+
+        /**
+         * @param csrfEncoding the csrfEncoding to set
+         */
+        public void setCsrfEncoding(String csrfEncoding) {
+            this.csrfEncoding = csrfEncoding;
+        }
+
+        /**
+         * @return the csrfHtml5
+         */
+        public boolean isCsrfHtml5() {
+            return csrfHtml5;
+        }
+
+        /**
+         * @param csrfHtml5 the csrfHtml5 to set
+         */
+        public void setCsrfHtml5(boolean csrfHtml5) {
+            this.csrfHtml5 = csrfHtml5;
+        }
+        
+        /**
+         * @return the csrfHtml5Binaly
+         */
+        public boolean isCsrfHtml5Binaly() {
+            return csrfHtml5Binaly;
+        }
+
+        /**
+         * @param csrfHtml5Binaly the csrfHtml5Binaly to set
+         */
+        public void setCsrfHtml5Binaly(boolean csrfHtml5Binaly) {
+            this.csrfHtml5Binaly = csrfHtml5Binaly;
+        }
+
+        /**
+         * @return the csrfGetMethod
+         */
+        public boolean isCsrfGetMethod() {
+            return csrfGetMethod;
+        }
+
+        /**
+         * @param csrfFormMethod the csrfGetMethod to set
+         */
+        public void setCsrfGetMethod(boolean csrfGetMethod) {
+            this.csrfGetMethod = csrfGetMethod;
+        }
+
+        /**
+         * @return the useHttps
+         */
+        public boolean isUseHttps() {
+            return useHttps;
+        }
+
+        /**
+         * @param useHttps the useHttps to set
+         */
+        public void setUseHttps(boolean useHttps) {
+            this.useHttps = useHttps;
+        }
+        
+        /**
+         * @return the csrfTimeDelay
+         */
+        public boolean isCsrfTimeDelay() {
+            return csrfTimeDelay;
+        }
+
+        /**
+         * @param csrfTimeDelay the csrfTimeDelay to set
+         */
+        public void setCsrfTimeDelay(boolean csrfTimeDelay) {
+            this.csrfTimeDelay = csrfTimeDelay;
+        }
+        
+    }
+
+    protected GenerateCsrfParameter getGenerateCsrfParameter() {
+        GenerateCsrfParameter csrfParam  = new GenerateCsrfParameter();
+        csrfParam.setCsrfAutoSubmit(this.chkAutoSubmit.isSelected());
+        csrfParam.setTimeOutValue((int)this.spnTime.getValue());
+        csrfParam.setCsrfAuto(this.rdoAuto.isSelected());
+        csrfParam.setCsrfUrlencode(this.rdoUrlencode.isSelected());
+        csrfParam.setCsrfMultiPart(this.rdoMultipart.isSelected());
+        csrfParam.setCsrfTextPlain(this.rdoPlain.isSelected());
+        csrfParam.setCsrfEncoding(this.quickSearchTab.getSelectedEncoding());
+        csrfParam.setCsrfHtml5(this.chkHtml5.isSelected());
+        csrfParam.setCsrfHtml5Binaly(this.chkHtml5Binaly.isSelected());
+        csrfParam.setCsrfGetMethod(this.chkGETmethod.isSelected());
+        csrfParam.setUseHttps(this.chkUseHttps.isSelected());
+        csrfParam.setCsrfTimeDelay(this.chkTimeDelay.isSelected());
+        return csrfParam;
+    }
+            
+    private String generatePoC(GenerateCsrfParameter csrfParam) {
         StringBuilder buff = new StringBuilder();
         try {
-            boolean csrfAutoSubmit = this.chkAutoSubmit.isSelected();
-            int timeOutValue = (int) this.spnTime.getValue();
-            boolean csrfUrlencode = this.rdoUrlencode.isSelected();
-            boolean csrfMultiPart = this.rdoMultipart.isSelected();
-            boolean csrfTextPlain = this.rdoPlain.isSelected();
-            String csrfEncoding = this.quickSearchTab.getSelectedEncoding();
+            boolean csrfAutoSubmit = csrfParam.isCsrfAutoSubmit();
+            int timeOutValue = (int) csrfParam.getTimeOutValue();
+            boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
+            boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
+            boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
+            String csrfEncoding = csrfParam.getCsrfEncoding();
             IBurpExtenderCallbacks callback = BurpExtender.getCallbacks();
             final HttpRequest reqmsg = this.message;
             // 自動判定
             String contentType = reqmsg.getEnctype();
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // select auto
-            if (this.rdoAuto.isSelected()) {
+            if (csrfParam.isCsrfAuto()) {
                 if (contentType != null) {
                     csrfEnctype = contentType;
                     if (HttpUtil.isMaltiPart(contentType)) {
@@ -550,10 +775,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     csrfEnctype = "text/plain"; // 固定
                 }
             }
-            String csrfFormMethod = this.chkGETmethod.isSelected() ? "GET" : reqmsg.getMethod();
-            String csrfFormTarget = this.chkTimeDelay.isSelected() ? " target=\"_blank\"" : "";
 
-            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), chkUseHttps.isSelected());
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();
+            String csrfFormTarget = csrfParam.isCsrfTimeDelay() ? " target=\"_blank\"" : "";
+            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");
@@ -562,7 +787,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String autoSubmit = "";
             if (csrfAutoSubmit) {
                 autoSubmit = " onload=\"document.forms[0].submit();\"";
-                if (this.chkTimeDelay.isSelected()) {
+                if (csrfParam.isCsrfTimeDelay()) {
                     autoSubmit = String.format(" onload=\"setTimeout({document.forms[0].submit();}, %d);\"",
                             new Object[]{timeOutValue});
                 }
@@ -654,22 +879,23 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         return buff.toString();
     }
 
-    private String generateHTML5PoC() {
+    private String generateHTML5PoC(GenerateCsrfParameter csrfParam) {
         StringBuilder buff = new StringBuilder();
         try {
-            boolean csrfAutoSubmit = this.chkAutoSubmit.isSelected();
-            int timeOutValue = (int) this.spnTime.getValue();
-            boolean csrfUrlencode = this.rdoUrlencode.isSelected();
-            boolean csrfMultiPart = this.rdoMultipart.isSelected();
-            boolean csrfTextPlain = this.rdoPlain.isSelected();
-            boolean csrfHtml5Binaly = this.chkHtml5Binaly.isSelected();
-            String csrfEncoding = this.quickSearchTab.getSelectedEncoding();
+            boolean csrfAutoSubmit = csrfParam.isCsrfAutoSubmit();
+            int timeOutValue = (int) csrfParam.getTimeOutValue();
+            boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
+            boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
+            boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
+            String csrfEncoding = csrfParam.getCsrfEncoding();
+             boolean csrfHtml5Binaly = csrfParam.isCsrfHtml5Binaly();
+ 
             IBurpExtenderCallbacks callback = BurpExtender.getCallbacks();
             final HttpRequest reqmsg = this.message;
             String contentType = reqmsg.getEnctype();
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // 自動判定
-            if (this.rdoAuto.isSelected()) {
+            if (csrfParam.isCsrfAuto()) {
                 if (contentType != null) {
                     csrfEnctype = contentType;
                     if (HttpUtil.isMaltiPart(contentType)) {
@@ -693,11 +919,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     csrfEnctype = "text/plain"; // 固定
                 }
             }
-            String csrfFormMethod = this.chkGETmethod.isSelected() ? "GET" : reqmsg.getMethod();
-            String csrfFormTarget = this.chkTimeDelay.isSelected() ? " target=\"_blank\"" : "";
-
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();
+            String csrfFormTarget = csrfParam.isCsrfTimeDelay() ? " target=\"_blank\"" : "";
+            
 //            IHttpService httpService = this.controller.getHttpService();
-            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), chkUseHttps.isSelected());
+            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");

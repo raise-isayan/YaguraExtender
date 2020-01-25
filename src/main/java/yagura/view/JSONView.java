@@ -3,7 +3,6 @@ package yagura.view;
 import extend.util.SwingUtil;
 import extend.util.external.JsonUtil;
 import java.awt.Font;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -138,8 +137,11 @@ public class JSONView extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     public void setMessage(String content) {
-        if (content != null) {
+        this.txtJSON.setText("");
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
+        root.removeAllChildren();
 
+        if (content != null) {
             // Raw
             SwingWorker swRaw = new SwingWorker<String, Object>() {
                 @Override
@@ -192,11 +194,6 @@ public class JSONView extends javax.swing.JPanel {
                 }            
             };
             swTree.execute();
-
-        } else {
-            this.txtJSON.setText("");
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.modelJSON.getRoot();
-            root.removeAllChildren();
         }
     }
 

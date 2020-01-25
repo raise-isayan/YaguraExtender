@@ -55,6 +55,8 @@ import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
 import java.math.BigInteger;
 import java.util.HashSet;
+import java.util.concurrent.ExecutionException;
+import javax.swing.SwingWorker;
 import yagura.model.JTransCoderProperty;
 
 /**
@@ -2206,11 +2208,32 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Sequence")) {
             if (this.tabbetSequence.getSelectedIndex() == this.tabbetSequence.indexOfTab("Numbers")) {
                 try {
-                    int startNum = (Integer) this.spnNumStart.getModel().getValue();
-                    int endNum = (Integer) this.spnNumEnd.getModel().getValue();
-                    int stepNum = (Integer) this.spnNumStep.getValue();
-                    String[] list = TransUtil.generaterList(this.txtNumFormat.getText(), startNum, endNum, stepNum);
-                    this.txtGenarate.setText(TransUtil.join("\r\n", list));
+                    final String numFormat = this.txtNumFormat.getText();
+                    final int startNum = (Integer) this.spnNumStart.getModel().getValue();
+                    final int endNum = (Integer) this.spnNumEnd.getModel().getValue();
+                    final int stepNum = (Integer) this.spnNumStep.getValue();
+                    SwingWorker swList = new SwingWorker<String, Object>() {
+                        @Override
+                        protected String doInBackground() throws Exception {
+                            String[] list = TransUtil.generaterList(numFormat, startNum, endNum, stepNum);
+                            return TransUtil.join("\r\n", list);
+                        }
+
+                        protected void process(List<Object> chunks) {
+                        }
+
+                        protected void done() {
+                            try {
+                                txtGenarate.setText(get());
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (ExecutionException ex) {
+                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    };
+                    swList.execute();
+                    
                 } catch (IllegalFormatException e) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IllegalArgumentException e) {
@@ -2218,12 +2241,35 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 }
             } else if (this.tabbetSequence.getSelectedIndex() == this.tabbetSequence.indexOfTab("Date")) {
                 try {
-                    LocalDate dateStart = LocalDate.of(datePickerStart.getModel().getYear(), datePickerStart.getModel().getMonth() + 1, datePickerStart.getModel().getDay());
-                    LocalDate dateEnd = LocalDate.of(datePickerEnd.getModel().getYear(), datePickerEnd.getModel().getMonth() + 1, datePickerEnd.getModel().getDay());;
-                    int stepNum = (Integer) this.spnDateStep.getModel().getValue();
-                    DateUnit unit = Enum.valueOf(DateUnit.class, (String) this.cmbDateUnit.getSelectedItem());
-                    String[] list = TransUtil.dateList(this.txtDateFormat.getText(), dateStart, dateEnd, stepNum, unit);
-                    this.txtGenarate.setText(TransUtil.join("\r\n", list));
+                    final String numFormat = this.txtNumFormat.getText();
+                    final LocalDate dateStart = LocalDate.of(datePickerStart.getModel().getYear(), datePickerStart.getModel().getMonth() + 1, datePickerStart.getModel().getDay());
+                    final LocalDate dateEnd = LocalDate.of(datePickerEnd.getModel().getYear(), datePickerEnd.getModel().getMonth() + 1, datePickerEnd.getModel().getDay());;
+                    final int stepNum = (Integer) this.spnDateStep.getModel().getValue();
+                    final String dateUnit = (String) this.cmbDateUnit.getSelectedItem();
+
+                    SwingWorker swList = new SwingWorker<String, Object>() {
+                        @Override
+                        protected String doInBackground() throws Exception {
+                            DateUnit unit = Enum.valueOf(DateUnit.class, dateUnit);
+                            String[] list = TransUtil.dateList(numFormat, dateStart, dateEnd, stepNum, unit);
+                            return TransUtil.join("\r\n", list);
+                        }
+
+                        protected void process(List<Object> chunks) {
+                        }
+
+                        protected void done() {
+                            try {
+                                txtGenarate.setText(get());
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (ExecutionException ex) {
+                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    };
+                    swList.execute();                    
+                    
                 } catch (IllegalFormatException e) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IllegalArgumentException e) {
@@ -2231,14 +2277,33 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 }
             }
         } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Random")) {
-            int count = this.getGenerateCount();
-            int length = this.getCharacterLength();
-            String rangeChars = this.getRangeChars();
+            final int count = this.getGenerateCount();
+            final int length = this.getCharacterLength();
+            final String rangeChars = this.getRangeChars();
             if (rangeChars.length() == 0) {
                 JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.chars.empty"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                String[] list = TransUtil.randomList(rangeChars, length, count);
-                this.txtGenarate.setText(TransUtil.join("\r\n", list));
+                SwingWorker swList = new SwingWorker<String, Object>() {
+                    @Override
+                    protected String doInBackground() throws Exception {
+                        String[] list = TransUtil.randomList(rangeChars, length, count);
+                        return TransUtil.join("\r\n", list);
+                    }
+
+                    protected void process(List<Object> chunks) {
+                    }
+
+                    protected void done() {
+                        try {
+                           txtGenarate.setText(get());
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ExecutionException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                };
+                swList.execute();
             }
         }
     }//GEN-LAST:event_btnGenerateActionPerformed

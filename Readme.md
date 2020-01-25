@@ -1,21 +1,25 @@
-Burp suite 拡張 YaguraExtender
+Burp suite Extension YaguraExtender
 =============
-このツールは、PortSwigger社の製品であるBurp Suiteの拡張になります。
 
-Burp Suiteは主にアジア圏のエンコーディング周りが弱いために作成しました。
-本ツールは、主に日本語圏のユーザをターゲットとした拡張となっています。
-中韓のエンコーディングを指定した場合も、ある程度は対応しているはずですが、特に文字コードの自動判定については主に日本語圏のエンコーディング判定をメインに据えた仕様であるため
-全てにおいて問題ないわけではありません。
+Language/[Japanese](https://github.com/raise-isayan/YaguraExtender/blob/master/Readme-ja.md)
 
-## ヘルプ
-利用方法等の詳細なヘルプは、help ディレクトリの help.html を参照してください。
+This tool is an extension of Burp Suite, a product of PortSwigger.
 
-オンラインの場合は、[help](https://github.com/raise-isayan/YaguraExtender/blob/master/src/main/help/help.adoc)を参照して下さい。
+Burp Suite was created mainly due to weak replication around Asia.
+This tool is an extension mainly targeting Japanese-speaking users.
+It should correspond to a certain extent even if you specify Chinese-Korean replication, but especially for the automatic determination of character code, it is a specification that mainly focuses on compliance in Japanese-speaking countries.
+Not everything is fine.
 
-## 必須ライブラリ
-ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。
+## help
+
+Please refer to help.html in help directory for detailed help such as how to use.
+
+If you are online, please refer to [help] (https://github.com/raise-isayan/YaguraExtender/blob/master/src/main/help/help.adoc).
+
+## Required library
+Building requires a separate [BurpExtLib] (https://github.com/raise-isayan/BurpExtLib) library.
 * BurpExtlib v1.9.2
 
-## 注意事項
-このツールは、私個人が勝手に開発したもので、PortSwigger社は一切関係ありません。本ツールを使用したことによる不具合等についてPortSwiggerに問い合わせないようお願いします。
+##Notes
+This tool was developed by myself and has nothing to do with PortSwigger. Please do not contact PortSwigger for any problems caused by using this tool.
 

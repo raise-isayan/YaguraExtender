@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.8">
-<title>YaguraExtender Help</title>
+<title>YaguraExtender ヘルプ</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -432,21 +432,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>YaguraExtender Help</h1>
+<h1>YaguraExtender ヘルプ</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_operating_environment">1. Operating environment</a></li>
+<li><a href="#_動作環境">1. 動作環境</a></li>
 <li><a href="#_start_up">2. Start up</a></li>
-<li><a href="#_yaguraextender_tab">3. YaguraExtender tab</a>
+<li><a href="#_yaguraextenderタブ">3. YaguraExtenderタブ</a>
 <ul class="sectlevel2">
-<li><a href="#_cjk_view_tab">3.1. CJK View tab</a></li>
-<li><a href="#_matchreplace_tab">3.2. MatchReplace tab</a></li>
-<li><a href="#_matchalert_tab">3.3. MatchAlert tab</a></li>
-<li><a href="#_sendto_tab">3.4. SendTo tab</a></li>
-<li><a href="#_logging_tabs">3.5. Logging tabs</a></li>
-<li><a href="#_jsearch_tab">3.6. JSearch tab</a></li>
-<li><a href="#_jtranscoder_tab">3.7. JTransCoder tab</a></li>
+<li><a href="#_cjk_viewタブ">3.1. CJK Viewタブ</a></li>
+<li><a href="#_matchreplaceタブ">3.2. MatchReplaceタブ</a></li>
+<li><a href="#_matchalertタブ">3.3. MatchAlertタブ</a></li>
+<li><a href="#_sendtoタブ">3.4. SendToタブ</a></li>
+<li><a href="#_loggingタブ">3.5. Loggingタブ</a></li>
+<li><a href="#_jsearchタブ">3.6. JSearchタブ</a></li>
+<li><a href="#_jtranscoderタブ">3.7. JTransCoderタブ</a></li>
 <li><a href="#_generate_csrf_poc">3.8. Generate CSRF PoC</a></li>
 <li><a href="#_version">3.9. Version</a></li>
 </ul>
@@ -458,18 +458,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Language/<a href="help-ja.html">Japanese</a></p>
+<p>Language/<a href="help.html">English</a></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_operating_environment">1. Operating environment</h2>
+<h2 id="_動作環境">1. 動作環境</h2>
 <div class="sectionbody">
 <div class="ulist">
 <div class="title">Java</div>
 <ul>
 <li>
-<p>JRE (JDK) 8, 11 (Open JDK is recommended) (<a href="https://openjdk.java.net/" class="bare">https://openjdk.java.net/</a>)</p>
+<p>JRE(JDK) 8, 11 (Open JDK を推奨)(<a href="https://openjdk.java.net/" class="bare">https://openjdk.java.net/</a>)</p>
 </li>
 </ul>
 </div>
@@ -477,12 +477,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">Burp suite</div>
 <ul>
 <li>
-<p>1.7 or higher (<a href="http://www.portswigger.net/burp/" class="bare">http://www.portswigger.net/burp/</a>)</p>
+<p>1.7以上 (<a href="http://www.portswigger.net/burp/" class="bare">http://www.portswigger.net/burp/</a>)</p>
 </li>
 </ul>
 </div>
 <div class="ulist">
-<div class="title">Development environment</div>
+<div class="title">開発環境</div>
 <ul>
 <li>
 <p>NetBean 11.0 (<a href="https://netbeans.apache.org/" class="bare">https://netbeans.apache.org/</a>)</p>
@@ -496,7 +496,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 <div class="ulist">
-<div class="title">Use Library</div>
+<div class="title">利用ライブラリ</div>
 <ul>
 <li>
 <p>gson</p>
@@ -602,9 +602,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_start_up">2. Start up</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>After pressing the "Add" button from the "Extender" tab of Burp suite, add YaguraExtender.jar.
-Checking "Loaded" will load the extension, and a "YaguraExtender" tab will be added to the tab of the Burp sute body.
-Various settings can be done from here.</p>
+<p>Burp suiteの「Extender」タブから「Add」ボタンを押下後、YaguraExtender.jar を追加します。
+「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
+各種設定はこちらから行えるようになっています。</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="./images/Extender_Yagura.png" alt="Extender"></span></p>
@@ -612,16 +612,16 @@ Various settings can be done from here.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_yaguraextender_tab">3. YaguraExtender tab</h2>
+<h2 id="_yaguraextenderタブ">3. YaguraExtenderタブ</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_cjk_view_tab">3.1. CJK View tab</h3>
+<h3 id="_cjk_viewタブ">3.1. CJK Viewタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_encoding.png" alt="CJK View tab"></span></p>
+<p><span class="image"><img src="./images/custom_encoding.png" alt="CJK Viewタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>Use this tab to configure CJK (Chinese, Japanese, Korean).
-You can select the most frequently used encoding. The value selected here is the encoding that can be selected on the display screen of JTransCoder or JSON view.</p>
+<p>いわゆるCJK(中国語、日本語、韓国語)に対応するための設定を行うタブです。
+使用頻度の高い Encoding を選択することができます。ここで選択した値は、JTransCoderまたはJSONビューの表示画面で選択できるエンコードです。</p>
 </div>
 <div class="sect3">
 <h4 id="_cjk_view">3.1.1. CJK View</h4>
@@ -629,30 +629,30 @@ You can select the most frequently used encoding. The value selected here is the
 <dl>
 <dt class="hdlist1">Target</dt>
 <dd>
-<p>A list of all encodings available in Java will be displayed.</p>
+<p>Javaで利用可能なすべてのエンコーディングリスト一覧が表示されます。</p>
 </dd>
 <dt class="hdlist1">Select</dt>
 <dd>
-<p>The selected encoding is listed.</p>
+<p>選択したエンコーディング一覧されます。</p>
 </dd>
-<dt class="hdlist1">[&lt;]、[&gt;] button</dt>
+<dt class="hdlist1">[&lt;]、[&gt;]ボタン</dt>
 <dd>
-<p>Move the selected encoding to Target or Select.</p>
+<p>選択したエンコーディングをTargetに移動もしくは、Selectに移動します。</p>
 </dd>
-<dt class="hdlist1">[Up]、[Down] button</dt>
+<dt class="hdlist1">[Up]、[Down]ボタン</dt>
 <dd>
-<p>Moves the order of the selected encoding.
-The order here is the order displayed in the encoding.</p>
+<p>選択したエンコーディングの順番を移動します。
+ここでの順番が、エンコーディングに表示される順番になります。</p>
 </dd>
-<dt class="hdlist1">[Reset] button</dt>
+<dt class="hdlist1">[Reset]ボタン</dt>
 <dd>
-<p>Set the encoding for the selected language to the default.</p>
+<p>選択された言語のエンコーディングをデフォルトに設定します。</p>
 </dd>
-<dt class="hdlist1">[clip bord auto decode] check box</dt>
+<dt class="hdlist1">[clip bord auto decode]チェックボックス</dt>
 <dd>
-<p>When checked, the character string copied from the Burp suite to the clipboard is automatically decoded so that it can be pasted to other applications without garbled characters.
-Judgment may fail because the character code is inferred from the byte string in the clipboard.<br>
-Not supported in current version.</p>
+<p>チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
+クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。<br>
+現在のバージョンではサポートされていません。</p>
 </dd>
 </dl>
 </div>
@@ -661,149 +661,149 @@ Not supported in current version.</p>
 <h4 id="_cjk_message_view">3.1.2. CJK Message View</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Cenerate PoC] check box</dt>
+<dt class="hdlist1">[Cenerate PoC]チェックボックス</dt>
 <dd>
-<p>Display the "Cenerate PoC" tab in the message tab.</p>
+<p>メッセージタブにCenerate PoCタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">[HTML Comment] check box</dt>
+<dt class="hdlist1">[HTML Comment]チェックボックス</dt>
 <dd>
-<p>Display HTML Comment tab in message tab.</p>
+<p>メッセージタブにHTML Commentタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">[JSON] check box</dt>
+<dt class="hdlist1">[JSON]チェックボックス</dt>
 <dd>
-<p>Display the JSON tab in the message tab.</p>
+<p>メッセージタブにJSONタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">[JWT] check box</dt>
+<dt class="hdlist1">[JWT]チェックボックス</dt>
 <dd>
-<p>Display the JWT tab in the message tab.</p>
+<p>メッセージタブにJWTタブを表示するようにします。</p>
 </dd>
-<dt class="hdlist1">[Universal Raw] check box</dt>
+<dt class="hdlist1">[Universal Raw]チェックボックス</dt>
 <dd>
-<p>Display the Raw tab corresponding to CJK in the message tab.
-Currently read-only.</p>
+<p>メッセージタブにCJKに対応したRawタブを表示するようにします。
+現時点ではリードオンリーです。</p>
 </dd>
-<dt class="hdlist1">[Universal Param] check box</dt>
+<dt class="hdlist1">[Universal Param]チェックボックス</dt>
 <dd>
-<p>Display the Param tab corresponding to CJK in the message tab.
-Currently read-only.</p>
+<p>メッセージタブにCJKに対応したParamタブを表示するようにします。
+現時点ではリードオンリーです。</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_matchreplace_tab">3.2. MatchReplace tab</h3>
+<h3 id="_matchreplaceタブ">3.2. MatchReplaceタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace.png" alt="MatchReplace tab"></span></p>
+<p><span class="image"><img src="./images/custom_matchreplace.png" alt="MatchReplaceタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>It is an extension of <strong> Match and Replace </strong> on the Proxy &#8658; Option tab of Burp sute itself. Create and switch between multiple <strong> Match and Replace </strong> s.
-You can specify a regular expression forward reference as the replacement string. The <strong> Match and Replace </strong> of the Burp main unit is a unique implementation. Match and Replace on the main unit is evaluated, and then Match and Replace on the extended side is evaluated.</p>
+<p>Burp sute 本体の Proxy &#8658; Optionタブの <strong> Match and Replace </strong> の拡張になります。複数の <strong> Match and Replace </strong> を作成して切り替えられます。
+置換文字列として正規表現の前方参照を指定できます。Burp本体の <strong> Match and Replace </strong> とは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。</p>
 </div>
 <div class="sect3">
 <h4 id="_matchreplace">3.2.1. MatchReplace</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Select] button</dt>
+<dt class="hdlist1">[Select]ボタン</dt>
 <dd>
-<p>Apply the selected MatchReplace.
-If you select Applied again, it will be canceled.</p>
+<p>選択したMatchReplaceを適用します。
+適用済みを再度選択した場合は、解除されます。</p>
 </dd>
-<dt class="hdlist1">[New] button</dt>
+<dt class="hdlist1">[New]ボタン</dt>
 <dd>
-<p>Create a new MatchReplace.
-An empty MatchReplaceItem dialog appears.</p>
+<p>MatchReplaceを新規作成します。
+空のMatchReplaceItemダイヤログが表示されます。</p>
 </dd>
-<dt class="hdlist1">[Edit] button</dt>
+<dt class="hdlist1">[Edit]ボタン</dt>
 <dd>
-<p>Edit the selected MatchReplace.
-MThe MatchReplaceItem dialog of the selected content is displayed.</p>
+<p>選択したMatchReplaceを編集します。
+選択した内容のMatchReplaceItemダイヤログが表示されます。</p>
 </dd>
-<dt class="hdlist1">[Remove] button</dt>
+<dt class="hdlist1">[Remove]ボタン</dt>
 <dd>
-<p>Delete the selected MatchReplace.</p>
+<p>選択したMatchReplaceを削除します。</p>
 </dd>
-</dl>
-</div>
-<div class="paragraph">
-<p>[Up], [Down] button:
-    Moves the order of the selected MatchReplace.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_matchreplace_dialog">3.2.2. MatchReplace Dialog</h4>
-<div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace_edit.png" alt="MatchReplaceItem Dialog"></span></p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">[in-scope only] check box</dt>
+<dt class="hdlist1">[Up]、[Down]ボタン</dt>
 <dd>
-<p>Limit the targets to those that match the scope on the Target tab in Burp.</p>
-</dd>
-<dt class="hdlist1">[burp import match and replace rule] button</dt>
-<dd>
-<p>Imports current Burp match and replace settings.<br>
-Not supported in current version.</p>
-</dd>
-<dt class="hdlist1">[Edit] button</dt>
-<dd>
-<p>Edit the selected MatchReplace.</p>
-</dd>
-<dt class="hdlist1">[Remove] button</dt>
-<dd>
-<p>Delete the selected MatchReplace.</p>
-</dd>
-<dt class="hdlist1">[Up], [Down] button</dt>
-<dd>
-<p>Moves the order of the selected MatchReplace Item.</p>
-</dd>
-<dt class="hdlist1">[All Clear] button</dt>
-<dd>
-<p>Delete all lists.</p>
-</dd>
-<dt class="hdlist1">[Add], [Update] button</dt>
-<dd>
-<p>Add MatchReplace. Update if it is being edited.</p>
+<p>選択したMatchReplaceの順番を移動します。</p>
 </dd>
 </dl>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchreplace_item_edit_dialog">3.2.3. MatchReplace Item Edit dialog</h4>
+<h4 id="_matchreplace_ダイヤログ">3.2.2. MatchReplace ダイヤログ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace_item.png" alt="MatchReplaceItem Edit dialog"></span></p>
+<p><span class="image"><img src="./images/custom_matchreplace_edit.png" alt="MatchReplaceItemダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Type(Replacement target)</dt>
+<dt class="hdlist1">[in-scope only]チェックボックス</dt>
 <dd>
-<p>Select from request heder, request body, response heder, response body.</p>
+<p>ターゲットをBurpのTargetタブのscopeにマッチするものに限定します。</p>
 </dd>
-<dt class="hdlist1">Match(Before replacement)</dt>
+<dt class="hdlist1">[burp import match and replace rule]ボタン</dt>
 <dd>
-<p>Enter the character string before replacement to be replaced.</p>
+<p>現在のBurpのmatch and replace設定をインポートします。<br>
+現在のバージョンではサポートされていません。</p>
 </dd>
-<dt class="hdlist1">Replace(After replacement)</dt>
+<dt class="hdlist1">[Edit]ボタン</dt>
 <dd>
-<p>Enter the replacement character string to be replaced.
-If request heder or response heder is selected as the replacement target and only the replaced character is entered, a header line will be added.
-You can also specify a capture group such as $ 1, $ 2.
-Non-ASCII characters cannot be specified here. If specified, the characters will be converted to?.
-To specify a character other than ASCII characters, use meta characters.</p>
+<p>選択した MatchReplace を編集します。</p>
 </dd>
-<dt class="hdlist1">[Regexp] check box</dt>
+<dt class="hdlist1">[Remove]ボタン</dt>
 <dd>
-<p>When checked, enable regular expressions.</p>
+<p>選択した MatchReplace を削除します。</p>
 </dd>
-<dt class="hdlist1">[IgnoreCase] check box</dt>
+<dt class="hdlist1">[Up]、[Down]ボタン</dt>
 <dd>
-<p>When checked, ignore case.</p>
+<p>選択した MatchReplace Item の順番を移動します。</p>
 </dd>
-<dt class="hdlist1">[Metachar] check box</dt>
+<dt class="hdlist1">[All Clear]ボタン</dt>
 <dd>
-<p>Enable metacharacters.
-The following meta characters are available.</p>
+<p>リストをすべて削除します。</p>
+</dd>
+<dt class="hdlist1">[Add]、[Update]ボタン</dt>
+<dd>
+<p>MatchReplace を追加します。編集中の場合は更新します。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_matchreplace_item_編集ダイヤログ">3.2.3. MatchReplace Item 編集ダイヤログ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="./images/custom_matchreplace_item.png" alt="MatchReplaceItem編集ダイヤログ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Type(置換対象)</dt>
+<dd>
+<p>request heder,request body,response heder,response bodyのいずれかから選択します。</p>
+</dd>
+<dt class="hdlist1">Match(置換前)</dt>
+<dd>
+<p>置換対象の置換前の文字列を入力します。</p>
+</dd>
+<dt class="hdlist1">Replace(置換後)</dt>
+<dd>
+<p>置換対象の置換後の文字列を入力します。
+置換対象に request heder,response hederが選択されている場合でかつ置換後の文字のみを入力した場合はHeder行の追加になります。
+また、$1、$2などのキャプチャグループを指定することができます。
+いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
+アスキー文字以外を指定する場合は、メタ文字を利用します。</p>
+</dd>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
+<dd>
+<p>チェック時、正規表現を有効にします。</p>
+</dd>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
+<dd>
+<p>チェック時、大文字小文字を無視します。</p>
+</dd>
+<dt class="hdlist1">[Metachar]チェックボックス</dt>
+<dd>
+<p>メタ文字を有効にします。
+以下のメタ文字が利用可能です。</p>
 </dd>
 </dl>
 </div>
@@ -814,75 +814,75 @@ The following meta characters are available.</p>
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">meta char</th>
-<th class="tableblock halign-left valign-top">conversion character</th>
+<th class="tableblock halign-left valign-top">メタ文字</th>
+<th class="tableblock halign-left valign-top">変換文字</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\r</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to CR(0x0d)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CR(0x0d) に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\n</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to LF(0x0a)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LF(0x0a) に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\b</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to 0x08</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x08 に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\f</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to 0x0c</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0c に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\t</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to TAB(0x09)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TAB(0x09) に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\v</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to 0x0b</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0x0b に変換</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\xhh</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Hexadecimal notation, specify two hexadecimal characters for hh. Use when you want to convert the byte string as it is.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16進表記、 hhには16進文字を2桁指定する。バイト列そのままに変換したい場合に利用します。</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">\uhhhh</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Specify Unicode code in hexadecimal for hhhh in Unicode notation. Unicode characters are automatically converted to the guessed character code of the guessed response. If there is no corresponding character, it is converted to?.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Unicode表記、 hhhhにはUnicodeコードを16進指定する。Unicode文字は推測したレスポンスの推測した文字コードに自動で変換されます。対応する文字が存在しない場合、?に変換されます。</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_matchalert_tab">3.3. MatchAlert tab</h3>
+<h3 id="_matchalertタブ">3.3. MatchAlertタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchalert.png" alt="MatchAlert tab"></span></p>
+<p><span class="image"><img src="./images/custom_matchalert.png" alt="MatchAlertタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>Notifies you when a character that matches the specified string appears in the response. It is assumed that a character string of ErrorCode such as Exception is registered.
-There are the following five notification methods, and you can select multiple methods at the same time</p>
+<p>指定した文字列にマッチする文字がレスポンスに現れた場合に通知してくれます。 ExceptionなどのErrorCode系の文字列を登録することを想定しています。
+通知方法には以下の５つの方法があり、同時に複数の方法を選択できます</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>How to notify on the Burp Alerts tab</p>
+<p>BurpのAlertsタブにて通知する方法</p>
 </li>
 <li>
-<p>How to notify by message in task tray<br>
-Not supported in current version.</p>
+<p>タスクトレイのメッセージにて通知する方法<br>
+現在のバージョンではサポートされていません。</p>
 </li>
 <li>
-<p>How to change HighlightColor of matched history<br>
-Only meaningful if proxy is checked.</p>
+<p>マッチしたヒストリのHighlightColorを変更する方法<br>
+proxyにチェックが入っている場合にしか意味がありません。</p>
 </li>
 <li>
-<p>How to change the comment of the matched history<br>
-Only meaningful if proxy is checked.</p>
+<p>マッチしたヒストリのCommentを変更する方法<br>
+proxyにチェックが入っている場合にしか意味がありません。</p>
 </li>
 <li>
-<p>Create a Scanner Issue with the matched content and the specified value.</p>
+<p>マッチした内容と指定した値にてScannerのIssueを作成します。</p>
 </li>
 </ol>
 </div>
@@ -890,202 +890,202 @@ Only meaningful if proxy is checked.</p>
 <h4 id="_matchalert">3.3.1. MatchAlert</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Enable Alert] check box</dt>
+<dt class="hdlist1">[Enable Alert]チェックボックス</dt>
 <dd>
-<p>Enable the MatchAlert function when checking.</p>
+<p>チェック時にMatchAlert機能を有効にします。</p>
 </dd>
-<dt class="hdlist1">[Edit] button</dt>
+<dt class="hdlist1">[Edit]ボタン</dt>
 <dd>
-<p>Edit the selected MatchAlert Item.</p>
+<p>選択した MatchAlert Item を編集します。</p>
 </dd>
-<dt class="hdlist1">[Remove] button</dt>
+<dt class="hdlist1">[Remove]ボタン</dt>
 <dd>
-<p>Delete the selected MatchAlert Item.</p>
+<p>選択した MatchAlert Item を削除します。</p>
 </dd>
-<dt class="hdlist1">[Add], [Update] button</dt>
+<dt class="hdlist1">[Add]、[Update]ボタン</dt>
 <dd>
-<p>Add a MatchAlert Item. Updates while editing.</p>
+<p>MatchAlert Item を追加します。編集中時は更新します。</p>
 </dd>
 </dl>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchalert_item_edit_dialog">3.3.2. MatchAlert Item Edit dialog</h4>
+<h4 id="_matchalert_item_編集ダイヤログ">3.3.2. MatchAlert Item 編集ダイヤログ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchalert_item.png" alt="MatchAlertItem Edit dialog"></span></p>
+<p><span class="image"><img src="./images/custom_matchalert_item.png" alt="MatchAlertItem編集ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Type(Search target)</dt>
+<dt class="hdlist1">Type(検索対象)</dt>
 <dd>
-<p>Select from request or response</p>
+<p>request,responseのいずれかから選択</p>
 </dd>
-<dt class="hdlist1">Match(Match string)</dt>
+<dt class="hdlist1">Match(マッチ文字列)</dt>
 <dd>
-<p>Enter the string you want to match.</p>
+<p>マッチさせたい文字列を入力します。</p>
 </dd>
-<dt class="hdlist1">Target(Alert target)</dt>
+<dt class="hdlist1">Target(アラート対象)</dt>
 <dd>
 <p>proxy,repeater,spider,intruder,scanner,sequencer
-The checked target will be the target of MatchAlert.</p>
+チェックした対象がMatchAlertの対象になります。</p>
 </dd>
-<dt class="hdlist1">[Regexp] check box</dt>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
 <dd>
-<p>Enable regular expression when checked.</p>
+<p>チェック時正規表現を有効にします。</p>
 </dd>
-<dt class="hdlist1">[IgnoreCase] check box</dt>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
 <dd>
-<p>Enable regular expression when checked.</p>
+<p>チェック時大文字小文字を無視します。</p>
 </dd>
-<dt class="hdlist1">[alert tabs] check box</dt>
+<dt class="hdlist1">[alert tabs]チェックボックス</dt>
 <dd>
-<p>Alerts in the Burp suite will be notified.</p>
+<p>Burp suite のalertsが通知先になります。</p>
 </dd>
-<dt class="hdlist1">[try message] check box</dt>
+<dt class="hdlist1">[try message]チェックボックス</dt>
 <dd>
-<p>The message in the inbox will be the notification destination.
-Not supported in current version.</p>
+<p>トレイのメッセージが通知先になります。
+現在のバージョンではサポートされていません。</p>
 </dd>
-<dt class="hdlist1">[Highlight Color] check box</dt>
+<dt class="hdlist1">[Highlight Color]チェックボックス</dt>
 <dd>
-<p>If the string matches, the HighlightColor of the corresponding Burp&#8217;s History will be the specified color<br>
-Valid only when you check the proxy log.</p>
+<p>文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります<br>
+proxyログにチェックした場合のみ有効です。</p>
 </dd>
-<dt class="hdlist1">[comment] check box</dt>
+<dt class="hdlist1">[comment]チェックボックス</dt>
 <dd>
-<p>If the string matches, the comment of the history of the corresponding Burp will be the specified comment<br>
-Valid only when you check the proxy log.</p>
+<p>文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります<br>
+proxyログにチェックした場合のみ有効です。</p>
 </dd>
-<dt class="hdlist1">[scanner issue] check box</dt>
+<dt class="hdlist1">[scanner issue]チェックボックス</dt>
 <dd>
-<p>If the strings match, create an issue for that Scanner.</p>
+<p>文字列がマッチした場合、該当のScannerのIssueを作成します。</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sendto_tab">3.4. SendTo tab</h3>
+<h3 id="_sendtoタブ">3.4. SendToタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto.png" alt="SendTo tab"></span></p>
+<p><span class="image"><img src="./images/custom_sendto.png" alt="SendToタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>This is a function using the extended menu of Burp.
-You can increase the number of right-click menus displayed from the Burp History, etc., and call up the specified function from the menu. The content sent is the content of the selected History request and response.</p>
+<p>Burpがもつ拡張メニューを利用した機能です。
+BurpのHistory等から表示される右クリックのメニューを増やすことができ、 メニューから指定した機能を呼び出すことができます。送られる内容は、選択したHistoryのリクエストとレスポンスの内容になります。</p>
 </div>
 <div class="sect3">
 <h4 id="_sendto">3.4.1. SendTo</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Send To Submenu] check box</dt>
+<dt class="hdlist1">[Send To Submenu]チェックボックス</dt>
 <dd>
-<p>If checked, the Send To Menu will be displayed as a submenu.</p>
+<p>チェックした場合、Send To Menuをサブメニューで表示します。</p>
 </dd>
-<dt class="hdlist1">[Edit] button</dt>
+<dt class="hdlist1">[Edit]ボタン</dt>
 <dd>
-<p>Edit the selected SendToItem.
-The Edit dialog of SendToItem of the selected content is displayed.</p>
+<p>選択したSendToItemを編集します。
+選択した内容のSendToItemの編集ダイヤログが表示されます。</p>
 </dd>
-<dt class="hdlist1">[Remove] button</dt>
+<dt class="hdlist1">[Remove]ボタン</dt>
 <dd>
-<p>Delete the selected SendToItem.</p>
+<p>選択したSendToItemを削除します。</p>
 </dd>
-<dt class="hdlist1">[Up], [Down] button</dt>
+<dt class="hdlist1">[Up]、[Down]ボタン</dt>
 <dd>
-<p>Moves the order of the selected SendToItem.
-The order here is the order displayed in the right-click menu.</p>
+<p>選択したSendToItemの順番を移動します。
+ここでの順番が、右クリックのメニューに表示される順番になります。</p>
 </dd>
-<dt class="hdlist1">[Add] button</dt>
+<dt class="hdlist1">[Add]ボタン</dt>
 <dd>
-<p>Add SendToItem.
-An empty SendToItem edit dialog appears.</p>
+<p>SendToItemを追加します。
+空のSendToItemの編集ダイヤログが表示されます。</p>
 </dd>
 </dl>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sendtoitem_edit_dialog">3.4.2. SendToItem Edit dialog</h4>
+<h4 id="_sendtoitem_編集ダイヤログ">3.4.2. SendToItem 編集ダイヤログ</h4>
 <div class="paragraph">
-<p>SendTo has a Base tab and an Extend tab. In the Base tab, it is convenient to register a binary editor, file comparison tool, etc. When you call the editor from the right-click, the binary editor is started with the temporarily created file as an argument. In the case of the comparison tool, you can compare by selecting two histories. This was created because Burp&#8217;s HEX dump and Compare functions are difficult to use.</p>
+<p>SendToには、Baseタブと、Extendタブがあります。 Baseタブでは、バイナリエディタやファイル比較ツール等を登録すると便利です。 右クリックからエディタを呼び出すと、一時的に作られたファイルを引数にしてバイナリエディタが起動されます。 比較ツールの場合、2つHistoryを選択することで比較することができます。 これは BurpのHEX ダンプやCompare機能が使いにくいためにつくりました。</p>
 </div>
 <div class="paragraph">
-<p>The Extend tab has useful functions that cannot be supported by the Base tab.</p>
+<p>ExtendタブにはBaseタブでは対応ができない便利な機能をあつめてます。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_base_tab">3.4.3. Base tab</h4>
+<h4 id="_baseタブ">3.4.3. Baseタブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_base.png" alt="SendToItem Edit Base Dialog"></span></p>
+<p><span class="image"><img src="./images/custom_sendto_base.png" alt="SendToItem編集 Base ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Menu Caption</dt>
 <dd>
-<p>Menu name</p>
+<p>メニュー名</p>
 </dd>
 <dt class="hdlist1">Target</dt>
 <dd>
-<p>Describe the execution path of any binary editor or file comparison tool.
-If server is checked, write a URL starting with http: // or https: //.</p>
+<p>任意のバイナリエディタやファイル比較ツール等の実行パスを記載します。
+serverにチェックが入ってる場合は、http:// または https:// で始まるURLを書きます。</p>
 </dd>
-<dt class="hdlist1">[server] check box</dt>
+<dt class="hdlist1">[server]チェックボックス</dt>
 <dd>
-<p>Check when sending to the server.
-If server is checked, send multipart data to the URL described in Target.</p>
+<p>サーバに送信する場合にチェックします。
+serverにチェックが入ってる場合は、Target に記載されたURLに対してmultipartのデータを送ります。</p>
 </dd>
-<dt class="hdlist1">[reverse order] check box</dt>
+<dt class="hdlist1">[reverse order]チェックボックス</dt>
 <dd>
-<p>Send in the reverse order of the selected list.</p>
+<p>選択したリストの逆順に送信をおこないます。</p>
 </dd>
-<dt class="hdlist1">[requset], [response] check box</dt>
+<dt class="hdlist1">[requset]、[response]チェックボックス</dt>
 <dd>
-<p>It is sent to the registered Target when requset or response of the request is checked.<br>
-Request and response can choose to send either header or body.</p>
+<p>リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。<br>
+リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。</p>
 </dd>
 </dl>
 </div>
 <div class="sect4">
-<h5 id="_multipart_data_sent">Multipart data sent</h5>
+<h5 id="_送信される_multipart_のデータ">送信される multipart のデータ</h5>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">host </dt>
 <dd>
-<p>hostname</p>
+<p>ホスト名</p>
 </dd>
 <dt class="hdlist1">port</dt>
 <dd>
-<p>Port name</p>
+<p>ポート名</p>
 </dd>
 <dt class="hdlist1">protocol</dt>
 <dd>
-<p>protocol name(http or https)</p>
+<p>protocol名(httpまたは、https)</p>
 </dd>
 <dt class="hdlist1">url</dt>
 <dd>
-<p>url string</p>
+<p>url文字列</p>
 </dd>
 <dt class="hdlist1">requset</dt>
 <dd>
-<p>requset</p>
+<p>リクエスト</p>
 </dd>
 <dt class="hdlist1">response</dt>
 <dd>
-<p>response</p>
+<p>レスポンス</p>
 </dd>
 <dt class="hdlist1">comment</dt>
 <dd>
-<p>comment</p>
+<p>コメント</p>
 </dd>
 <dt class="hdlist1">highlight</dt>
 <dd>
-<p>Selected Highlight Color
-One of the following values<br>
+<p>選択した Highlight Color
+以下のいずれかの値になります。<br>
 white, red, orange, yellow, green, cyan, blue, pink, magenta, gray<br>
-white is equivalent to not selected.</p>
+white は選択されていない状態と等価です。</p>
 </dd>
 <dt class="hdlist1">encoding</dt>
 <dd>
-<p>guess encoding</p>
+<p>推測エンコーディング</p>
 </dd>
 </dl>
 </div>
@@ -1136,77 +1136,77 @@ UTF-8
 </div>
 </div>
 <div class="paragraph">
-<p>At the moment, there is no (public) web application that can accept this format.
-sample / cgi-bin / sendto.cgi contains a sample CGI application that only receives and displays this format. Please refer here if you want to implement.</p>
+<p>現時点ではこの形式をうけとることができる（公開されている）Webアプリはありません。
+sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけのCGIアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。</p>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_extend_tab">3.4.4. Extend tab</h4>
+<h4 id="_extendタブ">3.4.4. Extendタブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_extend.png" alt="SendToItem Edit Extend Dialog"></span></p>
+<p><span class="image"><img src="./images/custom_sendto_extend.png" alt="SendToItem編集 Extend ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">request and response to file</dt>
 <dd>
-<p>Save only the body part of the response to a file.</p>
+<p>レスポンスのボディの部分のみをファイルに保存します。</p>
 </dd>
 <dt class="hdlist1">send to jtranscoder</dt>
 <dd>
-<p>Sends the selected string to the input of JTransCoder.</p>
+<p>JTransCoder のInputに選択した文字列を送ります。</p>
 </dd>
 <dt class="hdlist1">paste from jtranscoder</dt>
 <dd>
-<p>Paste the string from Output of JTransCoder.</p>
+<p>JTransCoder のOutputから文字列を貼り付けます。</p>
 </dd>
 <dt class="hdlist1">paste from clipboard</dt>
 <dd>
-<p>Paste the character string from the clipboard in the specified encoding.</p>
+<p>クリップボードから指定したエンコーディングにて文字列を貼り付けます。</p>
 </dd>
 <dt class="hdlist1">message info copy</dt>
 <dd>
-<p>Copy the message information to the clipboard.</p>
+<p>message の情報をクリップボードにコピーします。</p>
 </dd>
 <dt class="hdlist1">add host to include scope</dt>
 <dd>
-<p>Add URL scheme and host to include in scope.</p>
+<p>URLのスキームとホストをinclude in scopeに追加します。</p>
 </dd>
 <dt class="hdlist1">add host to exclude scope</dt>
 <dd>
-<p>Add URL scheme and host to exclude in scope.</p>
+<p>URLのスキームとホストをexclude in scopeに追加します。</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_logging_tabs">3.5. Logging tabs</h3>
+<h3 id="_loggingタブ">3.5. Loggingタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_logging.png" alt="Logging tab"></span></p>
+<p><span class="image"><img src="./images/custom_logging.png" alt="Loggingタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>Automatic log logging function.
-This function automatically saves the log without having to select the log every time.</p>
+<p>ログの自動ロギング機能です。
+この機能では、毎回ログの選択を行わなくても自動でログを 保存してくれます。</p>
 </div>
 <div class="sect3">
 <h4 id="_logging">3.5.1. Logging</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[auto logging] check box</dt>
+<dt class="hdlist1">[auto logging]チェックボックス</dt>
 <dd>
-<p>If checked, log will be recorded automatically. It is created in the directory specified by LogDir.</p>
+<p>チェックすると自動でログを記録します。LogDirで指定したディレクトリに作成されます。</p>
 </dd>
 <dt class="hdlist1">Log Dir</dt>
 <dd>
-<p>Specify the directory where logs are created.
-    A directory in date format (burp_yyyyMMdd) is created.
-    If the same date already exists, the directory for that date is used. If the log file name to be output exists, it will be added.</p>
+<p>ログを作成するディレクトリを指定します。
+日付形式(burp_yyyyMMdd)のディレクトリが作成されます。
+同じ日付が既に存在する場合は、その日付のディレクトリが使われます。出力するログファイル名が存在した場合は追記されます。</p>
 </dd>
 <dt class="hdlist1">Log size</dt>
 <dd>
-<p>Specify the maximum size of the log file. If the file limit is reached, a log is created with a new name.
-When the log size reaches the upper limit, it is added like .1, .2.</p>
+<p>ログファイルの上限サイズを指定します。ファイル上限に達した場合は新しい名前でログが作成されます。
+ログサイズの上限に達した場合は、.1,.2のように付加されていきます。</p>
 </dd>
 </dl>
 </div>
@@ -1219,28 +1219,28 @@ proxy-message.log.2
 </div>
 </div>
 <div class="paragraph">
-<p>If you specify 0, there is no upper limit.</p>
+<p>0を指定した場合は上限はありません。</p>
 </div>
 <div class="sect4">
 <h5 id="_logging_target">Logging target</h5>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[ProxyLog] check box</dt>
+<dt class="hdlist1">[ProxyLog]チェックボックス</dt>
 <dd>
-<p>ProxyLog of the value after the change in Match and Replace or Inspecter is recorded.</p>
+<p>Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。</p>
 </dd>
-<dt class="hdlist1">[ToolLog] check box</dt>
+<dt class="hdlist1">[ToolLog]チェックボックス</dt>
 <dd>
-<p>Log values ​​of various tools are recorded.</p>
+<p>各種Toolのログの値が記録されます。</p>
 </dd>
-<dt class="hdlist1">[history is included] check box</dt>
+<dt class="hdlist1">[history is included]チェックボックス</dt>
 <dd>
-<p>This can be checked only when auto logging is off.
-If checked, all logs currently recorded in History are recorded in a file.</p>
+<p>auto loggingがオフの状態でのみチェックできます。
+チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。</p>
 </dd>
-<dt class="hdlist1">[Exclude Extension] check box</dt>
+<dt class="hdlist1">[Exclude Extension]チェックボックス</dt>
 <dd>
-<p>Exclude the configured extension from logging.</p>
+<p>設定された拡張子をロギングから除外します。</p>
 </dd>
 </dl>
 </div>
@@ -1248,62 +1248,62 @@ If checked, all logs currently recorded in History are recorded in a file.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearch_tab">3.6. JSearch tab</h3>
+<h3 id="_jsearchタブ">3.6. JSearchタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_jsearch.png" alt="JSearch tab"></span></p>
+<p><span class="image"><img src="./images/custom_jsearch.png" alt="JSearchタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>JSearch tab is a function to search characters from the History list of Proxy.</p>
+<p>JSearch タブはProxyのHistory一覧から文字を検索するための機能です。</p>
 </div>
 <div class="sect3">
 <h4 id="_jsearch">3.6.1. JSearch</h4>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Search] button</dt>
+<dt class="hdlist1">[Search]ボタン</dt>
 <dd>
-<p>Search by the value entered in the text box from the history list of Proxy.</p>
+<p>ProxyのHistory一覧からテキストボックスに入力した値で検索します。</p>
 </dd>
-<dt class="hdlist1">[Smart Match] check box</dt>
+<dt class="hdlist1">[Smart Match]チェックボックス</dt>
 <dd>
-<p>Executes a search that considers multiple escapes such as HTML escape and URL encoding.
-Regular expressions cannot be enabled.</p>
+<p>HTMLエスケープ、URLエンコードなど複数のエスケープ考慮した検索を実行します。
+正規表現は有効にできません。</p>
 </dd>
-<dt class="hdlist1">[Regexp] check box</dt>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
 <dd>
-<p>Enable regular expression when checked.</p>
+<p>チェック時正規表現を有効にします。</p>
 </dd>
-<dt class="hdlist1">[IgnoreCase] check box</dt>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
 <dd>
-<p>Ignore case when checked.</p>
+<p>チェック時大文字小文字を無視します。</p>
 </dd>
-<dt class="hdlist1">[in-scope only] check box</dt>
+<dt class="hdlist1">[in-scope only]チェックボックス</dt>
 <dd>
-<p>Limit your search to those that match the scope on the Burp Target tab.</p>
+<p>検索をBurpのTargetタブのscopeにマッチするものに限定します。</p>
 </dd>
 <dt class="hdlist1">request</dt>
 <dd>
-<p>Specify the search to requests (Header, Body).</p>
+<p>検索対象をリクエスト(Header,Body)を指定します。</p>
 </dd>
 <dt class="hdlist1">response</dt>
 <dd>
-<p>Specify the search target (header, body)</p>
+<p>検索対象をレスポンス(Header,Body)を指定します。</p>
 </dd>
-<dt class="hdlist1">[comment] check box</dt>
+<dt class="hdlist1">[comment]チェックボックス</dt>
 <dd>
-<p>Include comments in search.</p>
+<p>検索対象にコメントを含めます。</p>
 </dd>
 <dt class="hdlist1">Search Encoding</dt>
 <dd>
-<p>Specify the encoding when searching.</p>
+<p>検索時のエンコーディングを指定します。</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoder_tab">3.7. JTransCoder tab</h3>
+<h3 id="_jtranscoderタブ">3.7. JTransCoderタブ</h3>
 <div class="paragraph">
-<p>Transcoder tab is a function to perform various encoding and decoding.</p>
+<p>Transcoder タブは各種エンコード、デコードを行うための機能です。</p>
 </div>
 <div class="sect3">
 <h4 id="_translator">3.7.1. Translator</h4>
@@ -1314,41 +1314,41 @@ Regular expressions cannot be enabled.</p>
 <dl>
 <dt class="hdlist1">Encode Type</dt>
 <dd>
-<p>Specify the character string to be converted when encoding.</p>
+<p>Encode時の変換する対象の文字列を指定します。</p>
 </dd>
 <dt class="hdlist1">Convert Case</dt>
 <dd>
-<p>Specifies whether the hexadecimal representation of the character when it is encoded is uppercase or lowercase.</p>
+<p>文字がエンコードされたときの16進表記を大文字にするか小文字するかを指定します。</p>
 </dd>
 <dt class="hdlist1">NewLineMode</dt>
 <dd>
-<p>Specify the line feed code of the editor.</p>
+<p>エディタの改行コードを指定します。</p>
 </dd>
 <dt class="hdlist1">View</dt>
 <dd>
-<p>Checking lineWrap will wrap the display.</p>
+<p>lineWrap にチェックすると表示が折り返されます。</p>
 </dd>
 <dt class="hdlist1">Encodeing</dt>
 <dd>
-<p>Specify the encoding of the character to be converted. The encoding that can be selected in the combo box is the one set in the Encoding tab.<br>
-Check Raw to encode and decode with ISO-8859_1.<br>
-If you check Guess, the character code will be automatically determined and encoded and decoded.</p>
+<p>変換する文字のエンコーディングを指定します。コンボボックスで選択可能なエンコーディングは、Encodingタブで設定したものが表示されます。<br>
+Raw にチェックすると ISO-8859_1 にてエンコード、デコードします。<br>
+Guess にチェックすると文字コードを自動で判定してエンコード、デコードします。</p>
 </dd>
-<dt class="hdlist1">[Clear] button</dt>
+<dt class="hdlist1">[Clear]ボタン</dt>
 <dd>
-<p>Clear the contents of Input and Output.</p>
+<p>InputおよびOutputの内容をクリアします。</p>
 </dd>
-<dt class="hdlist1">[Output &#8658; Input] button</dt>
+<dt class="hdlist1">[Output &#8658; Input]ボタン</dt>
 <dd>
-<p>Sends the contents of Output to Input.</p>
+<p>Outputの内容をInputに送ります。</p>
 </dd>
-<dt class="hdlist1">[Output Copy] button</dt>
+<dt class="hdlist1">[Output Copy]ボタン</dt>
 <dd>
-<p>Sends the contents of Output to the clipboard.</p>
+<p>Outputの内容をクリップボードに送ります。</p>
 </dd>
-<dt class="hdlist1">History combo box</dt>
+<dt class="hdlist1">Historyコンボボックス</dt>
 <dd>
-<p>The conversion history is recorded, and you can get the previous conversion by selecting it.</p>
+<p>変換した履歴が記録されており、選択すると以前の変換を取得できます。</p>
 </dd>
 </dl>
 </div>
@@ -1356,117 +1356,117 @@ If you check Guess, the character code will be automatically determined and enco
 <h5 id="_encodedecode">Encode/Decode</h5>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Smart Decode] button</dt>
+<dt class="hdlist1">[Smart Decode]ボタン</dt>
 <dd>
-<p>Automatically determine the character string format and decode.</p>
+<p>文字列の形式を自動判定しデコードします。</p>
 </dd>
-<dt class="hdlist1">[Encode]/[Decode] button</dt>
+<dt class="hdlist1">[Encode]/[Decode]ボタン</dt>
 <dd>
-<p>Performs encoding and decoding conversion using the selected conversion method.</p>
+<p>選択した変換方式でエンコード、デコード変換を行います。</p>
 </dd>
 </dl>
 </div>
 <div class="paragraph">
-<p>Performs the checked encoding / decoding.</p>
+<p>チェックしたエンコード/デコードを行います。</p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">URL(%hh)</dt>
 <dd>
-<p>Performs URL encoding and decoding.</p>
+<p>URLエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">URL(%uhhhh)</dt>
 <dd>
-<p>Performs URL encoding and decoding in Unicode format.</p>
+<p>Unicode形式のURLエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">Base64</dt>
 <dd>
-<p>Encodes and decodes Base64 format.</p>
+<p>Base64形式のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">64 newline</dt>
 <dd>
-<p>Specify this when performing line breaks with 64 characters when encoding in Base64 format.</p>
+<p>Base64形式のエンコード時に64文字で改行を行う場合に指定します。</p>
 </dd>
 <dt class="hdlist1">76 newline</dt>
 <dd>
-<p>Specify this when performing line breaks with 76 characters when encoding in Base64 format.</p>
+<p>Base64形式のエンコード時に76文字で改行を行う場合に指定します。</p>
 </dd>
 <dt class="hdlist1">Padding</dt>
 <dd>
-<p>Specify whether to pad when encoding in Base64 format.</p>
+<p>Base64形式のエンコード時にパディングするかを指定します。</p>
 </dd>
 <dt class="hdlist1">Base64URLSafe</dt>
 <dd>
-<p>Encodes and decodes Base64 URLSafe format.</p>
+<p>Base64 URLSafe形式のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">uuencode</dt>
 <dd>
-<p>Encodes and decodes uuencode format.</p>
+<p>uuencode形式のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">QuotedPrintable</dt>
 <dd>
-<p>Encodes and decodes QuotedPrintable format.</p>
+<p>QuotedPrintable形式のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">Punycode</dt>
 <dd>
-<p>Perform Punycode encoding and decoding.</p>
+<p>Punycodeエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">HTML(&lt;,&gt;,",')</dt>
 <dd>
-<p>Encode and decode HTML.
-Encoding is performed only for "&lt;,&gt;,", '".</p>
+<p>HTMLのエンコード、デコードを行います。
+エンコードは、「&lt;,&gt;,",'」のみ行われます。</p>
 </dd>
 <dt class="hdlist1">&amp;#d;</dt>
 <dd>
-<p>Encodes and decodes the entity reference format in decimal format.</p>
+<p>10進数形式の実体参照形式のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">&amp;#xhh;</dt>
 <dd>
-<p>Encodes and decodes the entity reference format in hexadecimal format.</p>
+<p>16進数形式の実体参照形式のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">\xhh;(unicode)</dt>
 <dd>
-<p>Encodes and decodes in hexadecimal format in unicode code units.</p>
+<p>unicodeコード単位で16進数形式によるエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">\xhh;(byte)</dt>
 <dd>
-<p>Encodes and decodes in hexadecimal format in byte code units.</p>
+<p>byteコード単位で16進数形式によるエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">\ooo;</dt>
 <dd>
-<p>Encodes and decodes in octal format.</p>
+<p>8進数形式によるエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">\uhhhh;</dt>
 <dd>
-<p>Encodes and decodes in Unicode format.</p>
+<p>Unicode形式によるエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">Gzip</dt>
 <dd>
-<p>Gzip compression and decompression.</p>
+<p>Gzipによる圧縮、解凍を行います。</p>
 </dd>
 <dt class="hdlist1">ZLIB</dt>
 <dd>
-<p>Performs compression and decompression by ZLIB.</p>
+<p>ZLIBによる圧縮、解凍を行います。</p>
 </dd>
 <dt class="hdlist1">UTF-7</dt>
 <dd>
-<p>Encodes and decodes UTF-7.</p>
+<p>UTF-7のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">UTF-8</dt>
 <dd>
-<p>Performs UTF-8 encoding. URL-encodes 2-byte, 3-byte, and 4-byte expressions.</p>
+<p>UTF-8のエンコードを行います。2バイト表現、3バイト表現、4バイト表現をURLエンコードします。</p>
 </dd>
 <dt class="hdlist1">C Lang</dt>
 <dd>
-<p>Performs C-style escaping.</p>
+<p>C言語形式のエスケープを行います。</p>
 </dd>
 <dt class="hdlist1">SQL</dt>
 <dd>
-<p>Performs escape in the SQL language format.</p>
+<p>SQL言語形式のエスケープを行います。</p>
 </dd>
 <dt class="hdlist1">Regex</dt>
 <dd>
-<p>Escapes a regular expression.</p>
+<p>正規表現のエスケープを行います。</p>
 </dd>
 </dl>
 </div>
@@ -1475,17 +1475,17 @@ Encoding is performed only for "&lt;,&gt;,", '".</p>
 <h5 id="_format">Format</h5>
 <div class="paragraph">
 <p>Minify:
-    Compress XML and JSON.</p>
+    XMLやJSONを圧縮します。</p>
 </div>
 <div class="paragraph">
 <p>Beautify:
-    Format XML and JSON.</p>
+    XMLやJSONを整形します。</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Smart Format] button</dt>
+<dt class="hdlist1">[Smart Format]ボタン</dt>
 <dd>
-<p>Formats a string. Supports XML and JSON formatting.</p>
+<p>文字列を整形します。XMLおよびJSONの整形に対応しています。</p>
 </dd>
 </dl>
 </div>
@@ -1496,11 +1496,11 @@ Encoding is performed only for "&lt;,&gt;,", '".</p>
 <dl>
 <dt class="hdlist1">Smart Math</dt>
 <dd>
-<p>Smart Math generates regular expressions to match various escapes.</p>
+<p>Smart Mathは、各種エスケープを考慮したマッチを行うための正規表現を生成します。</p>
 </dd>
 <dt class="hdlist1">with Byte</dt>
 <dd>
-<p>When checked, include regular expressions that take byte matching into Smart Math.</p>
+<p>チェック時、Smart Mathにバイトマッチを考慮した正規表現を含めます。</p>
 </dd>
 </dl>
 </div>
@@ -1508,177 +1508,177 @@ Encoding is performed only for "&lt;,&gt;,", '".</p>
 <div class="sect4">
 <h5 id="_hashchecksum">Hash/Checksum</h5>
 <div class="paragraph">
-<p>The hash value is calculated using the value entered in the text area.</p>
+<p>テキストエリアに入力されている値でハッシュ値計算を行います。</p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">md2</dt>
 <dd>
-<p>Calculate hash with md2</p>
+<p>md2によるハッシュを計算します。</p>
 </dd>
 <dt class="hdlist1">md5</dt>
 <dd>
-<p>Calculate hash with md5</p>
+<p>md5によるハッシュを計算します。</p>
 </dd>
 <dt class="hdlist1">sha1</dt>
 <dd>
-<p>Calculate hash with sha1</p>
+<p>sha1によるハッシュを計算します。</p>
 </dd>
 <dt class="hdlist1">sha256</dt>
 <dd>
-<p>Calculate hash with sha256</p>
+<p>sha256によるハッシュを計算します。</p>
 </dd>
 <dt class="hdlist1">sha384</dt>
 <dd>
-<p>Calculate hash with sha384</p>
+<p>sha384によるハッシュを計算します。</p>
 </dd>
 <dt class="hdlist1">sha512</dt>
 <dd>
-<p>Calculate hash with sha512</p>
+<p>sha512によるハッシュを計算します。</p>
 </dd>
 <dt class="hdlist1">CRC32</dt>
 <dd>
-<p>Calculate checksum by crc32</p>
+<p>crc32によるチェックサムを計算します。</p>
 </dd>
 <dt class="hdlist1">Adler-32</dt>
 <dd>
-<p>Calculate checksum by Adler-32</p>
+<p>Adlerによるチェックサムを計算します。</p>
 </dd>
 </dl>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_base_converter_tab">3.7.2. Base Converter tab</h4>
+<h4 id="_base_converter_タブ">3.7.2. Base Converter タブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_baseconverter.png" alt="BaseConverter tab"></span></p>
+<p><span class="image"><img src="./images/custom_baseconverter.png" alt="BaseConverterタブ"></span></p>
 </div>
 <div class="paragraph">
-<p>Converts the input value to binary, octal, decimal, or hexadecimal.</p>
+<p>入力した値を2,8,10,16進数に変換します。</p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Bin</dt>
 <dd>
-<p>Displays the value converted to binary.</p>
+<p>2進数に変換した値を表示します。</p>
 </dd>
 <dt class="hdlist1">Oct</dt>
 <dd>
-<p>Displays the value converted to octal.</p>
+<p>8進数に変換した値を表示します。</p>
 </dd>
 <dt class="hdlist1">Dec</dt>
 <dd>
-<p>Displays the value converted to decimal</p>
+<p>10進数に変換した値を表示します</p>
 </dd>
 <dt class="hdlist1">Hex</dt>
 <dd>
-<p>Displays the value converted to hexadecimal</p>
+<p>16進数に変換した値を表示します</p>
 </dd>
 </dl>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generater_tab">3.7.3. Generater tab</h4>
+<h4 id="_generaterタブ">3.7.3. Generaterタブ</h4>
 <div class="paragraph">
-<p>The Generater has a sequence tab and a random tab.</p>
+<p>Generater には、sequenceタブとrandomタブがあります。</p>
 </div>
 <div class="paragraph">
-<div class="title">sequence tab</div>
-<p>The sequence tab is a simple function for generating a continuous character list.</p>
+<div class="title">sequenceタブ</div>
+<p>sequenceタブは連続する文字リストを生成するための簡易的な機能です。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_gene_seq.png" alt="Generater tab"></span></p>
+<p><span class="image"><img src="./images/custom_gene_seq.png" alt="Generaterタブ"></span></p>
 </div>
 <div class="dlist">
-<div class="title">sequence-Numbers tab</div>
+<div class="title">sequence-Numbersタブ</div>
 <dl>
-<dt class="hdlist1">Generate format string input </dt>
+<dt class="hdlist1">生成書式文字列入力</dt>
 <dd>
-<p>Enter a format string in C language printf format.
-A format string can specify only one numeric format.</p>
+<p>C言語のprintf形式の書式文字列を入力します。
+書式文字列は数字関係の書式を一つしか指定できません。</p>
 </dd>
 <dt class="hdlist1">start</dt>
 <dd>
-<p>Enter the starting number for the list.</p>
+<p>リストの開始の数字を入力します。</p>
 </dd>
 <dt class="hdlist1">end</dt>
 <dd>
-<p>Enter the end number of the list. Generates up to the ending number.</p>
+<p>リストの終了の数字を入力します。終了の数字まで生成されます。</p>
 </dd>
 <dt class="hdlist1">step</dt>
 <dd>
-<p>Specifies the number of increments from start to end.</p>
+<p>startからendまでの数字の増加数を指定します。</p>
 </dd>
 </dl>
 </div>
 <div class="paragraph">
-<div class="title">sequence-Date tab</div>
-<p><span class="image"><img src="./images/custom_gene_date.png" alt="Generater tab"></span></p>
+<div class="title">sequence-Dateタブ</div>
+<p><span class="image"><img src="./images/custom_gene_date.png" alt="Generaterタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Generate format string input </dt>
+<dt class="hdlist1">生成書式文字列入力</dt>
 <dd>
-<p>Enter a format string in the DateTimeFormatter format of the Java language.</p>
+<p>Java言語のDateTimeFormatter形式の書式文字列を入力します。</p>
 </dd>
 <dt class="hdlist1">start</dt>
 <dd>
-<p>Enter the start date of the list.</p>
+<p>リストの開始の日付を入力します。</p>
 </dd>
 <dt class="hdlist1">end</dt>
 <dd>
-<p>Enter the end date of the list. Generated until the end date.</p>
+<p>リストの終了の日付を入力します。終了の日付まで生成されます。</p>
 </dd>
 <dt class="hdlist1">step</dt>
 <dd>
-<p>Specify the number of increments of the date from start to end.</p>
+<p>startからendまでの日付の増加数を指定します。</p>
 </dd>
-<dt class="hdlist1">[generate] button</dt>
+<dt class="hdlist1">[generate]ボタン</dt>
 <dd>
-<p>Generates a list with the specified information.</p>
+<p>指定した情報でリストを生成します。</p>
 </dd>
-<dt class="hdlist1">[List Copy] button</dt>
+<dt class="hdlist1">[List Copy]ボタン</dt>
 <dd>
-<p>Output the generated list to the clipboard.</p>
+<p>生成したリストをクリップボードに出力します。</p>
 </dd>
-<dt class="hdlist1">[Save to file] button</dt>
+<dt class="hdlist1">[Save to file]ボタン</dt>
 <dd>
-<p>Output the generated list to a file.</p>
+<p>生成したリストをファイルに出力します。</p>
 </dd>
 </dl>
 </div>
 <div class="paragraph">
-<div class="title">random tab</div>
-<p>The andom tab is a simple function for generating a random character list.</p>
+<div class="title">randomタブ</div>
+<p>randomタブはランダムな文字リストを生成するための簡易的な機能です。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_gene_random.png" alt="random tab"></span></p>
+<p><span class="image"><img src="./images/custom_gene_random.png" alt="randomタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Character</dt>
 <dd>
-<p>Character specifies the type of character to be generated.</p>
+<p>Characterは生成する文字の種類を指定します。</p>
 </dd>
 <dt class="hdlist1">Character length</dt>
 <dd>
-<p>Specify the length of the number of characters to be generated.</p>
+<p>生成する文字数の長さを指定します。</p>
 </dd>
 <dt class="hdlist1">generator count</dt>
 <dd>
-<p>Enter the number to generate.</p>
+<p>生成する個数を入力します。</p>
 </dd>
-<dt class="hdlist1">[generate] button</dt>
+<dt class="hdlist1">[generate]ボタン</dt>
 <dd>
-<p>Generates a list with the specified information.</p>
+<p>指定した情報でリストを生成します。</p>
 </dd>
-<dt class="hdlist1">[List Copy] button</dt>
+<dt class="hdlist1">[List Copy]ボタン</dt>
 <dd>
-<p>Output the generated list to the clipboard.</p>
+<p>生成したリストをクリップボードに出力します。</p>
 </dd>
-<dt class="hdlist1">[Save to file] button</dt>
+<dt class="hdlist1">[Save to file]ボタン</dt>
 <dd>
-<p>Output the generated list to a file.</p>
+<p>生成したリストをファイルに出力します。</p>
 </dd>
 </dl>
 </div>
@@ -1687,59 +1687,59 @@ A format string can specify only one numeric format.</p>
 <div class="sect2">
 <h3 id="_generate_csrf_poc">3.8. Generate CSRF PoC</h3>
 <div class="paragraph">
-<p>This function is mainly for creating PoC for CSRF (Cross Site Request Forgery).</p>
+<p>主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。</p>
 </div>
 <div class="paragraph">
-<p>At places where requests can be confirmed, such as the History tab of the Proxy,
-Displayed when the selected request is a POST request.</p>
+<p>ProxyのHistoryタブなどのリクエストを確認可能な箇所において、
+選択したリクエストがPOSTリクエスト場合に表示されます。</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="./images/custom_CSRF_PoC.png" alt="YaguraExtender CSRF-PoC"></span></p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Generate] button</dt>
+<dt class="hdlist1">[Generate]ボタン</dt>
 <dd>
-<p>Generate PoC according to the set conditions.
-If you change the conditions, you need to generate again by pressing the [Generate] button.</p>
+<p>設定した条件にしたがってPoCを生成します。
+条件を変更した場合は再度、[Generate]ボタンを押して生成しなおす必要があります。</p>
 </dd>
 <dt class="hdlist1">[Copy to Clipbord]ボタン</dt>
 <dd>
-<p>Copy the generated PoC to the clipboard.<br>
-Character codes are ignored.</p>
+<p>生成したPoCをクリップボードにコピーします。<br>
+文字コードは無視されます。</p>
 </dd>
 <dt class="hdlist1">[Save to file]ボタン</dt>
 <dd>
-<p>Save the generated PoC to a file.<br>
-It is saved with the specified character code.</p>
+<p>生成したPoCをファイルに保存します。<br>
+指定した文字コードで保存されます。</p>
 </dd>
-<dt class="hdlist1">[auto submit] check box</dt>
+<dt class="hdlist1">[auto submit]チェックボックス</dt>
 <dd>
-<p>Generates an automatically submitted PoC.</p>
+<p>自動でsubmitされるPoCを生成します。</p>
 </dd>
-<dt class="hdlist1">[Time Delay] check box</dt>
+<dt class="hdlist1">[Time Delay]チェックボックス</dt>
 <dd>
-<p>Generate a PoC to be submitted after a specified time (seconds).<br>
-Enabled only when [auto submit] is checked.</p>
+<p>指定時間後(秒)にsubmitされるPoCを生成します。<br>
+[auto submit]チェック時のみ有効になります。</p>
 </dd>
-<dt class="hdlist1">[GET] check box</dt>
+<dt class="hdlist1">[GET]チェックボックス</dt>
 <dd>
-<p>Make the PoC request method a GET method.</p>
+<p>PoCのリクエストメソッドがGETメソッドになるようにします。</p>
 </dd>
-<dt class="hdlist1">[https] check box</dt>
+<dt class="hdlist1">[https]チェックボックス</dt>
 <dd>
-<p>Check if the PoC request needs to be HTTPS.
-The value automatically determined from the selected request will be the default.</p>
+<p>PoCのリクエストをHTTPSにする必要がある場合にチェックします。
+選択したリクエストから自動判定された値がデフォルトになります。</p>
 </dd>
-<dt class="hdlist1">[HTML5] check box</dt>
+<dt class="hdlist1">[HTML5]チェックボックス</dt>
 <dd>
-<p>Create a PoC trap using HTML5 functions.
-Check here when performing binary upload.</p>
+<p>PoCの罠をHTML5の機能を利用して作成します。
+バイナリアップロードを行う場合ここをチェックします。</p>
 </dd>
-<dt class="hdlist1">[Binay] check box</dt>
+<dt class="hdlist1">[Binay]チェックボックス</dt>
 <dd>
-<p>No check is required in the current version.
-If you check [HTML5], binary upload is enabled by default.</p>
+<p>現在のバージョンではチェックは不要です。
+[HTML5]にチェックすれば、バイナリアップロードについてはデフォルトで可能となっています。</p>
 </dd>
 </dl>
 </div>
@@ -1748,21 +1748,21 @@ If you check [HTML5], binary upload is enabled by default.</p>
 <dl>
 <dt class="hdlist1">auto</dt>
 <dd>
-<p>Content-Type is automatically determined.</p>
+<p>Content-Typeを自動判定します。</p>
 </dd>
 <dt class="hdlist1">urlencode</dt>
 <dd>
-<p>Create PoC using text field.<br></p>
+<p>text フィールドを利用してPoCを作成します。<br></p>
 </dd>
 <dt class="hdlist1">multi part</dt>
 <dd>
-<p>Make this selection when Content-Type is Multi part.<br></p>
+<p>Content-TypeがMulti partの場合にこの選択を行います。<br></p>
 </dd>
 <dt class="hdlist1">plain</dt>
 <dd>
-<p>Create PoC using text area.<br>
-Select when you want to send the contents of the Body as it is.<br>
-This may not work for items that contain binaries. In that case, please use Binay of HTML5.</p>
+<p>text area を利用してPoCを作成します。<br>
+Bodyの内容をそのまま送信したい場合に選択します。<br>
+バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。</p>
 </dd>
 </dl>
 </div>
@@ -1770,17 +1770,17 @@ This may not work for items that contain binaries. In that case, please use Bina
 <div class="sect2">
 <h3 id="_version">3.9. Version</h3>
 <div class="paragraph">
-<p>Displays version information.</p>
+<p>バージョン情報を表示します。</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Import] button</dt>
+<dt class="hdlist1">[Import]ボタン</dt>
 <dd>
-<p>Import settings in JSON format.</p>
+<p>設定をJSON形式にてImportします。</p>
 </dd>
-<dt class="hdlist1">[Export] button</dt>
+<dt class="hdlist1">[Export]ボタン</dt>
 <dd>
-<p>Export the settings in JSON format.</p>
+<p>JSON形式の設定をExportします。</p>
 </dd>
 </dl>
 </div>
@@ -1790,7 +1790,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-25 10:01:18 +0900
+Last updated 2020-01-25 10:00:30 +0900
 </div>
 </div>
 </body>

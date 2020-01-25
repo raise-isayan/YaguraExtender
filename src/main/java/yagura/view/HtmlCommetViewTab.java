@@ -15,8 +15,11 @@ import java.awt.Component;
 import java.awt.Font;
 import java.text.ParseException;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingWorker;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
@@ -103,29 +106,34 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             if (this.message == null) {
                 return;
             }
+            final boolean uniq = this.quickSearchTab.getUniqCheckBox().isSelected();
+
+            this.txtHtmlComment.setText("");
             if (this.message != null) {
-                // Raw
-                this.setHTMLCommentEncoding(encoding, this.quickSearchTab.getUniqCheckBox().isSelected());
-                // View                
-            } else {
-                this.txtHtmlComment.setText("");
+                SwingWorker swText = new SwingWorker<String, Object>() {
+                    @Override
+                    protected String doInBackground() throws Exception {
+                        String comments[] = HttpUtil.extractHTMLComments(Util.decodeMessage(message.getBodyBytes(), encoding), uniq);
+                        return TransUtil.join("\r\n", comments);
+                    }
+
+                    protected void process(List<Object> chunks) {
+                    }
+
+                    protected void done() {
+                        try {
+                            txtHtmlComment.setText(get());
+                            txtHtmlComment.setCaretPosition(0);
+                            quickSearchTab.clearViewAndSearch();
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ExecutionException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                };
+                swText.execute();                    
             }
-//            this.quickSearchTab.clearView();
-            this.quickSearchTab.clearViewAndSearch();
-        } catch (Exception ex) {
-            Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    protected void setHTMLCommentEncoding(String encoding) {
-        this.setHTMLCommentEncoding(encoding, true);
-    }
-
-    protected void setHTMLCommentEncoding(String encoding, boolean uniqe) {
-        try {
-            String comments[] = HttpUtil.extractHTMLComments(Util.decodeMessage(this.message.getBodyBytes(), encoding), uniqe);
-            this.txtHtmlComment.setText(TransUtil.join("\r\n", comments));
-            this.txtHtmlComment.setCaretPosition(0);
         } catch (Exception ex) {
             Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }

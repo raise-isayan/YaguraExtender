@@ -12,8 +12,11 @@ import java.awt.Font;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
@@ -141,13 +144,30 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
             if (this.content == null) {
                 return;
             }
+            this.txtRaw.setText("");
             if (this.content != null) {
-                // Raw
-                this.txtRaw.setText(Util.decodeMessage(this.content, encoding));
-                this.txtRaw.setCaretPosition(0);
-                // View                
-            } else {
-                this.txtRaw.setText("");
+                SwingWorker swText = new SwingWorker<String, Object>() {
+                    @Override
+                    protected String doInBackground() throws Exception {
+                        // Raw
+                        return Util.decodeMessage(content, encoding);
+                    }
+
+                    protected void process(List<Object> chunks) {
+                    }
+
+                    protected void done() {
+                        try {
+                            txtRaw.setText(get());
+                            txtRaw.setCaretPosition(0);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ExecutionException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                };
+                swText.execute();                    
             }
 //            this.quickSearchTab.clearView();
             this.quickSearchTab.clearViewAndSearch();

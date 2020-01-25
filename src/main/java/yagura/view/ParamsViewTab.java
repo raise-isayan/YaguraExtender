@@ -30,6 +30,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import extend.util.external.TransUtil;
+import java.util.concurrent.ExecutionException;
+import javax.swing.SwingWorker;
 import yagura.model.Parameter;
 import yagura.model.ParamsView;
 import yagura.model.ParamsViewModel;
@@ -271,17 +273,17 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         // Type
         this.tableParams.getColumnModel().getColumn(0).setMinWidth(20);
         this.tableParams.getColumnModel().getColumn(0).setPreferredWidth(30);
-        this.tableParams.getColumnModel().getColumn(0).setMaxWidth(50);
+        this.tableParams.getColumnModel().getColumn(0).setMaxWidth(100);
 
         // Name
         this.tableParams.getColumnModel().getColumn(1).setMinWidth(20);
         this.tableParams.getColumnModel().getColumn(1).setPreferredWidth(80);
-        this.tableParams.getColumnModel().getColumn(1).setMaxWidth(300);
+        this.tableParams.getColumnModel().getColumn(1).setMaxWidth(500);
 
         // Value
         this.tableParams.getColumnModel().getColumn(2).setMinWidth(20);
-        this.tableParams.getColumnModel().getColumn(2).setPreferredWidth(80);
-        this.tableParams.getColumnModel().getColumn(2).setMaxWidth(300);
+        this.tableParams.getColumnModel().getColumn(2).setPreferredWidth(300);
+        this.tableParams.getColumnModel().getColumn(2).setMaxWidth(8000);
 
     }
 
@@ -367,42 +369,71 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
 
     @Override
     public void setMessage(byte[] content, boolean isRequest) {
-        try {
-            if (content == null) {
-                this.clearView();
-            } else {
-                this.content = content;
-                String guessCharset = null;
-                HttpMessage httpmessage = null;
-                if (isRequest) {
-                    HttpRequest request = HttpRequest.parseHttpRequest(content);
-                    httpmessage = request;
-                    //                guessCharset = request.getGuessCharset();
-                    this.reqInfo = BurpExtender.getHelpers().analyzeRequest(this.controller.getHttpService(), content);
-                    if (this.reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
-                        guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
-                    } else {
-                        guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());
+        if (content == null) {
+            this.clearView();
+        } else {
+            this.content = content;
+
+            if (isRequest) {
+                SwingWorker swParam = new SwingWorker<IRequestInfo, Object>() {
+                    @Override
+                    protected IRequestInfo doInBackground() throws Exception {
+                        final HttpRequest request = HttpRequest.parseHttpRequest(content);
+                        final HttpMessage httpmessage = request;
+                        final IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(controller.getHttpService(), content);
+                        setLocation(reqInfo);
+                        setParams(reqInfo);
+                        return reqInfo;
                     }
 
-                    this.setLocation(this.reqInfo);
-                    this.setParams(this.reqInfo);
-                }
-                if (guessCharset == null) {
-                    guessCharset = StandardCharsets.ISO_8859_1.name();
-                }
-                this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-                this.quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
-                this.encodingItemStateChanged.itemStateChanged(null);
-                this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+                    protected void process(List<Object> chunks) {
+                    }
+
+                    protected void done() {
+                        try {
+                            reqInfo = get();
+                            String guessCharset = null;
+                            final HttpRequest request = HttpRequest.parseHttpRequest(content);
+                            HttpMessage httpmessage = request;
+                            if (reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
+                                guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
+                            } else {
+                                guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());
+                            }
+
+                            if (guessCharset == null) {
+                                guessCharset = StandardCharsets.ISO_8859_1.name();
+                            }
+
+                            quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
+                            quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
+                            encodingItemStateChanged.itemStateChanged(null);
+                            quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ExecutionException ex) {
+                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                };
+                swParam.execute();                    
 
                 this.textModified = false;
+
             }
-        } catch (ParseException ex) {
-            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+
         }
+//        try {
+//        } catch (ParseException ex) {
+//            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     @Override
