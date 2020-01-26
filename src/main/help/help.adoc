@@ -144,7 +144,7 @@ The ** Match and Replace ** of the Burp main unit is a unique implementation. Ma
 image:images/custom_matchreplace_edit.png[MatchReplaceItem Dialog]
 
 [in-scope only] check box::
-    Limit the targets to those that match the scope on the Target tab in Burp.
+    Search only when it matches the conditions of Burp Target Scope.
 
 [burp import match and replace rule] button:: 
     Imports current Burp match and replace settings. +

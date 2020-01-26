@@ -1778,16 +1778,24 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             } else if (this.rdoBase64.isSelected()) {
                 encode = ConvertUtil.toBase64Encode(value, this.getSelectEncode(), this.chkPadding.isSelected());
                 if (this.chk76Newline.isSelected()) {
-                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
+                    if (!this.chkRawMode.isSelected()) {
+                        encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
+                    }
                 } else if (this.chk64Newline.isSelected()) {
-                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
+                    if (!this.chkRawMode.isSelected()) {
+                        encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
+                    }
                 }
             } else if (this.rdoBase64URLSafe.isSelected()) {
                 encode = ConvertUtil.toBase64URLSafeEncode(value, this.getSelectEncode());
                 if (this.chk76Newline.isSelected()) {
-                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
+                    if (!this.chkRawMode.isSelected()) {
+                        encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
+                    }
                 } else if (this.chk64Newline.isSelected()) {
-                    encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
+                    if (!this.chkRawMode.isSelected()) {
+                        encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
+                    }
                 }
             } else if (this.rdoUuencode.isSelected()) {
                 encode = TransUtil.toUuencode(value, this.getSelectEncode());
@@ -2085,7 +2093,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnInputfileActionPerformed
 
     private void tabbetInputStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbetInputStateChanged
-        this.setInputByte(Util.getRawByte(TransUtil.replaceNewLine(getSelectNewLine(), this.txtInputRaw.getText())));
+        if (this.chkRawMode.isSelected()) {
+            this.setInputByte(Util.getRawByte(this.txtInputRaw.getText()));    
+        }
+        else {
+            this.setInputByte(Util.getRawByte(TransUtil.replaceNewLine(getSelectNewLine(), this.txtInputRaw.getText())));    
+        }
     }//GEN-LAST:event_tabbetInputStateChanged
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
@@ -2183,6 +2196,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void chkRawModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRawModeActionPerformed
         this.cmbEncoding.setEnabled(!(this.chkRawMode.isSelected() || this.chkGuess.isSelected()));
+        SwingUtil.setContainerEnable(this.pnlNewLine, !this.chkRawMode.isSelected()); 
         if (evt != null) {
             firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
         }
@@ -2766,7 +2780,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         } else {
             selectText = this.txtInputRaw.getSelectedText();
         }
-        return TransUtil.replaceNewLine(getSelectNewLine(), selectText);
+        if (this.chkRawMode.isSelected()) {
+            return selectText;
+        } else {
+            return TransUtil.replaceNewLine(getSelectNewLine(), selectText);        
+        }        
     }
 
     private void setInputText(String inputText) {

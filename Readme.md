@@ -14,10 +14,10 @@ Not everything is fine.
 
 Please refer to help.html in help directory for detailed help such as how to use.
 
-If you are online, please refer to [help] (https://github.com/raise-isayan/YaguraExtender/blob/master/src/main/help/help.adoc).
+If you are online, please refer to [help](https://github.com/raise-isayan/YaguraExtender/blob/master/src/main/help/help.adoc).
 
 ## Required library
-Building requires a separate [BurpExtLib] (https://github.com/raise-isayan/BurpExtLib) library.
+Building requires a separate [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) library.
 * BurpExtlib v1.9.2
 
 ##Notes

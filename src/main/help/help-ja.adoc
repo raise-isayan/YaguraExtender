@@ -142,7 +142,7 @@ Burp sute 本体の Proxy => Optionタブの ** Match and Replace ** の拡張�
 image:images/custom_matchreplace_edit.png[MatchReplaceItemダイヤログ]
 
 [in-scope only]チェックボックス::
-    ターゲットをBurpのTargetタブのscopeにマッチするものに限定します。
+    BurpのTarget Scopeの条件にマッチする場合のみ検索します。
 
 [burp import match and replace rule]ボタン:: 
     現在のBurpのmatch and replace設定をインポートします。 +

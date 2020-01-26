@@ -635,11 +635,11 @@ You can select the most frequently used encoding. The value selected here is the
 <dd>
 <p>The selected encoding is listed.</p>
 </dd>
-<dt class="hdlist1">[&lt;]、[&gt;] button</dt>
+<dt class="hdlist1">[&lt;], [&gt;] button</dt>
 <dd>
 <p>Move the selected encoding to Target or Select.</p>
 </dd>
-<dt class="hdlist1">[Up]、[Down] button</dt>
+<dt class="hdlist1">[Up], [Down] button</dt>
 <dd>
 <p>Moves the order of the selected encoding.
 The order here is the order displayed in the encoding.</p>
@@ -697,8 +697,9 @@ Currently read-only.</p>
 <p><span class="image"><img src="./images/custom_matchreplace.png" alt="MatchReplace tab"></span></p>
 </div>
 <div class="paragraph">
-<p>It is an extension of <strong> Match and Replace </strong> on the Proxy &#8658; Option tab of Burp sute itself. Create and switch between multiple <strong> Match and Replace </strong> s.
-You can specify a regular expression forward reference as the replacement string. The <strong> Match and Replace </strong> of the Burp main unit is a unique implementation. Match and Replace on the main unit is evaluated, and then Match and Replace on the extended side is evaluated.</p>
+<p>It is an extension of <strong> Match and Replace </strong> on the Proxy &#8658; Option tab of Burp sute itself. Create and switch between multiple <strong> Match and Replace </strong>.
+You can specify a regular expression forward reference as the replacement string.
+The <strong> Match and Replace </strong> of the Burp main unit is a unique implementation. Match and Replace on the main unit is evaluated, and then Match and Replace on the extended side is evaluated.</p>
 </div>
 <div class="sect3">
 <h4 id="_matchreplace">3.2.1. MatchReplace</h4>
@@ -717,7 +718,7 @@ An empty MatchReplaceItem dialog appears.</p>
 <dt class="hdlist1">[Edit] button</dt>
 <dd>
 <p>Edit the selected MatchReplace.
-MThe MatchReplaceItem dialog of the selected content is displayed.</p>
+The MatchReplaceItem dialog of the selected content is displayed.</p>
 </dd>
 <dt class="hdlist1">[Remove] button</dt>
 <dd>
@@ -739,7 +740,7 @@ MThe MatchReplaceItem dialog of the selected content is displayed.</p>
 <dl>
 <dt class="hdlist1">[in-scope only] check box</dt>
 <dd>
-<p>Limit the targets to those that match the scope on the Target tab in Burp.</p>
+<p>Search only when it matches the conditions of Burp Target Scope.</p>
 </dd>
 <dt class="hdlist1">[burp import match and replace rule] button</dt>
 <dd>
@@ -788,7 +789,7 @@ Not supported in current version.</p>
 <dd>
 <p>Enter the replacement character string to be replaced.
 If request heder or response heder is selected as the replacement target and only the replaced character is entered, a header line will be added.
-You can also specify a capture group such as $ 1, $ 2.
+You can also specify a capture group such as $1, $2.
 Non-ASCII characters cannot be specified here. If specified, the characters will be converted to?.
 To specify a character other than ASCII characters, use meta characters.</p>
 </dd>
@@ -875,11 +876,11 @@ Not supported in current version.</p>
 </li>
 <li>
 <p>How to change HighlightColor of matched history<br>
-Only meaningful if proxy is checked.</p>
+It is effective when proxy is checked.</p>
 </li>
 <li>
 <p>How to change the comment of the matched history<br>
-Only meaningful if proxy is checked.</p>
+It is effective when proxy is checked.</p>
 </li>
 <li>
 <p>Create a Scanner Issue with the matched content and the specified value.</p>
@@ -943,12 +944,12 @@ The checked target will be the target of MatchAlert.</p>
 </dd>
 <dt class="hdlist1">[try message] check box</dt>
 <dd>
-<p>The message in the inbox will be the notification destination.
+<p>The tray message will be the notification destination.
 Not supported in current version.</p>
 </dd>
 <dt class="hdlist1">[Highlight Color] check box</dt>
 <dd>
-<p>If the string matches, the HighlightColor of the corresponding Burp&#8217;s History will be the specified color<br>
+<p>If the string matches, the HighlightColor of the corresponding Burp History will be the specified color<br>
 Valid only when you check the proxy log.</p>
 </dd>
 <dt class="hdlist1">[comment] check box</dt>
@@ -1026,7 +1027,7 @@ An empty SendToItem edit dialog appears.</p>
 <dt class="hdlist1">Target</dt>
 <dd>
 <p>Describe the execution path of any binary editor or file comparison tool.
-If server is checked, write a URL starting with http: // or https: //.</p>
+If server is checked, write a URL starting with http:// or https:// .</p>
 </dd>
 <dt class="hdlist1">[server] check box</dt>
 <dd>
@@ -1137,7 +1138,7 @@ UTF-8
 </div>
 <div class="paragraph">
 <p>At the moment, there is no (public) web application that can accept this format.
-sample / cgi-bin / sendto.cgi contains a sample CGI application that only receives and displays this format. Please refer here if you want to implement.</p>
+sample/cgi-bin/sendto.cgi contains a sample CGI application that only receives and displays this format. Please refer here if you want to implement.</p>
 </div>
 </div>
 </div>
@@ -1278,7 +1279,7 @@ Regular expressions cannot be enabled.</p>
 </dd>
 <dt class="hdlist1">[in-scope only] check box</dt>
 <dd>
-<p>Limit your search to those that match the scope on the Burp Target tab.</p>
+<p>Set the search target to a path that matches the scope on the Target tab of Burp.</p>
 </dd>
 <dt class="hdlist1">request</dt>
 <dd>
@@ -1308,7 +1309,7 @@ Regular expressions cannot be enabled.</p>
 <div class="sect3">
 <h4 id="_translator">3.7.1. Translator</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_jtranscoder.png" alt="Translatorタブ"></span></p>
+<p><span class="image"><img src="./images/custom_jtranscoder.png" alt="Translator tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1414,7 +1415,7 @@ If you check Guess, the character code will be automatically determined and enco
 <dt class="hdlist1">HTML(&lt;,&gt;,",')</dt>
 <dd>
 <p>Encode and decode HTML.
-Encoding is performed only for "&lt;,&gt;,", '".</p>
+Encoding is performed only for (&lt;,&gt;,',").</p>
 </dd>
 <dt class="hdlist1">&amp;#d;</dt>
 <dd>
@@ -1790,7 +1791,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-25 10:01:18 +0900
+Last updated 2020-01-25 15:04:36 +0900
 </div>
 </div>
 </body>
