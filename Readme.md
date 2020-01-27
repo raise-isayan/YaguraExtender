@@ -5,10 +5,9 @@ Language/[Japanese](https://github.com/raise-isayan/YaguraExtender/blob/master/R
 
 This tool is an extension of Burp Suite, a product of PortSwigger.
 
-Burp Suite was created mainly due to weak replication around Asia.
-This tool is an extension mainly targeting Japanese-speaking users.
-It should correspond to a certain extent even if you specify Chinese-Korean replication, but especially for the automatic determination of character code, it is a specification that mainly focuses on compliance in Japanese-speaking countries.
-Not everything is fine.
+Burp Suite has drawbacks when using Asian character encodings.
+This tool is an extension mainly targeting Japanese users.
+It also supports Chinese and Korean encodings, but may not be fully tested and may contain issues.
 
 ## help
 

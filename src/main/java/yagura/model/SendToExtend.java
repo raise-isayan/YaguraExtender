@@ -69,14 +69,14 @@ public class SendToExtend extends SendToMenuItem {
                 BurpExtender.getInstance().sendToTableInfoCopy(this.contextMenu, messageInfo);
                 break;
             }
-//            case ADD_HOST_TO_INCLUDE_SCOPE: {
-//                BurpExtender.getInstance().sendToAddHostIncludeToScope(this.contextMenu, messageInfo);
-//                break;
-//            }
-//            case ADD_HOST_TO_EXCLUDE_SCOPE: {
-//                BurpExtender.getInstance().sendToAddHostToExcludeScope(this.contextMenu, messageInfo);
-//                break;
-//            }
+            case ADD_HOST_TO_INCLUDE_SCOPE: {
+                BurpExtender.getInstance().sendToAddHostIncludeToScope(this.contextMenu, messageInfo);
+                break;
+            }
+            case ADD_HOST_TO_EXCLUDE_SCOPE: {
+                BurpExtender.getInstance().sendToAddHostToExcludeScope(this.contextMenu, messageInfo);
+                break;
+            }
             default:
                 // ここには現状こない
                 break;
