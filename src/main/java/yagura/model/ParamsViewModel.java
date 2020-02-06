@@ -113,7 +113,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
             }
             super.setData(rowIndex, param);
         } catch (Exception ex) {
-            Logger.getLogger(ParamsView.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ParamsViewModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

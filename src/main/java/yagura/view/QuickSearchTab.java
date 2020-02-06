@@ -374,6 +374,10 @@ public class QuickSearchTab extends javax.swing.JPanel {
     public void clearView() {
         this.keyword = null;
         this.highlightKeyword.clearHighlightKeyword();
+        this.mnuRegex.setEnabled(!this.mnuSmartMatch.isSelected());
+        this.smartMatch = this.mnuSmartMatch.isSelected();
+        this.regex = this.mnuRegex.isSelected();
+        this.ignoreCase = this.mnuIgnoreCase.isSelected();
         this.lblMatch.setText(String.format("%d match", 0));
     }
 

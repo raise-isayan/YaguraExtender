@@ -375,7 +375,7 @@ public final class LegacyConfig {
             prop.writeEntryBool("sendto", String.format("item[%d].reverseOrder", i), item.isReverseOrder());
 
             if (item.getHotkey() != null) {
-                prop.writeEntry("sendto", String.format("item[%d].hotkey", i), String.valueOf(item.getHotkey()));
+                prop.writeEntry("sendto", String.format("item[%d].hotkey", i), Util.toString(item.getHotkey()));
             }
 
             if (item.getExtend() != null) {
@@ -417,13 +417,13 @@ public final class LegacyConfig {
             for (int i = 0; i < group.getReplaceList().size(); i++) {
                 List<MatchReplaceItem> list = group.getReplaceList();
                 MatchReplaceItem bean = list.get(i);
-                prop.writeEntry(sectionName, String.format("item[%d].selected", i), String.valueOf(bean.isSelected()));
+                prop.writeEntry(sectionName, String.format("item[%d].selected", i), Util.toString(bean.isSelected()));
                 prop.writeEntry(sectionName, String.format("item[%d].type", i), bean.getType());
                 prop.writeEntry(sectionName, String.format("item[%d].match", i), bean.getMatch());
-                prop.writeEntry(sectionName, String.format("item[%d].regexp", i), String.valueOf(bean.isRegexp()));
-                prop.writeEntry(sectionName, String.format("item[%d].ignore", i), String.valueOf(bean.isIgnoreCase()));
+                prop.writeEntry(sectionName, String.format("item[%d].regexp", i), Util.toString(bean.isRegexp()));
+                prop.writeEntry(sectionName, String.format("item[%d].ignore", i), Util.toString(bean.isIgnoreCase()));
                 prop.writeEntry(sectionName, String.format("item[%d].replace", i), bean.getReplace());
-                prop.writeEntry(sectionName, String.format("item[%d].metachar", i), String.valueOf(bean.isMetaChar()));
+                prop.writeEntry(sectionName, String.format("item[%d].metachar", i), Util.toString(bean.isMetaChar()));
             }
         }
 
@@ -437,7 +437,7 @@ public final class LegacyConfig {
             prop.writeEntryBool("matchalert", String.format("item[%d].selected", i), item.isSelected());
             prop.writeEntry("matchalert", String.format("item[%d].type", i), item.getType());
             prop.writeEntry("matchalert", String.format("item[%d].match", i), item.getMatch());
-            prop.writeEntry("matchalert", String.format("item[%d].regexp", i), String.valueOf(item.isRegexp()));
+            prop.writeEntry("matchalert", String.format("item[%d].regexp", i), Util.toString(item.isRegexp()));
             prop.writeEntryBool("matchalert", String.format("item[%d].ignorecase", i), item.isIgnoreCase());
 
             //prop.writeEntry("matchalert", String.format("item[%d].notify", i), item.getNotifyType().name());

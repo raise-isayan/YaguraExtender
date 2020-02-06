@@ -479,7 +479,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
             this.popEncodeMenu.addSeparator();
         }
         for (int i = 0; i < this.listSelect.getModel().getSize(); i++) {
-            String enc = String.valueOf(this.listSelect.getModel().getElementAt(i));
+            String enc = Util.toString(this.listSelect.getModel().getElementAt(i));
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
             item.addChangeListener(new ChangeListener() {
                 @Override

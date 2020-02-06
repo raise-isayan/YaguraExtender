@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -135,12 +136,12 @@ public class SendToServer extends SendToMenuItem {
     protected void outMultipart(String boundary, OutputStream out, IHttpRequestResponse messageInfo) throws IOException, Exception {
         IHttpService httpService = messageInfo.getHttpService();
         HttpUtil.outMultipartText(boundary, out, "host", httpService.getHost());
-        HttpUtil.outMultipartText(boundary, out, "port", String.valueOf(httpService.getPort()));
+        HttpUtil.outMultipartText(boundary, out, "port", Util.toString(httpService.getPort()));
         HttpUtil.outMultipartText(boundary, out, "protocol", httpService.getProtocol());
-        HttpUtil.outMultipartText(boundary, out, "url", String.valueOf(BurpWrap.getURL(messageInfo)));
+        HttpUtil.outMultipartText(boundary, out, "url", Util.toString(BurpWrap.getURL(messageInfo)));
         String comment = messageInfo.getComment();
         if (comment != null) {
-            HttpUtil.outMultipartText(boundary, out, "comment", String.valueOf(comment));
+            HttpUtil.outMultipartText(boundary, out, "comment",  Util.getRawByteStr(comment, StandardCharsets.UTF_8));
         }
         String color = BurpWrap.getHighlightColor(messageInfo);
         if (color != null) {

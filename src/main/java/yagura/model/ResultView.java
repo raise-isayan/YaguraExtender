@@ -4,6 +4,7 @@ import burp.IHttpRequestResponse;
 import extend.model.base.ObjectTableColumn;
 import extend.model.base.ObjectTableMapping;
 import extend.util.BurpWrap;
+import extend.util.Util;
 import extend.view.base.HttpRequest;
 import extend.view.base.MatchItem;
 import extend.view.base.NamedColor;
@@ -76,10 +77,10 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     if (color != null) {
                         MatchItem.HighlightColor hc = MatchItem.HighlightColor.parseValue(color);
                         highlightColor = hc.toColor();
-                        value = new NamedColor(highlightColor, String.valueOf(ordinal + 1));
+                        value = new NamedColor(highlightColor, Util.toString(ordinal + 1));
                     }
                     if (value == null) {
-                        value = new NamedColor(Color.WHITE, String.valueOf(ordinal + 1));
+                        value = new NamedColor(Color.WHITE, Util.toString(ordinal + 1));
                     }
                     break;
                 case 2: // host
@@ -90,12 +91,12 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     value = reqmsg.getMethod();
                     break;
                 case 4: // url
-                    value = String.valueOf(msg.getUrl());
+                    value = Util.toString(msg.getUrl());
                     break;
                 case 5: // status code
                     value = 0;
                     if (this.getResponse() != null) {
-                        value = String.valueOf((int) msg.getStatusCode());
+                        value = Util.toString((int) msg.getStatusCode());
                     }
                     break;
                 case 6: // length

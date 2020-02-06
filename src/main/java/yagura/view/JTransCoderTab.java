@@ -2071,8 +2071,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 map.add(c);
             }
         }
-        this.txtBase.setText(String.valueOf(map.toArray().length));
-        this.txtExponent.setText(String.valueOf(sum_len / tokenList.length));
+        this.txtBase.setText(Util.toString(map.toArray().length));
+        this.txtExponent.setText(Util.toString(sum_len / tokenList.length));
         this.btnCalcActionPerformed(evt);
     }//GEN-LAST:event_btnAnalyzeActionPerformed
 
@@ -2240,9 +2240,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             try {
                                 txtGenarate.setText(get());
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (ExecutionException ex) {
-                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     };
@@ -2276,9 +2276,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             try {
                                 txtGenarate.setText(get());
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (ExecutionException ex) {
-                                Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     };
@@ -2311,9 +2311,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         try {
                            txtGenarate.setText(get());
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 };

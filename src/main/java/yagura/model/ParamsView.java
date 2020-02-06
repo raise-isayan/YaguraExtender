@@ -82,7 +82,7 @@ public class ParamsView extends Parameter implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            Logger.getLogger(ParamsViewModel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ParamsView.class.getName()).log(Level.SEVERE, null, ex);
         }
         return value;
     }

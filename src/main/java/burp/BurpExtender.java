@@ -570,7 +570,7 @@ public class BurpExtender extends BurpExtenderImpl
 //                        trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
                     }
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.ITEM_HIGHLIGHT)) {
-                        BurpWrap.setHighlightColor(messageInfo, String.valueOf(bean.getHighlightColor()));
+                        BurpWrap.setHighlightColor(messageInfo, Util.toString(bean.getHighlightColor()));
                     }
                     if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.COMMENT)) {
                         messageInfo.setComment(bean.getComment());
@@ -838,7 +838,7 @@ public class BurpExtender extends BurpExtenderImpl
                 if (cols[i]) {
                     int rawRow = table.convertRowIndexToModel(rows[k]);
                     Object data = model.getValueAt(rawRow, i);
-                    export.append(String.valueOf(data));
+                    export.append(Util.toString(data));
                     export.append("\t");
                 }
             }

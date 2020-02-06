@@ -126,9 +126,9 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                             txtHtmlComment.setCaretPosition(0);
                             quickSearchTab.clearViewAndSearch();
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 };

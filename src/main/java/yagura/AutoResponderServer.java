@@ -119,7 +119,7 @@ public class AutoResponderServer {
                 if (handler != null) {
                     handler.uncaughtException(this, ex);
                 }
-                Logger.getLogger(ThreadWrap.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AutoResponderServer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 

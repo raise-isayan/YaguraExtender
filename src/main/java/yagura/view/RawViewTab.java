@@ -160,17 +160,17 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                         try {
                             txtRaw.setText(get());
                             txtRaw.setCaretPosition(0);
+                            quickSearchTab.clearViewAndSearch();
+                //          quickSearchTab.clearView();
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 };
                 swText.execute();                    
             }
-//            this.quickSearchTab.clearView();
-            this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
             Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
         }

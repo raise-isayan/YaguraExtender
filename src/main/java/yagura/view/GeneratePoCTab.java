@@ -350,9 +350,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 try {
                     ta.setText(get());
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         };

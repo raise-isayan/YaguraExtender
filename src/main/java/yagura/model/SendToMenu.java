@@ -231,7 +231,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             for (int i = 0; i < rowSelect.length; i++) {
                 int rowIndex = table.convertRowIndexToModel(rowSelect[i]);
                 TableModel modelTable = table.getModel();
-                int historyIndex = Util.parseIntDefault(String.valueOf(modelTable.getValueAt(rowIndex, 0)), -1);
+                int historyIndex = Util.parseIntDefault(Util.toString(modelTable.getValueAt(rowIndex, 0)), -1);
                 if (historyIndex > 0) {
                     IHttpRequestResponse[] history = BurpExtender.getCallbacks().getProxyHistory();
                     historyList.add(history[historyIndex - 1]);

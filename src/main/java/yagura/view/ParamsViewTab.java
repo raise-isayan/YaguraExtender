@@ -409,11 +409,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                             quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
                             encodingItemStateChanged.itemStateChanged(null);
                             quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+                            textModified = false;
 
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (ParseException ex) {
                             Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (UnsupportedEncodingException ex) {
@@ -422,8 +423,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                     }
                 };
                 swParam.execute();                    
-
-                this.textModified = false;
 
             }
 

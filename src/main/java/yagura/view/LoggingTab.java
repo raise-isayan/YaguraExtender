@@ -373,7 +373,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
      * @param logFileLimitSize the logFileLimitSize to set
      */
     public void setLogFileLimitSize(int logFileLimitSize) {
-        this.txtFileLimitSize.setText(String.valueOf(logFileLimitSize));
+        this.txtFileLimitSize.setText(Util.toString(logFileLimitSize));
     }
 
     /**
