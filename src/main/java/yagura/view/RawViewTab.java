@@ -3,6 +3,7 @@ package yagura.view;
 import burp.BurpExtender;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
+import extend.util.ConvertUtil;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
@@ -150,10 +151,12 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                     @Override
                     protected String doInBackground() throws Exception {
                         // Raw
+                        publish("...");
                         return Util.decodeMessage(content, encoding);
                     }
 
                     protected void process(List<Object> chunks) {
+                        txtRaw.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
                     }
 
                     protected void done() {

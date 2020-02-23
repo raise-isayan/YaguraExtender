@@ -17,7 +17,7 @@ If you are online, please refer to [help](https://github.com/raise-isayan/Yagura
 
 ## Required library
 Building requires a separate [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) library.
-* BurpExtlib v1.9.2
+* BurpExtlib v2.0.4
 
 ##Notes
 This tool was developed by myself and has nothing to do with PortSwigger. Please do not contact PortSwigger for any problems caused by using this tool.

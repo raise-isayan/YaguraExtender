@@ -145,7 +145,7 @@ public class TransUtil {
 
     public enum ConvertCase {
         UPPER, LOWLER
-    };
+   };
 
     public static String toEmpty(Object obj) {
         return (obj == null) ? "" : obj.toString();

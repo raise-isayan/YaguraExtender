@@ -39,6 +39,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import extend.util.external.TransUtil;
 import java.util.EnumSet;
+import java.util.List;
+import javax.swing.SwingWorker;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
@@ -571,7 +573,8 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_chkRegExpStateChanged
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        this.search();
+//        this.search();
+        this.searchEx();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void chkSmartMatchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkSmartMatchStateChanged
@@ -653,6 +656,143 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
 
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
+    private SwingWorker swSearch = null;
+    
+    public void searchEx() {
+        if (swSearch == null) {
+            String queryText = this.txtSearch.getText();
+            if (queryText.length() > 0) {
+                if (!isValidRegex(queryText)) {
+                    lblProgress.setText(BUNDLE.getString("view.invalid.regex"));
+                    return;
+                }
+            }
+            this.swSearch = new SwingWorker<DefaultObjectTableModel<ResultView>, String>() {
+                private boolean isScopeOnly = false;
+                private boolean isRequestHeader = true;
+                private boolean isRequestBody = true;
+                private boolean isResponseHeader = true;
+                private boolean isResponseBody = true;
+                private boolean isComment = true;
+
+                @Override
+                protected DefaultObjectTableModel<ResultView> doInBackground() throws Exception {
+                    querying = true;
+                    isScopeOnly = chkScopeOnly.isSelected();
+                    isRequestHeader = chkRequestHeader.isSelected();
+                    isRequestBody = chkRequestBody.isSelected();
+                    isResponseHeader = chkResponseHeader.isSelected();
+                    isResponseBody = chkResponseBody.isSelected();
+                    isComment = chkComment.isSelected();
+                    btnSearch.setText("Stop");
+                    // all clear
+                    modelSearch.removeAll();
+                    searchEx(txtSearch.getText());
+                    return modelSearch;
+                }
+
+                protected void searchEx(String text) {
+                    Pattern p = TransUtil.compileRegex(text, chkSmartMatch.isSelected(), chkRegExp.isSelected(), chkRegExp.isSelected());
+
+                    IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
+                    try {
+                        publish(String.format(SEARCH_PROGRESS, 0.0));
+                        for (int i = 0; i < messageInfo.length; i++) {
+                            HttpMessageItem item = new HttpMessageItem(messageInfo[i], i);
+                            Matcher m = null;
+                            boolean find = false;
+                            do {
+                                String encoding = StandardCharsets.ISO_8859_1.name();
+                                if (getAutoRecogniseEncoding()) {
+                                    encoding = item.getGuessCharset();
+                                }
+                                if (isScopeOnly) {
+                                    if (!BurpExtender.getCallbacks().isInScope(item.getUrl())) {
+                                        continue;
+                                    }
+                                }
+                                if ((isRequestHeader || isRequestBody) && item.getRequest() != null) {
+                                    byte reqMessage[] = item.getRequest();
+                                    if (!(isRequestHeader && isRequestBody)) {
+                                        IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(reqMessage);
+                                        if (isRequestHeader) {
+                                            reqMessage = Arrays.copyOfRange(item.getRequest(), 0, reqInfo.getBodyOffset());
+                                        } else if (isRequestBody) {
+                                            reqMessage = Arrays.copyOfRange(item.getRequest(), reqInfo.getBodyOffset(), item.getRequest().length);
+                                        }
+                                    }
+                                    String req = Util.decodeMessage(reqMessage, encoding);
+                                    m = p.matcher(req);
+                                    if (m.find()) {
+                                        find = true;
+                                        break;
+                                    }
+                                }
+                                if ((isResponseHeader || isResponseBody) && item.getResponse() != null) {
+                                    byte resMessage[] = item.getResponse();
+                                    if (!(isResponseHeader && isResponseBody)) {
+                                        IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(resMessage);
+                                        if (isResponseHeader) {
+                                            resMessage = Arrays.copyOfRange(item.getResponse(), 0, resInfo.getBodyOffset());
+                                        } else if (isResponseBody) {
+                                            resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getResponse().length);
+                                        }
+                                    }
+                                    String res = Util.decodeMessage(resMessage, encoding);
+                                    m = p.matcher(res);
+                                    if (m.find()) {
+                                        find = true;
+                                        break;
+                                    }
+                                }
+                                if (isComment && item.getComment() != null) {
+                                    m = p.matcher(item.getComment());
+                                    if (m.find()) {
+                                        find = true;
+                                        break;
+                                    }
+                                }
+                                publish(String.format(SEARCH_PROGRESS, (double) i / messageInfo.length * 100.0));
+                            } while (false);
+                            if (m != null && find) {
+                                modelSearch.addRow(new ResultView(item, item.getOrdinal()));
+                            }
+                            if (isCancelled()) {
+                                break;
+                            }
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(JSearchTab.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+                protected void process(List<String> chunks) {
+                    if (chunks.size() > 0) {
+                        String progress = chunks.get(0);
+                        lblProgress.setText(progress);
+                    }
+                }
+
+                protected void done() {
+                    cancel = false;
+                    querying = false;
+                    btnSearch.setText("Search");
+                    lblProgress.setText(String.format(SEARCH_PROGRESS, 100.0));
+                }
+            };
+            swSearch.execute();                                            
+            swSearch = null;
+        }
+        else {
+            if (!swSearch.isCancelled() && !swSearch.isDone()) {
+                // キャンセル前かつ検索中
+                swSearch.cancel(true);                
+            }
+        }
+    }
+    
+     
     public void search() {
         if (!this.cancel && this.querying) {
             // キャンセル前かつ検索中
@@ -665,7 +805,6 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                     return;
                 }
                 Runnable search = new Runnable() {
-
                     @Override
                     public void run() {
                         modelSearch.removeAll();

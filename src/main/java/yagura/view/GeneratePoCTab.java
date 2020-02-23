@@ -9,6 +9,7 @@ import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
 import extend.util.BurpWrap;
+import extend.util.ConvertUtil;
 import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
 import extend.util.HttpUtil;
@@ -18,7 +19,9 @@ import extend.util.Util;
 import extend.util.external.JsonUtil;
 import java.awt.Component;
 import java.awt.Font;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -303,25 +306,14 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int selected = filechooser.showSaveDialog(null);
         if (selected == JFileChooser.APPROVE_OPTION) {
-            FileOutputStream fstm = null;
-            try {
-                File file = filechooser.getSelectedFile();
+            File file = filechooser.getSelectedFile();
                 if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                    fstm = new FileOutputStream(file);
-                    fstm.write(Util.encodeMessage(ta.getText(), encoding));
-                    fstm.flush();
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                if (fstm != null) {
-                    try {
-                        fstm.close();
+                    try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+                        fstm.write(Util.encodeMessage(ta.getText(), encoding));
                     } catch (IOException ex) {
                         Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            }
         }
     }//GEN-LAST:event_btnSavetoFileActionPerformed
 
@@ -336,6 +328,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         SwingWorker swPoC = new SwingWorker<String, Object>() {
             @Override
             protected String doInBackground() throws Exception {
+                publish("...");
                 if (csrfParam.isCsrfHtml5()) {
                     return generateHTML5PoC(csrfParam);
                 } else {
@@ -344,6 +337,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
 
             protected void process(List<Object> chunks) {
+                ta.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
             }
 
             protected void done() {

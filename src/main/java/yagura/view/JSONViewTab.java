@@ -83,7 +83,6 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         }    
 
     };
-
         
     /**
      * This method is called from within the constructor to initialize the form.

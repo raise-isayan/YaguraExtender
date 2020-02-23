@@ -1,5 +1,6 @@
 package yagura.view;
 
+import extend.util.ConvertUtil;
 import extend.util.SwingUtil;
 import extend.util.external.JsonUtil;
 import java.awt.Font;
@@ -146,12 +147,12 @@ public class JSONView extends javax.swing.JPanel {
             SwingWorker swRaw = new SwingWorker<String, Object>() {
                 @Override
                 protected String doInBackground() throws Exception {
-                    publish("\"heavy processing\"");
+                    publish("...");
                     return JsonUtil.prettyJson(content);
                 }
 
                 protected void process(List<Object> chunks) {
-                    txtJSON.setText("\"heavy processing\"");
+                    txtJSON.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
                 }
                 
                 protected void done() {
@@ -172,12 +173,12 @@ public class JSONView extends javax.swing.JPanel {
             SwingWorker swTree = new SwingWorker<DefaultTreeModel, Object>() {
                 @Override
                 protected DefaultTreeModel doInBackground() throws Exception {
-                    publish("\"heavy processing\"");
+                    publish("...");
                     return (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
                 }
 
                 protected void process(List<Object> chunks) {
-                    modelJSON.setRoot(new DefaultMutableTreeNode("\"heavy processing\""));
+                    modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
                 }
                 
                 protected void done() {

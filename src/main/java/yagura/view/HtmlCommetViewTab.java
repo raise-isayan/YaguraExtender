@@ -8,6 +8,7 @@ import burp.IResponseInfo;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpResponse;
 import extend.util.BurpWrap;
+import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
 import extend.util.external.TransUtil;
 import extend.util.Util;
@@ -113,11 +114,13 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                 SwingWorker swText = new SwingWorker<String, Object>() {
                     @Override
                     protected String doInBackground() throws Exception {
+                        publish("...");
                         String comments[] = HttpUtil.extractHTMLComments(Util.decodeMessage(message.getBodyBytes(), encoding), uniq);
                         return TransUtil.join("\r\n", comments);
                     }
 
                     protected void process(List<Object> chunks) {
+                        txtHtmlComment.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
                     }
 
                     protected void done() {

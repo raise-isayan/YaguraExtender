@@ -53,6 +53,7 @@ import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
+import java.io.BufferedOutputStream;
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
@@ -2255,7 +2256,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 }
             } else if (this.tabbetSequence.getSelectedIndex() == this.tabbetSequence.indexOfTab("Date")) {
                 try {
-                    final String numFormat = this.txtNumFormat.getText();
+                    final String numFormat = this.txtDateFormat.getText();
                     final LocalDate dateStart = LocalDate.of(datePickerStart.getModel().getYear(), datePickerStart.getModel().getMonth() + 1, datePickerStart.getModel().getDay());
                     final LocalDate dateEnd = LocalDate.of(datePickerEnd.getModel().getYear(), datePickerEnd.getModel().getMonth() + 1, datePickerEnd.getModel().getDay());;
                     final int stepNum = (Integer) this.spnDateStep.getModel().getValue();
@@ -2333,23 +2334,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         int selected = filechooser.showSaveDialog(null);
         if (selected == JFileChooser.APPROVE_OPTION) {
-            FileOutputStream fstm = null;
-            try {
-                File file = filechooser.getSelectedFile();
-                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                    fstm = new FileOutputStream(file);
+            File file = filechooser.getSelectedFile();
+            if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
+                try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                     fstm.write(Util.encodeMessage(s, this.getSelectEncode()));
-                    fstm.flush();
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                if (fstm != null) {
-                    try {
-                        fstm.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }

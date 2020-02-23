@@ -29,6 +29,7 @@ import java.awt.TrayIcon;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -338,7 +339,7 @@ public class BurpExtender extends BurpExtenderImpl
                         }
                     }
                     if (includeLog) {
-                        try (FileOutputStream fostm = new FileOutputStream(fname, true)) {
+                        try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
                             fostm.write(Util.getRawByte(Util.NEW_LINE));
                             fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
                             fostm.write(Util.getRawByte(getCurrentLogTimestamp() + " " + BurpWrap.getURLString(httpService) + Util.NEW_LINE));
@@ -402,7 +403,7 @@ public class BurpExtender extends BurpExtenderImpl
                     }
                 }
                 if (includeLog) {
-                    try (FileOutputStream fostm = new FileOutputStream(fname, true)) {
+                    try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
                         fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
                         fostm.write(Util.getRawByte(getCurrentLogTimestamp() + " " + BurpWrap.getURLString(messageInfo.getHttpService()) + Util.NEW_LINE));
                         fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));

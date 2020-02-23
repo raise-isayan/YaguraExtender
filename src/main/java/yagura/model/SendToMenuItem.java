@@ -8,6 +8,7 @@ import burp.IResponseInfo;
 import extend.util.BurpWrap;
 import extend.util.HttpUtil;
 import extend.util.Util;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,7 +54,7 @@ public abstract class SendToMenuItem
         try {
             file = File.createTempFile(HttpUtil.getBaseName(BurpWrap.getURL(messageInfo)) + "." + index + ".", ".tmp");
             file.deleteOnExit();
-            try (FileOutputStream fostm = new FileOutputStream(file, true)) {
+            try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(file, true))) {
                 if ((this.isRequestHeader() || this.isRequestBody()) && messageInfo.getRequest() != null) {
                     byte reqMessage[] = messageInfo.getRequest();
                     if (!(this.isRequestHeader() && this.isRequestBody())) {

@@ -8,6 +8,7 @@ import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.Util;
 import java.awt.event.ActionEvent;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -94,7 +95,7 @@ public class SendToExtend extends SendToMenuItem {
                 try {
                     File file = filechooser.getSelectedFile();
                     if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                        try (FileOutputStream fstm = new FileOutputStream(file)) {
+                        try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
                                 fstm.write(messageItem.getRequest());
                                 fstm.write(Util.getRawByte(Util.NEW_LINE));
