@@ -141,7 +141,7 @@ public class SendToServer extends SendToMenuItem {
         HttpUtil.outMultipartText(boundary, out, "url", Util.toString(BurpWrap.getURL(messageInfo)));
         String comment = messageInfo.getComment();
         if (comment != null) {
-            HttpUtil.outMultipartText(boundary, out, "comment",  Util.getRawByteStr(comment, StandardCharsets.UTF_8));
+            HttpUtil.outMultipartText(boundary, out, "comment", comment, StandardCharsets.UTF_8);
         }
         String color = BurpWrap.getHighlightColor(messageInfo);
         if (color != null) {

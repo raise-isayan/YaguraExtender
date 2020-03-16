@@ -2,6 +2,7 @@ package yagura.model;
 
 import com.google.gson.annotations.Expose;
 import extend.util.Util;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.SortedMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,18 +57,30 @@ public class UniversalViewProperty {
     }
 
     public static List<String> getDefaultEncodingList(Locale lang) {
+        SortedMap<String, Charset> charSets = Charset.availableCharsets();
+
         List<String> list = new ArrayList<>();
         if (lang == null) {
-            list.addAll(Arrays.asList(ENCODING_DEFAULT_OTHER_LIST));        
+            for (String enc : ENCODING_DEFAULT_OTHER_LIST) {
+               if (charSets.get(enc) != null)  list.add(enc);                
+            }
         }
         else if (lang.equals(Locale.JAPANESE)) {
-            list.addAll(Arrays.asList(ENCODING_DEFAULT_JAPANESE_LIST));
+            for (String enc : ENCODING_DEFAULT_JAPANESE_LIST) {
+               if (charSets.get(enc) != null)  list.add(enc);                
+            }
         } else if (lang.equals(Locale.CHINESE)) {
-            list.addAll(Arrays.asList(ENCODING_DEFAULT_CHINESE_LIST));
+            for (String enc : ENCODING_DEFAULT_CHINESE_LIST) {
+               if (charSets.get(enc) != null)  list.add(enc);                
+            }
         } else if (lang.equals(Locale.KOREAN)) {
-            list.addAll(Arrays.asList(ENCODING_DEFAULT_KOREAN_LIST));
+            for (String enc : ENCODING_DEFAULT_KOREAN_LIST) {
+               if (charSets.get(enc) != null)  list.add(enc);                
+            }
         } else {
-            list.addAll(Arrays.asList(ENCODING_DEFAULT_OTHER_LIST));
+            for (String enc : ENCODING_DEFAULT_OTHER_LIST) {
+               if (charSets.get(enc) != null)  list.add(enc);                
+            }
         }
         return Collections.unmodifiableList(list);
     }
