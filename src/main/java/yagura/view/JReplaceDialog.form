@@ -202,10 +202,11 @@
                 <Component class="javax.swing.JTable" name="tableReplace">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="7" rowCount="0">
+                      <Table columnCount="8" rowCount="0">
                         <Column editable="true" title="" type="java.lang.Boolean"/>
                         <Column editable="false" title="type" type="java.lang.String"/>
                         <Column editable="false" title="match" type="java.lang.String"/>
+                        <Column editable="false" title="smartMatch" type="java.lang.Boolean"/>
                         <Column editable="false" title="regex" type="java.lang.Boolean"/>
                         <Column editable="false" title="icase" type="java.lang.Boolean"/>
                         <Column editable="false" title="replace" type="java.lang.String"/>
@@ -229,7 +230,12 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>

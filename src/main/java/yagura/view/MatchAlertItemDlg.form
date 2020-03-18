@@ -114,13 +114,18 @@
                                   </Group>
                               </Group>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="cmbAlertType" pref="311" max="32767" attributes="0"/>
                                   <Component id="txtAlertMatch" max="32767" attributes="0"/>
-                                  <Component id="cmbAlertType" min="-2" pref="243" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="chkRegExp" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkIgnoreCase" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="chkRegExp" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="chkIgnoreCase" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="chkSmartMatch" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -143,7 +148,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -158,14 +163,15 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="chkRegExp" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="cmbAlertType" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="chkSmartMatch" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="txtAlertMatch" alignment="3" min="-2" max="-2" attributes="1"/>
                                   <Component id="lblMatch" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="chkIgnoreCase" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="chkRegExp" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="lblType" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -189,7 +195,7 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="pnlMatch" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="14" max="32767" attributes="0"/>
+                      <EmptySpace pref="66" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -451,6 +457,14 @@
                 </Container>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JCheckBox" name="chkSmartMatch">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Smart Match"/>
+              </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkSmartMatchStateChanged"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>

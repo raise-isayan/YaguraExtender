@@ -67,6 +67,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         cmbSeverity = new javax.swing.JComboBox<>();
         cmbConfidence = new javax.swing.JComboBox<>();
         txtIssueName = new javax.swing.JTextField();
+        chkSmartMatch = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -247,6 +248,13 @@ public class MatchAlertItemDlg extends CustomDialog {
             .addComponent(pnlScannerIssue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        chkSmartMatch.setText("Smart Match");
+        chkSmartMatch.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkSmartMatchStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlNoticeLayout = new javax.swing.GroupLayout(pnlNotice);
         pnlNotice.setLayout(pnlNoticeLayout);
         pnlNoticeLayout.setHorizontalGroup(
@@ -264,12 +272,16 @@ public class MatchAlertItemDlg extends CustomDialog {
                                 .addComponent(lblMatch)
                                 .addGap(18, 18, 18)))
                         .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtAlertMatch)
-                            .addComponent(cmbAlertType, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmbAlertType, 0, 311, Short.MAX_VALUE)
+                            .addComponent(txtAlertMatch))
+                        .addGap(18, 18, 18)
                         .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkRegExp)
-                            .addComponent(chkIgnoreCase)))
+                            .addGroup(pnlNoticeLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(chkRegExp)
+                                .addGap(18, 18, 18)
+                                .addComponent(chkIgnoreCase))
+                            .addComponent(chkSmartMatch)))
                     .addGroup(pnlNoticeLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblTarget)
@@ -285,7 +297,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                         .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkSequencer)
                             .addComponent(chkRepeater))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(44, 44, 44))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlNoticeLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(pnlMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -297,13 +309,14 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlNoticeLayout.createSequentialGroup()
                         .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(chkRegExp)
-                            .addComponent(cmbAlertType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cmbAlertType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(chkSmartMatch))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtAlertMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblMatch)
-                            .addComponent(chkIgnoreCase)))
+                            .addComponent(chkIgnoreCase)
+                            .addComponent(chkRegExp)))
                     .addComponent(lblType))
                 .addGap(8, 8, 8)
                 .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,7 +333,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                             .addComponent(chkSequencer))))
                 .addGap(18, 18, 18)
                 .addComponent(pnlMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         pnlMain.add(pnlNotice, java.awt.BorderLayout.LINE_START);
@@ -364,6 +377,10 @@ public class MatchAlertItemDlg extends CustomDialog {
     private void chkItem_highlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkItem_highlightActionPerformed
         this.cmbAlertColor.setEnabled(this.chkItem_highlight.isSelected());
     }//GEN-LAST:event_chkItem_highlightActionPerformed
+
+    private void chkSmartMatchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkSmartMatchStateChanged
+        this.chkRegExp.setEnabled(!this.chkSmartMatch.isSelected());
+    }//GEN-LAST:event_chkSmartMatchStateChanged
 
     /**
      * @param args the command line arguments
@@ -430,6 +447,7 @@ public class MatchAlertItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkScanner;
     private javax.swing.JCheckBox chkScannerIssue;
     private javax.swing.JCheckBox chkSequencer;
+    private javax.swing.JCheckBox chkSmartMatch;
     private javax.swing.JCheckBox chkSpider;
     private javax.swing.JCheckBox chkTray_message;
     private javax.swing.JComboBox cmbAlertColor;
@@ -499,6 +517,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         item.setType((String) this.cmbAlertType.getSelectedItem());
         item.setMatch(this.txtAlertMatch.getText());
 
+        item.setSmartMatch(this.chkSmartMatch.isSelected());
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
 
@@ -564,6 +583,7 @@ public class MatchAlertItemDlg extends CustomDialog {
     public void setItem(MatchAlertItem item) {
         this.cmbAlertType.setSelectedItem(item.getType());
         this.txtAlertMatch.setText(item.getMatch());
+        this.chkSmartMatch.setSelected(item.isSmartMatch());
         this.chkRegExp.setSelected(item.isRegexp());
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
 

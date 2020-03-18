@@ -1331,8 +1331,7 @@ public class TransUtil {
         return buff.toString();
     }
 
-    public static Pattern compileRegex(String text, boolean smartMatch, boolean regexp, boolean ignoreCase) {
-        int flags = 0;
+    public static Pattern compileRegex(String text, boolean smartMatch, boolean regexp, boolean ignoreCase, int flags) {
         if (ignoreCase) {
             flags |= Pattern.CASE_INSENSITIVE;
         }
@@ -1342,6 +1341,10 @@ public class TransUtil {
             p = RegexItem.compileRegex(smartRegex, flags, false);
         }
         return p;
+    }
+        
+    public static Pattern compileRegex(String text, boolean smartMatch, boolean regexp, boolean ignoreCase) {
+        return compileRegex(text, smartMatch, regexp, ignoreCase, 0);
     }
             
     /**

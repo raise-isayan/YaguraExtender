@@ -275,5 +275,22 @@ public class ConfigTest {
             assertEquals(1, option.getMatchReplaceProperty().getReplaceSelectedList("xxx").size());
         }        
     }
-   
+
+    @Test
+    public void testLoadOptionHierarchyLegacy1() throws Exception {
+        System.out.println("loadOptionHierarchyLegacy1");
+        URL url = this.getClass().getResource("/resources/YaguraExtender_legacy1.json");
+        File fi = new File(url.toURI());
+        if (fi.exists()) {
+            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);        
+            assertEquals(5, option.getEncodingProperty().getEncodingList().size());
+            assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
+            assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());
+            assertEquals(1, option.getMatchReplaceProperty().getReplaceMap().size());
+            assertEquals(null, option.getMatchReplaceProperty().getReplaceSelectedGroup(option.getMatchReplaceProperty().getSelectedName()));
+            assertEquals(false, option.getMatchReplaceProperty().getReplaceSelectedGroup("xxx").isInScopeOnly());
+            assertEquals(1, option.getMatchReplaceProperty().getReplaceSelectedList("xxx").size());
+        }        
+    }
+    
 }

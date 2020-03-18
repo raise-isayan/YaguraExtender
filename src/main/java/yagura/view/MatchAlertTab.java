@@ -74,14 +74,14 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
 
             },
             new String [] {
-                "", "type", "match", "regex", "icase", "notify", "target tool", "highlight color", "comment", "issue name", "severity", "confidence"
+                "", "type", "match", "smartMatch", "regex", "icase", "notify", "target tool", "highlight color", "comment", "issue name", "severity", "confidence"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -103,7 +103,6 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
             tableAlert.getColumnModel().getColumn(0).setResizable(false);
             tableAlert.getColumnModel().getColumn(1).setResizable(false);
             tableAlert.getColumnModel().getColumn(2).setResizable(false);
-            tableAlert.getColumnModel().getColumn(4).setResizable(false);
         }
 
         btnAlertRemove.setText("Remove");
@@ -218,40 +217,45 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
         this.tableAlert.getColumnModel().getColumn(1).setPreferredWidth(60);
         this.tableAlert.getColumnModel().getColumn(1).setMaxWidth(80);
 
-        // regex
+        // smartMatch
         this.tableAlert.getColumnModel().getColumn(3).setMinWidth(20);
         this.tableAlert.getColumnModel().getColumn(3).setPreferredWidth(30);
         this.tableAlert.getColumnModel().getColumn(3).setMaxWidth(40);
-
-        // icase
+        
+        // regex
         this.tableAlert.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableAlert.getColumnModel().getColumn(4).setPreferredWidth(30);
         this.tableAlert.getColumnModel().getColumn(4).setMaxWidth(40);
 
-        // highlight color
-        this.tableAlert.getColumnModel().getColumn(7).setMinWidth(0);
-        this.tableAlert.getColumnModel().getColumn(7).setPreferredWidth(0);
-        this.tableAlert.getColumnModel().getColumn(7).setMaxWidth(0);
+        // icase
+        this.tableAlert.getColumnModel().getColumn(5).setMinWidth(20);
+        this.tableAlert.getColumnModel().getColumn(5).setPreferredWidth(30);
+        this.tableAlert.getColumnModel().getColumn(5).setMaxWidth(40);
 
-        // comment
+        // highlight color
         this.tableAlert.getColumnModel().getColumn(8).setMinWidth(0);
         this.tableAlert.getColumnModel().getColumn(8).setPreferredWidth(0);
         this.tableAlert.getColumnModel().getColumn(8).setMaxWidth(0);
 
+        // comment
+        this.tableAlert.getColumnModel().getColumn(9).setMinWidth(0);
+        this.tableAlert.getColumnModel().getColumn(9).setPreferredWidth(0);
+        this.tableAlert.getColumnModel().getColumn(9).setMaxWidth(0);
+
         // issue name
-        this.tableAlert.getColumnModel().getColumn(9).setMinWidth(40);
-        this.tableAlert.getColumnModel().getColumn(9).setPreferredWidth(60);
-        this.tableAlert.getColumnModel().getColumn(9).setMaxWidth(80);
+        this.tableAlert.getColumnModel().getColumn(10).setMinWidth(40);
+        this.tableAlert.getColumnModel().getColumn(10).setPreferredWidth(60);
+        this.tableAlert.getColumnModel().getColumn(10).setMaxWidth(80);
 
         // severity
-        this.tableAlert.getColumnModel().getColumn(10).setMinWidth(0);
-        this.tableAlert.getColumnModel().getColumn(10).setPreferredWidth(0);
-        this.tableAlert.getColumnModel().getColumn(10).setMaxWidth(0);
-
-        // confidence
         this.tableAlert.getColumnModel().getColumn(11).setMinWidth(0);
         this.tableAlert.getColumnModel().getColumn(11).setPreferredWidth(0);
         this.tableAlert.getColumnModel().getColumn(11).setMaxWidth(0);
+
+        // confidence
+        this.tableAlert.getColumnModel().getColumn(12).setMinWidth(0);
+        this.tableAlert.getColumnModel().getColumn(12).setPreferredWidth(0);
+        this.tableAlert.getColumnModel().getColumn(12).setMaxWidth(0);
 
     }
 

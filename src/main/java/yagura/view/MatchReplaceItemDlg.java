@@ -35,6 +35,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
         cmbRepType = new javax.swing.JComboBox();
         txtRepMatch = new javax.swing.JTextField();
         txtRepReplace = new javax.swing.JTextField();
+        chkSmartMatch = new javax.swing.JCheckBox();
         chkRegExp = new javax.swing.JCheckBox();
         chkIgnoreCase = new javax.swing.JCheckBox();
         lblType = new javax.swing.JLabel();
@@ -67,6 +68,13 @@ public class MatchReplaceItemDlg extends CustomDialog {
             }
         });
 
+        chkSmartMatch.setText("Smart Match");
+        chkSmartMatch.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkSmartMatchStateChanged(evt);
+            }
+        });
+
         chkRegExp.setSelected(true);
         chkRegExp.setText("RegExp");
 
@@ -93,25 +101,25 @@ public class MatchReplaceItemDlg extends CustomDialog {
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(lblType)
-                        .addGap(35, 35, 35)
-                        .addComponent(cmbRepType, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkIgnoreCase))
-                    .addGroup(pnlMainLayout.createSequentialGroup()
                         .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblReplace)
                             .addComponent(lblMatch))
                         .addGap(18, 18, 18)
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtRepMatch)
+                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(pnlMainLayout.createSequentialGroup()
-                                .addComponent(chkMetaChar)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(txtRepReplace))))
-                .addContainerGap())
+                                .addComponent(chkSmartMatch, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chkRegExp)
+                                .addGap(18, 18, 18)
+                                .addComponent(chkIgnoreCase))
+                            .addComponent(chkMetaChar)
+                            .addComponent(txtRepMatch, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                            .addComponent(txtRepReplace)))
+                    .addGroup(pnlMainLayout.createSequentialGroup()
+                        .addComponent(lblType)
+                        .addGap(35, 35, 35)
+                        .addComponent(cmbRepType, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,19 +127,23 @@ public class MatchReplaceItemDlg extends CustomDialog {
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbRepType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblType)
+                    .addComponent(lblType))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkIgnoreCase)
                     .addComponent(chkRegExp)
-                    .addComponent(chkIgnoreCase))
-                .addGap(10, 10, 10)
+                    .addComponent(chkSmartMatch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRepMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMatch))
-                .addGap(10, 10, 10)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRepReplace, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblReplace))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkMetaChar)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -170,7 +182,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
@@ -214,6 +226,10 @@ public class MatchReplaceItemDlg extends CustomDialog {
 
     private void cmbRepTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbRepTypeItemStateChanged
     }//GEN-LAST:event_cmbRepTypeItemStateChanged
+
+    private void chkSmartMatchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkSmartMatchStateChanged
+        this.chkRegExp.setEnabled(!this.chkSmartMatch.isSelected());
+    }//GEN-LAST:event_chkSmartMatchStateChanged
 
     /**
      * @param args the command line arguments
@@ -272,6 +288,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkMetaChar;
     private javax.swing.JCheckBox chkRegExp;
+    private javax.swing.JCheckBox chkSmartMatch;
     private javax.swing.JComboBox cmbRepType;
     private javax.swing.JLabel lblMatch;
     private javax.swing.JLabel lblReplace;
@@ -290,6 +307,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
         item.setSelected(true);
         item.setType((String) this.cmbRepType.getSelectedItem());
         item.setMatch(this.txtRepMatch.getText());
+        item.setSmartMatch(this.chkSmartMatch.isSelected());
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
         item.setReplace(this.txtRepReplace.getText());
@@ -303,6 +321,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
     public void setItem(MatchReplaceItem item) {
         this.cmbRepType.getModel().setSelectedItem(item.getType());
         this.txtRepMatch.setText(item.getMatch());
+        this.chkSmartMatch.setSelected(item.isSmartMatch());
         this.chkRegExp.setSelected(item.isRegexp());
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
         this.txtRepReplace.setText(item.getReplace());

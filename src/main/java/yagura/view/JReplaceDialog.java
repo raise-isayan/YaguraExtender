@@ -129,14 +129,14 @@ public class JReplaceDialog extends CustomDialog {
 
             },
             new String [] {
-                "", "type", "match", "regex", "icase", "replace", "metachar"
+                "", "type", "match", "smartMatch", "regex", "icase", "replace", "metachar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -151,8 +151,7 @@ public class JReplaceDialog extends CustomDialog {
         scrollPane.setViewportView(tableReplace);
         if (tableReplace.getColumnModel().getColumnCount() > 0) {
             tableReplace.getColumnModel().getColumn(2).setResizable(false);
-            tableReplace.getColumnModel().getColumn(3).setResizable(false);
-            tableReplace.getColumnModel().getColumn(6).setResizable(false);
+            tableReplace.getColumnModel().getColumn(7).setResizable(false);
         }
 
         lblName.setText("Name:");
@@ -302,20 +301,25 @@ public class JReplaceDialog extends CustomDialog {
         this.tableReplace.getColumnModel().getColumn(1).setPreferredWidth(120);
         this.tableReplace.getColumnModel().getColumn(1).setMaxWidth(150);
 
-        // regex
+        // smartMatch
         this.tableReplace.getColumnModel().getColumn(3).setMinWidth(20);
         this.tableReplace.getColumnModel().getColumn(3).setPreferredWidth(30);
         this.tableReplace.getColumnModel().getColumn(3).setMaxWidth(40);
-
-        // ignore
+                
+        // regex
         this.tableReplace.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableReplace.getColumnModel().getColumn(4).setPreferredWidth(30);
         this.tableReplace.getColumnModel().getColumn(4).setMaxWidth(40);
 
+        // ignore
+        this.tableReplace.getColumnModel().getColumn(5).setMinWidth(20);
+        this.tableReplace.getColumnModel().getColumn(5).setPreferredWidth(30);
+        this.tableReplace.getColumnModel().getColumn(5).setMaxWidth(40);
+
         // metachar
-        this.tableReplace.getColumnModel().getColumn(6).setMinWidth(0);
-        this.tableReplace.getColumnModel().getColumn(6).setPreferredWidth(0);
-        this.tableReplace.getColumnModel().getColumn(6).setMaxWidth(0);
+        this.tableReplace.getColumnModel().getColumn(7).setMinWidth(0);
+        this.tableReplace.getColumnModel().getColumn(7).setPreferredWidth(0);
+        this.tableReplace.getColumnModel().getColumn(7).setMaxWidth(0);
 
         this.tableReplace.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 

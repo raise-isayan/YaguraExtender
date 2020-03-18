@@ -34,6 +34,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
         final Class cls = token.getRawType();
         if (cls.equals(MatchAlertItem.class)) {
             MatchAlertItem matchItem = (MatchAlertItem) t;
+            jsonObject.add("smartMatch", jsc.serialize(matchItem.isSmartMatch()));
             jsonObject.add("issueName", jsc.serialize(matchItem.getIssueName()));
             jsonObject.add("severity", jsc.serialize(matchItem.getSeverity()));
             jsonObject.add("confidence", jsc.serialize(matchItem.getConfidence()));
@@ -43,6 +44,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             jsonObject.add("comment", jsc.serialize(matchItem.getComment()));
         } else if (cls.equals(MatchReplaceItem.class)) {
             MatchReplaceItem matchItem = (MatchReplaceItem) t;
+            jsonObject.add("smartMatch", jsc.serialize(matchItem.isSmartMatch()));
             jsonObject.add("metaChar", jsc.serialize(matchItem.isMetaChar()));
         }
         return jsonObject;
@@ -63,6 +65,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
         if (cls.equals(MatchAlertItem.class)) {
             final MatchAlertItem matchItem = new MatchAlertItem();
             matchItem.setProperty((MatchItem) item);
+            if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
             matchItem.setIssueName(jdc.deserialize(jsonObject.get("issueName"), String.class));
             matchItem.setSeverity(jdc.deserialize(jsonObject.get("severity"), MatchItem.Severity.class));
             matchItem.setConfidence(jdc.deserialize(jsonObject.get("confidence"), MatchItem.Confidence.class));
@@ -74,6 +77,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
         } else if (cls.equals(MatchReplaceItem.class)) {
             final MatchReplaceItem matchItem = new MatchReplaceItem();
             matchItem.setProperty((MatchItem) item);
+            if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
             matchItem.setMetaChar(jdc.deserialize(jsonObject.get("metaChar"), Boolean.TYPE));
             return matchItem;
         }

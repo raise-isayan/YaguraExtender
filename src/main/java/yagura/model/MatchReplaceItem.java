@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import extend.view.base.MatchItem;
 import extend.util.external.TransUtil;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author isayan
@@ -31,6 +32,11 @@ public class MatchReplaceItem extends MatchItem {
         return types;
     }
 
+    @Override
+    public Pattern compileRegex(boolean quote) {
+        return TransUtil.compileRegex(this.getMatch(), this.isSmartMatch(), !quote, this.isIgnoreCase(), Pattern.MULTILINE);
+    }
+    
     /**
      * @param quote
      * @param metachar
@@ -52,6 +58,17 @@ public class MatchReplaceItem extends MatchItem {
         }
     }
 
+    @Expose
+    private boolean smartMatch = false;
+
+    public void setSmartMatch(boolean value) {
+        this.smartMatch = value;
+    }
+
+    public boolean isSmartMatch() {
+        return this.smartMatch;
+    }
+    
     @Expose
     private boolean metaChar = false;
 
@@ -101,17 +118,19 @@ public class MatchReplaceItem extends MatchItem {
     public void setProperty(MatchReplaceItem item) {
         this.setProperty((MatchItem)item);
         this.setMetaChar(item.isMetaChar());
+        this.setSmartMatch(item.isSmartMatch());
     }
     
     public static Object[] toObjects(MatchReplaceItem matchReplace) {
-        Object[] beans = new Object[7];
+        Object[] beans = new Object[8];
         beans[0] = matchReplace.isSelected();
         beans[1] = matchReplace.getType();
         beans[2] = matchReplace.getMatch();
-        beans[3] = matchReplace.isRegexp();
-        beans[4] = matchReplace.isIgnoreCase();
-        beans[5] = matchReplace.getReplace();
-        beans[6] = matchReplace.isMetaChar();
+        beans[3] = matchReplace.isSmartMatch();
+        beans[4] = matchReplace.isRegexp();
+        beans[5] = matchReplace.isIgnoreCase();
+        beans[6] = matchReplace.getReplace();
+        beans[7] = matchReplace.isMetaChar();
         return beans;
     }
 
@@ -120,10 +139,11 @@ public class MatchReplaceItem extends MatchItem {
         matchReplace.setSelected(((Boolean) rows[0]));
         matchReplace.setType((String) rows[1]);
         matchReplace.setMatch((String) rows[2]);
-        matchReplace.setRegexp((Boolean) rows[3]);
-        matchReplace.setIgnoreCase((Boolean) rows[4]);
-        matchReplace.setReplace((String) rows[5]);
-        matchReplace.setMetaChar((Boolean) rows[6]);
+        matchReplace.setSmartMatch((Boolean) rows[3]);
+        matchReplace.setRegexp((Boolean) rows[4]);
+        matchReplace.setIgnoreCase((Boolean) rows[5]);
+        matchReplace.setReplace((String) rows[6]);
+        matchReplace.setMetaChar((Boolean) rows[7]);
         matchReplace.recompileRegex(!matchReplace.isRegexp());
         return matchReplace;
     }

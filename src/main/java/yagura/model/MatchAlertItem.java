@@ -1,8 +1,11 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extend.util.external.TransUtil;
 import extend.view.base.MatchItem;
 import java.util.EnumSet;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  *
@@ -16,10 +19,26 @@ public class MatchAlertItem extends MatchItem {
         this.setType(MESSAGE_TYPE[1]);
     }
 
+    @Override
+    public Pattern compileRegex(boolean quote) {
+        return TransUtil.compileRegex(this.getMatch(), this.isSmartMatch(), !quote, this.isIgnoreCase(), Pattern.MULTILINE);
+    }
+    
     public static String[] getTypes() {
         return MESSAGE_TYPE;
     }
 
+    @Expose
+    private boolean smartMatch = false;
+
+    public void setSmartMatch(boolean value) {
+        this.smartMatch = value;
+    }
+
+    public boolean isSmartMatch() {
+        return this.smartMatch;
+    }
+        
     @Expose
     private EnumSet<NotifyType> notifyTypes = EnumSet.noneOf(NotifyType.class);
 
@@ -147,19 +166,20 @@ public class MatchAlertItem extends MatchItem {
     }
 
     public static Object[] toObjects(MatchAlertItem matchAlert) {
-        Object[] beans = new Object[12];
+        Object[] beans = new Object[13];
         beans[0] = matchAlert.isSelected();
         beans[1] = matchAlert.getType();
         beans[2] = matchAlert.getMatch();
-        beans[3] = matchAlert.isRegexp();
-        beans[4] = matchAlert.isIgnoreCase();
-        beans[5] = matchAlert.getNotifyTypes();
-        beans[6] = matchAlert.getTargetTools();
-        beans[7] = matchAlert.getHighlightColor();
-        beans[8] = matchAlert.getComment();
-        beans[9] = matchAlert.getIssueName();
-        beans[10] = matchAlert.getSeverity();
-        beans[11] = matchAlert.getConfidence();
+        beans[3] = matchAlert.isSmartMatch();
+        beans[4] = matchAlert.isRegexp();
+        beans[5] = matchAlert.isIgnoreCase();
+        beans[6] = matchAlert.getNotifyTypes();
+        beans[7] = matchAlert.getTargetTools();
+        beans[8] = matchAlert.getHighlightColor();
+        beans[9] = matchAlert.getComment();
+        beans[10] = matchAlert.getIssueName();
+        beans[11] = matchAlert.getSeverity();
+        beans[12] = matchAlert.getConfidence();
         return beans;
     }
 
@@ -169,15 +189,16 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setSelected(((Boolean) rows[0]));
         matchAlert.setType((String) rows[1]);
         matchAlert.setMatch((String) rows[2]);
-        matchAlert.setRegexp((Boolean) rows[3]);
-        matchAlert.setIgnoreCase((Boolean) rows[4]);
-        matchAlert.setNotifyTypes((EnumSet<NotifyType>) rows[5]);
-        matchAlert.setTargetTools((EnumSet<TargetTool>) rows[6]);
-        matchAlert.setHighlightColor((HighlightColor) rows[7]);
-        matchAlert.setComment((String) rows[8]);
-        matchAlert.setIssueName((String) rows[9]);
-        matchAlert.setSeverity((Severity) rows[10]);
-        matchAlert.setConfidence((Confidence) rows[11]);
+        matchAlert.setSmartMatch((Boolean) rows[3]);
+        matchAlert.setRegexp((Boolean) rows[4]);
+        matchAlert.setIgnoreCase((Boolean) rows[5]);
+        matchAlert.setNotifyTypes((EnumSet<NotifyType>) rows[6]);
+        matchAlert.setTargetTools((EnumSet<TargetTool>) rows[7]);
+        matchAlert.setHighlightColor((HighlightColor) rows[8]);
+        matchAlert.setComment((String) rows[9]);
+        matchAlert.setIssueName((String) rows[10]);
+        matchAlert.setSeverity((Severity) rows[11]);
+        matchAlert.setConfidence((Confidence) rows[12]);
         return matchAlert;
     }
 
@@ -192,6 +213,7 @@ public class MatchAlertItem extends MatchItem {
     
     public void setProperty(MatchAlertItem item) {
         this.setProperty((MatchItem)item);
+        this.setSmartMatch(item.isSmartMatch());
         this.setIssueName(item.getIssueName());
         this.setSeverity(item.getSeverity());
         this.setConfidence(item.getConfidence());
