@@ -4,6 +4,8 @@ import burp.IHttpRequestResponse;
 import burp.BurpExtender;
 import yagura.model.*;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,9 +70,24 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
+
         // Request
+        this.tabRequestRawView.getMessageComponent().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showBurpMenu(e);
+            }        
+        });
         this.tabbetMessageView.addTab("JRequest", this.tabbetRequestView);
+
         // Response
+        this.tabResponseRawView.getMessageComponent().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showBurpMenu(e);
+            }        
+        });
+
         this.tabbetMessageView.addTab("JResponse", this.tabbetResponseView);
     }
 

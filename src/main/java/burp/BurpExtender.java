@@ -26,7 +26,11 @@ import java.awt.Component;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedOutputStream;
@@ -57,6 +61,7 @@ import javax.swing.table.TableModel;
 import passive.IssueItem;
 import yagura.Config;
 import yagura.model.HotKey;
+import yagura.model.SendToMessage;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
@@ -76,7 +81,7 @@ public class BurpExtender extends BurpExtenderImpl
      * ログ設定プロパティファイルのファイル名
      */
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
-    
+
     static {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         try {
@@ -113,6 +118,11 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, true);
+            tab.getMessageComponent().addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    getSendToMenu().showBurpMenu(controller, e);
+                }        
+            });                                
             return tab;
         }
     };
@@ -121,6 +131,11 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, false);
+            tab.getMessageComponent().addMouseListener(new MouseAdapter() {
+                public void mouseClicked(MouseEvent e) {
+                    getSendToMenu().showBurpMenu(controller, e);
+                }        
+            });                                
             return tab;
         }
     };
@@ -171,8 +186,8 @@ public class BurpExtender extends BurpExtenderImpl
             // 設定ファイル読み込み
             try {
                 if (CONFIG_FILE.exists()) {
-                    Config.loadFromJson(CONFIG_FILE, this.option);                            
-                }                             
+                    Config.loadFromJson(CONFIG_FILE, this.option);
+                }
             } catch (IOException ex) {
                 Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
             } catch (RuntimeException ex) {
@@ -201,7 +216,6 @@ public class BurpExtender extends BurpExtenderImpl
 
             //
 //            DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
-
         } else {
             JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "YaguraExtender", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -733,7 +747,7 @@ public class BurpExtender extends BurpExtenderImpl
                     this.historyLogAppend();
                 }
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage() , "YaguraExtender", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "YaguraExtender", JOptionPane.INFORMATION_MESSAGE);
                 this.option.getLoggingProperty().setAutoLogging(false);
                 this.tabbetOption.setLoggingProperty(this.option.getLoggingProperty());
             }
@@ -765,8 +779,7 @@ public class BurpExtender extends BurpExtenderImpl
         String clipbord = SwingUtil.systemClipboardPaste();
         return Util.encodeMessage(clipbord, encoding);
     }
-    
-    
+
     /**
      * Message Info Copy
      *
@@ -883,13 +896,5 @@ public class BurpExtender extends BurpExtenderImpl
             Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-    }
-    
-    
+
 }

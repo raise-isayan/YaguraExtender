@@ -6,6 +6,7 @@ import burp.IContextMenuFactory;
 import burp.IContextMenuInvocation;
 import burp.IHttpRequestResponse;
 import burp.IHttpService;
+import burp.IMessageEditorController;
 import burp.IScanIssue;
 import extend.util.BurpWrap;
 import extend.util.HttpUtil;
@@ -15,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,7 +44,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
         this.property = property;
 
     }
-    private final List<JMenuItem> menuList = new ArrayList<JMenuItem>();
+    private final List<JMenuItem> menuList = new ArrayList<>();
     private final List<SendToMenuItem> sendToList = new ArrayList<>();
 
     @Override
@@ -138,6 +140,10 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
     }
 
     private final javax.swing.JPopupMenu popBurpMenu = new javax.swing.JPopupMenu();
+
+    public void showBurpMenu(IMessageEditorController controller, MouseEvent e) {
+        showBurpMenu(this.getSendToMessage(controller), e);
+    }
 
     public void showBurpMenu(SendToMessage message, java.awt.event.MouseEvent evt) {
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
@@ -254,6 +260,77 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
         }
     }
 
+    public SendToMessage getSendToMessage(IMessageEditorController controller) {
+        return new SendToMessage() {
+            @Override
+            public IHttpRequestResponse[] getSelectedMessages() {
+                return new IHttpRequestResponse[]{
+                    new IHttpRequestResponse() {
+                        @Override
+                        public byte[] getRequest() {
+                            return controller.getRequest();
+                        }
+
+                        @Override
+                        public void setRequest(byte[] bytes) {
+
+                        }
+
+                        @Override
+                        public byte[] getResponse() {
+                            return controller.getResponse();
+                        }
+
+                        @Override
+                        public void setResponse(byte[] bytes) {
+
+                        }
+
+                        @Override
+                        public String getComment() {
+                            return null;
+                        }
+
+                        @Override
+                        public void setComment(String string) {
+                        }
+
+                        @Override
+                        public String getHighlight() {
+                            return null;
+                        }
+
+                        @Override
+                        public void setHighlight(String string) {
+                        }
+
+                        @Override
+                        public IHttpService getHttpService() {
+                            return controller.getHttpService();
+                        }
+
+                        @Override
+                        public void setHttpService(IHttpService ihs) {
+
+                        }
+
+                    }
+                };
+            }
+
+            @Override
+            public String getSelectedText() {
+                return null;
+            }
+
+            @Override
+            public boolean isExtendVisible() {
+                return false;
+            }
+
+        };
+    }
+    
     private IContextMenuInvocation getContextMenuInvocation(KeyEvent evt, IHttpRequestResponse[] messageInfo) {
         return new IContextMenuInvocation() {
             @Override
