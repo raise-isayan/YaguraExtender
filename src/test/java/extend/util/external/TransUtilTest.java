@@ -1,6 +1,5 @@
 package extend.util.external;
 
-import extend.util.external.TransUtil;
 import extend.util.HttpUtil;
 import extend.util.Util;
 import extend.util.external.TransUtil.EncodePattern;

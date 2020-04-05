@@ -37,7 +37,7 @@ public class AutoResponderProperty {
         return autoResponderEnable;
     }
 
-    private final List<AutoResponderItem> autoResponderList = new ArrayList<AutoResponderItem>();
+    private final List<AutoResponderItem> autoResponderList = new ArrayList<>();
 
     public void setAutoResponderItemList(List<AutoResponderItem> autoResponderItemList) {
         this.autoResponderList.clear();

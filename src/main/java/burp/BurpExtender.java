@@ -26,8 +26,6 @@ import java.awt.Component;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -60,8 +58,8 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import passive.IssueItem;
 import yagura.Config;
+import yagura.Version;
 import yagura.model.HotKey;
-import yagura.model.SendToMessage;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
@@ -75,7 +73,7 @@ public class BurpExtender extends BurpExtenderImpl
     public BurpExtender() {
     }
 
-    private final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
+    private static final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
 
     /**
      * ログ設定プロパティファイルのファイル名
@@ -119,10 +117,11 @@ public class BurpExtender extends BurpExtenderImpl
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, true);
             tab.getMessageComponent().addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     getSendToMenu().showBurpMenu(controller, e);
-                }        
-            });                                
+                }
+            });
             return tab;
         }
     };
@@ -132,10 +131,11 @@ public class BurpExtender extends BurpExtenderImpl
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, false);
             tab.getMessageComponent().addMouseListener(new MouseAdapter() {
+                @Override
                 public void mouseClicked(MouseEvent e) {
                     getSendToMenu().showBurpMenu(controller, e);
-                }        
-            });                                
+                }
+            });
             return tab;
         }
     };
@@ -207,7 +207,6 @@ public class BurpExtender extends BurpExtenderImpl
             cb.registerHttpListener(this);
             cb.registerProxyListener(this);
             cb.addSuiteTab(this.tabbetOption);
-            cb.registerExtensionStateListener(this.tabbetOption);
             cb.registerExtensionStateListener(this);
             cb.registerContextMenuFactory(this.getSendToMenu());
             this.tabbetOption.setProperty(this.option);
@@ -217,7 +216,7 @@ public class BurpExtender extends BurpExtenderImpl
             //
 //            DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
         } else {
-            JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", "YaguraExtender", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", Version.getInstance().getVersion(), JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -747,7 +746,7 @@ public class BurpExtender extends BurpExtenderImpl
                     this.historyLogAppend();
                 }
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "YaguraExtender", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, ex.getMessage(), Version.getInstance().getVersion(), JOptionPane.INFORMATION_MESSAGE);
                 this.option.getLoggingProperty().setAutoLogging(false);
                 this.tabbetOption.setLoggingProperty(this.option.getLoggingProperty());
             }

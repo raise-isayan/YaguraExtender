@@ -324,7 +324,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
 
     public List<MatchAlertItem> getMatchAlertItemList() {
         javax.swing.JTable srcTable = this.tableAlert;
-        List<MatchAlertItem> list = new ArrayList<MatchAlertItem>();
+        List<MatchAlertItem> list = new ArrayList<>();
         for (int i = 0; i < srcTable.getRowCount(); i++) {
             Object editRows[] = this.modelAlert.getRows(i);
             list.add(MatchAlertItem.fromObjects(editRows));

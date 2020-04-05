@@ -153,4 +153,28 @@ public class JsonUtil {
         return gson.fromJson(jsonString, classOfT);
     }
 
+    public static String jsonToString(Object bean, boolean exludeFields) {
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
+            gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
+        }
+        if (exludeFields) {            
+            gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        }        
+        Gson gson = gsonBuilder.create();
+        return gson.toJson(bean);
+    }
+    
+    public static <T> T jsonFromString(String jsonString, Class<T> classOfT, boolean exludeFields) {
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
+            gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
+        }
+        if (exludeFields) {            
+            gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        }                
+        Gson gson = gsonBuilder.create();
+        return gson.fromJson(jsonString, classOfT);
+    }
+    
 }

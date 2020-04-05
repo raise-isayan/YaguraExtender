@@ -1,7 +1,6 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import java.awt.event.KeyEvent;
 import javax.swing.event.EventListenerList;
 
 /**

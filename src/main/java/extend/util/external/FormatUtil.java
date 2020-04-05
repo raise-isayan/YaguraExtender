@@ -1,8 +1,5 @@
 package extend.util.external;
 
-import burp.BurpExtender;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;

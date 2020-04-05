@@ -37,14 +37,14 @@ public final class Version extends CustomVersion {
     private final static String VERSION_INFO_FMT = 
             "Product Version: %s %s\n" + 
             "Log Dir: %s\n" +
-            "User Dir: %s\n";    
+            "Config Dir: %s\n";    
 
     public String getVersionInfo() {
         return String.format(VERSION_INFO_FMT,
             getProjectName(),
             Version.getInstance().getVersion(), 
-            Config.getExtensionHomeDir().getAbsoluteFile(),
-            Config.getUserDir());    
+            Config.getUserDir(),
+            Config.getExtensionHomeDir().getAbsoluteFile());    
     }
     
 }

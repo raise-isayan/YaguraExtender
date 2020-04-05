@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.IExtensionStateListener;
 import burp.ITab;
 import java.awt.Color;
 import java.awt.Component;
@@ -10,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JTabbedPane;
 import java.util.Timer;
 import java.util.TimerTask;
+import yagura.Version;
 import yagura.model.AutoResponderProperty;
 import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
@@ -24,7 +24,7 @@ import yagura.model.IOptionProperty;
  *
  * @author isayan
  */
-public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProperty, ITab, PropertyChangeListener, IExtensionStateListener {
+public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProperty, ITab, PropertyChangeListener {
 
     public TabbetOption() {
         super();
@@ -87,7 +87,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
      */
     @Override
     public String getTabCaption() {
-        return "YaguraExtender";
+        return Version.getInstance().getVersion();
     }
 
     /**
@@ -253,11 +253,6 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 
     public byte[] receiveFromJTransCoder() {
         return this.tabJTransCoder.receiveFromJTransCoder();
-    }
-
-    @Override
-    public void extensionUnloaded() {
-//        this.tabAutoResponder.extensionUnloaded();
     }
 
 }

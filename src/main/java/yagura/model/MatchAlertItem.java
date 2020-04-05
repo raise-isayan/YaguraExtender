@@ -5,7 +5,6 @@ import extend.util.external.TransUtil;
 import extend.view.base.MatchItem;
 import java.util.EnumSet;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 /**
  *

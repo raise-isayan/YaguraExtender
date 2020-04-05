@@ -52,4 +52,13 @@ public class Config {
         option.setProperty(load);
     }
 
+    public static String stringToJson(OptionProperty option) {
+        return JsonUtil.jsonToString(option, true);
+    }
+
+    public static void stringFromJson(String json, OptionProperty option) {
+        OptionProperty load = JsonUtil.jsonFromString(json, OptionProperty.class, true);
+        option.setProperty(load);
+    }
+    
 }

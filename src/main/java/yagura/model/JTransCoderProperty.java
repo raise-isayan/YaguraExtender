@@ -115,7 +115,7 @@ public class JTransCoderProperty {
     }
 
     @Expose
-    private String selectEncoding = StandardCharsets.UTF_8.toString();
+    private String selectEncoding = StandardCharsets.UTF_8.name();
 
     /**
      * @return the selectEncoding

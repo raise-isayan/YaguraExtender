@@ -66,19 +66,19 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             final MatchAlertItem matchItem = new MatchAlertItem();
             matchItem.setProperty((MatchItem) item);
             if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
-            matchItem.setIssueName(jdc.deserialize(jsonObject.get("issueName"), String.class));
-            matchItem.setSeverity(jdc.deserialize(jsonObject.get("severity"), MatchItem.Severity.class));
-            matchItem.setConfidence(jdc.deserialize(jsonObject.get("confidence"), MatchItem.Confidence.class));
-            matchItem.setNotifyTypes(NotifyType.enumSetValueOf(jsonObject.get("notifyTypes").getAsJsonArray().toString()));
-            matchItem.setTargetTools(TargetTool.enumSetValueOf(jsonObject.get("targetTools").getAsJsonArray().toString()));
-            matchItem.setHighlightColor(jdc.deserialize(jsonObject.get("highlightColor"), MatchItem.HighlightColor.class));
-            matchItem.setComment(jdc.deserialize(jsonObject.get("comment"), String.class));
+            if (jsonObject.has("issueName")) matchItem.setIssueName(jdc.deserialize(jsonObject.get("issueName"), String.class));
+            if (jsonObject.has("severity")) matchItem.setSeverity(jdc.deserialize(jsonObject.get("severity"), MatchItem.Severity.class));
+            if (jsonObject.has("confidence")) matchItem.setConfidence(jdc.deserialize(jsonObject.get("confidence"), MatchItem.Confidence.class));
+            if (jsonObject.has("notifyTypes")) matchItem.setNotifyTypes(NotifyType.enumSetValueOf(jsonObject.get("notifyTypes").getAsJsonArray().toString()));
+            if (jsonObject.has("targetTools")) matchItem.setTargetTools(TargetTool.enumSetValueOf(jsonObject.get("targetTools").getAsJsonArray().toString()));
+            if (jsonObject.has("highlightColor")) matchItem.setHighlightColor(jdc.deserialize(jsonObject.get("highlightColor"), MatchItem.HighlightColor.class));
+            if (jsonObject.has("comment")) matchItem.setComment(jdc.deserialize(jsonObject.get("comment"), String.class));
             return matchItem;
         } else if (cls.equals(MatchReplaceItem.class)) {
             final MatchReplaceItem matchItem = new MatchReplaceItem();
             matchItem.setProperty((MatchItem) item);
             if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
-            matchItem.setMetaChar(jdc.deserialize(jsonObject.get("metaChar"), Boolean.TYPE));
+            if (jsonObject.has("metaChar")) matchItem.setMetaChar(jdc.deserialize(jsonObject.get("metaChar"), Boolean.TYPE));
             return matchItem;
         }
         return item;
