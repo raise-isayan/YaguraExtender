@@ -87,7 +87,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
      */
     @Override
     public String getTabCaption() {
-        return Version.getInstance().getVersion();
+        return Version.getInstance().getProjectName();
     }
 
     /**

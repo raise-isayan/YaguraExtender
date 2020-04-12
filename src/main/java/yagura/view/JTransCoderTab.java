@@ -135,7 +135,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtHex.setDocument(HEX_DOC);
         this.txtHex.setText("0");
         // Drag and Drop
-        this.txtInputRaw.setTransferHandler(new FileDropAndClipbordTransferHandler());
+        this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
+
+            @Override
+            public void setData(byte [] rawData) {
+                setInputText(Util.getRawStr(rawData));
+            }
+        
+        });
         this.doStateDecodeChange();
 
     }
@@ -3043,122 +3050,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         chkRawModeActionPerformed(null);
         chkGuessActionPerformed(null);
         chkViewLineWrapActionPerformed(null);
-    }
-
-    protected class FileDropAndClipbordTransferHandler extends TransferHandler {
-
-        @Override
-        public void exportToClipboard(JComponent comp, Clipboard clipboard,
-                int action) throws IllegalStateException {
-            if (comp instanceof JTextComponent) {
-                JTextComponent text = (JTextComponent) comp;
-                int p0 = text.getSelectionStart();
-                int p1 = text.getSelectionEnd();
-                if (p0 != p1) {
-                    try {
-                        Document doc = text.getDocument();
-                        String srcData = doc.getText(p0, p1 - p0);
-                        StringSelection contents = new StringSelection(srcData);
-                        clipboard.setContents(contents, null);
-
-                        if (action == TransferHandler.MOVE) {
-                            doc.remove(p0, p1 - p0);
-                        }
-                    } catch (BadLocationException ble) {
-                    }
-                }
-            }
-        }
-
-        @Override
-        public boolean importData(JComponent comp, Transferable t) {
-            if (comp instanceof JTextComponent) {
-                DataFlavor flavor = getFlavor(t.getTransferDataFlavors());
-                if (flavor != null) {
-                    InputContext ic = comp.getInputContext();
-                    if (ic != null) {
-                        ic.endComposition();
-                    }
-                    try {
-                        String data = (String) t.getTransferData(flavor);
-                        ((JTextComponent) comp).replaceSelection(data);
-                        return true;
-                    } catch (UnsupportedFlavorException ex) {
-                        Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
-            JTextComponent c = (JTextComponent) comp;
-            if (!(c.isEditable() && c.isEnabled())) {
-                return false;
-            }
-            return (getFlavor(transferFlavors) != null);
-        }
-
-        @Override
-        public boolean importData(TransferHandler.TransferSupport support) {
-            Transferable t = support.getTransferable();
-            if (support.isDrop()) {
-                try {
-                    Object data = t.getTransferData(DataFlavor.javaFileListFlavor);
-                    if (data instanceof List) {
-                        List<File> files = (List) data;
-                        byte[] rawData = new byte[0];
-                        for (File file : files) {
-                            rawData = Util.readAllBytes(new FileInputStream(file));
-                            break;
-                        }
-                        setInputText(Util.getRawStr(rawData));
-                    }
-                } catch (UnsupportedFlavorException ex) {
-                    Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                return support.getComponent() instanceof JComponent
-                        ? importData((JComponent) support.getComponent(), support.getTransferable())
-                        : false;
-            }
-            return false;
-        }
-
-        @Override
-        public boolean canImport(TransferHandler.TransferSupport support) {
-            if (support.isDrop()) {
-                if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    return true;
-                }
-            } else {
-                return support.getComponent() instanceof JComponent
-                        ? canImport((JComponent) support.getComponent(), support.getDataFlavors())
-                        : false;
-            }
-            return false;
-        }
-
-        @Override
-        public int getSourceActions(JComponent c) {
-            return NONE;
-        }
-
-        private DataFlavor getFlavor(DataFlavor[] flavors) {
-            if (flavors != null) {
-                for (DataFlavor flavor : flavors) {
-                    if (flavor.equals(DataFlavor.stringFlavor)) {
-                        return flavor;
-                    }
-                }
-            }
-            return null;
-        }
     }
 
 }

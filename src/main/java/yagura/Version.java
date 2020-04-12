@@ -29,7 +29,7 @@ public final class Version extends CustomVersion {
         return version;
     }
 
-    private String getProjectName() {
+    public String getProjectName() {
         String projname = BUNDLE.getString("projname");
         return projname;
     }
