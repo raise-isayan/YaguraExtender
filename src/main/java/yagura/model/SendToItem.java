@@ -1,6 +1,14 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.EventListenerList;
 
 /**
@@ -53,6 +61,8 @@ public class SendToItem {
         this.reverseOrder = item.reverseOrder;
         this.hotkey = item.hotkey;
         this.sendExtend = item.sendExtend;
+        this.extendProperties.clear();
+        this.extendProperties.putAll(item.extendProperties);
     }
 
    @Expose
@@ -233,6 +243,33 @@ public class SendToItem {
         this.hotkey = hotKey;
     }
 
+   @Expose
+    private final Properties extendProperties = new Properties();
+    
+    public Properties getExtendProperty() {
+        return extendProperties;
+    }
+
+    public String getExtendPropertyString() {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            this.extendProperties.storeToXML(os, "");            
+        } catch (IOException ex) {
+            Logger.getLogger(SendToItem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return os.toString(StandardCharsets.UTF_8);
+    }
+
+    public void setExtendPropertyString(String propString) {
+        try {
+            ByteArrayInputStream is = new ByteArrayInputStream(propString.getBytes(StandardCharsets.UTF_8));            
+            this.extendProperties.loadFromXML(is);
+        } catch (IOException ex) {
+            Logger.getLogger(SendToItem.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
     /**
      * @return the extend
      */
@@ -299,7 +336,7 @@ public class SendToItem {
         beans[6] = sendTo.isResponseHeader();
         beans[7] = sendTo.isResponseBody();
         beans[8] = sendTo.isReverseOrder();
-        beans[9] = sendTo.getHotkey();
+        beans[9] = sendTo.getExtendPropertyString();
         beans[10] = sendTo.getExtend();
         return beans;
     }
@@ -315,7 +352,7 @@ public class SendToItem {
         sendTo.setResponseHeader((Boolean) rows[6]);
         sendTo.setResponseBody((Boolean) rows[7]);
         sendTo.setReverseOrder((Boolean) rows[8]);
-        sendTo.setHotkey((HotKey) rows[9]);
+        sendTo.setExtendPropertyString((String) rows[9]);
         sendTo.setExtend((ExtendType) rows[10]);
         return sendTo;
     }

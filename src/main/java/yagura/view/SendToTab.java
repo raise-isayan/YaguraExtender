@@ -298,7 +298,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         this.tableSendTo.getColumnModel().getColumn(8).setPreferredWidth(0);
         this.tableSendTo.getColumnModel().getColumn(8).setMaxWidth(0);
 
-        // Hotkey
+        // ExendProperty
         this.tableSendTo.getColumnModel().getColumn(9).setMinWidth(0);
 //        this.tableSendTo.getColumnModel().getColumn(9).setPreferredWidth(80);
         this.tableSendTo.getColumnModel().getColumn(9).setMaxWidth(0);

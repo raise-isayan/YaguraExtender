@@ -14,8 +14,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -63,9 +67,26 @@ public class SendToServer extends SendToMenuItem {
                     DummyOutputStream dummy = new DummyOutputStream();
                     outMultipart(boundary, dummy, messageInfo);
                     int contentLength = dummy.getSize();
-
+                    
                     URL url = new URL(getTarget()); // 送信先
-                    conn = (HttpURLConnection) url.openConnection();
+                    // 拡張オプションを取得
+                    Properties prop = getExtendProperty();
+                    String proxyProtocol =  prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name());
+                    Proxy proxy = Proxy.NO_PROXY;
+                    if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
+                        String proxyHost =  prop.getProperty("proxyHost", "");
+                        if (Proxy.Type.HTTP.name().equals(proxyProtocol)) {
+                            int proxyPort = Util.parseIntDefault(prop.getProperty("proxyPort", "8080"), 8080);
+                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+                            proxy = new Proxy(Proxy.Type.HTTP, addr);                                                                
+                        }
+                        else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
+                            int proxyPort = Util.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
+                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+                            proxy = new Proxy(Proxy.Type.SOCKS, addr);                                                                                        
+                        }
+                    }                    
+                    conn = (HttpURLConnection) url.openConnection(proxy);
                     conn.setFixedLengthStreamingMode(contentLength);
                     conn.setRequestMethod("POST");
                     conn.setDoOutput(true);
@@ -129,6 +150,7 @@ public class SendToServer extends SendToMenuItem {
                     }
                 }
             }
+
         };
         this.threadExecutor.submit(sendTo);
     }

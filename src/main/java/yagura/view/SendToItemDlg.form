@@ -112,19 +112,26 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="cmbTargetLocal" min="-2" pref="287" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="cmbTargetLocal" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnSelectExecute" min="-2" pref="34" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="txtMenuCaption" min="-2" pref="112" max="-2" attributes="1"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="pnlRequest" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="pnlRequest1" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnExtendProperty" min="-2" pref="34" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtMenuCaption" min="-2" pref="112" max="-2" attributes="1"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="pnlRequest" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="pnlRequest1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="193" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="90" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -136,16 +143,22 @@
                           <Component id="lblMenuCaption" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtMenuCaption" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="cmbTargetLocal" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="chkServer" alignment="3" min="-2" max="-2" attributes="1"/>
                               </Group>
                           </Group>
-                          <Component id="btnSelectExecute" alignment="0" max="32767" attributes="1"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnSelectExecute" max="32767" attributes="1"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="btnExtendProperty" max="32767" attributes="1"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -155,7 +168,7 @@
                           </Group>
                           <Component id="chkReverseOrder" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="29" max="32767" attributes="0"/>
+                      <EmptySpace pref="52" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -172,6 +185,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Server:"/>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkServerStateChanged"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnSelectExecute">
               <Properties>
@@ -307,6 +323,16 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="reverse order"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnExtendProperty">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/yagura/resources/wrench.png"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExtendPropertyActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

@@ -9,6 +9,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
+import java.util.Properties;
 
 /**
  *
@@ -54,6 +55,7 @@ public class SendToItemDlg extends CustomDialog {
         chkResponseHeader = new javax.swing.JCheckBox();
         chkResponseBody = new javax.swing.JCheckBox();
         chkReverseOrder = new javax.swing.JCheckBox();
+        btnExtendProperty = new javax.swing.JButton();
         tabExtend = new javax.swing.JPanel();
         cmbExtend = new javax.swing.JComboBox();
 
@@ -103,6 +105,11 @@ public class SendToItemDlg extends CustomDialog {
         lblMenuCaption.setText("Menu Caption:");
 
         chkServer.setText("Server:");
+        chkServer.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkServerStateChanged(evt);
+            }
+        });
 
         btnSelectExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_image.png"))); // NOI18N
         btnSelectExecute.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +201,13 @@ public class SendToItemDlg extends CustomDialog {
 
         chkReverseOrder.setText("reverse order");
 
+        btnExtendProperty.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/wrench.png"))); // NOI18N
+        btnExtendProperty.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExtendPropertyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabBaseLayout = new javax.swing.GroupLayout(tabBase);
         tabBase.setLayout(tabBaseLayout);
         tabBaseLayout.setHorizontalGroup(
@@ -207,15 +221,20 @@ public class SendToItemDlg extends CustomDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabBaseLayout.createSequentialGroup()
-                        .addComponent(cmbTargetLocal, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbTargetLocal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtMenuCaption, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExtendProperty, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(tabBaseLayout.createSequentialGroup()
-                        .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtMenuCaption, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(tabBaseLayout.createSequentialGroup()
+                                .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 193, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         tabBaseLayout.setVerticalGroup(
             tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,21 +243,25 @@ public class SendToItemDlg extends CustomDialog {
                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMenuCaption)
                     .addComponent(txtMenuCaption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabBaseLayout.createSequentialGroup()
-                        .addGap(4, 4, 4)
+                        .addGap(10, 10, 10)
                         .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmbTargetLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(chkServer)))
-                    .addComponent(btnSelectExecute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(tabBaseLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(tabBaseLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExtendProperty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(15, 15, 15)
                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(pnlRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(chkReverseOrder))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Base", tabBase);
@@ -268,12 +291,15 @@ public class SendToItemDlg extends CustomDialog {
     }// </editor-fold>//GEN-END:initComponents
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
+    private final SendToServerExtendDlg sendToServerExtendDlg = new SendToServerExtendDlg(null, true);
+
     private DefaultComboBoxModel modelExtend = null;
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.modelExtend = new DefaultComboBoxModel();
         this.cmbExtend.setModel(this.modelExtend);
+        this.btnExtendProperty.setEnabled(this.chkServer.isSelected());
         for (SendToItem.ExtendType extType : SendToItem.ExtendType.values()) {
             this.modelExtend.addElement(extType);
         }
@@ -324,6 +350,14 @@ public class SendToItemDlg extends CustomDialog {
             this.cmbTargetLocal.getEditor().setItem(file.getAbsolutePath());
         }
     }//GEN-LAST:event_btnSelectExecuteActionPerformed
+
+    private void btnExtendPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExtendPropertyActionPerformed
+        showSendToServerExtendDlg(true);        
+    }//GEN-LAST:event_btnExtendPropertyActionPerformed
+
+    private void chkServerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServerStateChanged
+        this.btnExtendProperty.setEnabled(this.chkServer.isSelected());
+    }//GEN-LAST:event_chkServerStateChanged
 
     /**
      * @param args the command line arguments
@@ -378,6 +412,7 @@ public class SendToItemDlg extends CustomDialog {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnExtendProperty;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnSelectExecute;
     private javax.swing.JCheckBox chkRequestBody;
@@ -398,6 +433,8 @@ public class SendToItemDlg extends CustomDialog {
     private javax.swing.JTextField txtMenuCaption;
     // End of variables declaration//GEN-END:variables
 
+    private final Properties extendProperty = new Properties();
+    
     private boolean isSelectedBase() {
         return (this.tabbetSendTo.getSelectedIndex() == 0);
     }
@@ -417,15 +454,17 @@ public class SendToItemDlg extends CustomDialog {
             item.setResponseHeader(this.chkResponseHeader.isSelected());
             item.setResponseBody(this.chkResponseBody.isSelected());
             item.setReverseOrder(this.chkReverseOrder.isSelected());
+            item.getExtendProperty().putAll(this.extendProperty);
         } else {
             SendToItem.ExtendType sendToExtend = (SendToItem.ExtendType) this.modelExtend.getSelectedItem();
             item.setCaption(sendToExtend.toString());
             item.setTarget(SendToItem.ExtendType.class.getSimpleName());
             item.setExtend(sendToExtend);
+            item.getExtendProperty().putAll(this.extendProperty);
         }
         return item;
     }
-
+    
     /**
      * @param item the item to set
      */
@@ -440,10 +479,12 @@ public class SendToItemDlg extends CustomDialog {
             this.chkResponseHeader.setSelected(item.isResponseHeader());
             this.chkResponseBody.setSelected(item.isResponseBody());
             this.chkReverseOrder.setSelected(item.isReverseOrder());
+            this.extendProperty.putAll(item.getExtendProperty());
         } else {
             this.tabbetSendTo.setSelectedIndex(this.tabbetSendTo.indexOfTab("Extend"));
             SendToItem.ExtendType sendToExtend = item.getExtend();
             this.cmbExtend.setSelectedItem(sendToExtend);
+            this.extendProperty.putAll(item.getExtendProperty());
         }
     }
 
@@ -456,4 +497,20 @@ public class SendToItemDlg extends CustomDialog {
             this.cmbTargetLocal.addItem(item.getTarget());
         }
     }
+
+    @SuppressWarnings("unchecked")
+    private void showSendToServerExtendDlg(boolean editMode) {
+        this.sendToServerExtendDlg.setLocationRelativeTo(this);
+        if (editMode) {
+            this.sendToServerExtendDlg.setProperties(this.extendProperty);
+        } else {
+            Properties prop  = new Properties();
+            this.sendToServerExtendDlg.setProperties(prop);
+        }
+        this.sendToServerExtendDlg.setVisible(true);
+        if (this.sendToServerExtendDlg.getModalResult() == JOptionPane.OK_OPTION) {
+            this.sendToServerExtendDlg.getProperties(this.extendProperty);
+        }
+    }
+
 }
