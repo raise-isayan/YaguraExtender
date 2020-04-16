@@ -13,8 +13,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
 import java.net.URL;
@@ -85,6 +87,17 @@ public class SendToServer extends SendToMenuItem {
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);                                                                                        
                         }
+                    } 
+                    String proxyUser = prop.getProperty("proxyUser", "");
+                    String proxyPasswd = prop.getProperty("proxyPasswd", "");                    
+                    Authenticator authenticator = new Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());                        
+                        }               
+                    };
+                    if (!proxyUser.isEmpty()) {
+                        Authenticator.setDefault(authenticator);
                     }                    
                     conn = (HttpURLConnection) url.openConnection(proxy);
                     conn.setFixedLengthStreamingMode(contentLength);

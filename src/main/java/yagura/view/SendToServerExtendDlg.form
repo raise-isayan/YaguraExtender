@@ -38,17 +38,26 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="lblProtocol" alignment="0" min="-2" pref="57" max="-2" attributes="0"/>
                       <Component id="lblProxyHost" alignment="0" min="-2" pref="69" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lblProxyPasswd" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblProxyUser" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="cmbProtocol" alignment="0" pref="200" max="32767" attributes="0"/>
                       <Component id="txtProxyHost" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtProxyUser" alignment="0" max="32767" attributes="0"/>
+                      <Component id="txtProxyPasswd" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lblProxyPort" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="spnProxyPort" min="-2" pref="110" max="-2" attributes="0"/>
-                  <EmptySpace pref="136" max="32767" attributes="0"/>
+                  <EmptySpace pref="129" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -67,7 +76,17 @@
                       <Component id="lblProxyPort" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="spnProxyPort" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="74" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblProxyUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtProxyUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="24" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -109,6 +128,23 @@
               <SpinnerEditor format="#" type="3"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblProxyUser">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="User:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblProxyPasswd">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Password:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtProxyUser">
+        </Component>
+        <Component class="javax.swing.JPasswordField" name="txtProxyPasswd">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProxyPasswdActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -454,12 +454,14 @@ public class SendToItemDlg extends CustomDialog {
             item.setResponseHeader(this.chkResponseHeader.isSelected());
             item.setResponseBody(this.chkResponseBody.isSelected());
             item.setReverseOrder(this.chkReverseOrder.isSelected());
+            item.getExtendProperty().clear();
             item.getExtendProperty().putAll(this.extendProperty);
         } else {
             SendToItem.ExtendType sendToExtend = (SendToItem.ExtendType) this.modelExtend.getSelectedItem();
             item.setCaption(sendToExtend.toString());
             item.setTarget(SendToItem.ExtendType.class.getSimpleName());
             item.setExtend(sendToExtend);
+            item.getExtendProperty().clear();
             item.getExtendProperty().putAll(this.extendProperty);
         }
         return item;
@@ -479,11 +481,13 @@ public class SendToItemDlg extends CustomDialog {
             this.chkResponseHeader.setSelected(item.isResponseHeader());
             this.chkResponseBody.setSelected(item.isResponseBody());
             this.chkReverseOrder.setSelected(item.isReverseOrder());
+            this.extendProperty.clear();
             this.extendProperty.putAll(item.getExtendProperty());
         } else {
             this.tabbetSendTo.setSelectedIndex(this.tabbetSendTo.indexOfTab("Extend"));
             SendToItem.ExtendType sendToExtend = item.getExtend();
             this.cmbExtend.setSelectedItem(sendToExtend);
+            this.extendProperty.clear();
             this.extendProperty.putAll(item.getExtendProperty());
         }
     }

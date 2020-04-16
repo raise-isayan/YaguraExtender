@@ -40,6 +40,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         txtProxyHost = new javax.swing.JTextField();
         lblProxyPort = new javax.swing.JLabel();
         spnProxyPort = new javax.swing.JSpinner();
+        lblProxyUser = new javax.swing.JLabel();
+        lblProxyPasswd = new javax.swing.JLabel();
+        txtProxyUser = new javax.swing.JTextField();
+        txtProxyPasswd = new javax.swing.JPasswordField();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -59,6 +63,16 @@ public class SendToServerExtendDlg extends CustomDialog {
         spnProxyPort.setModel(new javax.swing.SpinnerNumberModel(8080, 0, 65535, 1));
         spnProxyPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnProxyPort, "#"));
 
+        lblProxyUser.setText("User:");
+
+        lblProxyPasswd.setText("Password:");
+
+        txtProxyPasswd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProxyPasswdActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
@@ -67,16 +81,23 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblProtocol, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblProxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lblProxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlMainLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblProxyPasswd)
+                            .addComponent(lblProxyUser))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cmbProtocol, 0, 200, Short.MAX_VALUE)
-                    .addComponent(txtProxyHost))
+                    .addComponent(txtProxyHost)
+                    .addComponent(txtProxyUser)
+                    .addComponent(txtProxyPasswd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,7 +112,15 @@ public class SendToServerExtendDlg extends CustomDialog {
                     .addComponent(txtProxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProxyPort)
                     .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProxyUser)
+                    .addComponent(txtProxyUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblProxyPasswd)
+                    .addComponent(txtProxyPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -162,6 +191,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
+    private void txtProxyPasswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProxyPasswdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtProxyPasswdActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -186,11 +219,15 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JComboBox<String> cmbProtocol;
     private javax.swing.JLabel lblProtocol;
     private javax.swing.JLabel lblProxyHost;
+    private javax.swing.JLabel lblProxyPasswd;
     private javax.swing.JLabel lblProxyPort;
+    private javax.swing.JLabel lblProxyUser;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JSpinner spnProxyPort;
     private javax.swing.JTextField txtProxyHost;
+    private javax.swing.JPasswordField txtProxyPasswd;
+    private javax.swing.JTextField txtProxyUser;
     // End of variables declaration//GEN-END:variables
 
     @SuppressWarnings("unchecked")
@@ -204,15 +241,21 @@ public class SendToServerExtendDlg extends CustomDialog {
         String proxyProtocol = prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name());
         String proxyHost = prop.getProperty("proxyHost", "");
         String proxyPort = prop.getProperty("proxyPort", "8080");        
+        String proxyUser = prop.getProperty("proxyUser", "");
+        String proxyPasswd = prop.getProperty("proxyPasswd", "");        
         this.cmbProtocol.setSelectedItem(proxyProtocol);
         this.txtProxyHost.setText(proxyHost);
-        this.spnProxyPort.setValue((int)Util.parseIntDefault(proxyPort, 8080));        
+        this.spnProxyPort.setValue((int)Util.parseIntDefault(proxyPort, 8080));
+        this.txtProxyUser.setText(proxyUser);
+        this.txtProxyPasswd.setText(proxyPasswd);
     }
 
     public void getProperties(Properties prop) {
         prop.setProperty("proxyProtocol", (String)this.cmbProtocol.getSelectedItem());
         prop.setProperty("proxyHost", this.txtProxyHost.getText());
         prop.setProperty("proxyPort", Util.toString(this.spnProxyPort.getValue()));        
+        prop.setProperty("proxyUser", this.txtProxyUser.getText());
+        prop.setProperty("proxyPasswd", String.valueOf(this.txtProxyPasswd.getPassword()));
     }
     
     
