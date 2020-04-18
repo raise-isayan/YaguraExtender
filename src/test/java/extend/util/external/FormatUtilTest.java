@@ -261,8 +261,5 @@ public class FormatUtilTest {
         String result = FormatUtil.prettyJson(plainJson);
         assertEquals(expResult, result);
     }
-
-
-    
     
 }

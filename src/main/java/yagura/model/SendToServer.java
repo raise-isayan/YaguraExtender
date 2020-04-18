@@ -98,7 +98,10 @@ public class SendToServer extends SendToMenuItem {
                     };
                     if (!proxyUser.isEmpty()) {
                         Authenticator.setDefault(authenticator);
-                    }                    
+                    }
+                    else {
+                        Authenticator.setDefault(null);                    
+                    }
                     conn = (HttpURLConnection) url.openConnection(proxy);
                     conn.setFixedLengthStreamingMode(contentLength);
                     conn.setRequestMethod("POST");

@@ -92,24 +92,24 @@ Select::
 ==== CJK Message View
 
 [Cenerate PoC]チェックボックス:: 
-   メッセージタブにCenerate PoCタブを表示するようにします。
+    メッセージタブにCenerate PoCタブを表示するようにします。
    
 [HTML Comment]チェックボックス:: 
-   メッセージタブにHTML Commentタブを表示するようにします。
+    メッセージタブにHTML Commentタブを表示するようにします。
 
 [JSON]チェックボックス:: 
-   メッセージタブにJSONタブを表示するようにします。
+    メッセージタブにJSONタブを表示するようにします。
 
 [JWT]チェックボックス:: 
-   メッセージタブにJWTタブを表示するようにします。
+    メッセージタブにJWTタブを表示するようにします。
 
 [Universal Raw]チェックボックス:: 
-   メッセージタブにCJKに対応したRawタブを表示するようにします。
-   現時点ではリードオンリーです。
+    メッセージタブにCJKに対応したRawタブを表示するようにします。
+    現時点ではリードオンリーです。
 
 [Universal Param]チェックボックス:: 
-   メッセージタブにCJKに対応したParamタブを表示するようにします。
-   現時点ではリードオンリーです。
+    メッセージタブにCJKに対応したParamタブを表示するようにします。
+    現時点ではリードオンリーです。
 
 === MatchReplaceタブ
 
@@ -186,8 +186,8 @@ Replace(置換後)::
     チェック時、大文字小文字を無視します。
 
 [Metachar]チェックボックス:: 
-     メタ文字を有効にします。
-     以下のメタ文字が利用可能です。
+    メタ文字を有効にします。
+    以下のメタ文字が利用可能です。
 
 [options="header", cols="2,8"]
 |=======================
@@ -211,11 +211,11 @@ image:images/custom_matchalert.png[MatchAlertタブ]
 
 . BurpのAlertsタブにて通知する方法
 . タスクトレイのメッセージにて通知する方法 +
-  現在のバージョンではサポートされていません。
+    現在のバージョンではサポートされていません。
 . マッチしたヒストリのHighlightColorを変更する方法 +
-  proxyにチェックが入っている場合に有効です。
+    proxyにチェックが入っている場合に有効です。
 . マッチしたヒストリのCommentを変更する方法 +
-  proxyにチェックが入っている場合に有効です。
+    proxyにチェックが入っている場合に有効です。
 . マッチした内容と指定した値にてScannerのIssueを作成します。
 
 ==== MatchAlert
@@ -250,22 +250,22 @@ Target(アラート対象)::
     チェック時大文字小文字を無視します。
 
 [alert tabs]チェックボックス:: 
-     Burp suite のalertsが通知先になります。
+    Burp suite のalertsが通知先になります。
 
 [tray message]チェックボックス:: 
     トレイのメッセージが通知先になります。
     現在のバージョンではサポートされていません。
 
 [Highlight Color]チェックボックス::
-     文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
-     proxyログにチェックした場合のみ有効です。
+    文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
+    proxyログにチェックした場合のみ有効です。
 
 [comment]チェックボックス:: 
-     文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
-     proxyログにチェックした場合のみ有効です。
+    文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
+    proxyログにチェックした場合のみ有効です。
 
 [scanner issue]チェックボックス:: 
-     文字列がマッチした場合、該当のScannerのIssueを作成します。
+    文字列がマッチした場合、該当のScannerのIssueを作成します。
 
 === SendToタブ
 
@@ -321,28 +321,54 @@ Target::
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
     リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。
 
-===== 送信される multipart のデータ
-     host :: 
-           ホスト名
-     port:: 
-           ポート名
-     protocol:: 
-           protocol名(httpまたは、https)
-     url::
-           url文字列
-     requset:: 
-           リクエスト
-     response:: 
-           レスポンス
-     comment:: 
-           コメント
-     highlight:: 
-           選択した Highlight Color
-           以下のいずれかの値になります。 +
-           white, red, orange, yellow, green, cyan, blue, pink, magenta, gray +
-           white は選択されていない状態と等価です。
-     encoding:: 
-            推測エンコーディング
+===== Proxy設定ダイヤログ
+
+サーバに送信する場合にチェックされている場合プロキシの設定が可能となります。
+
+image:images/custom_sendto_server_proxy.png[SendToItem編集 Proxy設定 ダイヤログ]
+
+サーバにチェックされている場合に設定可能となります。
+
+Protocol:: 
+    Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡
+
+Host:: 
+    Proxyのホストを入力します。
+
+Port:: 
+    Proxyのポート番号を入力します。
+
+User:: 
+    Proxyの認証ユーザ名を指定します。
+  
+Password:: 
+    Proxyの認証パスワードを指定します。
+
+===== サーバチェック時にサーバに送信される形式
+
+multipart のデータ形式でサーバに送信されます。次の内容を含みます。
+
+    host :: 
+        ホスト名
+    port:: 
+        ポート名
+    protocol:: 
+        protocol名(httpまたは、https)
+    url::
+        url文字列
+    requset:: 
+        リクエスト
+    response:: 
+        レスポンス
+    comment:: 
+        コメント
+    highlight:: 
+        選択した Highlight Color
+        以下のいずれかの値になります。 +
+        white, red, orange, yellow, green, cyan, blue, pink, magenta, gray +
+        white は選択されていない状態と等価です。
+    encoding:: 
+        推測エンコーディング
 
 ----
 Content-Type: multipart/form-data; boundary=---------------------------265001916915724
@@ -391,6 +417,7 @@ UTF-8
 
 現時点ではこの形式をうけとることができる（公開されている）Webアプリはありません。
 sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけのCGIアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。
+
 
 ==== Extendタブ
 image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
@@ -734,13 +761,13 @@ generator count::
     生成する個数を入力します。
 
 [generate]ボタン::
-  指定した情報でリストを生成します。
+    指定した情報でリストを生成します。
 
 [List Copy]ボタン::
-  生成したリストをクリップボードに出力します。
+    生成したリストをクリップボードに出力します。
 
 [Save to file]ボタン::
-  生成したリストをファイルに出力します。
+    生成したリストをファイルに出力します。
 
 === Generate CSRF PoC
 
@@ -752,52 +779,52 @@ ProxyのHistoryタブなどのリクエストを確認可能な箇所におい�
 image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
 
 [Generate]ボタン::
-   設定した条件にしたがってPoCを生成します。
-   条件を変更した場合は再度、[Generate]ボタンを押して生成しなおす必要があります。
+    設定した条件にしたがってPoCを生成します。
+    条件を変更した場合は再度、[Generate]ボタンを押して生成しなおす必要があります。
 
 [Copy to Clipbord]ボタン::
-   生成したPoCをクリップボードにコピーします。 +
-   文字コードは無視されます。
+    生成したPoCをクリップボードにコピーします。 +
+    文字コードは無視されます。
 
 [Save to file]ボタン::
-   生成したPoCをファイルに保存します。 +
-   指定した文字コードで保存されます。
+    生成したPoCをファイルに保存します。 +
+    指定した文字コードで保存されます。
    
 [auto submit]チェックボックス::
-   自動でsubmitされるPoCを生成します。
+    自動でsubmitされるPoCを生成します。
 
 [Time Delay]チェックボックス::
-   指定時間後(秒)にsubmitされるPoCを生成します。 +
-   [auto submit]チェック時のみ有効になります。
+    指定時間後(秒)にsubmitされるPoCを生成します。 +
+    [auto submit]チェック時のみ有効になります。
 
 [GET]チェックボックス::
-   PoCのリクエストメソッドがGETメソッドになるようにします。
+    PoCのリクエストメソッドがGETメソッドになるようにします。
 
 [https]チェックボックス::
-   PoCのリクエストをHTTPSにする必要がある場合にチェックします。
-   選択したリクエストから自動判定された値がデフォルトになります。
+    PoCのリクエストをHTTPSにする必要がある場合にチェックします。
+    選択したリクエストから自動判定された値がデフォルトになります。
    
 [HTML5]チェックボックス::
-   PoCの罠をHTML5の機能を利用して作成します。
-   バイナリアップロードを行う場合ここをチェックします。
+    PoCの罠をHTML5の機能を利用して作成します。
+    バイナリアップロードを行う場合ここをチェックします。
    
 [Binay]チェックボックス::
-   現在のバージョンではチェックは不要です。
-   [HTML5]にチェックすれば、バイナリアップロードについてはデフォルトで可能となっています。
+    現在のバージョンではチェックは不要です。
+    [HTML5]にチェックすれば、バイナリアップロードについてはデフォルトで可能となっています。
 
 .Content-Type
 auto:: Content-Typeを自動判定します。
 urlencode:: text フィールドを利用してPoCを作成します。 +
 multi part:: Content-TypeがMulti partの場合にこの選択を行います。 +
 plain:: text area を利用してPoCを作成します。 +
-        Bodyの内容をそのまま送信したい場合に選択します。 +
-        バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。
+    Bodyの内容をそのまま送信したい場合に選択します。 +
+    バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。
 
 === Version
 バージョン情報を表示します。
 
 [Import]ボタン:: 
-     設定をJSON形式にてImportします。
+    設定をJSON形式にてImportします。
 [Export]ボタン:: 
-     JSON形式の設定をExportします。
+    JSON形式の設定をExportします。
 

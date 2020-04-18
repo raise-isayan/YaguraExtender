@@ -783,11 +783,11 @@ Not supported in current version.</p>
 </dd>
 <dt class="hdlist1">Match(Before replacement)</dt>
 <dd>
-<p>Enter the character string before replacement to be replaced.</p>
+<p>character string before replacement to be replaced.</p>
 </dd>
 <dt class="hdlist1">Replace(After replacement)</dt>
 <dd>
-<p>Enter the replacement character string to be replaced.
+<p>replacement character string to be replaced.
 If request heder or response heder is selected as the replacement target and only the replaced character is entered, a header line will be added.
 You can also specify a capture group such as $1, $2.
 Non-ASCII characters cannot be specified here. If specified, the characters will be converted to?.
@@ -923,7 +923,7 @@ It is effective when proxy is checked.</p>
 </dd>
 <dt class="hdlist1">Match(Match string)</dt>
 <dd>
-<p>Enter the string you want to match.</p>
+<p>string you want to match.</p>
 </dd>
 <dt class="hdlist1">Target(Alert target)</dt>
 <dd>
@@ -1046,7 +1046,46 @@ Request and response can choose to send either header or body.</p>
 </dl>
 </div>
 <div class="sect4">
-<h5 id="_multipart_data_sent">Multipart data sent</h5>
+<h5 id="_proxy_configuration_dialog">Proxy Configuration Dialog</h5>
+<div class="paragraph">
+<p>If it is checked when sending to the server, the proxy setting is enabled.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="./images/custom_sendto_server_proxy.png" alt="SendToItem Edit Proxy Settings Dialog"></span></p>
+</div>
+<div class="paragraph">
+<p>This setting is only available if the server is checked.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Protocol</dt>
+<dd>
+<p>protocol of the proxy, HTTP or SOCKS.</p>
+</dd>
+<dt class="hdlist1">Host</dt>
+<dd>
+<p>host of the Proxy.</p>
+</dd>
+<dt class="hdlist1">Port</dt>
+<dd>
+<p>port number of the Proxy.</p>
+</dd>
+<dt class="hdlist1">User</dt>
+<dd>
+<p>authenticated user name of the Proxy.</p>
+</dd>
+<dt class="hdlist1">Password</dt>
+<dd>
+<p>authentication password for the Proxy.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_the_format_sent_to_the_server_when_checking_the_server">The format sent to the server when checking the server</h5>
+<div class="paragraph">
+<p>It is sent to the server in the form of multipart data. It includes the following</p>
+</div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">host </dt>
@@ -1595,20 +1634,20 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 <dl>
 <dt class="hdlist1">Generate format string input </dt>
 <dd>
-<p>Enter a format string in C language printf format.
+<p>format string in C language printf format.
 A format string can specify only one numeric format.</p>
 </dd>
 <dt class="hdlist1">start</dt>
 <dd>
-<p>Enter the starting number for the list.</p>
+<p>start number for the list.</p>
 </dd>
 <dt class="hdlist1">end</dt>
 <dd>
-<p>Enter the end number of the list. Generates up to the ending number.</p>
+<p>end number of the list. Generates up to the ending number.</p>
 </dd>
 <dt class="hdlist1">step</dt>
 <dd>
-<p>Specifies the number of increments from start to end.</p>
+<p>number of increments from start to end.</p>
 </dd>
 </dl>
 </div>
@@ -1620,19 +1659,19 @@ A format string can specify only one numeric format.</p>
 <dl>
 <dt class="hdlist1">Generate format string input </dt>
 <dd>
-<p>Enter a format string in the DateTimeFormatter format of the Java language.</p>
+<p>format string in the DateTimeFormatter format of the Java language.</p>
 </dd>
 <dt class="hdlist1">start</dt>
 <dd>
-<p>Enter the start date of the list.</p>
+<p>start date of the list.</p>
 </dd>
 <dt class="hdlist1">end</dt>
 <dd>
-<p>Enter the end date of the list. Generated until the end date.</p>
+<p>end date of the list. Generated until the end date.</p>
 </dd>
 <dt class="hdlist1">step</dt>
 <dd>
-<p>Specify the number of increments of the date from start to end.</p>
+<p>number of increments of the date from start to end.</p>
 </dd>
 <dt class="hdlist1">[generate] button</dt>
 <dd>
@@ -1667,7 +1706,7 @@ A format string can specify only one numeric format.</p>
 </dd>
 <dt class="hdlist1">generator count</dt>
 <dd>
-<p>Enter the number to generate.</p>
+<p>number to generate.</p>
 </dd>
 <dt class="hdlist1">[generate] button</dt>
 <dd>
@@ -1704,12 +1743,12 @@ Displayed when the selected request is a POST request.</p>
 <p>Generate PoC according to the set conditions.
 If you change the conditions, you need to generate again by pressing the [Generate] button.</p>
 </dd>
-<dt class="hdlist1">[Copy to Clipbord]ボタン</dt>
+<dt class="hdlist1">[Copy to Clipbord] button</dt>
 <dd>
 <p>Copy the generated PoC to the clipboard.<br>
 Character codes are ignored.</p>
 </dd>
-<dt class="hdlist1">[Save to file]ボタン</dt>
+<dt class="hdlist1">[Save to file] button</dt>
 <dd>
 <p>Save the generated PoC to a file.<br>
 It is saved with the specified character code.</p>
@@ -1791,7 +1830,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-01-25 15:04:36 +0900
+Last updated 2020-04-18 09:28:27 +0900
 </div>
 </div>
 </body>
