@@ -353,8 +353,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         return this;
     }
 
-    private final CustomListModel modelTarget = new CustomListModel();
-    private final CustomListModel modelSelect = new CustomListModel();
+    private final CustomListModel<String> modelTarget = new CustomListModel<String>();
+    private final CustomListModel<String> modelSelect = new CustomListModel<String>();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
@@ -568,9 +568,10 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         return property;
     }
 
+    @SuppressWarnings("unchecked")
     protected void moveItemList(javax.swing.JList srcList, javax.swing.JList dstList) {
-        DefaultListModel modelSrc = (DefaultListModel) srcList.getModel();
-        DefaultListModel modelDst = (DefaultListModel) dstList.getModel();
+        DefaultListModel<String> modelSrc = (DefaultListModel<String>) srcList.getModel();
+        DefaultListModel<String> modelDst = (DefaultListModel<String>) dstList.getModel();
         int[] indexs = srcList.getSelectedIndices();
         for (int index : indexs) {
             modelDst.addElement(modelSrc.getElementAt(index));

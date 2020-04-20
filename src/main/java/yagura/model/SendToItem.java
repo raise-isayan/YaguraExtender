@@ -257,7 +257,7 @@ public class SendToItem {
         } catch (IOException ex) {
             Logger.getLogger(SendToItem.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return os.toString(StandardCharsets.UTF_8);
+        return new String(os.toByteArray(), StandardCharsets.UTF_8);
     }
 
     public void setExtendPropertyString(String propString) {

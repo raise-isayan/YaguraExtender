@@ -164,6 +164,7 @@ public class MainFrame extends javax.swing.JFrame {
         return mi;
     }
 
+    @SuppressWarnings("unchecked")
     protected boolean isAvailableLookAndFeel(LookAndFeelUI lafUI) {
         try {
             Class lnfClass = Class.forName(lafUI.getClassName());

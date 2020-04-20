@@ -197,7 +197,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
     }
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    private final CustomListModel modelReplace = new CustomListModel();
+    private final CustomListModel<String> modelReplace = new CustomListModel<>();
     private final ListDataListener listDataListener = new ListDataListener() {
 
         @Override
@@ -409,8 +409,8 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
      */
     public void setReplaceMap(Map<String, MatchReplaceGroup> replaceMap) {
         this.modelReplace.removeAllElements();
-        List list = Util.toList(replaceMap.keySet().iterator());
-        for (Object name : list) {
+        List<String> list = Util.toList(replaceMap.keySet().iterator());
+        for (String name : list) {
             this.modelReplace.addElement(name);
         }
         this.listMatchReplace.setSelectedIndex(0);

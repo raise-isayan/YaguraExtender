@@ -98,6 +98,7 @@ public class BurpExtender extends BurpExtenderImpl
         JsonUtil.registerTypeHierarchyAdapter(HotKey.class, new HotKeyAdapter());
     }
 
+    @SuppressWarnings("unchecked")
     public static BurpExtender getInstance() {
         return BurpExtenderImpl.<BurpExtender>getInstance();
     }

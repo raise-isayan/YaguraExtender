@@ -2807,6 +2807,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.setOutput(outputText, StandardCharsets.ISO_8859_1.name());
     }
 
+    @SuppressWarnings("unchecked")
     private void setOutput(String outputText, String encoding) {
         this.setOutputText(outputText);
         if (encoding == null) {
@@ -2833,7 +2834,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         }
         modelHistory.insertElementAt(current, 0);
         modelHistory.setSelectedItem(current);
-//        this.cmbHistory.addItemListener(this.historyItemStateChanged);
         this.cmbHistory.addActionListener(this.historyActionPerformed);
    }
 

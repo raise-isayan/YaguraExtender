@@ -102,6 +102,7 @@ public final class LegacyConfig {
         loadFromXml(prop, option);
     }
 
+    @SuppressWarnings("unchecked")
     protected static void loadFromXml(IniProp prop, IOptionProperty option) throws IOException {
         // Encoding
         UniversalViewProperty encProp = new UniversalViewProperty();

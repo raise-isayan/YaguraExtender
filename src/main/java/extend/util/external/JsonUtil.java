@@ -27,9 +27,8 @@ public class JsonUtil {
 
     public static boolean validJson(String jsonElementString) {
         try {
-            JsonParser jp = new JsonParser();
-            jp.parse(jsonElementString);        
-            return true;
+           JsonParser.parseString(jsonElementString);
+           return true;
         }
         catch (JsonSyntaxException ex) {
             return false;
@@ -41,8 +40,7 @@ public class JsonUtil {
     }
 
     public static JsonElement parse(String jsonElementString)  throws JsonSyntaxException {
-        JsonParser jp = new JsonParser();
-        return jp.parse(jsonElementString);
+        return JsonParser.parseString(jsonElementString);
     }
 
     public static String prettyJson(String jsonString) throws IOException {

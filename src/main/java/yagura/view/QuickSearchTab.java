@@ -282,6 +282,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
         quickSearchPerformed(forward, true);
     }
 
+    @SuppressWarnings("unchecked")
     private void quickSearchPerformed(boolean forward, boolean appendHistory) {
         javax.swing.text.JTextComponent ta = this.getSelectedTextArea();
         String searchText = (String) this.cmbQuckSearch.getEditor().getItem();
@@ -292,7 +293,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
         // history
         if (appendHistory) {
             this.cmbQuckSearch.setVisible(false);
-            DefaultComboBoxModel model = (DefaultComboBoxModel) this.cmbQuckSearch.getModel();
+            DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>)this.cmbQuckSearch.getModel();
             model.removeElement(searchText);
             model.insertElementAt(searchText, 0);
             this.cmbQuckSearch.setSelectedIndex(0);
@@ -387,6 +388,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
         this.fireForwardPerformedhEvent(newQuickSearchEvent(true));        
     }
 
+    @SuppressWarnings("unchecked")
     public void renewEncodingList(String defaultCharset, List<String> encodingLiest) {
         this.cmbEncoding.removeAllItems();
         for (String enc : encodingLiest) {
