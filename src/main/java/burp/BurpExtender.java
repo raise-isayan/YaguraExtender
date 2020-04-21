@@ -165,6 +165,21 @@ public class BurpExtender extends BurpExtenderImpl
         }
     };
 
+    private final IMessageEditorTabFactory responseJSONPTab = new IMessageEditorTabFactory() {
+        @Override
+        public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
+            final JSONViewTab tab = new JSONViewTab(controller, editable, false) {
+
+                @Override
+                public boolean isJsonp() {
+                    return true;
+                }
+            
+            };
+            return tab;
+        }
+    };
+    
     private final KeyEventPostProcessor dispatcher = new KeyEventPostProcessor() {
         @Override
         public boolean postProcessKeyEvent(KeyEvent e) {
@@ -235,6 +250,7 @@ public class BurpExtender extends BurpExtenderImpl
         cb.registerMessageEditorTabFactory(this.commentViewTab);
         cb.registerMessageEditorTabFactory(this.requestJSONTab);
         cb.registerMessageEditorTabFactory(this.responseJSONTab);
+        cb.registerMessageEditorTabFactory(this.responseJSONPTab);
         cb.registerMessageEditorTabFactory(this.jwtViewTab);
     }
 

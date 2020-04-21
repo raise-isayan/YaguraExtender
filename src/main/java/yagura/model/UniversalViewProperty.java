@@ -119,7 +119,7 @@ public class UniversalViewProperty {
     }
 
     public enum UniversalView {
-        GENERATE_POC, HTML_COMMENT, JSON, JWT, JRAW, JPARAM;
+        GENERATE_POC, HTML_COMMENT, JSON, JSONP, JWT, JRAW, JPARAM;
 
         public static UniversalView parseValue(String value) {
             UniversalView eval = (UniversalView) Util.parseEnumValue(UniversalView.class, value);

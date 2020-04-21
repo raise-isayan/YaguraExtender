@@ -27,8 +27,8 @@ public class JsonUtil {
 
     public static boolean validJson(String jsonElementString) {
         try {
-           JsonParser.parseString(jsonElementString);
-           return true;
+            JsonParser.parseString(jsonElementString);
+            return true;
         }
         catch (JsonSyntaxException ex) {
             return false;
@@ -68,6 +68,14 @@ public class JsonUtil {
         return model;
     }
 
+    public static DefaultTreeModel toJsonTreeModel(JsonpElement jsonpElement) {
+        DefaultMutableTreeNode rootJson = new DefaultMutableTreeNode("JSONP");
+        DefaultTreeModel model = new DefaultTreeModel(rootJson);
+        rootJson.add(new DefaultMutableTreeNode(jsonpElement.getCallbackName() + "()"));
+        toJsonTreeNode(jsonpElement.getJsonElement(), rootJson);
+        return model;
+    }
+    
     private static void toJsonTreeNode(JsonElement jsonElement, DefaultMutableTreeNode parentNode) {
         if (jsonElement.isJsonObject()) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode("{}");
@@ -115,6 +123,16 @@ public class JsonUtil {
         }        
     }
 
+    public static boolean isJsonp(String jsonpString) {
+        try {
+            JsonpElement.parseJsonp(jsonpString);    
+            return true;    
+        }
+        catch (JsonSyntaxException ex) {
+            return false;    
+        }
+    }
+    
     private static final Map<Class<?>, Object> typeAdapterMap = new HashMap<>();
     
     public static void registerTypeHierarchyAdapter(Class<?> baseType, Object typeAdapter) {

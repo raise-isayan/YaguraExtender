@@ -57,8 +57,10 @@ public class FormatUtil {
         return JsonUtil.isJson(jsonString);
     }
 
-    
-    
+    public static boolean isJsonp(String jsonString) {
+        return JsonUtil.isJsonp(jsonString);
+    }
+        
     public static String prettyXml(String xmlString) throws IOException {
         return prettyXml(xmlString, true);
     }

@@ -28,8 +28,8 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
-
-    private boolean isRequest = true;
+    
+    private final boolean isRequest;
 
     /**
      * Creates new form JSONView
@@ -47,7 +47,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         customizeComponents();
     }
 
-    private final JSONView jsonView = new JSONView();
+    private final JSONView jsonView = new JSONView(isJsonp());
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     @SuppressWarnings("unchecked")
@@ -60,6 +60,10 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
+    public boolean isJsonp() {
+        return false;
+    }
+        
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
         @Override
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -149,7 +153,12 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
     @Override
     public String getTabCaption() {
-        return "JSON";
+        if (this.isJsonp()) {
+            return "JSONP";
+        }
+        else {
+            return "JSON";        
+        }
     }
 
     @Override
@@ -162,6 +171,15 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         if (content == null || content.length == 0) {
             return false;
         }
+        if (this.isJsonp()) {
+            return isEnabledJsonp(content, isMessageRequest);        
+        }
+        else {    
+            return isEnabledJson(content, isMessageRequest);
+        }
+    }
+
+    public boolean isEnabledJson(byte[] content, boolean isMessageRequest) {
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
@@ -185,9 +203,28 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             return FormatUtil.isJson(Util.getRawStr(body));
         } else {
             return FormatUtil.isJson(Util.getRawStr(body));
-        }
+        }        
     }
-
+        
+    public boolean isEnabledJsonp(byte[] content, boolean isMessageRequest) {
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
+            return false;
+        }
+        if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+            return false;
+        }
+        byte[] body = new byte[0];
+        if (this.isRequest && isMessageRequest) {
+            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
+            body = BurpWrap.getRequestBody(reqInfo, content);
+        } else if (!this.isRequest && !isMessageRequest) {
+            IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
+            body = BurpWrap.getResponseBody(resInfo, content);
+        }
+        return FormatUtil.isJsonp(Util.getRawStr(body));
+    }
+        
     private HttpMessage message = null;
 
     @Override

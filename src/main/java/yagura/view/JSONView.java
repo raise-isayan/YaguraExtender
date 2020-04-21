@@ -3,7 +3,9 @@ package yagura.view;
 import extend.util.ConvertUtil;
 import extend.util.SwingUtil;
 import extend.util.external.JsonUtil;
+import extend.util.external.JsonpElement;
 import java.awt.Font;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -25,14 +27,24 @@ import javax.swing.tree.TreePath;
  */
 public class JSONView extends javax.swing.JPanel {
 
+    private final boolean isJsonp;
+    
     /**
      * Creates new form JSONView
      */
     public JSONView() {
+        this(false);
+    }
+
+    /**
+     * Creates new form JSONView
+     */
+    public JSONView(boolean isJsonp) {
+        this.isJsonp = isJsonp;
         initComponents();
         customizeComponents();
     }
-
+        
     private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
         @Override
         public Document createDefaultDocument() {
@@ -143,61 +155,129 @@ public class JSONView extends javax.swing.JPanel {
         root.removeAllChildren();
 
         if (content != null) {
-            // Raw
-            SwingWorker swRaw = new SwingWorker<String, Object>() {
-                @Override
-                protected String doInBackground() throws Exception {
-                    publish("...");
-                    return JsonUtil.prettyJson(content);
-                }
-
-                protected void process(List<Object> chunks) {
-                    txtJSON.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
-                }
-                
-                protected void done() {
-                    try {
-                        txtJSON.setText(get());
-                        txtJSON.setCaretPosition(0);                        
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ExecutionException ex) {
-                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-
-            };
-            swRaw.execute();
-
-            // Tree View
-            SwingWorker swTree = new SwingWorker<DefaultTreeModel, Object>() {
-                @Override
-                protected DefaultTreeModel doInBackground() throws Exception {
-                    publish("...");
-                    return (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
-                }
-
-                protected void process(List<Object> chunks) {
-                    modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
-                }
-                
-                protected void done() {
-                    try {
-                        modelJSON = get();
-                        SwingUtil.allNodesChanged(treeJSON);
-                        treeJSON.setModel(modelJSON);
-                        expandJsonTree();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ExecutionException ex) {
-                        Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }            
-            };
-            swTree.execute();
+            if (this.isJsonp) {
+                setMessageJsonp(content);            
+            }
+            else {
+                setMessageJson(content);
+            }
         }
     }
 
+    private void setMessageJson(String content) {
+        // Raw
+        SwingWorker swRaw = new SwingWorker<String, Object>() {
+            @Override
+            protected String doInBackground() throws Exception {
+                publish("...");
+                return JsonUtil.prettyJson(content);
+            }
+
+            protected void process(List<Object> chunks) {
+                txtJSON.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+            }
+
+            protected void done() {
+                try {
+                    txtJSON.setText(get());
+                    txtJSON.setCaretPosition(0);                        
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        };
+        swRaw.execute();
+
+        // Tree View
+        SwingWorker swTree = new SwingWorker<DefaultTreeModel, Object>() {
+            @Override
+            protected DefaultTreeModel doInBackground() throws Exception {
+                publish("...");
+                return (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
+            }
+
+            protected void process(List<Object> chunks) {
+                modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
+            }
+
+            protected void done() {
+                try {
+                    modelJSON = get();
+                    SwingUtil.allNodesChanged(treeJSON);
+                    treeJSON.setModel(modelJSON);
+                    expandJsonTree();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }            
+        };
+        swTree.execute();    
+    }
+    
+    private void setMessageJsonp(String content) {
+        // Raw
+        SwingWorker swRaw = new SwingWorker<JsonpElement, Object>() {
+            @Override
+            protected JsonpElement doInBackground() throws Exception {
+                publish("...");
+                return JsonpElement.parseJsonp(content);
+            }
+
+            protected void process(List<Object> chunks) {
+                txtJSON.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+            }
+
+            protected void done() {
+                try {
+                    JsonpElement jsonpElement = get();
+                    txtJSON.setText(jsonpElement.pretty());
+                    txtJSON.setCaretPosition(0);                        
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        };
+        swRaw.execute();
+
+        // Tree View
+        SwingWorker swTree = new SwingWorker<DefaultTreeModel, Object>() {
+            @Override
+            protected DefaultTreeModel doInBackground() throws Exception {
+                publish("...");
+                JsonpElement jsonpElement = JsonpElement.parseJsonp(content);
+                return (DefaultTreeModel) JsonUtil.toJsonTreeModel(jsonpElement);
+            }
+
+            protected void process(List<Object> chunks) {
+                modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
+            }
+
+            protected void done() {
+                try {
+                    modelJSON = get();
+                    SwingUtil.allNodesChanged(treeJSON);
+                    treeJSON.setModel(modelJSON);
+                    expandJsonTree();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ExecutionException ex) {
+                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }            
+        };
+        swTree.execute();            
+    }
+    
     public String getMessage() {
         return this.txtJSON.getText();
     }
