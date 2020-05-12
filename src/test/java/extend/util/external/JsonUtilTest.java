@@ -175,7 +175,7 @@ public class JsonUtilTest {
         {
             String json = "callback([\"abc\",\"def\",\"ghi\"])";
             boolean result = JsonUtil.isJsonp(json);
-            assertEquals(false, result);        
+            assertEquals(true, result);        
         }
 
     }
@@ -263,10 +263,30 @@ public class JsonUtilTest {
             String json = "callback([\"abc\",\"def\",\"ghi\"])";
             try {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
-                assertTrue(false);                    
+                assertEquals("callback", jsonp.getCallbackName());                
             }
             catch (JsonSyntaxException ex) {
-                assertTrue(true);                    
+                fail();
+            }
+        }
+        {
+            String json = "callback({\"inarray\":[\"abc\",\"def\",\"ghi\"]})";
+            try {
+                JsonpElement jsonp = JsonpElement.parseJsonp(json);
+                assertEquals("callback", jsonp.getCallbackName());                
+            }
+            catch (JsonSyntaxException ex) {
+                fail();
+            }
+        }
+        {
+            String json = "callback([{\"abc\":\"def\"},\"ghi\"])";
+            try {
+                JsonpElement jsonp = JsonpElement.parseJsonp(json);
+                assertEquals("callback", jsonp.getCallbackName());                
+            }
+            catch (JsonSyntaxException ex) {
+                fail();
             }
         }
 

@@ -1,6 +1,5 @@
 package burp;
 
-import static burp.BurpExtenderImpl.getCallbacks;
 import yagura.model.AutoResponderItem;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchReplaceItem;

@@ -525,8 +525,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         return selectText;
     }
 
-    private final static Pattern ENCODE_JS = Pattern.compile("[^ !#-&(-/0-Z\\[\\]^-~]");
-
     protected class GenerateCsrfParameter  {
 
         private boolean csrfAutoSubmit = false;
@@ -969,7 +967,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             }
                             parambuff.append("\treq += '--' + boundary + '\\r\\n' + \r\n");
                             parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"\\r\\n\\r\\n' + \r\n", new Object[]{paramName}));
-                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue, csrfEncoding), TransUtil.PTN_ENCODE_ALPHANUM, false);
+                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue, csrfEncoding), TransUtil.PTN_ENCODE_JS, false);
                             parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                         } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {
                             binaryParam = true;
@@ -982,7 +980,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\\r\\n' + \r\n", new Object[]{paramName, filename}));
                             parambuff.append("\t'Content-Type: application/octet-stream\\r\\n\\r\\n'");
                             parambuff.append("+ \r\n");
-                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue), TransUtil.PTN_ENCODE_ALPHANUM, false);
+                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue), TransUtil.PTN_ENCODE_JS, false);
                             parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                             binaryParam = false;
                             filename = "";
@@ -1014,7 +1012,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                                 buff.append("'&' + ");
                             }
                             if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
-                                paramName = Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
+                                paramName =   Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
                                 paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
                             } 
                             else {
@@ -1044,7 +1042,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             else {
                 buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');\r\n", csrfEnctype));
                 String paramValue = Util.decodeMessage(reqmsg.getBodyBytes());
-                buff.append(String.format("\treq += '%s';\r\n", new Object[]{TransUtil.toByteHexEncode(Util.getRawByte(paramValue), ENCODE_JS, false)}));
+                buff.append(String.format("\treq += '%s';\r\n", new Object[]{TransUtil.toByteHexEncode(Util.getRawByte(paramValue), TransUtil.PTN_ENCODE_JS, false)}));
                 buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
                 buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
                 buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n");

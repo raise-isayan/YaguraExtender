@@ -156,6 +156,7 @@ public class TransUtil {
     public final static Pattern PTN_ENCODE_ALPHANUM = Pattern.compile("[^a-zA-Z0-9_]");
     public final static Pattern PTN_ENCODE_LIGHT = Pattern.compile("[^A-Za-z0-9!\"$'()*,/:<>@\\[\\\\\\]^`{|}~]");
     public final static Pattern PTN_ENCODE_STANDARD = Pattern.compile("[^A-Za-z0-9\"<>\\[\\\\\\]^`{|}]");
+    public final static Pattern PTN_ENCODE_JS = Pattern.compile("[^ !#$&=~/,@+*|0-9A-Za-z\\[\\]\\(\\)\\{\\}?-]");
 
     public static Pattern getEncodeTypePattern(EncodeType type) {
         switch (type) {
@@ -693,18 +694,34 @@ public class TransUtil {
         return toByteHexEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
     }
 
+    public static String toByteHexEncode(String input, Charset charset, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteHexEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
+    }
+        
     public static String toByteHexEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
         return toByteHexEncode(input.getBytes(charset), pattern, upperCase);
     }
 
+    public static String toByteHexEncode(String input, Charset charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteHexEncode(input.getBytes(charset), pattern, upperCase);
+    }
+        
     public static String toByteOctEncode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
         return toByteOctEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
     }
 
+    public static String toByteOctEncode(String input, Charset charset, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteOctEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
+    }
+    
     public static String toByteOctEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
         return toByteOctEncode(input.getBytes(charset), pattern, upperCase);
     }
 
+    public static String toByteOctEncode(String input, Charset charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteOctEncode(input.getBytes(charset), pattern, upperCase);
+    }
+    
     public static String toByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
