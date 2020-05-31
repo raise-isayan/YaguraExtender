@@ -6,6 +6,8 @@ import extend.util.Util;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -48,6 +50,7 @@ public class SendToMultiEditor extends SendToMenuItem {
                 Util.executeFormat(this.getTarget(), args);
             } catch (IOException ex) {
                 this.fireSendToErrorEvent(new SendToEvent(this, ex.getMessage()));
+                Logger.getLogger(SendToMultiEditor.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
     }

@@ -1,29 +1,39 @@
 package yagura.model;
 
+import burp.BurpExtender;
 import burp.IContextMenuInvocation;
 import extend.util.HttpUtil;
 import burp.IHttpRequestResponse;
 import burp.IHttpService;
 import extend.util.BurpWrap;
 import extend.util.Util;
-import java.awt.event.ActionEvent;
 
-import java.io.BufferedInputStream;
+import java.awt.event.ActionEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
+import java.net.ProxySelector;
 import java.net.SocketAddress;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpClient.Redirect;
+import java.net.http.HttpClient.Version;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -57,116 +67,101 @@ public class SendToServer extends SendToMenuItem {
         }
     }
 
+    /*
+     * https://alvinalexander.com/java/jwarehouse/openjdk-8/jdk/src/share/classes/sun/net/www/protocol/http/HttpURLConnection.java.shtml
+     */
+        
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     protected void sendToServer(IHttpRequestResponse messageInfo) {
         Runnable sendTo = new Runnable() {
             @Override
             public void run() {
-                String boundary = HttpUtil.generateBoundary();
                 HttpURLConnection conn = null;
                 try {
-                    DummyOutputStream dummy = new DummyOutputStream();
-                    outMultipart(boundary, dummy, messageInfo);
-                    int contentLength = dummy.getSize();
-                    
-                    URL url = new URL(getTarget()); // 送信先
                     // 拡張オプションを取得
                     Properties prop = getExtendProperty();
-                    String proxyProtocol =  prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name());
+                    String proxyProtocol = prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name());
                     Proxy proxy = Proxy.NO_PROXY;
                     if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
-                        String proxyHost =  prop.getProperty("proxyHost", "");
+                        String proxyHost = prop.getProperty("proxyHost", "");
                         if (Proxy.Type.HTTP.name().equals(proxyProtocol)) {
                             int proxyPort = Util.parseIntDefault(prop.getProperty("proxyPort", "8080"), 8080);
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
-                            proxy = new Proxy(Proxy.Type.HTTP, addr);                                                                
-                        }
-                        else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
+                            proxy = new Proxy(Proxy.Type.HTTP, addr);
+                        } else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
                             int proxyPort = Util.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
-                            proxy = new Proxy(Proxy.Type.SOCKS, addr);                                                                                        
+                            proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
-                    } 
-                    String proxyUser = prop.getProperty("proxyUser", "");
-                    String proxyPasswd = prop.getProperty("proxyPasswd", "");                    
-                    Authenticator authenticator = new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());                        
-                        }               
-                    };
-                    if (!proxyUser.isEmpty()) {
-                        Authenticator.setDefault(authenticator);
                     }
-                    else {
-                        Authenticator.setDefault(null);                    
+                    Authenticator authenticator = null;
+                    if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
+                        String proxyUser = prop.getProperty("proxyUser", "");
+                        String proxyPasswd = prop.getProperty("proxyPasswd", "");
+                        authenticator = new Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
+                            }
+                        };
                     }
-                    conn = (HttpURLConnection) url.openConnection(proxy);
-                    conn.setFixedLengthStreamingMode(contentLength);
-                    conn.setRequestMethod("POST");
-                    conn.setDoOutput(true);
-                    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-                    conn.connect();
 
-                    OutputStream ostm = null;
-                    try {
-                        ostm = conn.getOutputStream();
+                    String boundary = HttpUtil.generateBoundary();
+                    HttpClient.Builder builder = HttpClient.newBuilder()
+                        .version(Version.HTTP_1_1)
+                        .followRedirects(Redirect.NEVER)
+                        .connectTimeout(Duration.ofSeconds(10))
+                        .sslContext(HttpUtil.ignoreSSLContext());
+
+                    if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
+                        ProxySelector staticProxy = new HttpUtil.StaticProxySelector(proxy) {
+                            @Override
+                            public void connectFailed(URI uri, SocketAddress sa, IOException ex) {
+                                fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                                Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                            }                            
+                        };
+                        builder.proxy(staticProxy);
+                    }
+                    if (authenticator != null) {
+                        builder.authenticator(authenticator);
+                    }
+                    try ( ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
                         outMultipart(boundary, ostm, messageInfo);
-                    } catch (IOException e) {
-                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
-                    } catch (Exception e) {
-                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
-                    } finally {
-                        if (ostm != null) {
-                            ostm.close();
-                        }
-                    }
 
-                    InputStream istm = conn.getInputStream();
-                    ByteArrayOutputStream bostm = new ByteArrayOutputStream();
-                    try {
-                        BufferedInputStream bistm = new BufferedInputStream(istm);
-                        String decodeMessage;
-                        byte buf[] = new byte[4096];
-                        int len;
-                        while ((len = bistm.read(buf)) != -1) {
-                            bostm.write(buf, 0, len);
-                        }
-                        int statusCode = conn.getResponseCode();
-                        decodeMessage = Util.decodeMessage(bostm.toByteArray());
+                        HttpRequest request = HttpRequest.newBuilder()
+                            .uri(URI.create(getTarget())) // 送信先
+                            .timeout(Duration.ofSeconds(10))
+                            .header("Content-Type", "multipart/form-data;boundary=" + boundary)
+                            .POST(BodyPublishers.ofByteArray(ostm.toByteArray()))
+                            .build();
+
+                        HttpClient client = builder.build();
+                        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+                        int statusCode = response.statusCode();
+                        String bodyMessage = response.body();
                         if (statusCode == HttpURLConnection.HTTP_OK) {
-                            if (decodeMessage.length() == 0) {
+                            if (bodyMessage.length() == 0) {
                                 fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
                             } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + decodeMessage));
+                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
+                                Logger.getLogger(SendToServer.class.getName()).log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                             }
                         } else {
                             // 200以外
-                            fireSendToErrorEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + decodeMessage));
-                        }
-
-                    } catch (IOException e) {
-                        fireSendToErrorEvent(new SendToEvent(this, "Error[" + e.getClass().getName() + "]:" + e.getMessage()));
-                    } finally {
-                        if (istm != null) {
-                            istm.close();
-                        }
-                        if (bostm != null) {
-                            bostm.close();
+                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
+                            Logger.getLogger(SendToServer.class.getName()).log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                         }
                     }
                 } catch (IOException ex) {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (Exception ex) {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                } finally {
-                    if (conn != null) {
-                        conn.disconnect();
-                    }
+                    Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
-
         };
         this.threadExecutor.submit(sendTo);
     }
@@ -200,34 +195,10 @@ public class SendToServer extends SendToMenuItem {
         sendToEvent(messageInfo);
     }
 
-    class DummyOutputStream extends OutputStream {
-
-        private int size = 0;
-
-        @Override
-        public void write(int b) throws IOException {
-            size += 1;
-        }
-
-        @Override
-        public void write(byte[] bytes) throws IOException {
-            size += bytes.length;
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) throws IOException {
-            size += len;
-        }
-
-        public int getSize() {
-            return this.size;
-        }
-    }
-
     @Override
     public boolean isEnabled() {
         boolean enabled = (this.contextMenu.getInvocationContext() != IContextMenuInvocation.CONTEXT_INTRUDER_PAYLOAD_POSITIONS)
-                || (this.contextMenu.getInvocationContext() != IContextMenuInvocation.CONTEXT_TARGET_SITE_MAP_TREE);
+            || (this.contextMenu.getInvocationContext() != IContextMenuInvocation.CONTEXT_TARGET_SITE_MAP_TREE);
         return enabled;
     }
 

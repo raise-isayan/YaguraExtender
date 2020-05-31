@@ -11,6 +11,7 @@ import extend.view.base.MatchItem;
 import extend.view.base.MatchItem.HighlightColor;
 import extend.util.Util;
 import extend.view.model.VerticalFlowLayout;
+import java.net.HttpURLConnection;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.logging.Level;
@@ -449,16 +450,16 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                         statusFilter = true;
                     }
 
-                    if (this.filterProp.getStat2xx() && (200 <= item.getStatusCode() && item.getStatusCode() < 300)) {
+                    if (this.filterProp.getStat2xx() && (HttpURLConnection.HTTP_OK <= item.getStatusCode() && item.getStatusCode() < HttpURLConnection.HTTP_MULT_CHOICE)) {
                         statusFilter = true;
                     }
-                    if (this.filterProp.getStat3xx() && (300 <= item.getStatusCode() && item.getStatusCode() < 400)) {
+                    if (this.filterProp.getStat3xx() && (HttpURLConnection.HTTP_MULT_CHOICE <= item.getStatusCode() && item.getStatusCode() < HttpURLConnection.HTTP_BAD_REQUEST)) {
                         statusFilter = true;
                     }
-                    if (this.filterProp.getStat4xx() && (400 <= item.getStatusCode() && item.getStatusCode() < 500)) {
+                    if (this.filterProp.getStat4xx() && (HttpURLConnection.HTTP_BAD_REQUEST <= item.getStatusCode() && item.getStatusCode() < HttpURLConnection.HTTP_INTERNAL_ERROR)) {
                         statusFilter = true;
                     }
-                    if (this.filterProp.getStat5xx() && (500 <= item.getStatusCode() && item.getStatusCode() < 600)) {
+                    if (this.filterProp.getStat5xx() && (HttpURLConnection.HTTP_INTERNAL_ERROR <= item.getStatusCode() && item.getStatusCode() < 600)) {
                         statusFilter = true;
                     }
 

@@ -16,12 +16,10 @@ import extend.util.HttpUtil;
 import extend.util.SwingUtil;
 import extend.util.external.TransUtil;
 import extend.util.Util;
-import extend.util.external.JsonUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -32,14 +30,12 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
-import javax.swing.tree.DefaultTreeModel;
 import yagura.model.UniversalViewProperty;
 
 /**

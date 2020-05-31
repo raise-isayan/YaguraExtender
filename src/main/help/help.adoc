@@ -9,10 +9,10 @@ Language/link:help-ja.html[Japanese]
 == Operating environment
 
 .Java
-* JRE (JDK) 8, 11 (Open JDK is recommended) (https://openjdk.java.net/)
+* JRE (JDK) 11 (Open JDK is recommended) (https://openjdk.java.net/)
 
 .Burp suite
-* 1.7 or higher (http://www.portswigger.net/burp/)
+* v2020 or higher (http://www.portswigger.net/burp/)
 
 .Development environment
 * NetBean 11.0 (https://netbeans.apache.org/)

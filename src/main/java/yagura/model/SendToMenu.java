@@ -12,6 +12,7 @@ import extend.util.BurpWrap;
 import extend.util.HttpUtil;
 import extend.util.Util;
 import java.awt.Component;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -108,6 +109,24 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                     mnuItem.setText(item.getCaption());
                     if (item.isServer()) {
                         SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
+                        sendToItem.addSendToListener(new SendToListener() {
+                            @Override
+                            public void complete(SendToEvent evt) {
+                            }
+
+                            @Override
+                            public void warning(SendToEvent evt) {
+                                BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.WARNING);
+                                Logger.getLogger(BurpExtender.class.getName()).log(Level.WARNING, evt.getMessage());
+                             }
+
+                            @Override
+                            public void error(SendToEvent evt) {
+                               BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.ERROR);
+                                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, evt.getMessage());                            }
+                        
+                        });
+                       
                         sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
