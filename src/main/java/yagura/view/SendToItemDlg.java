@@ -318,6 +318,8 @@ public class SendToItemDlg extends CustomDialog {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.sendto.add.empty"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
         } else if (this.isSelectedBase() && server && !(HttpUtil.startsWithHttp(target))) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.sendto.add.target"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
+        } else if (this.isSelectedBase() && server && !(HttpUtil.isValidUrl(target))) {
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.sendto.add.target.invalid.url"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
         } else {
             this.setModalResult(JOptionPane.OK_OPTION);
             this.closeDialog(null);

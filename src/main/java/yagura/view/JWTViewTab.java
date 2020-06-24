@@ -6,6 +6,7 @@ import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
+import extend.util.SwingUtil;
 import extend.util.Util;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
@@ -84,7 +85,9 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlParam = new javax.swing.JPanel();
         cmbParam = new javax.swing.JComboBox<>();
+        btnCopy = new javax.swing.JButton();
         pnlJWT = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
         lblHeader = new javax.swing.JLabel();
@@ -101,12 +104,24 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
         setLayout(new java.awt.BorderLayout());
 
+        pnlParam.setLayout(new java.awt.BorderLayout());
+
         cmbParam.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cmbParamItemStateChanged(evt);
             }
         });
-        add(cmbParam, java.awt.BorderLayout.NORTH);
+        pnlParam.add(cmbParam, java.awt.BorderLayout.CENTER);
+
+        btnCopy.setText("Copy");
+        btnCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopyActionPerformed(evt);
+            }
+        });
+        pnlParam.add(btnCopy, java.awt.BorderLayout.EAST);
+
+        add(pnlParam, java.awt.BorderLayout.NORTH);
 
         pnlJWT.setLayout(new java.awt.BorderLayout());
 
@@ -162,15 +177,24 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         }
     }//GEN-LAST:event_cmbParamItemStateChanged
 
+    private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
+        String key = (String) this.cmbParam.getSelectedItem();
+        if (key != null) {
+            SwingUtil.systemClipboardCopy(key);
+        }
+    }//GEN-LAST:event_btnCopyActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Signature;
+    private javax.swing.JButton btnCopy;
     private javax.swing.JComboBox<String> cmbParam;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblPayload;
     private javax.swing.JLabel lblSignature;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlJWT;
+    private javax.swing.JPanel pnlParam;
     private javax.swing.JPanel pnlPayload;
     private javax.swing.JScrollPane scrollHeaderJSON;
     private javax.swing.JScrollPane scrollPayloadJSON;

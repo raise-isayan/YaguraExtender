@@ -129,6 +129,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                 return canEdit [columnIndex];
             }
         });
+        tableSendTo.getTableHeader().setReorderingAllowed(false);
         tableSendTo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 tableSendToKeyPressed(evt);
@@ -271,27 +272,27 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         // Target
         this.tableSendTo.getColumnModel().getColumn(3).setMinWidth(80);
         this.tableSendTo.getColumnModel().getColumn(3).setPreferredWidth(200);
-        this.tableSendTo.getColumnModel().getColumn(3).setMaxWidth(300);
+        this.tableSendTo.getColumnModel().getColumn(3).setMaxWidth(800);
 
         // request header
         this.tableSendTo.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(4).setPreferredWidth(50);
-        this.tableSendTo.getColumnModel().getColumn(4).setMaxWidth(60);
+        this.tableSendTo.getColumnModel().getColumn(4).setMaxWidth(120);
 
         // request body
         this.tableSendTo.getColumnModel().getColumn(5).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(5).setPreferredWidth(50);
-        this.tableSendTo.getColumnModel().getColumn(5).setMaxWidth(60);
+        this.tableSendTo.getColumnModel().getColumn(5).setMaxWidth(120);
 
         // response header
         this.tableSendTo.getColumnModel().getColumn(6).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(6).setPreferredWidth(50);
-        this.tableSendTo.getColumnModel().getColumn(6).setMaxWidth(60);
+        this.tableSendTo.getColumnModel().getColumn(6).setMaxWidth(120);
 
         // response body
         this.tableSendTo.getColumnModel().getColumn(7).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(7).setPreferredWidth(50);
-        this.tableSendTo.getColumnModel().getColumn(7).setMaxWidth(60);
+        this.tableSendTo.getColumnModel().getColumn(7).setMaxWidth(120);
 
         // reverse order
         this.tableSendTo.getColumnModel().getColumn(8).setMinWidth(0);
@@ -309,7 +310,6 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         this.tableSendTo.getColumnModel().getColumn(10).setMaxWidth(0);
 
         // 
-        this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         this.btnEditHotkey.setVisible(false);
         
     }

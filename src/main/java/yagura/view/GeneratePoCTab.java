@@ -107,7 +107,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         chkGETmethod = new javax.swing.JCheckBox();
         chkUseHttps = new javax.swing.JCheckBox();
         chkHtml5 = new javax.swing.JCheckBox();
-        chkHtml5Binaly = new javax.swing.JCheckBox();
+        chkHtml5WithXHeader = new javax.swing.JCheckBox();
         spnTime = new javax.swing.JSpinner();
         pnlSelect = new javax.swing.JPanel();
         rdoPlain = new javax.swing.JRadioButton();
@@ -119,7 +119,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
         setLayout(new java.awt.BorderLayout());
 
-        splitGeneratorPoC.setDividerLocation(140);
+        splitGeneratorPoC.setDividerLocation(200);
         splitGeneratorPoC.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         pnlPoC.setLayout(new java.awt.GridLayout(1, 3));
@@ -155,7 +155,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     .addComponent(btnGenerate)
                     .addComponent(btnCopyClipbord)
                     .addComponent(btnSavetoFile))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         pnlButtonLayout.setVerticalGroup(
             pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,7 +166,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 .addComponent(btnCopyClipbord)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSavetoFile)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlButton);
@@ -191,9 +191,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
         });
 
-        chkHtml5Binaly.setSelected(true);
-        chkHtml5Binaly.setText("Binaly");
-        chkHtml5Binaly.setEnabled(false);
+        chkHtml5WithXHeader.setText("with X- Header");
+        chkHtml5WithXHeader.setEnabled(false);
 
         spnTime.setValue(1000);
 
@@ -214,12 +213,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     .addGroup(pnlCheckLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(pnlCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkHtml5Binaly)
+                            .addComponent(chkHtml5WithXHeader)
                             .addGroup(pnlCheckLayout.createSequentialGroup()
                                 .addComponent(chkTimeDelay)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(spnTime, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 20, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         pnlCheckLayout.setVerticalGroup(
             pnlCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +236,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 .addGap(2, 2, 2)
                 .addComponent(chkHtml5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chkHtml5Binaly)
+                .addComponent(chkHtml5WithXHeader)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -265,7 +264,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     .addComponent(rdoAuto)
                     .addComponent(rdoMultipart)
                     .addComponent(rdoPlain))
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         pnlSelectLayout.setVerticalGroup(
             pnlSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,6 +350,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private void chkHtml5StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHtml5StateChanged
 //        this.chkHtml5Binaly.setEnabled(this.chkHtml5.isSelected());
+        this.chkHtml5WithXHeader.setEnabled(this.chkHtml5.isSelected());
     }//GEN-LAST:event_chkHtml5StateChanged
 
     private void chkAutoSubmitStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkAutoSubmitStateChanged
@@ -365,7 +365,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     private javax.swing.JCheckBox chkAutoSubmit;
     private javax.swing.JCheckBox chkGETmethod;
     private javax.swing.JCheckBox chkHtml5;
-    private javax.swing.JCheckBox chkHtml5Binaly;
+    private javax.swing.JCheckBox chkHtml5WithXHeader;
     private javax.swing.JCheckBox chkTimeDelay;
     private javax.swing.JCheckBox chkUseHttps;
     private javax.swing.ButtonGroup grpGene;
@@ -532,6 +532,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         private String csrfEncoding = StandardCharsets.ISO_8859_1.name();
         public boolean csrfHtml5 = false;
         private boolean csrfHtml5Binaly = false;
+        private boolean csrfHtml5WithXHeader = false;
         private boolean csrfGetMethod = false;
         public boolean useHttps = false;
         private boolean csrfTimeDelay = false;
@@ -663,6 +664,20 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         }
 
         /**
+         * @return the csrfHtml5WithXHeader
+         */
+        public boolean isCsrfHtml5WithXHeader() {
+            return csrfHtml5WithXHeader;
+        }
+
+        /**
+         * @param csrfHtml5WithXHeader the csrfHtml5WithXHeader to set
+         */
+        public void setCsrfHtml5WithXHeader(boolean csrfHtml5WithXHeader) {
+            this.csrfHtml5WithXHeader = csrfHtml5WithXHeader;
+        }
+        
+        /**
          * @return the csrfGetMethod
          */
         public boolean isCsrfGetMethod() {
@@ -716,7 +731,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         csrfParam.setCsrfTextPlain(this.rdoPlain.isSelected());
         csrfParam.setCsrfEncoding(this.quickSearchTab.getSelectedEncoding());
         csrfParam.setCsrfHtml5(this.chkHtml5.isSelected());
-        csrfParam.setCsrfHtml5Binaly(this.chkHtml5Binaly.isSelected());
+        csrfParam.setCsrfHtml5WithXHeader(this.chkHtml5WithXHeader.isSelected());
         csrfParam.setCsrfGetMethod(this.chkGETmethod.isSelected());
         csrfParam.setUseHttps(this.chkUseHttps.isSelected());
         csrfParam.setCsrfTimeDelay(this.chkTimeDelay.isSelected());
@@ -876,7 +891,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
             String csrfEncoding = csrfParam.getCsrfEncoding();
-             boolean csrfHtml5Binaly = csrfParam.isCsrfHtml5Binaly();
+//            boolean csrfHtml5Binaly = csrfParam.isCsrfHtml5Binaly();
+            boolean csrfHtml5WithXHeader = csrfParam.isCsrfHtml5WithXHeader();
  
             IBurpExtenderCallbacks callback = BurpExtender.getCallbacks();
             final HttpRequest reqmsg = this.message;
@@ -916,16 +932,26 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>");
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{csrfEncoding}));
-
             buff.append("<script type=\"text/javascript\">\n");
             buff.append("function html5_csrf() {\n");
-            String boundary = HttpUtil.generateBoundary();
             buff.append("\tvar xhr = new XMLHttpRequest();\r\n");
             buff.append(String.format("\txhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl)}));
             buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
+            if (csrfHtml5WithXHeader) {
+                List<String> headers = requestInfo.getHeaders();
+                for (String header : headers) {
+                    if (header.startsWith("X-")) {
+                        String pair [] = header.split(":");
+                        String key = (pair.length > 0) ?  pair[0] : "";
+                        String value = (pair.length > 1) ?  pair[1] : "";
+                        buff.append(String.format("\txhr.setRequestHeader('%s', '%s');\r\n", TransUtil.encodeJsLangQuote(key), TransUtil.encodeJsLangQuote(value)));                                        
+                    }
+                }
+            }            
             buff.append("\tvar req = '';\r\n");
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
+                String boundary = HttpUtil.generateBoundary();
                 if (csrfMultiPart) {
                     buff.append(String.format("\tvar boundary = '--%s';\r\n", new Object[]{boundary}));
                     buff.append("\txhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);\r\n");
