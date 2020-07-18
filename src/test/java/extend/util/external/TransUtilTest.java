@@ -452,13 +452,30 @@ public class TransUtilTest {
      * Test of toByteDecode method, of class TransUtil.
      */
     @Test
-    public void testToUnocode2Decode() {
-        System.out.println("toUnocode4Decode");
+    public void testToByteDecode() {
+        System.out.println("toByteDecode");
         assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));
         assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
-        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\41\\42\\43\\44\\45", "8859_1"));
+        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\041\\042\\043\\044\\045", "8859_1"));
+
+        byte o[] = new byte[]{(byte) 0202, (byte) 0240, (byte) 0202, (byte) 0242, (byte) 0202, (byte) 0244, (byte) 0202, (byte) 0246, (byte) 0202, (byte) 0250, (byte) 012};
+        assertEquals(new String(o, StandardCharsets.ISO_8859_1), TransUtil.toByteDecode("\\202\\240\\202\\242\\202\\244\\202\\246\\202\\250\\12", StandardCharsets.ISO_8859_1.name()));
     }
 
+    /**
+     * Test of toByteHexDecode method, of class TransUtil.
+     */
+    @Test
+    public void testToByteHexDecode() {
+        System.out.println("toByteHexDecode");
+        assertEquals("abcdef!\"#$%", TransUtil.toByteHexDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));
+        assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHexDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
+
+        assertEquals("abcdef!\"#$%", TransUtil.toByteHexDecode("abcdef\\21\\22\\23\\24\\25", "8859_1"));
+        assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHexDecode("\\61\\62\\63\\64\\65\\66\\21\\22\\67\\68\\69\\23\\24\\25\\6a\\6b\\66", "8859_1"));
+        
+    }
+    
     /**
      * Test of toUnocodeUrlEncode method, of class TransUtil.
      */

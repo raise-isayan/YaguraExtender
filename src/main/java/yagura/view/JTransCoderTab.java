@@ -183,6 +183,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlJSHexEnc = new javax.swing.JPanel();
         rdoUnicodeHex = new javax.swing.JRadioButton();
         rdoByteHex = new javax.swing.JRadioButton();
+        rdoByteHex2 = new javax.swing.JRadioButton();
         rdoByteOct = new javax.swing.JRadioButton();
         pnlCompress = new javax.swing.JPanel();
         rdoGzip = new javax.swing.JRadioButton();
@@ -510,6 +511,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
         pnlJSHexEnc.add(rdoByteHex);
+
+        rdoEncodeDecodeGrp.add(rdoByteHex2);
+        rdoByteHex2.setText("\\h(hex)");
+        rdoByteHex2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteHex2ActionPerformed(evt);
+            }
+        });
+        pnlJSHexEnc.add(rdoByteHex2);
 
         rdoEncodeDecodeGrp.add(rdoByteOct);
         rdoByteOct.setText("\\ooo(oct)");
@@ -1805,8 +1815,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 encode = TransUtil.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex.isSelected()) {
                 encode = TransUtil.toByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoByteHex2.isSelected()) {
+                encode = TransUtil.toByteHex2Encode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteOct.isSelected()) {
-                encode = TransUtil.toByteOctEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = TransUtil.toByteOctEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlDec.isSelected()) {
                 encode = TransUtil.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlHex.isSelected()) {
@@ -1871,6 +1883,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             encodePattern = TransUtil.EncodePattern.UNICODE;
         } else if (this.rdoByteHex.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BYTE_HEX;
+        } else if (this.rdoByteHex2.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BYTE_HEX2;
         } else if (this.rdoByteOct.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BYTE_OCT;
         } else if (this.rdoHtmlDec.isSelected()) {
@@ -2458,6 +2472,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBinActionPerformed
 
+    private void rdoByteHex2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteHex2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoByteHex2ActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
@@ -2589,6 +2607,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JRadioButton rdoBase64URLSafe;
     private javax.swing.JRadioButton rdoBeautifyFormat;
     private javax.swing.JRadioButton rdoByteHex;
+    private javax.swing.JRadioButton rdoByteHex2;
     private javax.swing.JRadioButton rdoByteOct;
     private javax.swing.JRadioButton rdoCLang;
     private javax.swing.JRadioButton rdoCR;
