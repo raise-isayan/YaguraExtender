@@ -15,7 +15,7 @@ Language/link:help-ja.html[Japanese]
 * v2020 or higher (http://www.portswigger.net/burp/)
 
 .Development environment
-* NetBean 11.0 (https://netbeans.apache.org/)
+* NetBean 12.0 (https://netbeans.apache.org/)
 * Meven 3.6.1 (https://maven.apache.org/)
 * asciidoc (http://asciidoc.org/) 
 
@@ -803,13 +803,16 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
     Generate a PoC to be submitted after a specified time (seconds). +
     Enabled only when [auto submit] is checked.
 
-[GET] check box::
-    Make the PoC request method a GET method.
-
 [https] check box::
     Check if the PoC request needs to be HTTPS.
     The value automatically determined from the selected request will be the default.
-   
+
+[GET] check box::
+    Make the PoC request method a GET method.
+
+[multi form] check box::
+    Outputs code that is useful for creating a multi-form PoC.
+
 [HTML5] check box::
     Create a PoC trap using HTML5 functions.
     Check here when performing binary upload.   

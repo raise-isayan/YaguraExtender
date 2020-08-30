@@ -15,7 +15,7 @@ Language/link:help.html[English]
 * v2020以上 (http://www.portswigger.net/burp/)
 
 .開発環境
-* NetBean 11.0 (https://netbeans.apache.org/)
+* NetBean 12.0 (https://netbeans.apache.org/)
 * Meven 3.6.1 (https://maven.apache.org/)
 * asciidoc (http://asciidoc.org/) 
 
@@ -797,21 +797,20 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
     指定時間後(秒)にsubmitされるPoCを生成します。 +
     [auto submit]チェック時のみ有効になります。
 
-[GET]チェックボックス::
-    PoCのリクエストメソッドがGETメソッドになるようにします。
-
 [https]チェックボックス::
     PoCのリクエストをHTTPSにする必要がある場合にチェックします。
     選択したリクエストから自動判定された値がデフォルトになります。
+
+[GET]チェックボックス::
+    PoCのリクエストメソッドがGETメソッドになるようにします。
+
+[multi form]チェックボックス::
+    複数フォームによるPoCを作成するのに便利なコードを出力します。
    
 [HTML5]チェックボックス::
     PoCの罠をHTML5の機能を利用して作成します。
     バイナリアップロードを行う場合ここをチェックします。
    
-[Binay]チェックボックス::
-    現在のバージョンではチェックは不要です。
-    [HTML5]にチェックすれば、バイナリアップロードについてはデフォルトで可能となっています。
-
 .Content-Type
 auto:: Content-Typeを自動判定します。
 urlencode:: text フィールドを利用してPoCを作成します。 +

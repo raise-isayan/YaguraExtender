@@ -48,7 +48,7 @@ public abstract class AbstractSyntaxDocument extends DefaultStyledDocument {
         quote = new SimpleAttributeSet();
         StyleConstants.setForeground(quote, Color.magenta);
         StyleConstants.setBold(quote, true);
-
+        
         keywords = getKeywords();
     }
 
