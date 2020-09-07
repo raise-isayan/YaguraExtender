@@ -34,6 +34,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -83,10 +84,16 @@ public class BurpExtender extends BurpExtenderImpl
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         try {
             Properties prop = new Properties();
-            prop.load(BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES));
-            String pattern = prop.getProperty(FileHandler.class.getName() + ".pattern");
             File logDir = Config.getExtensionHomeDir();
             logDir.mkdirs();
+            File logPropFile = new File(Config.getExtensionHomeDir(), Config.getLoggingPropertyName());
+            if (logPropFile.exists()) {
+                prop.load(new FileInputStream(logPropFile));
+            }
+            else {
+                prop.load(BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES));
+            }
+            String pattern = prop.getProperty(FileHandler.class.getName() + ".pattern");
             prop.setProperty(FileHandler.class.getName() + ".pattern", new File(logDir, pattern).getAbsolutePath());
             prop.store(bout, "");
             LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(bout.toByteArray()));
