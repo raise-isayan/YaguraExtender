@@ -8,7 +8,7 @@ import java.util.EventObject;
  */
 public class QuickSearchEvent extends EventObject {
 
-    private String keyword;
+    private String keyword = "";
     private boolean smartMatch = false;
     private boolean regexp = false;
     private boolean ignoreCase = false;

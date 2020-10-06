@@ -69,7 +69,8 @@ import yagura.view.RawViewTab;
  */
 public class BurpExtender extends BurpExtenderImpl
         implements IHttpListener, IProxyListener, IExtensionStateListener {
-
+    private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
+      
     public BurpExtender() {
     }
 
@@ -98,7 +99,7 @@ public class BurpExtender extends BurpExtenderImpl
             prop.store(bout, "");
             LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(bout.toByteArray()));
         } catch (IOException ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
         JsonUtil.registerTypeHierarchyAdapter(HotKey.class, new HotKeyAdapter());
@@ -201,7 +202,7 @@ public class BurpExtender extends BurpExtenderImpl
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, e);
+                logger.log(Level.SEVERE, null, e);
             }
         });
         if (this.getBurpVersion().isExtendSupport()) {
@@ -211,9 +212,9 @@ public class BurpExtender extends BurpExtenderImpl
                     Config.loadFromJson(CONFIG_FILE, this.option);
                 }
             } catch (IOException ex) {
-                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             } catch (RuntimeException ex) {
-                Logger.getLogger(BurpExtender.class.getName()).log(Level.WARNING, null, ex);
+                logger.log(Level.WARNING, null, ex);
             }
 
             try {
@@ -222,7 +223,7 @@ public class BurpExtender extends BurpExtenderImpl
                     this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
                 }
             } catch (IOException ex) {
-                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
 
             setSendToMenu(new SendToMenu(cb, this.option.getSendToProperty()));
@@ -391,9 +392,9 @@ public class BurpExtender extends BurpExtenderImpl
                     }
                 } catch (IOException ex) {
                     getCallbacks().issueAlert(ex.getMessage());
-                    Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } catch (Exception ex) {
-                    Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }
             // ログを出力したら消す
@@ -457,9 +458,9 @@ public class BurpExtender extends BurpExtenderImpl
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
     private final static Pattern REQUEST_URI = Pattern.compile("^(.*?\\s+)(.*?)(\\s+.*)");
@@ -490,7 +491,7 @@ public class BurpExtender extends BurpExtenderImpl
             }
 
         } catch (Exception ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return apply;
     }
@@ -621,7 +622,7 @@ public class BurpExtender extends BurpExtenderImpl
                     }
                 }
             } catch (Exception ex) {
-                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -778,9 +779,9 @@ public class BurpExtender extends BurpExtenderImpl
         try {
             Config.saveToJson(CONFIG_FILE, this.option);
         } catch (IOException ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -830,7 +831,7 @@ public class BurpExtender extends BurpExtenderImpl
                 buff.append("\r\n");
             }
         } catch (ParseException ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         SwingUtil.systemClipboardCopy(buff.toString());
     }
@@ -897,7 +898,7 @@ public class BurpExtender extends BurpExtenderImpl
                 BurpExtender.getCallbacks().includeInScope(new URL(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort())));
             }
         } catch (MalformedURLException ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -915,7 +916,7 @@ public class BurpExtender extends BurpExtenderImpl
                 BurpExtender.getCallbacks().excludeFromScope(new URL(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort())));
             }
         } catch (MalformedURLException ex) {
-            Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

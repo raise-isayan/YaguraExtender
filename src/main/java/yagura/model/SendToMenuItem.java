@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  */
 public abstract class SendToMenuItem
         extends SendToItem implements java.awt.event.ActionListener  {
+    private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
 
     protected IContextMenuInvocation contextMenu = null;
 
@@ -83,9 +84,9 @@ public abstract class SendToMenuItem
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(SendToMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(SendToMenuItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return file;
     }

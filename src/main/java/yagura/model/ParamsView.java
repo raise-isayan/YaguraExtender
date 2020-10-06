@@ -11,6 +11,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class ParamsView extends Parameter implements ObjectTableMapping {
+    private final static Logger logger = Logger.getLogger(ParamsView.class.getName());
 
     public ParamsView(IParameter parameter) {
         super(parameter);
@@ -82,7 +83,7 @@ public class ParamsView extends Parameter implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            Logger.getLogger(ParamsView.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return value;
     }
@@ -105,7 +106,7 @@ public class ParamsView extends Parameter implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            Logger.getLogger(ParamsView.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

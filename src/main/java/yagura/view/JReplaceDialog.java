@@ -17,6 +17,7 @@ import javax.swing.event.ListSelectionListener;
  * @author isayan
  */
 public class JReplaceDialog extends CustomDialog {
+    private final static Logger logger = Logger.getLogger(JReplaceDialog.class.getName());
 
     /**
      * Creates new form ReplaceDialog
@@ -516,7 +517,7 @@ public class JReplaceDialog extends CustomDialog {
                 this.setEditItem(item, editMode);
             }
         } catch (Exception ex) {
-            Logger.getLogger(JReplaceDialog.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -542,7 +543,7 @@ public class JReplaceDialog extends CustomDialog {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(JReplaceDialog.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 }

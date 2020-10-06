@@ -15,7 +15,7 @@ public class JsonpElement {
     private JsonpElement() {    
     }
     
-    private final static Pattern JSONP_TYPE = Pattern.compile("\\s*([\\w\\$\\.]+)\\s*\\(\\s*(\\{.*?\\}|\\[.*?\\])\\s*\\)", Pattern.DOTALL);
+    private final static Pattern JSONP_TYPE = Pattern.compile("\\s*([\\w\\$\\.]+)\\s*\\(\\s*(\\{.*?\\}|\\[.*?\\])\\s*\\)([;]*)", Pattern.DOTALL);
     
     public static JsonpElement parseJsonp(String jsonpString) throws JsonSyntaxException {
         Matcher m = JSONP_TYPE.matcher(jsonpString);

@@ -22,6 +22,7 @@ import yagura.model.AutoResponderProperty;
  * @author isayan
  */
 public class AutoResponderServer {
+    private final static Logger logger = Logger.getLogger(AutoResponderServer.class.getName());
 
     private HttpServer server = null;
 
@@ -119,7 +120,7 @@ public class AutoResponderServer {
                 if (handler != null) {
                     handler.uncaughtException(this, ex);
                 }
-                Logger.getLogger(AutoResponderServer.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
 

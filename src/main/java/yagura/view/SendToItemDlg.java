@@ -10,13 +10,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  *
  * @author isayan
  */
 public class SendToItemDlg extends CustomDialog {
-
+    private final static Logger logger = Logger.getLogger(SendToItemDlg.class.getName());
     /**
      * Creates new form SendToItemDlg
      *
@@ -381,13 +382,13 @@ public class SendToItemDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SendToItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SendToItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SendToItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SendToItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

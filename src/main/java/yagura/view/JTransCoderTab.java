@@ -53,6 +53,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class JTransCoderTab extends javax.swing.JPanel implements ITab {
+    private final static Logger logger = Logger.getLogger(JTransCoderTab.class.getName());
 
     /**
      * Creates new form JTransCoder
@@ -1857,7 +1858,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(encode);
         } catch (Exception ex) {
             this.setOutputText(Util.getStackTraceMessage(ex));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnEncodeActionPerformed
 
@@ -1946,7 +1947,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnHashMd2ActionPerformed
 
@@ -1957,7 +1958,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnHashMd5ActionPerformed
 
@@ -1968,7 +1969,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnHashSha1ActionPerformed
 
@@ -1979,7 +1980,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnHashSha256ActionPerformed
 
@@ -1990,7 +1991,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnHashSha384ActionPerformed
 
@@ -2001,7 +2002,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnHashSha512ActionPerformed
 
@@ -2027,7 +2028,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 byte[] output = this.getOutputByte();
                 Util.bytesToFile(output, file);
             } catch (IOException ex) {
-                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnOutputfileActionPerformed
@@ -2097,7 +2098,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 this.setInputText(Util.getRawStr(input));
                 this.setInputByte(input);
             } catch (IOException ex) {
-                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnInputfileActionPerformed
@@ -2250,9 +2251,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             try {
                                 txtGenarate.setText(get());
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                                logger.log(Level.SEVERE, null, ex);
                             } catch (ExecutionException ex) {
-                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                                logger.log(Level.SEVERE, null, ex);
                             }
                         }
                     };
@@ -2286,9 +2287,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             try {
                                 txtGenarate.setText(get());
                             } catch (InterruptedException ex) {
-                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                                logger.log(Level.SEVERE, null, ex);
                             } catch (ExecutionException ex) {
-                                Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                                logger.log(Level.SEVERE, null, ex);
                             }
                         }
                     };
@@ -2321,9 +2322,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         try {
                            txtGenarate.setText(get());
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         }
                     }
                 };
@@ -2348,7 +2349,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                     fstm.write(Util.encodeMessage(s, this.getSelectEncode()));
                 } catch (Exception ex) {
-                    Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -2373,7 +2374,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnSmartMatchActionPerformed
 
@@ -2395,7 +2396,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnCRC32ActionPerformed
 
@@ -2405,7 +2406,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             this.setOutputText(Util.getStackTraceMessage(e1));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }//GEN-LAST:event_btnAdler32ActionPerformed
 
@@ -2736,7 +2737,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.txtStatus.setText(sttmsg);
 
         } catch (UnsupportedEncodingException e1) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         }
     }
 
@@ -2762,7 +2763,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.setOutput(decode, applyCharset);
         } catch (java.lang.NumberFormatException ex) {
             this.setOutputText(Util.getStackTraceMessage(ex));
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
+            logger.log(Level.INFO, null, ex);
         }
     }
 
@@ -2873,7 +2874,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
             this.txtOutputFormat.setCaretPosition(0);
         } catch (IOException ex) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

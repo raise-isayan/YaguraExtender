@@ -31,6 +31,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+    private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
     /**
      * Creates new form HtmlCommetViewTab
@@ -129,16 +130,16 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                             txtHtmlComment.setCaretPosition(0);
                             quickSearchTab.clearViewAndSearch();
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         }
                     }
                 };
                 swText.execute();                    
             }
         } catch (Exception ex) {
-            Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -159,7 +160,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {
-            Logger.getLogger(HtmlCommetViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

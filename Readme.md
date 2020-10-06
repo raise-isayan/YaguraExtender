@@ -1,7 +1,7 @@
 Burp suite Extension YaguraExtender
 =============
 
-Language/[Japanese](https://github.com/raise-isayan/YaguraExtender/blob/master/Readme-ja.md)
+Language/[Japanese](Readme-ja.md)
 
 This tool is an extension of Burp Suite, a product of PortSwigger.
 

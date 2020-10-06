@@ -30,6 +30,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab {
+    private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 
     private boolean request = false;
     private boolean textModified = false;
@@ -165,16 +166,16 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                             quickSearchTab.clearViewAndSearch();
                             //          quickSearchTab.clearView();
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         }
                     }
                 };
                 swText.execute();
             }
         } catch (Exception ex) {
-            Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -249,7 +250,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 this.textModified = false;
             }
         } catch (ParseException ex) {
-            Logger.getLogger(RawViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

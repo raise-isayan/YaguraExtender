@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.BurpExtender;
 import burp.IContextMenuInvocation;
 import extend.util.HttpUtil;
 import burp.IHttpRequestResponse;
@@ -40,6 +39,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class SendToServer extends SendToMenuItem {
+    private final static Logger logger = Logger.getLogger(SendToServer.class.getName());
 
     static {
         // SSL 証明書検証をしない。
@@ -119,7 +119,7 @@ public class SendToServer extends SendToMenuItem {
                             @Override
                             public void connectFailed(URI uri, SocketAddress sa, IOException ex) {
                                 fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                                Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                                logger.log(Level.SEVERE, ex.getMessage(), ex);
                             }                            
                         };
                         builder.proxy(staticProxy);
@@ -146,20 +146,20 @@ public class SendToServer extends SendToMenuItem {
                                 fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
                             } else {
                                 fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
-                                Logger.getLogger(SendToServer.class.getName()).log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+                                logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                             }
                         } else {
                             // 200以外
                             fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
-                            Logger.getLogger(SendToServer.class.getName()).log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+                            logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                         }
                     }
                 } catch (IOException ex) {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                    Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (Exception ex) {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                    Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         };

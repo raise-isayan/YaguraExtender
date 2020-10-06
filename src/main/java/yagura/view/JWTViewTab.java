@@ -33,6 +33,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+    private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
 
     private IMessageEditorController controller = null;
 
@@ -346,7 +347,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             }
             this.message = httpmessage;
         } catch (ParseException ex) {
-            Logger.getLogger(JWTViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

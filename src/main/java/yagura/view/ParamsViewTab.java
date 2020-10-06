@@ -42,6 +42,7 @@ import yagura.model.UniversalViewProperty;
  * @author raise.isayan
  */
 public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorTab {
+    private final static Logger logger = Logger.getLogger(ParamsViewTab.class.getName());
 
     private boolean textModified = false;
     private boolean editable;
@@ -412,13 +413,13 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                             textModified = false;
 
                         } catch (InterruptedException ex) {
-                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
-                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         } catch (ParseException ex) {
-                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, null, ex);
                         }
                     }
                 };
@@ -429,9 +430,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         }
 //        try {
 //        } catch (ParseException ex) {
-//            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.log(Level.SEVERE, null, ex);
 //        } catch (UnsupportedEncodingException ex) {
-//            Logger.getLogger(ParamsViewTab.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.log(Level.SEVERE, null, ex);
 //        }
     }
 

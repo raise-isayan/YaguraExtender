@@ -33,6 +33,7 @@ import javax.swing.table.TableModel;
  * @author isayan
  */
 public class SendToMenu implements IContextMenuFactory, SendToListener {
+    private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
 
     private final SendToProperty property;
     private final IBurpExtenderCallbacks callbacks;
@@ -117,13 +118,13 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                             @Override
                             public void warning(SendToEvent evt) {
                                 BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.WARNING);
-                                Logger.getLogger(BurpExtender.class.getName()).log(Level.WARNING, evt.getMessage());
+                                logger.log(Level.WARNING, evt.getMessage());
                              }
 
                             @Override
                             public void error(SendToEvent evt) {
                                BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.ERROR);
-                                Logger.getLogger(BurpExtender.class.getName()).log(Level.SEVERE, evt.getMessage());                            }
+                                logger.log(Level.SEVERE, evt.getMessage());                            }
                         
                         });
                        
@@ -392,7 +393,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             callbacks.sendToRepeater(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
                     messageItem[0].getRequest(), "v" + this.repeternum++);
         } catch (Exception ex) {
-            Logger.getLogger(SendToMenu.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -403,7 +404,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             callbacks.sendToIntruder(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
                     messageItem[0].getRequest());
         } catch (Exception ex) {
-            Logger.getLogger(SendToMenu.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -412,7 +413,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             IHttpRequestResponse[] messageItem = message.getSelectedMessages();
             callbacks.sendToSpider(BurpWrap.getURL(messageItem[0]));
         } catch (Exception ex) {
-            Logger.getLogger(SendToMenu.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

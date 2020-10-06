@@ -27,6 +27,7 @@ import java.security.SignatureException;
  * @author isayan
  */
 public class JWTToken {
+    private final static Logger logger = Logger.getLogger(JWTToken.class.getName());
 
     public JWTToken() {
     }
@@ -257,7 +258,7 @@ public class JWTToken {
                     throw new NoSuchAlgorithmException(algo.name());
             }
         } catch (InvalidKeyException ex) {
-            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -301,13 +302,13 @@ public class JWTToken {
                     throw new NoSuchAlgorithmException(algo.name());
             }
         } catch (InvalidKeyException ex) {
-            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } catch (SignatureException ex) {
-            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } catch (GeneralSecurityException ex) {
-            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(JWTToken.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         throw new NoSuchAlgorithmException(algo.name());
     }

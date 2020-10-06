@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class SendToMultiEditor extends SendToMenuItem {
+    private final static Logger logger = Logger.getLogger(SendToMultiEditor.class.getName());
 
     public SendToMultiEditor(SendToItem item, IContextMenuInvocation contextMenu) {
         super(item, contextMenu);
@@ -50,7 +51,7 @@ public class SendToMultiEditor extends SendToMenuItem {
                 Util.executeFormat(this.getTarget(), args);
             } catch (IOException ex) {
                 this.fireSendToErrorEvent(new SendToEvent(this, ex.getMessage()));
-                Logger.getLogger(SendToMultiEditor.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
     }

@@ -43,6 +43,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+    private final static Logger logger = Logger.getLogger(GeneratePoCTab.class.getName());
 
     /**
      * Creates new form GeneraterPoC
@@ -231,9 +232,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     .addComponent(chkTimeDelay)
                     .addComponent(spnTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkUseHttps)
-                    .addComponent(chkGETmethod))
+                .addGroup(pnlCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkGETmethod)
+                    .addComponent(chkUseHttps))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkMultiForm)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -309,7 +310,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                         fstm.write(Util.encodeMessage(ta.getText(), encoding));
                     } catch (IOException ex) {
-                        Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.log(Level.SEVERE, null, ex);
                     }
                 }
         }
@@ -342,9 +343,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 try {
                     ta.setText(get());
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
-                    Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }
         };
@@ -408,7 +409,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
             this.quickSearchTab.clearView();
         } catch (Exception ex) {
-            Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -493,7 +494,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {
-            Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -779,7 +780,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         csrfEnctype = "text/plain"; // 固定 
                     }
                 }
-                Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "multipart:{0}", csrfMultiPart);
+                logger.log(Level.FINE, "multipart:{0}", csrfMultiPart);
             } else {
                 // select urlencode mode
                 if (csrfUrlencode) {
@@ -856,7 +857,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             new Object[]{csrfUrl, csrfFormMethod, csrfEnctype}));
                 }
                 List<IParameter> parameters = requestInfo.getParameters();
-                Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.length:{0}", parameters.size());
+                logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
                 boolean binaryParam = false;
                 String filename = "";
                 for (int i = 0; i < parameters.size(); i++) {
@@ -931,7 +932,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             buff.append("<!-- end form -->\n");
             buff.append("</body></html>\n");
         } catch (Exception ex) {
-            Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return buff.toString();
     }
@@ -962,7 +963,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         csrfTextPlain = true;
                     }
                 }
-                Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "multipart:{0}", csrfMultiPart);
+                logger.log(Level.FINE, "multipart:{0}", csrfMultiPart);
             } else {
                 // select urlencode mode
                 if (csrfUrlencode) {
@@ -1022,7 +1023,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     buff.append(String.format("\tvar boundary = '--%s';\r\n", new Object[]{ boundary }));
                     buff.append("\txhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);\r\n");
                     List<IParameter> parameters = requestInfo.getParameters();
-                    Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.length:{0}", parameters.size());
+                    logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
                     boolean binaryParam = false;
                     String filename = "";
                     StringBuilder parambuff = new StringBuilder();
@@ -1083,7 +1084,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 } else {
                     buff.append("\txhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\r\n");
                     List<IParameter> parameters = requestInfo.getParameters();
-                    Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.FINE, "parameters.size:{0}", parameters.size());
+                    logger.log(Level.FINE, "parameters.size:{0}", parameters.size());
                     boolean binaryParam = false;
                     boolean first = true;
                     for (int i = 0; i < parameters.size(); i++) {
@@ -1169,7 +1170,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
             buff.append("</body></html>\n");
         } catch (Exception ex) {
-            Logger.getLogger(GeneratePoCTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return buff.toString();
     }

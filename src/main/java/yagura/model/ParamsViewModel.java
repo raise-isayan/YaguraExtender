@@ -13,6 +13,7 @@ import extend.util.external.TransUtil;
  * @author raise.isayan
  */
 public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
+    private final static Logger logger = Logger.getLogger(ParamsViewModel.class.getName());
 
     public ParamsViewModel(TableModel model) {
         super(model);
@@ -75,7 +76,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     break;
             }
         } catch (Exception ex) {
-            Logger.getLogger(ParamsViewModel.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return value;
     }
@@ -113,7 +114,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
             }
             super.setData(rowIndex, param);
         } catch (Exception ex) {
-            Logger.getLogger(ParamsViewModel.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

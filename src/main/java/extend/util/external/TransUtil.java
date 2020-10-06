@@ -32,6 +32,7 @@ import org.mozilla.universalchardet.UniversalDetector;
  *
  */
 public class TransUtil {
+    private final static Logger logger = Logger.getLogger(TransUtil.class.getName());
 
     private final static HashMap<String, Character> ENTITY = new HashMap<>();
 
@@ -474,7 +475,7 @@ public class TransUtil {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         if (selectCharset != null) {
             selectCharset.replace(0, selectCharset.length(), applyCharset);
@@ -910,7 +911,7 @@ public class TransUtil {
             }
             m.appendTail(buff);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return buff.toString();
     }
@@ -954,7 +955,7 @@ public class TransUtil {
             }
             m.appendTail(buff);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return buff.toString();
     }
@@ -1204,9 +1205,9 @@ public class TransUtil {
                 bout.write(buf, 0, length);
             }
         } catch (javax.mail.MessagingException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IOException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return new String(bout.toByteArray(), encoding);
     }
@@ -1229,9 +1230,9 @@ public class TransUtil {
                 out.write(buf, 0, length);
             }
         } catch (javax.mail.MessagingException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IOException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return new String(bout.toByteArray(), encoding);
     }
@@ -1416,7 +1417,7 @@ public class TransUtil {
         try {
             return toSmartMatch(value, null);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
     }
@@ -1642,7 +1643,7 @@ public class TransUtil {
             }
             out.flush();
         } catch (Exception e2) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, e2);
+            logger.log(Level.SEVERE, e2.getMessage(), e2);
         }
     }
 
@@ -1666,7 +1667,7 @@ public class TransUtil {
                 detector.handleData(buf, 0, nread);
             }
         } catch (IOException ex) {
-            Logger.getLogger(TransUtil.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         detector.dataEnd();
         guessCharset = detector.getDetectedCharset();

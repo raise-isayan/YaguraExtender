@@ -1,6 +1,7 @@
 package yagura.view;
 
 import extend.view.base.CustomDialog;
+import java.util.logging.Logger;
 import yagura.model.MatchReplaceItem;
 import javax.swing.JOptionPane;
 
@@ -9,6 +10,7 @@ import javax.swing.JOptionPane;
  * @author isayan
  */
 public class MatchReplaceItemDlg extends CustomDialog {
+    private final static Logger logger = Logger.getLogger(MatchReplaceItemDlg.class.getName());
 
     /**
      * Creates new form MatchReplaceItemDlg
@@ -253,13 +255,13 @@ public class MatchReplaceItemDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MatchReplaceItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MatchReplaceItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MatchReplaceItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MatchReplaceItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

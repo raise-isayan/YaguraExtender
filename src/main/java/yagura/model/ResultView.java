@@ -17,6 +17,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class ResultView extends HttpMessageItem implements ObjectTableMapping {
+    private final static Logger logger = Logger.getLogger(ResultView.class.getName());
 
     public ResultView() {
     }
@@ -110,7 +111,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            Logger.getLogger(ResultView.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return value;
 
@@ -146,7 +147,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            Logger.getLogger(ResultView.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

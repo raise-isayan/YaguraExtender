@@ -20,6 +20,7 @@ import yagura.Config;
  * @author isayan
  */
 public class VersionTab extends javax.swing.JPanel implements ITab {
+    private final static Logger logger = Logger.getLogger(VersionTab.class.getName());
 
     /**
      * Creates new form VersionTab
@@ -139,7 +140,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 File file = filechooser.getSelectedFile();
                 Config.loadFromJson(file, BurpExtender.getInstance().getProperty());
             } catch (IOException ex) {
-                Logger.getLogger(VersionTab.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
         this.firePropertyChange(TabbetOption.LOAD_CONFIG_PROPERTY, null, this);
@@ -159,7 +160,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 }
                 Config.saveToJson(file, BurpExtender.getInstance().getProperty());
             } catch (IOException ex) {
-                Logger.getLogger(VersionTab.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
 
@@ -176,7 +177,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 File file = filechooser.getSelectedFile();
                 LegacyConfig.loadFromXml(file, BurpExtender.getInstance().getProperty());
             } catch (IOException ex) {
-                Logger.getLogger(VersionTab.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
         this.firePropertyChange(TabbetOption.LOAD_CONFIG_PROPERTY, null, this);

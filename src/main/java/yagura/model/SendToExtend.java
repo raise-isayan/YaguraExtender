@@ -22,6 +22,7 @@ import yagura.Config;
  * @author isayan
  */
 public class SendToExtend extends SendToMenuItem {
+    private final static Logger logger = Logger.getLogger(SendToExtend.class.getName());
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private File currentDirectory = new File(Config.getUserHome());
@@ -109,11 +110,11 @@ public class SendToExtend extends SendToMenuItem {
                     }
                     this.currentDirectory = file;
                 } catch (IOException ex) {
-                    Logger.getLogger(SendToExtend.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(SendToExtend.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

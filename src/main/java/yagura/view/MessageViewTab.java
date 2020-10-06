@@ -16,6 +16,7 @@ import yagura.model.UniversalViewProperty.UniversalView;
  * @author isayan
  */
 public class MessageViewTab extends javax.swing.JPanel implements SendToMessage {
+    private final static Logger logger = Logger.getLogger(MessageViewTab.class.getName());
 
     /**
      * Creates new form MessageViewTab
@@ -173,7 +174,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(MessageViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -203,7 +204,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(MessageViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

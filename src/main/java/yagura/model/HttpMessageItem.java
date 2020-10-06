@@ -20,6 +20,7 @@ import javax.swing.RowFilter;
  * @author isayan
  */
 public class HttpMessageItem implements IHttpRequestResponse {
+    private final static Logger logger = Logger.getLogger(HttpMessageItem.class.getName());
 
     private IHttpRequestResponse httpItem = null;
     private int ordinal = -1;
@@ -223,7 +224,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(HttpMessageItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return charset;
     }
@@ -240,7 +241,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
             System.out.println(String.format("[%d].getHighlight=%s", ordinal, this.getHighlight()));
             System.out.println(String.format("[%d].getStatusCode=%d", ordinal, this.getStatusCode()));
         } catch (Exception ex) {
-            Logger.getLogger(HttpMessageItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -252,7 +253,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
                 mimeType = res.getContentMimeType();
             }
         } catch (Exception ex) {
-            Logger.getLogger(HttpMessageItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return mimeType;
     }
@@ -269,7 +270,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
             this.setPort(httpService.getPort());
             this.setProtocol(httpService.getProtocol());
         } catch (Exception ex) {
-            Logger.getLogger(HttpMessageItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

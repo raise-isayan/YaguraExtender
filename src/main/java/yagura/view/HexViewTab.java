@@ -30,6 +30,7 @@ import javax.swing.table.TableColumnModel;
  * @author isayan
  */
 public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+    private final static Logger logger = Logger.getLogger(HexViewTab.class.getName());
 
     /**
      * Creates new form HexViewTab
@@ -207,9 +208,9 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 this.modelHex.addRow(hexmod);
             }
         } catch (UnsupportedEncodingException e1) {
-            Logger.getLogger(HexViewTab.class.getName()).log(Level.SEVERE, null, e1);
+            logger.log(Level.SEVERE, null, e1);
         } catch (Exception e2) {
-            Logger.getLogger(HexViewTab.class.getName()).log(Level.SEVERE, null, e2);
+            logger.log(Level.SEVERE, null, e2);
         }
     }
 

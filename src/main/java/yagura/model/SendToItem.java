@@ -15,6 +15,7 @@ import javax.swing.event.EventListenerList;
  * @author isayan
  */
 public class SendToItem {
+    private final static Logger logger = Logger.getLogger(SendToItem.class.getName());
 
     public enum MessageType {
         REQUEST, RESPONSE, REQUEST_AND_RESPONSE;
@@ -254,7 +255,7 @@ public class SendToItem {
         try {
             this.extendProperties.storeToXML(os, "");            
         } catch (IOException ex) {
-            Logger.getLogger(SendToItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
         return new String(os.toByteArray(), StandardCharsets.UTF_8);
     }
@@ -264,7 +265,7 @@ public class SendToItem {
             ByteArrayInputStream is = new ByteArrayInputStream(propString.getBytes(StandardCharsets.UTF_8));            
             this.extendProperties.loadFromXML(is);
         } catch (IOException ex) {
-            Logger.getLogger(SendToItem.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
     

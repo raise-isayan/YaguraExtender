@@ -24,6 +24,7 @@ import javax.swing.text.View;
  * @author isayan
  */
 public class KeywordHighlighter extends DefaultHighlighter {
+    private final static Logger logger = Logger.getLogger(KeywordHighlighter.class.getName());
 
     private String keyword = "";
     private int position = 0;
@@ -56,7 +57,7 @@ public class KeywordHighlighter extends DefaultHighlighter {
             Pattern p = RegexItem.compileRegex(keyword, flags, quote);
             this.setHighlight(doc, p, color);
         } catch (BadLocationException ex) {
-            Logger.getLogger(KeywordHighlighter.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

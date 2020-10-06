@@ -26,6 +26,7 @@ import javax.swing.tree.TreePath;
  * @author isayan
  */
 public class JSONView extends javax.swing.JPanel {
+    private final static Logger logger = Logger.getLogger(JSONView.class.getName());
 
     private final boolean isJsonp;
     
@@ -182,9 +183,9 @@ public class JSONView extends javax.swing.JPanel {
                     txtJSON.setText(get());
                     txtJSON.setCaretPosition(0);                        
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -210,9 +211,9 @@ public class JSONView extends javax.swing.JPanel {
                     treeJSON.setModel(modelJSON);
                     expandJsonTree();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }            
         };
@@ -238,11 +239,11 @@ public class JSONView extends javax.swing.JPanel {
                     txtJSON.setText(jsonpElement.pretty());
                     txtJSON.setCaretPosition(0);                        
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -269,9 +270,9 @@ public class JSONView extends javax.swing.JPanel {
                     treeJSON.setModel(modelJSON);
                     expandJsonTree();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
-                    Logger.getLogger(JSONView.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }            
         };

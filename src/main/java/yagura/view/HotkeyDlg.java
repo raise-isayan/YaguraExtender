@@ -6,6 +6,7 @@ import extend.view.base.CustomDialog;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import yagura.model.HotKey;
@@ -16,6 +17,7 @@ import yagura.model.SendToItem;
  * @author isayan
  */
 public class HotkeyDlg extends CustomDialog {
+    private final static Logger logger = Logger.getLogger(HotkeyDlg.class.getName());
 
     /**
      * Creates new form NewJDialog
@@ -204,13 +206,13 @@ public class HotkeyDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HotkeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HotkeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HotkeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HotkeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

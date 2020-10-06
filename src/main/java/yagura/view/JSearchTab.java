@@ -50,6 +50,7 @@ import yagura.model.UniversalViewProperty.UniversalView;
  * @author isayan
  */
 public class JSearchTab extends javax.swing.JPanel implements ITab {
+    private final static Logger logger = Logger.getLogger(JSearchTab.class.getName());
 
     /**
      * Creates new form JSerchTab
@@ -764,7 +765,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(JSearchTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         } finally {
             this.cancel = false;
             this.querying = false;
