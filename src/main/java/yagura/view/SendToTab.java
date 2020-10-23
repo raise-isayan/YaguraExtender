@@ -13,6 +13,7 @@ import extend.util.SwingUtil;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -416,6 +417,8 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
             this.sendtoItemDlg.setItem(getEditItem());
         } else {
             SendToItem item = new SendToItem();
+            Properties prop = item.getExtendProperty();
+            prop.setProperty("ignoreValidateCertification", Boolean.FALSE.toString());
             this.sendtoItemDlg.setItem(item);
         }
         this.sendtoItemDlg.setVisible(true);

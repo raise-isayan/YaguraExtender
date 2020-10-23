@@ -511,6 +511,7 @@ public class SendToItemDlg extends CustomDialog {
             this.sendToServerExtendDlg.setProperties(this.extendProperty);
         } else {
             Properties prop  = new Properties();
+            prop.setProperty("ignoreValidateCertification", Boolean.FALSE.toString());
             this.sendToServerExtendDlg.setProperties(prop);
         }
         this.sendToServerExtendDlg.setVisible(true);

@@ -44,6 +44,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         lblProxyPasswd = new javax.swing.JLabel();
         txtProxyUser = new javax.swing.JTextField();
         txtProxyPasswd = new javax.swing.JPasswordField();
+        chkIgnoreValidateCertification = new javax.swing.JCheckBox();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -73,6 +74,8 @@ public class SendToServerExtendDlg extends CustomDialog {
             }
         });
 
+        chkIgnoreValidateCertification.setText("ignore Validate Certification");
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
@@ -88,16 +91,19 @@ public class SendToServerExtendDlg extends CustomDialog {
                             .addComponent(lblProxyPasswd)
                             .addComponent(lblProxyUser))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cmbProtocol, 0, 200, Short.MAX_VALUE)
-                    .addComponent(txtProxyHost)
-                    .addComponent(txtProxyUser)
-                    .addComponent(txtProxyPasswd))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkIgnoreValidateCertification)
+                    .addGroup(pnlMainLayout.createSequentialGroup()
+                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbProtocol, 0, 200, Short.MAX_VALUE)
+                            .addComponent(txtProxyHost)
+                            .addComponent(txtProxyUser)
+                            .addComponent(txtProxyPasswd))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,7 +126,8 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyPasswd)
                     .addComponent(txtProxyPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(chkIgnoreValidateCertification))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -216,6 +223,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
+    private javax.swing.JCheckBox chkIgnoreValidateCertification;
     private javax.swing.JComboBox<String> cmbProtocol;
     private javax.swing.JLabel lblProtocol;
     private javax.swing.JLabel lblProxyHost;
@@ -243,11 +251,13 @@ public class SendToServerExtendDlg extends CustomDialog {
         String proxyPort = prop.getProperty("proxyPort", "8080");        
         String proxyUser = prop.getProperty("proxyUser", "");
         String proxyPasswd = prop.getProperty("proxyPasswd", "");        
+        String ignoreValidateCertification = prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString());        
         this.cmbProtocol.setSelectedItem(proxyProtocol);
         this.txtProxyHost.setText(proxyHost);
         this.spnProxyPort.setValue((int)Util.parseIntDefault(proxyPort, 8080));
         this.txtProxyUser.setText(proxyUser);
         this.txtProxyPasswd.setText(proxyPasswd);
+        this.chkIgnoreValidateCertification.setSelected(Util.parseBooleanDefault(ignoreValidateCertification, false));
     }
 
     public void getProperties(Properties prop) {
@@ -256,6 +266,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         prop.setProperty("proxyPort", Util.toString(this.spnProxyPort.getValue()));        
         prop.setProperty("proxyUser", this.txtProxyUser.getText());
         prop.setProperty("proxyPasswd", String.valueOf(this.txtProxyPasswd.getPassword()));
+        prop.setProperty("ignoreValidateCertification", String.valueOf(this.chkIgnoreValidateCertification.isSelected()));
     }
     
     

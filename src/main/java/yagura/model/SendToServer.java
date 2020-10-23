@@ -106,13 +106,16 @@ public class SendToServer extends SendToMenuItem {
                             }
                         };
                     }
-
+                    boolean ignoreValidateCertification = Util.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
                     String boundary = HttpUtil.generateBoundary();
                     HttpClient.Builder builder = HttpClient.newBuilder()
                         .version(Version.HTTP_1_1)
                         .followRedirects(Redirect.NEVER)
-                        .connectTimeout(Duration.ofSeconds(10))
-                        .sslContext(HttpUtil.ignoreSSLContext());
+                        .connectTimeout(Duration.ofSeconds(10));
+
+                    if (ignoreValidateCertification) {
+                        builder.sslContext(HttpUtil.ignoreSSLContext());
+                    }
 
                     if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
                         ProxySelector staticProxy = new HttpUtil.StaticProxySelector(proxy) {

@@ -47,17 +47,22 @@
                       </Group>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="cmbProtocol" alignment="0" pref="200" max="32767" attributes="0"/>
-                      <Component id="txtProxyHost" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtProxyUser" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txtProxyPasswd" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="chkIgnoreValidateCertification" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="cmbProtocol" alignment="0" pref="200" max="32767" attributes="0"/>
+                              <Component id="txtProxyHost" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtProxyUser" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtProxyPasswd" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="lblProxyPort" min="-2" pref="32" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="spnProxyPort" min="-2" pref="110" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="lblProxyPort" min="-2" pref="32" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="spnProxyPort" min="-2" pref="110" max="-2" attributes="0"/>
-                  <EmptySpace pref="129" max="32767" attributes="0"/>
+                  <EmptySpace pref="143" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -86,7 +91,8 @@
                       <Component id="lblProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace pref="7" max="32767" attributes="0"/>
+                  <Component id="chkIgnoreValidateCertification" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -145,6 +151,11 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProxyPasswdActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkIgnoreValidateCertification">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ignore Validate Certification"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
