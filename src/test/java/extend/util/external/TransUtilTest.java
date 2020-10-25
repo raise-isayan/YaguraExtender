@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import extend.util.ConvertUtil;
 import extend.util.HttpUtil;
 import extend.util.Util;
 import extend.util.external.TransUtil.EncodePattern;
@@ -72,7 +73,6 @@ public class TransUtilTest {
         assertEquals(true, TransUtil.isUrlencoded("0abcAZz9%25"));
         assertEquals(false, TransUtil.isUrlencoded("<0abcAZz9%25>"));
     }
-    
 
     @Test
     public void testDecodeTest() {
@@ -86,7 +86,6 @@ public class TransUtilTest {
         }
     }
 
-    
     /**
      * Test of getSmartDecode method, of class TransUtil.
      */
@@ -182,6 +181,71 @@ public class TransUtilTest {
 
     }
 
+    @Test
+    public void testBase64() {
+
+        assertEquals("!\"#$%&'()=~", TransUtil.toBase64Decode("ISIjJCUmJygpPX4=", StandardCharsets.ISO_8859_1));
+        assertEquals("qwertyuiopASDFGHJKL", TransUtil.toBase64Decode("cXdlcnR5dWlvcEFTREZHSEpLTA==", StandardCharsets.ISO_8859_1));
+
+        assertEquals(ConvertUtil.toBase64Encode("12345667890q", StandardCharsets.ISO_8859_1, false), TransUtil.toBase64Encode("12345667890q", StandardCharsets.ISO_8859_1, false));
+        assertEquals(ConvertUtil.toBase64Encode("!\"#$%&'()=", StandardCharsets.ISO_8859_1, false), TransUtil.toBase64Encode("!\"#$%&'()=", StandardCharsets.ISO_8859_1, false));
+        assertEquals(ConvertUtil.toBase64Encode("qwertyuiopASDFGHJKL", StandardCharsets.ISO_8859_1, false), TransUtil.toBase64Encode("qwertyuiopASDFGHJKL", StandardCharsets.ISO_8859_1, false));
+
+        assertEquals("", TransUtil.toBase64Encode("", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zg==", TransUtil.toBase64Encode("f", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm8=", TransUtil.toBase64Encode("fo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9v", TransUtil.toBase64Encode("foo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9vYg==", TransUtil.toBase64Encode("foob", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9vYmE=", TransUtil.toBase64Encode("fooba", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9vYmFy", TransUtil.toBase64Encode("foobar", StandardCharsets.ISO_8859_1, true));
+
+        assertEquals("", TransUtil.toBase64Encode("", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zg", TransUtil.toBase64Encode("f", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm8", TransUtil.toBase64Encode("fo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9v", TransUtil.toBase64Encode("foo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9vYg", TransUtil.toBase64Encode("foob", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9vYmE", TransUtil.toBase64Encode("fooba", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9vYmFy", TransUtil.toBase64Encode("foobar", StandardCharsets.ISO_8859_1, false));
+
+    }
+
+    @Test
+    public void testBaseN() {
+
+        assertEquals("", TransUtil.toBase32Encode("", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MY======", TransUtil.toBase32Encode("f", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXQ====", TransUtil.toBase32Encode("fo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6===", TransUtil.toBase32Encode("foo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6YQ=", TransUtil.toBase32Encode("foob", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6YTB", TransUtil.toBase32Encode("fooba", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6YTBOI======", TransUtil.toBase32Encode("foobar", StandardCharsets.ISO_8859_1, true));
+
+        assertEquals("", TransUtil.toBase32Encode("", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MY", TransUtil.toBase32Encode("f", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXQ", TransUtil.toBase32Encode("fo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6", TransUtil.toBase32Encode("foo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6YQ", TransUtil.toBase32Encode("foob", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6YTB", TransUtil.toBase32Encode("fooba", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6YTBOI", TransUtil.toBase32Encode("foobar", StandardCharsets.ISO_8859_1, false));
+
+        assertEquals("", TransUtil.toBase16Encode("", StandardCharsets.ISO_8859_1, true));
+        assertEquals("66", TransUtil.toBase16Encode("f", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F", TransUtil.toBase16Encode("fo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F", TransUtil.toBase16Encode("foo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F62", TransUtil.toBase16Encode("foob", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F6261", TransUtil.toBase16Encode("fooba", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F626172", TransUtil.toBase16Encode("foobar", StandardCharsets.ISO_8859_1, true));
+
+        assertEquals("", TransUtil.toBase16Encode("", StandardCharsets.ISO_8859_1, false));
+        assertEquals("66", TransUtil.toBase16Encode("f", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F", TransUtil.toBase16Encode("fo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F", TransUtil.toBase16Encode("foo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F62", TransUtil.toBase16Encode("foob", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F6261", TransUtil.toBase16Encode("fooba", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F626172", TransUtil.toBase16Encode("foobar", StandardCharsets.ISO_8859_1, false));
+
+    }
+
     /**
      * Test of toSmartDecode method, of class TransUtil.
      */
@@ -189,7 +253,7 @@ public class TransUtilTest {
     public void testToSmartDecode_unmatch() {
         assertEquals("<<<<<<<<<<<", TransUtil.toSmartDecode("<<<<<<<<<<<"));
     }
-    
+
     /**
      * Test of toMd5Sum method, of class TransUtil.
      */
@@ -402,7 +466,7 @@ public class TransUtilTest {
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\ud840\\udc0b\\ud844\\ude3dghi\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4abz019"));
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\UD840\\UDC0B\\UD844\\UDE3Dghi\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4abz019"));
     }
-    
+
     /**
      * Test of testToHexEncode method, of class TransUtil.
      */
@@ -415,7 +479,7 @@ public class TransUtilTest {
 
             assertEquals("abcdef\\x0d\\x0a\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toByteHexEncode("abcdef\r\n!\"ghi#$%jkf", StandardCharsets.ISO_8859_1, false));
             assertEquals("abcdef\\X0D\\X0A\\X21\\X22ghi\\X23\\X24\\X25jkf", TransUtil.toByteHexEncode("abcdef\r\n!\"ghi#$%jkf", StandardCharsets.ISO_8859_1, true));
-                        
+
             assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0d\\x0a\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", TransUtil.toByteHexEncode(Util.getRawByte("abcdef\r\n!\"ghi#$%jkf"), TransUtil.PTN_ENCODE_ALL, false));
             assertEquals("\\X61\\X62\\X63\\X64\\X65\\X66\\X0D\\X0A\\X21\\X22\\X67\\X68\\X69\\X23\\X24\\X25\\X6A\\X6B\\X66", TransUtil.toByteHexEncode(Util.getRawByte("abcdef\r\n!\"ghi#$%jkf"), TransUtil.PTN_ENCODE_ALL, true));
 
@@ -473,9 +537,9 @@ public class TransUtilTest {
 
         assertEquals("abcdef!\"#$%", TransUtil.toByteHexDecode("abcdef\\21\\22\\23\\24\\25", "8859_1"));
         assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHexDecode("\\61\\62\\63\\64\\65\\66\\21\\22\\67\\68\\69\\23\\24\\25\\6a\\6b\\66", "8859_1"));
-        
+
     }
-    
+
     /**
      * Test of toUnocodeUrlEncode method, of class TransUtil.
      */
@@ -1029,9 +1093,23 @@ public class TransUtilTest {
             String regex = TransUtil.toRegexEncode(expValue);
             Pattern ptn = Pattern.compile(regex);
             String expResult = TransUtil.toRegexDecode(regex);
-            assertEquals(expResult, expValue);        
+            assertEquals(expResult, expValue);
         }
     }
-    
-    
+
+    @Test
+    public void testExtractComment() {
+        System.out.println("testExtractComment");
+        String expValue = "<html><head></head><body>"
+                + "<div><!-- foo --><p>bar<!-- baz --></div><!--qux--></body></html>";
+        {
+            String[] expResult = TransUtil.extractHTMLComments(expValue, true);
+            assertEquals(3, expResult.length);
+            assertEquals("<!-- foo -->", expResult[0]);
+            assertEquals("<!-- baz -->", expResult[1]);
+            assertEquals("<!--qux-->", expResult[2]);
+        }
+
+    }
+
 }

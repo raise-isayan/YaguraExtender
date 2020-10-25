@@ -45,6 +45,8 @@ import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
+import java.awt.SystemColor;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
 
@@ -53,6 +55,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class JTransCoderTab extends javax.swing.JPanel implements ITab {
+
     private final static Logger logger = Logger.getLogger(JTransCoderTab.class.getName());
 
     /**
@@ -66,12 +69,68 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final QuickSearchTab quickSearchTabFormat = new QuickSearchTab();
 
     private final SwingUtil.IntegerDocument BIN_DOC = new SwingUtil.IntegerDocument(2);
-    private final SwingUtil.IntegerDocument OCT_DOC = new SwingUtil.IntegerDocument(8);    
-    private final SwingUtil.IntegerDocument DEC_DOC = new SwingUtil.IntegerDocument(10);    
-    private final SwingUtil.IntegerDocument HEX_DOC = new SwingUtil.IntegerDocument(16);    
-    
+    private final SwingUtil.IntegerDocument OCT_DOC = new SwingUtil.IntegerDocument(8);
+    private final SwingUtil.IntegerDocument DEC_DOC = new SwingUtil.IntegerDocument(10);
+    private final SwingUtil.IntegerDocument HEX_DOC = new SwingUtil.IntegerDocument(16);
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollInputRaw;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtInputRaw;
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollOutputFormat;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputFormat;
+
     private void customizeComponents() {
 
+        /**
+         * * UI design start **
+         */
+        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+
+        this.txtInputRaw.setEditable(true);
+        this.txtInputRaw.setHyperlinksEnabled(false);
+        this.txtInputRaw.setHighlightCurrentLine(false);
+        this.txtInputRaw.setBackground(SystemColor.text);
+        this.txtInputRaw.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtInputRawCaretUpdate(evt);
+            }
+        });
+        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
+
+//        scrollURaw.setViewportView(txtURaw);
+//        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
+        this.tabbetInput.addTab("Raw", this.scrollInputRaw);
+
+        this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+
+        this.txtOutputRaw.setEditable(false);
+        this.txtOutputRaw.setHyperlinksEnabled(false);
+        this.txtOutputRaw.setHighlightCurrentLine(false);
+        this.txtOutputRaw.setBackground(SystemColor.text);
+        this.txtOutputRaw.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtOutputRawCaretUpdate(evt);
+            }
+        });
+        this.scrollOutputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputRaw);
+        this.pnlOutputRaw.add(this.scrollOutputRaw, BorderLayout.CENTER);
+
+        this.txtOutputFormat = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        this.txtOutputFormat.setEditable(false);
+        this.txtOutputFormat.setCodeFoldingEnabled(true);
+        this.txtOutputFormat.setHyperlinksEnabled(false);
+        this.txtOutputFormat.setHighlightCurrentLine(false);
+        this.txtOutputFormat.setBackground(SystemColor.text);
+        this.txtOutputFormat.setCurrentLineHighlightColor(SystemColor.textHighlight);
+
+        this.scrollOutputFormat = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputFormat);
+
+        /**
+         * * UI design end **
+         */
         this.pnlTransButton.setLayout(new VerticalFlowLayout());
 
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
@@ -102,10 +161,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.quickSearchTabFormat.setSelectedTextArea(this.txtOutputFormat);
         this.quickSearchTabFormat.getEncodingComboBox().setVisible(false);
 
-        this.txtOutputRaw.setEditable(false);
-        this.txtOutputFormat.setEditable(false);
-
-        this.scrollOutputFormat.setViewportView(this.txtOutputFormat);
+//        this.scrollOutputFormat.setViewportView(this.txtOutputFormat);
         this.pnlOutputFormat.setLayout(new BorderLayout());
         this.pnlOutputFormat.add(this.scrollOutputFormat, BorderLayout.CENTER);
         this.pnlOutputRaw.add(this.quickSearchTabRaw, java.awt.BorderLayout.SOUTH);
@@ -127,19 +183,26 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
 
             @Override
-            public void setData(byte [] rawData) {
+            public void setData(byte[] rawData) {
                 setInputText(Util.getRawStr(rawData));
             }
-        
+
         });
         this.doStateDecodeChange();
 
     }
 
+    private void txtInputRawCaretUpdate(javax.swing.event.CaretEvent evt) {
+        this.caretUpdate(this.txtInputRaw);
+    }
+
+    private void txtOutputRawCaretUpdate(javax.swing.event.CaretEvent evt) {
+        this.caretUpdate(this.txtOutputRaw);
+    }
+
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
+     * content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -171,8 +234,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         chkPadding = new javax.swing.JCheckBox();
         pnlBase64URLSafe = new javax.swing.JPanel();
         rdoBase64URLSafe = new javax.swing.JRadioButton();
+        pnlBaseN = new javax.swing.JPanel();
+        rdoBase32 = new javax.swing.JRadioButton();
+        rdoBase16 = new javax.swing.JRadioButton();
+        chkNPadding = new javax.swing.JCheckBox();
         pnlMail = new javax.swing.JPanel();
-        rdoUuencode = new javax.swing.JRadioButton();
         rdoQuotedPrintable = new javax.swing.JRadioButton();
         rdoPunycode = new javax.swing.JRadioButton();
         pnlHtmlEnc = new javax.swing.JPanel();
@@ -213,6 +279,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         btnHashSha512 = new javax.swing.JButton();
         btnCRC32 = new javax.swing.JButton();
         btnAdler32 = new javax.swing.JButton();
+        btnMurmurHash32 = new javax.swing.JButton();
+        btnMurmurHash64 = new javax.swing.JButton();
         pnlTranslator = new javax.swing.JPanel();
         pnlConvert = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
@@ -220,12 +288,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         cmbHistory = new javax.swing.JComboBox<>();
         splitConvert = new javax.swing.JSplitPane();
         tabbetInput = new javax.swing.JTabbedPane();
-        scrollInput = new javax.swing.JScrollPane();
-        txtInputRaw = new javax.swing.JTextArea();
         tabbetOutput = new javax.swing.JTabbedPane();
         pnlOutputRaw = new javax.swing.JPanel();
-        scrollOutput = new javax.swing.JScrollPane();
-        txtOutputRaw = new javax.swing.JTextArea();
         pnlStatus = new javax.swing.JPanel();
         pnlInput = new javax.swing.JPanel();
         btnInputfile = new javax.swing.JButton();
@@ -356,7 +420,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlTransButton.setLayout(new javax.swing.BoxLayout(pnlTransButton, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(13, 0));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(14, 0));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -438,16 +502,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         pnlEncodeDecode.add(pnlBase64URLSafe);
 
-        pnlMail.setLayout(new java.awt.GridLayout(1, 2));
+        pnlBaseN.setLayout(new java.awt.GridLayout(1, 0));
 
-        rdoEncodeDecodeGrp.add(rdoUuencode);
-        rdoUuencode.setText("uuencode");
-        rdoUuencode.addActionListener(new java.awt.event.ActionListener() {
+        rdoEncodeDecodeGrp.add(rdoBase32);
+        rdoBase32.setText("Base32");
+        pnlBaseN.add(rdoBase32);
+
+        rdoEncodeDecodeGrp.add(rdoBase16);
+        rdoBase16.setText("Base16");
+        rdoBase16.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoUuencodeActionPerformed(evt);
+                rdoBase16ActionPerformed(evt);
             }
         });
-        pnlMail.add(rdoUuencode);
+        pnlBaseN.add(rdoBase16);
+
+        chkNPadding.setSelected(true);
+        chkNPadding.setText("Padding");
+        pnlBaseN.add(chkNPadding);
+
+        pnlEncodeDecode.add(pnlBaseN);
+
+        pnlMail.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoQuotedPrintable);
         rdoQuotedPrintable.setText("QuotedPrintable");
@@ -638,7 +714,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlTransButton.add(pnlRegex);
 
         pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash/Checksum"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(4, 2));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(5, 2));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -704,6 +780,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         });
         pnlHashTrans.add(btnAdler32);
 
+        btnMurmurHash32.setText("MurmurHash32");
+        btnMurmurHash32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMurmurHash32ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnMurmurHash32);
+
+        btnMurmurHash64.setText("MurmurHash64");
+        btnMurmurHash64.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMurmurHash64ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnMurmurHash64);
+
         pnlTransButton.add(pnlHashTrans);
 
         tabTransrator.add(pnlTransButton, java.awt.BorderLayout.EAST);
@@ -730,33 +822,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 tabbetInputStateChanged(evt);
             }
         });
-
-        txtInputRaw.setColumns(20);
-        txtInputRaw.setRows(5);
-        txtInputRaw.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtInputRawCaretUpdate(evt);
-            }
-        });
-        scrollInput.setViewportView(txtInputRaw);
-
-        tabbetInput.addTab("Raw", scrollInput);
-
         splitConvert.setTopComponent(tabbetInput);
 
         pnlOutputRaw.setLayout(new java.awt.BorderLayout());
-
-        txtOutputRaw.setColumns(20);
-        txtOutputRaw.setRows(5);
-        txtOutputRaw.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtOutputRawCaretUpdate(evt);
-            }
-        });
-        scrollOutput.setViewportView(txtOutputRaw);
-
-        pnlOutputRaw.add(scrollOutput, java.awt.BorderLayout.CENTER);
-
         tabbetOutput.addTab("Raw", pnlOutputRaw);
 
         splitConvert.setBottomComponent(tabbetOutput);
@@ -1123,7 +1191,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(684, Short.MAX_VALUE))
+                .addContainerGap(748, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1205,7 +1273,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(txtDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblDateFormat, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(637, Short.MAX_VALUE))
+                .addContainerGap(697, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1342,7 +1410,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(634, Short.MAX_VALUE))
+                .addContainerGap(698, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1496,7 +1564,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
                         .addComponent(lblBin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1107, Short.MAX_VALUE))
+                        .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1169, Short.MAX_VALUE))
                     .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
                         .addComponent(lblHex, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1604,7 +1672,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(892, Short.MAX_VALUE))
+                .addContainerGap(950, Short.MAX_VALUE))
         );
         pnlCertificateLayout.setVerticalGroup(
             pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1691,7 +1759,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1747,9 +1815,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final HexViewTab hexInputViewTab = new HexViewTab();
     private final HexViewTab hexOutputViewTab = new HexViewTab();
 
-    private final javax.swing.JScrollPane scrollOutputFormat = new javax.swing.JScrollPane();
     private final javax.swing.JPanel pnlOutputFormat = new javax.swing.JPanel();
-    private final javax.swing.JTextArea txtOutputFormat = new javax.swing.JTextArea();
 
     /*
      * ステータスメッセージ書式
@@ -1783,7 +1849,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     encode = encode.toUpperCase();
                 }
             } else if (this.rdoBase64.isSelected()) {
-                encode = ConvertUtil.toBase64Encode(value, this.getSelectEncode(), this.chkPadding.isSelected());
+                encode = TransUtil.toBase64Encode(value, this.getSelectEncode(), this.chkPadding.isSelected());
                 if (this.chk76Newline.isSelected()) {
                     if (!this.chkRawMode.isSelected()) {
                         encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
@@ -1794,7 +1860,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     }
                 }
             } else if (this.rdoBase64URLSafe.isSelected()) {
-                encode = ConvertUtil.toBase64URLSafeEncode(value, this.getSelectEncode());
+                encode = TransUtil.toBase64URLSafeEncode(value, this.getSelectEncode());
                 if (this.chk76Newline.isSelected()) {
                     if (!this.chkRawMode.isSelected()) {
                         encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
@@ -1804,8 +1870,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
                     }
                 }
-            } else if (this.rdoUuencode.isSelected()) {
-                encode = TransUtil.toUuencode(value, this.getSelectEncode());
+            } else if (this.rdoBase32.isSelected()) {
+                encode = TransUtil.toBase32Encode(value, this.getSelectEncode(), this.chkNPadding.isSelected());
+            } else if (this.rdoBase16.isSelected()) {
+                encode = TransUtil.toBase16Encode(value, this.getSelectEncode(), this.chkNPadding.isSelected());
+//            } else if (this.rdoUuencode.isSelected()) {
+//                encode = TransUtil.toUuencode(value, this.getSelectEncode());
             } else if (this.rdoQuotedPrintable.isSelected()) {
                 encode = TransUtil.toQuotedPrintable(value, this.getSelectEncode());
             } else if (this.rdoPunycode.isSelected()) {
@@ -1872,8 +1942,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             encodePattern = TransUtil.EncodePattern.BASE64;
         } else if (this.rdoBase64URLSafe.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BASE64_URLSAFE;
-        } else if (this.rdoUuencode.isSelected()) {
-            encodePattern = TransUtil.EncodePattern.UUENCODE;
+        } else if (this.rdoBase32.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BASE32;
+        } else if (this.rdoBase16.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BASE16;
+//        } else if (this.rdoUuencode.isSelected()) {
+//            encodePattern = TransUtil.EncodePattern.UUENCODE;
         } else if (this.rdoQuotedPrintable.isSelected()) {
             encodePattern = TransUtil.EncodePattern.QUOTEDPRINTABLE;
         } else if (this.rdoPunycode.isSelected()) {
@@ -1942,7 +2016,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnHashMd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd2ActionPerformed
         try {
-            String inputText = HashUtil.toMd2Sum(getInputText(),
+            String inputText = TransUtil.toMd2Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
@@ -1953,7 +2027,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnHashMd5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd5ActionPerformed
         try {
-            String inputText = HashUtil.toMd5Sum(getInputText(),
+            String inputText = TransUtil.toMd5Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
@@ -1964,7 +2038,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnHashSha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha1ActionPerformed
         try {
-            String inputText = HashUtil.toSHA1Sum(getInputText(),
+            String inputText = TransUtil.toSHA1Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
@@ -1975,7 +2049,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnHashSha256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha256ActionPerformed
         try {
-            String inputText = HashUtil.toSHA256Sum(getInputText(),
+            String inputText = TransUtil.toSHA256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
@@ -1986,7 +2060,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnHashSha384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha384ActionPerformed
         try {
-            String inputText = HashUtil.toSHA384Sum(getInputText(),
+            String inputText = TransUtil.toSHA384Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
@@ -1997,7 +2071,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnHashSha512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512ActionPerformed
         try {
-            String inputText = HashUtil.toSHA512Sum(getInputText(),
+            String inputText = TransUtil.toSHA512Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
@@ -2009,14 +2083,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void rdoCRLFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCRLFActionPerformed
         firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoCRLFActionPerformed
-
-    private void txtInputRawCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtInputRawCaretUpdate
-        this.caretUpdate(this.txtInputRaw);
-    }//GEN-LAST:event_txtInputRawCaretUpdate
-
-    private void txtOutputRawCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtOutputRawCaretUpdate
-        this.caretUpdate(this.txtOutputRaw);
-    }//GEN-LAST:event_txtOutputRawCaretUpdate
 
     private void btnOutputfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutputfileActionPerformed
         JFileChooser filechooser = new JFileChooser();
@@ -2040,10 +2106,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void txtCustomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCustomActionPerformed
-
-    private void rdoUuencodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoUuencodeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoUuencodeActionPerformed
 
     private void btnOutputToInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutputToInputActionPerformed
         String outputText = this.getOutputText();
@@ -2105,10 +2167,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void tabbetInputStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbetInputStateChanged
         if (this.chkRawMode.isSelected()) {
-            this.setInputByte(Util.getRawByte(this.txtInputRaw.getText()));    
-        }
-        else {
-            this.setInputByte(Util.getRawByte(TransUtil.replaceNewLine(getSelectNewLine(), this.txtInputRaw.getText())));    
+            this.setInputByte(Util.getRawByte(this.txtInputRaw.getText()));
+        } else {
+            this.setInputByte(Util.getRawByte(TransUtil.replaceNewLine(getSelectNewLine(), this.txtInputRaw.getText())));
         }
     }//GEN-LAST:event_tabbetInputStateChanged
 
@@ -2207,7 +2268,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void chkRawModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRawModeActionPerformed
         this.cmbEncoding.setEnabled(!(this.chkRawMode.isSelected() || this.chkGuess.isSelected()));
-        SwingUtil.setContainerEnable(this.pnlNewLine, !this.chkRawMode.isSelected()); 
+        SwingUtil.setContainerEnable(this.pnlNewLine, !this.chkRawMode.isSelected());
         if (evt != null) {
             firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
         }
@@ -2258,7 +2319,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         }
                     };
                     swList.execute();
-                    
+
                 } catch (IllegalFormatException e) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IllegalArgumentException e) {
@@ -2293,8 +2354,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             }
                         }
                     };
-                    swList.execute();                    
-                    
+                    swList.execute();
+
                 } catch (IllegalFormatException e) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IllegalArgumentException e) {
@@ -2320,7 +2381,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
                     protected void done() {
                         try {
-                           txtGenarate.setText(get());
+                            txtGenarate.setText(get());
                         } catch (InterruptedException ex) {
                             logger.log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {
@@ -2346,7 +2407,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         if (selected == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+                try ( BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                     fstm.write(Util.encodeMessage(s, this.getSelectEncode()));
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, null, ex);
@@ -2429,28 +2490,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         BigInteger value = BIN_DOC.getValue();
         this.txtOct.setText(value.toString(8));
         this.txtDec.setText(value.toString(10));
-        this.txtHex.setText(value.toString(16));        
+        this.txtHex.setText(value.toString(16));
     }//GEN-LAST:event_txtBinKeyReleased
 
     private void txtOctKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOctKeyReleased
         BigInteger value = OCT_DOC.getValue();
         this.txtBin.setText(value.toString(2));
         this.txtDec.setText(value.toString(10));
-        this.txtHex.setText(value.toString(16));        
+        this.txtHex.setText(value.toString(16));
     }//GEN-LAST:event_txtOctKeyReleased
 
     private void txtDecKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDecKeyReleased
         BigInteger value = DEC_DOC.getValue();
         this.txtBin.setText(value.toString(2));
         this.txtOct.setText(value.toString(8));
-        this.txtHex.setText(value.toString(16));        
+        this.txtHex.setText(value.toString(16));
     }//GEN-LAST:event_txtDecKeyReleased
 
     private void txtHexKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHexKeyReleased
         BigInteger value = HEX_DOC.getValue();
         this.txtBin.setText(value.toString(2));
         this.txtOct.setText(value.toString(8));
-        this.txtDec.setText(value.toString(10));        
+        this.txtDec.setText(value.toString(10));
     }//GEN-LAST:event_txtHexKeyReleased
 
     private void btnBinCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinCopyActionPerformed
@@ -2477,6 +2538,30 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoByteHex2ActionPerformed
 
+    private void rdoBase16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBase16ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoBase16ActionPerformed
+
+    private void btnMurmurHash32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash32ActionPerformed
+        try {
+            String inputText = Long.toString(TransUtil.toMurmurHash32(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException e1) {
+            this.setOutputText(Util.getStackTraceMessage(e1));
+            logger.log(Level.SEVERE, null, e1);
+        }
+    }//GEN-LAST:event_btnMurmurHash32ActionPerformed
+
+    private void btnMurmurHash64ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash64ActionPerformed
+        try {
+            String inputText = Long.toString(TransUtil.toMurmurHash64(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException e1) {
+            this.setOutputText(Util.getStackTraceMessage(e1));
+            logger.log(Level.SEVERE, null, e1);
+        }
+    }//GEN-LAST:event_btnMurmurHash64ActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
@@ -2486,7 +2571,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         }
     };
-        
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdler32;
     private javax.swing.JButton btnAnalyze;
@@ -2511,6 +2596,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JButton btnHexCopy;
     private javax.swing.JButton btnImport;
     private javax.swing.JButton btnInputfile;
+    private javax.swing.JButton btnMurmurHash32;
+    private javax.swing.JButton btnMurmurHash64;
     private javax.swing.JButton btnOctCopy;
     private javax.swing.JPanel btnOutput;
     private javax.swing.JButton btnOutputCopy;
@@ -2531,6 +2618,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JCheckBox chkCharacterUnderline;
     private javax.swing.JCheckBox chkCharacterUpperCase;
     private javax.swing.JCheckBox chkGuess;
+    private javax.swing.JCheckBox chkNPadding;
     private javax.swing.JCheckBox chkPadding;
     private javax.swing.JCheckBox chkRawMode;
     private javax.swing.JCheckBox chkViewLineWrap;
@@ -2561,6 +2649,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JLabel lblmaximum;
     private javax.swing.JPanel pnlBase64;
     private javax.swing.JPanel pnlBase64URLSafe;
+    private javax.swing.JPanel pnlBaseN;
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlCharacter;
     private javax.swing.JPanel pnlCompress;
@@ -2604,6 +2693,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JPanel pnlWrap;
     private javax.swing.JRadioButton rdoAll;
     private javax.swing.JRadioButton rdoAlphaNum;
+    private javax.swing.JRadioButton rdoBase16;
+    private javax.swing.JRadioButton rdoBase32;
     private javax.swing.JRadioButton rdoBase64;
     private javax.swing.JRadioButton rdoBase64URLSafe;
     private javax.swing.JRadioButton rdoBeautifyFormat;
@@ -2648,11 +2739,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JRadioButton rdoUpperCase;
     private javax.swing.JRadioButton rdoUrl;
     private javax.swing.JRadioButton rdoUrlUnicode;
-    private javax.swing.JRadioButton rdoUuencode;
     private javax.swing.JRadioButton rdoZLIB;
     private javax.swing.JScrollPane scrollGenerate;
-    private javax.swing.JScrollPane scrollInput;
-    private javax.swing.JScrollPane scrollOutput;
     private javax.swing.JScrollPane scrollStatus;
     private javax.swing.JSplitPane splitConvert;
     private javax.swing.JSplitPane splitGenerator;
@@ -2681,11 +2769,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JTextField txtExponent;
     private javax.swing.JTextArea txtGenarate;
     private javax.swing.JTextField txtHex;
-    private javax.swing.JTextArea txtInputRaw;
     private javax.swing.JButton txtListCopy;
     private javax.swing.JTextField txtNumFormat;
     private javax.swing.JTextField txtOct;
-    private javax.swing.JTextArea txtOutputRaw;
     private javax.swing.JTextArea txtStatus;
     private javax.swing.JTextField txtStoreFile;
     private javax.swing.JTextField txtStorePassword;
@@ -2788,8 +2874,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         if (this.chkRawMode.isSelected()) {
             return selectText;
         } else {
-            return TransUtil.replaceNewLine(getSelectNewLine(), selectText);        
-        }        
+            return TransUtil.replaceNewLine(getSelectNewLine(), selectText);
+        }
     }
 
     private void setInputText(String inputText) {
@@ -2823,10 +2909,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         }
         this.setOutputByte(Util.encodeMessage(outputText, encoding));
         if (this.rdoBeautifyFormat.isSelected()) {
-            this.setOutputFormat(outputText, true);    
-        }
-        else {
-            this.setOutputFormat(outputText, false);            
+            this.setOutputFormat(outputText, true);
+        } else {
+            this.setOutputFormat(outputText, false);
         }
         this.tabbetOutput.setSelectedIndex(this.tabbetInput.indexOfTab("Raw"));
         this.cmbHistory.removeActionListener(this.historyActionPerformed);
@@ -2843,7 +2928,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         modelHistory.insertElementAt(current, 0);
         modelHistory.setSelectedItem(current);
         this.cmbHistory.addActionListener(this.historyActionPerformed);
-   }
+    }
 
     private void setOutputText(String outputText) {
         this.txtOutputRaw.setText(outputText);
@@ -2866,9 +2951,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.txtOutputFormat.setText("");
             this.tabbetOutput.remove(this.pnlOutputFormat);
             if (FormatUtil.isJson(outputText)) {
+                this.txtOutputFormat.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
                 this.tabbetOutput.addTab("JSON", this.pnlOutputFormat);
                 this.txtOutputFormat.setText(FormatUtil.prettyJson(outputText, pretty));
             } else if (FormatUtil.isXml(outputText)) {
+                this.txtOutputFormat.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
                 this.tabbetOutput.addTab("XML", this.pnlOutputFormat);
                 this.txtOutputFormat.setText(FormatUtil.prettyXml(outputText, pretty));
             }

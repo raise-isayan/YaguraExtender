@@ -52,7 +52,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.quickSearchTab.setSelectedTextArea(this.jsonView.getTextArea());
+        this.quickSearchTab.setSelectedTextArea((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea());
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.addQuickSearchListener(quickSerchStateChanged);
         

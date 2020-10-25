@@ -5,6 +5,7 @@ import extend.util.SwingUtil;
 import extend.util.external.JsonUtil;
 import extend.util.external.JsonpElement;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -12,14 +13,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.SwingWorker;
-import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
-import javax.swing.text.StyledEditorKit;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 /**
  *
@@ -46,12 +45,12 @@ public class JSONView extends javax.swing.JPanel {
         customizeComponents();
     }
         
-    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
-        @Override
-        public Document createDefaultDocument() {
-            return new JSONSyntaxDocument();
-        }
-    };
+//    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
+//        @Override
+//        public Document createDefaultDocument() {
+//            return new JSONSyntaxDocument();
+//        }
+//    };
 
     private DefaultTreeModel modelJSON;
 
@@ -65,8 +64,6 @@ public class JSONView extends javax.swing.JPanel {
     private void initComponents() {
 
         tabbetJSON = new javax.swing.JTabbedPane();
-        scrollJSON = new javax.swing.JScrollPane();
-        txtJSON = new javax.swing.JEditorPane();
         pnlTree = new javax.swing.JPanel();
         scrollTree = new javax.swing.JScrollPane();
         treeJSON = new javax.swing.JTree();
@@ -75,10 +72,6 @@ public class JSONView extends javax.swing.JPanel {
         btnCollapse = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
-
-        scrollJSON.setViewportView(txtJSON);
-
-        tabbetJSON.addTab("pretty", scrollJSON);
 
         pnlTree.setLayout(new java.awt.BorderLayout());
 
@@ -113,12 +106,37 @@ public class JSONView extends javax.swing.JPanel {
         add(tabbetJSON, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private org.fife.ui.rtextarea.RTextScrollPane scrollJSON;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtJSON;        
+    
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.txtJSON.setEditable(false);
 
-        this.txtJSON.setEditorKitForContentType("application/json", this.jsonStyleEditorKit);
-        this.txtJSON.setContentType("application/json");
+        /*** UI design start ***/
+
+        this.txtJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.scrollJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtJSON);
+
+        this.txtJSON.setCodeFoldingEnabled(true);
+        this.txtJSON.setClearWhitespaceLinesEnabled(true);
+        this.txtJSON.setHighlightCurrentLine(true);       
+        this.txtJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtJSON.setBackground(SystemColor.text);
+        this.txtJSON.setEditable(false);
+//        scrollURaw.setViewportView(txtURaw);
+
+        add(this.scrollJSON, java.awt.BorderLayout.CENTER);
+
+//        tabbetJSON.addTab("pretty", scrollJSON);
+//        add(tabbetJSON, java.awt.BorderLayout.CENTER);
+
+        /*** UI design end ***/
+        
+        this.txtJSON.setEditable(false);
+        this.txtJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+
+//        this.txtJSON.setEditorKitForContentType("application/json", this.jsonStyleEditorKit);
+//        this.txtJSON.setContentType("application/json");
 
         Icon emptyIcon = SwingUtil.createEmptyIcon();
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) this.treeJSON.getCellRenderer();
@@ -143,11 +161,9 @@ public class JSONView extends javax.swing.JPanel {
     private javax.swing.JButton btnExpand;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel pnlTree;
-    private javax.swing.JScrollPane scrollJSON;
     private javax.swing.JScrollPane scrollTree;
     private javax.swing.JTabbedPane tabbetJSON;
     private javax.swing.JTree treeJSON;
-    private javax.swing.JEditorPane txtJSON;
     // End of variables declaration//GEN-END:variables
 
     public void setMessage(String content) {
@@ -192,32 +208,32 @@ public class JSONView extends javax.swing.JPanel {
         };
         swRaw.execute();
 
-        // Tree View
-        SwingWorker swTree = new SwingWorker<DefaultTreeModel, Object>() {
-            @Override
-            protected DefaultTreeModel doInBackground() throws Exception {
-                publish("...");
-                return (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
-            }
-
-            protected void process(List<Object> chunks) {
-                modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
-            }
-
-            protected void done() {
-                try {
-                    modelJSON = get();
-                    SwingUtil.allNodesChanged(treeJSON);
-                    treeJSON.setModel(modelJSON);
-                    expandJsonTree();
-                } catch (InterruptedException ex) {
-                    logger.log(Level.SEVERE, null, ex);
-                } catch (ExecutionException ex) {
-                    logger.log(Level.SEVERE, null, ex);
-                }
-            }            
-        };
-        swTree.execute();    
+//        // Tree View
+//        SwingWorker swTree = new SwingWorker<DefaultTreeModel, Object>() {
+//            @Override
+//            protected DefaultTreeModel doInBackground() throws Exception {
+//                publish("...");
+//                return (DefaultTreeModel) JsonUtil.toJsonTreeModel(JsonUtil.parse(content));
+//            }
+//
+//            protected void process(List<Object> chunks) {
+//                modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
+//            }
+//
+//            protected void done() {
+//                try {
+//                    modelJSON = get();
+//                    SwingUtil.allNodesChanged(treeJSON);
+//                    treeJSON.setModel(modelJSON);
+//                    expandJsonTree();
+//                } catch (InterruptedException ex) {
+//                    logger.log(Level.SEVERE, null, ex);
+//                } catch (ExecutionException ex) {
+//                    logger.log(Level.SEVERE, null, ex);
+//                }
+//            }            
+//        };
+//        swTree.execute();    
     }
     
     private void setMessageJsonp(String content) {

@@ -9,11 +9,11 @@ import extend.view.base.HttpMessage;
 import extend.view.base.HttpResponse;
 import extend.util.BurpWrap;
 import extend.util.ConvertUtil;
-import extend.util.HttpUtil;
 import extend.util.external.TransUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.List;
@@ -21,9 +21,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
-import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
-import javax.swing.text.StyledEditorKit;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -43,21 +40,42 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
-    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
-        @Override
-        public Document createDefaultDocument() {
-            return new HTMLSyntaxDocument();
-        }
-    };
+//    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
+//        @Override
+//        public Document createDefaultDocument() {
+//            return new HTMLSyntaxDocument();
+//        }
+//    };
 
+    private org.fife.ui.rtextarea.RTextScrollPane scrollHtmlComment;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHtmlComment;        
+    
     private void customizeComponents() {
+
+        /*** UI design start ***/
+
+        this.txtHtmlComment = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.scrollHtmlComment = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHtmlComment);
+
+        this.txtHtmlComment.setCodeFoldingEnabled(true);
+        this.txtHtmlComment.setClearWhitespaceLinesEnabled(true);
+        this.txtHtmlComment.setHighlightCurrentLine(true);       
+        this.txtHtmlComment.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtHtmlComment.setBackground(SystemColor.text);
+        this.txtHtmlComment.setEditable(false);
+//        scrollURaw.setViewportView(txtURaw);
+
+        add(this.scrollHtmlComment, java.awt.BorderLayout.CENTER);
+
+        /*** UI design end ***/
+
         this.quickSearchTab.setSelectedTextArea(this.txtHtmlComment);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.getUniqCheckBox().setVisible(true);
         this.quickSearchTab.getUniqCheckBox().addItemListener(encodingItemStateChanged);
 
-        this.txtHtmlComment.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
-        this.txtHtmlComment.setContentType("text/html");
+//        this.txtHtmlComment.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
+//        this.txtHtmlComment.setContentType("text/html");
 
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
@@ -81,22 +99,13 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        scrollHtmlComment = new javax.swing.JScrollPane();
-        txtHtmlComment = new javax.swing.JEditorPane();
-
         setLayout(new java.awt.BorderLayout());
-
-        txtHtmlComment.setEditable(false);
-        scrollHtmlComment.setViewportView(txtHtmlComment);
-
-        add(scrollHtmlComment, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane scrollHtmlComment;
-    private javax.swing.JEditorPane txtHtmlComment;
     // End of variables declaration//GEN-END:variables
-
+    
+    
     public void setMessageFont(Font font) {
         this.txtHtmlComment.setFont(font);
     }
@@ -116,7 +125,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                     @Override
                     protected String doInBackground() throws Exception {
                         publish("...");
-                        String comments[] = HttpUtil.extractHTMLComments(Util.decodeMessage(message.getBodyBytes(), encoding), uniq);
+                        String comments[] = TransUtil.extractHTMLComments(Util.decodeMessage(message.getBodyBytes(), encoding), uniq);
                         return TransUtil.join("\r\n", comments);
                     }
 
@@ -222,7 +231,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             body = BurpWrap.getResponseBody(resInfo, content);
         }
         if (body.length > 0 && mimeHTMLType) {
-            return HttpUtil.existsHTMLComments(Util.getRawStr(body));
+            return TransUtil.extractHTMLComments(Util.getRawStr(body), false).length  > 0;
         } else {
             return false;
         }
@@ -231,5 +240,5 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     public void clearView() {
         this.quickSearchTab.clearView();
     }
-
+        
 }

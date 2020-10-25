@@ -18,6 +18,7 @@ import extend.util.external.TransUtil;
 import extend.util.Util;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,10 +33,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
-import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
-import javax.swing.text.StyledEditorKit;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -53,16 +52,37 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         customizeComponents();
     }
 
-    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
-        @Override
-        public Document createDefaultDocument() {
-            return new HTMLSyntaxDocument();
-        }
-    };
+//    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
+//        @Override
+//        public Document createDefaultDocument() {
+//            return new HTMLSyntaxDocument();
+//        }
+//    };
 
+    private org.fife.ui.rtextarea.RTextScrollPane scrollGeneratorPoC;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtGeneratorPoC;        
+    
     private QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     private void customizeComponents() {
+
+        /*** UI design start ***/
+
+        this.txtGeneratorPoC = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.scrollGeneratorPoC = new org.fife.ui.rtextarea.RTextScrollPane(txtGeneratorPoC);
+
+        this.txtGeneratorPoC.setCodeFoldingEnabled(true);
+        this.txtGeneratorPoC.setClearWhitespaceLinesEnabled(true);
+        this.txtGeneratorPoC.setHighlightCurrentLine(true);       
+        this.txtGeneratorPoC.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtGeneratorPoC.setBackground(SystemColor.text);
+        this.txtGeneratorPoC.setEditable(false);
+//        scrollURaw.setViewportView(txtURaw);
+
+        this.splitGeneratorPoC.setRightComponent(this.scrollGeneratorPoC);
+
+        /*** UI design end ***/
+        
         this.grpGene.add(this.rdoAuto);
         this.grpGene.add(this.rdoUrlencode);
         this.grpGene.add(this.rdoMultipart);
@@ -70,8 +90,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         this.quickSearchTab.setSelectedTextArea(this.txtGeneratorPoC);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
 
-        this.txtGeneratorPoC.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
-        this.txtGeneratorPoC.setContentType("text/html");
+        this.txtGeneratorPoC.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+
+//        this.txtGeneratorPoC.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
+//        this.txtGeneratorPoC.setContentType("text/html");
 
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
@@ -116,8 +138,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         rdoMultipart = new javax.swing.JRadioButton();
         rdoUrlencode = new javax.swing.JRadioButton();
         rdoAuto = new javax.swing.JRadioButton();
-        scrollGeneratorPoC = new javax.swing.JScrollPane();
-        txtGeneratorPoC = new javax.swing.JEditorPane();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -168,7 +188,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 .addComponent(btnCopyClipbord)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSavetoFile)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlButton);
@@ -241,7 +261,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 .addComponent(chkHtml5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkHtml5WithXHeader)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlCheck);
@@ -287,11 +307,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         pnlPoC.add(pnlSelect);
 
         splitGeneratorPoC.setLeftComponent(pnlPoC);
-
-        txtGeneratorPoC.setEditable(false);
-        scrollGeneratorPoC.setViewportView(txtGeneratorPoC);
-
-        splitGeneratorPoC.setBottomComponent(scrollGeneratorPoC);
 
         add(splitGeneratorPoC, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -378,10 +393,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     private javax.swing.JRadioButton rdoMultipart;
     private javax.swing.JRadioButton rdoPlain;
     private javax.swing.JRadioButton rdoUrlencode;
-    private javax.swing.JScrollPane scrollGeneratorPoC;
     private javax.swing.JSplitPane splitGeneratorPoC;
     private javax.swing.JSpinner spnTime;
-    private javax.swing.JEditorPane txtGeneratorPoC;
     // End of variables declaration//GEN-END:variables
 
     public void setMessageFont(Font font) {

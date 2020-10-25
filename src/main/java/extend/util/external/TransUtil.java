@@ -17,14 +17,24 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Base64;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.codec.binary.Base16;
+import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.digest.MurmurHash2;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Comment;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
 import org.mozilla.universalchardet.UniversalDetector;
 
 /**
@@ -136,7 +146,6 @@ public class TransUtil {
         ENTITY.put("yuml", (char) 255); // latin small letter y with diaeresis, U+00FF ISOlat1s
     }
 
-
     public enum DateUnit {
         DAYS, WEEKS, MONTHS, YEARS
     }
@@ -177,7 +186,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
     private final static Pattern PTN_URLENCODE = Pattern.compile("([0-9a-zA-Z\\*_\\+\\.-]|%([0-9a-fA-F]{2}))+");
@@ -248,9 +257,9 @@ public class TransUtil {
         else if (mPunycode.lookingAt()) {
             return EncodePattern.PUNYCODE;
         } // uuencode encode match
-        else if (mUUENCODE.lookingAt()) {
-            return EncodePattern.UUENCODE;
-        } // QuotedPrintable
+//        else if (mUUENCODE.lookingAt()) {
+//            return EncodePattern.UUENCODE;
+//        } // QuotedPrintable
         else if (mQUOTEDPRINTABLE.find()) {
             return EncodePattern.QUOTEDPRINTABLE;
         } // Base64 encode match
@@ -374,26 +383,26 @@ public class TransUtil {
                         }
                         break;
                     // uuencode
-                    case UUENCODE: 
-                        {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = toUudecode(value, applyCharset);
-                            } else {
-                                decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
-                            }
-                        }
-                        break;
+//                    case UUENCODE:
+//                        {
+//                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+//                            if (guessCode != null) {
+//                                applyCharset = guessCode;
+//                                decode = toUudecode(value, applyCharset);
+//                            } else {
+//                                decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
+//                            }
+//                        }
+//                        break;
                     // QuotedPrintable
                     case QUOTEDPRINTABLE: 
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toUnQuotedPrintable(value, applyCharset);
                             } else {
-                                decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1.name());
+                                decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1);
                             }
                         }
                         break;
@@ -405,13 +414,13 @@ public class TransUtil {
                     case BASE64: 
                         {
                             value = value.replaceAll("[\r\n]", ""); // 改行削除
-                            byte[] bytes = Base64.getDecoder().decode(value);
+                            byte[] bytes = TransUtil.toBase64Decode(value);
                             String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
-                                decode = ConvertUtil.toBase64Decode(value, applyCharset);
+                                decode = TransUtil.toBase64Decode(value, applyCharset);
                             } else {
-                                decode = ConvertUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
+                                decode = TransUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
                             }
                         }
                         break;
@@ -419,13 +428,41 @@ public class TransUtil {
                     case BASE64_URLSAFE: 
                         {
                             value = value.replaceAll("[\r\n]", ""); // 改行削除
-                            byte[] bytes = Base64.getUrlDecoder().decode(value);
+                            byte[] bytes = TransUtil.toBase64URLSafeDecode(value);
                             String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
-                                decode = ConvertUtil.toBase64URLSafeDecode(value, applyCharset);
+                                decode = TransUtil.toBase64URLSafeDecode(value, applyCharset);
                             } else {
-                                decode = ConvertUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
+                                decode = TransUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
+                            }
+                        }
+                        break;
+                    // Base32 encode
+                    case BASE32:
+                        {
+                            value = value.replaceAll("[\r\n]", ""); // 改行削除
+                            byte[] bytes = TransUtil.toBase32Decode(value);
+                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = TransUtil.toBase32Decode(value, applyCharset);
+                            } else {
+                                decode = TransUtil.toBase32Decode(value, StandardCharsets.ISO_8859_1);
+                            }
+                        }
+                        break;
+                    // Base16 encode
+                    case BASE16:
+                        {
+                            value = value.replaceAll("[\r\n]", ""); // 改行削除
+                            byte[] bytes = TransUtil.toBase16Decode(value);
+                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            if (guessCode != null) {
+                                applyCharset = guessCode;
+                                decode = TransUtil.toBase16Decode(value, applyCharset);
+                            } else {
+                                decode = TransUtil.toBase16Decode(value, StandardCharsets.ISO_8859_1);
                             }
                         }
                         break;
@@ -481,6 +518,249 @@ public class TransUtil {
             selectCharset.replace(0, selectCharset.length(), applyCharset);
         }
         return decode;
+    }
+
+    public static String toBase64Encode(String src, Charset charset) {
+        return toBase64Encode(src, charset, true);
+    }
+
+    public static String toBase64Encode(String src, Charset charset, boolean padding) {
+        if (padding) {
+            byte bytes[] = Base64.encodeBase64(src.getBytes(charset));
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(Base64.encodeBase64(src.getBytes(charset)));
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase64Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase64Encode(src, charset, true);
+    }
+
+    public static String toBase64Encode(String src, String charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes[] = Base64.encodeBase64(src.getBytes(charset));
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(Base64.encodeBase64(src.getBytes(charset)));
+           return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase64Encode(byte[] src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase64Encode(src, true);
+    }
+
+    public static String toBase64Encode(byte[] src, boolean padding) {
+        if (padding) {
+            byte bytes[] = Base64.encodeBase64(src);
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(Base64.encodeBase64(src));
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase64Decode(String str, Charset charset) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return new String(bytes, charset);
+    }
+
+    public static String toBase64Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = Base64.decodeBase64(str);
+        return new String(bytes, charset);
+    }
+
+    public static byte[] toBase64Decode(String str) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return bytes;
+    }
+
+    public static String toBase64URLSafeEncode(String src, Charset charset) {
+        byte bytes[] = Base64.encodeBase64(src.getBytes(charset), false, true);
+        return Util.getRawStr(bytes);
+    }
+
+    public static String toBase64URLSafeEncode(String src, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = Base64.encodeBase64(src.getBytes(charset), false, true);
+        return Util.getRawStr(bytes);
+    }
+
+    public static String toBase64URLSafeEncode(byte[] src) {
+        byte bytes[] = Base64.encodeBase64(src, false, true);
+        return Util.getRawStr(bytes);
+    }
+
+    public static String toBase64URLSafeDecode(String str, Charset charset) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return new String(bytes, charset);
+    }
+
+    public static String toBase64URLSafeDecode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = Base64.decodeBase64(str);
+        return new String(bytes, charset);
+    }
+
+    public static byte[] toBase64URLSafeDecode(String str) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return bytes;
+    }
+
+    public static String toBase32Encode(String src, Charset charset) {
+        return toBase32Encode(src, charset, true);
+    }
+
+    public static String toBase32Encode(String src, Charset charset, boolean padding) {
+        if (padding) {
+            byte bytes[] = encodeBase32(src.getBytes(charset));
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(encodeBase32(src.getBytes(charset)));
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase32Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase32Encode(src, charset, true);
+    }
+
+    public static String toBase32Encode(String src, String charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes[] = encodeBase32(src.getBytes(charset));
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(encodeBase32(src.getBytes(charset)));
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase32Encode(byte[] src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase32Encode(src, true);
+    }
+
+    public static String toBase32Encode(byte[] src, boolean padding) {
+        if (padding) {
+            byte bytes[] = encodeBase32(src);
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(encodeBase32(src));
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase32Decode(String str, Charset charset) {
+        byte bytes[] = decodeBase32(str);
+        return new String(bytes, charset);
+    }
+
+    public static String toBase32Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = decodeBase32(str);
+        return new String(bytes, charset);
+    }
+
+    public static byte[] toBase32Decode(String str) {
+        byte bytes[] = decodeBase32(str);
+        return bytes;
+    }
+
+    private static byte[] encodeBase32(byte[] bytes) {
+        final Base32 b32 = new Base32();
+        return b32.encode(bytes);
+    }
+
+    private static byte[] decodeBase32(String str) {
+        final Base32 b32 = new Base32();
+        return b32.decode(str);
+    }
+
+    public static String toBase16Encode(String src, Charset charset) {
+        return toBase16Encode(src, charset, true);
+    }
+
+    public static String toBase16Encode(String src, Charset charset, boolean padding) {
+        if (padding) {
+            byte bytes[] = encodeBase16(src.getBytes(charset));
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(encodeBase16(src.getBytes(charset)));
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase16Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase16Encode(src, charset, true);
+    }
+
+    public static String toBase16Encode(String src, String charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes[] = encodeBase16(src.getBytes(charset));
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = removePadding(encodeBase16(src.getBytes(charset)));
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase16Encode(byte[] src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase32Encode(src, true);
+    }
+
+    public static String toBase16Encode(byte[] src, boolean padding) {
+        if (padding) {
+            byte bytes[] = encodeBase16(src);
+            return Util.getRawStr(bytes);
+        } else {
+            byte bytes[] = encodeBase16(src);
+            return Util.getRawStr(bytes);
+        }
+    }
+
+    public static String toBase16Decode(String str, Charset charset) {
+        byte bytes[] = decodeBase16(str);
+        return new String(bytes, charset);
+    }
+
+    public static String toBase16Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = decodeBase16(str);
+        return new String(bytes, charset);
+    }
+
+    public static byte[] toBase16Decode(String str) {
+        byte bytes[] = decodeBase16(str);
+        return bytes;
+    }
+
+    private static byte[] encodeBase16(byte[] bytes) {
+        final Base16 b16 = new Base16();
+        return b16.encode(bytes);
+    }
+
+    private static byte[] decodeBase16(String str) {
+        final Base16 b16 = new Base16();
+        return b16.decode(str);
+    }
+
+    private static byte[] removePadding(byte[] vaule) {
+        int len = vaule.length;
+        while (len > 0 && vaule[len - 1] == (byte)'=') {
+            len--;
+        }
+        return Arrays.copyOf(vaule, len);
     }
 
     public static String toPunycodeEncode(String value) {
@@ -1188,54 +1468,81 @@ public class TransUtil {
         }
     }
 
-    public static String toUudecode(String input, String encoding) throws UnsupportedEncodingException {
-        return toMimeUtilDecode(input, encoding, "uuencode");
-    }
+//    public static String toUudecode(String input, String encoding) throws UnsupportedEncodingException {
+//        return toMimeUtilDecode(input, encoding, "uuencode");
+//    }
 
-    public static String toUnQuotedPrintable(String input, String encoding) throws UnsupportedEncodingException {
-        return toMimeUtilDecode(input, encoding, "quoted-printable");
-    }
-
-    protected static String toMimeUtilDecode(String input, String encoding, String translate) throws UnsupportedEncodingException {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        try (InputStream in = javax.mail.internet.MimeUtility.decode(new ByteArrayInputStream(input.getBytes(encoding)), translate)) {
-            byte[] buf = new byte[1024];
-            int length = -1;
-            while ((length = in.read(buf)) > -1) {
-                bout.write(buf, 0, length);
-            }
-        } catch (javax.mail.MessagingException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
+    public static String toUnQuotedPrintable(String input, String charset) throws UnsupportedEncodingException {
+        try {
+            org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
+            return codec.decode(input, charset);
         }
-        return new String(bout.toByteArray(), encoding);
-    }
-
-    public static String toUuencode(String input, String encoding) throws UnsupportedEncodingException {
-        return toMimeUtilEncode(input, encoding, "uuencode");
-    }
-
-    public static String toQuotedPrintable(String input, String encoding) throws UnsupportedEncodingException {
-        return toMimeUtilEncode(input, encoding, "quoted-printable");
-    }
-
-    protected static String toMimeUtilEncode(String input, String encoding, String translate) throws UnsupportedEncodingException {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        try (OutputStream out = javax.mail.internet.MimeUtility.encode(bout, translate)) {
-            byte[] buf = new byte[1024];
-            ByteArrayInputStream bin = new ByteArrayInputStream(input.getBytes(encoding));
-            int length = -1;
-            while ((length = bin.read(buf)) > -1) {
-                out.write(buf, 0, length);
-            }
-        } catch (javax.mail.MessagingException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        catch (org.apache.commons.codec.DecoderException ex) {
+            return input;
         }
-        return new String(bout.toByteArray(), encoding);
     }
+
+    public static String toUnQuotedPrintable(String input, Charset charset) {
+        try {
+            org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
+            return codec.decode(input, charset);
+        }
+        catch (org.apache.commons.codec.DecoderException ex) {
+            return input;
+        }
+    }
+
+//    protected static String toMimeUtilDecode(String input, String encoding, String translate) throws UnsupportedEncodingException {
+//        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+//        try (InputStream in = javax.mail.internet.MimeUtility.decode(new ByteArrayInputStream(input.getBytes(encoding)), translate)) {
+//            byte[] buf = new byte[1024];
+//            int length = -1;
+//            while ((length = in.read(buf)) > -1) {
+//                bout.write(buf, 0, length);
+//            }
+//        } catch (javax.mail.MessagingException ex) {
+//            logger.log(Level.SEVERE, ex.getMessage(), ex);
+//        } catch (IOException ex) {
+//            logger.log(Level.SEVERE, ex.getMessage(), ex);
+//        }
+//        return new String(bout.toByteArray(), encoding);
+//    }
+
+//    public static String toUuencode(String input, String encoding) throws UnsupportedEncodingException {
+//        return toMimeUtilEncode(input, encoding, "uuencode");
+//    }
+//
+//    public static String toQuotedPrintable(String input, String encoding) throws UnsupportedEncodingException {
+//        return toMimeUtilEncode(input, encoding, "quoted-printable");
+//    }
+
+    public static String toQuotedPrintable(String input, String charset) throws UnsupportedEncodingException, org.apache.commons.codec.DecoderException {
+        org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
+        return codec.encode(input, charset);
+    }
+
+    public static String toQuotedPrintable(String input, Charset charset) throws org.apache.commons.codec.DecoderException {
+        org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
+        return codec.encode(input, charset);
+    }
+
+//
+//    protected static String toMimeUtilEncode(String input, String encoding, String translate) throws UnsupportedEncodingException {
+//        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+//        try (OutputStream out = javax.mail.internet.MimeUtility.encode(bout, translate)) {
+//            byte[] buf = new byte[1024];
+//            ByteArrayInputStream bin = new ByteArrayInputStream(input.getBytes(encoding));
+//            int length = -1;
+//            while ((length = bin.read(buf)) > -1) {
+//                out.write(buf, 0, length);
+//            }
+//        } catch (javax.mail.MessagingException ex) {
+//            logger.log(Level.SEVERE, ex.getMessage(), ex);
+//        } catch (IOException ex) {
+//            logger.log(Level.SEVERE, ex.getMessage(), ex);
+//        }
+//        return new String(bout.toByteArray(), encoding);
+//    }
 
     public static String toBigBin(String value) {
         return "0b" + (new BigInteger(toRadixTrim(value), toPrefixRadix(value))).toString(2);
@@ -1699,4 +2006,356 @@ public class TransUtil {
         return charset;
     }
 
+    public static String[] extractHTMLComments(String message, boolean uniqe) {
+        List<String> lists = new ArrayList();
+        Document doc = Jsoup.parse(message);
+        lists.addAll(extractHTMLComments(doc));
+        if (uniqe) {
+            List<String> uniqList = Util.toUniqList(lists);
+            return uniqList.toArray(new String[uniqList.size()]);
+        } else {
+            return lists.toArray(new String[lists.size()]);
+        }
+    }
+
+    private static List<String> extractHTMLComments(Node node) {
+        List<String> lists = new ArrayList();
+        for (int i = 0; i < node.childNodeSize(); i++) {
+            Node child = node.childNode(i);
+            if (child instanceof Comment) {
+                Comment comment = (Comment)child;
+                lists.add("<!--" + comment.getData() + "-->");
+            }
+            else {
+               lists.addAll(extractHTMLComments(child));
+            }
+        }
+        return lists;
+    }
+
+    /**
+     * HashUtil
+     **/
+ 
+    /**
+     * MD2値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static String toMd2Sum(byte[] body, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.md2Hex(body).toUpperCase();
+        else
+            return DigestUtils.md2Hex(body);
+    }
+
+    /**
+     * MD2値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static String toMd2Sum(String str, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.md2Hex(str).toUpperCase();
+        else
+            return DigestUtils.md2Hex(str);
+    }
+
+    /**
+     * MD2値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toMd2Sum(String str, String enc, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase)
+            return DigestUtils.md2Hex(str.getBytes(enc)).toUpperCase();
+        else
+            return DigestUtils.md2Hex(str.getBytes(enc));
+    }
+
+    /**
+     * MD5値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static String toMd5Sum(byte[] body, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.md5Hex(body).toUpperCase();
+        else
+            return DigestUtils.md5Hex(body);
+    }
+
+    /**
+     * MD5値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static String toMd5Sum(String str, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.md5Hex(str).toUpperCase();
+        else
+            return DigestUtils.md5Hex(str);
+    }
+
+    /**
+     * MD5値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toMd5Sum(String str, String enc, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase)
+            return DigestUtils.md5Hex(str.getBytes(enc)).toUpperCase();
+        else
+            return DigestUtils.md5Hex(str.getBytes(enc));
+    }
+
+    /**
+     * SHA-1値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static String toSHA1Sum(byte[] body, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha1Hex(body).toUpperCase();
+        else
+            return DigestUtils.sha1Hex(body);
+    }
+
+    /**
+     * SHA-1値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static String toSHA1Sum(String str, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha1Hex(str).toUpperCase();
+        else
+            return DigestUtils.sha1Hex(str);
+    }
+
+    /**
+     * SHA-1値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA1Sum(String str, String enc, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase)
+            return DigestUtils.sha1Hex(str.getBytes(enc)).toUpperCase();
+        else
+            return DigestUtils.sha1Hex(str.getBytes(enc));
+    }
+
+    /**
+     * SHA-256値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static String toSHA256Sum(byte[] body, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha256Hex(body).toUpperCase();
+        else
+            return DigestUtils.sha256Hex(body);
+    }
+
+    /**
+     * SHA-256値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static String toSHA256Sum(String str, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha256Hex(str).toUpperCase();
+        else
+            return DigestUtils.sha256Hex(str);
+    }
+
+    /**
+     * SHA-256値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA256Sum(String str, String enc, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase)
+            return DigestUtils.sha256Hex(str.getBytes(enc)).toUpperCase();
+        else
+            return DigestUtils.sha256Hex(str.getBytes(enc));
+    }
+
+    /**
+     * SHA-384値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static String toSHA384Sum(byte[] body, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha384Hex(body).toUpperCase();
+        else
+            return DigestUtils.sha384Hex(body);
+    }
+
+    /**
+     * SHA-384値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static String toSHA384Sum(String str, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha384Hex(str).toUpperCase();
+        else
+            return DigestUtils.sha384Hex(str);
+    }
+
+    /**
+     * SHA-384値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA384Sum(String str, String enc, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase)
+            return DigestUtils.sha384Hex(str.getBytes(enc)).toUpperCase();
+        else
+            return DigestUtils.sha384Hex(str.getBytes(enc));
+    }
+
+    /**
+     * SHA-512値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static String toSHA512Sum(byte[] body, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha512Hex(body).toUpperCase();
+        else
+            return DigestUtils.sha512Hex(body);
+    }
+
+    /**
+     * SHA-512値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static String toSHA512Sum(String str, boolean upperCase) {
+        if (upperCase)
+            return DigestUtils.sha512Hex(str).toUpperCase();
+        else
+            return DigestUtils.sha512Hex(str);
+    }
+
+    /**
+     * SHA-512値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA512Sum(String str, String enc, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase)
+            return DigestUtils.sha512Hex(str.getBytes(enc)).toUpperCase();
+        else
+            return DigestUtils.sha512Hex(str.getBytes(enc));
+    }
+
+   /**
+     * MurmurHash値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static int toMurmurHash32(byte[] body) {
+        return MurmurHash2.hash32(body, body.length);
+    }
+
+    /**
+     * MurmurHash値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static int toMurmurHash32(String str) {
+        return MurmurHash2.hash32(str);        
+    }
+
+    /**
+     * MurmurHash値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static int toMurmurHash32(String str, String enc)
+            throws UnsupportedEncodingException {
+        byte [] body = str.getBytes(enc);
+        return MurmurHash2.hash32(body, body.length);                
+    }    
+
+   /**
+     * MurmurHash値の取得
+     *
+     * @param body 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toMurmurHash64(byte[] body) {
+        return MurmurHash2.hash64(body, body.length);
+    }
+
+    /**
+     * MurmurHash値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static long toMurmurHash64(String str) {
+        return MurmurHash2.hash64(str);        
+    }
+
+    /**
+     * MurmurHash値の取得
+     *
+     * @param str 対象文字列
+     * @param enc エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toMurmurHash64(String str, String enc)
+            throws UnsupportedEncodingException {
+        byte [] body = str.getBytes(enc);
+        return MurmurHash2.hash64(body, body.length);                
+    }    
+    
+    
 }

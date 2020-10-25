@@ -1,5 +1,6 @@
 package yagura.view;
 
+import yagura.model.IKeywordHighlighter;
 import extend.view.base.RegexItem;
 import yagura.model.KeywordHighlighter;
 import yagura.model.StartEndPosion;
@@ -20,6 +21,7 @@ import extend.util.external.TransUtil;
 import javax.swing.event.EventListenerList;
 import yagura.model.QuickSearchEvent;
 import yagura.model.QuickSearchListener;
+import yagura.model.RSyntaxKeywordHighlighter;
 
 /**
  *
@@ -227,8 +229,8 @@ public class QuickSearchTab extends javax.swing.JPanel {
         this.ignoreCase = this.mnuIgnoreCase.isSelected();
     }//GEN-LAST:event_popQuickPopupMenuWillBecomeVisible
 
-    private final KeywordHighlighter highlightKeyword = new KeywordHighlighter();
-
+    private IKeywordHighlighter highlightKeyword;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnQuckOption;
     private javax.swing.JButton btnQuickBack;
@@ -255,6 +257,13 @@ public class QuickSearchTab extends javax.swing.JPanel {
 
     public void setSelectedTextArea(javax.swing.text.JTextComponent textArea) {
         this.txtTextArea = textArea;
+        this.highlightKeyword = new KeywordHighlighter();        
+        this.txtTextArea.setHighlighter(this.highlightKeyword);
+    }
+    
+    public void setSelectedTextArea(org.fife.ui.rtextarea.RTextArea textArea) {
+        this.txtTextArea = textArea;
+        this.highlightKeyword = new RSyntaxKeywordHighlighter();
         this.txtTextArea.setHighlighter(this.highlightKeyword);
     }
 
@@ -300,8 +309,8 @@ public class QuickSearchTab extends javax.swing.JPanel {
             this.cmbQuckSearch.setVisible(true);
         }
 
-        if (ta.getHighlighter() instanceof KeywordHighlighter) {
-            KeywordHighlighter high = (KeywordHighlighter) ta.getHighlighter();
+        if (ta.getHighlighter() instanceof IKeywordHighlighter) {
+            IKeywordHighlighter high = (IKeywordHighlighter) ta.getHighlighter();
             if (this.keyword != null
                     && this.smartMatch == this.mnuSmartMatch.isSelected()
                     && this.regex == this.mnuRegex.isSelected()
@@ -357,8 +366,8 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private boolean ignoreCase = false;
 
     protected void quickSearch(javax.swing.text.JTextComponent ta, String keyword) {
-        if (ta.getHighlighter() instanceof KeywordHighlighter) {
-            KeywordHighlighter hc = (KeywordHighlighter) ta.getHighlighter();
+        if (ta.getHighlighter() instanceof IKeywordHighlighter) {
+            IKeywordHighlighter hc = (IKeywordHighlighter) ta.getHighlighter();
             this.smartMatch = this.mnuSmartMatch.isSelected();
             this.regex = this.mnuRegex.isSelected();
             this.ignoreCase = this.mnuIgnoreCase.isSelected();

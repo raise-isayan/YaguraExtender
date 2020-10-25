@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>burp</groupId>
     <artifactId>YaguraExtender</artifactId>
-    <version>2.0</version>
+    <version>2.1</version>
     <packaging>jar</packaging>
     <properties>
-        <releaseVersion>${project.version}.4.0</releaseVersion>
+        <releaseVersion>${project.version}.0.0</releaseVersion>
         <compilerArgument>-Xlint:unchecked</compilerArgument>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
@@ -127,7 +127,7 @@
         <dependency>
             <groupId>burp</groupId>
             <artifactId>BurpExtlib</artifactId>
-            <version>2.0.14</version>
+            <version>2.1.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
@@ -138,10 +138,20 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+<!--
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.3</version>
+        </dependency>
+-->
+
+        <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+            <type>jar</type>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.jdatepicker/jdatepicker -->
@@ -178,6 +188,12 @@
             <artifactId>httpunit</artifactId>
             <version>1.7</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.13.1</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
 </project>

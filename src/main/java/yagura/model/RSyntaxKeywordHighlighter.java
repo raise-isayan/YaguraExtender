@@ -23,8 +23,12 @@ import javax.swing.text.View;
  *
  * @author isayan
  */
-public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHighlighter {
-    private final static Logger logger = Logger.getLogger(KeywordHighlighter.class.getName());
+public class RSyntaxKeywordHighlighter extends org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaHighlighter implements IKeywordHighlighter {
+    private final static Logger logger = Logger.getLogger(RSyntaxKeywordHighlighter.class.getName());
+
+    public RSyntaxKeywordHighlighter() {
+
+    }
 
     private String keyword = "";
     private int position = 0;
@@ -180,5 +184,5 @@ public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHi
             }
         }
     }
-
+        
 }
