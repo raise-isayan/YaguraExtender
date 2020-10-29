@@ -71,7 +71,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         this.txtGeneratorPoC = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollGeneratorPoC = new org.fife.ui.rtextarea.RTextScrollPane(txtGeneratorPoC);
 
-        this.txtGeneratorPoC.setCodeFoldingEnabled(true);
         this.txtGeneratorPoC.setClearWhitespaceLinesEnabled(true);
         this.txtGeneratorPoC.setHighlightCurrentLine(true);       
         this.txtGeneratorPoC.setCurrentLineHighlightColor(SystemColor.textHighlight);

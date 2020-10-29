@@ -12,6 +12,7 @@ import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.SystemColor;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -24,6 +25,7 @@ import java.util.regex.Pattern;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import passive.JWTObject;
 import passive.JWTToken;
 import yagura.model.UniversalViewProperty;
@@ -62,18 +64,81 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
 //    private final JSONView jsonHeaderView = new JSONView();
 //    private final JSONView jsonPayloadView = new JSONView();
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;        
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollPayloadJSON;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;        
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;        
+    
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-//        this.pnlHeader.add(this.jsonHeaderView, java.awt.BorderLayout.CENTER);
-//        this.pnlPayload.add(this.jsonPayloadView, java.awt.BorderLayout.CENTER);
 
+        /*** UI design start ***/
+
+        /* Header */
+        
+        this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
+
+        this.txtHeaderJSON.setCodeFoldingEnabled(true);
+        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
+        this.txtHeaderJSON.setHighlightCurrentLine(false);       
+        this.txtHeaderJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtHeaderJSON.setBackground(SystemColor.text);
         this.txtHeaderJSON.setEditable(false);
-        this.txtHeaderJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
-        this.txtHeaderJSON.setContentType("text/json");
+        this.txtHeaderJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 
+//        scrollURaw.setViewportView(txtURaw);
+
+        this.scrollHeaderJSON.setLineNumbersEnabled(false);
+        this.pnlHeader.add(this.scrollHeaderJSON, java.awt.BorderLayout.CENTER);
+
+        /* Payload */
+        
+        this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
+
+        this.txtPayloadJSON.setCodeFoldingEnabled(true);
+        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
+        this.txtPayloadJSON.setHighlightCurrentLine(false);       
+        this.txtPayloadJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtPayloadJSON.setBackground(SystemColor.text);
         this.txtPayloadJSON.setEditable(false);
-        this.txtPayloadJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
-        this.txtPayloadJSON.setContentType("text/json");
+        this.txtPayloadJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+//        scrollURaw.setViewportView(txtURaw);
+
+        this.pnlPayload.add(this.scrollPayloadJSON, java.awt.BorderLayout.CENTER);
+
+        /* Signature */
+
+        this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
+
+        this.txtSignatureSign.setCodeFoldingEnabled(true);
+        this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
+        this.txtSignatureSign.setHighlightCurrentLine(false);       
+        this.txtSignatureSign.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtSignatureSign.setBackground(SystemColor.text);
+        this.txtSignatureSign.setEditable(false);
+//        scrollURaw.setViewportView(txtURaw);
+
+        this.scrollSignatureSign.setLineNumbersEnabled(false);
+
+        this.pnlSignature.add(this.scrollSignatureSign, java.awt.BorderLayout.CENTER);
+        
+        /*** UI design end ***/
+
+//        this.txtHeaderJSON.setEditable(false);
+//        this.txtHeaderJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
+//        this.txtHeaderJSON.setContentType("text/json");
+
+//        this.txtPayloadJSON.setEditable(false);
+//        this.txtPayloadJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
+//        this.txtPayloadJSON.setContentType("text/json");
 
     }
 
@@ -92,16 +157,10 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         pnlJWT = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
         lblHeader = new javax.swing.JLabel();
-        scrollHeaderJSON = new javax.swing.JScrollPane();
-        txtHeaderJSON = new javax.swing.JTextPane();
         pnlPayload = new javax.swing.JPanel();
         lblPayload = new javax.swing.JLabel();
-        scrollPayloadJSON = new javax.swing.JScrollPane();
-        txtPayloadJSON = new javax.swing.JTextPane();
-        Signature = new javax.swing.JPanel();
+        pnlSignature = new javax.swing.JPanel();
         lblSignature = new javax.swing.JLabel();
-        scrollSignatureJSON = new javax.swing.JScrollPane();
-        txtSignatureSign = new javax.swing.JEditorPane();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -131,10 +190,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         lblHeader.setText("Header");
         pnlHeader.add(lblHeader, java.awt.BorderLayout.PAGE_START);
 
-        scrollHeaderJSON.setViewportView(txtHeaderJSON);
-
-        pnlHeader.add(scrollHeaderJSON, java.awt.BorderLayout.CENTER);
-
         pnlJWT.add(pnlHeader, java.awt.BorderLayout.NORTH);
 
         pnlPayload.setLayout(new java.awt.BorderLayout());
@@ -142,26 +197,15 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         lblPayload.setText("Payload");
         pnlPayload.add(lblPayload, java.awt.BorderLayout.PAGE_START);
 
-        scrollPayloadJSON.setViewportView(txtPayloadJSON);
-
-        pnlPayload.add(scrollPayloadJSON, java.awt.BorderLayout.CENTER);
-
         pnlJWT.add(pnlPayload, java.awt.BorderLayout.CENTER);
 
-        Signature.setPreferredSize(new java.awt.Dimension(108, 60));
-        Signature.setLayout(new java.awt.BorderLayout());
+        pnlSignature.setPreferredSize(new java.awt.Dimension(108, 60));
+        pnlSignature.setLayout(new java.awt.BorderLayout());
 
         lblSignature.setText("Signature");
-        Signature.add(lblSignature, java.awt.BorderLayout.PAGE_START);
+        pnlSignature.add(lblSignature, java.awt.BorderLayout.PAGE_START);
 
-        scrollSignatureJSON.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        txtSignatureSign.setEditable(false);
-        scrollSignatureJSON.setViewportView(txtSignatureSign);
-
-        Signature.add(scrollSignatureJSON, java.awt.BorderLayout.CENTER);
-
-        pnlJWT.add(Signature, java.awt.BorderLayout.SOUTH);
+        pnlJWT.add(pnlSignature, java.awt.BorderLayout.SOUTH);
 
         add(pnlJWT, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -187,7 +231,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Signature;
     private javax.swing.JButton btnCopy;
     private javax.swing.JComboBox<String> cmbParam;
     private javax.swing.JLabel lblHeader;
@@ -197,12 +240,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private javax.swing.JPanel pnlJWT;
     private javax.swing.JPanel pnlParam;
     private javax.swing.JPanel pnlPayload;
-    private javax.swing.JScrollPane scrollHeaderJSON;
-    private javax.swing.JScrollPane scrollPayloadJSON;
-    private javax.swing.JScrollPane scrollSignatureJSON;
-    private javax.swing.JTextPane txtHeaderJSON;
-    private javax.swing.JTextPane txtPayloadJSON;
-    private javax.swing.JEditorPane txtSignatureSign;
+    private javax.swing.JPanel pnlSignature;
     // End of variables declaration//GEN-END:variables
 
     public void setMessageFont(Font font) {

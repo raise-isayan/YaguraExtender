@@ -90,34 +90,30 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 
         this.txtInputRaw.setEditable(true);
+        this.txtInputRaw.setCodeFoldingEnabled(false);
         this.txtInputRaw.setHyperlinksEnabled(false);
         this.txtInputRaw.setHighlightCurrentLine(false);
+        this.txtInputRaw.setHyperlinksEnabled(false);
         this.txtInputRaw.setBackground(SystemColor.text);
-        this.txtInputRaw.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtInputRawCaretUpdate(evt);
-            }
-        });
-        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
 
+        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
+//        this.tabbetInput.addTab("Raw", this.scrollInputRaw);
+        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
+        
 //        scrollURaw.setViewportView(txtURaw);
 //        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
-        this.tabbetInput.addTab("Raw", this.scrollInputRaw);
-
+        
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 
         this.txtOutputRaw.setEditable(false);
         this.txtOutputRaw.setHyperlinksEnabled(false);
         this.txtOutputRaw.setHighlightCurrentLine(false);
+        this.txtOutputRaw.setHyperlinksEnabled(false);
         this.txtOutputRaw.setBackground(SystemColor.text);
-        this.txtOutputRaw.addCaretListener(new javax.swing.event.CaretListener() {
-            public void caretUpdate(javax.swing.event.CaretEvent evt) {
-                txtOutputRawCaretUpdate(evt);
-            }
-        });
+
         this.scrollOutputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputRaw);
         this.pnlOutputRaw.add(this.scrollOutputRaw, BorderLayout.CENTER);
-
+        
         this.txtOutputFormat = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtOutputFormat.setEditable(false);
         this.txtOutputFormat.setCodeFoldingEnabled(true);
@@ -127,10 +123,23 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtOutputFormat.setCurrentLineHighlightColor(SystemColor.textHighlight);
 
         this.scrollOutputFormat = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputFormat);
-
+        
         /**
          * * UI design end **
          */
+
+        this.txtInputRaw.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtInputRawCaretUpdate(evt);
+            }
+        });
+
+        this.txtOutputRaw.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtOutputRawCaretUpdate(evt);
+            }
+        });
+        
         this.pnlTransButton.setLayout(new VerticalFlowLayout());
 
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
@@ -179,15 +188,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtDec.setText("0");
         this.txtHex.setDocument(HEX_DOC);
         this.txtHex.setText("0");
-        // Drag and Drop
-        this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
-
-            @Override
-            public void setData(byte[] rawData) {
-                setInputText(Util.getRawStr(rawData));
-            }
-
-        });
+//        // Drag and Drop
+//        this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
+//
+//            @Override
+//            public void setData(byte[] rawData) {
+//                setInputText(Util.getRawStr(rawData));
+//            }
+//
+//        });
         this.doStateDecodeChange();
 
     }
@@ -288,6 +297,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         cmbHistory = new javax.swing.JComboBox<>();
         splitConvert = new javax.swing.JSplitPane();
         tabbetInput = new javax.swing.JTabbedPane();
+        pnlInputRaw = new javax.swing.JPanel();
         tabbetOutput = new javax.swing.JTabbedPane();
         pnlOutputRaw = new javax.swing.JPanel();
         pnlStatus = new javax.swing.JPanel();
@@ -822,6 +832,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 tabbetInputStateChanged(evt);
             }
         });
+
+        pnlInputRaw.setLayout(new java.awt.BorderLayout());
+        tabbetInput.addTab("Raw", pnlInputRaw);
+
         splitConvert.setTopComponent(tabbetInput);
 
         pnlOutputRaw.setLayout(new java.awt.BorderLayout());
@@ -2166,6 +2180,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnInputfileActionPerformed
 
     private void tabbetInputStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbetInputStateChanged
+        if (this.txtInputRaw == null) return;
         if (this.chkRawMode.isSelected()) {
             this.setInputByte(Util.getRawByte(this.txtInputRaw.getText()));
         } else {
@@ -2673,6 +2688,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JPanel pnlILLUTF8;
     private javax.swing.JPanel pnlInput;
     private javax.swing.JPanel pnlInputOutput;
+    private javax.swing.JPanel pnlInputRaw;
     private javax.swing.JPanel pnlJSHexEnc;
     private javax.swing.JPanel pnlLang;
     private javax.swing.JPanel pnlMail;

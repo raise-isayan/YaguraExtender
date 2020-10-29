@@ -85,7 +85,7 @@ public class UniversalViewProperty {
     }
 
     @Expose
-    private int dispayMaxLength = 3000000;
+    private int dispayMaxLength = 10000000;
     
     public int getDispayMaxLength() {
         return this.dispayMaxLength;

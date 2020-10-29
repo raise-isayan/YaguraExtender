@@ -3,6 +3,7 @@ package yagura.view;
 import burp.BurpExtender;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
+import extend.util.ConvertUtil;
 import extend.view.base.HttpMessage;
 import extend.view.base.HttpRequest;
 import extend.view.base.HttpResponse;
@@ -14,9 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -155,37 +159,36 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
             }
             this.txtURaw.setText("");
             if (this.content != null) {
-                txtURaw.setText(Util.decodeMessage(content, encoding));
-                txtURaw.setCaretPosition(0);
-                quickSearchTab.clearViewAndSearch();
+//                txtURaw.setText(Util.decodeMessage(content, encoding));
+//                txtURaw.setCaretPosition(0);
+//                quickSearchTab.clearViewAndSearch();
+               
+                SwingWorker swText = new SwingWorker<String, Object>() {
+                    @Override
+                    protected String doInBackground() throws Exception {
+                        // Raw
+                        publish("...");
+                        return Util.decodeMessage(content, encoding);
+                    }
 
-                
-//                SwingWorker swText = new SwingWorker<String, Object>() {
-//                    @Override
-//                    protected String doInBackground() throws Exception {
-//                        // Raw
-//                        publish("...");
-//                        return Util.decodeMessage(content, encoding);
-//                    }
-//
-//                    protected void process(List<Object> chunks) {
-//                        txtURaw.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
-//                    }
-//
-//                    protected void done() {
-//                        try {
-//                            txtURaw.setText(get());
-//                            txtURaw.setCaretPosition(0);
-//                            quickSearchTab.clearViewAndSearch();
-//                            //          quickSearchTab.clearView();
-//                        } catch (InterruptedException ex) {
-//                            logger.log(Level.SEVERE, null, ex);
-//                        } catch (ExecutionException ex) {
-//                            logger.log(Level.SEVERE, null, ex);
-//                        }
-//                    }
-//                };
-//                swText.execute();
+                    protected void process(List<Object> chunks) {
+                        txtURaw.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+                    }
+
+                    protected void done() {
+                        try {
+                            txtURaw.setText(get());
+                            txtURaw.setCaretPosition(0);
+                            quickSearchTab.clearViewAndSearch();
+                            //          quickSearchTab.clearView();
+                        } catch (InterruptedException ex) {
+                            logger.log(Level.SEVERE, null, ex);
+                        } catch (ExecutionException ex) {
+                            logger.log(Level.SEVERE, null, ex);
+                        }
+                    }
+                };
+                swText.execute();
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
@@ -238,9 +241,6 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         CODE_MAP.put("text/html", SyntaxConstants.SYNTAX_STYLE_HTML);
         CODE_MAP.put("text/json", SyntaxConstants.SYNTAX_STYLE_JSON_WITH_COMMENTS);
         CODE_MAP.put("application/json", SyntaxConstants.SYNTAX_STYLE_JSON);
-//        CODE_MAP.put("text/xml", SyntaxConstants.SYNTAX_STYLE_HTML);
-//        CODE_MAP.put("application/xml", SyntaxConstants.SYNTAX_STYLE_HTML);
-
         CODE_MAP.put("text/xml", SyntaxConstants.SYNTAX_STYLE_XML);
         CODE_MAP.put("application/xml", SyntaxConstants.SYNTAX_STYLE_XML);
     }

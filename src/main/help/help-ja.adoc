@@ -20,15 +20,21 @@ Language/link:help.html[English]
 * asciidoc (http://asciidoc.org/) 
 
 .利用ライブラリ
+
+* Apache common codec
+** https://commons.apache.org/proper/commons-codec/
+** Apache License 2.0
+** http://www.apache.org/licenses/
+
+* RSyntaxTextArea
+** http://bobbylight.github.io/RSyntaxTextArea/
+** BSD 3-Clause license
+** https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE
+
 * gson
 ** https://github.com/google/gson
 ** Apache License 2.0
 ** https://github.com/google/gson/blob/master/LICENSE
-
-* Java Mail
-** https://javaee.github.io/javamail/
-** CDDL 1.1, GPL 2.0 License
-** https://github.com/javaee/javamail/blob/master/LICENSE.txt
 
 * JDatePicker
 ** https://github.com/JDatePicker/JDatePicker
@@ -37,13 +43,8 @@ Language/link:help.html[English]
 
 * Universal Chardet for java
 ** https://code.google.com/archive/p/juniversalchardet/
-** MPL 1.1, GPL 2.0 License
+** MPL 1.1
 ** https://code.google.com/archive/p/juniversalchardet/
-
-* gson
-** https://github.com/google/gson
-** Apache +License
-** https://github.com/google/gson/blob/master/LICENSE
 
 * Use Icon
 ** http://www.famfamfam.com/lab/icons/silk/

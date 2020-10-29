@@ -57,7 +57,6 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         this.txtHtmlComment = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollHtmlComment = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHtmlComment);
 
-        this.txtHtmlComment.setCodeFoldingEnabled(true);
         this.txtHtmlComment.setClearWhitespaceLinesEnabled(true);
         this.txtHtmlComment.setHighlightCurrentLine(true);       
         this.txtHtmlComment.setCurrentLineHighlightColor(SystemColor.textHighlight);
