@@ -1933,32 +1933,43 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblBin" min="-2" pref="55" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblBin" min="-2" pref="55" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtBin" pref="1169" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblHex" min="-2" pref="55" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtHex" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblOct" min="-2" pref="55" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtOct" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="lblDec" min="-2" pref="55" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="txtDec" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtBin" pref="1169" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="lblHex" min="-2" pref="55" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtHex" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnBinCopy" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnOctCopy" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnDecCopy" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnHexCopy" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblOct" min="-2" pref="55" max="-2" attributes="0"/>
+                              <Component id="lblRadix32" min="-2" pref="55" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtOct" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="lblDec" min="-2" pref="55" max="-2" attributes="0"/>
+                              <Component id="txtRadix32" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtDec" max="32767" attributes="0"/>
+                              <Component id="btnRadix32Copy" min="-2" max="-2" attributes="0"/>
                           </Group>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnBinCopy" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnOctCopy" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnDecCopy" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnHexCopy" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -1987,11 +1998,19 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblHex" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtHex" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblHex" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtHex" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="btnHexCopy" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="842" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="txtRadix32" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblRadix32" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnRadix32Copy" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="819" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2015,6 +2034,11 @@
             <Component class="javax.swing.JLabel" name="lblHex">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Hex:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblRadix32">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Radix32:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtBin">
@@ -2051,7 +2075,17 @@
                 <Property name="text" type="java.lang.String" value="0"/>
               </Properties>
               <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtHexActionPerformed"/>
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtHexKeyReleased"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="txtRadix32">
+              <Properties>
+                <Property name="horizontalAlignment" type="int" value="4"/>
+                <Property name="text" type="java.lang.String" value="0"/>
+              </Properties>
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtRadix32KeyReleased"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnBinCopy">
@@ -2084,6 +2118,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHexCopyActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnRadix32Copy">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Copy"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRadix32CopyActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

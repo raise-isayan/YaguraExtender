@@ -72,6 +72,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final SwingUtil.IntegerDocument OCT_DOC = new SwingUtil.IntegerDocument(8);
     private final SwingUtil.IntegerDocument DEC_DOC = new SwingUtil.IntegerDocument(10);
     private final SwingUtil.IntegerDocument HEX_DOC = new SwingUtil.IntegerDocument(16);
+    private final SwingUtil.IntegerDocument RDX32_DOC = new SwingUtil.IntegerDocument(32);
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollInputRaw;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtInputRaw;
@@ -188,6 +189,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtDec.setText("0");
         this.txtHex.setDocument(HEX_DOC);
         this.txtHex.setText("0");
+        this.txtRadix32.setDocument(RDX32_DOC);
+        this.txtRadix32.setText("0");
 //        // Drag and Drop
 //        this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
 //
@@ -392,14 +395,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         lblOct = new javax.swing.JLabel();
         lblDec = new javax.swing.JLabel();
         lblHex = new javax.swing.JLabel();
+        lblRadix32 = new javax.swing.JLabel();
         txtBin = new javax.swing.JTextField();
         txtOct = new javax.swing.JTextField();
         txtDec = new javax.swing.JTextField();
         txtHex = new javax.swing.JTextField();
+        txtRadix32 = new javax.swing.JTextField();
         btnBinCopy = new javax.swing.JButton();
         btnOctCopy = new javax.swing.JButton();
         btnDecCopy = new javax.swing.JButton();
         btnHexCopy = new javax.swing.JButton();
+        btnRadix32Copy = new javax.swing.JButton();
         pnlCertificate = new javax.swing.JPanel();
         btnExport = new javax.swing.JButton();
         rdoConvertPEM = new javax.swing.JRadioButton();
@@ -1503,6 +1509,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         lblHex.setText("Hex:");
 
+        lblRadix32.setText("Radix32:");
+
         txtBin.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtBin.setText("0");
         txtBin.addActionListener(new java.awt.event.ActionListener() {
@@ -1534,9 +1542,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         txtHex.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtHex.setText("0");
+        txtHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHexActionPerformed(evt);
+            }
+        });
         txtHex.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtHexKeyReleased(evt);
+            }
+        });
+
+        txtRadix32.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtRadix32.setText("0");
+        txtRadix32.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtRadix32KeyReleased(evt);
             }
         });
 
@@ -1568,6 +1589,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
 
+        btnRadix32Copy.setText("Copy");
+        btnRadix32Copy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRadix32CopyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabBaseBaseConverterLayout = new javax.swing.GroupLayout(tabBaseBaseConverter);
         tabBaseBaseConverter.setLayout(tabBaseBaseConverterLayout);
         tabBaseBaseConverterLayout.setHorizontalGroup(
@@ -1576,27 +1604,35 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 .addContainerGap()
                 .addGroup(tabBaseBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
-                        .addComponent(lblBin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(tabBaseBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
+                                .addComponent(lblBin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1169, Short.MAX_VALUE))
+                            .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
+                                .addComponent(lblHex, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtHex))
+                            .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
+                                .addComponent(lblOct, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtOct))
+                            .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
+                                .addComponent(lblDec, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDec)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1169, Short.MAX_VALUE))
+                        .addGroup(tabBaseBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnBinCopy, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnOctCopy, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnDecCopy, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnHexCopy, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
-                        .addComponent(lblHex, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblRadix32, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtHex))
-                    .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
-                        .addComponent(lblOct, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtRadix32)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtOct))
-                    .addGroup(tabBaseBaseConverterLayout.createSequentialGroup()
-                        .addComponent(lblDec, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDec)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabBaseBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBinCopy, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnOctCopy, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnDecCopy, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnHexCopy, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(btnRadix32Copy)))
                 .addContainerGap())
         );
         tabBaseBaseConverterLayout.setVerticalGroup(
@@ -1619,10 +1655,16 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     .addComponent(btnDecCopy))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabBaseBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblHex)
-                    .addComponent(txtHex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(tabBaseBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblHex)
+                        .addComponent(txtHex, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnHexCopy))
-                .addContainerGap(842, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabBaseBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRadix32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRadix32)
+                    .addComponent(btnRadix32Copy))
+                .addContainerGap(819, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Base Converter", tabBaseBaseConverter);
@@ -2506,6 +2548,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtOct.setText(value.toString(8));
         this.txtDec.setText(value.toString(10));
         this.txtHex.setText(value.toString(16));
+        this.txtRadix32.setText(value.toString(32));
     }//GEN-LAST:event_txtBinKeyReleased
 
     private void txtOctKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOctKeyReleased
@@ -2513,6 +2556,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtBin.setText(value.toString(2));
         this.txtDec.setText(value.toString(10));
         this.txtHex.setText(value.toString(16));
+        this.txtRadix32.setText(value.toString(32));
     }//GEN-LAST:event_txtOctKeyReleased
 
     private void txtDecKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDecKeyReleased
@@ -2520,6 +2564,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtBin.setText(value.toString(2));
         this.txtOct.setText(value.toString(8));
         this.txtHex.setText(value.toString(16));
+        this.txtRadix32.setText(value.toString(32));
     }//GEN-LAST:event_txtDecKeyReleased
 
     private void txtHexKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHexKeyReleased
@@ -2527,6 +2572,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtBin.setText(value.toString(2));
         this.txtOct.setText(value.toString(8));
         this.txtDec.setText(value.toString(10));
+        this.txtRadix32.setText(value.toString(32));
     }//GEN-LAST:event_txtHexKeyReleased
 
     private void btnBinCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinCopyActionPerformed
@@ -2577,6 +2623,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         }
     }//GEN-LAST:event_btnMurmurHash64ActionPerformed
 
+    private void txtRadix32KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRadix32KeyReleased
+        BigInteger value = RDX32_DOC.getValue();
+        this.txtBin.setText(value.toString(2));
+        this.txtOct.setText(value.toString(8));
+        this.txtDec.setText(value.toString(10));
+        this.txtHex.setText(value.toString(16));
+    }//GEN-LAST:event_txtRadix32KeyReleased
+
+    private void btnRadix32CopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRadix32CopyActionPerformed
+        SwingUtil.systemClipboardCopy(this.txtRadix32.getText());
+    }//GEN-LAST:event_btnRadix32CopyActionPerformed
+
+    private void txtHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHexActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHexActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
@@ -2618,6 +2680,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JButton btnOutputCopy;
     private javax.swing.JButton btnOutputToInput;
     private javax.swing.JButton btnOutputfile;
+    private javax.swing.JButton btnRadix32Copy;
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JButton btnSmartDecode;
     private javax.swing.JButton btnSmartFormat;
@@ -2661,6 +2724,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JLabel lblOct;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPositionStatus;
+    private javax.swing.JLabel lblRadix32;
     private javax.swing.JLabel lblmaximum;
     private javax.swing.JPanel pnlBase64;
     private javax.swing.JPanel pnlBase64URLSafe;
@@ -2788,6 +2852,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JButton txtListCopy;
     private javax.swing.JTextField txtNumFormat;
     private javax.swing.JTextField txtOct;
+    private javax.swing.JTextField txtRadix32;
     private javax.swing.JTextArea txtStatus;
     private javax.swing.JTextField txtStoreFile;
     private javax.swing.JTextField txtStorePassword;
