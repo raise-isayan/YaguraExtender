@@ -74,6 +74,8 @@ public class BurpExtender extends BurpExtenderImpl
     public BurpExtender() {
     }
 
+    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
+
     private static final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
 
     /**
@@ -197,8 +199,9 @@ public class BurpExtender extends BurpExtenderImpl
     };
 
     @Override
-    public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
-        super.registerExtenderCallbacks(cb);
+    public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
+        super.registerExtenderCallbacks(callbacks);
+        callbacks.setExtensionName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
@@ -226,12 +229,12 @@ public class BurpExtender extends BurpExtenderImpl
                 logger.log(Level.SEVERE, null, ex);
             }
 
-            setSendToMenu(new SendToMenu(cb, this.option.getSendToProperty()));
-            cb.registerHttpListener(this);
-            cb.registerProxyListener(this);
-            cb.addSuiteTab(this.tabbetOption);
-            cb.registerExtensionStateListener(this);
-            cb.registerContextMenuFactory(this.getSendToMenu());
+            setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
+            callbacks.registerHttpListener(this);
+            callbacks.registerProxyListener(this);
+            callbacks.addSuiteTab(this.tabbetOption);
+            callbacks.registerExtensionStateListener(this);
+            callbacks.registerContextMenuFactory(this.getSendToMenu());
             this.tabbetOption.setProperty(this.option);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
             this.registerView();
@@ -853,23 +856,24 @@ public class BurpExtender extends BurpExtenderImpl
         boolean[] cols = new boolean[colcount];
         for (int i = 0; i < cols.length; i++) {
             cols[i] = false;
-            try {
+            if (String.class.isAssignableFrom(table.getColumnClass(i))) {
                 table.getColumnClass(i).asSubclass(String.class);
                 cols[i] = true;
-            } catch (ClassCastException ex) {
-                try {
-                    table.getColumnClass(i).asSubclass(Integer.class);
-                    cols[i] = true;
-                } catch (ClassCastException ex2) {
-                }
+            }
+            else if (Integer.class.isAssignableFrom(table.getColumnClass(i))) {
+                table.getColumnClass(i).asSubclass(Integer.class);
+                cols[i] = true;
+            }
+            else if (Long.class.isAssignableFrom(table.getColumnClass(i))) {
+                table.getColumnClass(i).asSubclass(Long.class);
+                cols[i] = true;
             }
             if (cols[i]) {
                 export.append(table.getColumnName(i));
                 export.append("\t");
             }
         }
-        export.append("\r\n");
-        int[] rows = table.getSelectedRows();
+        export.append("\r\n");        int[] rows = table.getSelectedRows();
         for (int k = 0; k < rows.length; k++) {
             for (int i = 0; i < colcount; i++) {
                 if (cols[i]) {
@@ -917,6 +921,13 @@ public class BurpExtender extends BurpExtenderImpl
             }
         } catch (MalformedURLException ex) {
             logger.log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void sendToAddToExcludeScope(IContextMenuInvocation contextMenu, IHttpRequestResponse[] messageInfoList) {
+        for (IHttpRequestResponse messageInfo : messageInfoList) {
+            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo);
+            BurpExtender.getCallbacks().excludeFromScope(reqInfo.getUrl());
         }
     }
 

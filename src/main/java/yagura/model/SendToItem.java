@@ -34,7 +34,8 @@ public class SendToItem {
         PASTE_FROM_CLIPBOARD,
         MESSAGE_INFO_COPY,
         ADD_HOST_TO_INCLUDE_SCOPE,
-        ADD_HOST_TO_EXCLUDE_SCOPE;
+        ADD_HOST_TO_EXCLUDE_SCOPE,
+        ADD_TO_EXCLUDE_SCOPE;
 
         @Override
         public String toString() {

@@ -79,6 +79,10 @@ public class SendToExtend extends SendToMenuItem {
                 BurpExtender.getInstance().sendToAddHostToExcludeScope(this.contextMenu, messageInfo);
                 break;
             }
+            case ADD_TO_EXCLUDE_SCOPE: {
+                BurpExtender.getInstance().sendToAddToExcludeScope(this.contextMenu, messageInfo);
+                break;
+            }    
             default:
                 // ここには現状こない
                 break;

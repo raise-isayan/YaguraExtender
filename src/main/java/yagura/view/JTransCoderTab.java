@@ -88,7 +88,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         /**
          * * UI design start **
          */
-        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+//        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(20, 60);
 
         this.txtInputRaw.setEditable(true);
         this.txtInputRaw.setCodeFoldingEnabled(false);

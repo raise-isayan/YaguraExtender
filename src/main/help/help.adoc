@@ -442,6 +442,8 @@ image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
         Add URL scheme and host to include in scope.
     add host to exclude scope:: 
         Add URL scheme and host to exclude in scope.
+    add exclude scope:: 
+        Add URL to exclude in scope.
 
 === Logging tabs
 

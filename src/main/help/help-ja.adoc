@@ -437,6 +437,8 @@ image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
           URLのスキームとホストをinclude in scopeに追加します。
      add host to exclude scope:: 
           URLのスキームとホストをexclude in scopeに追加します。
+     add exclude scope:: 
+          URLをexclude in scopeに追加します。
 
 === Loggingタブ
 

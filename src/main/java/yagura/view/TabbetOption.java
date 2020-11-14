@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JTabbedPane;
 import java.util.Timer;
 import java.util.TimerTask;
+import yagura.Config;
 import yagura.Version;
 import yagura.model.AutoResponderProperty;
 import yagura.model.UniversalViewProperty;
@@ -87,7 +88,8 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
      */
     @Override
     public String getTabCaption() {
-        return Version.getInstance().getProjectName();
+//        return Version.getInstance().getProjectName();
+        return Config.getTabCaption();
     }
 
     /**

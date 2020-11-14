@@ -19,6 +19,10 @@ public class Config {
         return new File(getUserHome(), getExtensionDir());
     }
 
+    public static String getTabCaption() {
+        return "Yagura";
+    }
+        
     public static String getExtensionDir() {
         return ".yaguraextender";
     }
