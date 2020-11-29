@@ -186,7 +186,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
     private final static Pattern PTN_URLENCODE = Pattern.compile("([0-9a-zA-Z\\*_\\+\\.-]|%([0-9a-fA-F]{2}))+");
@@ -488,6 +488,10 @@ public class TransUtil {
                     // ZLIB
                     case ZLIB:
                         decode = Util.getRawStr(ConvertUtil.decompressZlib(Util.encodeMessage(value, charset)));
+                        break;
+                    // ZLIB_NOWRAP
+                    case ZLIB_NOWRAP:
+                        decode = Util.getRawStr(ConvertUtil.decompressZlib(Util.encodeMessage(value, charset), true));
                         break;
                     // UTF7
                     case UTF7:

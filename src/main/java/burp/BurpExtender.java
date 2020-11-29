@@ -248,6 +248,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     @Override
     public void extensionUnloaded() {
+        System.gc();
 //        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventPostProcessor(dispatcher);
     }
 

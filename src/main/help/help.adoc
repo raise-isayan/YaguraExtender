@@ -625,6 +625,9 @@ Gzip::
 ZLIB::
     Performs compression and decompression by ZLIB.
 
+ZLIB(with Gzip)::
+    Performs compression and decompression by ZLIB(Supports GZIP compatible compression).
+
 UTF-7:: 
     Encodes and decodes UTF-7.
 

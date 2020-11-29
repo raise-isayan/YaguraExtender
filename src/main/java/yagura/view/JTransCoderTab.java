@@ -74,9 +74,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final SwingUtil.IntegerDocument HEX_DOC = new SwingUtil.IntegerDocument(16);
     private final SwingUtil.IntegerDocument RDX32_DOC = new SwingUtil.IntegerDocument(32);
 
-    private org.fife.ui.rtextarea.RTextScrollPane scrollInputRaw;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtInputRaw;
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollInputRaw;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtInputRaw;
 
+    private javax.swing.JScrollPane scrollInputRaw;
+    private javax.swing.JTextArea txtInputRaw;
+    
+    
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
 
@@ -89,16 +93,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
          * * UI design start **
          */
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(20, 60);
-
+        this.txtInputRaw = new javax.swing.JTextArea();
+        
         this.txtInputRaw.setEditable(true);
-        this.txtInputRaw.setCodeFoldingEnabled(false);
-        this.txtInputRaw.setHyperlinksEnabled(false);
-        this.txtInputRaw.setHighlightCurrentLine(false);
-        this.txtInputRaw.setHyperlinksEnabled(false);
+//        this.txtInputRaw.setCodeFoldingEnabled(false);
+//        this.txtInputRaw.setHyperlinksEnabled(false);
+//        this.txtInputRaw.setHighlightCurrentLine(false);
+//        this.txtInputRaw.setHyperlinksEnabled(false);
         this.txtInputRaw.setBackground(SystemColor.text);
 
-        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
+//        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
+        this.scrollInputRaw = new javax.swing.JScrollPane();
+        this.scrollInputRaw.setViewportView(this.txtInputRaw);
 //        this.tabbetInput.addTab("Raw", this.scrollInputRaw);
         this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
         
@@ -268,6 +274,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlCompress = new javax.swing.JPanel();
         rdoGzip = new javax.swing.JRadioButton();
         rdoZLIB = new javax.swing.JRadioButton();
+        rdoZLIB_NOWRAP = new javax.swing.JRadioButton();
         pnlILLUTF8 = new javax.swing.JPanel();
         rdoUTF7 = new javax.swing.JRadioButton();
         rdoILLUTF8 = new javax.swing.JRadioButton();
@@ -633,8 +640,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlCompress.add(rdoGzip);
 
         rdoEncodeDecodeGrp.add(rdoZLIB);
-        rdoZLIB.setText("ZLIB");
+        rdoZLIB.setText("Zlib");
         pnlCompress.add(rdoZLIB);
+
+        rdoEncodeDecodeGrp.add(rdoZLIB_NOWRAP);
+        rdoZLIB_NOWRAP.setText("Zlib(with Gzip)");
+        pnlCompress.add(rdoZLIB_NOWRAP);
 
         pnlEncodeDecode.add(pnlCompress);
 
@@ -1957,6 +1968,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 encode = Util.getRawStr(ConvertUtil.compressGzip(Util.encodeMessage(value, this.getSelectEncode())));
             } else if (this.rdoZLIB.isSelected()) {
                 encode = Util.getRawStr(ConvertUtil.compressZlib(Util.encodeMessage(value, this.getSelectEncode())));
+            } else if (this.rdoZLIB_NOWRAP.isSelected()) {
+                encode = Util.getRawStr(ConvertUtil.compressZlib(Util.encodeMessage(value, this.getSelectEncode()), true));
             } else if (this.rdoUTF7.isSelected()) {
                 encode = TransUtil.toUTF7Encode(value);
             } else if (this.rdoILLUTF8.isSelected()) {
@@ -2029,6 +2042,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             encodePattern = TransUtil.EncodePattern.GZIP;
         } else if (this.rdoZLIB.isSelected()) {
             encodePattern = TransUtil.EncodePattern.ZLIB;
+        } else if (this.rdoZLIB_NOWRAP.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.ZLIB_NOWRAP;
         } else if (this.rdoUTF7.isSelected()) {
             encodePattern = TransUtil.EncodePattern.UTF7;
         } else if (this.rdoILLUTF8.isSelected()) {
@@ -2821,6 +2836,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JRadioButton rdoUrl;
     private javax.swing.JRadioButton rdoUrlUnicode;
     private javax.swing.JRadioButton rdoZLIB;
+    private javax.swing.JRadioButton rdoZLIB_NOWRAP;
     private javax.swing.JScrollPane scrollGenerate;
     private javax.swing.JScrollPane scrollStatus;
     private javax.swing.JSplitPane splitConvert;
