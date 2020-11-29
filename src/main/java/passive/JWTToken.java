@@ -1,17 +1,13 @@
 package passive;
 
-import extend.util.CertUtil;
 import extend.util.Util;
+import extend.util.external.JsonUtil;
 import extend.view.base.CaptureItem;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,19 +15,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.Signature;
-import java.security.SignatureException;
+import static passive.JsonToken.decodeUrlSafe;
 
 /**
  *
  * @author isayan
  */
-public class JWTToken {
+public class JWTToken extends JsonToken {
     private final static Logger logger = Logger.getLogger(JWTToken.class.getName());
 
+    private final static JWTToken instance = new JWTToken();
+
+    public JWTToken getInstance() {
+        return instance; 
+    }
+    
     public JWTToken() {
     }
-
+    
     public JWTToken(JWTToken token) {
         this.algorithm = token.algorithm;
         this.header = token.header;
@@ -42,6 +43,7 @@ public class JWTToken {
 
     public enum Algorithm {
         NONE(""),
+        // JWT
         HS256("HmacSHA256"),
         HS384("HmacSHA384"),
         HS512("HmacSHA512"),
@@ -54,8 +56,8 @@ public class JWTToken {
         PS256(""),
         PS384(""),
         PS512("");
-
-        private String signAlgorithm;
+ 
+        private final String signAlgorithm;
 
         Algorithm(String signAlgorithm) {
             this.signAlgorithm = signAlgorithm;
@@ -68,9 +70,9 @@ public class JWTToken {
         public static Algorithm parseValue(String s) {
             return Algorithm.valueOf(s.toUpperCase());
         }
-
+                
     };
-
+        
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
 
     private static Algorithm findAlgorithm(String header) {
@@ -89,36 +91,55 @@ public class JWTToken {
 
     private final static Pattern PTN_JWT = Pattern.compile("(e(?:[0-9a-zA-Z_-]){10,})\\.(e(?:[0-9a-zA-Z_-]){2,})\\.((?:[0-9a-zA-Z_-]){30,})?");
 
-    public static boolean isJWTFormat(String value) {
+    public static boolean isTokenFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
         if (m.matches()) {
-            return (JWTToken.parseJWTToken(value, true) != null);
+            if (instance.parseToken(value, true) != null) {
+                return true;            
+            }
         }
         return false;
     }
 
-    public static boolean containsJWTFormat(String value) {
+    @Override
+    public boolean isSignFormat() {
+        switch (this.algorithm) {
+            case HS256:
+            case HS384:
+            case HS512:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public static boolean containsTokenFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
         if (m.find()) {
-            return (JWTToken.parseJWTToken(m.group(0), true) != null);
+            return isTokenFormat(m.group(0));
         }
         return false;
     }
 
-    public static CaptureItem[] findJWT(String value) {
+    public static CaptureItem[] findToken(String value) {
         List<CaptureItem> tokens = new ArrayList<>();
         Matcher m = PTN_JWT.matcher(value);
         while (m.find()) {
             String capture = m.group(0);
-            if (isJWTFormat(capture)) {
+            if (isTokenFormat(capture)) {
                 CaptureItem item = new CaptureItem();
                 item.setCaptureValue(capture);
                 item.setStart(m.start());
                 item.setEnd(m.end());
-                tokens.add(item);
+                tokens.add(item);            
             }
         }
         return tokens.toArray(new CaptureItem[0]);
+    }
+    
+    @Override
+    public boolean isValidFormat(String value) {
+        return isTokenFormat(value);
     }
 
     private Algorithm algorithm;
@@ -127,8 +148,8 @@ public class JWTToken {
     private String signature;
     private byte[] signatureByte;
 
-    public static JWTToken parseJWTToken(String value, boolean matches) {
-        JWTToken jwt = null;
+    public JWTToken parseToken(String value, boolean matches) {
+        JWTToken token = null;
         Matcher m = PTN_JWT.matcher(value);
         boolean find = false;
         if (matches) {
@@ -138,45 +159,17 @@ public class JWTToken {
         }
 
         if (find) {
-            jwt = new JWTToken();
+            token = new JWTToken();
             String header = m.group(1);
             String payload = m.group(2);
             String signature = (m.group(3) != null) ? m.group(3) : "";
-            jwt.algorithm = findAlgorithm(header);
-            jwt.header = header;
-            jwt.payload = payload;
-            jwt.signature = signature;
-            jwt.signatureByte = decodeUrlSafeByte(signature);
+            token.algorithm = findAlgorithm(header);
+            token.header = header;
+            token.payload = payload;
+            token.signature = signature;
+            token.signatureByte = decodeUrlSafeByte(signature);
         }
-        return jwt;
-    }
-
-    public static byte[] decodeUrlSafeByte(String value) {
-        return Base64.getUrlDecoder().decode(value);
-    }
-
-    protected static String decodeUrlSafe(byte[] value) {
-        return new String(Base64.getUrlDecoder().decode(value), StandardCharsets.UTF_8);
-    }
-
-    protected static String decodeUrlSafe(String value) {
-        return new String(decodeUrlSafeByte(value), StandardCharsets.UTF_8);
-    }
-
-    public static byte[] encodeUrlSafeByte(byte[] value) {
-        return Base64.getUrlEncoder().withoutPadding().encode(value);
-    }
-
-    public static byte[] encodeUrlSafeByte(String value) {
-        return encodeUrlSafeByte(value.getBytes(StandardCharsets.UTF_8));
-    }
-
-    public static String encodeUrlSafe(byte[] value) {
-        return new String(encodeUrlSafeByte(value), StandardCharsets.UTF_8);
-    }
-
-    protected static String encodeUrlSafe(String value) {
-        return new String(encodeUrlSafeByte(value), StandardCharsets.UTF_8);
+        return token;
     }
 
     /**
@@ -238,79 +231,157 @@ public class JWTToken {
         return this.signatureByte;
     }
 
-    public static boolean signatureEqual(final JWTToken token, final String secret) throws NoSuchAlgorithmException {
-        return signatureEqual(token.getAlgorithm(), token.getData(), token.getSignatureByte(), secret);
+    /**
+     * @param pretty
+     * @return the header
+     */
+    public String getHeaderJSON(boolean pretty) {
+        return JsonUtil.prettyJson(decodeUrlSafe(this.getHeader()), pretty);
     }
 
-    public static boolean signatureEqual(Algorithm algo, final String encrypt, final byte[] signature, final String secret) throws NoSuchAlgorithmException {
+    /**
+     * @param pretty
+     * @return the payload
+     */
+    public String getPayloadJSON(boolean pretty) {
+        return JsonUtil.prettyJson(decodeUrlSafe(this.getPayload()), pretty);
+    }
+    
+    public boolean signatureEqual(final String secret) {
+        return signatureEqual(this.algorithm, Util.getRawByte(this.getData()), this.signatureByte, Util.getRawByte(secret));
+    }
+
+    public static boolean signatureEqual(Algorithm algo, String encrypt, final byte[] signature, String secret) {
+        return signatureEqual(algo, Util.getRawByte(encrypt), signature,  Util.getRawByte(secret));
+    }
+    
+    protected static boolean signatureEqual(Algorithm algo, byte [] encrypt, final byte[] signature, final byte [] secret) {
         try {
             switch (algo) {
                 case HS256:
                 case HS384:
                 case HS512:
                     Mac mac = Mac.getInstance(algo.getSignAlgorithm());
-                    final SecretKeySpec sk = new SecretKeySpec(Util.getRawByte(secret), algo.getSignAlgorithm());
+                    final SecretKeySpec sk = new SecretKeySpec(secret, algo.getSignAlgorithm());
                     mac.init(sk);
                     mac.reset();
-                    final byte[] mac_bytes = mac.doFinal(Util.getRawByte(encrypt));
+                    final byte[] mac_bytes = mac.doFinal(encrypt);
                     return Arrays.equals(mac_bytes, signature);
                 default:
-                    throw new NoSuchAlgorithmException(algo.name());
+                    break;
             }
         } catch (InvalidKeyException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, null, ex);
         }
         return false;
     }
 
-    public static byte[] sign(Algorithm algo, final String encrypt, final String secret) throws NoSuchAlgorithmException {
+    public static String jwtHeader(Algorithm algo) {
+        return String.format("{\"alg\":\"%s\",\"typ\":\"JWT\"}", algo.toString());
+    }
+
+//    public static String jwtHeader2(Algorithm algo) {
+//        return String.format("{\"typ\":\"JWT\",\"alg\":\"%s\"}", algo.toString());
+//    }
+        
+    public static byte [] sign(Algorithm algo, String payload, String secret) throws NoSuchAlgorithmException {
+        return sign(algo, payload, Util.getRawByte(secret));
+    }
+
+    public static byte [] sign(Algorithm algo, final String payload, final byte [] secret) throws NoSuchAlgorithmException {
         try {
             switch (algo) {
                 case NONE:
-                    return new byte[]{};
+                    return new byte [] {};
                 case HS256:
                 case HS384:
                 case HS512: {
                     Mac mac = Mac.getInstance(algo.getSignAlgorithm());
-                    final SecretKeySpec sk = new SecretKeySpec(Util.getRawByte(secret), algo.getSignAlgorithm());
+                    final SecretKeySpec sk = new SecretKeySpec(secret, algo.getSignAlgorithm());
                     mac.init(sk);
                     mac.reset();
-                    final byte[] mac_bytes = mac.doFinal(Util.getRawByte(encrypt));
-                    return mac_bytes;
+                    String data = encodeUrlSafe(jwtHeader(algo)) + "." + payload;
+                    final byte[] mac_bytes = mac.doFinal(Util.getRawByte(data));
+                    return mac_bytes;                
                 }
-                case RS256:
-                case RS384:
-                case RS512: {
-                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
-                    PrivateKey privateKey = CertUtil.loadPrivateKey(secret);
-                    rsaSignature.initSign(privateKey);
-                    rsaSignature.update(Util.getRawByte(encrypt));
-                    byte[] mac_bytes = rsaSignature.sign();
-                    return mac_bytes;
-                }
-                case ES256:
-                case ES384:
-                case ES512: {
-                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
-                    PrivateKey privateKey = CertUtil.loadPrivateKey(secret);
-                    rsaSignature.initSign(privateKey);
-                    rsaSignature.update(Util.getRawByte(encrypt));
-                    byte[] mac_bytes = rsaSignature.sign();
-                    return mac_bytes;
-                }
+//                case RS256:
+//                case RS384:
+//                case RS512: {
+//                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
+//                    PrivateKey privateKey = CertUtil.loadPrivateKey(Util.getRawStr(secret));
+//                    rsaSignature.initSign(privateKey);
+//                    String data = encodeUrlSafe(jwtHeader(algo)) + "." + payload;
+//                    rsaSignature.update(Util.getRawByte(data));
+//                    byte[] mac_bytes = rsaSignature.sign();
+//                    return mac_bytes;                
+//                }
+//                case ES256:
+//                case ES384:
+//                case ES512: {
+//                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
+//                    PrivateKey privateKey = CertUtil.loadPrivateKey(Util.getRawStr(secret));
+//                    String data = encodeUrlSafe(jwtHeader(algo)) + "." + payload;
+//                    rsaSignature.update(Util.getRawByte(data));
+//                    byte[] mac_bytes = rsaSignature.sign();
+//                    return mac_bytes;                                    
+//                }
                 default:
                     throw new NoSuchAlgorithmException(algo.name());
             }
         } catch (InvalidKeyException ex) {
             logger.log(Level.SEVERE, null, ex);
-        } catch (SignatureException ex) {
-            logger.log(Level.SEVERE, null, ex);
         } catch (GeneralSecurityException ex) {
             logger.log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, null, ex);
+//        } catch (SignatureException ex) {
+//            logger.log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            logger.log(Level.SEVERE, null, ex);
         }
         throw new NoSuchAlgorithmException(algo.name());
     }
+    
+    private final static String [] algNone = {"none", "NONE", "None"}; 
+    
+    public static String [] generateNoneToken(String baseJWT) {
+        final List<String> tokens = new ArrayList<>();
+        JWTToken jwt = instance.parseToken(baseJWT, true);
+        if (jwt != null) {
+            for (String alg : algNone) {
+                String decodeHeader = decodeUrlSafe(jwt.getHeader());
+                Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
+                StringBuffer header = new StringBuffer();
+                if (m.find()) {
+                    m.appendReplacement(header, String.format("\"alg\":\"%s\"", alg));
+                }
+                m.appendTail(header);
+                String token = encodeUrlSafe(header.toString()) + "." + jwt.getPayload() + ".";
+                tokens.add(token);
+            }
+        }
+        return tokens.toArray(new String[0]);
+    }
 
+    private final static Algorithm [] algHS = {Algorithm.HS256, Algorithm.HS384, Algorithm.HS512}; 
+    
+    public static String [] generatePublicToHashToken(String baseToken, byte [] publicKey) {
+        final List<String> tokens = new ArrayList<>();
+        JWTToken jwt = instance.parseToken(baseToken, true);
+        if (jwt != null) {
+            for (Algorithm alg : algHS) {
+                byte [] sign;
+                try {
+                    sign = JWTToken.sign(alg, jwt.getPayload(), publicKey);
+                    String signature = JWTToken.encodeUrlSafe(sign);  
+                    String result = JWTToken.encodeUrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;  
+                    tokens.add(result);
+                } catch (NoSuchAlgorithmException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return tokens.toArray(new String[0]);
+    }
+    
 }

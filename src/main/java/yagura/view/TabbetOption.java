@@ -11,7 +11,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import yagura.Version;
 import yagura.model.AutoResponderProperty;
-import yagura.model.IKeywordHighlighter.java;
 import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
 import yagura.model.MatchAlertProperty;

@@ -26,7 +26,6 @@ import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import passive.JWTObject;
 import passive.JWTToken;
 import yagura.model.UniversalViewProperty;
 
@@ -37,6 +36,8 @@ import yagura.model.UniversalViewProperty;
 public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
 
+    private JWTToken jwtinstance = new JWTToken();
+    
     private IMessageEditorController controller = null;
 
     private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
@@ -212,13 +213,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     private void cmbParamItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbParamItemStateChanged
         String key = (String) this.cmbParam.getSelectedItem();
-        JWTObject jwt = this.jwtMap.get(key);
-        if (jwt != null) {
+        JWTToken token = this.tokenMap.get(key);
+        if (token != null) {
 //            this.jsonHeaderView.setMessage(jwt.getHeaderJSON(true));
 //            this.jsonPayloadView.setMessage(jwt.getPayloadJSON(true));
-            this.txtHeaderJSON.setText(jwt.getHeaderJSON(true));
-            this.txtPayloadJSON.setText(jwt.getPayloadJSON(true));
-            this.txtSignatureSign.setText(jwt.getSignature());
+            this.txtHeaderJSON.setText(token.getHeaderJSON(true));
+            this.txtPayloadJSON.setText(token.getPayloadJSON(true));
+            this.txtSignatureSign.setText(token.getSignature());
         }
     }//GEN-LAST:event_cmbParamItemStateChanged
 
@@ -290,14 +291,14 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<String> headers = reqInfo.getHeaders();
             for (String h : headers) {
-                if (JWTObject.containsJWTFormat(h)) {
+                if (JWTToken.containsTokenFormat(h)) {
                     return true;
                 }
             }
             List<IParameter> parameters = reqInfo.getParameters();
             for (IParameter p : parameters) {
                 if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
-                    find = JWTObject.isJWTFormat(p.getValue());
+                    find = JWTToken.isTokenFormat(p.getValue());
                     if (find) {
                         break;
                     }
@@ -305,7 +306,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             }
             if (!find) {
                 String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
-                find = JWTObject.containsJWTFormat(body);
+                find = JWTToken.containsTokenFormat(body);
             }
         }
         return find;
@@ -314,12 +315,12 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
     private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
 
-    private final HashMap<String, JWTObject> jwtMap = new HashMap<>();
+    private final HashMap<String, JWTToken> tokenMap = new HashMap<>();
 
     private final static String[] TYPES = {"(URL)", "(Body)", "(Cookie)", "(XML)", "-", "(file)", "(JSON)"};
 
     public void setJWT(byte[] message) {
-        this.jwtMap.clear();
+        this.tokenMap.clear();
         this.cmbParam.removeAllItems();
         IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(message);
         List<String> headers = reqInfo.getHeaders();
@@ -327,9 +328,12 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             Matcher m = HEADER.matcher(h);
             if (m.matches()) {
                 try {
-                    JWTToken jwto = JWTToken.parseJWTToken(m.group(2), false);
-                    jwtMap.put(h, new JWTObject(jwto));
-                    this.cmbParam.addItem(h);
+                    String value = m.group(2);
+                    JWTToken token = jwtinstance.parseToken(value, false);
+                    if (token != null) {
+                        tokenMap.put(h, token);
+                        this.cmbParam.addItem(h);
+                    }
                 } catch (Exception ex) {
                 }
             }
@@ -337,23 +341,23 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         boolean find = false;
         List<IParameter> parameters = reqInfo.getParameters();
         for (IParameter p : parameters) {
-            if (JWTObject.containsJWTFormat(p.getValue())) {
+            if (JWTToken.containsTokenFormat(p.getValue())) {
                 if (p.getType() == IParameter.PARAM_COOKIE) {
                     String name = p.getName();
                     String value = p.getValue();
                     String key = TYPES[p.getType()] + " " + name;
-                    if (JWTObject.isJWTFormat(value)) {
-                        JWTToken jwt = JWTObject.parseJWTToken(value, true);
-                        jwtMap.put(key, new JWTObject(jwt));
+                    JWTToken token = jwtinstance.parseToken(value, true);
+                    if (token != null) {
+                        tokenMap.put(key, token);
                         this.cmbParam.addItem(key);
                     }
                 } else if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
                     String name = p.getName();
                     String value = p.getValue();
                     String key = TYPES[p.getType()] + " " + name;
-                    if (JWTObject.isJWTFormat(value)) {
-                        JWTToken jwt = JWTObject.parseJWTToken(value, true);
-                        jwtMap.put(key, new JWTObject(jwt));
+                    JWTToken token = jwtinstance.parseToken(value, true);
+                    if (token != null) {
+                        tokenMap.put(key, token);
                         this.cmbParam.addItem(key);
                         find = true;
                     }
@@ -362,11 +366,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         }
         if (!find) {
             String body = Util.getRawStr(Arrays.copyOfRange(message, reqInfo.getBodyOffset(), message.length));
-            if (JWTObject.containsJWTFormat(body)) {
-                JWTToken jwt = JWTObject.parseJWTToken(body, false);
-                String key = "(body)";
-                jwtMap.put(key, new JWTObject(jwt));
-                this.cmbParam.addItem(key);
+            if (JWTToken.containsTokenFormat(body)) {
+                JWTToken token = jwtinstance.parseToken(body, false);
+                if (token != null) {
+                    String key = "(body)";
+                    tokenMap.put(key, token);
+                    this.cmbParam.addItem(key);
+                }
             }
         }
     }
@@ -381,7 +387,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 HttpRequest request = HttpRequest.parseHttpRequest(content);
                 httpmessage = request;
                 this.setJWT(content);
-//                this.setJWT(httpmessage);
             }
             this.message = httpmessage;
         } catch (ParseException ex) {

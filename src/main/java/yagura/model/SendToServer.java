@@ -110,7 +110,7 @@ public class SendToServer extends SendToMenuItem {
                     String boundary = HttpUtil.generateBoundary();
                     HttpClient.Builder builder = HttpClient.newBuilder()
                         .version(Version.HTTP_1_1)
-                        .followRedirects(Redirect.NEVER)
+                        .followRedirects(Redirect.NORMAL)
                         .connectTimeout(Duration.ofSeconds(10));
 
                     if (ignoreValidateCertification) {
