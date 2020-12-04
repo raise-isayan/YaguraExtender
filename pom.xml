@@ -154,7 +154,7 @@
             <type>jar</type>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.jdatepicker/jdatepicker -->
+        <!-- https://mvnrepository.com/artifact/ocommons-codecrg.jdatepicker/jdatepicker -->
         <dependency>
             <groupId>org.jdatepicker</groupId>
             <artifactId>jdatepicker</artifactId>

@@ -1,6 +1,5 @@
 package yagura.view;
 
-import yagura.model.IKeywordHighlighter;
 import extend.view.base.RegexItem;
 import yagura.model.KeywordHighlighter;
 import yagura.model.StartEndPosion;
@@ -22,6 +21,7 @@ import javax.swing.event.EventListenerList;
 import yagura.model.QuickSearchEvent;
 import yagura.model.QuickSearchListener;
 import yagura.model.RSyntaxKeywordHighlighter;
+import yagura.model.IKeywordHighlighter;
 
 /**
  *

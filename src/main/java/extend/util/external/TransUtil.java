@@ -189,10 +189,10 @@ public class TransUtil {
         NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
-    private final static Pattern PTN_URLENCODE = Pattern.compile("([0-9a-zA-Z\\*_\\+\\.-]|%([0-9a-fA-F]{2}))+");
+//    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
         
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
-    private final static Pattern PTN_B64_URLSAFE = Pattern.compile("([0-9a-zA-Z_\\-\r\n])");
+    private final static Pattern PTN_B64_URLSAFE = Pattern.compile("([0-9a-zA-Z_\\-])");
     private final static Pattern PTN_UUENCODE = Pattern.compile("begin\\s[0-6]{3}\\s\\w+");
     private final static Pattern PTN_QUOTEDPRINTABLE = Pattern.compile("=([0-9a-fA-F]{2})");
     private final static Pattern PTN_PUNYCODE = Pattern.compile("xn--[0-9a-zA-Z_\\.]+");
@@ -280,8 +280,33 @@ public class TransUtil {
     }
 
     public static boolean isUrlencoded(String value) {
-        Matcher m = PTN_URLENCODE.matcher(value);
-        return m.matches();
+        boolean result = true;
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if (c == '%') {
+                if (i + 2 < value.length()) {
+                    char cl = value.charAt(i+1);
+                    char ch = value.charAt(i+2);
+                    if (!('0' <= cl && cl <= '9' || 'a' <= cl &&  cl <= 'z' || 'A' <= cl &&  cl <= 'Z' && '0' <= ch && ch <= '9' || 'a' <= ch &&  ch <= 'z' || 'A' <= ch &&  ch <= 'Z')) {
+                        result = false;
+                        break;
+                    }
+                }
+                else {
+                    result = false;
+                    break;
+                }
+            }
+            else if (!('0' <= c && c <= '9' || 'a' <= c &&  c <= 'z' || 'A' <= c &&  c <= 'Z' || c == '*' || c == '_' || c == '+' || c == '.' || c == '-')) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public static boolean isBase64Encoded(String value) {
+        return Base64.isBase64(value);
     }
     
     public static String toSmartDecode(String value) {

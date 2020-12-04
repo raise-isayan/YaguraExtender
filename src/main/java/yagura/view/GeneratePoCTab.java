@@ -829,14 +829,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
             if (csrfMultiForm) {
                 buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
-                buff.append("<!-- begen form -->\n");
                 buff.append("\tfor(let i = 0; i < document.forms.length; i++) {\n");
                 if (csrfParam.isCsrfTimeDelay()) {
                     buff.append("\t\tmsleep(msec);\n");
                 }
                 buff.append("\t\tdocument.forms[i].submit();\n");        
                 buff.append("\t}\n");
-                buff.append("<!-- end form -->\n");
                 buff.append("}\n");
             }
             else {
@@ -1149,14 +1147,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 buff.append("\txhr.send(new Blob([blob]));\r\n");
             }
             if (csrfMultiForm) {
-                buff.append("<!-- begen form -->\n");
                 buff.append("\tfor(let i = 0; i < document.forms.length; i++) {\n");
                 if (csrfParam.isCsrfTimeDelay()) {
                     buff.append("\t\tmsleep(msec);\n");
                 }
                 buff.append("\t\tdocument.forms[i].submit();\n");        
                 buff.append("\t}\n");
-                buff.append("<!-- end form -->\n");            
             }
             buff.append("}\n");
             buff.append("</script></head>\n");
@@ -1168,11 +1164,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 }
             }
             buff.append(String.format("<body%s>\n", new Object[]{autoSubmit}));
-            if (csrfMultiForm) {
-                buff.append("<!-- begen form -->\n");
-                buff.append("<!-- end form -->\n");            
-            }
-
             autoSubmit = " onClick=\"csrfPoC()\"";            
             if (csrfParam.isCsrfTimeDelay()) {
                 autoSubmit = String.format(" onClick=\"csrfPoC(%d)\"",  new Object[]{ timeOutValue });
