@@ -28,8 +28,9 @@ public class SendToItem {
     };
 
     public enum ExtendType {
-        REQUEST_AND_RESPONSE_TO_FILE,
         SEND_TO_JTRANSCODER,
+        REQUEST_AND_RESPONSE_TO_FILE,
+        RESPONSE_BODY_TO_FILE,
         PASTE_FROM_JTRANSCODER,
         PASTE_FROM_CLIPBOARD,
         MESSAGE_INFO_COPY,

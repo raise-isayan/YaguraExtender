@@ -428,10 +428,12 @@ sample/cgi-bin/sendto.cgi contains a sample CGI application that only receives a
 ==== Extend tab
 image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
 
-    request and response to file:: 
-        Save only the body part of the response to a file.
     send to jtranscoder:: 
         Sends the selected string to the input of JTransCoder.
+    request and response to file:: 
+        Save request and response to a file.
+    response body to file:: 
+        Save only the body part of the response to a file.
     paste from jtranscoder:: 
         Paste the string from Output of JTransCoder.
     paste from clipboard:: 
@@ -588,8 +590,11 @@ Padding::
 Base64URLSafe:: 
     Encodes and decodes Base64 URLSafe format.
 
-uuencode::
-    Encodes and decodes uuencode format.
+Base32:: 
+    Encodes and decodes Base32 format.
+
+Base16:: 
+    Encodes and decodes Base16 format.
 
 QuotedPrintable::
     Encodes and decodes QuotedPrintable format.

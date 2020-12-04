@@ -1187,13 +1187,17 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">request and response to file</dt>
-<dd>
-<p>レスポンスのボディの部分のみをファイルに保存します。</p>
-</dd>
 <dt class="hdlist1">send to jtranscoder</dt>
 <dd>
 <p>JTransCoder のInputに選択した文字列を送ります。</p>
+</dd>
+<dt class="hdlist1">request and response to file</dt>
+<dd>
+<p>リクエストとレスポンスをファイルに保存します。</p>
+</dd>
+<dt class="hdlist1">response body to file</dt>
+<dd>
+<p>レスポンスのボディの部分のみをファイルに保存します。</p>
 </dd>
 <dt class="hdlist1">paste from jtranscoder</dt>
 <dd>
@@ -1442,9 +1446,13 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>Base64 URLSafe形式のエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">uuencode</dt>
+<dt class="hdlist1">Base32</dt>
 <dd>
-<p>uuencode形式のエンコード、デコードを行います。</p>
+<p>Base32形式のエンコード、デコードを行います。</p>
+</dd>
+<dt class="hdlist1">Base16</dt>
+<dd>
+<p>Base16形式のエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">QuotedPrintable</dt>
 <dd>
@@ -1836,7 +1844,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-11-29 11:08:44 +0900
+Last updated 2020-12-04 23:24:37 +0900
 </div>
 </div>
 </body>

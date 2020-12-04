@@ -12,6 +12,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -42,15 +43,19 @@ public class SendToExtend extends SendToMenuItem {
             return;
         }
         switch (this.getExtend()) {
-            case REQUEST_AND_RESPONSE_TO_FILE: {
-                saveAsMessage(SendToItem.MessageType.REQUEST_AND_RESPONSE, messageInfo);
-                break;
-            }
             case SEND_TO_JTRANSCODER: {
                 String text = BurpWrap.copySelectionData(this.contextMenu, true);
                 if (text != null) {
                     BurpExtender.getInstance().sendToJTransCoder(text);
                 }
+                break;
+            }
+            case REQUEST_AND_RESPONSE_TO_FILE: {
+                saveAsMessage(SendToItem.MessageType.REQUEST_AND_RESPONSE, messageInfo);
+                break;
+            }
+            case RESPONSE_BODY_TO_FILE: {
+                saveAsMessageBody(SendToItem.MessageType.RESPONSE, messageInfo);
                 break;
             }
             case PASTE_FROM_JTRANSCODER: {
@@ -122,6 +127,41 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
+    private void saveAsMessageBody(SendToItem.MessageType messageType, IHttpRequestResponse[] messageInfo) {
+        IHttpRequestResponse messageItem = messageInfo[0];
+        try {
+            JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
+            filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(BurpWrap.getURL(messageItem))));
+            int selected = filechooser.showSaveDialog(null);
+            if (selected == JFileChooser.APPROVE_OPTION) {
+                try {
+                    File file = filechooser.getSelectedFile();
+                    if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
+                        try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+                            if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
+                                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageItem.getRequest());
+                                byte reqMessage[] = Arrays.copyOfRange(messageItem.getRequest(), reqInfo.getBodyOffset(), messageItem.getRequest().length);
+                                fstm.write(reqMessage);
+                            }
+                            if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
+                                IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(messageItem.getResponse());
+                                byte resMessage[] = Arrays.copyOfRange(messageItem.getResponse(), resInfo.getBodyOffset(), messageItem.getResponse().length);
+                                fstm.write(resMessage);
+                            }
+                            fstm.flush();
+                        }
+                    }
+                    this.currentDirectory = file;
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, null, ex);
+                }
+            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         javax.swing.JMenuItem item = (javax.swing.JMenuItem)e.getSource();
@@ -133,12 +173,16 @@ public class SendToExtend extends SendToMenuItem {
     public boolean isEnabled() {
         boolean enabled = false;
         switch (this.getExtend()) {
+            case SEND_TO_JTRANSCODER: {
+                enabled = (this.contextMenu.getSelectionBounds() != null);
+                break;
+            }
             case REQUEST_AND_RESPONSE_TO_FILE: {
                 enabled = true;
                 break;
             }
-            case SEND_TO_JTRANSCODER: {
-                enabled = (this.contextMenu.getSelectionBounds() != null);
+            case RESPONSE_BODY_TO_FILE: {
+                enabled = true;
                 break;
             }
             case PASTE_FROM_JTRANSCODER: {

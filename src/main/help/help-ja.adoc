@@ -423,10 +423,12 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 ==== Extendタブ
 image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
 
-     request and response to file:: 
-          レスポンスのボディの部分のみをファイルに保存します。
      send to jtranscoder:: 
           JTransCoder のInputに選択した文字列を送ります。
+     request and response to file:: 
+          リクエストとレスポンスをファイルに保存します。
+     response body to file:: 
+          レスポンスのボディの部分のみをファイルに保存します。
      paste from jtranscoder:: 
           JTransCoder のOutputから文字列を貼り付けます。
      paste from clipboard:: 
@@ -583,8 +585,11 @@ Padding::
 Base64URLSafe:: 
     Base64 URLSafe形式のエンコード、デコードを行います。
 
-uuencode::
-    uuencode形式のエンコード、デコードを行います。
+Base32:: 
+    Base32形式のエンコード、デコードを行います。
+
+Base16:: 
+    Base16形式のエンコード、デコードを行います。
 
 QuotedPrintable::
     QuotedPrintable形式のエンコード、デコードを行います。
