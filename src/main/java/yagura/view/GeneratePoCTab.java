@@ -903,6 +903,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     } else {
                         String file_encoding = csrfEncoding;
                         String decodevalue = Util.decodeMessage(Util.encodeMessage(paramValue), file_encoding);
+                        buff.append("<!-- Internet Explorer browser only technique -->\n");
                         buff.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
                                 new Object[]{paramName, filename, file_encoding}));
                         buff.append(HttpUtil.toHtmlEncode(decodevalue));

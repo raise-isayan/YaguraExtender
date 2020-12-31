@@ -2,7 +2,9 @@ package passive;
 
 import extend.util.Util;
 import extend.util.external.JsonUtil;
+import extend.util.external.TransUtil;
 import extend.view.base.CaptureItem;
+import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -89,7 +91,7 @@ public class JWTToken extends JsonToken {
         return null;
     }
 
-    private final static Pattern PTN_JWT = Pattern.compile("(e(?:[0-9a-zA-Z_-]){10,})\\.(e(?:[0-9a-zA-Z_-]){2,})\\.((?:[0-9a-zA-Z_-]){30,})?");
+    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]){10,})\\.(ey(?:[0-9a-zA-Z_-]){2,})\\.((?:[0-9a-zA-Z_-]){30,})?");
 
     public static boolean isTokenFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
@@ -123,7 +125,7 @@ public class JWTToken extends JsonToken {
 
     public static CaptureItem[] findToken(String value) {
         List<CaptureItem> tokens = new ArrayList<>();
-        Matcher m = PTN_JWT.matcher(value);
+        Matcher m = PTN_JWT.matcher(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1));
         while (m.find()) {
             String capture = m.group(0);
             if (isTokenFormat(capture)) {
@@ -150,7 +152,7 @@ public class JWTToken extends JsonToken {
 
     public JWTToken parseToken(String value, boolean matches) {
         JWTToken token = null;
-        Matcher m = PTN_JWT.matcher(value);
+        Matcher m = PTN_JWT.matcher(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1));
         boolean find = false;
         if (matches) {
             find = m.matches();

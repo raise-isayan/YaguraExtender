@@ -97,7 +97,6 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         add(scrollHex, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane scrollHex;
     private javax.swing.JTable tableHex;
@@ -110,7 +109,6 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     private final Action copyAction = new AbstractAction() {
         public void actionPerformed(ActionEvent evt) {
-            System.out.println("JTable copy 0");
             //選択されている行の列コピーの値を取得
             JTable table = (JTable) evt.getSource();
             SwingUtil.systemClipboardCopy(CustomTableModel.tableCopy(table, true));

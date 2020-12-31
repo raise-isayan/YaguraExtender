@@ -13,7 +13,7 @@ Burp Suiteにはアジアの文字エンコーディングの利用に欠点が�
 ## ヘルプ
 利用方法等の詳細なヘルプは、help ディレクトリの help.html を参照してください。
 
-オンラインの場合は、[help](https://github.com/raise-isayan/YaguraExtender/blob/master/src/main/help/help-ja.adoc)を参照して下さい。
+オンラインの場合は、[help](/src/main/help/help-ja.adoc)を参照して下さい。
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。

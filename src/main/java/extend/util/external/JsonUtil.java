@@ -62,7 +62,11 @@ public class JsonUtil {
     }
 
     public static DefaultTreeModel toJsonTreeModel(JsonElement jsonElement) {
-        DefaultMutableTreeNode rootJson = new DefaultMutableTreeNode("JSON");
+        return toJsonTreeModel(jsonElement, "JSON");
+    }
+
+    public static DefaultTreeModel toJsonTreeModel(JsonElement jsonElement, String rootName) {
+        DefaultMutableTreeNode rootJson = new DefaultMutableTreeNode(rootName);
         DefaultTreeModel model = new DefaultTreeModel(rootJson);
         toJsonTreeNode(jsonElement, rootJson);
         return model;

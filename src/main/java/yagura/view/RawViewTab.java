@@ -231,7 +231,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         return false;
     }
 
-    private final static Map<String, String> CODE_MAP = new HashMap();
+    private final static Map<String, String> CODE_MAP = new HashMap<>();
     
     static {
         CODE_MAP.put("text/css", SyntaxConstants.SYNTAX_STYLE_CSS);

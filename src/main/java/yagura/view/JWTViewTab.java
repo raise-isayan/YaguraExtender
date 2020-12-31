@@ -282,38 +282,35 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         boolean find = false;
         if (isMessageRequest) {
             try {
-                    EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
-                    if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
-                        return false;
+                EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+                if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
+                    return false;
+                }
+                if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+                    return false;
+                }
+                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
+                List<String> headers = reqInfo.getHeaders();
+                for (String h : headers) {
+                    if (JWTToken.containsTokenFormat(h)) {
+                        return true;
                     }
-                    if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
-                        return false;
-                    }
-                    IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
-                    List<String> headers = reqInfo.getHeaders();
-                    for (String h : headers) {
-                        if (JWTToken.containsTokenFormat(h)) {
-        System.out.println("head:" + h);
-                            return true;
+                }
+                List<IParameter> parameters = reqInfo.getParameters();
+                for (IParameter p : parameters) {
+                    if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
+                        find = JWTToken.isTokenFormat(p.getValue());
+                        if (find) {
+                            break;
                         }
                     }
-                    List<IParameter> parameters = reqInfo.getParameters();
-                    for (IParameter p : parameters) {
-                        if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
-                            find = JWTToken.isTokenFormat(p.getValue());
-                            if (find) {
-        System.out.println("param:" + p.getValue());
-                                break;
-                            }
-                        }
-                    }
-                    if (!find) {
-                        String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
-                        find = JWTToken.containsTokenFormat(body);
-        System.out.println("body:" + find);
-                    }
+                }
+                if (!find) {
+                    String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
+                    find = JWTToken.containsTokenFormat(body);
+                }
             } catch (Exception ex) {
-        ex.printStackTrace();
+                logger.log(Level.SEVERE, null, ex);
             }
         }
 
@@ -335,14 +332,11 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         for (String h : headers) {
             Matcher m = HEADER.matcher(h);
             if (m.matches()) {
-                try {
-                    String value = m.group(2);
-                    JWTToken token = jwtinstance.parseToken(value, false);
-                    if (token != null) {
-                        tokenMap.put(h, token);
-                        this.cmbParam.addItem(h);
-                    }
-                } catch (Exception ex) {
+                String value = m.group(2);
+                JWTToken token = jwtinstance.parseToken(value, false);
+                if (token != null) {
+                    tokenMap.put(h, token);
+                    this.cmbParam.addItem(h);
                 }
             }
         }

@@ -17,10 +17,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import extend.util.HashUtil;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.Locale;
+import yagura.model.IKeywordHighlighter;
 
 /**
  *
@@ -252,6 +256,17 @@ public class TransUtilTest {
     }
 
     /**
+     * Test of toLocalDate method, of class TransUtil.
+     */
+    @Test
+    public void toLocalDate() {
+        for (int i = -12; i <= 12; i++) {
+            ZoneOffset offset = ZoneOffset.ofHours(i);
+            System.out.println("x:" + i + " " +  offset.getId());        
+        }
+    }
+        
+    /**
      * Test of toSmartDecode method, of class TransUtil.
      */
     @Test
@@ -369,7 +384,7 @@ public class TransUtilTest {
     @Test
     public void testToHtmlDecEncode() {
         System.out.println("toHtmlDecEncode");
-        assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;_&#92;&#13;&#10;abcdef", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcdef"));
+        assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;&#95;&#92;&#13;&#10;abcdef", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcdef"));
         assertEquals("&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;&#41;&#61;&#126;&#124;&#96;&#123;&#125;&#42;&#43;&#60;&#62;&#63;&#95;&#92;&#13;&#10;&#97;&#98;&#99;&#101;&#100;&#101;&#102;", TransUtil.toHtmlDecEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedef", TransUtil.PTN_ENCODE_ALL));
         int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
@@ -383,8 +398,8 @@ public class TransUtilTest {
     @Test
     public void testToHtmlHexEncode() {
         System.out.println("toHtmlHexEncode");
-        assertEquals("&#x21;&#x22;&#x23;&#x24;&#x25;&#x26;&#x27;&#x28;&#x29;&#x3d;&#x7e;&#x7c;&#x60;&#x7b;&#x7d;&#x2a;&#x2b;&#x3c;&#x3e;&#x3f;_&#x5c;&#xd;&#xa;abcedf", TransUtil.toHtmlHexEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf", false));
-        assertEquals("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;_&#X5C;&#XD;&#XA;abcedf", TransUtil.toHtmlHexEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf", true));
+        assertEquals("&#x21;&#x22;&#x23;&#x24;&#x25;&#x26;&#x27;&#x28;&#x29;&#x3d;&#x7e;&#x7c;&#x60;&#x7b;&#x7d;&#x2a;&#x2b;&#x3c;&#x3e;&#x3f;&#x5f;&#x5c;&#xd;&#xa;abcedf", TransUtil.toHtmlHexEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf", false));
+        assertEquals("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;&#X5F;&#X5C;&#XD;&#XA;abcedf", TransUtil.toHtmlHexEncode("!\"#$%&'()=~|`{}*+<>?_\\\r\nabcedf", true));
 
         int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
@@ -1115,6 +1130,22 @@ public class TransUtilTest {
             assertEquals("<!--qux-->", expResult[2]);
         }
 
+    }
+
+    @Test
+    public void testToConv() {
+        System.out.println("testToConv");
+        {
+            BigDecimal bd = new BigDecimal("44199.1234");
+            long unix_time = TransUtil.toEpochMilli(bd);
+            System.out.println(unix_time);        
+            System.out.println(new Date(unix_time));        
+        }
+        {
+            long unix_time = 1609389309L;
+            BigDecimal bd = TransUtil.toExcelSerial(unix_time);
+            System.out.println(bd.doubleValue());        
+        }
     }
 
 }

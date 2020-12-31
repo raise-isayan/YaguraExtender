@@ -6,7 +6,10 @@ import extend.util.UTF7Charset;
 import extend.util.Util;
 import extend.view.base.RegexItem;
 import java.io.*;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.IDN;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -164,7 +167,8 @@ public class TransUtil {
 
     // 条件一致時にEncode
     public final static Pattern PTN_ENCODE_ALL = Pattern.compile(".", Pattern.DOTALL);
-    public final static Pattern PTN_ENCODE_ALPHANUM = Pattern.compile("[^a-zA-Z0-9_]");
+    public final static Pattern PTN_ENCODE_ALPHANUM = Pattern.compile("[^a-zA-Z0-9]");
+    public final static Pattern PTN_ENCODE_URLSAFE = Pattern.compile("[^a-zA-Z0-9\\._-]");
     public final static Pattern PTN_ENCODE_LIGHT = Pattern.compile("[^A-Za-z0-9!\"$'()*,/:<>@\\[\\\\\\]^`{|}~]");
     public final static Pattern PTN_ENCODE_STANDARD = Pattern.compile("[^A-Za-z0-9\"<>\\[\\\\\\]^`{|}]");
     public final static Pattern PTN_ENCODE_JS = Pattern.compile("[^ !#$&=~/,@+*|0-9A-Za-z\\[\\]\\(\\)\\{\\}?-]");
@@ -2036,7 +2040,7 @@ public class TransUtil {
     }
 
     public static String[] extractHTMLComments(String message, boolean uniqe) {
-        List<String> lists = new ArrayList();
+        List<String> lists = new ArrayList<>();
         Document doc = Jsoup.parse(message);
         lists.addAll(extractHTMLComments(doc));
         if (uniqe) {
@@ -2048,7 +2052,7 @@ public class TransUtil {
     }
 
     private static List<String> extractHTMLComments(Node node) {
-        List<String> lists = new ArrayList();
+        List<String> lists = new ArrayList<>();
         for (int i = 0; i < node.childNodeSize(); i++) {
             Node child = node.childNode(i);
             if (child instanceof Comment) {
@@ -2383,8 +2387,19 @@ public class TransUtil {
     public static long toMurmurHash64(String str, String enc)
             throws UnsupportedEncodingException {
         byte [] body = str.getBytes(enc);
-        return MurmurHash2.hash64(body, body.length);                
+        return MurmurHash2.hash64(body, body.length);
     }    
-    
-    
+
+    public static long toEpochMilli(BigDecimal excel_serial) {
+        // Unixtime = (Excelserial - 25569) * (60 * 60 * 24) - (60 * 60 * 0)
+        excel_serial = excel_serial.subtract(BigDecimal.valueOf((double)25569L)).multiply(BigDecimal.valueOf((double)60 * 60 * 24));
+        return excel_serial.longValue();
+    }
+
+    public static BigDecimal toExcelSerial(long epoch_milli) {
+        // Excel Serial = 25569 + ((Unixtime + (60 * 60 * 0)) / (60 * 60 * 24))
+        BigDecimal excel_serial = new BigDecimal(epoch_milli);
+        return excel_serial.divide(BigDecimal.valueOf((double)60 * 60 * 24), new MathContext(4, RoundingMode.HALF_EVEN)).add(BigDecimal.valueOf((double)25569L));
+    }
+
 }
