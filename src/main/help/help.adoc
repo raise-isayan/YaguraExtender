@@ -15,7 +15,7 @@ Language/link:help-ja.html[Japanese]
 * v2020 or higher (http://www.portswigger.net/burp/)
 
 .Development environment
-* NetBean 12.0 (https://netbeans.apache.org/)
+* NetBean 12.2 (https://netbeans.apache.org/)
 * Meven 3.6.1 (https://maven.apache.org/)
 * asciidoc (http://asciidoc.org/) 
 
@@ -718,11 +718,12 @@ Hex::
 The Generater has a sequence tab and a random tab.
 
 .sequence tab
+
 The sequence tab is a simple function for generating a continuous character list.
 
-image:images/custom_gene_seq.png[Generater tab]
-
 .sequence-Numbers tab
+
+image:images/custom_gene_seq.png[Generater tab]
 
 Generate format string input ::
     format string in C language printf format.
@@ -763,6 +764,7 @@ step::
     Output the generated list to a file.
 
 .random tab
+
 The andom tab is a simple function for generating a random character list.
 
 image:images/custom_gene_random.png[random tab]
@@ -784,6 +786,45 @@ generator count::
 
 [Save to file] button::
     Output the generated list to a file.
+
+==== Converter tab
+
+The Base tab is a simple function for converting radixes.
+
+.Base tab
+
+image:images/custom_converter_base.png[Base tab]
+
+Bin:: 
+    input the binary number.
+
+Oct:: 
+    input the octal number.
+
+Dec:: 
+    input the decimal number.
+
+Hex:: 
+    input the hexadecimal number.
+
+Radix32 :: 
+    input the 32-base number.
+
+.Dateタブ
+
+image:images/custom_converter_date.png[Dateタブ]
+
+Date:: 
+    input the date.
+
+Unixtime:: 
+    input the unixtime.
+
+Java serial:: 
+    Input the time expressed in Java milliseconds.
+
+Excel serial:: 
+    Input the time represented by the serial value of Excel
 
 === Generate CSRF PoC
 

@@ -15,7 +15,7 @@ Language/link:help.html[English]
 * v2020以上 (http://www.portswigger.net/burp/)
 
 .開発環境
-* NetBean 12.0 (https://netbeans.apache.org/)
+* NetBean 12.2 (https://netbeans.apache.org/)
 * Meven 3.6.1 (https://maven.apache.org/)
 * asciidoc (http://asciidoc.org/) 
 
@@ -713,11 +713,12 @@ Hex::
 Generater には、sequenceタブとrandomタブがあります。
 
 .sequenceタブ
+
 sequenceタブは連続する文字リストを生成するための簡易的な機能です。
 
-image:images/custom_gene_seq.png[Generaterタブ]
-
 .sequence-Numbersタブ
+
+image:images/custom_gene_seq.png[Generaterタブ]
 
 生成書式文字列入力:: 
     C言語のprintf形式の書式文字列を入力します。
@@ -758,6 +759,7 @@ step::
   生成したリストをファイルに出力します。
 
 .randomタブ
+
 randomタブはランダムな文字リストを生成するための簡易的な機能です。
 
 image:images/custom_gene_random.png[randomタブ]
@@ -779,6 +781,45 @@ generator count::
 
 [Save to file]ボタン::
     生成したリストをファイルに出力します。
+
+==== Converter tab
+
+Baseタブは基数変換するための簡易的な機能です。
+
+.Baseタブ
+
+image:images/custom_converter_base.png[Baseタブ]
+
+Bin:: 
+    2進数を入力します。
+
+Oct:: 
+    8進数を入力します。
+
+Dec:: 
+    10進数を入力します。
+
+Hex:: 
+    16進数を入力します。
+
+Radix32 :: 
+    32進数を入力します。
+
+.Dateタブ
+
+image:images/custom_converter_date.png[Dateタブ]
+
+Date:: 
+    日付を入力します。
+
+Unixtime:: 
+    Unixtimeの値を入力します。
+
+Java serial:: 
+    Javaのミリ秒で表される時間を入力します。
+
+Excel serial:: 
+    Excelのシリアル値で表される時間を入力します。
 
 === Generate CSRF PoC
 

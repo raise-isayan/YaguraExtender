@@ -15,6 +15,12 @@ Please refer to help.html in help directory for detailed help such as how to use
 
 If you are online, please refer to [help](/src/main/help/help.adoc).
 
+# build
+
+```
+mvnw install
+```
+
 ## Required library
 Building requires a separate [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) library.
 * BurpExtlib v2.1.0.0

@@ -2921,18 +2921,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void txtExcelSerialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtExcelSerialKeyReleased
         try {
             this.txtExcelSerial.commitEdit();
-            BigDecimal excel_serial = null;
-            Object serial_object =  this.txtExcelSerial.getValue();
-            if (serial_object instanceof Long) {
-                excel_serial = BigDecimal.valueOf((long)serial_object);            
-            }
-            else if (serial_object instanceof Double) {
-                excel_serial = BigDecimal.valueOf((double)serial_object);                        
-            }
-            else {
-               throw new ParseException(serial_object.getClass().getName(), 0);
-            }
-            long unix_value = TransUtil.toEpochMilli(excel_serial);
+            Number excel_serial = (Number)this.txtExcelSerial.getValue();
+            long unix_value = TransUtil.toEpochMilli(BigDecimal.valueOf(excel_serial.doubleValue()));
             long java_value = unix_value * 1000L;
             this.txtUnixtime.setValue(unix_value);
             this.txtJavaSerial.setValue(java_value);
