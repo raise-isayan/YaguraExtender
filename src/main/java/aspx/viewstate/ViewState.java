@@ -10,7 +10,6 @@ import extend.util.ConvertUtil;
  * @author isayan
  */
 public class ViewState {
-
     public static final JsonElement ENCRYPTED_JSON;
 
     static {
@@ -32,6 +31,19 @@ public class ViewState {
         }
     }
 
+    private final static String [] UNIT_TYPE = {
+        "pixel", // 1
+        "point", // 2
+        "pica",  // 3
+        "inch",  // 4
+        "mm",    // 5
+        "cm",    // 6
+        "percentage", // 7
+        "em",	  // 8
+        "ex",	  // 9
+    };
+
+
     ViewState() {
         this.jsonRoot = JsonNull.INSTANCE;
         this.digest = new byte[0];
@@ -46,6 +58,13 @@ public class ViewState {
         this.jsonRoot = jsonRoot;
         this.digest = digest;
         this.encrypt = false;
+    }
+
+    public static String getUnitType(int unitType) {
+        if (0 < unitType && unitType <= UNIT_TYPE.length) {
+            return UNIT_TYPE[unitType - 1];
+        }
+        return "Unkown-UnitType";
     }
 
     private boolean encrypt;
