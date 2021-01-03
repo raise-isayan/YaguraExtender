@@ -103,6 +103,9 @@ Select::
 [JWT] check box:: 
     Display the JWT tab in the message tab.
 
+[ViewState] check box:: 
+    Display the ViewState tab in the message tab.
+
 [Universal Raw] check box:: 
     Display the Raw tab corresponding to CJK in the message tab.
     Currently read-only.

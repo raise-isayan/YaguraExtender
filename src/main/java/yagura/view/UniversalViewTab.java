@@ -74,6 +74,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         spnDispayMaxLength = new javax.swing.JSpinner();
         lblDispayMaxLength = new javax.swing.JLabel();
         chkJSONP = new javax.swing.JCheckBox();
+        chkViewState = new javax.swing.JCheckBox();
 
         setName("Encoding"); // NOI18N
         setPreferredSize(new java.awt.Dimension(600, 450));
@@ -187,12 +188,12 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
                             .addComponent(lblSelectEncode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectDown)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(lblTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(533, Short.MAX_VALUE)))
+                    .addContainerGap(529, Short.MAX_VALUE)))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -277,7 +278,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        chkJWT.setSelected(true);
         chkJWT.setText("JWT");
         chkJWT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,6 +303,13 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
             }
         });
 
+        chkViewState.setText("ViewState");
+        chkViewState.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkViewStateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabMessageViewLayout = new javax.swing.GroupLayout(tabMessageView);
         tabMessageView.setLayout(tabMessageViewLayout);
         tabMessageViewLayout.setHorizontalGroup(
@@ -325,11 +332,16 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
                             .addComponent(chkJWT))
                         .addGap(84, 84, 84)))
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkJSONP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chkUniversalParams)
-                    .addComponent(chkUniversalRaw)
-                    .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap(12, Short.MAX_VALUE))
+                    .addGroup(tabMessageViewLayout.createSequentialGroup()
+                        .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkJSONP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(chkUniversalParams)
+                            .addComponent(chkUniversalRaw)
+                            .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap(16, Short.MAX_VALUE))
+                    .addGroup(tabMessageViewLayout.createSequentialGroup()
+                        .addComponent(chkViewState)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         tabMessageViewLayout.setVerticalGroup(
             tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -346,7 +358,9 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
                     .addComponent(chkJSON)
                     .addComponent(chkJSONP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chkJWT)
+                .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkJWT)
+                    .addComponent(chkViewState))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -484,6 +498,10 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkJSONPActionPerformed
 
+    private void chkViewStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewStateActionPerformed
+        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+    }//GEN-LAST:event_chkViewStateActionPerformed
+
     private void renewPopup() {
         String encodeList[] = {"PlatformDefault", "AutoRecognise", "RawBytes"};
         this.popEncodeMenu.removeAll();
@@ -525,6 +543,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JCheckBox chkJWT;
     private javax.swing.JCheckBox chkUniversalParams;
     private javax.swing.JCheckBox chkUniversalRaw;
+    private javax.swing.JCheckBox chkViewState;
     private javax.swing.JComboBox<String> cmbDefaultLangEncoding;
     private javax.swing.JLabel lblDispayMaxLength;
     private javax.swing.JLabel lblSelect;
@@ -606,6 +625,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         this.chkJSON.setSelected(view.contains(UniversalViewProperty.UniversalView.JSON));
         this.chkJSONP.setSelected(view.contains(UniversalViewProperty.UniversalView.JSONP));
         this.chkJWT.setSelected(view.contains(UniversalViewProperty.UniversalView.JWT));
+        this.chkViewState.setSelected(view.contains(UniversalViewProperty.UniversalView.VIEW_STATE));
         this.chkUniversalRaw.setSelected(view.contains(UniversalViewProperty.UniversalView.JRAW));
         this.chkUniversalParams.setSelected(view.contains(UniversalViewProperty.UniversalView.JPARAM));
     }
@@ -626,6 +646,9 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         }
         if (this.chkJWT.isSelected()) {
             view.add(UniversalViewProperty.UniversalView.JWT);
+        }
+        if (this.chkViewState.isSelected()) {
+            view.add(UniversalViewProperty.UniversalView.VIEW_STATE);
         }
         if (this.chkUniversalRaw.isSelected()) {
             view.add(UniversalViewProperty.UniversalView.JRAW);

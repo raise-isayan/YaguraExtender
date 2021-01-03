@@ -15,7 +15,7 @@ Please refer to help.html in help directory for detailed help such as how to use
 
 If you are online, please refer to [help](/src/main/help/help.adoc).
 
-# build
+## build
 
 ```
 mvnw install

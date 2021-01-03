@@ -82,8 +82,9 @@ public class JsonUtil {
     
     private static void toJsonTreeNode(JsonElement jsonElement, DefaultMutableTreeNode parentNode) {
         if (jsonElement.isJsonObject()) {
-            DefaultMutableTreeNode node = new DefaultMutableTreeNode("{}");
-            parentNode.add(node);
+//            DefaultMutableTreeNode node = new DefaultMutableTreeNode("{}");
+//            parentNode.add(node);
+            DefaultMutableTreeNode node = parentNode;
             JsonObject jsonObject = (JsonObject) jsonElement;
             Set<Map.Entry<String, JsonElement>> set = jsonObject.entrySet();
             for (Map.Entry<String, JsonElement> s : set) {

@@ -89,13 +89,13 @@
                               <Component id="btnSelectDown" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="65" max="32767" attributes="0"/>
+                      <EmptySpace pref="61" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblTarget" min="-2" pref="44" max="-2" attributes="0"/>
-                          <EmptySpace pref="533" max="32767" attributes="0"/>
+                          <EmptySpace pref="529" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -334,12 +334,20 @@
                       </Group>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="chkJSONP" max="32767" attributes="0"/>
-                      <Component id="chkUniversalParams" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="chkUniversalRaw" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="spnDispayMaxLength" alignment="1" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="chkJSONP" max="32767" attributes="0"/>
+                              <Component id="chkUniversalParams" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkUniversalRaw" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="spnDispayMaxLength" alignment="1" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="16" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Component id="chkViewState" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -361,7 +369,10 @@
                       <Component id="chkJSONP" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="chkJWT" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="chkJWT" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="chkViewState" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="spnDispayMaxLength" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -418,7 +429,6 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="chkJWT">
           <Properties>
-            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="JWT"/>
           </Properties>
           <Events>
@@ -448,6 +458,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkJSONPActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkViewState">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="ViewState"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkViewStateActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

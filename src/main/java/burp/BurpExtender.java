@@ -63,6 +63,7 @@ import yagura.model.HotKey;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
+import yagura.view.ViewStateTab;
 
 /**
  * @author isayan
@@ -121,6 +122,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     private final HtmlCommetViewTab commentViewTab = new HtmlCommetViewTab();
     private final GeneratePoCTab generatePoCTab = new GeneratePoCTab();
+    private final ViewStateTab viewStateTab = new ViewStateTab();
 
     private final IMessageEditorTabFactory requestRawTab = new IMessageEditorTabFactory() {
         @Override
@@ -258,6 +260,7 @@ public class BurpExtender extends BurpExtenderImpl
         cb.registerMessageEditorTabFactory(this.responseRawTab);
         cb.registerMessageEditorTabFactory(this.requestParamsTab);
         cb.registerMessageEditorTabFactory(this.generatePoCTab);
+        cb.registerMessageEditorTabFactory(this.viewStateTab);
         cb.registerMessageEditorTabFactory(this.commentViewTab);
         cb.registerMessageEditorTabFactory(this.requestJSONTab);
         cb.registerMessageEditorTabFactory(this.responseJSONTab);

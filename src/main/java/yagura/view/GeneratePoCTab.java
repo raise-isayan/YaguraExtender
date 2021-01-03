@@ -445,31 +445,31 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     @Override
     public boolean isEnabled(byte[] content, boolean isMessageRequest) {
-        if (isMessageRequest) {
-            if (content == null || content.length == 0) {
-                return false;
-            }
-            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
-            if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
-                return false;
-            }
-            try {
-                HttpRequest request = HttpRequest.parseHttpRequest(content);
-                String host = request.getHost();
-                if (host == null) {
-                    return false;
-                }
-                if (!("POST".equals(request.getMethod()) || "GET".equals(request.getMethod()))) {
-                    return false;
-                }
-                return (request.getBody().length() > 0);
-            } catch (ParseException ex) {
-                return false;
-            }
+        if (!isMessageRequest) {
+            return false;
         }
-        return false;
+        if (content == null || content.length == 0) {
+            return false;
+        }
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+            return false;
+        }
+        try {
+            HttpRequest request = HttpRequest.parseHttpRequest(content);
+            String host = request.getHost();
+            if (host == null) {
+                return false;
+            }
+            if (!("POST".equals(request.getMethod()) || "GET".equals(request.getMethod()))) {
+                return false;
+            }
+            return (request.getBody().length() > 0);
+        } catch (ParseException ex) {
+            return false;
+        }
     }
-
+    
     @Override
     public void setMessage(byte[] content, boolean isMessageRequest) {
         try {

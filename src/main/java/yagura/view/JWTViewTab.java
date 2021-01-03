@@ -276,44 +276,44 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     @Override
     public boolean isEnabled(byte[] content, boolean isMessageRequest) {
+        if (!isMessageRequest) {
+            return false;
+        }
         if (content == null || content.length == 0) {
             return false;
         }
         boolean find = false;
-        if (isMessageRequest) {
-            try {
-                EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
-                if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
-                    return false;
-                }
-                if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
-                    return false;
-                }
-                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
-                List<String> headers = reqInfo.getHeaders();
-                for (String h : headers) {
-                    if (JWTToken.containsTokenFormat(h)) {
-                        return true;
-                    }
-                }
-                List<IParameter> parameters = reqInfo.getParameters();
-                for (IParameter p : parameters) {
-                    if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
-                        find = JWTToken.isTokenFormat(p.getValue());
-                        if (find) {
-                            break;
-                        }
-                    }
-                }
-                if (!find) {
-                    String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
-                    find = JWTToken.containsTokenFormat(body);
-                }
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, null, ex);
+        try {
+            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
+                return false;
             }
+            if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+                return false;
+            }
+            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
+            List<String> headers = reqInfo.getHeaders();
+            for (String h : headers) {
+                if (JWTToken.containsTokenFormat(h)) {
+                    return true;
+                }
+            }
+            List<IParameter> parameters = reqInfo.getParameters();
+            for (IParameter p : parameters) {
+                if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
+                    find = JWTToken.isTokenFormat(p.getValue());
+                    if (find) {
+                        break;
+                    }
+                }
+            }
+            if (!find) {
+                String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
+                find = JWTToken.containsTokenFormat(body);
+            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, null, ex);
         }
-
         return find;
     }
 
