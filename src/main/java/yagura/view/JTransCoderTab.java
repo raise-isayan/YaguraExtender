@@ -49,12 +49,9 @@ import extend.util.external.TransUtil.NewLine;
 import java.awt.SystemColor;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Date;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import yagura.model.IKeywordHighlighter;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
 

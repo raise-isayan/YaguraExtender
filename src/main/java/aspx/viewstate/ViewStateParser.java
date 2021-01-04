@@ -11,15 +11,20 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author isayan
+ * Base Code
+ * @see https://github.com/mono/mono/blob/da11592cbea4269971f4b1f9624769a85cc10660/mcs/class/referencesource/System.Web/UI/ObjectStateFormatter.cs
+ * @licenses MIT license
  */
 public class ViewStateParser {
-    private final static boolean DEBUG_MODE = true;
+    private final static Logger logger = Logger.getLogger(ViewStateParser.class.getName());
+
+    private final static boolean DEBUG_MODE = false;
 
     // Optimized type tokens
     private final static byte Token_Int16 = 0x01;
@@ -92,28 +97,23 @@ public class ViewStateParser {
         ByteBuffer decodeBuffer = ByteBuffer.wrap(Base64.getDecoder().decode(viewStateEncode));
         decodeBuffer.order(ByteOrder.LITTLE_ENDIAN); // Change Endian
         byte formatMarker = decodeBuffer.get();
-        if (formatMarker == Marker_Format) {
-            byte versionMarker = decodeBuffer.get();
-            if (versionMarker == Marker_Version_1) {
-                JsonElement jsonRoot = decodeJsonObject(decodeBuffer);
-                // hmac
-                int hmac_len = decodeBuffer.remaining();
-                if (hmac_len > 0) {
-                    byte[] hmac = new byte[hmac_len];
-                    decodeBuffer.get(hmac);
-                    ViewState viewState = new ViewState(jsonRoot, hmac);
-                    return viewState;
-                } else {
-                    ViewState viewState = new ViewState(jsonRoot);
-                    return viewState;
-                }
-            }
-            else {
-                ViewState viewState = new ViewState();
+        byte versionMarker = decodeBuffer.get();
+        if (formatMarker == Marker_Format && versionMarker == Marker_Version_1) {
+            JsonElement jsonRoot = decodeJsonObject(decodeBuffer);
+            // hmac
+            int hmac_len = decodeBuffer.remaining();
+            if (hmac_len > 0) {
+                byte[] hmac = new byte[hmac_len];
+                decodeBuffer.get(hmac);
+                ViewState viewState = new ViewState(jsonRoot, hmac);
+                return viewState;
+            } else {
+                ViewState viewState = new ViewState(jsonRoot);
                 return viewState;
             }
         }
         else {
+            // Encrypted
             ViewState viewState = new ViewState();
             return viewState;
         }
@@ -155,22 +155,25 @@ if (DEBUG_MODE) System.out.println("Token_Char");
                     byte value = bbf.get();
 if (DEBUG_MODE) System.out.println(String.format("\tchar:%c, \\u%04x", value, (int)value));
                     JsonObject jsonNode = new JsonObject();
-                    jsonNode.addProperty("Char", value);
+                    jsonNode.addProperty("char", value);
                     decodeNode = jsonNode;
                     break;
                 }
                 case Token_String: { //?
                     String value = readString(bbf);
-if (DEBUG_MODE) System.out.println("String:" + value);
+if (DEBUG_MODE) System.out.println("string:" + value);
                     JsonObject jsonNode = new JsonObject();
-                    jsonNode.addProperty("String", value);
+                    jsonNode.addProperty("string", value);
                     decodeNode = jsonNode;
                     break;
                 }
                 case Token_DateTime: { //?
-                    long value = bbf.getLong();
+                    long date_binary = bbf.getLong();
+if (DEBUG_MODE) System.out.println("DateTime:" + date_binary);
+//                    LocalDateTime value = LocalDateTime.ofInstant(Instant.ofEpochSecond(date_binary), ZoneOffset.UTC);
                     JsonObject jsonNode = new JsonObject();
-                    jsonNode.addProperty("DateTime", value);
+                    jsonNode.addProperty("DateTime",  date_binary);
+//                    jsonNode.addProperty("DateTime",  DateTimeFormatter.RFC_1123_DATE_TIME.format(value));
                     decodeNode = jsonNode;
                     break;
                 }
@@ -475,7 +478,7 @@ if (DEBUG_MODE) System.out.println("Token_SparseArray.itemCount:" + itemCount);
                     break;
                 }
                 default: {
-if (DEBUG_MODE) System.out.println("Unknown token:" + String.format("0x%02x len=%d", token, bbf.remaining()));
+if (DEBUG_MODE) System.out.println("Mismatch token:" + String.format("0x%02x len=%d", token, bbf.remaining()));
                     JsonObject jsonNode = new JsonObject();
                     jsonNode.addProperty("Unknown token", String.format("0x%02x", token));
                     decodeNode = jsonNode;
@@ -489,23 +492,11 @@ if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + Util.getStackTrace(ex
         return decodeNode;
     }
 
-//    private int readInt16(java.io.InputStream istm) throws IOException {
-//        int value = 0;
-//        byte [] buff = new byte[2];
-//        if (2 != istm.read(buff)) {
-//            value = (buff[0] | buff[1] << 8);
-//        }
-//        return value;
-//    }
     private int readEncodedInt32(ByteBuffer bbf) {
         int value = 0;
         int shift = 0;
         byte readByte = 0;
         do {
-            if (shift == 5 * 7) // 5 bytes max per Int32, shift += 7
-            {
-                throw new IllegalArgumentException("Illegal Format 7BitInt32");
-            }
             readByte = bbf.get();
             value |= (readByte & 0x7F) << shift;
             shift += 7;
@@ -515,7 +506,6 @@ if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + Util.getStackTrace(ex
 
     public String readString(ByteBuffer bbf) {
         StringBuilder sb = new StringBuilder();
-        int currPos = 0;
         int stringLength = readEncodedInt32(bbf);
         if (stringLength < 0) {
             throw new IllegalArgumentException("Invalid String Length");
@@ -524,10 +514,9 @@ if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + Util.getStackTrace(ex
         if (stringLength == 0) {
             return "";
         }
-
         byte[] byteBuff = new byte[stringLength];
         ByteBuffer b = bbf.get(byteBuff, 0, stringLength);
-        sb.append(new String(byteBuff, 0, stringLength, StandardCharsets.ISO_8859_1));
+        sb.append(new String(byteBuff, 0, stringLength, StandardCharsets.UTF_8));
         return sb.toString();
     }
 
@@ -536,7 +525,7 @@ if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + Util.getStackTrace(ex
         switch (token) {
             case Token_IndexedString: {
                 byte tableIndex = bbf.get();
-                value = new String("StringReference:" + tableIndex);
+                value = new String("stringReference:" + tableIndex);
                 break;
             }
             default: {
@@ -548,7 +537,7 @@ if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + Util.getStackTrace(ex
     }
 
     private JsonObject readType(ByteBuffer bbf) {
-        final String[] KnownTypes = new String[]{"Object", "int", "String", "bool"};
+        final String[] KnownTypes = new String[]{"Object", "int", "string", "bool"};
         JsonObject decodeNode = new JsonObject();
         byte token = bbf.get();
         switch (token) {
