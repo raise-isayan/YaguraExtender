@@ -20,11 +20,12 @@ import extend.util.HashUtil;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Locale;
-import yagura.model.IKeywordHighlighter;
 
 /**
  *
@@ -1136,15 +1137,31 @@ public class TransUtilTest {
     public void testToConv() {
         System.out.println("testToConv");
         {
-            BigDecimal bd = new BigDecimal("44199.1234");
-            long unix_time = TransUtil.toEpochMilli(bd);
-            System.out.println(unix_time);        
-            System.out.println(new Date(unix_time));        
+            BigDecimal bd = new BigDecimal("44202.782396"); // 2021/01/06 18:46:39 +09:00
+            long unix_time = TransUtil.toEpochSecond(bd);
+            assertEquals(unix_time, 1609958799L - 60 * 60 * 9);            
+            LocalDateTime ztm = LocalDateTime.ofEpochSecond(unix_time, 0, ZoneOffset.ofHours(9));
+            assertEquals(ztm.getYear(), 2021);
+            assertEquals(ztm.getMonthValue(), 1);
+            assertEquals(ztm.getDayOfMonth(), 6);            
+            assertEquals(ztm.getHour(), 18);
+            assertEquals(ztm.getMinute(), 46);
+            assertEquals(ztm.getSecond(), 39);            
+            //System.out.println("toDate:" + Date.from(ztm.toInstant()));
         }
         {
-            long unix_time = 1609389309L;
+            long unix_time = 1609958799L - 60 * 60 * 9;
             BigDecimal bd = TransUtil.toExcelSerial(unix_time);
-            System.out.println(bd.doubleValue());        
+            System.out.println(bd.toPlainString());        
+            assertEquals(bd.toPlainString(), "44202.782396");            
+        }
+        {
+            Calendar cal = Calendar.getInstance();
+//            cal.getTimeZone().
+//            long unix_time = 1609958799L;
+//            BigDecimal bd = TransUtil.toExcelSerial(unix_time);
+//            System.out.println(bd.toPlainString());        
+//            assertEquals(bd.toPlainString(), "44202.782396");            
         }
     }
 

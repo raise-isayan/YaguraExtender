@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -2389,17 +2390,25 @@ public class TransUtil {
         byte [] body = str.getBytes(enc);
         return MurmurHash2.hash64(body, body.length);
     }    
-
-    public static long toEpochMilli(BigDecimal excel_serial) {
+    
+    public static long toEpochSecond(BigDecimal excel_serial) {
         // Unixtime = (Excelserial - 25569) * (60 * 60 * 24) - (60 * 60 * 0)
-        excel_serial = excel_serial.subtract(BigDecimal.valueOf((double)25569L)).multiply(BigDecimal.valueOf((double)60 * 60 * 24));
+        final TimeZone tz = TimeZone.getDefault();
+        final long tz_offset = tz.getRawOffset() / 1000L;
+        excel_serial = excel_serial.subtract(BigDecimal.valueOf(25569L)).multiply(BigDecimal.valueOf(60 * 60 * 24)).subtract(BigDecimal.valueOf(tz_offset));
         return excel_serial.longValue();
+    }
+    
+    public static long toEpochMilli(BigDecimal excel_serial) {
+        return toEpochSecond(excel_serial) * 1000L;
     }
 
     public static BigDecimal toExcelSerial(long epoch_milli) {
         // Excel Serial = 25569 + ((Unixtime + (60 * 60 * 0)) / (60 * 60 * 24))
+        final TimeZone tz = TimeZone.getDefault();
+        final long tz_offset = tz.getRawOffset() / 1000L;
         BigDecimal excel_serial = new BigDecimal(epoch_milli);
-        return excel_serial.divide(BigDecimal.valueOf((double)60 * 60 * 24), new MathContext(4, RoundingMode.HALF_EVEN)).add(BigDecimal.valueOf((double)25569L));
+        return excel_serial.add(BigDecimal.valueOf(tz_offset)).divide(BigDecimal.valueOf(60 * 60 * 24), 6, RoundingMode.HALF_EVEN).add(BigDecimal.valueOf(25569L));
     }
 
 }
