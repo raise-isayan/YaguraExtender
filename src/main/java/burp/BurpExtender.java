@@ -28,6 +28,7 @@ import java.awt.TrayIcon;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedOutputStream;
@@ -128,12 +129,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, true);
-            tab.getMessageComponent().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    getSendToMenu().showBurpMenu(controller, e);
-                }
-            });
+            tab.getMessageComponent().addMouseListener(newContextMenu(controller));
             return tab;
         }
     };
@@ -142,12 +138,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, false);
-            tab.getMessageComponent().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    getSendToMenu().showBurpMenu(controller, e);
-                }
-            });
+            tab.getMessageComponent().addMouseListener(newContextMenu(controller));
             return tab;
         }
     };
@@ -180,17 +171,15 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, false) {
-
                 @Override
                 public boolean isJsonp() {
                     return true;
-                }
-            
+                }            
             };
             return tab;
         }
     };
-    
+
     private final KeyEventPostProcessor dispatcher = new KeyEventPostProcessor() {
         @Override
         public boolean postProcessKeyEvent(KeyEvent e) {
@@ -200,6 +189,16 @@ public class BurpExtender extends BurpExtenderImpl
         }
     };
 
+            
+    private MouseListener newContextMenu(IMessageEditorController controller) {
+        return new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    getSendToMenu().showBurpMenu(controller, e);
+                }
+            };   
+    }
+        
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         super.registerExtenderCallbacks(callbacks);
@@ -723,7 +722,7 @@ public class BurpExtender extends BurpExtenderImpl
         return option;
     }
 
-    public PropertyChangeListener newPropertyChangeListener() {
+    protected PropertyChangeListener newPropertyChangeListener() {
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -791,7 +790,7 @@ public class BurpExtender extends BurpExtenderImpl
             logger.log(Level.SEVERE, null, ex);
         }
     }
-
+    
     /**
      * Send to JTransCoder
      *

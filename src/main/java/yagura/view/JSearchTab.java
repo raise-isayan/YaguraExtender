@@ -862,4 +862,13 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.tabMessageView.showBurpMenu(evt);
     }
 
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.tabMessageView.setRequestLineWrap(lineWrap);
+        this.tabMessageView.setResponseLineWrap(lineWrap);
+    }
+    
+    
 }

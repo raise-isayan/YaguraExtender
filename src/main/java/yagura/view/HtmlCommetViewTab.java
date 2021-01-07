@@ -56,6 +56,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 
         this.txtHtmlComment = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollHtmlComment = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHtmlComment);
+        this.txtHtmlComment.setWrapStyleWord(false);
 
         this.txtHtmlComment.setClearWhitespaceLinesEnabled(true);
         this.txtHtmlComment.setHighlightCurrentLine(true);       
@@ -217,7 +218,9 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         if (content == null || content.length == 0) {
             return false;
         }
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+        this.setLineWrap(viewProperty.isLineWrap());
         if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
             return false;
         }
@@ -239,5 +242,20 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     public void clearView() {
         this.quickSearchTab.clearView();
     }
-        
+
+    /**
+     * @return the lineWrap
+     */
+    public boolean isLineWrap() {
+        return this.txtHtmlComment.getLineWrap();
+    }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.txtHtmlComment.setLineWrap(lineWrap);
+    }
+    
+    
 }

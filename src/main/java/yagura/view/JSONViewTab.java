@@ -180,13 +180,15 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     }
 
     public boolean isEnabledJson(byte[] content, boolean isMessageRequest) {
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
         }
-        if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+        if (content.length > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
+        this.setLineWrap(viewProperty.isLineWrap());
         boolean mimeJsonType = false;
         byte[] body = new byte[0];
         if (this.isRequest && isMessageRequest) {
@@ -279,4 +281,18 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.quickSearchTab.clearView();
     }
 
+    /**
+     * @return the lineWrap
+     */
+    public boolean isLineWrap() {
+        return this.jsonView.isLineWrap();
+    }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.jsonView.setLineWrap(lineWrap);
+    }
+    
 }

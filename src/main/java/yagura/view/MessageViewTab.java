@@ -273,4 +273,21 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     public boolean isExtendVisible() {
         return false;
     }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setRequestLineWrap(boolean lineWrap) {
+        this.tabRequestRawView.setLineWrap(lineWrap);
+    }
+
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setResponseLineWrap(boolean lineWrap) {
+        this.tabResponseRawView.setLineWrap(lineWrap);
+    }
+    
+
 }

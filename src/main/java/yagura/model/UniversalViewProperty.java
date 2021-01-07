@@ -85,6 +85,23 @@ public class UniversalViewProperty {
     }
 
     @Expose
+    private boolean lineWrap = false;
+
+    /**
+     * @return the lineWrap
+     */
+    public boolean isLineWrap() {
+        return lineWrap;
+    }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.lineWrap = lineWrap;
+    }
+        
+    @Expose
     private int dispayMaxLength = 10000000;
     
     public int getDispayMaxLength() {
@@ -165,6 +182,7 @@ public class UniversalViewProperty {
         this.setEncodingList(property.getEncodingList());
         this.setMessageView(property.getMessageView());
         this.setDispayMaxLength(property.getDispayMaxLength());
+        this.setLineWrap(property.isLineWrap());
     }
 
 }

@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import extend.util.ConvertUtil;
 import extend.util.SwingUtil;
 import extend.util.external.JsonUtil;
@@ -116,7 +117,8 @@ public class JSONView extends javax.swing.JPanel {
 
         this.txtJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtJSON);
-
+        this.txtJSON.setWrapStyleWord(false);
+                
         this.txtJSON.setCodeFoldingEnabled(true);
         this.txtJSON.setClearWhitespaceLinesEnabled(true);
         this.txtJSON.setHighlightCurrentLine(true);       
@@ -336,6 +338,20 @@ public class JSONView extends javax.swing.JPanel {
            TreeNode child = node.getChildAt(i);
            child.toString();
        }
+    }
+
+    /**
+     * @return the lineWrap
+     */
+    public boolean isLineWrap() {
+        return this.txtJSON.getLineWrap();
+    }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.txtJSON.setLineWrap(lineWrap);
     }
     
 }

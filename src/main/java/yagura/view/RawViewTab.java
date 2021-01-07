@@ -62,7 +62,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     public RawViewTab(IMessageEditorController controller, boolean editable, boolean isResuest) {
         this.request = isResuest;
         this.controller = controller;
-        this.editable = editable;
+        //this.editable = editable;
         this.editable = false;
         initComponents();
         customizeComponents();
@@ -79,7 +79,8 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 
         this.txtURaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollURaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtURaw);
-
+        this.txtURaw.setWrapStyleWord(false);
+        
         this.txtURaw.setCodeFoldingEnabled(true);
         this.txtURaw.setClearWhitespaceLinesEnabled(true);
         this.txtURaw.setHighlightCurrentLine(true);       
@@ -214,15 +215,16 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         if (content == null || content.length == 0) {
             return false;
         }
-
         // "This message is too large to display"
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
             return false;
         }
-        if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+        if (content.length > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
+        this.setLineWrap(viewProperty.isLineWrap());
         if (this.request && isRequest && content.length > 0) {
             return true;
         } else if (!this.request && !isRequest && content.length > 0) {
@@ -336,4 +338,11 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.content = null;
     }
 
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.txtURaw.setLineWrap(lineWrap);
+    }
+        
 }

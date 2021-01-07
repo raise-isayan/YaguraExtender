@@ -75,7 +75,6 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.tabJTransCoder.addPropertyChangeListener(JTRANS_CODER_PROPERTY, this);
         this.tabVersion.addPropertyChangeListener(VERSION_PROPERTY, this);
         this.tabVersion.addPropertyChangeListener(LOAD_CONFIG_PROPERTY, this);
-
     }
 
     /**

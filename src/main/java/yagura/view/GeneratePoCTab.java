@@ -70,6 +70,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
         this.txtGeneratorPoC = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollGeneratorPoC = new org.fife.ui.rtextarea.RTextScrollPane(txtGeneratorPoC);
+        this.txtGeneratorPoC.setWrapStyleWord(false);
 
         this.txtGeneratorPoC.setClearWhitespaceLinesEnabled(true);
         this.txtGeneratorPoC.setHighlightCurrentLine(true);       
@@ -451,7 +452,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         if (content == null || content.length == 0) {
             return false;
         }
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+        this.setLineWrap(viewProperty.isLineWrap());
         if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
             return false;
         }
@@ -1183,4 +1186,18 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         this.quickSearchTab.clearView();
     }
 
+    /**
+     * @return the lineWrap
+     */
+    public boolean isLineWrap() {
+        return this.txtGeneratorPoC.getLineWrap();
+    }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.txtGeneratorPoC.setLineWrap(lineWrap);
+    }
+    
 }

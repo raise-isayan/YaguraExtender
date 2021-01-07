@@ -84,6 +84,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         
         this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
+        this.txtHeaderJSON.setWrapStyleWord(false);
 
         this.txtHeaderJSON.setCodeFoldingEnabled(true);
         this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
@@ -102,7 +103,8 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         
         this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
-
+        this.txtPayloadJSON.setWrapStyleWord(false);
+        
         this.txtPayloadJSON.setCodeFoldingEnabled(true);
         this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
         this.txtPayloadJSON.setHighlightCurrentLine(false);       
@@ -118,6 +120,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
         this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
         this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
+        this.txtSignatureSign.setWrapStyleWord(false);
 
         this.txtSignatureSign.setCodeFoldingEnabled(true);
         this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
@@ -284,13 +287,15 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         }
         boolean find = false;
         try {
-            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+            UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
                 return false;
             }
-            if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+            if (content.length > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
                 return false;
             }
+            this.setLineWrap(viewProperty.isLineWrap());
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             List<String> headers = reqInfo.getHeaders();
             for (String h : headers) {
@@ -415,4 +420,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         return null;
     }
 
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    private void setLineWrap(boolean lineWrap) {
+        this.txtHeaderJSON.setLineWrap(lineWrap);
+        this.txtPayloadJSON.setLineWrap(lineWrap);
+        this.txtSignatureSign.setLineWrap(lineWrap);
+    }
+    
 }
