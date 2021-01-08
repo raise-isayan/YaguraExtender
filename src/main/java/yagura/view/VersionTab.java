@@ -55,6 +55,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
 
         txtVersion.setEditable(false);
         txtVersion.setColumns(20);
+        txtVersion.setLineWrap(true);
         txtVersion.setRows(5);
         scrollVersion.setViewportView(txtVersion);
 
@@ -110,7 +111,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
         pnlCenter.add(pnlConfig, java.awt.BorderLayout.NORTH);
 
         add(pnlCenter);
-        pnlCenter.setBounds(0, 0, 559, 168);
+        pnlCenter.setBounds(0, 0, 559, 167);
 
         chkDebugMode.setText("DebugMode");
         chkDebugMode.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -187,6 +188,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
     private void customizeComponents() {
         this.setLayout(new VerticalFlowLayout());
         // Version Info
+        this.txtVersion.setWrapStyleWord(false);
         this.txtVersion.setText(Version.getInstance().getVersionInfo());
     }
 

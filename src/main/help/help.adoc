@@ -100,6 +100,9 @@ Select::
 [JSON] check box:: 
     Display the JSON tab in the message tab.
 
+[JSONP] check box:: 
+    Display the JSONP tab in the message tab.
+
 [JWT] check box:: 
     Display the JWT tab in the message tab.
 
@@ -113,7 +116,13 @@ Select::
 [Universal Param] check box:: 
     Display the Param tab corresponding to CJK in the message tab.
     Currently read-only.
-   
+
+[Display max length]::
+    Sets the maximum size of the View to be displayed. If the size of the request or response is very large, it may stop responding.
+
+[lineWrap]::
+    Sets whether text will be wrapped in the view or not. If checked, the text will be wrapped.
+
 === MatchReplace tab
 
 image:images/custom_matchreplace.png[MatchReplace tab]

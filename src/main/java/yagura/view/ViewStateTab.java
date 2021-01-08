@@ -141,19 +141,20 @@ public class ViewStateTab extends javax.swing.JPanel implements IMessageEditorTa
         if (!view.contains(UniversalViewProperty.UniversalView.VIEW_STATE)) {
             return false;
         }
+        // パラメータ値のサイズではなく全体のサイズで判断する
+        if ( content.length > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
+            return false;
+        }
         IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
         List<IParameter> parameters = reqInfo.getParameters();
         String viewStateValue = "";
         for (IParameter p : parameters) {
             if (p.getType() == IParameter.PARAM_BODY) {
                 if ("__VIEWSTATE".equals(p.getName()) && !"".equals(p.getValue())) {                  
-                    viewStateValue = p.getValue();
+                    return true;
                 }
             }
         }        
-        if (viewStateValue.length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
-            return false;
-        }
         return false;
     }
 

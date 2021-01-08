@@ -106,7 +106,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
          */
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtInputRaw = new javax.swing.JTextArea();
-        
+        this.txtInputRaw.setWrapStyleWord(false);
         this.txtInputRaw.setEditable(true);
 //        this.txtInputRaw.setCodeFoldingEnabled(false);
 //        this.txtInputRaw.setHyperlinksEnabled(false);
@@ -117,6 +117,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 //        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
         this.scrollInputRaw = new javax.swing.JScrollPane();
         this.scrollInputRaw.setViewportView(this.txtInputRaw);
+
 //        this.tabbetInput.addTab("Raw", this.scrollInputRaw);
         this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
         
@@ -125,6 +126,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 
+        this.txtOutputRaw.setWrapStyleWord(false);
         this.txtOutputRaw.setEditable(false);
         this.txtOutputRaw.setHyperlinksEnabled(false);
         this.txtOutputRaw.setHighlightCurrentLine(false);
