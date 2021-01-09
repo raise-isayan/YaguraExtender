@@ -416,6 +416,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlEncode = new javax.swing.JPanel();
         rdoAll = new javax.swing.JRadioButton();
         rdoAlphaNum = new javax.swing.JRadioButton();
+        rdoURLSafe = new javax.swing.JRadioButton();
         rdoLigth = new javax.swing.JRadioButton();
         rdoStandard = new javax.swing.JRadioButton();
         pnlConvertCase = new javax.swing.JPanel();
@@ -1061,15 +1062,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEncodingLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnlEncodingLayout.createSequentialGroup()
-                        .addComponent(cmbEncoding, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(pnlEncodingLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(cmbEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlEncodingLayout.createSequentialGroup()
                         .addComponent(chkRawMode)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkGuess)
-                        .addGap(4, 32, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(chkGuess)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlEncodingLayout.setVerticalGroup(
             pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1077,9 +1078,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 .addGroup(pnlEncodingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkRawMode)
                     .addComponent(chkGuess))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlInputOutput.add(pnlEncoding, java.awt.BorderLayout.CENTER);
@@ -1110,12 +1111,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlOutputToInput.setLayout(pnlOutputToInputLayout);
         pnlOutputToInputLayout.setHorizontalGroup(
             pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlOutputToInputLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOutputCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnOutputToInput, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+            .addGroup(pnlOutputToInputLayout.createSequentialGroup()
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addGroup(pnlOutputToInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnClear, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOutputCopy, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOutputToInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         pnlOutputToInputLayout.setVerticalGroup(
@@ -1135,7 +1136,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlSelect.add(pnlInputOutput, java.awt.BorderLayout.EAST);
 
         pnlEncode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode Type"));
-        pnlEncode.setLayout(new java.awt.GridLayout(4, 0));
+        pnlEncode.setLayout(new java.awt.GridLayout(5, 0));
 
         btnGrpEncodeType.add(rdoAll);
         rdoAll.setSelected(true);
@@ -1156,8 +1157,19 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         });
         pnlEncode.add(rdoAlphaNum);
 
+        btnGrpEncodeType.add(rdoURLSafe);
+        rdoURLSafe.setText("URLSafe");
+        rdoURLSafe.setToolTipText("[^a-zA-Z0-9\\._-]");
+        rdoURLSafe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoURLSafeActionPerformed(evt);
+            }
+        });
+        pnlEncode.add(rdoURLSafe);
+
         btnGrpEncodeType.add(rdoLigth);
-        rdoLigth.setText("[^A-Za-z0-9!\"$'()*,/:<>@\\[\\\\\\]^`{|}~]");
+        rdoLigth.setText("Light");
+        rdoLigth.setToolTipText("[^A-Za-z0-9!\\\"$&'()*+,:=@|~]");
         rdoLigth.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoLigthActionPerformed(evt);
@@ -1166,7 +1178,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlEncode.add(rdoLigth);
 
         btnGrpEncodeType.add(rdoStandard);
-        rdoStandard.setText("[^A-Za-z0-9\"<>\\[\\\\\\]^`{|}]");
+        rdoStandard.setText("Standard");
+        rdoStandard.setToolTipText("[^A-Za-z0-9!\\\"'()*,/:<>@\\[\\\\\\]^`{|}~]");
         rdoStandard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoStandardActionPerformed(evt);
@@ -2423,9 +2436,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoQuotedPrintableActionPerformed
 
-    private void rdoStandardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoStandardActionPerformed
+    private void rdoURLSafeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoURLSafeActionPerformed
         firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
-    }//GEN-LAST:event_rdoStandardActionPerformed
+    }//GEN-LAST:event_rdoURLSafeActionPerformed
 
     private void rdoLowerCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoLowerCaseActionPerformed
         firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
@@ -2972,6 +2985,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         // TODO add your handling code here:
     }//GEN-LAST:event_spnDateEndStateChanged
 
+    private void rdoStandardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoStandardActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoStandardActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
@@ -3153,6 +3170,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JRadioButton rdoRegex;
     private javax.swing.JRadioButton rdoSQLLang;
     private javax.swing.JRadioButton rdoStandard;
+    private javax.swing.JRadioButton rdoURLSafe;
     private javax.swing.JRadioButton rdoUTF7;
     private javax.swing.JRadioButton rdoUnicodeHex;
     private javax.swing.JRadioButton rdoUpperCase;
@@ -3425,6 +3443,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             return EncodeType.LIGHT;
         } else if (this.rdoStandard.isSelected()) {
             return EncodeType.STANDARD;
+        } else if (this.rdoURLSafe.isSelected()) {
+            return EncodeType.URL_SAFE;
         }
         return EncodeType.ALL;
     }
@@ -3442,6 +3462,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 break;
             case STANDARD:
                 this.rdoStandard.setSelected(true);
+                break;
+            case URL_SAFE:
+                this.rdoURLSafe.setSelected(true);
                 break;
         }
     }

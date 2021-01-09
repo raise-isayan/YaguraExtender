@@ -35,11 +35,6 @@ Language/link:help-ja.html[Japanese]
 ** Apache License 2.0
 ** https://github.com/google/gson/blob/master/LICENSE
 
-* JDatePicker
-** https://github.com/JDatePicker/JDatePicker
-** BSD License
-** https://github.com/JDatePicker/JDatePicker/blob/master/LICENSE.md
-
 * Universal Chardet for java
 ** https://code.google.com/archive/p/juniversalchardet/
 ** MPL 1.1

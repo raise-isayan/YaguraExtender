@@ -8,7 +8,6 @@ import extend.view.base.RegexItem;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.net.IDN;
 import java.nio.ByteBuffer;
@@ -155,7 +154,7 @@ public class TransUtil {
     }
 
     public enum EncodeType {
-        ALL, ALPHANUM, LIGHT, STANDARD
+        ALL, ALPHANUM, STANDARD, LIGHT, URL_SAFE
     };
 
     public enum ConvertCase {
@@ -170,8 +169,8 @@ public class TransUtil {
     public final static Pattern PTN_ENCODE_ALL = Pattern.compile(".", Pattern.DOTALL);
     public final static Pattern PTN_ENCODE_ALPHANUM = Pattern.compile("[^a-zA-Z0-9]");
     public final static Pattern PTN_ENCODE_URLSAFE = Pattern.compile("[^a-zA-Z0-9\\._-]");
-    public final static Pattern PTN_ENCODE_LIGHT = Pattern.compile("[^A-Za-z0-9!\"$'()*,/:<>@\\[\\\\\\]^`{|}~]");
-    public final static Pattern PTN_ENCODE_STANDARD = Pattern.compile("[^A-Za-z0-9\"<>\\[\\\\\\]^`{|}]");
+    public final static Pattern PTN_ENCODE_STANDARD = Pattern.compile("[^A-Za-z0-9!\"$&'()*+,:=@|~]");
+    public final static Pattern PTN_ENCODE_LIGHT = Pattern.compile("[^A-Za-z0-9!\"'()*,/:<>@\\[\\\\\\]^`{|}~]");
     public final static Pattern PTN_ENCODE_JS = Pattern.compile("[^ !#$&=~/,@+*|0-9A-Za-z\\[\\]\\(\\)\\{\\}?-]");
 
     public static Pattern getEncodeTypePattern(EncodeType type) {
@@ -180,10 +179,12 @@ public class TransUtil {
                 return PTN_ENCODE_ALL;
             case ALPHANUM:
                 return PTN_ENCODE_ALPHANUM;
-            case LIGHT:
-                return PTN_ENCODE_LIGHT;
             case STANDARD:
                 return PTN_ENCODE_STANDARD;
+            case LIGHT:
+                return PTN_ENCODE_LIGHT;
+            case URL_SAFE:
+                return PTN_ENCODE_URLSAFE;
             default:
                 break;
         }
@@ -1765,6 +1766,7 @@ public class TransUtil {
 
     public static String toSmartMatch(String value, String charset) throws UnsupportedEncodingException {
         StringBuilder buff = new StringBuilder();
+        boolean escape = false;
         int length = value.length();
         for (int i = 0; i < length; i = value.offsetByCodePoints(i, 1)) {
             char ch = value.charAt(i);
@@ -1779,11 +1781,14 @@ public class TransUtil {
                     buff.append('|');
                     buff.append(HttpUtil.toHtmlEncode(ch));
                     break;
-                case '\\':
+                case '\\': // escape
+                    if (i == length - 1) 
+                        buff.append(toRegexEscape(ch));
+                    else
+                        escape = true;
+                    break;
                 case '.':
                 case '+':
-                case '*':
-                case '?':
                 case '[':
                 case '^':
                 case ']':
@@ -1799,10 +1804,28 @@ public class TransUtil {
                 case '|':
                 case ':':
                 case '-':
+                    if (escape) buff.append(toRegexEscape('\\'));
                     buff.append(toRegexEscape(ch));
+                    escape = false;
+                    break;
+                case '*': // wild card
+                    if (escape)
+                        buff.append(toRegexEscape(ch));
+                    else
+                        buff.append("(?:.*?)");
+                    escape = false;
+                    break;
+                case '?': // wild card
+                    if (escape) 
+                        buff.append(toRegexEscape(ch));
+                    else
+                        buff.append('.');
+                    escape = false;
                     break;
                 default:
+                    if (escape) buff.append(toRegexEscape('\\'));
                     buff.appendCodePoint(code);
+                    escape = false;
                     break;
             }
             buff.append('|');

@@ -22,7 +22,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Locale;
@@ -757,6 +756,68 @@ public class TransUtilTest {
             Pattern p = Pattern.compile(regex);
             assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
         }
+        /* wild card */
+        {
+            String regex = TransUtil.toSmartMatch("a?a");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("aXa").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("a?a??b???c");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("aXaYYbZZZc").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("a?a??bc?");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("aXaYYbcZ").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("*aa");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("XYZaa").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("a*a");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("aa").matches());
+            assertTrue(p.matcher("aXa").matches());
+            assertTrue(p.matcher("aXYa").matches());
+            assertTrue(p.matcher("aXYZa").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("aa*");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("aaXYZ").matches());
+        }
+        /* wild card escape */
+        {
+            String regex = TransUtil.toSmartMatch("a\\?a");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("a?a").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("a\\?a\\??b?\\??c");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("a?a?YbZ?Zc").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("a?a\\");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("aZa\\").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("a\\*a");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("a*a").matches());
+        }
+        {
+            String regex = TransUtil.toSmartMatch("a*a\\");
+            Pattern p = Pattern.compile(regex);
+            assertTrue(p.matcher("aXa\\").matches());
+        }
+        
+        
     }
 
     /**
@@ -823,6 +884,7 @@ public class TransUtilTest {
                 for (char c : ch) {
                     String regex = TransUtil.toSmartMatch(Character.toString(c), "UTF-8");
                     Pattern p = Pattern.compile(regex);
+                    System.out.println("ch:" + Character.toString(c));
                     assertTrue(p.matcher(Character.toString(c)).matches());
                 }
             }

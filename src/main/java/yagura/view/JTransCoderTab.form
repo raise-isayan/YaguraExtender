@@ -932,20 +932,20 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <Component id="cmbEncoding" max="32767" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="102" alignment="1" attributes="0">
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              <Component id="cmbEncoding" min="-2" pref="146" max="-2" attributes="0"/>
                                           </Group>
-                                          <Group type="102" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
                                               <Component id="chkRawMode" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <EmptySpace max="32767" attributes="0"/>
                                               <Component id="chkGuess" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="4" pref="32" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
+                                      <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -956,9 +956,9 @@
                                           <Component id="chkRawMode" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="chkGuess" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="cmbEncoding" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="cmbEncoding" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -1005,12 +1005,12 @@
                           <Layout>
                             <DimensionLayout dim="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="2" attributes="0">
-                                          <Component id="btnClear" alignment="2" max="32767" attributes="0"/>
-                                          <Component id="btnOutputCopy" alignment="2" max="32767" attributes="0"/>
-                                          <Component id="btnOutputToInput" alignment="2" pref="182" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace pref="13" max="32767" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="btnClear" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
+                                          <Component id="btnOutputCopy" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
+                                          <Component id="btnOutputToInput" alignment="1" min="-2" pref="152" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -1082,7 +1082,7 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                             <Property name="columns" type="int" value="0"/>
-                            <Property name="rows" type="int" value="4"/>
+                            <Property name="rows" type="int" value="5"/>
                           </Layout>
                           <SubComponents>
                             <Component class="javax.swing.JRadioButton" name="rdoAll">
@@ -1108,12 +1108,25 @@
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoAlphaNumActionPerformed"/>
                               </Events>
                             </Component>
+                            <Component class="javax.swing.JRadioButton" name="rdoURLSafe">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="btnGrpEncodeType"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="URLSafe"/>
+                                <Property name="toolTipText" type="java.lang.String" value="[^a-zA-Z0-9\u005c._-]" containsInvalidXMLChars="true"/>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoURLSafeActionPerformed"/>
+                              </Events>
+                            </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoLigth">
                               <Properties>
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                   <ComponentRef name="btnGrpEncodeType"/>
                                 </Property>
-                                <Property name="text" type="java.lang.String" value="[^A-Za-z0-9!&quot;$&apos;()*,/:&lt;&gt;@\u005c[\u005c\u005c\u005c]^`{|}~]" containsInvalidXMLChars="true"/>
+                                <Property name="text" type="java.lang.String" value="Light"/>
+                                <Property name="toolTipText" type="java.lang.String" value="[^A-Za-z0-9!\u005c&quot;$&amp;&apos;()*+,:=@|~]" containsInvalidXMLChars="true"/>
                               </Properties>
                               <Events>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoLigthActionPerformed"/>
@@ -1124,7 +1137,8 @@
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                   <ComponentRef name="btnGrpEncodeType"/>
                                 </Property>
-                                <Property name="text" type="java.lang.String" value="[^A-Za-z0-9&quot;&lt;&gt;\u005c[\u005c\u005c\u005c]^`{|}]" containsInvalidXMLChars="true"/>
+                                <Property name="text" type="java.lang.String" value="Standard"/>
+                                <Property name="toolTipText" type="java.lang.String" value="[^A-Za-z0-9!\u005c&quot;&apos;()*,/:&lt;&gt;@\u005c[\u005c\u005c\u005c]^`{|}~]" containsInvalidXMLChars="true"/>
                               </Properties>
                               <Events>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoStandardActionPerformed"/>
