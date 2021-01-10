@@ -2,9 +2,7 @@ package passive;
 
 import extend.util.Util;
 import extend.util.external.JsonUtil;
-import extend.util.external.TransUtil;
 import extend.view.base.CaptureItem;
-import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -17,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import static passive.JsonToken.decodeUrlSafe;
 
 /**
  *
@@ -26,10 +23,10 @@ import static passive.JsonToken.decodeUrlSafe;
 public class JWTToken extends JsonToken {
     private final static Logger logger = Logger.getLogger(JWTToken.class.getName());
 
-    private final static JWTToken instance = new JWTToken();
+    private final static JWTToken jwtInstance = new JWTToken();
 
     public JWTToken getInstance() {
-        return instance; 
+        return jwtInstance; 
     }
     
     public JWTToken() {
@@ -40,7 +37,7 @@ public class JWTToken extends JsonToken {
         this.header = token.header;
         this.payload = token.payload;
         this.signature = token.signature;
-        this.signatureByte = decodeUrlSafeByte(token.signature);
+        this.signatureByte = decodeBase64UrlSafeByte(token.signature);
     }
 
     public enum Algorithm {
@@ -78,7 +75,7 @@ public class JWTToken extends JsonToken {
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
 
     private static Algorithm findAlgorithm(String header) {
-        String decodeHeader = decodeUrlSafe(header);
+        String decodeHeader = decodeBase64UrlSafe(header);
         Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
         try {
             if (m.find()) {
@@ -91,12 +88,13 @@ public class JWTToken extends JsonToken {
         return null;
     }
 
-    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]){10,})\\.(ey(?:[0-9a-zA-Z_-]){2,})\\.((?:[0-9a-zA-Z_-]){30,})?");
+//    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]){10,})(?:\\.)(ey(?:[0-9a-zA-Z_-]){2,})(?:\\.)((?:[0-9a-zA-Z_-]){30,})?");
+    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){10,})(?:\\.|%2[eE])(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){2,})(?:\\.|%2[eE])((?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){30,})?");
 
-    public static boolean isTokenFormat(String value) {
+    protected static boolean isTokenFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);
         if (m.matches()) {
-            if (instance.parseToken(value, true) != null) {
+            if (jwtInstance.parseToken(value, true) != null) {
                 return true;            
             }
         }
@@ -116,6 +114,7 @@ public class JWTToken extends JsonToken {
     }
 
     public static boolean containsTokenFormat(String value) {
+        value = JsonToken.decodeUrl(value);
         Matcher m = PTN_JWT.matcher(value);
         if (m.find()) {
             return isTokenFormat(m.group(0));
@@ -125,7 +124,7 @@ public class JWTToken extends JsonToken {
 
     public static CaptureItem[] findToken(String value) {
         List<CaptureItem> tokens = new ArrayList<>();
-        Matcher m = PTN_JWT.matcher(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1));
+        Matcher m = PTN_JWT.matcher(value);
         while (m.find()) {
             String capture = m.group(0);
             if (isTokenFormat(capture)) {
@@ -150,9 +149,11 @@ public class JWTToken extends JsonToken {
     private String signature;
     private byte[] signatureByte;
 
+    @Override
     public JWTToken parseToken(String value, boolean matches) {
         JWTToken token = null;
-        Matcher m = PTN_JWT.matcher(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1));
+        value = JsonToken.decodeUrl(value);
+        Matcher m = PTN_JWT.matcher(value);
         boolean find = false;
         if (matches) {
             find = m.matches();
@@ -169,7 +170,7 @@ public class JWTToken extends JsonToken {
             token.header = header;
             token.payload = payload;
             token.signature = signature;
-            token.signatureByte = decodeUrlSafeByte(signature);
+            token.signatureByte = decodeBase64UrlSafeByte(signature);
         }
         return token;
     }
@@ -177,6 +178,7 @@ public class JWTToken extends JsonToken {
     /**
      * @return the token
      */
+    @Override
     public String getToken() {
         StringBuilder buff = new StringBuilder();
         buff.append(header);
@@ -190,6 +192,7 @@ public class JWTToken extends JsonToken {
     /**
      * @return the data
      */
+    @Override
     public String getData() {
         StringBuilder buff = new StringBuilder();
         buff.append(header);
@@ -215,6 +218,7 @@ public class JWTToken extends JsonToken {
     /**
      * @return the payload
      */
+    @Override
     public String getPayload() {
         return payload;
     }
@@ -222,6 +226,7 @@ public class JWTToken extends JsonToken {
     /**
      * @return the signature
      */
+    @Override
     public String getSignature() {
         return signature;
     }
@@ -238,7 +243,7 @@ public class JWTToken extends JsonToken {
      * @return the header
      */
     public String getHeaderJSON(boolean pretty) {
-        return JsonUtil.prettyJson(decodeUrlSafe(this.getHeader()), pretty);
+        return JsonUtil.prettyJson(decodeBase64UrlSafe(this.getHeader()), pretty);
     }
 
     /**
@@ -246,9 +251,10 @@ public class JWTToken extends JsonToken {
      * @return the payload
      */
     public String getPayloadJSON(boolean pretty) {
-        return JsonUtil.prettyJson(decodeUrlSafe(this.getPayload()), pretty);
+        return JsonUtil.prettyJson(decodeBase64UrlSafe(this.getPayload()), pretty);
     }
     
+    @Override
     public boolean signatureEqual(final String secret) {
         return signatureEqual(this.algorithm, Util.getRawByte(this.getData()), this.signatureByte, Util.getRawByte(secret));
     }
@@ -304,7 +310,7 @@ public class JWTToken extends JsonToken {
                     final SecretKeySpec sk = new SecretKeySpec(secret, algo.getSignAlgorithm());
                     mac.init(sk);
                     mac.reset();
-                    String data = encodeUrlSafe(jwtHeader(algo)) + "." + payload;
+                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
                     final byte[] mac_bytes = mac.doFinal(Util.getRawByte(data));
                     return mac_bytes;                
                 }
@@ -314,7 +320,7 @@ public class JWTToken extends JsonToken {
 //                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
 //                    PrivateKey privateKey = CertUtil.loadPrivateKey(Util.getRawStr(secret));
 //                    rsaSignature.initSign(privateKey);
-//                    String data = encodeUrlSafe(jwtHeader(algo)) + "." + payload;
+//                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
 //                    rsaSignature.update(Util.getRawByte(data));
 //                    byte[] mac_bytes = rsaSignature.sign();
 //                    return mac_bytes;                
@@ -324,7 +330,7 @@ public class JWTToken extends JsonToken {
 //                case ES512: {
 //                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
 //                    PrivateKey privateKey = CertUtil.loadPrivateKey(Util.getRawStr(secret));
-//                    String data = encodeUrlSafe(jwtHeader(algo)) + "." + payload;
+//                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
 //                    rsaSignature.update(Util.getRawByte(data));
 //                    byte[] mac_bytes = rsaSignature.sign();
 //                    return mac_bytes;                                    
@@ -348,17 +354,17 @@ public class JWTToken extends JsonToken {
     
     public static String [] generateNoneToken(String baseJWT) {
         final List<String> tokens = new ArrayList<>();
-        JWTToken jwt = instance.parseToken(baseJWT, true);
+        JWTToken jwt = jwtInstance.parseToken(baseJWT, true);
         if (jwt != null) {
             for (String alg : algNone) {
-                String decodeHeader = decodeUrlSafe(jwt.getHeader());
+                String decodeHeader = decodeBase64UrlSafe(jwt.getHeader());
                 Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
                 StringBuffer header = new StringBuffer();
                 if (m.find()) {
                     m.appendReplacement(header, String.format("\"alg\":\"%s\"", alg));
                 }
                 m.appendTail(header);
-                String token = encodeUrlSafe(header.toString()) + "." + jwt.getPayload() + ".";
+                String token = encodeBase64UrlSafe(header.toString()) + "." + jwt.getPayload() + ".";
                 tokens.add(token);
             }
         }
@@ -369,14 +375,14 @@ public class JWTToken extends JsonToken {
     
     public static String [] generatePublicToHashToken(String baseToken, byte [] publicKey) {
         final List<String> tokens = new ArrayList<>();
-        JWTToken jwt = instance.parseToken(baseToken, true);
+        JWTToken jwt = jwtInstance.parseToken(baseToken, true);
         if (jwt != null) {
             for (Algorithm alg : algHS) {
                 byte [] sign;
                 try {
                     sign = JWTToken.sign(alg, jwt.getPayload(), publicKey);
-                    String signature = JWTToken.encodeUrlSafe(sign);  
-                    String result = JWTToken.encodeUrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;  
+                    String signature = JWTToken.encodeBase64UrlSafe(sign);  
+                    String result = JWTToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;  
                     tokens.add(result);
                 } catch (NoSuchAlgorithmException ex) {
                     logger.log(Level.SEVERE, null, ex);

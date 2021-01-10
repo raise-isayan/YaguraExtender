@@ -306,7 +306,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             List<IParameter> parameters = reqInfo.getParameters();
             for (IParameter p : parameters) {
                 if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
-                    find = JWTToken.isTokenFormat(p.getValue());
+                    find = jwtinstance.isValidFormat(p.getValue());
                     if (find) {
                         break;
                     }
