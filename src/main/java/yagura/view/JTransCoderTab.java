@@ -98,12 +98,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final static String [] SHORT_ZONEIDS = { 
         "ACT", "AET", "AGT", "ART", "AST", "BET", "BST", "CAT", "CNT", "CST", "CTT", "EAT", "ECT", "IET", "IST", "JST", "MIT", "NET", "NST", "PLT", "PNT", "PRT", "PST", "SST", "VST", "EST", "MST", "HST"
     };
+
+    private final ViewStateDecoderTab viewStateDecoderTab = new ViewStateDecoderTab();
     
     private void customizeComponents() {
 
         /**
          * * UI design start **
          */
+
+        tabbetTranscoder.addTab(viewStateDecoderTab.getTabCaption(), viewStateDecoderTab);
+
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtInputRaw = new javax.swing.JTextArea();
         this.txtInputRaw.setWrapStyleWord(false);
@@ -504,7 +509,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         lblBin1 = new javax.swing.JLabel();
         btnUnixtimeCopy = new javax.swing.JButton();
         lblJavaSerial = new javax.swing.JLabel();
-        btnUnixtimeCopy1 = new javax.swing.JButton();
+        btnJavaSerialCopy = new javax.swing.JButton();
         lblExcelSerial = new javax.swing.JLabel();
         btnExcelSerial = new javax.swing.JButton();
         lblDate = new javax.swing.JLabel();
@@ -1809,8 +1814,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         lblJavaSerial.setText("Java serial:");
 
-        btnUnixtimeCopy1.setText("Copy");
-        btnUnixtimeCopy1.addActionListener(new java.awt.event.ActionListener() {
+        btnJavaSerialCopy.setText("Copy");
+        btnJavaSerialCopy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnJavaSerialCopyActionPerformed(evt);
             }
@@ -1892,7 +1897,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnUnixtimeCopy1, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                        .addComponent(btnJavaSerialCopy, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
                         .addComponent(btnExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnUnixtimeCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1915,7 +1920,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 .addGap(6, 6, 6)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblJavaSerial)
-                    .addComponent(btnUnixtimeCopy1)
+                    .addComponent(btnJavaSerialCopy)
                     .addComponent(txtJavaSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -3024,6 +3029,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JButton btnHexCopy;
     private javax.swing.JButton btnImport;
     private javax.swing.JButton btnInputfile;
+    private javax.swing.JButton btnJavaSerialCopy;
     private javax.swing.JButton btnMurmurHash32;
     private javax.swing.JButton btnMurmurHash64;
     private javax.swing.JButton btnOctCopy;
@@ -3039,7 +3045,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JToggleButton btnStoreTypeJKS;
     private javax.swing.JToggleButton btnStoreTypePKCS12;
     private javax.swing.JButton btnUnixtimeCopy;
-    private javax.swing.JButton btnUnixtimeCopy1;
     private javax.swing.JCheckBox chk64Newline;
     private javax.swing.JCheckBox chk76Newline;
     private javax.swing.JCheckBox chkCharacterCustom;

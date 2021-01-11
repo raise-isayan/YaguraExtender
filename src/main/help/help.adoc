@@ -817,9 +817,9 @@ Hex::
 Radix32 :: 
     input the 32-base number.
 
-.Dateタブ
+.Date tab
 
-image:images/custom_converter_date.png[Dateタブ]
+image:images/custom_converter_date.png[Date tab]
 
 Date:: 
     input the date.
@@ -832,6 +832,16 @@ Java serial::
 
 Excel serial:: 
     Input the time represented by the serial value of Excel
+
+==== ViewStateDecoder tab
+
+image:images/custom_viewstate_decoder.png[ViewStateDecoder tab]
+
+[Decode] button:: 
+     Decode ViewState.
+
+[Clear] button:: 
+     Clear ViewState.
 
 === Generate CSRF PoC
 

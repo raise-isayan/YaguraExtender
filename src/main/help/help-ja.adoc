@@ -829,6 +829,16 @@ Java serial::
 Excel serial:: 
     Excelのシリアル値で表される時間を入力します。
 
+==== ViewStateDecoder タブ
+
+image:images/custom_viewstate_decoder.png[ViewStateDecoderタブ]
+
+[Decode]ボタン:: 
+     ViewStateのデコードを行います。
+
+[Clear]ボタン:: 
+     ViewStateをクリアします。
+
 === Generate CSRF PoC
 
 主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。
