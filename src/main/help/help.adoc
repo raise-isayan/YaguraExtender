@@ -112,11 +112,11 @@ Select::
     Display the Param tab corresponding to CJK in the message tab.
     Currently read-only.
 
-[Display max length]::
-    Sets the maximum size of the View to be displayed. If the size of the request or response is very large, it may stop responding.
-
 [lineWrap]::
     Sets whether text will be wrapped in the view or not. If checked, the text will be wrapped.
+
+[Display max length]::
+    Sets the maximum size of the View to be displayed. If the size of the request or response is very large, it may stop responding.
 
 === MatchReplace tab
 
@@ -702,24 +702,6 @@ CRC32::
 Adler-32::
     Calculate checksum by Adler-32
 
-==== Base Converter tab
-
-image:images/custom_baseconverter.png[BaseConverter tab]
-
-Converts the input value to binary, octal, decimal, or hexadecimal.
-
-Bin::
-  Displays the value converted to binary.
-
-Oct:: 
-  Displays the value converted to octal.
-
-Dec:: 
-  Displays the value converted to decimal
-
-Hex:: 
-  Displays the value converted to hexadecimal
-
 ==== Generater tab
 
 The Generater has a sequence tab and a random tab.
@@ -837,11 +819,17 @@ Excel serial::
 
 image:images/custom_viewstate_decoder.png[ViewStateDecoder tab]
 
+[expand] button::
+    Expand the selected tree.
+
+[collapse] button::
+    Collapse the selected tree.
+
 [Decode] button:: 
-     Decode ViewState.
+    Decode ViewState.
 
 [Clear] button:: 
-     Clear ViewState.
+    Clear ViewState.
 
 === Generate CSRF PoC
 

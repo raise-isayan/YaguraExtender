@@ -102,7 +102,7 @@ Select::
 [JWT]チェックボックス:: 
     メッセージタブにJWTタブを表示するようにします。
 
-[ViewState] check box:: 
+[ViewState]チェックボックス:: 
     メッセージタブにViewStateタブを表示するようにします。
 
 [Universal Raw]チェックボックス:: 
@@ -113,12 +113,11 @@ Select::
     メッセージタブにCJKに対応したParamタブを表示するようにします。
     現時点ではリードオンリーです。
 
-[Display max length]::
-    Viewを表示する最大のサイズを設定します。リクエストまたはレスポンスのサイズが非常に大きい場合、応答しなくなる可能性があります。
-
 [lineWrap]::
     Viewで文字を折り返すかを設定します。チェック時は折り返されます｡
 
+[Display max length]::
+    Viewを表示する最大のサイズを設定します。リクエストまたはレスポンスのサイズが非常に大きい場合、応答しなくなる可能性があります。
 
 === MatchReplaceタブ
 
@@ -698,24 +697,6 @@ CRC32::
 Adler-32::
     Adlerによるチェックサムを計算します。
 
-==== Base Converter タブ
-
-image:images/custom_baseconverter.png[BaseConverterタブ]
-
-入力した値を2,8,10,16進数に変換します。
-
-Bin::
-  2進数に変換した値を表示します。
-
-Oct:: 
-  8進数に変換した値を表示します。
-
-Dec:: 
-  10進数に変換した値を表示します
-
-Hex:: 
-  16進数に変換した値を表示します
-
 ==== Generaterタブ
 
 Generater には、sequenceタブとrandomタブがあります。
@@ -832,6 +813,12 @@ Excel serial::
 ==== ViewStateDecoder タブ
 
 image:images/custom_viewstate_decoder.png[ViewStateDecoderタブ]
+
+[expand]ボタン::
+    選択したツリーを展開します。
+
+[collapse]ボタン::
+    選択したツリーを折りたたみます。
 
 [Decode]ボタン:: 
      ViewStateのデコードを行います。
