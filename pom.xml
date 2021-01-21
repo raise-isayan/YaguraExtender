@@ -6,7 +6,7 @@
     <version>2.1</version>
     <packaging>jar</packaging>
     <properties>
-        <releaseVersion>${project.version}.6.0</releaseVersion>
+        <releaseVersion>${project.version}.6.1</releaseVersion>
         <compilerArgument>-Xlint:unchecked</compilerArgument>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>

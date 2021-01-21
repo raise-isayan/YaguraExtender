@@ -111,6 +111,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtInputRaw = new javax.swing.JTextArea();
+        this.txtInputRaw.setLineWrap(true);
         this.txtInputRaw.setWrapStyleWord(false);
         this.txtInputRaw.setEditable(true);
 //        this.txtInputRaw.setCodeFoldingEnabled(false);
@@ -119,6 +120,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 //        this.txtInputRaw.setHyperlinksEnabled(false);
         this.txtInputRaw.setBackground(SystemColor.text);
 
+        // Drag and Drop
+        this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
+            @Override
+            public void setData(byte[] rawData) {
+                setInputText(Util.getRawStr(rawData));
+            }
+        });
+                
 //        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
         this.scrollInputRaw = new javax.swing.JScrollPane();
         this.scrollInputRaw.setViewportView(this.txtInputRaw);
@@ -131,7 +140,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 
-        this.txtOutputRaw.setWrapStyleWord(false);
         this.txtOutputRaw.setEditable(false);
         this.txtOutputRaw.setHyperlinksEnabled(false);
         this.txtOutputRaw.setHighlightCurrentLine(false);
@@ -142,6 +150,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.pnlOutputRaw.add(this.scrollOutputRaw, BorderLayout.CENTER);
         
         this.txtOutputFormat = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+
         this.txtOutputFormat.setEditable(false);
         this.txtOutputFormat.setCodeFoldingEnabled(true);
         this.txtOutputFormat.setHyperlinksEnabled(false);
@@ -233,15 +242,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         this.spnDatetimeStateChanged(null);
         
-//        // Drag and Drop
-//        this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
-//
-//            @Override
-//            public void setData(byte[] rawData) {
-//                setInputText(Util.getRawStr(rawData));
-//            }
-//
-//        });
         this.doStateDecodeChange();        
     }
         
@@ -2583,7 +2583,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private void chkViewLineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewLineWrapActionPerformed
         this.txtInputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
+        this.txtInputRaw.setWrapStyleWord(false);
         this.txtOutputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
+        this.txtOutputRaw.setWrapStyleWord(false);
         if (evt != null) {
             firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
         }
