@@ -87,6 +87,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.txtURaw.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtURaw.setBackground(SystemColor.text);
         this.txtURaw.setEditable(false);
+//        this.txtURaw.setComponentPopupMenu(popup);
 //        scrollURaw.setViewportView(txtURaw);
 
         add(this.scrollURaw, java.awt.BorderLayout.CENTER);
@@ -181,7 +182,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                             txtURaw.setText(get());
                             txtURaw.setCaretPosition(0);
                             quickSearchTab.clearViewAndSearch();
-                            //          quickSearchTab.clearView();
+                            // quickSearchTab.clearView();
                         } catch (InterruptedException ex) {
                             logger.log(Level.SEVERE, null, ex);
                         } catch (ExecutionException ex) {

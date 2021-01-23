@@ -810,22 +810,6 @@ Java serial::
 Excel serial:: 
     Excelのシリアル値で表される時間を入力します。
 
-==== ViewStateDecoder タブ
-
-image:images/custom_viewstate_decoder.png[ViewStateDecoderタブ]
-
-[expand]ボタン::
-    選択したツリーを展開します。
-
-[collapse]ボタン::
-    選択したツリーを折りたたみます。
-
-[Decode]ボタン:: 
-     ViewStateのデコードを行います。
-
-[Clear]ボタン:: 
-     ViewStateをクリアします。
-
 === Generate CSRF PoC
 
 主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。
@@ -875,6 +859,38 @@ multi part:: Content-TypeがMulti partの場合にこの選択を行います。
 plain:: text area を利用してPoCを作成します。 +
     Bodyの内容をそのまま送信したい場合に選択します。 +
     バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。
+
+==== JWT タブ
+
+image:images/custom_JWT.png[JWTタブ]
+
+[JWT]コンボボックス::
+  デコードするJWTを選択します。
+
+[Header]テキストエリア::
+  JWTのHeaderをデコードして表示します。
+
+[Payload]テキストエリア::
+  JWTのPayloadをデコードして表示します。
+
+[Signature]テキストエリア::
+  JWTのSignatureを表示します。
+
+==== ViewState タブ
+
+image:images/custom_viewstate_decoder.png[ViewStateDecoderタブ]
+
+[expand]ボタン::
+    選択したツリーを展開します。
+
+[collapse]ボタン::
+    選択したツリーを折りたたみます。
+
+[Decode]ボタン:: 
+     ViewStateのデコードを行います。
+
+[Clear]ボタン:: 
+     ViewStateをクリアします。
 
 === Version
 バージョン情報を表示します。

@@ -1767,32 +1767,6 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </dl>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_viewstatedecoder_タブ">3.7.4. ViewStateDecoder タブ</h4>
-<div class="paragraph">
-<p><span class="image"><img src="./images/custom_viewstate_decoder.png" alt="ViewStateDecoderタブ"></span></p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">[expand]ボタン</dt>
-<dd>
-<p>選択したツリーを展開します。</p>
-</dd>
-<dt class="hdlist1">[collapse]ボタン</dt>
-<dd>
-<p>選択したツリーを折りたたみます。</p>
-</dd>
-<dt class="hdlist1">[Decode]ボタン</dt>
-<dd>
-<p>ViewStateのデコードを行います。</p>
-</dd>
-<dt class="hdlist1">[Clear]ボタン</dt>
-<dd>
-<p>ViewStateをクリアします。</p>
-</dd>
-</dl>
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="_generate_csrf_poc">3.8. Generate CSRF PoC</h3>
@@ -1875,6 +1849,58 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </dd>
 </dl>
 </div>
+<div class="sect3">
+<h4 id="_jwt_タブ">3.8.1. JWT タブ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="./images/custom_JWT.png" alt="JWTタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JWT]コンボボックス</dt>
+<dd>
+<p>デコードするJWTを選択します。</p>
+</dd>
+<dt class="hdlist1">[Header]テキストエリア</dt>
+<dd>
+<p>JWTのHeaderをデコードして表示します。</p>
+</dd>
+<dt class="hdlist1">[Payload]テキストエリア</dt>
+<dd>
+<p>JWTのPayloadをデコードして表示します。</p>
+</dd>
+<dt class="hdlist1">[Signature]テキストエリア</dt>
+<dd>
+<p>JWTのSignatureを表示します。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_viewstate_タブ">3.8.2. ViewState タブ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="./images/custom_viewstate_decoder.png" alt="ViewStateDecoderタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[expand]ボタン</dt>
+<dd>
+<p>選択したツリーを展開します。</p>
+</dd>
+<dt class="hdlist1">[collapse]ボタン</dt>
+<dd>
+<p>選択したツリーを折りたたみます。</p>
+</dd>
+<dt class="hdlist1">[Decode]ボタン</dt>
+<dd>
+<p>ViewStateのデコードを行います。</p>
+</dd>
+<dt class="hdlist1">[Clear]ボタン</dt>
+<dd>
+<p>ViewStateをクリアします。</p>
+</dd>
+</dl>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_version">3.9. Version</h3>
@@ -1899,7 +1925,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-12 19:46:35 +0900
+Last updated 2021-01-24 00:05:42 +0900
 </div>
 </div>
 </body>

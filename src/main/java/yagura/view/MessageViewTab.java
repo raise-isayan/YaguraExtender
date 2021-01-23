@@ -35,19 +35,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popQuick = new javax.swing.JPopupMenu();
-        mnuRegex = new javax.swing.JCheckBoxMenuItem();
-        mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
-        grpGene = new javax.swing.ButtonGroup();
-        popBurpMenu = new javax.swing.JPopupMenu();
         tabbetMessageView = new javax.swing.JTabbedPane();
-
-        mnuRegex.setSelected(true);
-        mnuRegex.setText("regex");
-        popQuick.add(mnuRegex);
-
-        mnuIgnoreCase.setText("case sensitive");
-        popQuick.add(mnuIgnoreCase);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -96,11 +84,6 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     }//GEN-LAST:event_tabbetMessageViewStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup grpGene;
-    private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
-    private javax.swing.JCheckBoxMenuItem mnuRegex;
-    private javax.swing.JPopupMenu popBurpMenu;
-    private javax.swing.JPopupMenu popQuick;
     private javax.swing.JTabbedPane tabbetMessageView;
     // End of variables declaration//GEN-END:variables
 

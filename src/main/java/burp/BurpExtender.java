@@ -188,7 +188,6 @@ public class BurpExtender extends BurpExtenderImpl
             return false;
         }
     };
-
             
     private MouseListener newContextMenu(IMessageEditorController controller) {
         return new MouseAdapter() {

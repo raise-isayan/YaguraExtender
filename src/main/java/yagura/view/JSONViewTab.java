@@ -97,25 +97,11 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popQuick = new javax.swing.JPopupMenu();
-        mnuRegex = new javax.swing.JCheckBoxMenuItem();
-        mnuIgnoreCase = new javax.swing.JCheckBoxMenuItem();
-
-        mnuRegex.setSelected(true);
-        mnuRegex.setText("regex");
-        popQuick.add(mnuRegex);
-
-        mnuIgnoreCase.setText("case sensitive");
-        popQuick.add(mnuIgnoreCase);
-
         setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem mnuIgnoreCase;
-    private javax.swing.JCheckBoxMenuItem mnuRegex;
-    private javax.swing.JPopupMenu popQuick;
     // End of variables declaration//GEN-END:variables
 
     public void setMessageEncoding(String encoding) {
