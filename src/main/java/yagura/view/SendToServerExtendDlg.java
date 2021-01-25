@@ -34,17 +34,19 @@ public class SendToServerExtendDlg extends CustomDialog {
     private void initComponents() {
 
         pnlMain = new javax.swing.JPanel();
+        pnlCerficate = new javax.swing.JPanel();
+        chkIgnoreValidateCertification = new javax.swing.JCheckBox();
+        pnlProxy = new javax.swing.JPanel();
         lblProtocol = new javax.swing.JLabel();
-        cmbProtocol = new javax.swing.JComboBox<>();
         lblProxyHost = new javax.swing.JLabel();
-        txtProxyHost = new javax.swing.JTextField();
-        lblProxyPort = new javax.swing.JLabel();
-        spnProxyPort = new javax.swing.JSpinner();
         lblProxyUser = new javax.swing.JLabel();
         lblProxyPasswd = new javax.swing.JLabel();
-        txtProxyUser = new javax.swing.JTextField();
         txtProxyPasswd = new javax.swing.JPasswordField();
-        chkIgnoreValidateCertification = new javax.swing.JCheckBox();
+        txtProxyUser = new javax.swing.JTextField();
+        txtProxyHost = new javax.swing.JTextField();
+        cmbProtocol = new javax.swing.JComboBox<>();
+        lblProxyPort = new javax.swing.JLabel();
+        spnProxyPort = new javax.swing.JSpinner();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -55,14 +57,35 @@ public class SendToServerExtendDlg extends CustomDialog {
             }
         });
 
+        pnlMain.setLayout(new java.awt.BorderLayout());
+
+        pnlCerficate.setBorder(javax.swing.BorderFactory.createTitledBorder("Cerficate"));
+
+        chkIgnoreValidateCertification.setText("ignore Validate Certification");
+
+        javax.swing.GroupLayout pnlCerficateLayout = new javax.swing.GroupLayout(pnlCerficate);
+        pnlCerficate.setLayout(pnlCerficateLayout);
+        pnlCerficateLayout.setHorizontalGroup(
+            pnlCerficateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCerficateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkIgnoreValidateCertification)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlCerficateLayout.setVerticalGroup(
+            pnlCerficateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCerficateLayout.createSequentialGroup()
+                .addComponent(chkIgnoreValidateCertification)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        pnlMain.add(pnlCerficate, java.awt.BorderLayout.SOUTH);
+
+        pnlProxy.setBorder(javax.swing.BorderFactory.createTitledBorder("Proxy"));
+
         lblProtocol.setText("Protocol:");
 
         lblProxyHost.setText("Host:");
-
-        lblProxyPort.setText("port:");
-
-        spnProxyPort.setModel(new javax.swing.SpinnerNumberModel(8080, 0, 65535, 1));
-        spnProxyPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnProxyPort, "#"));
 
         lblProxyUser.setText("User:");
 
@@ -74,63 +97,62 @@ public class SendToServerExtendDlg extends CustomDialog {
             }
         });
 
-        chkIgnoreValidateCertification.setText("ignore Validate Certification");
+        lblProxyPort.setText("port:");
 
-        javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
-        pnlMain.setLayout(pnlMainLayout);
-        pnlMainLayout.setHorizontalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
+        spnProxyPort.setModel(new javax.swing.SpinnerNumberModel(8080, 0, 65535, 1));
+        spnProxyPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnProxyPort, "#"));
+
+        javax.swing.GroupLayout pnlProxyLayout = new javax.swing.GroupLayout(pnlProxy);
+        pnlProxy.setLayout(pnlProxyLayout);
+        pnlProxyLayout.setHorizontalGroup(
+            pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProxyLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblProtocol, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlMainLayout.createSequentialGroup()
+                    .addGroup(pnlProxyLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblProxyPasswd)
                             .addComponent(lblProxyUser))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(chkIgnoreValidateCertification)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbProtocol, 0, 234, Short.MAX_VALUE)
-                            .addComponent(txtProxyUser)
-                            .addComponent(txtProxyPasswd)
-                            .addComponent(txtProxyHost))
-                        .addGap(8, 8, 8)
-                        .addComponent(lblProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbProtocol, 0, 247, Short.MAX_VALUE)
+                    .addComponent(txtProxyUser)
+                    .addComponent(txtProxyPasswd)
+                    .addComponent(txtProxyHost))
+                .addGap(8, 8, 8)
+                .addComponent(lblProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        pnlMainLayout.setVerticalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
+        pnlProxyLayout.setVerticalGroup(
+            pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProxyLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProtocol)
                     .addComponent(cmbProtocol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyHost)
                     .addComponent(txtProxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProxyPort)
                     .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyUser)
                     .addComponent(txtProxyUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyPasswd)
                     .addComponent(txtProxyPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(chkIgnoreValidateCertification))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
+
+        pnlMain.add(pnlProxy, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -155,7 +177,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(290, Short.MAX_VALUE)
+                .addContainerGap(315, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -168,7 +190,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
@@ -233,7 +255,9 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JLabel lblProxyPort;
     private javax.swing.JLabel lblProxyUser;
     private javax.swing.JPanel pnlApply;
+    private javax.swing.JPanel pnlCerficate;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JPanel pnlProxy;
     private javax.swing.JSpinner spnProxyPort;
     private javax.swing.JTextField txtProxyHost;
     private javax.swing.JPasswordField txtProxyPasswd;

@@ -56,6 +56,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     private final JSONViewTab tabRequestJSONViewTab = new JSONViewTab(true);
     private final JSONViewTab tabResponseJSONViewTab = new JSONViewTab(false);
     private final GeneratePoCTab tabGeneratePoC = new GeneratePoCTab();
+    private final ViewStateTab tabViewState = new ViewStateTab();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
@@ -101,6 +102,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         this.tabRequestJSONViewTab.setFont(font);
         this.tabResponseJSONViewTab.setFont(font);
         this.tabGeneratePoC.setFont(font);
+        this.tabViewState.setFont(font);
     }
 
     private final EnumSet<UniversalView> mesageView = EnumSet.noneOf(UniversalView.class);
@@ -143,6 +145,9 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 if (this.tabbetRequestView.indexOfComponent(this.tabGeneratePoC) > -1) {
                     this.tabGeneratePoC.setMessage(this.messageItem.getRequest(), true);
                 }
+                if (this.tabbetRequestView.indexOfComponent(this.tabViewState) > -1) {
+                    this.tabViewState.setMessage(this.messageItem.getRequest(), true);
+                }
             }
             if (this.messageItem.getResponse() != null) {
                 this.setEnabled(messageItem.getResponse(), false);
@@ -184,6 +189,8 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabGeneratePoC.getTabCaption())) {
                     this.tabGeneratePoC.setMessageEncoding(encoding);
                     this.tabGeneratePoC.clearView();
+                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabViewState.getTabCaption())) {
+
                 }
             }
         } catch (Exception ex) {
@@ -202,6 +209,9 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             }
             if (this.tabGeneratePoC.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.GENERATE_POC)) {
                 this.tabbetRequestView.addTab(this.tabGeneratePoC.getTabCaption(), this.tabGeneratePoC);
+            }
+            if (this.tabViewState.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.VIEW_STATE)) {
+                this.tabbetRequestView.addTab(this.tabViewState.getTabCaption(), this.tabViewState);
             }
         } else {
             this.tabbetResponseView.removeAll();
@@ -224,6 +234,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         this.tabResponseJSONViewTab.clearView();
         this.tabHtmlComment.clearView();
         this.tabGeneratePoC.clearView();;
+        this.tabViewState.clearViewState();
     }
 
     @Override
