@@ -60,14 +60,14 @@
                           <Group type="102" attributes="0">
                               <Component id="lblName" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtListName" min="-2" pref="186" max="-2" attributes="0"/>
+                              <Component id="txtListName" min="-2" pref="242" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="chkScopeOnly" pref="122" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
+                              <Component id="chkScopeOnly" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="btnImportRule" min="-2" pref="232" max="-2" attributes="1"/>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="scrollPane" max="32767" attributes="0"/>
+                              <Component id="scrollPane" pref="559" max="32767" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
@@ -116,7 +116,7 @@
                               <Component id="btnRepAdd" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnRepAddAll" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="27" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="75" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>

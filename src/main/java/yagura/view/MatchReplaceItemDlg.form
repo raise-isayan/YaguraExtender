@@ -43,16 +43,21 @@
                               <Component id="lblMatch" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="chkSmartMatch" min="-2" pref="115" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="chkRegExp" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="chkIgnoreCase" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="chkSmartMatch" min="-2" pref="115" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="chkRegExp" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="chkIgnoreCase" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="chkMetaChar" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="0" pref="226" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="chkMetaChar" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtRepMatch" alignment="0" pref="499" max="32767" attributes="0"/>
+                              <Component id="txtRepMatch" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtRepReplace" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -62,7 +67,7 @@
                           <Component id="cmbRepType" min="-2" pref="260" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
