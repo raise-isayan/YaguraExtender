@@ -1227,4 +1227,14 @@ public class TransUtilTest {
         }
     }
 
+    @Test
+    public void testStringBuilder() {
+        System.out.println("testStringBuilder");
+        StringBuilder b = new StringBuilder();
+        b.append((String)null);
+        System.out.println("append:" + b.toString());
+        
+
+    }
+    
 }

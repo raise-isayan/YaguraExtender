@@ -859,15 +859,16 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
             buff.append(String.format("<body%s>\n", new Object[]{ autoSubmit }));
             buff.append("<!-- begen form -->\n");
+            String targetLink = (csrfParam.isCsrfMultiForm()) ? "target=\"_blank\"" : "";
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
                 if (HttpUtil.isUrlEencoded(csrfEnctype)) {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\" target=\"_blank\">\n",
-                            new Object[]{csrfUrl, csrfFormMethod}));
+                    buff.append(String.format("<form action=\"%s\" method=\"%s\" %s>\n",
+                            new Object[]{csrfUrl, csrfFormMethod, targetLink}));
                 } 
                 else {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" target=\"_blank\">\n",
-                            new Object[]{csrfUrl, csrfFormMethod, csrfEnctype}));
+                    buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>\n",
+                            new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
                 }
                 List<IParameter> parameters = requestInfo.getParameters();
                 logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
@@ -916,8 +917,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 }
                 // csrf textplain    
             } else {
-                buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" target=\"_blank\">\n",
-                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype}));
+                buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>\n",
+                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
                 Map.Entry<String, String> pair = HttpUtil.getParameter(Util.decodeMessage(Util.encodeMessage(reqmsg.getBody()), csrfEncoding));
                 String key = pair.getKey();
                 String val = pair.getValue();
