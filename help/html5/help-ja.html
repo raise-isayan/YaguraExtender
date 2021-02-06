@@ -433,22 +433,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <body class="article toc2 toc-left">
 <div id="header">
 <h1>YaguraExtender ヘルプ</h1>
+<div class="details">
+<span id="revnumber">version unspecified</span>
+</div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_動作環境">1. 動作環境</a></li>
-<li><a href="#_start_up">2. Start up</a></li>
-<li><a href="#_yaguraextenderタブ">3. YaguraExtenderタブ</a>
+<li><a href="#_start_up">1. Start up</a></li>
+<li><a href="#_yaguraextenderタブ">2. YaguraExtenderタブ</a>
 <ul class="sectlevel2">
-<li><a href="#_cjk_viewタブ">3.1. CJK Viewタブ</a></li>
-<li><a href="#_matchreplaceタブ">3.2. MatchReplaceタブ</a></li>
-<li><a href="#_matchalertタブ">3.3. MatchAlertタブ</a></li>
-<li><a href="#_sendtoタブ">3.4. SendToタブ</a></li>
-<li><a href="#_loggingタブ">3.5. Loggingタブ</a></li>
-<li><a href="#_jsearchタブ">3.6. JSearchタブ</a></li>
-<li><a href="#_jtranscoderタブ">3.7. JTransCoderタブ</a></li>
-<li><a href="#_generate_csrf_poc">3.8. Generate CSRF PoC</a></li>
-<li><a href="#_version">3.9. Version</a></li>
+<li><a href="#_cjk_viewタブ">2.1. CJK Viewタブ</a></li>
+<li><a href="#_matchreplaceタブ">2.2. MatchReplaceタブ</a></li>
+<li><a href="#_matchalertタブ">2.3. MatchAlertタブ</a></li>
+<li><a href="#_sendtoタブ">2.4. SendToタブ</a></li>
+<li><a href="#_loggingタブ">2.5. Loggingタブ</a></li>
+<li><a href="#_jsearchタブ">2.6. JSearchタブ</a></li>
+<li><a href="#_jtranscoderタブ">2.7. JTransCoderタブ</a></li>
+<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a></li>
+<li><a href="#_version">2.9. Version</a></li>
 </ul>
 </li>
 </ul>
@@ -463,127 +465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_動作環境">1. 動作環境</h2>
-<div class="sectionbody">
-<div class="ulist">
-<div class="title">Java</div>
-<ul>
-<li>
-<p>JRE(JDK) 11 (Open JDK を推奨)(<a href="https://openjdk.java.net/" class="bare">https://openjdk.java.net/</a>)</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">Burp suite</div>
-<ul>
-<li>
-<p>v2020以上 (<a href="http://www.portswigger.net/burp/" class="bare">http://www.portswigger.net/burp/</a>)</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">開発環境</div>
-<ul>
-<li>
-<p>NetBean 12.2 (<a href="https://netbeans.apache.org/" class="bare">https://netbeans.apache.org/</a>)</p>
-</li>
-<li>
-<p>Meven 3.6.1 (<a href="https://maven.apache.org/" class="bare">https://maven.apache.org/</a>)</p>
-</li>
-<li>
-<p>asciidoc (<a href="http://asciidoc.org/" class="bare">http://asciidoc.org/</a>)</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">利用ライブラリ</div>
-<ul>
-<li>
-<p>Apache common codec</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://commons.apache.org/proper/commons-codec/" class="bare">https://commons.apache.org/proper/commons-codec/</a></p>
-</li>
-<li>
-<p>Apache License 2.0</p>
-</li>
-<li>
-<p><a href="http://www.apache.org/licenses/" class="bare">http://www.apache.org/licenses/</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>RSyntaxTextArea</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://bobbylight.github.io/RSyntaxTextArea/" class="bare">http://bobbylight.github.io/RSyntaxTextArea/</a></p>
-</li>
-<li>
-<p>BSD 3-Clause license</p>
-</li>
-<li>
-<p><a href="https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE" class="bare">https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>gson</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/google/gson" class="bare">https://github.com/google/gson</a></p>
-</li>
-<li>
-<p>Apache License 2.0</p>
-</li>
-<li>
-<p><a href="https://github.com/google/gson/blob/master/LICENSE" class="bare">https://github.com/google/gson/blob/master/LICENSE</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Universal Chardet for java</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://code.google.com/archive/p/juniversalchardet/" class="bare">https://code.google.com/archive/p/juniversalchardet/</a></p>
-</li>
-<li>
-<p>MPL 1.1</p>
-</li>
-<li>
-<p><a href="https://code.google.com/archive/p/juniversalchardet/" class="bare">https://code.google.com/archive/p/juniversalchardet/</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Use Icon</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://www.famfamfam.com/lab/icons/silk/" class="bare">http://www.famfamfam.com/lab/icons/silk/</a></p>
-</li>
-<li>
-<p>Creative Commons Attribution 2.5 License</p>
-</li>
-<li>
-<p><a href="http://www.famfamfam.com/lab/icons/silk/" class="bare">http://www.famfamfam.com/lab/icons/silk/</a></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_start_up">2. Start up</h2>
+<h2 id="_start_up">1. Start up</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Burp suiteの「Extender」タブから「Add」ボタンを押下後、YaguraExtender.jar を追加します。
@@ -591,24 +473,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 各種設定はこちらから行えるようになっています。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/Extender_Yagura.png" alt="Extender"></span></p>
+<p><span class="image"><img src="images/Extender_Yagura.png" alt="Extender"></span></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_yaguraextenderタブ">3. YaguraExtenderタブ</h2>
+<h2 id="_yaguraextenderタブ">2. YaguraExtenderタブ</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_cjk_viewタブ">3.1. CJK Viewタブ</h3>
+<h3 id="_cjk_viewタブ">2.1. CJK Viewタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_encoding.png" alt="CJK Viewタブ"></span></p>
+<p><span class="image"><img src="images/custom_encoding.png" alt="CJK Viewタブ"></span></p>
 </div>
 <div class="paragraph">
 <p>いわゆるCJK(中国語、日本語、韓国語)に対応するための設定を行うタブです。
 使用頻度の高い Encoding を選択することができます。ここで選択した値は、JTransCoderまたはJSONビューの表示画面で選択できるエンコードです。</p>
 </div>
 <div class="sect3">
-<h4 id="_cjk_view">3.1.1. CJK View</h4>
+<h4 id="_cjk_view">2.1.1. CJK View</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Target</dt>
@@ -642,7 +524,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_cjk_message_view">3.1.2. CJK Message View</h4>
+<h4 id="_cjk_message_view">2.1.2. CJK Message View</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Cenerate PoC]チェックボックス</dt>
@@ -692,16 +574,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_matchreplaceタブ">3.2. MatchReplaceタブ</h3>
+<h3 id="_matchreplaceタブ">2.2. MatchReplaceタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace.png" alt="MatchReplaceタブ"></span></p>
+<p><span class="image"><img src="images/custom_matchreplace.png" alt="MatchReplaceタブ"></span></p>
 </div>
 <div class="paragraph">
 <p>Burp sute 本体の Proxy &#8658; Optionタブの <strong> Match and Replace </strong> の拡張になります。複数の <strong> Match and Replace </strong> を作成して切り替えられます。
 置換文字列として正規表現の前方参照を指定できます。Burp本体の <strong> Match and Replace </strong> とは独自実装となっていて、本体側のMatch and Replaceが評価されたあと拡張側のMatch and Replaceが評価されます。</p>
 </div>
 <div class="sect3">
-<h4 id="_matchreplace">3.2.1. MatchReplace</h4>
+<h4 id="_matchreplace">2.2.1. MatchReplace</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Select]ボタン</dt>
@@ -731,9 +613,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchreplace_ダイヤログ">3.2.2. MatchReplace ダイヤログ</h4>
+<h4 id="_matchreplace_ダイヤログ">2.2.2. MatchReplace ダイヤログ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace_edit.png" alt="MatchReplaceItemダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_matchreplace_edit.png" alt="MatchReplaceItemダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -770,9 +652,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchreplace_item_編集ダイヤログ">3.2.3. MatchReplace Item 編集ダイヤログ</h4>
+<h4 id="_matchreplace_item_編集ダイヤログ">2.2.3. MatchReplace Item 編集ダイヤログ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace_item.png" alt="MatchReplaceItem編集ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_matchreplace_item.png" alt="MatchReplaceItem編集ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -856,9 +738,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_matchalertタブ">3.3. MatchAlertタブ</h3>
+<h3 id="_matchalertタブ">2.3. MatchAlertタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchalert.png" alt="MatchAlertタブ"></span></p>
+<p><span class="image"><img src="images/custom_matchalert.png" alt="MatchAlertタブ"></span></p>
 </div>
 <div class="paragraph">
 <p>指定した文字列にマッチする文字がレスポンスに現れた場合に通知してくれます。 ExceptionなどのErrorCode系の文字列を登録することを想定しています。
@@ -887,7 +769,7 @@ proxyにチェックが入っている場合に有効です。</p>
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_matchalert">3.3.1. MatchAlert</h4>
+<h4 id="_matchalert">2.3.1. MatchAlert</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Enable Alert]チェックボックス</dt>
@@ -910,9 +792,9 @@ proxyにチェックが入っている場合に有効です。</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchalert_item_編集ダイヤログ">3.3.2. MatchAlert Item 編集ダイヤログ</h4>
+<h4 id="_matchalert_item_編集ダイヤログ">2.3.2. MatchAlert Item 編集ダイヤログ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchalert_item.png" alt="MatchAlertItem編集ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_matchalert_item.png" alt="MatchAlertItem編集ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -965,16 +847,16 @@ proxyログにチェックした場合のみ有効です。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sendtoタブ">3.4. SendToタブ</h3>
+<h3 id="_sendtoタブ">2.4. SendToタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto.png" alt="SendToタブ"></span></p>
+<p><span class="image"><img src="images/custom_sendto.png" alt="SendToタブ"></span></p>
 </div>
 <div class="paragraph">
 <p>Burpがもつ拡張メニューを利用した機能です。
 BurpのHistory等から表示される右クリックのメニューを増やすことができ、 メニューから指定した機能を呼び出すことができます。送られる内容は、選択したHistoryのリクエストとレスポンスの内容になります。</p>
 </div>
 <div class="sect3">
-<h4 id="_sendto">3.4.1. SendTo</h4>
+<h4 id="_sendto">2.4.1. SendTo</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Send To Submenu]チェックボックス</dt>
@@ -1004,7 +886,7 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sendtoitem_編集ダイヤログ">3.4.2. SendToItem 編集ダイヤログ</h4>
+<h4 id="_sendtoitem_編集ダイヤログ">2.4.2. SendToItem 編集ダイヤログ</h4>
 <div class="paragraph">
 <p>SendToには、Baseタブと、Extendタブがあります。 Baseタブでは、バイナリエディタやファイル比較ツール等を登録すると便利です。 右クリックからエディタを呼び出すと、一時的に作られたファイルを引数にしてバイナリエディタが起動されます。 比較ツールの場合、2つHistoryを選択することで比較することができます。 これは BurpのHEX ダンプやCompare機能が使いにくいためにつくりました。</p>
 </div>
@@ -1013,9 +895,9 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 </div>
 </div>
 <div class="sect3">
-<h4 id="_baseタブ">3.4.3. Baseタブ</h4>
+<h4 id="_baseタブ">2.4.3. Baseタブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_base.png" alt="SendToItem編集 Base ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_sendto_base.png" alt="SendToItem編集 Base ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1050,7 +932,7 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 <p>サーバに送信する場合にチェックされている場合プロキシの設定が可能となります。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_server_proxy.png" alt="SendToItem編集 Proxy設定 ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_sendto_server_proxy.png" alt="SendToItem編集 Proxy設定 ダイヤログ"></span></p>
 </div>
 <div class="paragraph">
 <p>サーバにチェックされている場合に設定可能となります。</p>
@@ -1181,9 +1063,9 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 </div>
 </div>
 <div class="sect3">
-<h4 id="_extendタブ">3.4.4. Extendタブ</h4>
+<h4 id="_extendタブ">2.4.4. Extendタブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_extend.png" alt="SendToItem編集 Extend ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_sendto_extend.png" alt="SendToItem編集 Extend ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1228,16 +1110,16 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 </div>
 </div>
 <div class="sect2">
-<h3 id="_loggingタブ">3.5. Loggingタブ</h3>
+<h3 id="_loggingタブ">2.5. Loggingタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_logging.png" alt="Loggingタブ"></span></p>
+<p><span class="image"><img src="images/custom_logging.png" alt="Loggingタブ"></span></p>
 </div>
 <div class="paragraph">
 <p>ログの自動ロギング機能です。
 この機能では、毎回ログの選択を行わなくても自動でログを 保存してくれます。</p>
 </div>
 <div class="sect3">
-<h4 id="_logging">3.5.1. Logging</h4>
+<h4 id="_logging">2.5.1. Logging</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[auto logging]チェックボックス</dt>
@@ -1295,15 +1177,15 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearchタブ">3.6. JSearchタブ</h3>
+<h3 id="_jsearchタブ">2.6. JSearchタブ</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_jsearch.png" alt="JSearchタブ"></span></p>
+<p><span class="image"><img src="images/custom_jsearch.png" alt="JSearchタブ"></span></p>
 </div>
 <div class="paragraph">
 <p>JSearch タブはProxyのHistory一覧から文字を検索するための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_jsearch">3.6.1. JSearch</h4>
+<h4 id="_jsearch">2.6.1. JSearch</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Search]ボタン</dt>
@@ -1348,14 +1230,14 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoderタブ">3.7. JTransCoderタブ</h3>
+<h3 id="_jtranscoderタブ">2.7. JTransCoderタブ</h3>
 <div class="paragraph">
 <p>Transcoder タブは各種エンコード、デコードを行うための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_translator">3.7.1. Translator</h4>
+<h4 id="_translator">2.7.1. Translator</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_jtranscoder.png" alt="Translatorタブ"></span></p>
+<p><span class="image"><img src="images/custom_jtranscoder.png" alt="Translatorタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1604,7 +1486,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generaterタブ">3.7.2. Generaterタブ</h4>
+<h4 id="_generaterタブ">2.7.2. Generaterタブ</h4>
 <div class="paragraph">
 <p>Generater には、sequenceタブとrandomタブがあります。</p>
 </div>
@@ -1614,7 +1496,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 <div class="paragraph">
 <div class="title">sequence-Numbersタブ</div>
-<p><span class="image"><img src="./images/custom_gene_seq.png" alt="Generaterタブ"></span></p>
+<p><span class="image"><img src="images/custom_gene_seq.png" alt="Generaterタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1639,7 +1521,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 <div class="paragraph">
 <div class="title">sequence-Dateタブ</div>
-<p><span class="image"><img src="./images/custom_gene_date.png" alt="Generaterタブ"></span></p>
+<p><span class="image"><img src="images/custom_gene_date.png" alt="Generaterタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1678,7 +1560,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <p>randomタブはランダムな文字リストを生成するための簡易的な機能です。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_gene_random.png" alt="randomタブ"></span></p>
+<p><span class="image"><img src="images/custom_gene_random.png" alt="randomタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1710,13 +1592,13 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_converter_tab">3.7.3. Converter tab</h4>
+<h4 id="_converter_tab">2.7.3. Converter tab</h4>
 <div class="paragraph">
 <p>Baseタブは基数変換するための簡易的な機能です。</p>
 </div>
 <div class="paragraph">
 <div class="title">Baseタブ</div>
-<p><span class="image"><img src="./images/custom_converter_base.png" alt="Baseタブ"></span></p>
+<p><span class="image"><img src="images/custom_converter_base.png" alt="Baseタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1744,7 +1626,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 <div class="paragraph">
 <div class="title">Dateタブ</div>
-<p><span class="image"><img src="./images/custom_converter_date.png" alt="Dateタブ"></span></p>
+<p><span class="image"><img src="images/custom_converter_date.png" alt="Dateタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1769,7 +1651,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generate_csrf_poc">3.8. Generate CSRF PoC</h3>
+<h3 id="_generate_csrf_poc">2.8. Generate CSRF PoC</h3>
 <div class="paragraph">
 <p>主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。</p>
 </div>
@@ -1778,7 +1660,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 選択したリクエストがPOSTリクエスト場合に表示されます。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_CSRF_PoC.png" alt="YaguraExtender CSRF-PoC"></span></p>
+<p><span class="image"><img src="images/custom_CSRF_PoC.png" alt="YaguraExtender CSRF-PoC"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1850,9 +1732,9 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_jwt_タブ">3.8.1. JWT タブ</h4>
+<h4 id="_jwt_タブ">2.8.1. JWT タブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_JWT.png" alt="JWTタブ"></span></p>
+<p><span class="image"><img src="images/custom_JWT.png" alt="JWTタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1876,9 +1758,9 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_viewstate_タブ">3.8.2. ViewState タブ</h4>
+<h4 id="_viewstate_タブ">2.8.2. ViewState タブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_viewstate_decoder.png" alt="ViewStateDecoderタブ"></span></p>
+<p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="ViewStateDecoderタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1903,7 +1785,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version">3.9. Version</h3>
+<h3 id="_version">2.9. Version</h3>
 <div class="paragraph">
 <p>バージョン情報を表示します。</p>
 </div>
@@ -1925,7 +1807,8 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-24 00:05:42 +0900
+Version unspecified<br>
+Last updated 2021-02-06 19:19:31 +0900
 </div>
 </div>
 </body>

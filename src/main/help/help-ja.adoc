@@ -6,46 +6,6 @@
 
 Language/link:help.html[English]
 
-== 動作環境
-
-.Java
-* JRE(JDK) 11 (Open JDK を推奨)(https://openjdk.java.net/)
-
-.Burp suite
-* v2020以上 (http://www.portswigger.net/burp/)
-
-.開発環境
-* NetBean 12.2 (https://netbeans.apache.org/)
-* Meven 3.6.1 (https://maven.apache.org/)
-* asciidoc (http://asciidoc.org/) 
-
-.利用ライブラリ
-
-* Apache common codec
-** https://commons.apache.org/proper/commons-codec/
-** Apache License 2.0
-** http://www.apache.org/licenses/
-
-* RSyntaxTextArea
-** http://bobbylight.github.io/RSyntaxTextArea/
-** BSD 3-Clause license
-** https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE
-
-* gson
-** https://github.com/google/gson
-** Apache License 2.0
-** https://github.com/google/gson/blob/master/LICENSE
-
-* Universal Chardet for java
-** https://code.google.com/archive/p/juniversalchardet/
-** MPL 1.1
-** https://code.google.com/archive/p/juniversalchardet/
-
-* Use Icon
-** http://www.famfamfam.com/lab/icons/silk/
-** Creative Commons Attribution 2.5 License
-** http://www.famfamfam.com/lab/icons/silk/
-
 == Start up 
 Burp suiteの「Extender」タブから「Add」ボタンを押下後、YaguraExtender.jar を追加します。
 「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「YaguraExtender」タブが追加されます。

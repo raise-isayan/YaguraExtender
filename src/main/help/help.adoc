@@ -6,45 +6,6 @@
 
 Language/link:help-ja.html[Japanese]
 
-== Operating environment
-
-.Java
-* JRE (JDK) 11 (Open JDK is recommended) (https://openjdk.java.net/)
-
-.Burp suite
-* v2020 or higher (http://www.portswigger.net/burp/)
-
-.Development environment
-* NetBean 12.2 (https://netbeans.apache.org/)
-* Meven 3.6.1 (https://maven.apache.org/)
-* asciidoc (http://asciidoc.org/) 
-
-.Use Library
-* Apache common codec
-** https://commons.apache.org/proper/commons-codec/
-** Apache License 2.0
-** http://www.apache.org/licenses/
-
-* RSyntaxTextArea
-** http://bobbylight.github.io/RSyntaxTextArea/
-** BSD 3-Clause license
-** https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE
-
-* gson
-** https://github.com/google/gson
-** Apache License 2.0
-** https://github.com/google/gson/blob/master/LICENSE
-
-* Universal Chardet for java
-** https://code.google.com/archive/p/juniversalchardet/
-** MPL 1.1
-** https://code.google.com/archive/p/juniversalchardet/
-
-* Use Icon
-** http://www.famfamfam.com/lab/icons/silk/
-** Creative Commons Attribution 2.5 License
-** http://www.famfamfam.com/lab/icons/silk/
-
 == Start up 
 After pressing the "Add" button from the "Extender" tab of Burp suite, add YaguraExtender.jar.
 Checking "Loaded" will load the extension, and a "YaguraExtender" tab will be added to the tab of the Burp sute body.

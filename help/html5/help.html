@@ -433,22 +433,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <body class="article toc2 toc-left">
 <div id="header">
 <h1>YaguraExtender Help</h1>
+<div class="details">
+<span id="revnumber">version unspecified</span>
+</div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_operating_environment">1. Operating environment</a></li>
-<li><a href="#_start_up">2. Start up</a></li>
-<li><a href="#_yaguraextender_tab">3. YaguraExtender tab</a>
+<li><a href="#_start_up">1. Start up</a></li>
+<li><a href="#_yaguraextender_tab">2. YaguraExtender tab</a>
 <ul class="sectlevel2">
-<li><a href="#_cjk_view_tab">3.1. CJK View tab</a></li>
-<li><a href="#_matchreplace_tab">3.2. MatchReplace tab</a></li>
-<li><a href="#_matchalert_tab">3.3. MatchAlert tab</a></li>
-<li><a href="#_sendto_tab">3.4. SendTo tab</a></li>
-<li><a href="#_logging_tabs">3.5. Logging tabs</a></li>
-<li><a href="#_jsearch_tab">3.6. JSearch tab</a></li>
-<li><a href="#_jtranscoder_tab">3.7. JTransCoder tab</a></li>
-<li><a href="#_generate_csrf_poc">3.8. Generate CSRF PoC</a></li>
-<li><a href="#_version">3.9. Version</a></li>
+<li><a href="#_cjk_view_tab">2.1. CJK View tab</a></li>
+<li><a href="#_matchreplace_tab">2.2. MatchReplace tab</a></li>
+<li><a href="#_matchalert_tab">2.3. MatchAlert tab</a></li>
+<li><a href="#_sendto_tab">2.4. SendTo tab</a></li>
+<li><a href="#_logging_tabs">2.5. Logging tabs</a></li>
+<li><a href="#_jsearch_tab">2.6. JSearch tab</a></li>
+<li><a href="#_jtranscoder_tab">2.7. JTransCoder tab</a></li>
+<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a></li>
+<li><a href="#_version">2.9. Version</a></li>
 </ul>
 </li>
 </ul>
@@ -463,127 +465,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_operating_environment">1. Operating environment</h2>
-<div class="sectionbody">
-<div class="ulist">
-<div class="title">Java</div>
-<ul>
-<li>
-<p>JRE (JDK) 11 (Open JDK is recommended) (<a href="https://openjdk.java.net/" class="bare">https://openjdk.java.net/</a>)</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">Burp suite</div>
-<ul>
-<li>
-<p>v2020 or higher (<a href="http://www.portswigger.net/burp/" class="bare">http://www.portswigger.net/burp/</a>)</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">Development environment</div>
-<ul>
-<li>
-<p>NetBean 12.2 (<a href="https://netbeans.apache.org/" class="bare">https://netbeans.apache.org/</a>)</p>
-</li>
-<li>
-<p>Meven 3.6.1 (<a href="https://maven.apache.org/" class="bare">https://maven.apache.org/</a>)</p>
-</li>
-<li>
-<p>asciidoc (<a href="http://asciidoc.org/" class="bare">http://asciidoc.org/</a>)</p>
-</li>
-</ul>
-</div>
-<div class="ulist">
-<div class="title">Use Library</div>
-<ul>
-<li>
-<p>Apache common codec</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://commons.apache.org/proper/commons-codec/" class="bare">https://commons.apache.org/proper/commons-codec/</a></p>
-</li>
-<li>
-<p>Apache License 2.0</p>
-</li>
-<li>
-<p><a href="http://www.apache.org/licenses/" class="bare">http://www.apache.org/licenses/</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>RSyntaxTextArea</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://bobbylight.github.io/RSyntaxTextArea/" class="bare">http://bobbylight.github.io/RSyntaxTextArea/</a></p>
-</li>
-<li>
-<p>BSD 3-Clause license</p>
-</li>
-<li>
-<p><a href="https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE" class="bare">https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>gson</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/google/gson" class="bare">https://github.com/google/gson</a></p>
-</li>
-<li>
-<p>Apache License 2.0</p>
-</li>
-<li>
-<p><a href="https://github.com/google/gson/blob/master/LICENSE" class="bare">https://github.com/google/gson/blob/master/LICENSE</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Universal Chardet for java</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://code.google.com/archive/p/juniversalchardet/" class="bare">https://code.google.com/archive/p/juniversalchardet/</a></p>
-</li>
-<li>
-<p>MPL 1.1</p>
-</li>
-<li>
-<p><a href="https://code.google.com/archive/p/juniversalchardet/" class="bare">https://code.google.com/archive/p/juniversalchardet/</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Use Icon</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://www.famfamfam.com/lab/icons/silk/" class="bare">http://www.famfamfam.com/lab/icons/silk/</a></p>
-</li>
-<li>
-<p>Creative Commons Attribution 2.5 License</p>
-</li>
-<li>
-<p><a href="http://www.famfamfam.com/lab/icons/silk/" class="bare">http://www.famfamfam.com/lab/icons/silk/</a></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_start_up">2. Start up</h2>
+<h2 id="_start_up">1. Start up</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>After pressing the "Add" button from the "Extender" tab of Burp suite, add YaguraExtender.jar.
@@ -591,24 +473,24 @@ Checking "Loaded" will load the extension, and a "YaguraExtender" tab will be ad
 Various settings can be done from here.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/Extender_Yagura.png" alt="Extender"></span></p>
+<p><span class="image"><img src="images/Extender_Yagura.png" alt="Extender"></span></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_yaguraextender_tab">3. YaguraExtender tab</h2>
+<h2 id="_yaguraextender_tab">2. YaguraExtender tab</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_cjk_view_tab">3.1. CJK View tab</h3>
+<h3 id="_cjk_view_tab">2.1. CJK View tab</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_encoding.png" alt="CJK View tab"></span></p>
+<p><span class="image"><img src="images/custom_encoding.png" alt="CJK View tab"></span></p>
 </div>
 <div class="paragraph">
 <p>Use this tab to configure CJK (Chinese, Japanese, Korean).
 You can select the most frequently used encoding. The value selected here is the encoding that can be selected on the display screen of JTransCoder or JSON view.</p>
 </div>
 <div class="sect3">
-<h4 id="_cjk_view">3.1.1. CJK View</h4>
+<h4 id="_cjk_view">2.1.1. CJK View</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Target</dt>
@@ -642,7 +524,7 @@ Not supported in current version.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_cjk_message_view">3.1.2. CJK Message View</h4>
+<h4 id="_cjk_message_view">2.1.2. CJK Message View</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Cenerate PoC] check box</dt>
@@ -692,9 +574,9 @@ Currently read-only.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_matchreplace_tab">3.2. MatchReplace tab</h3>
+<h3 id="_matchreplace_tab">2.2. MatchReplace tab</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace.png" alt="MatchReplace tab"></span></p>
+<p><span class="image"><img src="images/custom_matchreplace.png" alt="MatchReplace tab"></span></p>
 </div>
 <div class="paragraph">
 <p>It is an extension of <strong> Match and Replace </strong> on the Proxy &#8658; Option tab of Burp sute itself. Create and switch between multiple <strong> Match and Replace </strong>.
@@ -702,7 +584,7 @@ You can specify a regular expression forward reference as the replacement string
 The <strong> Match and Replace </strong> of the Burp main unit is a unique implementation. Match and Replace on the main unit is evaluated, and then Match and Replace on the extended side is evaluated.</p>
 </div>
 <div class="sect3">
-<h4 id="_matchreplace">3.2.1. MatchReplace</h4>
+<h4 id="_matchreplace">2.2.1. MatchReplace</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Select] button</dt>
@@ -732,9 +614,9 @@ The MatchReplaceItem dialog of the selected content is displayed.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchreplace_dialog">3.2.2. MatchReplace Dialog</h4>
+<h4 id="_matchreplace_dialog">2.2.2. MatchReplace Dialog</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace_edit.png" alt="MatchReplaceItem Dialog"></span></p>
+<p><span class="image"><img src="images/custom_matchreplace_edit.png" alt="MatchReplaceItem Dialog"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -771,9 +653,9 @@ Not supported in current version.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchreplace_item_edit_dialog">3.2.3. MatchReplace Item Edit dialog</h4>
+<h4 id="_matchreplace_item_edit_dialog">2.2.3. MatchReplace Item Edit dialog</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchreplace_item.png" alt="MatchReplaceItem Edit dialog"></span></p>
+<p><span class="image"><img src="images/custom_matchreplace_item.png" alt="MatchReplaceItem Edit dialog"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -857,9 +739,9 @@ The following meta characters are available.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_matchalert_tab">3.3. MatchAlert tab</h3>
+<h3 id="_matchalert_tab">2.3. MatchAlert tab</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchalert.png" alt="MatchAlert tab"></span></p>
+<p><span class="image"><img src="images/custom_matchalert.png" alt="MatchAlert tab"></span></p>
 </div>
 <div class="paragraph">
 <p>Notifies you when a character that matches the specified string appears in the response. It is assumed that a character string of ErrorCode such as Exception is registered.
@@ -888,7 +770,7 @@ It is effective when proxy is checked.</p>
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_matchalert">3.3.1. MatchAlert</h4>
+<h4 id="_matchalert">2.3.1. MatchAlert</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Enable Alert] check box</dt>
@@ -911,9 +793,9 @@ It is effective when proxy is checked.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_matchalert_item_edit_dialog">3.3.2. MatchAlert Item Edit dialog</h4>
+<h4 id="_matchalert_item_edit_dialog">2.3.2. MatchAlert Item Edit dialog</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_matchalert_item.png" alt="MatchAlertItem Edit dialog"></span></p>
+<p><span class="image"><img src="images/custom_matchalert_item.png" alt="MatchAlertItem Edit dialog"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -966,16 +848,16 @@ Valid only when you check the proxy log.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sendto_tab">3.4. SendTo tab</h3>
+<h3 id="_sendto_tab">2.4. SendTo tab</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto.png" alt="SendTo tab"></span></p>
+<p><span class="image"><img src="images/custom_sendto.png" alt="SendTo tab"></span></p>
 </div>
 <div class="paragraph">
 <p>This is a function using the extended menu of Burp.
 You can increase the number of right-click menus displayed from the Burp History, etc., and call up the specified function from the menu. The content sent is the content of the selected History request and response.</p>
 </div>
 <div class="sect3">
-<h4 id="_sendto">3.4.1. SendTo</h4>
+<h4 id="_sendto">2.4.1. SendTo</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Send To Submenu] check box</dt>
@@ -1005,7 +887,7 @@ An empty SendToItem edit dialog appears.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sendtoitem_edit_dialog">3.4.2. SendToItem Edit dialog</h4>
+<h4 id="_sendtoitem_edit_dialog">2.4.2. SendToItem Edit dialog</h4>
 <div class="paragraph">
 <p>SendTo has a Base tab and an Extend tab. In the Base tab, it is convenient to register a binary editor, file comparison tool, etc. When you call the editor from the right-click, the binary editor is started with the temporarily created file as an argument. In the case of the comparison tool, you can compare by selecting two histories. This was created because Burp&#8217;s HEX dump and Compare functions are difficult to use.</p>
 </div>
@@ -1014,9 +896,9 @@ An empty SendToItem edit dialog appears.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_base_tab">3.4.3. Base tab</h4>
+<h4 id="_base_tab">2.4.3. Base tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_base.png" alt="SendToItem Edit Base Dialog"></span></p>
+<p><span class="image"><img src="images/custom_sendto_base.png" alt="SendToItem Edit Base Dialog"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1051,7 +933,7 @@ Request and response can choose to send either header or body.</p>
 <p>If it is checked when sending to the server, the proxy setting is enabled.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_server_proxy.png" alt="SendToItem Edit Proxy Settings Dialog"></span></p>
+<p><span class="image"><img src="images/custom_sendto_server_proxy.png" alt="SendToItem Edit Proxy Settings Dialog"></span></p>
 </div>
 <div class="paragraph">
 <p>This setting is only available if the server is checked.</p>
@@ -1182,9 +1064,9 @@ sample/cgi-bin/sendto.cgi contains a sample CGI application that only receives a
 </div>
 </div>
 <div class="sect3">
-<h4 id="_extend_tab">3.4.4. Extend tab</h4>
+<h4 id="_extend_tab">2.4.4. Extend tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_sendto_extend.png" alt="SendToItem Edit Extend Dialog"></span></p>
+<p><span class="image"><img src="images/custom_sendto_extend.png" alt="SendToItem Edit Extend Dialog"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1229,16 +1111,16 @@ sample/cgi-bin/sendto.cgi contains a sample CGI application that only receives a
 </div>
 </div>
 <div class="sect2">
-<h3 id="_logging_tabs">3.5. Logging tabs</h3>
+<h3 id="_logging_tabs">2.5. Logging tabs</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_logging.png" alt="Logging tab"></span></p>
+<p><span class="image"><img src="images/custom_logging.png" alt="Logging tab"></span></p>
 </div>
 <div class="paragraph">
 <p>Automatic log logging function.
 This function automatically saves the log without having to select the log every time.</p>
 </div>
 <div class="sect3">
-<h4 id="_logging">3.5.1. Logging</h4>
+<h4 id="_logging">2.5.1. Logging</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[auto logging] check box</dt>
@@ -1296,15 +1178,15 @@ If checked, all logs currently recorded in History are recorded in a file.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearch_tab">3.6. JSearch tab</h3>
+<h3 id="_jsearch_tab">2.6. JSearch tab</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_jsearch.png" alt="JSearch tab"></span></p>
+<p><span class="image"><img src="images/custom_jsearch.png" alt="JSearch tab"></span></p>
 </div>
 <div class="paragraph">
 <p>JSearch tab is a function to search characters from the History list of Proxy.</p>
 </div>
 <div class="sect3">
-<h4 id="_jsearch">3.6.1. JSearch</h4>
+<h4 id="_jsearch">2.6.1. JSearch</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Search] button</dt>
@@ -1349,14 +1231,14 @@ Regular expressions cannot be enabled.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoder_tab">3.7. JTransCoder tab</h3>
+<h3 id="_jtranscoder_tab">2.7. JTransCoder tab</h3>
 <div class="paragraph">
 <p>Transcoder tab is a function to perform various encoding and decoding.</p>
 </div>
 <div class="sect3">
-<h4 id="_translator">3.7.1. Translator</h4>
+<h4 id="_translator">2.7.1. Translator</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_jtranscoder.png" alt="Translator tab"></span></p>
+<p><span class="image"><img src="images/custom_jtranscoder.png" alt="Translator tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1605,7 +1487,7 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generater_tab">3.7.2. Generater tab</h4>
+<h4 id="_generater_tab">2.7.2. Generater tab</h4>
 <div class="paragraph">
 <p>The Generater has a sequence tab and a random tab.</p>
 </div>
@@ -1615,7 +1497,7 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 </div>
 <div class="paragraph">
 <div class="title">sequence-Numbers tab</div>
-<p><span class="image"><img src="./images/custom_gene_seq.png" alt="Generater tab"></span></p>
+<p><span class="image"><img src="images/custom_gene_seq.png" alt="Generater tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1640,7 +1522,7 @@ A format string can specify only one numeric format.</p>
 </div>
 <div class="paragraph">
 <div class="title">sequence-Date tab</div>
-<p><span class="image"><img src="./images/custom_gene_date.png" alt="Generater tab"></span></p>
+<p><span class="image"><img src="images/custom_gene_date.png" alt="Generater tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1679,7 +1561,7 @@ A format string can specify only one numeric format.</p>
 <p>The andom tab is a simple function for generating a random character list.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_gene_random.png" alt="random tab"></span></p>
+<p><span class="image"><img src="images/custom_gene_random.png" alt="random tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1711,13 +1593,13 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_converter_tab">3.7.3. Converter tab</h4>
+<h4 id="_converter_tab">2.7.3. Converter tab</h4>
 <div class="paragraph">
 <p>The Base tab is a simple function for converting radixes.</p>
 </div>
 <div class="paragraph">
 <div class="title">Base tab</div>
-<p><span class="image"><img src="./images/custom_converter_base.png" alt="Base tab"></span></p>
+<p><span class="image"><img src="images/custom_converter_base.png" alt="Base tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1745,7 +1627,7 @@ A format string can specify only one numeric format.</p>
 </div>
 <div class="paragraph">
 <div class="title">Date tab</div>
-<p><span class="image"><img src="./images/custom_converter_date.png" alt="Date tab"></span></p>
+<p><span class="image"><img src="images/custom_converter_date.png" alt="Date tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1770,7 +1652,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generate_csrf_poc">3.8. Generate CSRF PoC</h3>
+<h3 id="_generate_csrf_poc">2.8. Generate CSRF PoC</h3>
 <div class="paragraph">
 <p>This function is mainly for creating PoC for CSRF (Cross Site Request Forgery).</p>
 </div>
@@ -1779,7 +1661,7 @@ A format string can specify only one numeric format.</p>
 Displayed when the selected request is a POST request.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_CSRF_PoC.png" alt="YaguraExtender CSRF-PoC"></span></p>
+<p><span class="image"><img src="images/custom_CSRF_PoC.png" alt="YaguraExtender CSRF-PoC"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1856,9 +1738,9 @@ This may not work for items that contain binaries. In that case, please use Bina
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_jwt_tab">3.8.1. JWT tab</h4>
+<h4 id="_jwt_tab">2.8.1. JWT tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_JWT.png" alt="JWT tab"></span></p>
+<p><span class="image"><img src="images/custom_JWT.png" alt="JWT tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1882,9 +1764,9 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 </div>
 <div class="sect3">
-<h4 id="_viewstate_tab">3.8.2. ViewState tab</h4>
+<h4 id="_viewstate_tab">2.8.2. ViewState tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="./images/custom_viewstate_decoder.png" alt="ViewStateDecoder tab"></span></p>
+<p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="ViewStateDecoder tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -1909,7 +1791,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version">3.9. Version</h3>
+<h3 id="_version">2.9. Version</h3>
 <div class="paragraph">
 <p>Displays version information.</p>
 </div>
@@ -1931,7 +1813,8 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-24 00:11:19 +0900
+Version unspecified<br>
+Last updated 2021-02-06 19:13:20 +0900
 </div>
 </div>
 </body>
