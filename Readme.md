@@ -36,7 +36,7 @@ gradlew build
 
 ## Required library
 Building requires a [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) library.
-* BurpExtlib v2.1.0.0
+* BurpExtlib v2.1.2.0
 
 ## Use Library
 * Apache common codec (https://commons.apache.org/proper/commons-codec/)

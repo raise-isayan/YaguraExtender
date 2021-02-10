@@ -21,9 +21,6 @@ Burp Suiteにはアジアの文字エンコーディングの利用に欠点が�
 gradlew build
 ```
 
-## 必須ライブラリ
-* BurpExtlib v2.1.0.0 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib)
-
 ## 動作環境
 
 ### Java
@@ -36,6 +33,10 @@ gradlew build
 * NetBean 12.2 (https://netbeans.apache.org/)
 * Gradle 6.8.1 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/) 
+
+## 必須ライブラリ
+ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。
+* BurpExtlib v2.1.2.0
 
 ### 利用ライブラリ
 
