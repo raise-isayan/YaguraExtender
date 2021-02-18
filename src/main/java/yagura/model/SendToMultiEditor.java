@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.BurpExtender;
 import burp.IContextMenuInvocation;
 import burp.IHttpRequestResponse;
 import extend.util.Util;

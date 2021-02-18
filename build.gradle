@@ -43,23 +43,27 @@ processResources {
     }
 }
 
-clean.doFirst { 
-    delete 'release/*.jar';
+clean.doFirst {
+    delete fileTree('release') {
+      include '*.jar'
+    }
 }
 
 jar {
+    // Keep jar clean:
+    exclude 'META-INF/**', 'about.html', 'module-info.class'
+
     manifest {
         attributes 'Main-Class': mainClassName
     }
-    
+
     from {
         configurations.runtimeClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
-    destinationDir = file('release')
-    version =  "v${release_version_major}"
+    destinationDirectory = file('release')
+    archiveVersion =  "v${release_version_major}"
 }
-
 
 task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
     archiveBaseName ="${rootProject.name}_v${release_version_major}.${release_version_minor}"

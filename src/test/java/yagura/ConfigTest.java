@@ -32,7 +32,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import yagura.model.HotKey;
 import yagura.model.IOptionProperty;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
@@ -63,7 +62,6 @@ public class ConfigTest {
     @Before
     public void setUp() {
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
-        JsonUtil.registerTypeHierarchyAdapter(HotKey.class, new HotKeyAdapter());
     }
     
     @After

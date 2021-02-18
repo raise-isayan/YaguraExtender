@@ -18,7 +18,7 @@ If you are online, please refer to [help](/src/main/help/help.adoc).
 ## build
 
 ```
-gradlew build
+gradlew release
 ```
 
 ## Operating environment
@@ -36,7 +36,7 @@ gradlew build
 
 ## Required library
 Building requires a [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) library.
-* BurpExtlib v2.1.2.0
+* BurpExtlib v2.1.2.2
 
 ## Use Library
 * Apache common codec (https://commons.apache.org/proper/commons-codec/)
@@ -47,7 +47,7 @@ Building requires a [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) lib
   * BSD 3-Clause license
   * https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE
 
-* gson (https://github.com/google/gson)
+* Google gson (https://github.com/google/gson)
   * Apache License 2.0
   * https://github.com/google/gson/blob/master/LICENSE
 

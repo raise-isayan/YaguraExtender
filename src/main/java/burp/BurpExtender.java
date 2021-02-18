@@ -56,6 +56,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 import passive.IssueItem;
 import yagura.Config;
@@ -228,13 +229,16 @@ public class BurpExtender extends BurpExtenderImpl
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, null, ex);
             }
-
-            setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
+                       
             callbacks.registerHttpListener(this);
             callbacks.registerProxyListener(this);
-            callbacks.addSuiteTab(this.tabbetOption);
             callbacks.registerExtensionStateListener(this);
-            callbacks.registerContextMenuFactory(this.getSendToMenu());
+            SwingUtilities.invokeLater(() -> {
+                callbacks.addSuiteTab(this.tabbetOption);
+                setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
+                callbacks.registerContextMenuFactory(this.getSendToMenu());
+            });
+
             this.tabbetOption.setProperty(this.option);
             this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
             this.registerView();

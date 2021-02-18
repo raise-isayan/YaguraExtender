@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.FocusManager;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.TableModel;
 
 /**

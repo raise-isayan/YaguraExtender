@@ -18,7 +18,7 @@ Burp Suiteにはアジアの文字エンコーディングの利用に欠点が�
 ## ビルド
 
 ```
-gradlew build
+gradlew release
 ```
 
 ## 動作環境
@@ -36,7 +36,7 @@ gradlew build
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。
-* BurpExtlib v2.1.2.0
+* BurpExtlib v2.1.2.2
 
 ### 利用ライブラリ
 
@@ -48,7 +48,7 @@ gradlew build
   * BSD 3-Clause license
   * https://github.com/bobbylight/RSyntaxTextArea/blob/master/RSyntaxTextArea/src/main/resources/META-INF/LICENSE
 
-* gson (https://github.com/google/gson)
+* Google gson (https://github.com/google/gson)
   * Apache License 2.0
   * https://github.com/google/gson/blob/master/LICENSE
 
