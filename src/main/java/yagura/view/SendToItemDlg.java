@@ -1,14 +1,14 @@
 package yagura.view;
 
-import extend.view.base.CustomDialog;
 import yagura.model.SendToItem;
-import extend.util.HttpUtil;
 import java.io.File;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
+import extension.helpers.HttpUtil;
+import extension.view.base.CustomDialog;
 import java.util.Properties;
 import java.util.logging.Logger;
 

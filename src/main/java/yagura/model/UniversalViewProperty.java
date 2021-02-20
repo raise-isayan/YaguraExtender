@@ -1,7 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import extend.util.Util;
+import extension.helpers.ConvertUtil;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -139,7 +139,7 @@ public class UniversalViewProperty {
         GENERATE_POC, HTML_COMMENT, JSON, JSONP, JWT, VIEW_STATE, JRAW, JPARAM;
 
         public static UniversalView parseValue(String value) {
-            UniversalView eval = (UniversalView) Util.parseEnumValue(UniversalView.class, value);
+            UniversalView eval = (UniversalView) ConvertUtil.parseEnumValue(UniversalView.class, value);
             if (eval == null) {
                 return null;
             } else {
@@ -153,7 +153,7 @@ public class UniversalViewProperty {
             EnumSet<UniversalView> values = EnumSet.noneOf(UniversalView.class);
             Matcher m = ENUM_SPLIT.matcher(s.toUpperCase());
             while (m.find()) {
-                values.add((UniversalView) Util.parseEnumValue(UniversalView.class, m.group()));
+                values.add((UniversalView) ConvertUtil.parseEnumValue(UniversalView.class, m.group()));
             }
             return values;
         }

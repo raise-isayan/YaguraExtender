@@ -1,10 +1,10 @@
 package extend.util.external;
 
-import extend.util.ConvertUtil;
-import extend.util.HttpUtil;
-import extend.util.UTF7Charset;
-import extend.util.Util;
-import extend.view.base.RegexItem;
+import extension.helpers.ConvertUtil;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.charset.UTF7Charset;
+import extension.view.base.RegexItem;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -339,7 +339,7 @@ public class TransUtil {
                 if (charset != null) {
                     applyCharset = charset;
                 }
-                decode = Util.getRawByteStr(value, applyCharset);
+                decode = StringUtil.getBytesRawString(value, applyCharset);
             } 
             else {
                 // URL encode match
@@ -349,7 +349,7 @@ public class TransUtil {
                         break;
                     case URL_STANDARD: 
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
+                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = TransUtil.decodeUrl(value, applyCharset);
@@ -369,7 +369,7 @@ public class TransUtil {
                     // Byte Hex
                     case BYTE_HEX: 
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toByteDecode(value, applyCharset);
@@ -381,7 +381,7 @@ public class TransUtil {
                     // Byte Hex2
                     case BYTE_HEX2: 
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toByteHexDecode(value, applyCharset);
@@ -393,7 +393,7 @@ public class TransUtil {
 //                    // Byte Dec
 //                    case BYTE_DEC: 
 //                        {
-//                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+//                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
 //                            if (guessCode != null) {
 //                                applyCharset = guessCode;
 //                                decode = toByteDecode(value, applyCharset);
@@ -404,7 +404,7 @@ public class TransUtil {
 //                        break;
                     case BYTE_OCT: 
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toByteDecode(value, applyCharset);
@@ -416,7 +416,7 @@ public class TransUtil {
                     // uuencode
 //                    case UUENCODE:
 //                        {
-//                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUudecode(value, "8859_1"))) : charset;
+//                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toUudecode(value, "8859_1"))) : charset;
 //                            if (guessCode != null) {
 //                                applyCharset = guessCode;
 //                                decode = toUudecode(value, applyCharset);
@@ -428,7 +428,7 @@ public class TransUtil {
                     // QuotedPrintable
                     case QUOTEDPRINTABLE: 
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
+                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toUnQuotedPrintable(value, applyCharset);
@@ -503,7 +503,7 @@ public class TransUtil {
                         break;
                     case BYTE_HTML:
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(Util.getRawByte(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toHtmlDecode(value, applyCharset);
@@ -514,15 +514,15 @@ public class TransUtil {
                         break;
                     // Gzip
                     case GZIP:
-                        decode = Util.getRawStr(ConvertUtil.decompressGzip(Util.encodeMessage(value, charset)));
+                        decode = StringUtil.getBytesRawString(ConvertUtil.decompressGzip(StringUtil.getBytesCharset(value, charset)));
                         break;
                     // ZLIB
                     case ZLIB:
-                        decode = Util.getRawStr(ConvertUtil.decompressZlib(Util.encodeMessage(value, charset)));
+                        decode = StringUtil.getBytesRawString(ConvertUtil.decompressZlib(StringUtil.getBytesCharset(value, charset)));
                         break;
                     // ZLIB_NOWRAP
                     case ZLIB_NOWRAP:
-                        decode = Util.getRawStr(ConvertUtil.decompressZlib(Util.encodeMessage(value, charset), true));
+                        decode = StringUtil.getBytesRawString(ConvertUtil.decompressZlib(StringUtil.getBytesCharset(value, charset), true));
                         break;
                     // UTF7
                     case UTF7:
@@ -562,10 +562,10 @@ public class TransUtil {
     public static String toBase64Encode(String src, Charset charset, boolean padding) {
         if (padding) {
             byte bytes[] = Base64.encodeBase64(src.getBytes(charset));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         } else {
             byte bytes[] = removePadding(Base64.encodeBase64(src.getBytes(charset)));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         }
     }
 
@@ -578,10 +578,10 @@ public class TransUtil {
             throws UnsupportedEncodingException {
         if (padding) {
             byte bytes[] = Base64.encodeBase64(src.getBytes(charset));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         } else {
             byte bytes[] = removePadding(Base64.encodeBase64(src.getBytes(charset)));
-           return Util.getRawStr(bytes);
+           return StringUtil.getBytesRawString(bytes);
         }
     }
 
@@ -593,10 +593,10 @@ public class TransUtil {
     public static String toBase64Encode(byte[] src, boolean padding) {
         if (padding) {
             byte bytes[] = Base64.encodeBase64(src);
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         } else {
             byte bytes[] = removePadding(Base64.encodeBase64(src));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         }
     }
 
@@ -618,18 +618,18 @@ public class TransUtil {
 
     public static String toBase64URLSafeEncode(String src, Charset charset) {
         byte bytes[] = Base64.encodeBase64(src.getBytes(charset), false, true);
-        return Util.getRawStr(bytes);
+        return StringUtil.getBytesRawString(bytes);
     }
 
     public static String toBase64URLSafeEncode(String src, String charset)
             throws UnsupportedEncodingException {
         byte bytes[] = Base64.encodeBase64(src.getBytes(charset), false, true);
-        return Util.getRawStr(bytes);
+        return StringUtil.getBytesRawString(bytes);
     }
 
     public static String toBase64URLSafeEncode(byte[] src) {
         byte bytes[] = Base64.encodeBase64(src, false, true);
-        return Util.getRawStr(bytes);
+        return StringUtil.getBytesRawString(bytes);
     }
 
     public static String toBase64URLSafeDecode(String str, Charset charset) {
@@ -655,10 +655,10 @@ public class TransUtil {
     public static String toBase32Encode(String src, Charset charset, boolean padding) {
         if (padding) {
             byte bytes[] = encodeBase32(src.getBytes(charset));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         } else {
             byte bytes[] = removePadding(encodeBase32(src.getBytes(charset)));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         }
     }
 
@@ -671,10 +671,10 @@ public class TransUtil {
             throws UnsupportedEncodingException {
         if (padding) {
             byte bytes[] = encodeBase32(src.getBytes(charset));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         } else {
             byte bytes[] = removePadding(encodeBase32(src.getBytes(charset)));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         }
     }
 
@@ -686,10 +686,10 @@ public class TransUtil {
     public static String toBase32Encode(byte[] src, boolean padding) {
         if (padding) {
             byte bytes[] = encodeBase32(src);
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         } else {
             byte bytes[] = removePadding(encodeBase32(src));
-            return Util.getRawStr(bytes);
+            return StringUtil.getBytesRawString(bytes);
         }
     }
 
@@ -726,10 +726,10 @@ public class TransUtil {
     public static String toBase16Encode(String src, Charset charset, boolean padding) {
         if (padding) {
             byte bytes[] = encodeBase16(src.getBytes(charset));
-            return Util.getRawStr(bytes);
+            return StringUtil.getStringRaw(bytes);
         } else {
             byte bytes[] = removePadding(encodeBase16(src.getBytes(charset)));
-            return Util.getRawStr(bytes);
+            return StringUtil.getStringRaw(bytes);
         }
     }
 
@@ -742,10 +742,10 @@ public class TransUtil {
             throws UnsupportedEncodingException {
         if (padding) {
             byte bytes[] = encodeBase16(src.getBytes(charset));
-            return Util.getRawStr(bytes);
+            return StringUtil.getStringRaw(bytes);
         } else {
             byte bytes[] = removePadding(encodeBase16(src.getBytes(charset)));
-            return Util.getRawStr(bytes);
+            return StringUtil.getStringRaw(bytes);
         }
     }
 
@@ -757,10 +757,10 @@ public class TransUtil {
     public static String toBase16Encode(byte[] src, boolean padding) {
         if (padding) {
             byte bytes[] = encodeBase16(src);
-            return Util.getRawStr(bytes);
+            return StringUtil.getStringRaw(bytes);
         } else {
             byte bytes[] = encodeBase16(src);
-            return Util.getRawStr(bytes);
+            return StringUtil.getStringRaw(bytes);
         }
     }
 
@@ -854,10 +854,10 @@ public class TransUtil {
     };
 
     public static String getNewLine(NewLine linemode) {
-        String newLine = Util.NEW_LINE;
+        String newLine = HttpUtil.LINE_TERMINATE;
         switch (linemode) {
             case NONE:
-                newLine = Util.NEW_LINE;
+                newLine = HttpUtil.LINE_TERMINATE;
                 break;
             case CRLF:
                 newLine = "\r\n";
@@ -1898,7 +1898,7 @@ public class TransUtil {
     public static String[] randomList(String range, int length, int count) {
         ArrayList<String> list = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            list.add(Util.randomCharRange(range, length));
+            list.add(StringUtil.randomCharRange(range, length));
         }
         return list.toArray(new String[0]);
     }
@@ -2068,7 +2068,7 @@ public class TransUtil {
         Document doc = Jsoup.parse(message);
         lists.addAll(extractHTMLComments(doc));
         if (uniqe) {
-            List<String> uniqList = Util.toUniqList(lists);
+            List<String> uniqList = ConvertUtil.toUniqList(lists);
             return uniqList.toArray(new String[uniqList.size()]);
         } else {
             return lists.toArray(new String[lists.size()]);

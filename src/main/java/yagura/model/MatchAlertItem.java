@@ -2,7 +2,12 @@ package yagura.model;
 
 import com.google.gson.annotations.Expose;
 import extend.util.external.TransUtil;
-import extend.view.base.MatchItem;
+import extension.burp.Confidence;
+import extension.burp.HighlightColor;
+import extension.burp.NotifyType;
+import extension.burp.Severity;
+import extension.burp.TargetTool;
+import extension.view.base.MatchItem;
 import java.util.EnumSet;
 import java.util.regex.Pattern;
 
@@ -73,7 +78,7 @@ public class MatchAlertItem extends MatchItem {
     }
 
     @Expose
-    private MatchItem.HighlightColor highlightColor = null;
+    private HighlightColor highlightColor = null;
 
     /**
      * @return the highlightColor
@@ -85,7 +90,7 @@ public class MatchAlertItem extends MatchItem {
     /**
      * @param highlightColor the highlightColor to set
      */
-    public void setHighlightColor(MatchItem.HighlightColor highlightColor) {
+    public void setHighlightColor(HighlightColor highlightColor) {
         this.highlightColor = highlightColor;
     }
 
@@ -135,24 +140,24 @@ public class MatchAlertItem extends MatchItem {
     /**
      * @param serverity the serverity to set
      */
-    public void setSeverity(MatchItem.Severity serverity) {
+    public void setSeverity(Severity serverity) {
         this.serverity = serverity;
     }
 
     @Expose
-    private MatchItem.Confidence confidence = MatchItem.Confidence.CERTAIN;
+    private Confidence confidence = Confidence.CERTAIN;
 
     /**
      * @return the confidence
      */
-    public MatchItem.Confidence getConfidence() {
+    public Confidence getConfidence() {
         return confidence;
     }
 
     /**
      * @param confidence the confidence to set
      */
-    public void setConfidence(MatchItem.Confidence confidence) {
+    public void setConfidence(Confidence confidence) {
         this.confidence = confidence;
     }
 

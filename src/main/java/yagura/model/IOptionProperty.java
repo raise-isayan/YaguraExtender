@@ -32,11 +32,6 @@ public interface IOptionProperty {
 
     public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty);
 
-    // AutoResponder
-    public AutoResponderProperty getAutoResponderProperty();
-
-    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty);
-
     // SendTo
     public void setSendToProperty(SendToProperty sendToProperty);
 

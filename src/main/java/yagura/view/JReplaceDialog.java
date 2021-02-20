@@ -1,9 +1,9 @@
 package yagura.view;
 
-import extend.view.base.CustomDialog;
-import extend.model.base.CustomTableModel;
+import extension.helpers.SwingUtil;
 import yagura.model.MatchReplaceItem;
-import extend.util.SwingUtil;
+import extension.view.base.CustomDialog;
+import extension.view.base.CustomTableModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;

@@ -6,9 +6,10 @@
 package yagura.view;
 
 import burp.ITab;
+import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
 import yagura.model.LoggingProperty;
-import extend.util.SwingUtil;
-import extend.util.Util;
 import java.awt.Component;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -366,14 +367,14 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
      * @return the logFileLimitSize
      */
     public int getLogFileLimitSize() {
-        return Util.parseIntDefault(this.txtFileLimitSize.getText(), 0); // MB
+        return ConvertUtil.parseIntDefault(this.txtFileLimitSize.getText(), 0); // MB
     }
 
     /**
      * @param logFileLimitSize the logFileLimitSize to set
      */
     public void setLogFileLimitSize(int logFileLimitSize) {
-        this.txtFileLimitSize.setText(Util.toString(logFileLimitSize));
+        this.txtFileLimitSize.setText(StringUtil.toString(logFileLimitSize));
     }
 
     /**

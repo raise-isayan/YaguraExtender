@@ -4,8 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-import extend.util.ConvertUtil;
-import extend.util.Util;
+import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.Charset;
@@ -490,7 +490,7 @@ if (DEBUG_MODE) System.out.println("Mismatch token:" + String.format("0x%02x len
             }
             return decodeNode;
         } catch (RuntimeException ex) {
-if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + Util.getStackTrace(ex));
+if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + StringUtil.getStackTrace(ex));
         }
         return decodeNode;
     }

@@ -5,11 +5,6 @@ import burp.IHttpRequestResponse;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
 import burp.ITab;
-import extend.model.base.DefaultObjectTableModel;
-import extend.util.Util;
-import extend.view.base.MatchItem;
-import extend.view.base.NamedColor;
-import extend.view.base.RegexItem;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.SystemColor;
@@ -38,6 +33,11 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import extend.util.external.TransUtil;
+import extension.burp.HighlightColor;
+import extension.helpers.StringUtil;
+import extension.view.base.DefaultObjectTableModel;
+import extension.view.base.NamedColor;
+import extension.view.base.RegexItem;
 import java.util.EnumSet;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
@@ -483,8 +483,8 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.cmbColor.setMaximumRowCount(10);
         this.cmbColor.setRenderer(this.colorComboBoxRenderer);
         this.cmbColor.addItem(""); // nonselect
-        for (MatchItem.HighlightColor c : MatchItem.HighlightColor.values()) {
-            if (c == MatchItem.HighlightColor.WHITE) {
+        for (HighlightColor c : HighlightColor.values()) {
+            if (c == HighlightColor.WHITE) {
                 continue;
             }
             this.cmbColor.addItem(new NamedColor(c.toColor(), c.name().toLowerCase()));
@@ -723,7 +723,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                                 reqMessage = Arrays.copyOfRange(item.getRequest(), reqInfo.getBodyOffset(), item.getRequest().length);
                             }
                         }
-                        String req = Util.decodeMessage(reqMessage, encoding);
+                        String req = StringUtil.getStringCharset(reqMessage, encoding);
                         m = p.matcher(req);
                         if (m.find()) {
                             find = true;
@@ -740,7 +740,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                                 resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getResponse().length);
                             }
                         }
-                        String res = Util.decodeMessage(resMessage, encoding);
+                        String res = StringUtil.getStringCharset(resMessage, encoding);
                         m = p.matcher(res);
                         if (m.find()) {
                             find = true;

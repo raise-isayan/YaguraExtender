@@ -1,7 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import extend.util.Util;
+import extension.helpers.ConvertUtil;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -92,7 +92,7 @@ public class MatchReplaceProperty {
     }
 
     public List<String> getReplaceNameList() {
-        return Util.toList(this.replaceMap.keySet().iterator());
+        return ConvertUtil.toList(this.replaceMap.keySet().iterator());
     }
 
     @Expose

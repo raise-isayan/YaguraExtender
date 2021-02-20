@@ -1,8 +1,8 @@
 package passive;
 
-import extend.util.Util;
-import extend.util.external.JsonUtil;
-import extend.view.base.CaptureItem;
+import extension.helpers.json.JsonUtil;
+import extension.helpers.StringUtil;
+import extension.view.base.CaptureItem;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -256,11 +256,11 @@ public class JWTToken extends JsonToken {
     
     @Override
     public boolean signatureEqual(final String secret) {
-        return signatureEqual(this.algorithm, Util.getRawByte(this.getData()), this.signatureByte, Util.getRawByte(secret));
+        return signatureEqual(this.algorithm, StringUtil.getBytesRaw(this.getData()), this.signatureByte, StringUtil.getBytesRaw(secret));
     }
 
     public static boolean signatureEqual(Algorithm algo, String encrypt, final byte[] signature, String secret) {
-        return signatureEqual(algo, Util.getRawByte(encrypt), signature,  Util.getRawByte(secret));
+        return signatureEqual(algo, StringUtil.getBytesRaw(encrypt), signature,  StringUtil.getBytesRaw(secret));
     }
     
     protected static boolean signatureEqual(Algorithm algo, byte [] encrypt, final byte[] signature, final byte [] secret) {
@@ -295,7 +295,7 @@ public class JWTToken extends JsonToken {
 //    }
         
     public static byte [] sign(Algorithm algo, String payload, String secret) throws NoSuchAlgorithmException {
-        return sign(algo, payload, Util.getRawByte(secret));
+        return sign(algo, payload, StringUtil.getBytesRaw(secret));
     }
 
     public static byte [] sign(Algorithm algo, final String payload, final byte [] secret) throws NoSuchAlgorithmException {
@@ -311,7 +311,7 @@ public class JWTToken extends JsonToken {
                     mac.init(sk);
                     mac.reset();
                     String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
-                    final byte[] mac_bytes = mac.doFinal(Util.getRawByte(data));
+                    final byte[] mac_bytes = mac.doFinal(StringUtil.getBytesRaw(data));
                     return mac_bytes;                
                 }
 //                case RS256:
@@ -321,7 +321,7 @@ public class JWTToken extends JsonToken {
 //                    PrivateKey privateKey = CertUtil.loadPrivateKey(Util.getRawStr(secret));
 //                    rsaSignature.initSign(privateKey);
 //                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
-//                    rsaSignature.update(Util.getRawByte(data));
+//                    rsaSignature.update(StringUtil.getBytesRaw(data));
 //                    byte[] mac_bytes = rsaSignature.sign();
 //                    return mac_bytes;                
 //                }
@@ -331,7 +331,7 @@ public class JWTToken extends JsonToken {
 //                    Signature rsaSignature = Signature.getInstance(algo.getSignAlgorithm());
 //                    PrivateKey privateKey = CertUtil.loadPrivateKey(Util.getRawStr(secret));
 //                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
-//                    rsaSignature.update(Util.getRawByte(data));
+//                    rsaSignature.update(StringUtil.getBytesRaw(data));
 //                    byte[] mac_bytes = rsaSignature.sign();
 //                    return mac_bytes;                                    
 //                }

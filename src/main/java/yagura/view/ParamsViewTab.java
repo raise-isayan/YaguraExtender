@@ -5,11 +5,6 @@ import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IParameter;
 import burp.IRequestInfo;
-import extend.model.base.CustomTableModel;
-import extend.util.SwingUtil;
-import extend.util.Util;
-import extend.view.base.HttpMessage;
-import extend.view.base.HttpRequest;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -30,6 +25,11 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import extend.util.external.TransUtil;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpRequest;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
+import extension.view.base.CustomTableModel;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 import yagura.model.Parameter;
@@ -397,7 +397,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                             final HttpRequest request = HttpRequest.parseHttpRequest(content);
                             HttpMessage httpmessage = request;
                             if (reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
-                                guessCharset = TransUtil.getUniversalGuessCode(Util.getRawByte(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
+                                guessCharset = TransUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
                             } else {
                                 guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());
                             }

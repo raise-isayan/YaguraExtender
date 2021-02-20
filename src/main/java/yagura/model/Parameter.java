@@ -1,8 +1,11 @@
 package yagura.model;
 
 import burp.IParameter;
-import extend.util.Util;
+import extension.helpers.StringUtil;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -81,17 +84,25 @@ public class Parameter implements IParameter {
 
     public String getUniversalName() {
         if (this.encoding != null) {
-            return Util.decodeMessage(Util.getRawByte(parameter.getName()), this.encoding);
+            try {
+                return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getName()), this.encoding);
+            } catch (UnsupportedEncodingException ex) {
+                return null;
+            }
         } else {
-            return Util.decodeMessage(Util.getRawByte(parameter.getName()), StandardCharsets.ISO_8859_1.name());
+            return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getName()), StandardCharsets.ISO_8859_1);
         }
     }
 
     public String getUniversalValue() {
         if (this.encoding != null) {
-            return Util.decodeMessage(Util.getRawByte(parameter.getValue()), this.encoding);
+            try {
+               return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getValue()), this.encoding);
+            } catch (UnsupportedEncodingException ex) {
+                return null;
+            }
         } else {
-            return Util.decodeMessage(Util.getRawByte(parameter.getName()), StandardCharsets.ISO_8859_1.name());
+            return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getName()), StandardCharsets.ISO_8859_1);
         }
     }
 

@@ -2,9 +2,8 @@ package yagura.view;
 
 import burp.BurpExtender;
 import burp.ITab;
-import yagura.LegacyConfig;
+import extension.view.layout.VerticalFlowLayout;
 import yagura.Version;
-import extend.view.model.VerticalFlowLayout;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +44,6 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
         pnlConfig = new javax.swing.JPanel();
         btnExport = new javax.swing.JButton();
         btnImport = new javax.swing.JButton();
-        btnLegacyImport = new javax.swing.JButton();
         chkDebugMode = new javax.swing.JCheckBox();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
@@ -77,13 +75,6 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        btnLegacyImport.setText("Legacy Import");
-        btnLegacyImport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLegacyImportActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlConfigLayout = new javax.swing.GroupLayout(pnlConfig);
         pnlConfig.setLayout(pnlConfigLayout);
         pnlConfigLayout.setHorizontalGroup(
@@ -93,9 +84,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 .addComponent(btnImport)
                 .addGap(18, 18, 18)
                 .addComponent(btnExport)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnLegacyImport)
-                .addContainerGap(272, Short.MAX_VALUE))
+                .addContainerGap(391, Short.MAX_VALUE))
         );
         pnlConfigLayout.setVerticalGroup(
             pnlConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,15 +92,14 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 .addContainerGap()
                 .addGroup(pnlConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExport)
-                    .addComponent(btnImport)
-                    .addComponent(btnLegacyImport))
+                    .addComponent(btnImport))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pnlCenter.add(pnlConfig, java.awt.BorderLayout.NORTH);
 
         add(pnlCenter);
-        pnlCenter.setBounds(0, 0, 559, 167);
+        pnlCenter.setBounds(0, 0, 559, 172);
 
         chkDebugMode.setText("DebugMode");
         chkDebugMode.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -167,23 +155,6 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
 
     }//GEN-LAST:event_btnExportActionPerformed
 
-    private void btnLegacyImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLegacyImportActionPerformed
-        JFileChooser filechooser = new JFileChooser();
-        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.addChoosableFileFilter(BURP_LEGACY_CONFIG_FILTER);
-        filechooser.setFileFilter(BURP_LEGACY_CONFIG_FILTER);
-        int selected = filechooser.showOpenDialog(this);
-        if (selected == JFileChooser.APPROVE_OPTION) {
-            try {
-                File file = filechooser.getSelectedFile();
-                LegacyConfig.loadFromXml(file, BurpExtender.getInstance().getProperty());
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, null, ex);
-            }
-        }
-        this.firePropertyChange(TabbetOption.LOAD_CONFIG_PROPERTY, null, this);
-    }//GEN-LAST:event_btnLegacyImportActionPerformed
-
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.setLayout(new VerticalFlowLayout());
@@ -195,7 +166,6 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnImport;
-    private javax.swing.JButton btnLegacyImport;
     private javax.swing.JCheckBox chkDebugMode;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlConfig;

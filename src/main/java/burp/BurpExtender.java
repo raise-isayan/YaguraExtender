@@ -1,6 +1,6 @@
 package burp;
 
-import yagura.model.AutoResponderItem;
+import extend.util.external.gson.XMatchItemAdapter;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchReplaceItem;
 import yagura.model.SendToMenu;
@@ -11,16 +11,19 @@ import yagura.view.TabbetOption;
 import yagura.model.MatchReplaceGroup;
 import yagura.model.OptionProperty;
 import passive.signature.MatchAlert;
-import extend.view.base.HttpMessage;
-import extend.view.base.MatchItem;
-import extend.util.BurpWrap;
-import extend.util.HttpUtil;
-import extend.util.SwingUtil;
-import extend.util.Util;
-import extend.util.external.JsonUtil;
-import extend.util.external.gson.HotKeyAdapter;
-import extend.util.external.gson.XMatchItemAdapter;
-import extend.view.base.HttpResponse;
+import extension.burp.BurpExtenderImpl;
+import extension.burp.HttpService;
+import extension.burp.NotifyType;
+import extension.burp.TargetTool;
+import extension.helpers.BurpUtil;
+import extension.helpers.FileUtil;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpResponse;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
+import extension.helpers.json.JsonUtil;
+import extension.view.base.MatchItem;
 import java.awt.Component;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
@@ -38,6 +41,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -58,10 +62,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
+import jdk.jshell.execution.Util;
 import passive.IssueItem;
 import yagura.Config;
 import yagura.Version;
-import yagura.model.HotKey;
+import yagura.model.IKeywordHighlighter;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
@@ -73,11 +78,12 @@ import yagura.view.ViewStateTab;
 public class BurpExtender extends BurpExtenderImpl
         implements IHttpListener, IProxyListener, IExtensionStateListener {
     private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
+
       
     public BurpExtender() {
     }
 
-    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
+    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
 
     private static final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
 
@@ -107,7 +113,6 @@ public class BurpExtender extends BurpExtenderImpl
             logger.log(Level.SEVERE, null, ex);
         }
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
-        JsonUtil.registerTypeHierarchyAdapter(HotKey.class, new HotKeyAdapter());
     }
 
     @SuppressWarnings("unchecked")
@@ -181,15 +186,6 @@ public class BurpExtender extends BurpExtenderImpl
         }
     };
 
-    private final KeyEventPostProcessor dispatcher = new KeyEventPostProcessor() {
-        @Override
-        public boolean postProcessKeyEvent(KeyEvent e) {
-            SendToMenu menu = getSendToMenu();
-            menu.doKeyEventAction(e);
-            return false;
-        }
-    };
-            
     private MouseListener newContextMenu(IMessageEditorController controller) {
         return new MouseAdapter() {
                 @Override
@@ -209,45 +205,39 @@ public class BurpExtender extends BurpExtenderImpl
                 logger.log(Level.SEVERE, null, e);
             }
         });
-        if (this.getBurpVersion().isExtendSupport()) {
-            // 設定ファイル読み込み
-            try {
-                if (CONFIG_FILE.exists()) {
-                    Config.loadFromJson(CONFIG_FILE, this.option);
-                }
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, null, ex);
-            } catch (RuntimeException ex) {
-                logger.log(Level.WARNING, null, ex);
+
+        // 設定ファイル読み込み
+        try {
+            if (CONFIG_FILE.exists()) {
+                Config.loadFromJson(CONFIG_FILE, this.option);
             }
-
-            try {
-                // 自動ログ作成時のみディレクトリ作成
-                if (this.option.getLoggingProperty().isAutoLogging()) {
-                    this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
-                }
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, null, ex);
-            }
-                       
-            callbacks.registerHttpListener(this);
-            callbacks.registerProxyListener(this);
-            callbacks.registerExtensionStateListener(this);
-            SwingUtilities.invokeLater(() -> {
-                callbacks.addSuiteTab(this.tabbetOption);
-                setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
-                callbacks.registerContextMenuFactory(this.getSendToMenu());
-            });
-
-            this.tabbetOption.setProperty(this.option);
-            this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
-            this.registerView();
-
-            //
-//            DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventPostProcessor(dispatcher);
-        } else {
-            JOptionPane.showMessageDialog(null, "This burp version is not supported.\r\nversion 1.7 required", Version.getInstance().getVersion(), JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (RuntimeException ex) {
+            logger.log(Level.WARNING, null, ex);
         }
+
+        try {
+            // 自動ログ作成時のみディレクトリ作成
+            if (this.option.getLoggingProperty().isAutoLogging()) {
+                this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+
+        callbacks.registerHttpListener(this);
+        callbacks.registerProxyListener(this);
+        callbacks.registerExtensionStateListener(this);
+        SwingUtilities.invokeLater(() -> {
+            callbacks.addSuiteTab(this.tabbetOption);
+            setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
+            callbacks.registerContextMenuFactory(this.getSendToMenu());
+        });
+
+        this.tabbetOption.setProperty(this.option);
+        this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
+        this.registerView();
     }
 
     @Override
@@ -288,14 +278,6 @@ public class BurpExtender extends BurpExtenderImpl
         }
         resultBytes = messageByte;
         IHttpRequestResponse msgInfo = message.getMessageInfo();
-
-        // Autoresponder
-        if (messageIsRequest && this.option.getAutoResponderProperty().getAutoResponderEnable()) {
-            boolean apply = this.autoresponderProxyMessage(msgInfo.getHttpService(), msgInfo);
-            if (apply) {
-                return;
-            }
-        }
 
         // Match and Replace
         if (this.option.getMatchReplaceProperty().isSelectedMatchReplace()) {
@@ -373,30 +355,30 @@ public class BurpExtender extends BurpExtenderImpl
                     File fname = new File(this.getLogDir(), Config.getProxyLogMessageName());
                     if (fname.length() > this.option.getLoggingProperty().getLogFileByteLimitSize()
                             && this.option.getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                        File renameFile = Util.rotateFile(this.getLogDir(), Config.getProxyLogMessageName());
+                        File renameFile = FileUtil.rotateFile(this.getLogDir(), Config.getProxyLogMessageName());
                         fname.renameTo(renameFile);
                     }
                     boolean includeLog = true;
                     if (this.option.getLoggingProperty().isExclude()) {
-                        Pattern patternExclude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExcludeExtension()));
-                        Matcher matchExclude = patternExclude.matcher(BurpWrap.getURL(httpService, request).getFile());
+                        Pattern patternExclude = Pattern.compile(BurpUtil.parseFilterPattern(this.option.getLoggingProperty().getExcludeExtension()));
+                        Matcher matchExclude = patternExclude.matcher(BurpExtender.getHelpers().getURL(httpService, request).getFile());
                         if (matchExclude.find()) {
                             includeLog = false;
                         }
                     }
                     if (includeLog) {
                         try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
-                            fostm.write(Util.getRawByte(Util.NEW_LINE));
-                            fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
-                            fostm.write(Util.getRawByte(getCurrentLogTimestamp() + " " + BurpWrap.getURLString(httpService) + Util.NEW_LINE));
-                            fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
-                            fostm.write(Util.getRawByte(Util.NEW_LINE));
+                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
+                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+                            fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpService.getURLString(httpService) + HttpUtil.LINE_TERMINATE));
+                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             fostm.write(request);
-                            fostm.write(Util.getRawByte(Util.NEW_LINE));
-                            fostm.write(Util.getRawByte("=========================================================" + Util.NEW_LINE));
+                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
+                            fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
                             fostm.write(message);
-                            fostm.write(Util.getRawByte(Util.NEW_LINE));
-                            fostm.write(Util.getRawByte("=========================================================" + Util.NEW_LINE));
+                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
+                            fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
                         }
                     }
                 } catch (IOException ex) {
@@ -437,32 +419,32 @@ public class BurpExtender extends BurpExtenderImpl
                 File fname = new File(this.getLogDir(), baselogfname);
                 if (fname.length() > this.option.getLoggingProperty().getLogFileByteLimitSize()
                         && this.option.getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                    File renameFile = Util.rotateFile(this.getLogDir(), baselogfname);
+                    File renameFile = FileUtil.rotateFile(this.getLogDir(), baselogfname);
                     fname.renameTo(renameFile);
                 }
                 boolean includeLog = true;
                 if (this.option.getLoggingProperty().isExclude()) {
-                    Pattern patternExclude = Pattern.compile(BurpWrap.parseFilterPattern(this.option.getLoggingProperty().getExcludeExtension()));
-                    Matcher matchExclude = patternExclude.matcher(BurpWrap.getURL(messageInfo).getFile());
+                    Pattern patternExclude = Pattern.compile(BurpUtil.parseFilterPattern(this.option.getLoggingProperty().getExcludeExtension()));
+                    Matcher matchExclude = patternExclude.matcher(BurpExtender.getHelpers().getURL(messageInfo).getFile());
                     if (matchExclude.find()) {
                         includeLog = false;
                     }
                 }
                 if (includeLog) {
                     try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
-                        fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
-                        fostm.write(Util.getRawByte(getCurrentLogTimestamp() + " " + BurpWrap.getURLString(messageInfo.getHttpService()) + Util.NEW_LINE));
-                        fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
+                        fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+                        fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpService.getURLString(messageInfo.getHttpService()) + HttpUtil.LINE_TERMINATE));
+                        fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                         if (messageInfo.getRequest() != null) {
                             fostm.write(messageInfo.getRequest());
-                            fostm.write(Util.getRawByte(Util.NEW_LINE));
+                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                         }
                         if (messageInfo.getResponse() != null) {
-                            fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
+                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                             fostm.write(messageInfo.getResponse());
-                            fostm.write(Util.getRawByte(Util.NEW_LINE));
+                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                         }
-                        fostm.write(Util.getRawByte("======================================================" + Util.NEW_LINE));
+                        fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                     }
                 }
             }
@@ -472,39 +454,9 @@ public class BurpExtender extends BurpExtenderImpl
             logger.log(Level.SEVERE, null, ex);
         }
     }
-    private final static Pattern REQUEST_URI = Pattern.compile("^(.*?\\s+)(.*?)(\\s+.*)");
+
     private final static Pattern HTTP_LINESEP = Pattern.compile("\\r\\n\\r\\n");
-
-    private boolean autoresponderProxyMessage(
-            IHttpService httpService, IHttpRequestResponse messageInfo) {
-
-        boolean apply = false;
-        try {
-            IRequestInfo reqInfo = getHelpers().analyzeRequest(httpService, messageInfo.getRequest());
-            String url = HttpUtil.normalizeURL(reqInfo.getUrl().toExternalForm());
-            AutoResponderItem item = this.option.getAutoResponderProperty().findItem(url);
-            if (item != null) {
-                // FullパスをRequestヘッダに追加
-                String request = Util.decodeMessage(messageInfo.getRequest());
-                Matcher m = REQUEST_URI.matcher(request);
-                StringBuffer sb = new StringBuffer();
-                if (m.find()) {
-                    m.appendReplacement(sb, m.group(0));
-                    sb.append("\r\nX-AutoResponder: ").append(url);
-                }
-                m.appendTail(sb);
-                request = sb.toString();
-                messageInfo.setRequest(Util.encodeMessage(request));
-                messageInfo.setHttpService(getHelpers().buildHttpService("127.0.0.1", option.getAutoResponderProperty().getRedirectPort(), "http"));
-                apply = true;
-            }
-
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-        return apply;
-    }
-
+    
     /**
      * メッセージの置換
      *
@@ -520,7 +472,7 @@ public class BurpExtender extends BurpExtenderImpl
         // headerとbodyに分割
         boolean edited = false;
         boolean updateLength = false;
-        String decodeMessage = Util.decodeMessage(message);
+        String decodeMessage = StringUtil.getStringRaw(message);
         HttpMessage httpMsg = HttpMessage.parseHttpMessage(decodeMessage);
         List<MatchReplaceItem> matchReplaceList = this.option.getMatchReplaceProperty().getMatchReplaceList();
         for (int i = 0; i < matchReplaceList.size(); i++) {
@@ -563,7 +515,7 @@ public class BurpExtender extends BurpExtenderImpl
         if (edited) {
             // messageの再構築
             httpMsg.updateContentLength(updateLength);
-            message = Util.encodeMessage(httpMsg.getMessage());
+            message = StringUtil.getBytesRaw(httpMsg.getMessage());
         }
         return message;
     }
@@ -584,16 +536,16 @@ public class BurpExtender extends BurpExtenderImpl
                 continue;
             }
             try {
-                MatchItem.TargetTool tools = MatchItem.TargetTool.valueOf(toolName.toUpperCase());
+                TargetTool tools = TargetTool.valueOf(toolName.toUpperCase());
                 if (!bean.getTargetTools().contains(tools)) {
                     continue;
                 }
                 Pattern p = bean.getRegexPattern();
                 String decodeMessage = "";
                 if (bean.isRequest() && messageIsRequest) {
-                    decodeMessage = Util.decodeMessage(messageInfo.getRequest());
+                    decodeMessage = StringUtil.getStringRaw(messageInfo.getRequest());
                 } else if (bean.isResponse() && !messageIsRequest) {
-                    decodeMessage = Util.decodeMessage(messageInfo.getResponse());
+                    decodeMessage = StringUtil.getStringRaw(messageInfo.getResponse());
                 }
                 List<IssueItem> markList = new ArrayList<>();
                 Matcher m = p.matcher(decodeMessage);
@@ -610,19 +562,19 @@ public class BurpExtender extends BurpExtenderImpl
                     count++;
                 }
                 if (count > 0) {
-                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.ALERTS_TAB)) {
+                    if (bean.getNotifyTypes().contains(NotifyType.ALERTS_TAB)) {
                         issueAlert(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
                     }
-                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.TRAY_MESSAGE)) {
+                    if (bean.getNotifyTypes().contains(NotifyType.TRAY_MESSAGE)) {
 //                        trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
                     }
-                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.ITEM_HIGHLIGHT)) {
-                        BurpWrap.setHighlightColor(messageInfo, Util.toString(bean.getHighlightColor()));
+                    if (bean.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
+                        messageInfo.setHighlight(StringUtil.toString(bean.getHighlightColor()));
                     }
-                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.COMMENT)) {
+                    if (bean.getNotifyTypes().contains(NotifyType.COMMENT)) {
                         messageInfo.setComment(bean.getComment());
                     }
-                    if (bean.getNotifyTypes().contains(MatchAlertItem.NotifyType.SCANNER_ISSUE)) {
+                    if (bean.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
                         MatchAlert alert = new MatchAlert(toolName, this.option.getMatchAlertProperty());
                         List<IScanIssue> issues = alert.makeIssueList(messageIsRequest, messageInfo, markList);
                         for (IScanIssue scanissue : issues) {
@@ -642,7 +594,7 @@ public class BurpExtender extends BurpExtenderImpl
      * @return リスト
      */
     public List<String> getSelectEncodingList() {
-        String defaultCharset = HttpUtil.normalizeCharset(Util.DEFAULT_ENCODING);
+        String defaultCharset = HttpUtil.normalizeCharset(StringUtil.DEFAULT_ENCODING);
         List<String> list = new ArrayList<>();
         list.addAll(this.option.getEncodingProperty().getEncodingList());
         // リストにない場合追加
@@ -736,9 +688,6 @@ public class BurpExtender extends BurpExtenderImpl
                 } else if (TabbetOption.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());
                     applyOptionProperty();
-                } else if (TabbetOption.AUTO_RESPONDER_PROPERTY.equals(evt.getPropertyName())) {
-                    option.setAutoResponderProperty(tabbetOption.getAutoResponderProperty());
-                    applyOptionProperty();
                 } else if (TabbetOption.SENDTO_PROPERTY.equals(evt.getPropertyName())) {
                     option.setSendToProperty(tabbetOption.getSendToProperty());
                     if (getCallbacks() != null) {
@@ -807,9 +756,9 @@ public class BurpExtender extends BurpExtenderImpl
         return this.tabbetOption.receiveFromJTransCoder();
     }
 
-    public byte[] receiveFromClipbord(String encoding) {
+    public byte[] receiveFromClipbord(String encoding) throws UnsupportedEncodingException {
         String clipbord = SwingUtil.systemClipboardPaste();
-        return Util.encodeMessage(clipbord, encoding);
+        return StringUtil.getBytesCharset(clipbord, encoding);
     }
 
     /**
@@ -885,7 +834,7 @@ public class BurpExtender extends BurpExtenderImpl
                 if (cols[i]) {
                     int rawRow = table.convertRowIndexToModel(rows[k]);
                     Object data = model.getValueAt(rawRow, i);
-                    export.append(Util.toString(data));
+                    export.append(StringUtil.toString(data));
                     export.append("\t");
                 }
             }

@@ -29,7 +29,7 @@ public class LoggingProperty {
     }
 
     @Expose
-    private String logBaseDir = Config.getUserDir();
+    private String logBaseDir = Config.getUserDirPath();
 
     public String getBaseDir() {
         return this.logBaseDir;

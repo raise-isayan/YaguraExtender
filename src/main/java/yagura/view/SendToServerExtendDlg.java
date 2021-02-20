@@ -5,8 +5,9 @@
  */
 package yagura.view;
 
-import extend.util.Util;
-import extend.view.base.CustomDialog;
+import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
+import extension.view.base.CustomDialog;
 import java.net.Proxy;
 import java.util.Properties;
 import javax.swing.JOptionPane;
@@ -280,16 +281,16 @@ public class SendToServerExtendDlg extends CustomDialog {
         String ignoreValidateCertification = prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString());        
         this.cmbProtocol.setSelectedItem(proxyProtocol);
         this.txtProxyHost.setText(proxyHost);
-        this.spnProxyPort.setValue((int)Util.parseIntDefault(proxyPort, 8080));
+        this.spnProxyPort.setValue((int)ConvertUtil.parseIntDefault(proxyPort, 8080));
         this.txtProxyUser.setText(proxyUser);
         this.txtProxyPasswd.setText(proxyPasswd);
-        this.chkIgnoreValidateCertification.setSelected(Util.parseBooleanDefault(ignoreValidateCertification, false));
+        this.chkIgnoreValidateCertification.setSelected(ConvertUtil.parseBooleanDefault(ignoreValidateCertification, false));
     }
 
     public void getProperties(Properties prop) {
         prop.setProperty("proxyProtocol", (String)this.cmbProtocol.getSelectedItem());
         prop.setProperty("proxyHost", this.txtProxyHost.getText());
-        prop.setProperty("proxyPort", Util.toString(this.spnProxyPort.getValue()));        
+        prop.setProperty("proxyPort", StringUtil.toString(this.spnProxyPort.getValue()));        
         prop.setProperty("proxyUser", this.txtProxyUser.getText());
         prop.setProperty("proxyPasswd", String.valueOf(this.txtProxyPasswd.getPassword()));
         prop.setProperty("ignoreValidateCertification", String.valueOf(this.chkIgnoreValidateCertification.isSelected()));

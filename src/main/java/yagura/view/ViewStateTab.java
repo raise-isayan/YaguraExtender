@@ -8,9 +8,10 @@ import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
-import extend.util.ConvertUtil;
-import extend.util.SwingUtil;
-import extend.util.external.JsonUtil;
+import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
+import extension.helpers.json.JsonUtil;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.net.URLDecoder;
@@ -294,7 +295,7 @@ public class ViewStateTab extends javax.swing.JPanel implements IMessageEditorTa
                 }
 
                 protected void process(List<Object> chunks) {
-                    treeViewState.setModel(JsonUtil.toTreeNodeModel("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
+                    treeViewState.setModel(JsonUtil.toTreeNodeModel("Heavy Processing" + StringUtil.repeat("...", chunks.size())));
                 }
 
                 protected void done() {

@@ -1,7 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import extend.view.base.RegexItem;
+import extension.view.base.RegexItem;
 
 /**
  *

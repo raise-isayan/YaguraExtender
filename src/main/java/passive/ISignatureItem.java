@@ -1,6 +1,6 @@
 package passive;
 
-import extend.view.base.MatchItem;
+import extension.burp.Severity;
 
 /**
  *
@@ -26,6 +26,6 @@ public interface ISignatureItem {
     /**
      * @return the serverity
      */
-    public MatchItem.Severity getServerity();
+    public Severity getServerity();
 
 }

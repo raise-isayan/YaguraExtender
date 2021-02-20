@@ -1,11 +1,12 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import extend.view.base.MatchItem;
 import extend.util.external.TransUtil;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import extension.view.base.MatchItem;
 
+        
 /**
  * @author isayan
  */

@@ -1,8 +1,8 @@
 package yagura.model;
 
 import burp.IParameter;
-import extend.model.base.ObjectTableColumn;
-import extend.model.base.ObjectTableMapping;
+import extension.view.base.ObjectTableColumn;
+import extension.view.base.ObjectTableMapping;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

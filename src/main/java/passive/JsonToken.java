@@ -1,6 +1,6 @@
 package passive;
 
-import extend.util.ConvertUtil;
+import extension.helpers.ConvertUtil;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

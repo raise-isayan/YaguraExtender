@@ -1,11 +1,12 @@
 package yagura.model;
 
+import burp.BurpExtender;
 import burp.IContextMenuInvocation;
-import extend.util.HttpUtil;
 import burp.IHttpRequestResponse;
 import burp.IHttpService;
-import extend.util.BurpWrap;
-import extend.util.Util;
+import extension.helpers.ConvertUtil;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
 
 import java.awt.event.ActionEvent;
 import java.io.ByteArrayOutputStream;
@@ -86,11 +87,11 @@ public class SendToServer extends SendToMenuItem {
                     if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
                         String proxyHost = prop.getProperty("proxyHost", "");
                         if (Proxy.Type.HTTP.name().equals(proxyProtocol)) {
-                            int proxyPort = Util.parseIntDefault(prop.getProperty("proxyPort", "8080"), 8080);
+                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "8080"), 8080);
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.HTTP, addr);
                         } else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
-                            int proxyPort = Util.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
+                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
@@ -106,7 +107,7 @@ public class SendToServer extends SendToMenuItem {
                             }
                         };
                     }
-                    boolean ignoreValidateCertification = Util.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
+                    boolean ignoreValidateCertification = ConvertUtil.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
                     String boundary = HttpUtil.generateBoundary();
                     HttpClient.Builder builder = HttpClient.newBuilder()
                         .version(Version.HTTP_1_1)
@@ -172,16 +173,16 @@ public class SendToServer extends SendToMenuItem {
     protected void outMultipart(String boundary, OutputStream out, IHttpRequestResponse messageInfo) throws IOException, Exception {
         IHttpService httpService = messageInfo.getHttpService();
         HttpUtil.outMultipartText(boundary, out, "host", httpService.getHost());
-        HttpUtil.outMultipartText(boundary, out, "port", Util.toString(httpService.getPort()));
+        HttpUtil.outMultipartText(boundary, out, "port", StringUtil.toString(httpService.getPort()));
         HttpUtil.outMultipartText(boundary, out, "protocol", httpService.getProtocol());
-        HttpUtil.outMultipartText(boundary, out, "url", Util.toString(BurpWrap.getURL(messageInfo)));
+        HttpUtil.outMultipartText(boundary, out, "url", StringUtil.toString(BurpExtender.getHelpers().getURL(messageInfo)));
         String comment = messageInfo.getComment();
         if (comment != null) {
             HttpUtil.outMultipartText(boundary, out, "comment", comment, StandardCharsets.UTF_8);
         }
-        String color = BurpWrap.getHighlightColor(messageInfo);
+        String color = messageInfo.getHighlight();
         if (color != null) {
-            HttpUtil.outMultipartText(boundary, out, "highlight", BurpWrap.getHighlightColor(messageInfo));
+            HttpUtil.outMultipartText(boundary, out, "highlight", color);
         }
         if (messageInfo.getRequest() != null && this.isRequest()) {
             HttpUtil.outMultipartBinary(boundary, out, "request", messageInfo.getRequest());

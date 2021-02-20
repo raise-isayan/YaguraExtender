@@ -8,9 +8,8 @@ import burp.IHttpRequestResponse;
 import burp.IHttpService;
 import burp.IMessageEditorController;
 import burp.IScanIssue;
-import extend.util.BurpWrap;
-import extend.util.HttpUtil;
-import extend.util.Util;
+import extension.helpers.ConvertUtil;
+import extension.helpers.HttpUtil;
 import java.awt.Component;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
@@ -248,39 +247,6 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
 
     private int repeternum = 0;
 
-    public void doKeyEventAction(KeyEvent evt) {
-        List<IHttpRequestResponse> historyList = new ArrayList<>();
-        FocusManager mgr = FocusManager.getCurrentManager();
-        Component owner = mgr.getFocusOwner();
-        if (owner instanceof JTable) {
-            JTable table = (JTable) owner;
-            int[] rowSelect = table.getSelectedRows();
-            for (int i = 0; i < rowSelect.length; i++) {
-                int rowIndex = table.convertRowIndexToModel(rowSelect[i]);
-                TableModel modelTable = table.getModel();
-                int historyIndex = Util.parseIntDefault(Util.toString(modelTable.getValueAt(rowIndex, 0)), -1);
-                if (historyIndex > 0) {
-                    IHttpRequestResponse[] history = BurpExtender.getCallbacks().getProxyHistory();
-                    historyList.add(history[historyIndex - 1]);
-                }
-            }
-        }
-        createMenuItems(getContextMenuInvocation(evt, historyList.toArray(new IHttpRequestResponse[0])));
-        //
-        for (SendToMenuItem item : sendToList) {
-            if (item.isSelected() && item.getHotkey() != null) {
-                KeyEvent hotKey = item.getHotkey();
-                if (evt.getModifiersEx() == hotKey.getModifiersEx()
-                        && evt.getKeyCode() == hotKey.getKeyCode()) {
-                    if (historyList.size() > 0) {
-                        IHttpRequestResponse[] messageInfo = historyList.toArray(new IHttpRequestResponse[0]);
-                        item.menuItemClicked("#", messageInfo);
-                    }
-                }
-            }
-        }
-    }
-
     public SendToMessage getSendToMessage(IMessageEditorController controller) {
         return new SendToMessage() {
             @Override
@@ -412,7 +378,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
     public void sendToSpider(SendToMessage message) {
         try {
             IHttpRequestResponse[] messageItem = message.getSelectedMessages();
-            callbacks.sendToSpider(BurpWrap.getURL(messageItem[0]));
+            callbacks.sendToSpider(BurpExtender.getHelpers().getURL(messageItem[0]));
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
         }

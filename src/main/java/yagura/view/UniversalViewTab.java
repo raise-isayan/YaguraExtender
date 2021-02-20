@@ -6,9 +6,10 @@
 package yagura.view;
 
 import burp.ITab;
-import extend.model.base.CustomListModel;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
+import extension.view.base.CustomListModel;
 import yagura.model.UniversalViewProperty;
-import extend.util.Util;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -395,7 +396,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
 
         // Encoding Tab
         this.listTarget.setModel(this.modelTarget);
-        for (String item : Util.getAvailableEncodingList()) {
+        for (String item : StringUtil.getAvailableEncodingList()) {
             if (!modelSelect.contains(item)) {
                 this.modelTarget.addElement(item);
             }
@@ -524,7 +525,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
             this.popEncodeMenu.addSeparator();
         }
         for (int i = 0; i < this.listSelect.getModel().getSize(); i++) {
-            String enc = Util.toString(this.listSelect.getModel().getElementAt(i));
+            String enc = StringUtil.toString(this.listSelect.getModel().getElementAt(i));
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
             item.addChangeListener(new ChangeListener() {
                 @Override
@@ -594,7 +595,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
             this.modelSelect.addElement(item);
         }
         this.modelTarget.clear();
-        for (String item : Util.getAvailableEncodingList()) {
+        for (String item : StringUtil.getAvailableEncodingList()) {
             if (!this.modelSelect.contains(item)) {
                 this.modelTarget.addElement(item);
             }

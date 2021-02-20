@@ -6,10 +6,10 @@ import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
-import extend.util.SwingUtil;
-import extend.util.Util;
-import extend.view.base.HttpMessage;
-import extend.view.base.HttpRequest;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpRequest;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -313,7 +313,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 }
             }
             if (!find) {
-                String body = Util.getRawStr(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
+                String body = StringUtil.getStringRaw(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
                 find = JWTToken.containsTokenFormat(body);
             }
         } catch (Exception ex) {
@@ -372,7 +372,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             }
         }
         if (!find) {
-            String body = Util.getRawStr(Arrays.copyOfRange(message, reqInfo.getBodyOffset(), message.length));
+            String body = StringUtil.getBytesRawString(Arrays.copyOfRange(message, reqInfo.getBodyOffset(), message.length));
             if (JWTToken.containsTokenFormat(body)) {
                 JWTToken token = jwtinstance.parseToken(body, false);
                 if (token != null) {

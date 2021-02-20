@@ -35,8 +35,8 @@ gradlew release
 * asciidoc (http://asciidoc.org/) 
 
 ## Required library
-Building requires a [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) library.
-* BurpExtlib v2.1.2.2
+Building requires a [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) library.
+* BurpExtensionCommons v0.4.0.0
 
 ## Use Library
 * Apache common codec (https://commons.apache.org/proper/commons-codec/)

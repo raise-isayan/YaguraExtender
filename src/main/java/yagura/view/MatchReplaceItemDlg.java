@@ -1,6 +1,6 @@
 package yagura.view;
 
-import extend.view.base.CustomDialog;
+import extension.view.base.CustomDialog;
 import java.util.logging.Logger;
 import yagura.model.MatchReplaceItem;
 import javax.swing.JOptionPane;

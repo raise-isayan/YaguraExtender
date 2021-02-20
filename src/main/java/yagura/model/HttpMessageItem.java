@@ -6,9 +6,9 @@ import burp.IHttpService;
 import burp.IMessageEditorController;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
-import extend.util.BurpWrap;
-import extend.view.base.HttpMessage;
-import extend.view.base.HttpResponse;
+import extension.burp.HttpService;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpResponse;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
@@ -81,7 +81,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
 
     public void setHost(String host) throws Exception {
         if (this.httpItem != null) {
-            this.httpItem.setHttpService(BurpWrap.getHttpService(host, this.httpItem.getHttpService().getPort(), this.httpItem.getHttpService().getProtocol()));
+            this.httpItem.setHttpService(HttpService.getHttpService(host, this.httpItem.getHttpService().getPort(), this.httpItem.getHttpService().getProtocol()));
         } else {
             this.host = host;
         }
@@ -89,7 +89,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
 
     public void setPort(int port) throws Exception {
         if (this.httpItem != null) {
-            this.httpItem.setHttpService(BurpWrap.getHttpService(this.httpItem.getHttpService().getHost(), port, this.httpItem.getHttpService().getProtocol()));
+            this.httpItem.setHttpService(HttpService.getHttpService(this.httpItem.getHttpService().getHost(), port, this.httpItem.getHttpService().getProtocol()));
         } else {
             this.port = port;
         }
@@ -97,7 +97,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
 
     public void setProtocol(String protocol) throws Exception {
         if (this.httpItem != null) {
-            this.httpItem.setHttpService(BurpWrap.getHttpService(this.httpItem.getHttpService().getHost(), this.httpItem.getHttpService().getPort(), protocol));
+            this.httpItem.setHttpService(HttpService.getHttpService(this.httpItem.getHttpService().getHost(), this.httpItem.getHttpService().getPort(), protocol));
         } else {
             this.protocol = protocol;
         }
@@ -184,7 +184,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     @Override
     public String getHighlight() {
         if (this.httpItem != null) {
-            return BurpWrap.getHighlightColor(this.httpItem);
+            return this.httpItem.getHighlight();
         } else {
             return this.color;
         }
@@ -193,7 +193,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     @Override
     public void setHighlight(String color) {
         if (this.httpItem != null) {
-            BurpWrap.setHighlightColor(this.httpItem, color);
+            this.httpItem.setHighlight(color);
         } else {
             this.color = color;
         }
@@ -217,7 +217,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
         String charset = StandardCharsets.ISO_8859_1.name();
         try {
             if (this.getResponse() != null) {
-                HttpResponse res = new HttpResponse(HttpMessage.parseHttpMessage(this.getResponse()));
+                HttpResponse res = new HttpResponse(HttpMessage.parseHttpMessage(this.getResponse())) {};
                 charset = res.getGuessCharset();
                 if (charset == null) {
                     charset = StandardCharsets.ISO_8859_1.name();
@@ -260,7 +260,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
 
     @Override
     public IHttpService getHttpService() {
-        return BurpWrap.getHttpService(getHost(), getPort(), getProtocol());
+        return HttpService.getHttpService(getHost(), getPort(), getProtocol());
     }
 
     @Override

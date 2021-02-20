@@ -7,11 +7,11 @@ import burp.IHttpService;
 import burp.IRequestInfo;
 import burp.IScanIssue;
 import burp.IScannerCheck;
-import extend.util.HttpUtil;
+import extension.burp.Severity;
+import extension.helpers.HttpUtil;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import extend.view.base.MatchItem;
 import passive.IssueItem;
 import passive.PassiveCheckAdapter;
 import passive.SignatureItem;
@@ -27,7 +27,7 @@ public class MatchAlert extends SignatureItem<IssueItem> {
     private final MatchAlertProperty option;
 
     public MatchAlert(final String toolName, final MatchAlertProperty option) {
-        super("MatchAlert", MatchItem.Severity.HIGH);
+        super("MatchAlert", Severity.HIGH);
         this.toolName = toolName;
         this.option = option;
     }

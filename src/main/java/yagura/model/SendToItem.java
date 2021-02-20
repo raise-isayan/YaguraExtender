@@ -61,7 +61,6 @@ public class SendToItem {
         this.responseHeader = item.responseHeader;
         this.responseBody = item.responseBody;
         this.reverseOrder = item.reverseOrder;
-        this.hotkey = item.hotkey;
         this.sendExtend = item.sendExtend;
         this.extendProperties.clear();
         this.extendProperties.putAll(item.extendProperties);
@@ -235,17 +234,6 @@ public class SendToItem {
     }
 
    @Expose
-    private HotKey hotkey = null;
-
-    public HotKey getHotkey() {
-        return (hotkey == null) ? null : new HotKey(hotkey);
-    }
-
-    public void setHotkey(HotKey hotKey) {
-        this.hotkey = hotKey;
-    }
-
-   @Expose
     private final Properties extendProperties = new Properties();
     
     public Properties getExtendProperty() {
@@ -284,10 +272,6 @@ public class SendToItem {
      */
     public void setExtend(ExtendType sendExtend) {
         this.sendExtend = sendExtend;
-    }
-
-    public static HotKey parseHotkey(String value) {
-        return HotKey.parseHotkey(value);
     }
 
     private final EventListenerList sendToEventList = new EventListenerList();

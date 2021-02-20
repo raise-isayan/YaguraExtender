@@ -1,13 +1,12 @@
 package yagura.model;
 
 import burp.IHttpRequestResponse;
-import extend.model.base.ObjectTableColumn;
-import extend.model.base.ObjectTableMapping;
-import extend.util.BurpWrap;
-import extend.util.Util;
-import extend.view.base.HttpRequest;
-import extend.view.base.MatchItem;
-import extend.view.base.NamedColor;
+import extension.burp.HighlightColor;
+import extension.helpers.HttpRequest;
+import extension.helpers.StringUtil;
+import extension.view.base.NamedColor;
+import extension.view.base.ObjectTableColumn;
+import extension.view.base.ObjectTableMapping;
 import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,14 +73,14 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                 case 1: // #
                     int ordinal = msg.getOrdinal();
                     Color highlightColor = null;
-                    String color = BurpWrap.getHighlightColor(msg);
+                    String color = msg.getHighlight();
                     if (color != null) {
-                        MatchItem.HighlightColor hc = MatchItem.HighlightColor.parseValue(color);
+                        HighlightColor hc = HighlightColor.parseEnum(color);
                         highlightColor = hc.toColor();
-                        value = new NamedColor(highlightColor, Util.toString(ordinal + 1));
+                        value = new NamedColor(highlightColor, StringUtil.toString(ordinal + 1));
                     }
                     if (value == null) {
-                        value = new NamedColor(Color.WHITE, Util.toString(ordinal + 1));
+                        value = new NamedColor(Color.WHITE, StringUtil.toString(ordinal + 1));
                     }
                     break;
                 case 2: // host
@@ -92,12 +91,12 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     value = reqmsg.getMethod();
                     break;
                 case 4: // url
-                    value = Util.toString(msg.getUrl());
+                    value = StringUtil.toString(msg.getUrl());
                     break;
                 case 5: // status code
                     value = 0;
                     if (this.getResponse() != null) {
-                        value = Util.toString((int) msg.getStatusCode());
+                        value = StringUtil.toString((int) msg.getStatusCode());
                     }
                     break;
                 case 6: // length
@@ -127,9 +126,9 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                 case 1: // #
                     if (value instanceof NamedColor) {
                         NamedColor nc = (NamedColor) value;
-                        BurpWrap.setHighlightColor(msg, nc.toString());
+                        msg.setHighlight(nc.toString());
                     } else {
-                        BurpWrap.setHighlightColor(msg, null);
+                        msg.setHighlight(null);
                     }
                     break;
                 case 2: // host

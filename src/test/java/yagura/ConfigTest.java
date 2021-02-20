@@ -4,12 +4,14 @@ import burp.BurpExtender;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import extend.util.IniProp;
-import extend.util.Util;
-import extend.util.external.JsonUtil;
-import extend.util.external.gson.HotKeyAdapter;
 import extend.util.external.gson.XMatchItemAdapter;
-import extend.view.base.MatchItem;
+import extension.burp.HighlightColor;
+import extension.burp.NotifyType;
+import extension.burp.TargetTool;
+import extension.helpers.FileUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.json.JsonUtil;
+import extension.view.base.MatchItem;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +30,6 @@ import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,7 +40,6 @@ import yagura.model.MatchReplaceGroup;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import yagura.model.OptionProperty;
-import yagura.model.UniversalViewProperty;
 import yagura.model.UniversalViewProperty.UniversalView;
 
 /**
@@ -85,8 +85,8 @@ public class ConfigTest {
     public void testConfig() {
         try {
             URL url = this.getClass().getResource("/resources/default_project_burp.json");
-            byte [] test = Util.bytesFromFile(new File(url.toURI()));
-            JsonElement json = JsonUtil.parse(Util.decodeMessage(test, StandardCharsets.UTF_8)); 
+            byte [] test = FileUtil.bytesFromFile(new File(url.toURI()));
+            JsonElement json = JsonUtil.parse(StringUtil.getStringUTF8(test)); 
             String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
         } catch (IOException ex) {
@@ -99,61 +99,6 @@ public class ConfigTest {
                 
     private final IOptionProperty optionProperty = new OptionProperty();
     
-    /**
-     * Test of saveToXML method, of class LegacyConfig.
-     */
-    @Test
-    public void testLoadSaveXML() {
-        {
-            try {
-                System.out.println("saveToXML");
-                File fo = new File(System.getProperty("java.io.tmpdir"), "configTest.xml");
-                System.out.println("Path:" + fo);
-                LegacyConfig.saveToXML(fo, optionProperty);                        
-                assertTrue(fo.exists());
-            } catch (IOException ex) {
-                Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
-                assertTrue(false);
-            }
-        }
-        {
-            try {
-                System.out.println("loadFromXml");
-                File fi = new File(System.getProperty("java.io.tmpdir"), "configTest.xml");
-                LegacyConfig.loadFromXml(fi, optionProperty);
-                assertEquals(3, optionProperty.getEncodingProperty().getEncodingList().size());
-                assertEquals(0, optionProperty.getMatchAlertProperty().getMatchAlertItemList().size());
-                assertEquals(0, optionProperty.getMatchReplaceProperty().getReplaceNameList().size());
-                assertEquals("", optionProperty.getMatchReplaceProperty().getSelectedName());
-                assertEquals(null, optionProperty.getMatchReplaceProperty().getMatchReplaceList());
-                assertEquals(false, optionProperty.getMatchReplaceProperty().isSelectedMatchReplace());
-                assertEquals(0, optionProperty.getSendToProperty().getSendToItemList().size());
-                assertEquals(false, optionProperty.getLoggingProperty().isAutoLogging());
-                assertEquals(true, optionProperty.getLoggingProperty().isToolLog());
-                assertEquals(true, optionProperty.getLoggingProperty().isProxyLog());
-                assertEquals(0, optionProperty.getLoggingProperty().getLogFileLimitSize());                    
-                assertEquals(0, optionProperty.getLoggingProperty().getLogFileByteLimitSize());
-            } catch (IOException ex) {
-                Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
-                assertTrue(false);
-            }
-        }
-    }
-
-    @Test
-    public void testEncoding() {
-        IniProp prop = new IniProp();
-        UniversalViewProperty encProp = new UniversalViewProperty();
-        //encProp.setClipbordAutoDecode(prop.readEntryBool("encoding", "clipbordAutoDecode", false));
-        encProp.setClipbordAutoDecode(false);
-        List<String> encList = prop.readEntryList("encoding", "list", UniversalViewProperty.getDefaultEncodingList());
-        encProp.setEncodingList(encList);
-        for (String l : encList) {
-            System.out.println(l);
-        }
-        
-    }
-
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
     /**
@@ -179,15 +124,15 @@ public class ConfigTest {
         List<MatchAlertItem> matchAlertList = new ArrayList<>();
 
         MatchAlertItem matchAlertItem0 = new MatchAlertItem();
-        matchAlertItem0.setNotifyTypes(EnumSet.allOf(MatchItem.NotifyType.class));
-        matchAlertItem0.setHighlightColor(MatchItem.HighlightColor.CYAN);
+        matchAlertItem0.setNotifyTypes(EnumSet.allOf(NotifyType.class));
+        matchAlertItem0.setHighlightColor(HighlightColor.CYAN);
         matchAlertItem0.setComment("comment");
-        matchAlertItem0.setTargetTools(EnumSet.allOf(MatchItem.TargetTool.class));
+        matchAlertItem0.setTargetTools(EnumSet.allOf(TargetTool.class));
         matchAlertList.add(matchAlertItem0);
 
         MatchAlertItem matchAlertItem1 = new MatchAlertItem();
-        matchAlertItem1.setNotifyTypes(EnumSet.noneOf(MatchItem.NotifyType.class));
-        matchAlertItem1.setTargetTools(EnumSet.noneOf(MatchItem.TargetTool.class));
+        matchAlertItem1.setNotifyTypes(EnumSet.noneOf(NotifyType.class));
+        matchAlertItem1.setTargetTools(EnumSet.noneOf(TargetTool.class));
         matchAlertList.add(matchAlertItem1);
         
         matchAlert.setMatchAlertItemList(matchAlertList);
@@ -263,7 +208,7 @@ public class ConfigTest {
         URL url = this.getClass().getResource("/resources/YaguraExtender.json");
         File fi = new File(url.toURI());
         if (fi.exists()) {
-            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);        
+            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);
             assertEquals(5, option.getEncodingProperty().getEncodingList().size());
             assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());

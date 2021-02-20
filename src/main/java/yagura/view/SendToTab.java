@@ -6,10 +6,10 @@
 package yagura.view;
 
 import burp.ITab;
-import extend.model.base.CustomTableModel;
+import extension.helpers.SwingUtil;
+import extension.view.base.CustomTableModel;
 import yagura.model.SendToItem;
 import yagura.model.SendToProperty;
-import extend.util.SwingUtil;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +53,6 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         chkSubmenu = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableSendTo = new javax.swing.JTable();
-        btnEditHotkey = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -145,14 +144,6 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
             tableSendTo.getColumnModel().getColumn(10).setResizable(false);
         }
 
-        btnEditHotkey.setText("Edit Hotkey");
-        btnEditHotkey.setDoubleBuffered(true);
-        btnEditHotkey.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditHotkeyActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
@@ -162,7 +153,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jScrollPane1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSendToEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -173,8 +164,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                                     .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(btnSendToDownArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btnSendToUpArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(btnSendToAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEditHotkey, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnSendToAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(chkSubmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 552, Short.MAX_VALUE)))
@@ -197,9 +187,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                         .addComponent(btnSendToDownArraw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSendToAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEditHotkey)
-                        .addGap(19, 19, 19))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -224,7 +212,6 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 
     private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
-    private final HotkeyDlg hotkeyDlg = new HotkeyDlg(null, true);
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
@@ -309,9 +296,6 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         this.tableSendTo.getColumnModel().getColumn(10).setMinWidth(0);
         this.tableSendTo.getColumnModel().getColumn(10).setPreferredWidth(0);
         this.tableSendTo.getColumnModel().getColumn(10).setMaxWidth(0);
-
-        // 
-        this.btnEditHotkey.setVisible(false);
         
     }
 
@@ -350,14 +334,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
     private void tableSendToKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableSendToKeyPressed
     }//GEN-LAST:event_tableSendToKeyPressed
 
-    private void btnEditHotkeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditHotkeyActionPerformed
-        editHotkeyDlg();
-        this.tableSendTo.updateUI();
-        this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
-    }//GEN-LAST:event_btnEditHotkeyActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditHotkey;
     private javax.swing.JButton btnSendToAdd;
     private javax.swing.JButton btnSendToDownArraw;
     private javax.swing.JButton btnSendToEdit;
@@ -438,16 +415,6 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         sendToProperty.setSendToItemList(this.getSendToItemList());
         sendToProperty.setSubMenu(this.chkSubmenu.isSelected());
         return sendToProperty;
-    }
-
-    @SuppressWarnings("unchecked")
-    private void editHotkeyDlg() {
-        this.hotkeyDlg.setLocationRelativeTo(this);
-        this.hotkeyDlg.setItemList(this.getSendToItemList());
-        this.hotkeyDlg.setVisible(true);
-        if (this.hotkeyDlg.getModalResult() == JOptionPane.OK_OPTION) {
-            this.setSendToItemList(this.hotkeyDlg.getItemList());
-        }
     }
 
 }

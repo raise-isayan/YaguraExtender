@@ -1,12 +1,12 @@
 package yagura.model;
 
-import extend.model.base.DefaultObjectTableModel;
-import extend.util.Util;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
 import extend.util.external.TransUtil;
+import extension.helpers.StringUtil;
+import extension.view.base.DefaultObjectTableModel;
 
 /**
  *
@@ -58,7 +58,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     if (this.urldecode) {
                         value = TransUtil.decodeUrl(raw, encoding);
                     } else {
-                        value = Util.decodeMessage(Util.getRawByte(raw), encoding);
+                        value = StringUtil.getStringCharset(StringUtil.getBytesRaw(raw), encoding);
                     }
                     break;
                 }
@@ -68,7 +68,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     if (this.urldecode) {
                         value = TransUtil.decodeUrl(raw, encoding);
                     } else {
-                        value = Util.decodeMessage(Util.getRawByte(raw), encoding);
+                        value = StringUtil.getStringCharset(StringUtil.getBytesRaw(raw), encoding);
                     }
                     break;
                 }
@@ -93,21 +93,21 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     break;
                 case 2: // Name
                     if (this.urldecode) {
-                        String raw = Util.getRawStr(Util.encodeMessage((String) value, encoding));
+                        String raw = StringUtil.getBytesRawString((String) value, encoding);
                         raw = TransUtil.encodeUrl(raw, encoding, true);
                         param.setName(raw);
                     } else {
-                        String rowMessage = Util.getRawStr(Util.encodeMessage((String) value, encoding));
+                        String rowMessage = StringUtil.getBytesRawString((String) value, encoding);
                         param.setName(rowMessage);
                     }
                     break;
                 case 3: // Value
                     if (this.urldecode) {
-                        String raw = Util.getRawStr(Util.encodeMessage((String) value, encoding));
+                        String raw = StringUtil.getBytesRawString((String) value, encoding);
                         raw = TransUtil.encodeUrl(raw, encoding, true);
                         param.setValue(raw);
                     } else {
-                        String raw = Util.getRawStr(Util.encodeMessage((String) value, encoding));
+                        String raw = StringUtil.getBytesRawString((String) value, encoding);
                         param.setValue(raw);
                     }
                     break;

@@ -5,12 +5,13 @@ import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
-import extend.view.base.HttpMessage;
-import extend.view.base.HttpRequest;
-import extend.view.base.HttpResponse;
-import extend.util.BurpWrap;
 import extend.util.external.FormatUtil;
-import extend.util.Util;
+import extension.burp.RequestInfo;
+import extension.burp.ResponseInfo;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpRequest;
+import extension.helpers.HttpResponse;
+import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.nio.charset.StandardCharsets;
@@ -107,7 +108,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     public void setMessageEncoding(String encoding) {
         try {
             if (this.message != null) {
-                String msg = Util.decodeMessage(this.message.getBodyBytes(), encoding);
+                String msg = StringUtil.getStringCharset(this.message.getBodyBytes(), encoding);
                 // Raw
                 this.jsonView.setMessage(msg);
             } else {
@@ -180,17 +181,17 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         if (this.isRequest && isMessageRequest) {
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
             mimeJsonType = (reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_JSON);
-            body = BurpWrap.getRequestBody(reqInfo, content);
+            body = RequestInfo.getBodyBytes(reqInfo, content);
         } else if (!this.isRequest && !isMessageRequest) {
             IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
             String mimeType = resInfo.getInferredMimeType();
             mimeJsonType = "JSON".equals(mimeType);
-            body = BurpWrap.getResponseBody(resInfo, content);
+            body = ResponseInfo.getBodyBytes(resInfo, content);
         }
         if (body.length > 0 && mimeJsonType) {
-            return FormatUtil.isJson(Util.getRawStr(body));
+            return FormatUtil.isJson(StringUtil.getBytesRawString(body));
         } else {
-            return FormatUtil.isJson(Util.getRawStr(body));
+            return FormatUtil.isJson(StringUtil.getBytesRawString(body));
         }        
     }
         
@@ -205,12 +206,12 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         byte[] body = new byte[0];
         if (this.isRequest && isMessageRequest) {
             IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
-            body = BurpWrap.getRequestBody(reqInfo, content);
+            body = RequestInfo.getBodyBytes(reqInfo, content);
         } else if (!this.isRequest && !isMessageRequest) {
             IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
-            body = BurpWrap.getResponseBody(resInfo, content);
+            body = ResponseInfo.getBodyBytes(resInfo, content);
         }
-        return FormatUtil.isJsonp(Util.getRawStr(body));
+        return FormatUtil.isJsonp(StringUtil.getBytesRawString(body));
     }
         
     private HttpMessage message = null;

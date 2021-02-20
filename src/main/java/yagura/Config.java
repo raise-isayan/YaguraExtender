@@ -1,6 +1,7 @@
 package yagura;
 
-import extend.util.external.JsonUtil;
+import extension.burp.BurpConfig;
+import extension.helpers.json.JsonUtil;
 import java.io.File;
 import java.io.IOException;
 import yagura.model.OptionProperty;
@@ -9,14 +10,10 @@ import yagura.model.OptionProperty;
  *
  * @author isayan
  */
-public class Config {
+public class Config extends BurpConfig {
         
-    public static String getUserHome() {
-        return System.getProperties().getProperty("user.home");
-    }
-
     public static File getExtensionHomeDir() {
-        return new File(getUserHome(), getExtensionDir());
+        return new File(getUserHomePath(), getExtensionDir());
     }
 
     public static String getTabCaption() {
@@ -31,10 +28,6 @@ public class Config {
         return "YaguraExtender.json";
     }
     
-    public static String getUserDir() {
-        return System.getProperties().getProperty("user.dir");
-    }
-
     public static String getLoggingPropertyName() {
         return "logging.properties";
     }

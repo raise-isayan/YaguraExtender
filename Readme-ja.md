@@ -35,8 +35,8 @@ gradlew release
 * asciidoc (http://asciidoc.org/) 
 
 ## 必須ライブラリ
-ビルドには別途 [BurpExtLib](https://github.com/raise-isayan/BurpExtLib) のライブラリを必要とします。
-* BurpExtlib v2.1.2.2
+ビルドには別途 [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) のライブラリを必要とします。
+* BurpExtensionCommons v0.4.0.0
 
 ### 利用ライブラリ
 

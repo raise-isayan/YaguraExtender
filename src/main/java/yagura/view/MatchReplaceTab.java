@@ -6,10 +6,11 @@
 package yagura.view;
 
 import burp.ITab;
-import extend.model.base.CustomListModel;
+import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
+import extension.view.base.CustomListModel;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
-import extend.util.Util;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
@@ -234,7 +235,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 String name = (String) value;
-                if (Util.equalsString(name, selectedName)) {
+                if (StringUtil.equalsString(name, selectedName)) {
                     l.setIcon(image_check);
                     l.setIconTextGap(2);
                 } else {
@@ -279,7 +280,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
 
     private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
         String name = this.getReplaceSelectedName();
-        if (Util.equalsString(this.selectedName, name)) {
+        if (StringUtil.equalsString(this.selectedName, name)) {
             this.selectedName = "";
         } else {
             this.selectedName = name;
@@ -409,7 +410,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
      */
     public void setReplaceMap(Map<String, MatchReplaceGroup> replaceMap) {
         this.modelReplace.removeAllElements();
-        List<String> list = Util.toList(replaceMap.keySet().iterator());
+        List<String> list = ConvertUtil.toList(replaceMap.keySet().iterator());
         for (String name : list) {
             this.modelReplace.addElement(name);
         }

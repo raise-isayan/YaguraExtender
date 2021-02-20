@@ -3,15 +3,16 @@ package yagura.model;
 import burp.*;
 import burp.BurpExtender;
 import burp.IContextMenuInvocation;
-import extend.util.BurpWrap;
-import extend.util.HttpUtil;
-import extend.util.SwingUtil;
-import extend.util.Util;
+import extension.helpers.BurpUtil;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
 import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +27,7 @@ public class SendToExtend extends SendToMenuItem {
     private final static Logger logger = Logger.getLogger(SendToExtend.class.getName());
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    private File currentDirectory = new File(Config.getUserHome());
+    private File currentDirectory = new File(Config.getUserHomePath());
     private int repeternum = 0;
 
     public SendToExtend(SendToItem item, IContextMenuInvocation contextMenu) {
@@ -44,7 +45,7 @@ public class SendToExtend extends SendToMenuItem {
         }
         switch (this.getExtend()) {
             case SEND_TO_JTRANSCODER: {
-                String text = BurpWrap.copySelectionData(this.contextMenu, true);
+                String text = BurpUtil.copySelectionData(this.contextMenu, true);
                 if (text != null) {
                     BurpExtender.getInstance().sendToJTransCoder(text);
                 }
@@ -61,17 +62,23 @@ public class SendToExtend extends SendToMenuItem {
             case PASTE_FROM_JTRANSCODER: {
                 byte[] text = BurpExtender.getInstance().receiveFromJTransCoder();
                 if (text != null) {
-                    BurpWrap.pasteSelectionData(this.contextMenu, Util.getRawStr(text), true);
+                    BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), true);
                 }
                 break;
             }
             case PASTE_FROM_CLIPBOARD: {
-                byte[] text = BurpExtender.getInstance().receiveFromClipbord(menuItemCaption);
-                if (text != null) {
-                    BurpWrap.pasteSelectionData(this.contextMenu, Util.getRawStr(text), true);
+                try {
+                    // menuItemCaption にエンコーディングが入ってくる                    
+                    byte[] text = BurpExtender.getInstance().receiveFromClipbord(menuItemCaption);
+                    if (text != null) {
+                        BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), true);
+                    }
+                    break;
+                } catch (UnsupportedEncodingException ex) {
+                    Logger.getLogger(SendToExtend.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                break;
             }
+
             case MESSAGE_INFO_COPY: {
                 BurpExtender.getInstance().sendToTableInfoCopy(this.contextMenu, messageInfo);
                 break;
@@ -99,7 +106,7 @@ public class SendToExtend extends SendToMenuItem {
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(BurpWrap.getURL(messageItem))));
+            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(BurpExtender.getHelpers().getURL(messageItem))));
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -108,11 +115,11 @@ public class SendToExtend extends SendToMenuItem {
                         try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
                                 fstm.write(messageItem.getRequest());
-                                fstm.write(Util.getRawByte(Util.NEW_LINE));
+                                fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
                                 fstm.write(messageItem.getResponse());
-                                fstm.write(Util.getRawByte(Util.NEW_LINE));
+                                fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             fstm.flush();
                         }
@@ -132,7 +139,7 @@ public class SendToExtend extends SendToMenuItem {
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(BurpWrap.getURL(messageItem))));
+            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(BurpExtender.getHelpers().getURL(messageItem))));
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {

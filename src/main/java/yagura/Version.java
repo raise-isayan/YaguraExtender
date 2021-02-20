@@ -1,6 +1,6 @@
 package yagura;
 
-import extend.util.CustomVersion;
+import extension.view.base.CustomVersion;
 
 /**
  *
@@ -43,7 +43,7 @@ public final class Version extends CustomVersion {
         return String.format(VERSION_INFO_FMT,
             getProjectName(),
             Version.getInstance().getVersion(), 
-            Config.getUserDir(),
+            Config.getUserDirPath(),
             Config.getExtensionHomeDir().getAbsoluteFile());    
     }
     

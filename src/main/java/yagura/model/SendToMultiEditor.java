@@ -3,7 +3,7 @@ package yagura.model;
 import burp.BurpExtender;
 import burp.IContextMenuInvocation;
 import burp.IHttpRequestResponse;
-import extend.util.Util;
+import extension.helpers.ConvertUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class SendToMultiEditor extends SendToMenuItem {
                 for (int i = 0; i < args.length; i++) {
                     args[i] = msgFiles[i].toString();
                 }
-                Util.executeFormat(this.getTarget(), args);
+                ConvertUtil.executeFormat(this.getTarget(), args);
             } catch (IOException ex) {
                 this.fireSendToErrorEvent(new SendToEvent(this, ex.getMessage()));
                 logger.log(Level.SEVERE, ex.getMessage(), ex);

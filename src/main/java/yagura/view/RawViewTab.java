@@ -3,14 +3,15 @@ package yagura.view;
 import burp.BurpExtender;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
-import extend.util.ConvertUtil;
-import extend.view.base.HttpMessage;
-import extend.view.base.HttpRequest;
-import extend.view.base.HttpResponse;
-import extend.util.Util;
+import extension.helpers.ConvertUtil;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpRequest;
+import extension.helpers.HttpResponse;
+import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.EnumSet;
@@ -161,7 +162,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
             }
             this.txtURaw.setText("");
             if (this.content != null) {
-//                txtURaw.setText(Util.decodeMessage(content, encoding));
+//                txtURaw.setText(StringUtil.getStringCharset(content, encoding));
 //                txtURaw.setCaretPosition(0);
 //                quickSearchTab.clearViewAndSearch();
                
@@ -170,11 +171,11 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                     protected String doInBackground() throws Exception {
                         // Raw
                         publish("...");
-                        return Util.decodeMessage(content, encoding);
+                        return StringUtil.getStringCharset(content, encoding);
                     }
 
                     protected void process(List<Object> chunks) {
-                        txtURaw.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+                        txtURaw.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
                     }
 
                     protected void done() {
@@ -306,7 +307,11 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 String modifiedText = this.txtURaw.getText();
                 String encoding = quickSearchTab.getSelectedEncoding();
                 if (encoding != null) {
-                    return Util.encodeMessage(modifiedText, encoding);
+                    try {
+                        return StringUtil.getBytesCharset(modifiedText, encoding);
+                    } catch (UnsupportedEncodingException ex) {
+                        return null;
+                    }
                 } else {
                     return this.content;
                 }

@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import extension.helpers.json.JsonUtil;
 import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;

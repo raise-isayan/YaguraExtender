@@ -8,14 +8,13 @@ import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
-import extend.util.BurpWrap;
-import extend.util.ConvertUtil;
-import extend.view.base.HttpRequest;
-import extend.view.base.HttpResponse;
-import extend.util.HttpUtil;
-import extend.util.SwingUtil;
 import extend.util.external.TransUtil;
-import extend.util.Util;
+import extension.burp.HttpService;
+import extension.helpers.HttpRequest;
+import extension.helpers.HttpResponse;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -323,7 +322,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             File file = filechooser.getSelectedFile();
                 if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                     try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
-                        fstm.write(Util.encodeMessage(ta.getText(), encoding));
+                        fstm.write(StringUtil.getBytesCharset(ta.getText(), encoding));
                     } catch (IOException ex) {
                         logger.log(Level.SEVERE, null, ex);
                     }
@@ -351,7 +350,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
 
             protected void process(List<Object> chunks) {
-                ta.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+                ta.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
             protected void done() {
@@ -812,7 +811,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
 
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();
-            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
+            IHttpService httpService = HttpService.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>\n");
@@ -886,8 +885,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     if (paramType == IParameter.PARAM_BODY && !binaryParam) {
 
                         if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
-                            paramName = Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
-                            paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
+                            paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
+                            paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                         } 
                         else {
                             if (TransUtil.isUrlencoded(paramName)) {
@@ -906,7 +905,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         filename = paramValue;
                     } else {
                         String file_encoding = csrfEncoding;
-                        String decodevalue = Util.decodeMessage(Util.encodeMessage(paramValue), file_encoding);
+                        String decodevalue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), file_encoding);
                         buff.append("<!-- Internet Explorer browser only technique -->\n");
                         buff.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
                                 new Object[]{paramName, filename, file_encoding}));
@@ -919,7 +918,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             } else {
                 buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>\n",
                         new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
-                Map.Entry<String, String> pair = HttpUtil.getParameter(Util.decodeMessage(Util.encodeMessage(reqmsg.getBody()), csrfEncoding));
+                Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(StringUtil.getBytesRaw(reqmsg.getBody()), csrfEncoding));
                 String key = pair.getKey();
                 String val = pair.getValue();
                 if ("".equals(val)) {
@@ -995,7 +994,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();
             
-            IHttpService httpService = BurpWrap.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
+            IHttpService httpService = HttpService.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>\n");
@@ -1053,8 +1052,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         }
                         
                         if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
-                            paramName = Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
-                            paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
+                            paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
+                            paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                         } 
                         else {
                             if (TransUtil.isUrlencoded(paramName)) {
@@ -1071,7 +1070,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             }
                             parambuff.append("\treq += '--' + boundary + '\\r\\n' + \r\n");
                             parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"\\r\\n\\r\\n' + \r\n", new Object[]{paramName}));
-                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue, csrfEncoding), TransUtil.PTN_ENCODE_JS, false);
+                            String encodeHex = TransUtil.toByteHexEncode(StringUtil.getBytesCharset(paramValue, csrfEncoding), TransUtil.PTN_ENCODE_JS, false);
                             parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                         } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {
                             binaryParam = true;
@@ -1084,7 +1083,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\\r\\n' + \r\n", new Object[]{paramName, filename}));
                             parambuff.append("\t'Content-Type: application/octet-stream\\r\\n\\r\\n'");
                             parambuff.append("+ \r\n");
-                            String encodeHex = TransUtil.toByteHexEncode(Util.encodeMessage(paramValue), TransUtil.PTN_ENCODE_JS, false);
+                            String encodeHex = TransUtil.toByteHexEncode(StringUtil.getBytesRaw(paramValue), TransUtil.PTN_ENCODE_JS, false);
                             parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{ encodeHex }));
                             binaryParam = false;
                             filename = "";
@@ -1116,8 +1115,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                                 buff.append("'&' + ");
                             }
                             if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
-                                paramName =   Util.decodeMessage(Util.encodeMessage(paramName), csrfEncoding);
-                                paramValue = Util.decodeMessage(Util.encodeMessage(paramValue), csrfEncoding);
+                                paramName =   StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
+                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                             } 
                             if (contentType != null && HttpUtil.isMaltiPart(contentType) && HttpUtil.isUrlEencoded(csrfEnctype)) {
                                 // urlencodeの必要がある場合
@@ -1144,8 +1143,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             } // csrf textplain    
             else {
                 buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');\r\n", csrfEnctype));
-                String paramValue = Util.decodeMessage(reqmsg.getBodyBytes());
-                buff.append(String.format("\treq += '%s';\r\n", new Object[]{TransUtil.toByteHexEncode(Util.getRawByte(paramValue), TransUtil.PTN_ENCODE_JS, false)}));
+                String paramValue = StringUtil.getStringRaw(reqmsg.getBodyBytes());
+                buff.append(String.format("\treq += '%s';\r\n", new Object[]{TransUtil.toByteHexEncode(StringUtil.getBytesRaw(paramValue), TransUtil.PTN_ENCODE_JS, false)}));
                 buff.append("\tvar blob = new Uint8Array(req.length);\r\n");
                 buff.append("\tfor (var i = 0; i < blob.length; i++)\r\n");
                 buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n");

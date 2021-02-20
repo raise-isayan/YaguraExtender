@@ -1,6 +1,6 @@
 package yagura.model;
 
-import extend.view.base.RegexItem;
+import extension.view.base.RegexItem;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;

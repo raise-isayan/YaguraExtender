@@ -1,9 +1,13 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import extend.util.SwingUtil;
-import extend.view.base.CustomDialog;
-import extend.view.base.MatchItem;
+import extension.burp.Confidence;
+import extension.burp.HighlightColor;
+import extension.burp.NotifyType;
+import extension.burp.Severity;
+import extension.burp.TargetTool;
+import extension.helpers.SwingUtil;
+import extension.view.base.CustomDialog;
 import yagura.model.MatchAlertItem;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
@@ -477,10 +481,10 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         this.cmbAlertColor.setModel(
                 new DefaultComboBoxModel(
-                        new MatchItem.HighlightColor[]{MatchItem.HighlightColor.RED, MatchItem.HighlightColor.ORANGE,
-                            MatchItem.HighlightColor.YELLOW, MatchItem.HighlightColor.GREEN, MatchItem.HighlightColor.CYAN,
-                            MatchItem.HighlightColor.BLUE, MatchItem.HighlightColor.PINK, MatchItem.HighlightColor.MAGENTA,
-                            MatchItem.HighlightColor.GRAY}));
+                        new HighlightColor[]{HighlightColor.RED, HighlightColor.ORANGE,
+                            HighlightColor.YELLOW, HighlightColor.GREEN, HighlightColor.CYAN,
+                            HighlightColor.BLUE, HighlightColor.PINK, HighlightColor.MAGENTA,
+                            HighlightColor.GRAY}));
 
         this.cmbAlertColor.setEnabled(false);
 
@@ -489,7 +493,7 @@ public class MatchAlertItemDlg extends CustomDialog {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                MatchItem.HighlightColor hc = (MatchItem.HighlightColor) value;
+                HighlightColor hc = (HighlightColor) value;
                 l.setIcon(hc.toIcon());
                 l.setIconTextGap(2);
                 return l;
@@ -524,57 +528,57 @@ public class MatchAlertItemDlg extends CustomDialog {
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
 
         //item.setNotifyType((MatchItem.NotifyType) this.cmbAlertNotify.getSelectedItem());
-        EnumSet<MatchItem.NotifyType> notifys = EnumSet.noneOf(MatchItem.NotifyType.class);
+        EnumSet<NotifyType> notifys = EnumSet.noneOf(NotifyType.class);
         if (this.chkAlerts_tab.isSelected()) {
-            notifys.add(MatchItem.NotifyType.ALERTS_TAB);
+            notifys.add(NotifyType.ALERTS_TAB);
         }
         if (this.chkTray_message.isSelected()) {
-            notifys.add(MatchItem.NotifyType.TRAY_MESSAGE);
+            notifys.add(NotifyType.TRAY_MESSAGE);
         }
         if (this.chkItem_highlight.isSelected()) {
-            notifys.add(MatchItem.NotifyType.ITEM_HIGHLIGHT);
+            notifys.add(NotifyType.ITEM_HIGHLIGHT);
         }
         if (this.chkComment.isSelected()) {
-            notifys.add(MatchItem.NotifyType.COMMENT);
+            notifys.add(NotifyType.COMMENT);
         }
         if (this.chkScannerIssue.isSelected()) {
-            notifys.add(MatchItem.NotifyType.SCANNER_ISSUE);
+            notifys.add(NotifyType.SCANNER_ISSUE);
         }
         item.setNotifyTypes(notifys);
 
-        EnumSet<MatchItem.TargetTool> tools = EnumSet.noneOf(MatchItem.TargetTool.class);
+        EnumSet<TargetTool> tools = EnumSet.noneOf(TargetTool.class);
         if (this.chkProxy.isSelected()) {
-            tools.add(MatchItem.TargetTool.PROXY);
+            tools.add(TargetTool.PROXY);
         }
         if (this.chkRepeater.isSelected()) {
-            tools.add(MatchItem.TargetTool.REPEATER);
+            tools.add(TargetTool.REPEATER);
         }
         if (this.chkIntruder.isSelected()) {
-            tools.add(MatchItem.TargetTool.INTRUDER);
+            tools.add(TargetTool.INTRUDER);
         }
         if (this.chkSpider.isSelected()) {
-            tools.add(MatchItem.TargetTool.SPIDER);
+            tools.add(TargetTool.SPIDER);
         }
         if (this.chkScanner.isSelected()) {
-            tools.add(MatchItem.TargetTool.SCANNER);
+            tools.add(TargetTool.SCANNER);
         }
         if (this.chkSequencer.isSelected()) {
-            tools.add(MatchItem.TargetTool.SEQUENCER);
+            tools.add(TargetTool.SEQUENCER);
         }
         item.setTargetTools(tools);
 
-        if (item.getNotifyTypes().contains(MatchItem.NotifyType.ITEM_HIGHLIGHT)) {
-            item.setHighlightColor((MatchItem.HighlightColor) this.cmbAlertColor.getSelectedItem());
+        if (item.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
+            item.setHighlightColor((HighlightColor) this.cmbAlertColor.getSelectedItem());
         }
-        if (item.getNotifyTypes().contains(MatchItem.NotifyType.COMMENT)) {
+        if (item.getNotifyTypes().contains(NotifyType.COMMENT)) {
             item.setComment(this.txtComment.getText());
         }
-        if (item.getNotifyTypes().contains(MatchItem.NotifyType.SCANNER_ISSUE)) {
+        if (item.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
             item.setIssueName(this.txtIssueName.getText());
             String serverty = (String) this.cmbSeverity.getSelectedItem();
-            item.setSeverity(MatchItem.Severity.parseEnum(serverty));
+            item.setSeverity(Severity.parseEnum(serverty));
             String confidence = (String) this.cmbConfidence.getSelectedItem();
-            item.setConfidence(MatchItem.Confidence.parseEnum(confidence));
+            item.setConfidence(Confidence.parseEnum(confidence));
         }
         return item;
     }
@@ -589,22 +593,22 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.chkRegExp.setSelected(item.isRegexp());
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
 
-        EnumSet<MatchAlertItem.NotifyType> notifys = item.getNotifyTypes();
-        this.chkAlerts_tab.setSelected(notifys.contains(MatchAlertItem.NotifyType.ALERTS_TAB));
-        this.chkTray_message.setSelected(notifys.contains(MatchAlertItem.NotifyType.TRAY_MESSAGE));
-        this.chkItem_highlight.setSelected(notifys.contains(MatchAlertItem.NotifyType.ITEM_HIGHLIGHT));
-        this.chkComment.setSelected(notifys.contains(MatchAlertItem.NotifyType.COMMENT));
-        this.chkScannerIssue.setSelected(notifys.contains(MatchAlertItem.NotifyType.SCANNER_ISSUE));
+        EnumSet<NotifyType> notifys = item.getNotifyTypes();
+        this.chkAlerts_tab.setSelected(notifys.contains(NotifyType.ALERTS_TAB));
+        this.chkTray_message.setSelected(notifys.contains(NotifyType.TRAY_MESSAGE));
+        this.chkItem_highlight.setSelected(notifys.contains(NotifyType.ITEM_HIGHLIGHT));
+        this.chkComment.setSelected(notifys.contains(NotifyType.COMMENT));
+        this.chkScannerIssue.setSelected(notifys.contains(NotifyType.SCANNER_ISSUE));
 
-        EnumSet<MatchAlertItem.TargetTool> tools = item.getTargetTools();
-        this.chkProxy.setSelected(tools.contains(MatchAlertItem.TargetTool.PROXY));
-        this.chkRepeater.setSelected(tools.contains(MatchAlertItem.TargetTool.REPEATER));
-        this.chkIntruder.setSelected(tools.contains(MatchAlertItem.TargetTool.INTRUDER));
-        this.chkSpider.setSelected(tools.contains(MatchAlertItem.TargetTool.SPIDER));
-        this.chkScanner.setSelected(tools.contains(MatchAlertItem.TargetTool.SCANNER));
-        this.chkSequencer.setSelected(tools.contains(MatchAlertItem.TargetTool.SEQUENCER));
+        EnumSet<TargetTool> tools = item.getTargetTools();
+        this.chkProxy.setSelected(tools.contains(TargetTool.PROXY));
+        this.chkRepeater.setSelected(tools.contains(TargetTool.REPEATER));
+        this.chkIntruder.setSelected(tools.contains(TargetTool.INTRUDER));
+        this.chkSpider.setSelected(tools.contains(TargetTool.SPIDER));
+        this.chkScanner.setSelected(tools.contains(TargetTool.SCANNER));
+        this.chkSequencer.setSelected(tools.contains(TargetTool.SEQUENCER));
 
-        if (item.getNotifyTypes().contains(MatchItem.NotifyType.ITEM_HIGHLIGHT)) {
+        if (item.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
             this.cmbAlertColor.setSelectedItem(item.getHighlightColor());
         }
         chkItem_highlightActionPerformed(null);

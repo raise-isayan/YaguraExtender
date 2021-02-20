@@ -5,12 +5,12 @@ import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IResponseInfo;
-import extend.view.base.HttpMessage;
-import extend.view.base.HttpResponse;
-import extend.util.BurpWrap;
-import extend.util.ConvertUtil;
 import extend.util.external.TransUtil;
-import extend.util.Util;
+import extension.burp.ResponseInfo;
+import extension.helpers.ConvertUtil;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpResponse;
+import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -125,12 +125,12 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                     @Override
                     protected String doInBackground() throws Exception {
                         publish("...");
-                        String comments[] = TransUtil.extractHTMLComments(Util.decodeMessage(message.getBodyBytes(), encoding), uniq);
+                        String comments[] = TransUtil.extractHTMLComments(StringUtil.getStringCharset(message.getBodyBytes(), encoding), uniq);
                         return TransUtil.join("\r\n", comments);
                     }
 
                     protected void process(List<Object> chunks) {
-                        txtHtmlComment.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+                        txtHtmlComment.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
                     }
 
                     protected void done() {
@@ -230,10 +230,10 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
             String mimeType = resInfo.getInferredMimeType();
             mimeHTMLType = ("HTML".equals(mimeType) || "XML".equals(mimeType));
-            body = BurpWrap.getResponseBody(resInfo, content);
+            body = ResponseInfo.getBodyBytes(resInfo, content);
         }
         if (body.length > 0 && mimeHTMLType) {
-            return TransUtil.extractHTMLComments(Util.getRawStr(body), false).length  > 0;
+            return TransUtil.extractHTMLComments(StringUtil.getBytesRawString(body), false).length  > 0;
         } else {
             return false;
         }

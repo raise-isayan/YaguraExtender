@@ -5,9 +5,8 @@ import burp.IContextMenuInvocation;
 import burp.IHttpRequestResponse;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
-import extend.util.BurpWrap;
-import extend.util.HttpUtil;
-import extend.util.Util;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,7 +52,7 @@ public abstract class SendToMenuItem
     protected File tempMessageFile(IHttpRequestResponse messageInfo, int index) {
         File file = null;
         try {
-            file = File.createTempFile(HttpUtil.getBaseName(BurpWrap.getURL(messageInfo)) + "." + index + ".", ".tmp");
+            file = File.createTempFile(HttpUtil.getBaseName(BurpExtender.getHelpers().getURL(messageInfo)) + "." + index + ".", ".tmp");
             file.deleteOnExit();
             try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(file, true))) {
                 if ((this.isRequestHeader() || this.isRequestBody()) && messageInfo.getRequest() != null) {
@@ -67,7 +66,7 @@ public abstract class SendToMenuItem
                         }
                     }
                     fostm.write(reqMessage);
-                    fostm.write(Util.getRawByte(Util.NEW_LINE));
+                    fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                 }
                 if ((this.isResponseHeader() || this.isResponseBody()) && messageInfo.getResponse() != null) {
                     byte resMessage[] = messageInfo.getResponse();
@@ -80,7 +79,7 @@ public abstract class SendToMenuItem
                         }
                     }
                     fostm.write(resMessage);
-                    fostm.write(Util.getRawByte(Util.NEW_LINE));
+                    fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                 }
             }
         } catch (IOException ex) {

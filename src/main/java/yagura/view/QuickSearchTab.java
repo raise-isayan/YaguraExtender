@@ -1,6 +1,5 @@
 package yagura.view;
 
-import extend.view.base.RegexItem;
 import yagura.model.KeywordHighlighter;
 import yagura.model.StartEndPosion;
 import java.awt.Color;
@@ -17,6 +16,7 @@ import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.text.JTextComponent;
 import extend.util.external.TransUtil;
+import extension.view.base.RegexItem;
 import javax.swing.event.EventListenerList;
 import yagura.model.QuickSearchEvent;
 import yagura.model.QuickSearchListener;

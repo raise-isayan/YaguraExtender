@@ -1,10 +1,10 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import extend.util.ConvertUtil;
-import extend.util.SwingUtil;
-import extend.util.external.JsonUtil;
-import extend.util.external.JsonpElement;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
+import extension.helpers.json.JsonUtil;
+import extension.helpers.json.JsonpElement;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.io.IOException;
@@ -193,7 +193,7 @@ public class JSONView extends javax.swing.JPanel {
             }
 
             protected void process(List<Object> chunks) {
-                txtJSON.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+                txtJSON.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
             protected void done() {
@@ -248,7 +248,7 @@ public class JSONView extends javax.swing.JPanel {
             }
 
             protected void process(List<Object> chunks) {
-                txtJSON.setText("Heavy Processing" + ConvertUtil.repeat("...", chunks.size()));
+                txtJSON.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
             protected void done() {
@@ -278,7 +278,7 @@ public class JSONView extends javax.swing.JPanel {
             }
 
             protected void process(List<Object> chunks) {
-                modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + ConvertUtil.repeat("...", chunks.size())));
+                modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + StringUtil.repeat("...", chunks.size())));
             }
 
             protected void done() {

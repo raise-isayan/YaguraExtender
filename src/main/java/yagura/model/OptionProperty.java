@@ -57,22 +57,6 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements AutoResponderProperty 
-     */
-    // non Expose
-    private final AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
-
-    @Override
-    public AutoResponderProperty getAutoResponderProperty() {
-        return this.autoResponderProperty;
-    }
-
-    @Override
-    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
-        this.autoResponderProperty.setProperty(autoResponderProperty);
-    }
-
-    /**
      * implements SendToProperty 
      */
     @Expose
@@ -159,7 +143,6 @@ public class OptionProperty implements IOptionProperty {
         this.setEncodingProperty(property.getEncodingProperty());
         this.setMatchReplaceProperty(property.getMatchReplaceProperty());
         this.setMatchAlertProperty(property.getMatchAlertProperty());
-        this.setAutoResponderProperty(property.getAutoResponderProperty());
         this.setSendToProperty(property.getSendToProperty());
         this.setLoggingProperty(property.getLoggingProperty());
         this.setJSearchProperty(property.getJSearchProperty());

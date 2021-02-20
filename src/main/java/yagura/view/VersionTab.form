@@ -76,9 +76,7 @@
                       <Component id="btnImport" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnExport" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnLegacyImport" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="272" max="32767" attributes="0"/>
+                      <EmptySpace pref="391" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -89,7 +87,6 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btnExport" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnImport" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnLegacyImport" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="20" max="32767" attributes="0"/>
                   </Group>
@@ -111,14 +108,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImportActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnLegacyImport">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Legacy Import"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLegacyImportActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

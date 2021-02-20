@@ -6,10 +6,10 @@
 package yagura.view;
 
 import burp.ITab;
-import extend.model.base.CustomTableModel;
+import extension.helpers.SwingUtil;
+import extension.view.base.CustomTableModel;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
-import extend.util.SwingUtil;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;

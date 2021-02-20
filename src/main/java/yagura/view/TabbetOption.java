@@ -10,7 +10,6 @@ import javax.swing.JTabbedPane;
 import java.util.Timer;
 import java.util.TimerTask;
 import yagura.Version;
-import yagura.model.AutoResponderProperty;
 import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
 import yagura.model.MatchAlertProperty;
@@ -176,17 +175,6 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     @Override
     public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty) {
         this.tabMatchAlert.setMatchAlertProperty(matchAlertProperty);
-    }
-
-    @Override
-    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
-//        this.tabAutoResponder.setProperty(autoResponderProperty);
-    }
-
-    @Override
-    public AutoResponderProperty getAutoResponderProperty() {
-        return new AutoResponderProperty();
-        //return this.tabAutoResponder.getProperty();
     }
 
     @Override

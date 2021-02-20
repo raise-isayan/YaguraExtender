@@ -5,12 +5,13 @@
  */
 package yagura.view;
 
-import extend.util.BurpWrap;
+import burp.BurpExtender;
+import extension.burp.HighlightColor;
+import extension.helpers.BurpUtil;
+import extension.helpers.StringUtil;
+import extension.view.base.MatchItem;
+import extension.view.layout.VerticalFlowLayout;
 import yagura.model.FilterProperty;
-import extend.view.base.MatchItem;
-import extend.view.base.MatchItem.HighlightColor;
-import extend.util.Util;
-import extend.view.model.VerticalFlowLayout;
 import java.net.HttpURLConnection;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -364,7 +365,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
     }
 
     public EnumSet<HighlightColor> getHighlightColors() {
-        EnumSet<MatchItem.HighlightColor> colors = EnumSet.noneOf(MatchItem.HighlightColor.class);
+        EnumSet<HighlightColor> colors = EnumSet.noneOf(HighlightColor.class);
         if (this.chkWhite.isSelected()) {
             colors.add(HighlightColor.WHITE);
         }
@@ -436,7 +437,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 boolean showOnlyScopFilter = true;
                 // Filter by request type
                 if (this.filterProp.getShowOnlyScopeItems()) {
-                    showOnlyScopFilter = BurpWrap.isInScope(item.getUrl());
+                    showOnlyScopFilter = BurpExtender.isInScope(item.getUrl());
                 }
                 boolean hideItemsWithoutResponses = true;
                 if (this.filterProp.isHideItemsWithoutResponses()) {
@@ -469,7 +470,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 if (statusFilter && showOnlyScopFilter) {
                     // cololr
                     EnumSet<HighlightColor> colors = this.filterProp.getHighlightColors();
-                    MatchItem.HighlightColor hc = MatchItem.HighlightColor.parseValue(BurpWrap.getHighlightColor(item));
+                    HighlightColor hc = HighlightColor.parseEnum(item.getHighlight());
                     if (colors.contains(hc)) {
                         colorFilter = true;
                     }
@@ -486,14 +487,14 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 boolean matchFilter = true;
                 if (statusFilter && showOnlyScopFilter && colorFilter) {
                     if (this.filterProp.getShowOnly()) {
-                        Pattern patternShowOnly = Pattern.compile(BurpWrap.parseFilterPattern(this.filterProp.getShowOnlyExtension()));
+                        Pattern patternShowOnly = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getShowOnlyExtension()));
                         Matcher matchShowOnly = patternShowOnly.matcher(item.getUrl().getPath());
                         if (!matchShowOnly.find()) {
                             matchFilter = false;
                         }
                     } else {
                         if (this.filterProp.getHide()) {
-                            Pattern patternHide = Pattern.compile(BurpWrap.parseFilterPattern(this.filterProp.getHideExtension()));
+                            Pattern patternHide = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getHideExtension()));
                             Matcher matchHide = patternHide.matcher(item.getUrl().getPath());
                             if (matchHide.find()) {
                                 matchFilter = false;
@@ -542,7 +543,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 if (o1 instanceof Comparator) {
                     return ((Comparator) o1).compare(o1, o2);
                 } else {
-                    return Util.compareToString(o1.toString(), o2.toString());
+                    return StringUtil.compareToString(o1.toString(), o2.toString());
                 }
             }
         }
