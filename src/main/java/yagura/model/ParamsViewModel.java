@@ -93,21 +93,21 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     break;
                 case 2: // Name
                     if (this.urldecode) {
-                        String raw = StringUtil.getBytesRawString((String) value, encoding);
+                        String raw = StringUtil.getBytesCharsetString((String) value, encoding);
                         raw = TransUtil.encodeUrl(raw, encoding, true);
                         param.setName(raw);
                     } else {
-                        String rowMessage = StringUtil.getBytesRawString((String) value, encoding);
+                        String rowMessage = StringUtil.getBytesCharsetString((String) value, encoding);
                         param.setName(rowMessage);
                     }
                     break;
                 case 3: // Value
                     if (this.urldecode) {
-                        String raw = StringUtil.getBytesRawString((String) value, encoding);
+                        String raw = StringUtil.getBytesCharsetString((String) value, encoding);
                         raw = TransUtil.encodeUrl(raw, encoding, true);
                         param.setValue(raw);
                     } else {
-                        String raw = StringUtil.getBytesRawString((String) value, encoding);
+                        String raw = StringUtil.getBytesCharsetString((String) value, encoding);
                         param.setValue(raw);
                     }
                     break;

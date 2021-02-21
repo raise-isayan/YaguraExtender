@@ -1,6 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.helpers.StringUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class SendToItem {
             String value = name().toLowerCase();
             return value.replace('_', ' ');
         }
-        
+
     };
 
    @Expose
@@ -235,7 +236,7 @@ public class SendToItem {
 
    @Expose
     private final Properties extendProperties = new Properties();
-    
+
     public Properties getExtendProperty() {
         return extendProperties;
     }
@@ -243,23 +244,23 @@ public class SendToItem {
     public String getExtendPropertyString() {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
-            this.extendProperties.storeToXML(os, "");            
+            this.extendProperties.storeToXML(os, "");
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
         }
-        return new String(os.toByteArray(), StandardCharsets.UTF_8);
+        return StringUtil.getStringUTF8(os.toByteArray());
     }
 
     public void setExtendPropertyString(String propString) {
         try {
-            ByteArrayInputStream is = new ByteArrayInputStream(propString.getBytes(StandardCharsets.UTF_8));            
+            ByteArrayInputStream is = new ByteArrayInputStream(StringUtil.getBytesUTF8(propString));
             this.extendProperties.loadFromXML(is);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
+
     /**
      * @return the extend
      */

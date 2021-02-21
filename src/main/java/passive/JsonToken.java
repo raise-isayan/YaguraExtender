@@ -1,6 +1,7 @@
 package passive;
 
 import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -35,7 +36,7 @@ public abstract class JsonToken {
             result |= (bytes[i] & 0xFF);
         }
         return result;
-    }    
+    }
 
     public static byte []longToBytes(final long value) {
         int mag = Long.SIZE - Long.numberOfLeadingZeros(value);
@@ -47,7 +48,7 @@ public abstract class JsonToken {
             val >>= Byte.SIZE;
         }
         return bytes;
-    }    
+    }
 
     public static String decodeUrl(String value) {
         return URLDecoder.decode(value, StandardCharsets.ISO_8859_1);
@@ -59,7 +60,7 @@ public abstract class JsonToken {
 
     public static String decompressZlibBase64(String content) {
         byte [] decode = decodeBase64UrlSafeByte(content);
-        return new String(ConvertUtil.decompressZlib(decode), StandardCharsets.UTF_8);
+        return StringUtil.getStringUTF8(ConvertUtil.decompressZlib(decode));
     }
 
     public static byte[] decodeBase64UrlSafeByte(String value) {
@@ -67,11 +68,11 @@ public abstract class JsonToken {
     }
 
     protected static String decodeBase64UrlSafe(byte [] value) {
-        return new String(Base64.getUrlDecoder().decode(value), StandardCharsets.UTF_8);
+        return StringUtil.getStringUTF8(Base64.getUrlDecoder().decode(value));
     }
 
     protected static String decodeBase64UrlSafe(String value) {
-        return new String(decodeBase64UrlSafeByte(value), StandardCharsets.UTF_8);
+        return StringUtil.getStringUTF8(decodeBase64UrlSafeByte(value));
     }
 
     public static byte[] encodeBase64UrlSafeByte(byte [] value) {
@@ -79,15 +80,15 @@ public abstract class JsonToken {
     }
 
     public static byte[] encodeBase64UrlSafeByte(String value) {
-        return JsonToken.encodeBase64UrlSafeByte(value.getBytes(StandardCharsets.UTF_8));
+        return JsonToken.encodeBase64UrlSafeByte(StringUtil.getBytesUTF8(value));
     }
 
     public static String encodeBase64UrlSafe(byte [] value) {
-        return new String(JsonToken.encodeBase64UrlSafeByte(value), StandardCharsets.UTF_8);
+        return StringUtil.getStringUTF8(JsonToken.encodeBase64UrlSafeByte(value));
     }
 
     protected static String encodeBase64UrlSafe(String value) {
-        return new String(encodeBase64UrlSafeByte(value), StandardCharsets.UTF_8);
+        return StringUtil.getStringUTF8(encodeBase64UrlSafeByte(value));
     }
 
 }

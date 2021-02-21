@@ -339,7 +339,7 @@ public class TransUtil {
                 if (charset != null) {
                     applyCharset = charset;
                 }
-                decode = StringUtil.getBytesRawString(value, applyCharset);
+                decode = StringUtil.getBytesCharsetString(value, applyCharset);
             } 
             else {
                 // URL encode match
