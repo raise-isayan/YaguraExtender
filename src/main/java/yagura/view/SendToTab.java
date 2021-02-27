@@ -6,6 +6,7 @@
 package yagura.view;
 
 import burp.ITab;
+import extension.view.base.TableRowTransferHandler;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
 import yagura.model.SendToItem;
@@ -14,7 +15,9 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javax.swing.DropMode;
 import javax.swing.JOptionPane;
+import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -211,6 +214,8 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
     private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
 
+    private final TransferHandler handler = new TableRowTransferHandler();
+
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
@@ -239,6 +244,12 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         });
 
         this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        this.tableSendTo.setTransferHandler(handler);
+        this.tableSendTo.setDropMode(DropMode.INSERT_ROWS);
+        this.tableSendTo.setDragEnabled(true);
+        this.tableSendTo.setFillsViewportHeight(true);
+
 
         // selected
         this.tableSendTo.getColumnModel().getColumn(0).setMinWidth(20);

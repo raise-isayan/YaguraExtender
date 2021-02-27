@@ -346,12 +346,10 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
             this.replaceMap.put(name, grpup);
 
             if (this.modelReplace.contains(name)) {
-                if (editMode) {
+                if (!editMode) {
                     this.modelReplace.removeElement(name);
-                } else {
-                    this.modelReplace.removeElement(name);
+                    this.modelReplace.addElement(name);
                 }
-                this.modelReplace.addElement(name);
             } else {
                 this.modelReplace.addElement(name);
             }

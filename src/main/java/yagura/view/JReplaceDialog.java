@@ -4,11 +4,14 @@ import extension.helpers.SwingUtil;
 import yagura.model.MatchReplaceItem;
 import extension.view.base.CustomDialog;
 import extension.view.base.CustomTableModel;
+import extension.view.base.TableRowTransferHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DropMode;
 import javax.swing.JOptionPane;
+import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -276,6 +279,8 @@ public class JReplaceDialog extends CustomDialog {
 
     private CustomTableModel modelReplace = null;
 
+    private final TransferHandler handler = new TableRowTransferHandler();
+
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.modelReplace = new CustomTableModel(this.tableReplace.getModel());
@@ -293,6 +298,13 @@ public class JReplaceDialog extends CustomDialog {
             }
         });
 
+        this.tableReplace.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+
+        this.tableReplace.setTransferHandler(handler);
+        this.tableReplace.setDropMode(DropMode.INSERT_ROWS);
+        this.tableReplace.setDragEnabled(true);
+        this.tableReplace.setFillsViewportHeight(true);
+
         // selected
         this.tableReplace.getColumnModel().getColumn(0).setMinWidth(20);
         this.tableReplace.getColumnModel().getColumn(0).setPreferredWidth(20);
@@ -306,7 +318,7 @@ public class JReplaceDialog extends CustomDialog {
         this.tableReplace.getColumnModel().getColumn(3).setMinWidth(20);
         this.tableReplace.getColumnModel().getColumn(3).setPreferredWidth(30);
         this.tableReplace.getColumnModel().getColumn(3).setMaxWidth(40);
-                
+
         // regex
         this.tableReplace.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableReplace.getColumnModel().getColumn(4).setPreferredWidth(30);
@@ -321,8 +333,6 @@ public class JReplaceDialog extends CustomDialog {
         this.tableReplace.getColumnModel().getColumn(7).setMinWidth(0);
         this.tableReplace.getColumnModel().getColumn(7).setPreferredWidth(0);
         this.tableReplace.getColumnModel().getColumn(7).setMaxWidth(0);
-
-        this.tableReplace.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
 //        SwingUtil.setContainerKeyMap(this);
     }
