@@ -17,9 +17,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author isayan
  * Base Code
- * @see https://github.com/mono/mono/blob/da11592cbea4269971f4b1f9624769a85cc10660/mcs/class/referencesource/System.Web/UI/ObjectStateFormatter.cs
+ * @see https://github.com/mono/mono/blob/master/mcs/class/referencesource/System.Web/UI/ObjectStateFormatter.cs
  * @licenses MIT license
  */
 public class ViewStateParser {
@@ -356,8 +355,6 @@ if (DEBUG_MODE) System.out.println("Token_Unit");
                     int b = bbf.remaining();
                     double value = bbf.getDouble();
                     int type = bbf.getInt();
-//                    jsonUnit.addProperty("UnitType", type);
-//                    jsonUnit.addProperty("Value", value);
                     JsonObject jsonNode = new JsonObject();
                     jsonNode.addProperty("Unit", String.format("%.2f %s", value, ViewState.getUnitType(type)));
                     decodeNode = jsonNode;
@@ -510,7 +507,7 @@ if (DEBUG_MODE) System.out.println(ex.getMessage() + ":" + StringUtil.getStackTr
     public String readString(ByteBuffer bbf) {
         return readString(bbf, StandardCharsets.UTF_8);
     }
-    
+
     public String readString(ByteBuffer bbf, Charset charset) {
         StringBuilder sb = new StringBuilder();
         int stringLength = readEncodedInt32(bbf);

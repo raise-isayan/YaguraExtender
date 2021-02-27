@@ -25,10 +25,8 @@ import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.MatchItem;
 import java.awt.Component;
-import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.TrayIcon;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -62,11 +60,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
-import jdk.jshell.execution.Util;
 import passive.IssueItem;
 import yagura.Config;
 import yagura.Version;
-import yagura.model.IKeywordHighlighter;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
@@ -79,7 +75,7 @@ public class BurpExtender extends BurpExtenderImpl
         implements IHttpListener, IProxyListener, IExtensionStateListener {
     private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
 
-      
+
     public BurpExtender() {
     }
 
@@ -180,7 +176,7 @@ public class BurpExtender extends BurpExtenderImpl
                 @Override
                 public boolean isJsonp() {
                     return true;
-                }            
+                }
             };
             return tab;
         }
@@ -192,9 +188,9 @@ public class BurpExtender extends BurpExtenderImpl
                 public void mouseClicked(MouseEvent e) {
                     getSendToMenu().showBurpMenu(controller, e);
                 }
-            };   
+            };
     }
-        
+
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         super.registerExtenderCallbacks(callbacks);
@@ -456,7 +452,7 @@ public class BurpExtender extends BurpExtenderImpl
     }
 
     private final static Pattern HTTP_LINESEP = Pattern.compile("\\r\\n\\r\\n");
-    
+
     /**
      * メッセージの置換
      *
@@ -742,7 +738,7 @@ public class BurpExtender extends BurpExtenderImpl
             logger.log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Send to JTransCoder
      *
@@ -828,7 +824,8 @@ public class BurpExtender extends BurpExtenderImpl
                 export.append("\t");
             }
         }
-        export.append("\r\n");        int[] rows = table.getSelectedRows();
+        export.append("\r\n");
+        int[] rows = table.getSelectedRows();
         for (int k = 0; k < rows.length; k++) {
             for (int i = 0; i < colcount; i++) {
                 if (cols[i]) {

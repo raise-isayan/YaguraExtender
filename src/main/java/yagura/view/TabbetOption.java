@@ -1,14 +1,10 @@
 package yagura.view;
 
 import burp.ITab;
-import java.awt.Color;
+import extension.helpers.BurpUtil;
 import java.awt.Component;
-import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JTabbedPane;
-import java.util.Timer;
-import java.util.TimerTask;
 import yagura.Version;
 import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
@@ -85,7 +81,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
      */
     @Override
     public String getTabCaption() {
-        return Version.getInstance().getProjectName();
+        return Version.getInstance().getTabCaption();
 //        return Config.getTabCaption();
     }
 
@@ -217,25 +213,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     }
 
     public void sendToJTransCoder(String text) {
-        Container container = this.getParent();
-        if (container instanceof JTabbedPane) {
-            JTabbedPane tabbet = (JTabbedPane) container;
-            int index = tabbet.indexOfTab(this.getTabCaption());
-            if (index > -1) {
-                tabbet.setBackgroundAt(index, Color.RED);
-            }
-            // 解除
-            final Timer timer = new Timer(false);
-            TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    tabbet.setForegroundAt(index, null);
-                    tabbet.setBackgroundAt(index, null);
-                    timer.cancel();
-                }
-            };
-            timer.schedule(task, 5000);
-        }
+        BurpUtil.sendToTextHighlight(this);
         this.tabJTransCoder.sendToJTransCoder(text);
     }
 

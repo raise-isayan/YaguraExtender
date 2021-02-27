@@ -7,7 +7,6 @@ package yagura.view;
 
 import burp.ITab;
 import extension.helpers.StringUtil;
-import extension.helpers.SwingUtil;
 import extension.view.base.CustomListModel;
 import yagura.model.UniversalViewProperty;
 import java.awt.Component;

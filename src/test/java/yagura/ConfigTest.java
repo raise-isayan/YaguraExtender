@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -47,23 +49,23 @@ import yagura.model.UniversalViewProperty.UniversalView;
  * @author isayan
  */
 public class ConfigTest {
-    
+
     public ConfigTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
-    
+
     @After
     public void tearDown() {
         JsonUtil.removeTypeHierarchyAdapter(MatchItem.class);
@@ -86,7 +88,7 @@ public class ConfigTest {
         try {
             URL url = this.getClass().getResource("/resources/default_project_burp.json");
             byte [] test = FileUtil.bytesFromFile(new File(url.toURI()));
-            JsonElement json = JsonUtil.parse(StringUtil.getStringUTF8(test)); 
+            JsonElement json = JsonUtil.parse(StringUtil.getStringUTF8(test));
             String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
         } catch (IOException ex) {
@@ -94,11 +96,11 @@ public class ConfigTest {
         } catch (URISyntaxException ex) {
             Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-                
+
     private final IOptionProperty optionProperty = new OptionProperty();
-    
+
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
     /**
@@ -112,7 +114,7 @@ public class ConfigTest {
             prop.load(inStream);
             ByteArrayOutputStream bstm = new ByteArrayOutputStream();
             prop.storeToXML(bstm, "");
-            System.out.println(bstm.toString(StandardCharsets.ISO_8859_1.name()));            
+            System.out.println(bstm.toString(StandardCharsets.ISO_8859_1.name()));
         } catch (IOException ex) {
             Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -134,11 +136,11 @@ public class ConfigTest {
         matchAlertItem1.setNotifyTypes(EnumSet.noneOf(NotifyType.class));
         matchAlertItem1.setTargetTools(EnumSet.noneOf(TargetTool.class));
         matchAlertList.add(matchAlertItem1);
-        
+
         matchAlert.setMatchAlertItemList(matchAlertList);
-        
+
     }
-    
+
     @Test
     public void testMatchItem() throws Exception {
         System.out.println("matchItem");
@@ -151,7 +153,7 @@ public class ConfigTest {
         String json = gson.toJson(item);
         System.out.println(json);
     }
-    
+
 
     @Test
     public void testMatchReplaceItem() throws Exception {
@@ -216,7 +218,7 @@ public class ConfigTest {
             assertEquals(null, option.getMatchReplaceProperty().getReplaceSelectedGroup(option.getMatchReplaceProperty().getSelectedName()));
             assertEquals(false, option.getMatchReplaceProperty().getReplaceSelectedGroup("xxx").isInScopeOnly());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceSelectedList("xxx").size());
-        }        
+        }
     }
 
     @Test
@@ -225,7 +227,7 @@ public class ConfigTest {
         URL url = this.getClass().getResource("/resources/YaguraExtender_legacy1.json");
         File fi = new File(url.toURI());
         if (fi.exists()) {
-            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);        
+            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);
             assertEquals(5, option.getEncodingProperty().getEncodingList().size());
             assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());
@@ -233,7 +235,7 @@ public class ConfigTest {
             assertEquals(null, option.getMatchReplaceProperty().getReplaceSelectedGroup(option.getMatchReplaceProperty().getSelectedName()));
             assertEquals(false, option.getMatchReplaceProperty().getReplaceSelectedGroup("xxx").isInScopeOnly());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceSelectedList("xxx").size());
-        }        
+        }
     }
-    
+
 }

@@ -92,11 +92,11 @@ dependencies {
 
     // https://mvnrepository.com/artifact/net.portswigger.burp.extender/burp-extender-api
     compileOnly 'net.portswigger.burp.extender:burp-extender-api:2.1'
-    // https://mvnrepository.com/artifact/commons-codec/commons-codec 
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'
-    // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea 
+    // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.1.2'
-    // https://mvnrepository.com/artifact/org.jsoup/jsoup 
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation 'org.jsoup:jsoup:1.13.1'
     // Unit Test
     testImplementation 'net.portswigger.burp.extender:burp-extender-api:2.1'

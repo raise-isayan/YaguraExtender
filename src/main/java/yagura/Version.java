@@ -33,18 +33,23 @@ public final class Version extends CustomVersion {
         String projname = BUNDLE.getString("projname");
         return projname;
     }
-    
-    private final static String VERSION_INFO_FMT = 
-            "Product Version: %s %s\n" + 
+
+    public String getTabCaption() {
+        String projname = BUNDLE.getString("tabcaption");
+        return projname;
+    }
+
+    private final static String VERSION_INFO_FMT =
+            "Product Version: %s %s\n" +
             "Log Dir: %s\n" +
-            "Config Dir: %s\n";    
+            "Config Dir: %s\n";
 
     public String getVersionInfo() {
         return String.format(VERSION_INFO_FMT,
             getProjectName(),
-            Version.getInstance().getVersion(), 
+            Version.getInstance().getVersion(),
             Config.getUserDirPath(),
-            Config.getExtensionHomeDir().getAbsoluteFile());    
+            Config.getExtensionHomeDir().getAbsoluteFile());
     }
-    
+
 }

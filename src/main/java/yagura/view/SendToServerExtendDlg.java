@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package yagura.view;
 
 import extension.helpers.ConvertUtil;
@@ -200,7 +195,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-    
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);
@@ -271,14 +266,14 @@ public class SendToServerExtendDlg extends CustomDialog {
         this.cmbProtocol.addItem(Proxy.Type.HTTP.name());
         this.cmbProtocol.addItem(Proxy.Type.SOCKS.name());
     }
-    
+
     public void setProperties(Properties prop) {
         String proxyProtocol = prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name());
         String proxyHost = prop.getProperty("proxyHost", "");
-        String proxyPort = prop.getProperty("proxyPort", "8080");        
+        String proxyPort = prop.getProperty("proxyPort", "8080");
         String proxyUser = prop.getProperty("proxyUser", "");
-        String proxyPasswd = prop.getProperty("proxyPasswd", "");        
-        String ignoreValidateCertification = prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString());        
+        String proxyPasswd = prop.getProperty("proxyPasswd", "");
+        String ignoreValidateCertification = prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString());
         this.cmbProtocol.setSelectedItem(proxyProtocol);
         this.txtProxyHost.setText(proxyHost);
         this.spnProxyPort.setValue((int)ConvertUtil.parseIntDefault(proxyPort, 8080));
@@ -290,11 +285,11 @@ public class SendToServerExtendDlg extends CustomDialog {
     public void getProperties(Properties prop) {
         prop.setProperty("proxyProtocol", (String)this.cmbProtocol.getSelectedItem());
         prop.setProperty("proxyHost", this.txtProxyHost.getText());
-        prop.setProperty("proxyPort", StringUtil.toString(this.spnProxyPort.getValue()));        
+        prop.setProperty("proxyPort", StringUtil.toString(this.spnProxyPort.getValue()));
         prop.setProperty("proxyUser", this.txtProxyUser.getText());
         prop.setProperty("proxyPasswd", String.valueOf(this.txtProxyPasswd.getPassword()));
         prop.setProperty("ignoreValidateCertification", String.valueOf(this.chkIgnoreValidateCertification.isSelected()));
     }
-    
-    
+
+
 }

@@ -174,7 +174,7 @@
                         <Column editable="false" title="Server" type="java.lang.Boolean"/>
                         <Column editable="false" title="Target" type="java.lang.String"/>
                         <Column editable="false" title="Req Header" type="java.lang.Boolean"/>
-                        <Column editable="false" title="Req Bod" type="java.lang.Boolean"/>
+                        <Column editable="false" title="Req Body" type="java.lang.Boolean"/>
                         <Column editable="false" title="Res Header" type="java.lang.Boolean"/>
                         <Column editable="false" title="Res Body" type="java.lang.Boolean"/>
                         <Column editable="false" title="Rev Order" type="java.lang.Boolean"/>

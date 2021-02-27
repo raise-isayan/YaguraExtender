@@ -111,7 +111,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 
             },
             new String [] {
-                "select", "MenuCaption", "Server", "Target", "Req Header", "Req Bod", "Res Header", "Res Body", "Rev Order", "HotKey", "Extend"
+                "select", "MenuCaption", "Server", "Target", "Req Header", "Req Body", "Res Header", "Res Body", "Rev Order", "HotKey", "Extend"
             }
         ) {
             Class[] types = new Class [] {
@@ -186,11 +186,9 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSendToDownArraw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSendToAdd)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnSendToAdd))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabSendTo.add(pnlCenter, java.awt.BorderLayout.PAGE_START);
@@ -296,31 +294,31 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         this.tableSendTo.getColumnModel().getColumn(10).setMinWidth(0);
         this.tableSendTo.getColumnModel().getColumn(10).setPreferredWidth(0);
         this.tableSendTo.getColumnModel().getColumn(10).setMaxWidth(0);
-        
+
     }
 
     private void btnSendToEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToEditActionPerformed
         this.showSendToItemDlg(true);
-        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());                                
+        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
 }//GEN-LAST:event_btnSendToEditActionPerformed
 
     private void btnSendToRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToRemoveActionPerformed
         SwingUtil.removeItem(this.tableSendTo);
-        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());                                
+        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
 }//GEN-LAST:event_btnSendToRemoveActionPerformed
 
     private void btnSendToUpArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToUpArrawActionPerformed
         int index = this.tableSendTo.getSelectedRow();
         index = this.modelSendTo.moveUp(index);
         this.tableSendTo.getSelectionModel().setSelectionInterval(index, index);
-        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());                                
+        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
 }//GEN-LAST:event_btnSendToUpArrawActionPerformed
 
     private void btnSendToDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToDownArrawActionPerformed
         int index = this.tableSendTo.getSelectedRow();
         index = this.modelSendTo.moveDn(index);
         this.tableSendTo.getSelectionModel().setSelectionInterval(index, index);
-        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());                        
+        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
 }//GEN-LAST:event_btnSendToDownArrawActionPerformed
 
     private void btnSendToAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToAddActionPerformed

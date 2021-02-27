@@ -82,26 +82,26 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 //    private final SwingUtil.IntegerDocument UNIXTIME_DOC = new SwingUtil.IntegerDocument(10);
 //    private final SwingUtil.IntegerDocument JAVASERIAL_DOC = new SwingUtil.IntegerDocument(10);
 //    private final SwingUtil.IntegerDocument EXCELSERIAL_DOC = new SwingUtil.IntegerDocument(10);
-        
+
 //    private org.fife.ui.rtextarea.RTextScrollPane scrollInputRaw;
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtInputRaw;
 
     private javax.swing.JScrollPane scrollInputRaw;
     private javax.swing.JTextArea txtInputRaw;
-    
-    
+
+
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputFormat;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputFormat;
 
-    private final static String [] SHORT_ZONEIDS = { 
+    private final static String [] SHORT_ZONEIDS = {
         "ACT", "AET", "AGT", "ART", "AST", "BET", "BST", "CAT", "CNT", "CST", "CTT", "EAT", "ECT", "IET", "IST", "JST", "MIT", "NET", "NST", "PLT", "PNT", "PRT", "PST", "SST", "VST", "EST", "MST", "HST"
     };
 
     private final ViewStateDecoderTab viewStateDecoderTab = new ViewStateDecoderTab();
-    
+
     private void customizeComponents() {
 
         /**
@@ -128,17 +128,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 setInputText(StringUtil.getBytesRawString(rawData));
             }
         });
-                
+
 //        this.scrollInputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtInputRaw);
         this.scrollInputRaw = new javax.swing.JScrollPane();
         this.scrollInputRaw.setViewportView(this.txtInputRaw);
 
 //        this.tabbetInput.addTab("Raw", this.scrollInputRaw);
         this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
-        
+
 //        scrollURaw.setViewportView(txtURaw);
 //        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
-        
+
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 
         this.txtOutputRaw.setEditable(false);
@@ -149,7 +149,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         this.scrollOutputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputRaw);
         this.pnlOutputRaw.add(this.scrollOutputRaw, BorderLayout.CENTER);
-        
+
         this.txtOutputFormat = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 
         this.txtOutputFormat.setEditable(false);
@@ -160,7 +160,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtOutputFormat.setCurrentLineHighlightColor(SystemColor.textHighlight);
 
         this.scrollOutputFormat = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputFormat);
-                
+
         this.pnlTransButton.setLayout(new VerticalFlowLayout());
 
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
@@ -168,7 +168,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         this.tabbetInput.addTab("Hex", this.hexInputViewTab);
         this.hexInputViewTab.setEnabled(false);
-        
+
         this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), "UTF-8");
 
         this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
@@ -185,11 +185,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.pnlOutputFormat.add(this.scrollOutputFormat, BorderLayout.CENTER);
         this.pnlOutputRaw.add(this.quickSearchTabRaw, java.awt.BorderLayout.SOUTH);
         this.pnlOutputFormat.add(this.quickSearchTabFormat, java.awt.BorderLayout.SOUTH);
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.YEAR, 1);
         this.setGeneraterDateEnd(calendar.getTime());
-        
+
         /**
          * * UI design end **
          */
@@ -200,12 +200,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             ZoneId zone = ZoneId.of(ZoneId.SHORT_IDS.get(SHORT_ZONEIDS[i]));
             this.cmbTimezone.addItem(SHORT_ZONEIDS[i] + " - " + zone.getId());
             if (systemZone.equals(zone)) {
-                tz_offset = i; 
+                tz_offset = i;
             }
         }
         this.cmbTimezone.setSelectedIndex(tz_offset);
         this.cmbTimezone.setVisible(false);
-        
+
         this.txtInputRaw.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 txtInputRawCaretUpdate(evt);
@@ -217,7 +217,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 txtOutputRawCaretUpdate(evt);
             }
         });
-        
+
         this.cmbHistory.addActionListener(this.historyActionPerformed);
 //        this.cmbHistory.addItemListener(this.historyItemStateChanged);
 
@@ -242,10 +242,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 //        this.txtExcelSerial.setValue(new BigDecimal(0L));
 
         this.spnDatetimeStateChanged(null);
-        
-        this.doStateDecodeChange();        
+
+        this.doStateDecodeChange();
     }
-        
+
     private void txtInputRawCaretUpdate(javax.swing.event.CaretEvent evt) {
         this.caretUpdate(this.txtInputRaw);
     }
@@ -260,10 +260,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             return ZoneId.of(ZoneId.SHORT_IDS.get(SHORT_ZONEIDS[index]));
         }
         else {
-            return ZoneId.systemDefault();            
+            return ZoneId.systemDefault();
         }
     }
-        
+
     private void setConverterDateTime(Date value) {
         this.spnDatetime.setValue(value);
     }
@@ -272,13 +272,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         Date date = new Date();
         try {
             this.spnDatetime.commitEdit();
-            date = (Date)this.spnDatetime.getValue();            
+            date = (Date)this.spnDatetime.getValue();
         } catch (ParseException ex) {
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
         }
         return date;
     }
-        
+
     private void setGeneraterDateStart(Date value) {
         this.spnDateStart.setValue(value);
     }
@@ -287,13 +287,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         Date date = new Date();
         try {
             this.spnDateStart.commitEdit();
-            date = (Date)this.spnDateStart.getValue();            
+            date = (Date)this.spnDateStart.getValue();
         } catch (ParseException ex) {
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
         }
         return date;
     }
-    
+
     private void setGeneraterDateEnd(Date value) {
         this.spnDateEnd.setValue(value);
     }
@@ -302,7 +302,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         Date date = new Date();
         try {
             this.spnDateEnd.commitEdit();
-            date = (Date)this.spnDateEnd.getValue();            
+            date = (Date)this.spnDateEnd.getValue();
         } catch (ParseException ex) {
             Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
         }
@@ -561,6 +561,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         pnlEncDec.setLayout(new java.awt.GridLayout(1, 1));
 
+        btnEncode.setMnemonic('E');
         btnEncode.setText("Encode");
         btnEncode.setMaximumSize(new java.awt.Dimension(71, 21));
         btnEncode.setMinimumSize(new java.awt.Dimension(71, 21));
@@ -572,6 +573,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         });
         pnlEncDec.add(btnEncode);
 
+        btnDecode.setMnemonic('D');
         btnDecode.setText("Decode");
         btnDecode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1565,7 +1567,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(714, Short.MAX_VALUE))
+                .addContainerGap(710, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1743,7 +1745,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblBin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1180, Short.MAX_VALUE))
+                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1178, Short.MAX_VALUE))
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblHex, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1994,7 +1996,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(966, Short.MAX_VALUE))
+                .addContainerGap(968, Short.MAX_VALUE))
         );
         pnlCertificateLayout.setVerticalGroup(
             pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2081,7 +2083,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2655,7 +2657,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 try {
                     final String numFormat = this.txtDateFormat.getText();
                     final Date dateStart = getGeneraterDateStart();
-                    final Date dateEnd = getGeneraterDateEnd();                  
+                    final Date dateEnd = getGeneraterDateEnd();
                     final LocalDate localDateStart = dateStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     final LocalDate localDateLocalEnd = dateEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     final int stepNum = (Integer) this.spnDateStep.getModel().getValue();
@@ -2949,7 +2951,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void txtJavaSerialKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtJavaSerialKeyReleased
         try {
             this.txtJavaSerial.commitEdit();
-            long java_value = (long)this.txtJavaSerial.getValue(); 
+            long java_value = (long)this.txtJavaSerial.getValue();
             long unix_value = java_value / 1000L;
             this.txtUnixtime.setValue(Long.valueOf(unix_value));
             ZoneId zoneId = getZoneId();
