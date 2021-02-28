@@ -9,6 +9,7 @@ import burp.IResponseInfo;
 import extension.burp.HttpService;
 import extension.helpers.HttpMessage;
 import extension.helpers.HttpResponse;
+import extension.helpers.HttpUtil;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
@@ -230,7 +231,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
     }
 
     public boolean isSSL() {
-        return "https".equals(this.getProtocol());
+        return HttpUtil.isSSL(this.getProtocol());
     }
 
     public void dump() {

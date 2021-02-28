@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 public abstract class SendToMenuItem
         extends SendToItem implements java.awt.event.ActionListener  {
-    private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
+    private final static Logger logger = Logger.getLogger(SendToMenuItem.class.getName());
 
     protected IContextMenuInvocation contextMenu = null;
 
@@ -93,5 +93,5 @@ public abstract class SendToMenuItem
     public abstract void menuItemClicked(String menuItemCaption, IHttpRequestResponse[] messageInfo);
 
     public abstract boolean isEnabled();
-        
+
 }

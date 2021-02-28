@@ -479,7 +479,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        // #                
+        // #
         this.cmbColor.setMaximumRowCount(10);
         this.cmbColor.setRenderer(this.colorComboBoxRenderer);
         this.cmbColor.addItem(""); // nonselect
@@ -496,12 +496,12 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         TableColumn colorColumn = this.tableResult.getColumnModel().getColumn(1);
         colorColumn.setCellEditor(new DefaultCellEditor(this.cmbColor));
 
-        // Data        
+        // Data
         this.tableResult.getColumnModel().getColumn(0).setMinWidth(0);
         this.tableResult.getColumnModel().getColumn(0).setPreferredWidth(0);
         this.tableResult.getColumnModel().getColumn(0).setMaxWidth(0);
 
-        // #        
+        // #
         this.tableResult.getColumnModel().getColumn(1).setMinWidth(20);
         this.tableResult.getColumnModel().getColumn(1).setPreferredWidth(60);
         this.tableResult.getColumnModel().getColumn(1).setMaxWidth(80);
@@ -697,7 +697,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         Pattern p = TransUtil.compileRegex(text, searchProp.isSmartMatch(), searchProp.isRegexp(),  searchProp.isIgnoreCase());
 
         IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
-        try {            
+        try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
             for (int i = 0; i < messageInfo.length; i++) {
                 HttpMessageItem item = new HttpMessageItem(messageInfo[i], i);
@@ -869,6 +869,6 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.tabMessageView.setRequestLineWrap(lineWrap);
         this.tabMessageView.setResponseLineWrap(lineWrap);
     }
-    
-    
+
+
 }

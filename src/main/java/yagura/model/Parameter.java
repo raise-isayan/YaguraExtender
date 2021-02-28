@@ -3,9 +3,6 @@ package yagura.model;
 import burp.IParameter;
 import extension.helpers.StringUtil;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -90,7 +87,7 @@ public class Parameter implements IParameter {
                 return null;
             }
         } else {
-            return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getName()), StandardCharsets.ISO_8859_1);
+            return StringUtil.getStringRaw(StringUtil.getBytesRaw(parameter.getName()));
         }
     }
 
@@ -102,7 +99,7 @@ public class Parameter implements IParameter {
                 return null;
             }
         } else {
-            return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getName()), StandardCharsets.ISO_8859_1);
+            return StringUtil.getStringRaw(StringUtil.getBytesRaw(parameter.getName()));
         }
     }
 

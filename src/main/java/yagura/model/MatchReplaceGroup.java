@@ -21,9 +21,6 @@ public class MatchReplaceGroup {
         return Collections.unmodifiableList(this.replaceList);
     }
 
-    /**
-     * @return the replaceMap
-     */
     public void setReplaceList(List<MatchReplaceItem> replaceList) {
         this.replaceList.clear();
         this.replaceList.addAll(replaceList);

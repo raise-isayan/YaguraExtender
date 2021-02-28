@@ -36,10 +36,12 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
     public ObjectTableColumn getColumn() {
         return new ObjectTableColumn() {
 
+            @Override
             public String getColumnName(int column) {
                 return columns[column];
             }
 
+            @Override
             public int getColumnCount() {
                 return columns.length;
             }
@@ -67,7 +69,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
         try {
             HttpMessageItem msg = this;
             switch (column) {
-                case 0: // 
+                case 0: //
                     value = msg;
                     break;
                 case 1: // #

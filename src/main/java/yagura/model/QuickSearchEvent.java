@@ -7,13 +7,12 @@ import java.util.EventObject;
  * @author isayan
  */
 public class QuickSearchEvent extends EventObject {
-
     private String keyword = "";
     private boolean smartMatch = false;
     private boolean regexp = false;
     private boolean ignoreCase = false;
     public boolean clearView = false;
-    
+
     public QuickSearchEvent(Object source, String keyword, boolean smartMatch, boolean regexp, boolean ignoreCase, boolean clearView) {
         super(source);
         this.keyword = keyword;
@@ -29,7 +28,7 @@ public class QuickSearchEvent extends EventObject {
     public String getKeyword() {
         return this.keyword;
     }
-    
+
     /**
      * @return the smartMatch
      */
@@ -50,7 +49,7 @@ public class QuickSearchEvent extends EventObject {
     public boolean isIgnoreCase() {
         return ignoreCase;
     }
-    
+
     /**
      * @return the clearView
      */

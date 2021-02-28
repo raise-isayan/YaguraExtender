@@ -2,6 +2,7 @@ package yagura.model;
 
 import com.google.gson.annotations.Expose;
 import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -61,24 +62,24 @@ public class UniversalViewProperty {
         List<String> list = new ArrayList<>();
         if (lang == null) {
             for (String enc : ENCODING_DEFAULT_OTHER_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);                
+               if (charSets.get(enc) != null)  list.add(enc);
             }
         }
         else if (lang.equals(Locale.JAPANESE)) {
             for (String enc : ENCODING_DEFAULT_JAPANESE_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);                
+               if (charSets.get(enc) != null)  list.add(enc);
             }
         } else if (lang.equals(Locale.CHINESE)) {
             for (String enc : ENCODING_DEFAULT_CHINESE_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);                
+               if (charSets.get(enc) != null)  list.add(enc);
             }
         } else if (lang.equals(Locale.KOREAN)) {
             for (String enc : ENCODING_DEFAULT_KOREAN_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);                
+               if (charSets.get(enc) != null)  list.add(enc);
             }
         } else {
             for (String enc : ENCODING_DEFAULT_OTHER_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);                
+               if (charSets.get(enc) != null)  list.add(enc);
             }
         }
         return Collections.unmodifiableList(list);
@@ -100,10 +101,10 @@ public class UniversalViewProperty {
     public void setLineWrap(boolean lineWrap) {
         this.lineWrap = lineWrap;
     }
-        
+
     @Expose
     private int dispayMaxLength = 10000000;
-    
+
     public int getDispayMaxLength() {
         return this.dispayMaxLength;
     }
@@ -111,7 +112,7 @@ public class UniversalViewProperty {
     public void setDispayMaxLength(int dispayMaxLength) {
         this.dispayMaxLength = dispayMaxLength;
     }
-    
+
     // non Expose
     private boolean clipbordAutoDecode = true;
 
@@ -138,24 +139,25 @@ public class UniversalViewProperty {
     public enum UniversalView {
         GENERATE_POC, HTML_COMMENT, JSON, JSONP, JWT, VIEW_STATE, JRAW, JPARAM;
 
-        public static UniversalView parseValue(String value) {
-            UniversalView eval = (UniversalView) ConvertUtil.parseEnumValue(UniversalView.class, value);
-            if (eval == null) {
-                return null;
-            } else {
-                return eval;
-            }
+        public static UniversalView parseEnum(String s) {
+            String value = s.toUpperCase();
+            return Enum.valueOf(UniversalView.class, value);
         }
 
-        private static final Pattern ENUM_SPLIT = Pattern.compile("\\w+");
-
-        public static EnumSet<UniversalView> enumSetValueOf(String s) {
-            EnumSet<UniversalView> values = EnumSet.noneOf(UniversalView.class);
-            Matcher m = ENUM_SPLIT.matcher(s.toUpperCase());
-            while (m.find()) {
-                values.add((UniversalView) ConvertUtil.parseEnumValue(UniversalView.class, m.group()));
+        public static EnumSet<UniversalView> parseEnumSet(String s) {
+            EnumSet<UniversalView> universal = EnumSet.noneOf(UniversalView.class);
+            if (!s.startsWith("[") && s.endsWith("]")) {
+                throw new IllegalArgumentException("No enum constant " + UniversalView.class.getCanonicalName() + "." + s);
             }
-            return values;
+            String content = s.substring(1, s.length() - 1).trim();
+            if (content.isEmpty()) {
+                return universal;
+            }
+            for (String t : content.split(",")) {
+                String v = t.trim();
+                universal.add(parseEnum(v.replaceAll("\"", "")));
+            }
+            return universal;
         }
 
         @Override
@@ -167,7 +169,7 @@ public class UniversalViewProperty {
     };
 
     @Expose
-    private EnumSet<UniversalView> mesageView = EnumSet.of(UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON);
+    private EnumSet<UniversalView> mesageView = EnumSet.of(UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON, UniversalView.JSONP);
 
     public EnumSet<UniversalView> getMessageView() {
         return mesageView;

@@ -5,7 +5,6 @@ import extension.helpers.StringUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -259,7 +258,6 @@ public class SendToItem {
             logger.log(Level.SEVERE, null, ex);
         }
     }
-
 
     /**
      * @return the extend

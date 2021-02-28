@@ -8,9 +8,7 @@ import burp.IHttpRequestResponse;
 import burp.IHttpService;
 import burp.IMessageEditorController;
 import burp.IScanIssue;
-import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
-import java.awt.Component;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,11 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.FocusManager;
 import javax.swing.JMenuItem;
-import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.table.TableModel;
 
 /**
  * burp new IF
@@ -76,7 +70,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                         for (String encoding : encodingList) {
                             javax.swing.JMenuItem mnuItemEncoding = new javax.swing.JMenuItem();
                             mnuItemEncoding.setText(encoding);
-                            mnuItemEncoding.addActionListener(sendToItem);                    
+                            mnuItemEncoding.addActionListener(sendToItem);
                             mnuItem.add(mnuItemEncoding);
                         }
                         if (property.isSubMenu()) {
@@ -102,7 +96,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                             if (sendToItem.isEnabled()) {
                                 this.menuList.add(mnuItem);
                             }
-                        }                    
+                        }
                     }
 
                 } else {
@@ -125,9 +119,9 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                             public void error(SendToEvent evt) {
                                BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.ERROR);
                                 logger.log(Level.SEVERE, evt.getMessage());                            }
-                        
+
                         });
-                       
+
                         sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
@@ -317,7 +311,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
 
         };
     }
-    
+
     private IContextMenuInvocation getContextMenuInvocation(KeyEvent evt, IHttpRequestResponse[] messageInfo) {
         return new IContextMenuInvocation() {
             @Override
