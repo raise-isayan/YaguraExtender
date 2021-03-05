@@ -2,10 +2,12 @@ package yagura.view;
 
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
 import java.net.Proxy;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import yagura.model.SendToExtend;
 
 /**
  *
@@ -29,10 +31,15 @@ public class SendToServerExtendDlg extends CustomDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         pnlMain = new javax.swing.JPanel();
         pnlCerficate = new javax.swing.JPanel();
         chkIgnoreValidateCertification = new javax.swing.JCheckBox();
         pnlProxy = new javax.swing.JPanel();
+        pnlUseProxy = new javax.swing.JPanel();
+        rdoCustomProxy = new javax.swing.JRadioButton();
+        rdoBurpProxy = new javax.swing.JRadioButton();
+        pnlCustomProxy = new javax.swing.JPanel();
         lblProtocol = new javax.swing.JLabel();
         lblProxyHost = new javax.swing.JLabel();
         lblProxyUser = new javax.swing.JLabel();
@@ -77,7 +84,49 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         pnlMain.add(pnlCerficate, java.awt.BorderLayout.SOUTH);
 
-        pnlProxy.setBorder(javax.swing.BorderFactory.createTitledBorder("Proxy"));
+        pnlProxy.setLayout(new java.awt.BorderLayout());
+
+        buttonGroup1.add(rdoCustomProxy);
+        rdoCustomProxy.setSelected(true);
+        rdoCustomProxy.setText("Use Custom proxy settings");
+        rdoCustomProxy.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rdoCustomProxyStateChanged(evt);
+            }
+        });
+
+        buttonGroup1.add(rdoBurpProxy);
+        rdoBurpProxy.setText("Use Burp proxy settings");
+        rdoBurpProxy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoBurpProxyActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlUseProxyLayout = new javax.swing.GroupLayout(pnlUseProxy);
+        pnlUseProxy.setLayout(pnlUseProxyLayout);
+        pnlUseProxyLayout.setHorizontalGroup(
+            pnlUseProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlUseProxyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlUseProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdoCustomProxy)
+                    .addComponent(rdoBurpProxy))
+                .addContainerGap(353, Short.MAX_VALUE))
+        );
+        pnlUseProxyLayout.setVerticalGroup(
+            pnlUseProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUseProxyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(rdoBurpProxy)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(rdoCustomProxy)
+                .addContainerGap())
+        );
+
+        pnlProxy.add(pnlUseProxy, java.awt.BorderLayout.PAGE_START);
+
+        pnlCustomProxy.setBorder(javax.swing.BorderFactory.createTitledBorder("Proxy"));
 
         lblProtocol.setText("Protocol:");
 
@@ -98,22 +147,22 @@ public class SendToServerExtendDlg extends CustomDialog {
         spnProxyPort.setModel(new javax.swing.SpinnerNumberModel(8080, 0, 65535, 1));
         spnProxyPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnProxyPort, "#"));
 
-        javax.swing.GroupLayout pnlProxyLayout = new javax.swing.GroupLayout(pnlProxy);
-        pnlProxy.setLayout(pnlProxyLayout);
-        pnlProxyLayout.setHorizontalGroup(
-            pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProxyLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlCustomProxyLayout = new javax.swing.GroupLayout(pnlCustomProxy);
+        pnlCustomProxy.setLayout(pnlCustomProxyLayout);
+        pnlCustomProxyLayout.setHorizontalGroup(
+            pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCustomProxyLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblProtocol, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlProxyLayout.createSequentialGroup()
+                    .addGroup(pnlCustomProxyLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblProxyPasswd)
                             .addComponent(lblProxyUser))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmbProtocol, 0, 247, Short.MAX_VALUE)
                     .addComponent(txtProxyUser)
                     .addComponent(txtProxyPasswd)
@@ -124,31 +173,33 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
-        pnlProxyLayout.setVerticalGroup(
-            pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlProxyLayout.createSequentialGroup()
+        pnlCustomProxyLayout.setVerticalGroup(
+            pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCustomProxyLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProtocol)
                     .addComponent(cmbProtocol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyHost)
                     .addComponent(txtProxyHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblProxyPort)
                     .addComponent(spnProxyPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyUser)
                     .addComponent(txtProxyUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyPasswd)
                     .addComponent(txtProxyPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlMain.add(pnlProxy, java.awt.BorderLayout.CENTER);
+        pnlProxy.add(pnlCustomProxy, java.awt.BorderLayout.CENTER);
+
+        pnlMain.add(pnlProxy, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -222,6 +273,14 @@ public class SendToServerExtendDlg extends CustomDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtProxyPasswdActionPerformed
 
+    private void rdoBurpProxyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpProxyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoBurpProxyActionPerformed
+
+    private void rdoCustomProxyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomProxyStateChanged
+        SwingUtil.setContainerEnable(pnlCustomProxy, this.rdoCustomProxy.isSelected());
+    }//GEN-LAST:event_rdoCustomProxyStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -243,6 +302,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox chkIgnoreValidateCertification;
     private javax.swing.JComboBox<String> cmbProtocol;
     private javax.swing.JLabel lblProtocol;
@@ -252,8 +312,12 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JLabel lblProxyUser;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlCerficate;
+    private javax.swing.JPanel pnlCustomProxy;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnlProxy;
+    private javax.swing.JPanel pnlUseProxy;
+    private javax.swing.JRadioButton rdoBurpProxy;
+    private javax.swing.JRadioButton rdoCustomProxy;
     private javax.swing.JSpinner spnProxyPort;
     private javax.swing.JTextField txtProxyHost;
     private javax.swing.JPasswordField txtProxyPasswd;
@@ -274,11 +338,18 @@ public class SendToServerExtendDlg extends CustomDialog {
         String proxyUser = prop.getProperty("proxyUser", "");
         String proxyPasswd = prop.getProperty("proxyPasswd", "");
         String ignoreValidateCertification = prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString());
+        String useProxy = prop.getProperty("useProxy", SendToExtend.USE_CUSTOM_PROXY);
         this.cmbProtocol.setSelectedItem(proxyProtocol);
         this.txtProxyHost.setText(proxyHost);
         this.spnProxyPort.setValue((int)ConvertUtil.parseIntDefault(proxyPort, 8080));
         this.txtProxyUser.setText(proxyUser);
         this.txtProxyPasswd.setText(proxyPasswd);
+        if (SendToExtend.USE_CUSTOM_PROXY.equals(useProxy)) {
+            this.rdoCustomProxy.setSelected(true);
+        }
+        else {
+            this.rdoBurpProxy.setSelected(true);
+        }
         this.chkIgnoreValidateCertification.setSelected(ConvertUtil.parseBooleanDefault(ignoreValidateCertification, false));
     }
 
@@ -288,6 +359,8 @@ public class SendToServerExtendDlg extends CustomDialog {
         prop.setProperty("proxyPort", StringUtil.toString(this.spnProxyPort.getValue()));
         prop.setProperty("proxyUser", this.txtProxyUser.getText());
         prop.setProperty("proxyPasswd", String.valueOf(this.txtProxyPasswd.getPassword()));
+        String useProxy = this.rdoCustomProxy.isSelected() ? SendToExtend.USE_CUSTOM_PROXY : SendToExtend.USE_BURP_PROXY;
+        prop.setProperty("useProxy", useProxy);
         prop.setProperty("ignoreValidateCertification", String.valueOf(this.chkIgnoreValidateCertification.isSelected()));
     }
 

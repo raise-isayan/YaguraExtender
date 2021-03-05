@@ -4,10 +4,10 @@ import burp.BurpExtender;
 import burp.IContextMenuInvocation;
 import burp.IHttpRequestResponse;
 import burp.IHttpService;
+import extension.burp.HttpService;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
-
 import java.awt.event.ActionEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,6 +20,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
 import java.net.http.HttpClient.Version;
@@ -41,11 +42,6 @@ import java.util.logging.Logger;
  */
 public class SendToServer extends SendToMenuItem {
     private final static Logger logger = Logger.getLogger(SendToServer.class.getName());
-
-    static {
-        // SSL 証明書検証をしない。
-        HttpUtil.ignoreValidateCertification();
-    }
 
     public SendToServer(SendToItem item, IContextMenuInvocation contextMenu) {
         super(item, contextMenu);
@@ -71,10 +67,69 @@ public class SendToServer extends SendToMenuItem {
     /*
      * https://alvinalexander.com/java/jwarehouse/openjdk-8/jdk/src/share/classes/sun/net/www/protocol/http/HttpURLConnection.java.shtml
      */
-        
+
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     protected void sendToServer(IHttpRequestResponse messageInfo) {
+        // 拡張オプションを取得
+        Properties prop = getExtendProperty();
+        String useProxy = prop.getProperty("useProxy", SendToExtend.USE_CUSTOM_PROXY);
+        if (SendToExtend.USE_CUSTOM_PROXY.equals(useProxy)) {
+            sendToServerUseHttpClient(messageInfo);
+        }
+        else {
+            sendToServerUseBurp(messageInfo);
+        }
+    }
+
+    protected void sendToServerUseBurp(IHttpRequestResponse messageInfo) {
+        Runnable sendTo = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
+                        URL tagetURL = new URL(getTarget());
+                        outPostHeader(ostm, tagetURL);
+                        String boundary = HttpUtil.generateBoundary();
+                        ostm.write(StringUtil.getBytesRaw(String.format("Content-Type: %s", "multipart/form-data;boundary=" + boundary) + StringUtil.NEW_LINE));
+                        try (ByteArrayOutputStream bodyStream = new ByteArrayOutputStream()) {
+                            outMultipart(boundary, bodyStream, messageInfo);
+                            ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
+                            ostm.write(StringUtil.getBytesRaw(StringUtil.NEW_LINE));
+                            ostm.write(bodyStream.toByteArray());
+                        }
+                        HttpService httpService = new HttpService(tagetURL);
+                        BurpExtender.errPrintln("req:" + StringUtil.getStringRaw(ostm.toByteArray()));
+                        IHttpRequestResponse httpRequestResponse = BurpExtender.getCallbacks().makeHttpRequest(httpService, ostm.toByteArray());
+                        extension.helpers.HttpResponse response= extension.helpers.HttpResponse.parseHttpResponse(httpRequestResponse.getResponse());
+                        int statusCode = response.getStatusCode();
+                        if (statusCode == HttpURLConnection.HTTP_OK) {
+                            if (response.getBody().length() == 0) {
+                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                            } else {
+                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + response.getBody()));
+                                logger.log(Level.WARNING, "[" + statusCode + "]", response.getBody());
+                            }
+                        } else {
+                            // 200以外
+                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + response.getBody()));
+                            logger.log(Level.WARNING, "[" + statusCode + "]", response.getBody());
+                        }
+                    }
+                } catch (IOException ex) {
+                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                } catch (Exception ex) {
+                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+        this.threadExecutor.submit(sendTo);
+    }
+
+
+    protected void sendToServerUseHttpClient(IHttpRequestResponse messageInfo) {
         Runnable sendTo = new Runnable() {
             @Override
             public void run() {
@@ -108,14 +163,13 @@ public class SendToServer extends SendToMenuItem {
                         };
                     }
                     boolean ignoreValidateCertification = ConvertUtil.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
-                    String boundary = HttpUtil.generateBoundary();
                     HttpClient.Builder builder = HttpClient.newBuilder()
                         .version(Version.HTTP_1_1)
                         .followRedirects(Redirect.NORMAL)
                         .connectTimeout(Duration.ofSeconds(10));
 
                     if (ignoreValidateCertification) {
-                        builder.sslContext(HttpUtil.ignoreSSLContext());
+                        builder = builder.sslContext(HttpUtil.ignoreSSLContext());
                     }
 
                     if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
@@ -124,19 +178,19 @@ public class SendToServer extends SendToMenuItem {
                             public void connectFailed(URI uri, SocketAddress sa, IOException ex) {
                                 fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                                 logger.log(Level.SEVERE, ex.getMessage(), ex);
-                            }                            
+                            }
                         };
-                        builder.proxy(staticProxy);
+                        builder = builder.proxy(staticProxy);
                     }
                     if (authenticator != null) {
-                        builder.authenticator(authenticator);
+                        builder = builder.authenticator(authenticator);
                     }
                     try ( ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
+                        String boundary = HttpUtil.generateBoundary();
                         outMultipart(boundary, ostm, messageInfo);
 
                         HttpRequest request = HttpRequest.newBuilder()
                             .uri(URI.create(getTarget())) // 送信先
-                            .timeout(Duration.ofSeconds(10))
                             .header("Content-Type", "multipart/form-data;boundary=" + boundary)
                             .POST(BodyPublishers.ofByteArray(ostm.toByteArray()))
                             .build();
@@ -168,6 +222,13 @@ public class SendToServer extends SendToMenuItem {
             }
         };
         this.threadExecutor.submit(sendTo);
+    }
+
+    protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
+        HttpService httpService = new HttpService(tagetURL);
+        out.write(StringUtil.getBytesRaw(String.format("POST %s HTTP/1.1", tagetURL.getFile()) + HttpUtil.LINE_TERMINATE));
+        out.write(StringUtil.getBytesRaw(String.format("Host: %s", HttpUtil.buildHost(httpService.getHost(), httpService.getPort(), httpService.isHttps())) + HttpUtil.LINE_TERMINATE));
+        out.write(StringUtil.getBytesRaw(String.format("User-Agent: %s", "Java-http-client/BurpSuite") + StringUtil.NEW_LINE));
     }
 
     protected void outMultipart(String boundary, OutputStream out, IHttpRequestResponse messageInfo) throws IOException, Exception {

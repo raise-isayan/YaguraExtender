@@ -9,7 +9,6 @@ import burp.BurpExtender;
 import extension.burp.HighlightColor;
 import extension.helpers.BurpUtil;
 import extension.helpers.StringUtil;
-import extension.view.base.MatchItem;
 import extension.view.layout.VerticalFlowLayout;
 import yagura.model.FilterProperty;
 import java.net.HttpURLConnection;

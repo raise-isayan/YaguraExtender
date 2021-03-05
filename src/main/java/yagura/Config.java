@@ -24,7 +24,7 @@ public class Config extends BurpConfig {
         return ".yaguraextender";
     }
 
-    public static String getExtensionFile() {
+    public static String getExtensionName() {
         return "YaguraExtender.json";
     }
     

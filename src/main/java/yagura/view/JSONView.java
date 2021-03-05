@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtender;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
@@ -29,7 +28,7 @@ public class JSONView extends javax.swing.JPanel {
     private final static Logger logger = Logger.getLogger(JSONView.class.getName());
 
     private final boolean isJsonp;
-    
+
     /**
      * Creates new form JSONView
      */
@@ -45,7 +44,7 @@ public class JSONView extends javax.swing.JPanel {
         initComponents();
         customizeComponents();
     }
-        
+
 //    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
 //        @Override
 //        public Document createDefaultDocument() {
@@ -108,20 +107,20 @@ public class JSONView extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollJSON;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtJSON;        
-    
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtJSON;
+
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
         /*** UI design start ***/
 
-        this.txtJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.txtJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtJSON);
         this.txtJSON.setWrapStyleWord(false);
-                
+
         this.txtJSON.setCodeFoldingEnabled(true);
         this.txtJSON.setClearWhitespaceLinesEnabled(true);
-        this.txtJSON.setHighlightCurrentLine(true);       
+        this.txtJSON.setHighlightCurrentLine(true);
         this.txtJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtJSON.setBackground(SystemColor.text);
         this.txtJSON.setEditable(false);
@@ -133,7 +132,7 @@ public class JSONView extends javax.swing.JPanel {
 //        add(tabbetJSON, java.awt.BorderLayout.CENTER);
 
         /*** UI design end ***/
-        
+
         this.txtJSON.setEditable(false);
         this.txtJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 
@@ -175,7 +174,7 @@ public class JSONView extends javax.swing.JPanel {
 
         if (content != null) {
             if (this.isJsonp) {
-                setMessageJsonp(content);            
+                setMessageJsonp(content);
             }
             else {
                 setMessageJson(content);
@@ -199,7 +198,7 @@ public class JSONView extends javax.swing.JPanel {
             protected void done() {
                 try {
                     txtJSON.setText(get());
-                    txtJSON.setCaretPosition(0);                        
+                    txtJSON.setCaretPosition(0);
                 } catch (InterruptedException ex) {
                     logger.log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
@@ -233,11 +232,11 @@ public class JSONView extends javax.swing.JPanel {
 //                } catch (ExecutionException ex) {
 //                    logger.log(Level.SEVERE, null, ex);
 //                }
-//            }            
+//            }
 //        };
-//        swTree.execute();    
+//        swTree.execute();
     }
-    
+
     private void setMessageJsonp(String content) {
         // Raw
         SwingWorker swRaw = new SwingWorker<JsonpElement, Object>() {
@@ -255,7 +254,7 @@ public class JSONView extends javax.swing.JPanel {
                 try {
                     JsonpElement jsonpElement = get();
                     txtJSON.setText(jsonpElement.pretty());
-                    txtJSON.setCaretPosition(0);                        
+                    txtJSON.setCaretPosition(0);
                 } catch (InterruptedException ex) {
                     logger.log(Level.SEVERE, null, ex);
                 } catch (ExecutionException ex) {
@@ -292,11 +291,11 @@ public class JSONView extends javax.swing.JPanel {
                 } catch (ExecutionException ex) {
                     logger.log(Level.SEVERE, null, ex);
                 }
-            }            
+            }
         };
-        swTree.execute();            
+        swTree.execute();
     }
-    
+
     public String getMessage() {
         return this.txtJSON.getText();
     }

@@ -25,6 +25,8 @@ import yagura.Config;
  */
 public class SendToExtend extends SendToMenuItem {
     private final static Logger logger = Logger.getLogger(SendToExtend.class.getName());
+    public final static String USE_CUSTOM_PROXY = "USE_CUSTOM_PROXY";
+    public final static String USE_BURP_PROXY = "USE_BURP_PROXY";
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private File currentDirectory = new File(Config.getUserHomePath());
@@ -68,14 +70,14 @@ public class SendToExtend extends SendToMenuItem {
             }
             case PASTE_FROM_CLIPBOARD: {
                 try {
-                    // menuItemCaption にエンコーディングが入ってくる                    
+                    // menuItemCaption にエンコーディングが入ってくる
                     byte[] text = BurpExtender.getInstance().receiveFromClipbord(menuItemCaption);
                     if (text != null) {
                         BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), true);
                     }
                     break;
                 } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(SendToExtend.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, null, ex);
                 }
             }
 
@@ -94,7 +96,7 @@ public class SendToExtend extends SendToMenuItem {
             case ADD_TO_EXCLUDE_SCOPE: {
                 BurpExtender.getInstance().sendToAddToExcludeScope(this.contextMenu, messageInfo);
                 break;
-            }    
+            }
             default:
                 // ここには現状こない
                 break;
@@ -168,7 +170,7 @@ public class SendToExtend extends SendToMenuItem {
             logger.log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         javax.swing.JMenuItem item = (javax.swing.JMenuItem)e.getSource();

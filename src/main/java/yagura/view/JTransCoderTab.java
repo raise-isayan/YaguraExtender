@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtender;
 import burp.ITab;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
@@ -274,7 +273,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.spnDatetime.commitEdit();
             date = (Date)this.spnDatetime.getValue();
         } catch (ParseException ex) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
+            logger.log(Level.INFO, null, ex);
         }
         return date;
     }
@@ -289,7 +288,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.spnDateStart.commitEdit();
             date = (Date)this.spnDateStart.getValue();
         } catch (ParseException ex) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
+            logger.log(Level.INFO, null, ex);
         }
         return date;
     }
@@ -304,7 +303,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.spnDateEnd.commitEdit();
             date = (Date)this.spnDateEnd.getValue();
         } catch (ParseException ex) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
+            logger.log(Level.INFO, null, ex);
         }
         return date;
     }
@@ -2944,7 +2943,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             Date date = new Date(java_value);
             this.spnDatetime.setValue(date);
         } catch (ParseException ex) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
+            logger.log(Level.INFO, null, ex);
         }
     }//GEN-LAST:event_txtUnixtimeKeyReleased
 
@@ -2960,7 +2959,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             Date date = new Date(java_value);
             this.spnDatetime.setValue(date);
         } catch (ParseException ex) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
+            logger.log(Level.INFO, null, ex);
         }
     }//GEN-LAST:event_txtJavaSerialKeyReleased
 
@@ -2975,7 +2974,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             Date date = new Date(java_value);
             this.spnDatetime.setValue(date);
         } catch (ParseException ex) {
-            Logger.getLogger(JTransCoderTab.class.getName()).log(Level.INFO, null, ex);
+            logger.log(Level.INFO, null, ex);
         }
     }//GEN-LAST:event_txtExcelSerialKeyReleased
 

@@ -32,7 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
         File logDir = Config.getExtensionHomeDir();
         logDir.mkdirs();
     }
-    
+
     /**
      * Creates new form MainFrame
      */
@@ -105,38 +105,38 @@ public class MainFrame extends javax.swing.JFrame {
     private static LookAndFeelUI currentLookAndFeel = null;
 
     private ButtonGroup lafMenuGroup = new ButtonGroup();
- 
+
     public final OptionProperty option = new OptionProperty();
 
-    private final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
-    
+    private final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionName());
+
     private void customizeComponents() {
         this.setTitle("JTranscoder");
 
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
 //                try {
-//                    option.setJTransCoderProperty(jTransCoder.getProperty());            
+//                    option.setJTransCoderProperty(jTransCoder.getProperty());
 //                    Config.saveToJson(CONFIG_FILE, option);
 //                } catch (IOException ex) {
 //                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
 //                }
-            }        
+            }
         });
 
         this.jTransCoder = new JTransCoderTab();
         this.pnlMain.add(jTransCoder, java.awt.BorderLayout.CENTER);
-        
+
         try {
             if (CONFIG_FILE.exists()) {
-                Config.loadFromJson(CONFIG_FILE, option);        
+                Config.loadFromJson(CONFIG_FILE, option);
             }
             this.jTransCoder.setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE), "UTF-8");
             this.jTransCoder.setProperty(option.getJTransCoderProperty());
         } catch (IOException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.WARNING, null, ex);
+            logger.log(Level.WARNING, null, ex);
         }
-        
+
         UIManager.LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
         for (int i = 0; i < lafInfo.length; i++) {
             createLafMenuItem(this.menuLookAndFeel, new LookAndFeelUI(lafInfo[i].getName(), lafInfo[i].getClassName()));
@@ -171,8 +171,8 @@ public class MainFrame extends javax.swing.JFrame {
             Class lnfClass = Class.forName(lafUI.getClassName());
             LookAndFeel newLAF = (LookAndFeel) (lnfClass.getDeclaredConstructor().newInstance());
             return newLAF.isSupportedLookAndFeel();
-        } catch (Exception ex) { 
-            Logger.getLogger(MainFrame.class.getName()).log(Level.WARNING, null, ex);
+        } catch (Exception ex) {
+            logger.log(Level.WARNING, null, ex);
             return false;
         }
     }
@@ -197,7 +197,7 @@ public class MainFrame extends javax.swing.JFrame {
             UIManager.setLookAndFeel(this.currentLookAndFeel.getClassName());
             SwingUtilities.updateComponentTreeUI(this);
         } catch (Exception ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 

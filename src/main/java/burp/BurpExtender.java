@@ -81,7 +81,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
 
-    private static final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionFile());
+    private static final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionName());
 
     /**
      * ログ設定プロパティファイルのファイル名

@@ -29,7 +29,8 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
-    
+    private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
+
     private final boolean isRequest;
 
     /**
@@ -56,7 +57,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         this.quickSearchTab.setSelectedTextArea((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea());
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.addQuickSearchListener(quickSerchStateChanged);
-        
+
         this.add(jsonView, java.awt.BorderLayout.CENTER);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
@@ -64,7 +65,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     public boolean isJsonp() {
         return false;
     }
-        
+
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
         @Override
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -76,7 +77,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     };
 
     private final QuickSearchListener quickSerchStateChanged = new QuickSearchListener() {
-       
+
         @Override
         public void quickBackPerformed(QuickSearchEvent evt) {
 
@@ -84,11 +85,11 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
         @Override
         public void quickForwardPerformed(QuickSearchEvent evt) {
-            
-        }    
+
+        }
 
     };
-        
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -116,7 +117,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             }
             this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
-            Logger.getLogger(JSONViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -144,7 +145,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             return "JSONP";
         }
         else {
-            return "JSON";        
+            return "JSON";
         }
     }
 
@@ -159,9 +160,9 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             return false;
         }
         if (this.isJsonp()) {
-            return isEnabledJsonp(content, isMessageRequest);        
+            return isEnabledJsonp(content, isMessageRequest);
         }
-        else {    
+        else {
             return isEnabledJson(content, isMessageRequest);
         }
     }
@@ -192,9 +193,9 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             return FormatUtil.isJson(StringUtil.getBytesRawString(body));
         } else {
             return FormatUtil.isJson(StringUtil.getBytesRawString(body));
-        }        
+        }
     }
-        
+
     public boolean isEnabledJsonp(byte[] content, boolean isMessageRequest) {
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
@@ -213,7 +214,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         }
         return FormatUtil.isJsonp(StringUtil.getBytesRawString(body));
     }
-        
+
     private HttpMessage message = null;
 
     @Override
@@ -241,7 +242,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
 
         } catch (ParseException ex) {
-            Logger.getLogger(JSONViewTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -281,5 +282,5 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     public void setLineWrap(boolean lineWrap) {
         this.jsonView.setLineWrap(lineWrap);
     }
-    
+
 }

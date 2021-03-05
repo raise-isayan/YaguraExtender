@@ -7,7 +7,6 @@ import burp.IMessageEditorTabFactory;
 import burp.IResponseInfo;
 import extend.util.external.TransUtil;
 import extension.burp.ResponseInfo;
-import extension.helpers.ConvertUtil;
 import extension.helpers.HttpMessage;
 import extension.helpers.HttpResponse;
 import extension.helpers.StringUtil;
@@ -48,18 +47,18 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 //    };
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollHtmlComment;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHtmlComment;        
-    
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHtmlComment;
+
     private void customizeComponents() {
 
         /*** UI design start ***/
 
-        this.txtHtmlComment = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.txtHtmlComment = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollHtmlComment = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHtmlComment);
         this.txtHtmlComment.setWrapStyleWord(false);
 
         this.txtHtmlComment.setClearWhitespaceLinesEnabled(true);
-        this.txtHtmlComment.setHighlightCurrentLine(true);       
+        this.txtHtmlComment.setHighlightCurrentLine(true);
         this.txtHtmlComment.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtHtmlComment.setBackground(SystemColor.text);
         this.txtHtmlComment.setEditable(false);
@@ -104,8 +103,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
-    
+
+
     public void setMessageFont(Font font) {
         this.txtHtmlComment.setFont(font);
     }
@@ -145,7 +144,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                         }
                     }
                 };
-                swText.execute();                    
+                swText.execute();
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, null, ex);
@@ -256,6 +255,6 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     public void setLineWrap(boolean lineWrap) {
         this.txtHtmlComment.setLineWrap(lineWrap);
     }
-    
-    
+
+
 }

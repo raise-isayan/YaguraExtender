@@ -2,6 +2,10 @@ package extend.util.external;
 
 import extension.helpers.json.JsonUtil;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -38,6 +42,32 @@ public class FormatUtilTest {
      * Test of isURL method, of class FormatUtil.
      */
     @Test
+    public void testURL() {
+        try {
+            System.out.println("URL");
+            String plainURL = "http://example.com:333/aaa/test?aaa#xxxx";
+            URL url = new URL(plainURL);
+            System.out.println(url.getFile());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(FormatUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            System.out.println("URL");
+            String plainURL = "http://example.com/aaa/test?aaa#xxxx";
+            URL url = new URL(plainURL);
+            System.out.println(url.getFile());
+            System.out.println(url.getPort());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(FormatUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+
+    /**
+     * Test of isURL method, of class FormatUtil.
+     */
+    @Test
     public void testIsURL_http() {
         System.out.println("isURL");
         String plainURL = "http://example.com/";
@@ -68,7 +98,7 @@ public class FormatUtilTest {
             String plainURL = "httpsfile://example.com/";
             boolean expResult = false;
             boolean result = FormatUtil.isUrl(plainURL);
-            assertEquals(expResult, result);        
+            assertEquals(expResult, result);
         }
     }
 
@@ -155,7 +185,7 @@ public class FormatUtilTest {
                 fail();
             }
         }
-        
+
         System.out.println("isXML7");
         {
             String plainXML = "<root><a/>\r<<<<\n<x>z</x><z/><z/>\r\n</root>\r\n";
@@ -168,9 +198,9 @@ public class FormatUtilTest {
                 assertTrue(true);
             }
         }
-        
+
     }
-    
+
     /**
      * Test of isJSON method, of class FormatUtil.
      */
@@ -248,7 +278,7 @@ public class FormatUtilTest {
             boolean result = JsonUtil.validJson(plainJson);
             assertEquals(expResult, result);
         }
-        
+
     }
 
     /**
@@ -262,5 +292,5 @@ public class FormatUtilTest {
         String result = FormatUtil.prettyJson(plainJson);
         assertEquals(expResult, result);
     }
-    
+
 }

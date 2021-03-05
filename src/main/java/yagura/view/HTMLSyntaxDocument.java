@@ -1,7 +1,6 @@
 package yagura.view;
 
 import java.util.HashSet;
-import javax.swing.text.PlainDocument;
 
 /**
  *
@@ -263,7 +262,7 @@ public class HTMLSyntaxDocument extends AbstractSyntaxDocument {
         "width",
         "wrap",
         "xmp"};
-    
+
     @Override
     public HashSet<String> getKeywords() {
         final HashSet<String> keywords = new HashSet<>();

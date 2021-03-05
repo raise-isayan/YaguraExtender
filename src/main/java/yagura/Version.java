@@ -40,7 +40,7 @@ public final class Version extends CustomVersion {
     }
 
     private final static String VERSION_INFO_FMT =
-            "Product Version: %s %s\n" +
+            "Product Version: %s v%s\n" +
             "Log Dir: %s\n" +
             "Config Dir: %s\n";
 

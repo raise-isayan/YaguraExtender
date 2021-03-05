@@ -115,8 +115,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
         this.firePropertyChange(TabbetOption.VERSION_PROPERTY, null, this);
     }//GEN-LAST:event_chkDebugModeStateChanged
 
-    private final static FileFilter BURP_CONFIG_FILTER = new FileNameExtensionFilter("burp configファイル(*.json)", "json");
-    private final static FileFilter BURP_LEGACY_CONFIG_FILTER = new FileNameExtensionFilter("burp configファイル(*.bcxml)", "bcxml");
+    private final static FileFilter BURP_CONFIG_FILTER = new FileNameExtensionFilter("burp config File(*.json)", "json");
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         JFileChooser filechooser = new JFileChooser();

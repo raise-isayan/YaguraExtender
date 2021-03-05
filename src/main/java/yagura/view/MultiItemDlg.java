@@ -109,6 +109,7 @@ public class MultiItemDlg extends CustomDialog {
 
     public String[] getMultiLine() {
         String s = this.txtMultiLine.getText();
+        s = s.trim();
         return s.split("\n");
     }
 

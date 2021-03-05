@@ -209,7 +209,7 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkMultiForm">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="multi form"/>
+                    <Property name="text" type="java.lang.String" value="multi form (with target=blank)"/>
                   </Properties>
                 </Component>
               </SubComponents>
