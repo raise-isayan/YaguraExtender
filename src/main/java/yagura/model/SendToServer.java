@@ -94,12 +94,12 @@ public class SendToServer extends SendToMenuItem {
                         ostm.write(StringUtil.getBytesRaw(String.format("Content-Type: %s", "multipart/form-data;boundary=" + boundary) + StringUtil.NEW_LINE));
                         try (ByteArrayOutputStream bodyStream = new ByteArrayOutputStream()) {
                             outMultipart(boundary, bodyStream, messageInfo);
-                            ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
+                            //ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
+                            //ostm.write(StringUtil.getBytesRaw("Connection: close" + StringUtil.NEW_LINE));
                             ostm.write(StringUtil.getBytesRaw(StringUtil.NEW_LINE));
                             ostm.write(bodyStream.toByteArray());
                         }
                         HttpService httpService = new HttpService(tagetURL);
-                        BurpExtender.errPrintln("req:" + StringUtil.getStringRaw(ostm.toByteArray()));
                         IHttpRequestResponse httpRequestResponse = BurpExtender.getCallbacks().makeHttpRequest(httpService, ostm.toByteArray());
                         extension.helpers.HttpResponse response= extension.helpers.HttpResponse.parseHttpResponse(httpRequestResponse.getResponse());
                         int statusCode = response.getStatusCode();
@@ -146,6 +146,7 @@ public class SendToServer extends SendToMenuItem {
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.HTTP, addr);
                         } else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
+                            // https://bugs.openjdk.java.net/browse/JDK-8214516
                             int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
