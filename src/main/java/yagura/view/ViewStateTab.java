@@ -1,6 +1,7 @@
 package yagura.view;
 
 import aspx.viewstate.ViewState;
+import aspx.viewstate.ViewState.Algorithm;
 import aspx.viewstate.ViewStateParser;
 import burp.BurpExtender;
 import burp.IMessageEditorController;
@@ -282,8 +283,11 @@ public class ViewStateTab extends javax.swing.JPanel implements IMessageEditorTa
                             return EXCEPTION_VIEW_STATE_MODEL;
                         }
                         else {
-                            String enabled = viewState.isMacEnabled() ? "[MAC enabled]" :  "[MAC disnabled]";
-                            return new ViewStateModel(viewState, "viewState" + " - " + enabled);
+                            String macState = viewState.isMacEnabled() ? "[MAC enabled]" :  "[MAC disnabled]";
+                            if (viewState.getMacAlgorithm() == Algorithm.HMAC_UNKNOWN) {
+                                macState = "[MAC unknown]";
+                            }
+                            return new ViewStateModel(viewState, "viewState" + " - " + macState);
                         }
                     } catch (IllegalArgumentException ex) {
                         logger.log(Level.INFO, ex.getMessage(), ex);

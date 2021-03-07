@@ -92,10 +92,10 @@ public class ViewStateDecoderTab extends javax.swing.JPanel implements ITab {
         String viewState = this.txtViewState.getText().trim();
         return viewState;
     }
-
-
+    
+    
     private void btnDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecodeActionPerformed
-        String viewStateValue = getViewStateValue();
+        String viewStateValue = getViewStateValue();        
         if (viewStateValue.length() > 0) {
             this.viewStateTab.setViewState(viewStateValue);
         }
@@ -103,7 +103,7 @@ public class ViewStateDecoderTab extends javax.swing.JPanel implements ITab {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         this.txtViewState.setText("");
-        this.viewStateTab.clearViewState();
+        this.viewStateTab.clearViewState();        
     }//GEN-LAST:event_btnClearActionPerformed
 
 
@@ -115,9 +115,9 @@ public class ViewStateDecoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JPanel pnlViewStateTab;
     private javax.swing.JTextArea txtViewState;
     // End of variables declaration//GEN-END:variables
-
+    
     private final ViewStateTab viewStateTab = new ViewStateTab();
-
+    
     private void customizeComponents() {
         this.txtViewState.setWrapStyleWord(false);
         this.pnlViewStateTab.add(this.viewStateTab, BorderLayout.CENTER);
@@ -125,7 +125,7 @@ public class ViewStateDecoderTab extends javax.swing.JPanel implements ITab {
 
     @Override
     public String getTabCaption() {
-        return "ViewState";
+        return "ViewStateDecoder";
     }
 
     @Override

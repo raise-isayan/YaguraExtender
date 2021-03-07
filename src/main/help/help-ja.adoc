@@ -297,8 +297,14 @@ image:images/custom_sendto_server_proxy.png[SendToItem編集 Proxy設定 ダイ�
 
 サーバにチェックされている場合に設定可能となります。
 
+* Use Burp Proxy Settings
+プロキシ設定にBurpの設定を利用します。
+
+* Use Custom Proxy Settings
+プロキシ設定に独自の設定を利用します。
+
 Protocol:: 
-    Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡
+    Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡(SOCKSは現状動作しません)
 
 Host:: 
     Proxyのホストを入力します。
