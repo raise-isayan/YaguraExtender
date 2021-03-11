@@ -59,6 +59,7 @@ public class FormatUtilTest {
             System.out.println(url.getPort());
         } catch (MalformedURLException ex) {
             Logger.getLogger(FormatUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail();
         }
 
     }
@@ -194,6 +195,7 @@ public class FormatUtilTest {
             assertEquals(expResult, result);
             try {
                 FormatUtil.prettyXml(plainXML, false);
+                fail();
             } catch (IOException ex) {
                 assertTrue(true);
             }

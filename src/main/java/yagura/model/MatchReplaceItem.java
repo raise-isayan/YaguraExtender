@@ -2,11 +2,12 @@ package yagura.model;
 
 import com.google.gson.annotations.Expose;
 import extend.util.external.TransUtil;
+import extension.helpers.MatchUtil;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import extension.view.base.MatchItem;
 
-        
+
 /**
  * @author isayan
  */
@@ -35,9 +36,9 @@ public class MatchReplaceItem extends MatchItem {
 
     @Override
     public Pattern compileRegex(boolean quote) {
-        return TransUtil.compileRegex(this.getMatch(), this.isSmartMatch(), !quote, this.isIgnoreCase(), Pattern.MULTILINE);
+        return MatchUtil.compileRegex(this.getMatch(), this.isSmartMatch(), !quote, this.isIgnoreCase(), Pattern.MULTILINE);
     }
-    
+
     /**
      * @param quote
      * @param metachar
@@ -69,7 +70,7 @@ public class MatchReplaceItem extends MatchItem {
     public boolean isSmartMatch() {
         return this.smartMatch;
     }
-    
+
     @Expose
     private boolean metaChar = false;
 
@@ -115,13 +116,13 @@ public class MatchReplaceItem extends MatchItem {
         this.setRegexp(item.isRegexp());
         this.setReplace(item.getReplace());
     }
-    
+
     public void setProperty(MatchReplaceItem item) {
         this.setProperty((MatchItem)item);
         this.setMetaChar(item.isMetaChar());
         this.setSmartMatch(item.isSmartMatch());
     }
-    
+
     public static Object[] toObjects(MatchReplaceItem matchReplace) {
         Object[] beans = new Object[8];
         beans[0] = matchReplace.isSelected();

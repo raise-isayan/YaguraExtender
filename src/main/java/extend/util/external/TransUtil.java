@@ -2,9 +2,9 @@ package extend.util.external;
 
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
+import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.charset.UTF7Charset;
-import extension.view.base.RegexItem;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import java.util.logging.Level;
@@ -38,7 +37,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Comment;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
-import org.mozilla.universalchardet.UniversalDetector;
 
 /**
  * @author isayan
@@ -197,8 +195,6 @@ public class TransUtil {
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
 
-    private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
-    private final static Pattern PTN_B64_URLSAFE = Pattern.compile("([0-9a-zA-Z_\\-])");
     private final static Pattern PTN_UUENCODE = Pattern.compile("begin\\s[0-6]{3}\\s\\w+");
     private final static Pattern PTN_QUOTEDPRINTABLE = Pattern.compile("=([0-9a-fA-F]{2})");
     private final static Pattern PTN_PUNYCODE = Pattern.compile("xn--[0-9a-zA-Z_\\.]+");
@@ -216,10 +212,6 @@ public class TransUtil {
         // 判定の順番は検討の余地あり
         // % Encode
         Matcher mURL = PTN_URL.matcher(value);
-        // base64
-        Matcher m64 = PTN_B64.matcher(value);
-        // base64 UrlSafe
-        Matcher m64_URLSafe = PTN_B64_URLSAFE.matcher(value);
         // uuencode
         Matcher mUUENCODE = PTN_UUENCODE.matcher(value);
         // QuotedPrintable
@@ -269,10 +261,10 @@ public class TransUtil {
         else if (mQUOTEDPRINTABLE.find()) {
             return EncodePattern.QUOTEDPRINTABLE;
         } // Base64 encode match
-        else if (m64.matches()) {
+        else if (MatchUtil.isBase64(value)) {
             return EncodePattern.BASE64;
         } // Base64 URLSafe
-        else if (m64_URLSafe.matches()) {
+        else if (MatchUtil.isBase64URLSafe(value)) {
             return EncodePattern.BASE64_URLSAFE;
         } // Html decode
         else if (mHTML.find()) {
@@ -283,32 +275,6 @@ public class TransUtil {
         }
 
         return null;
-    }
-
-    public static boolean isUrlencoded(String value) {
-        boolean result = true;
-        for (int i = 0; i < value.length(); i++) {
-            char c = value.charAt(i);
-            if (c == '%') {
-                if (i + 2 < value.length()) {
-                    char cl = value.charAt(i+1);
-                    char ch = value.charAt(i+2);
-                    if (!('0' <= cl && cl <= '9' || 'a' <= cl &&  cl <= 'z' || 'A' <= cl &&  cl <= 'Z' && '0' <= ch && ch <= '9' || 'a' <= ch &&  ch <= 'z' || 'A' <= ch &&  ch <= 'Z')) {
-                        result = false;
-                        break;
-                    }
-                }
-                else {
-                    result = false;
-                    break;
-                }
-            }
-            else if (!('0' <= c && c <= '9' || 'a' <= c &&  c <= 'z' || 'A' <= c &&  c <= 'Z' || c == '*' || c == '_' || c == '+' || c == '.' || c == '-')) {
-                result = false;
-                break;
-            }
-        }
-        return result;
     }
 
     public static boolean isBase64Encoded(String value) {
@@ -349,7 +315,7 @@ public class TransUtil {
                         break;
                     case URL_STANDARD:
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = TransUtil.decodeUrl(value, applyCharset);
@@ -369,7 +335,7 @@ public class TransUtil {
                     // Byte Hex
                     case BYTE_HEX:
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toByteDecode(value, applyCharset);
@@ -381,7 +347,7 @@ public class TransUtil {
                     // Byte Hex2
                     case BYTE_HEX2:
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toByteHexDecode(value, applyCharset);
@@ -404,7 +370,7 @@ public class TransUtil {
 //                        break;
                     case BYTE_OCT:
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toByteDecode(value, applyCharset);
@@ -428,7 +394,7 @@ public class TransUtil {
                     // QuotedPrintable
                     case QUOTEDPRINTABLE:
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toUnQuotedPrintable(value, applyCharset);
@@ -446,7 +412,7 @@ public class TransUtil {
                         {
                             value = value.replaceAll("[\r\n]", ""); // 改行削除
                             byte[] bytes = TransUtil.toBase64Decode(value);
-                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = TransUtil.toBase64Decode(value, applyCharset);
@@ -460,7 +426,7 @@ public class TransUtil {
                         {
                             value = value.replaceAll("[\r\n]", ""); // 改行削除
                             byte[] bytes = TransUtil.toBase64URLSafeDecode(value);
-                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = TransUtil.toBase64URLSafeDecode(value, applyCharset);
@@ -474,7 +440,7 @@ public class TransUtil {
                         {
                             value = value.replaceAll("[\r\n]", ""); // 改行削除
                             byte[] bytes = TransUtil.toBase32Decode(value);
-                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = TransUtil.toBase32Decode(value, applyCharset);
@@ -488,7 +454,7 @@ public class TransUtil {
                         {
                             value = value.replaceAll("[\r\n]", ""); // 改行削除
                             byte[] bytes = TransUtil.toBase16Decode(value);
-                            String guessCode = (charset == null) ? getUniversalGuessCode(bytes) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = TransUtil.toBase16Decode(value, applyCharset);
@@ -503,7 +469,7 @@ public class TransUtil {
                         break;
                     case BYTE_HTML:
                         {
-                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                             if (guessCode != null) {
                                 applyCharset = guessCode;
                                 decode = toHtmlDecode(value, applyCharset);
@@ -1390,41 +1356,7 @@ public class TransUtil {
         int length = input.length();
         for (int i = 0; i < length; i++) {
             char c = input.charAt(i);
-            buff.append(toRegexEscape(c));
-        }
-        return buff.toString();
-    }
-
-    /*  . \ + * ? [ ^ ] $ ( ) { } = ! < > | : - */
-    public static String toRegexEscape(char ch) {
-        StringBuilder buff = new StringBuilder();
-        switch (ch) {
-            case '\\':
-            case '.':
-            case '+':
-            case '*':
-            case '?':
-            case '[':
-            case '^':
-            case ']':
-            case '$':
-            case '(':
-            case ')':
-            case '{':
-            case '}':
-            case '=':
-            case '!':
-            case '<':
-            case '>':
-            case '|':
-            case ':':
-            case '-':
-                buff.append('\\');
-                buff.append(ch);
-                break;
-            default:
-                buff.append(ch);
-                break;
+            buff.append(MatchUtil.toRegexEscape(c));
         }
         return buff.toString();
     }
@@ -1755,116 +1687,6 @@ public class TransUtil {
         return value.replaceAll("''", "'");
     }
 
-    public static String toSmartMatch(String value) {
-        try {
-            return toSmartMatch(value, null);
-        } catch (UnsupportedEncodingException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return null;
-    }
-
-    public static String toSmartMatch(String value, String charset) throws UnsupportedEncodingException {
-        StringBuilder buff = new StringBuilder();
-        boolean escape = false;
-        int length = value.length();
-        for (int i = 0; i < length; i = value.offsetByCodePoints(i, 1)) {
-            char ch = value.charAt(i);
-            int code = value.codePointAt(i);
-            buff.append('(');
-            switch (ch) {
-                case '<':
-                case '>':
-                case '&':
-                case '"':
-                    buff.append(toRegexEscape(ch));
-                    buff.append('|');
-                    buff.append(HttpUtil.toHtmlEncode(ch));
-                    break;
-                case '\\': // escape
-                    if (i == length - 1)
-                        buff.append(toRegexEscape(ch));
-                    else
-                        escape = true;
-                    break;
-                case '.':
-                case '+':
-                case '[':
-                case '^':
-                case ']':
-                case '$':
-                case '(':
-                case ')':
-                case '{':
-                case '}':
-                case '=':
-                case '!':
-//                case '<':
-//                case '>':
-                case '|':
-                case ':':
-                case '-':
-                    if (escape) buff.append(toRegexEscape('\\'));
-                    buff.append(toRegexEscape(ch));
-                    escape = false;
-                    break;
-                case '*': // wild card
-                    if (escape)
-                        buff.append(toRegexEscape(ch));
-                    else
-                        buff.append("(?:.*?)");
-                    escape = false;
-                    break;
-                case '?': // wild card
-                    if (escape)
-                        buff.append(toRegexEscape(ch));
-                    else
-                        buff.append('.');
-                    escape = false;
-                    break;
-                default:
-                    if (escape) buff.append(toRegexEscape('\\'));
-                    buff.appendCodePoint(code);
-                    escape = false;
-                    break;
-            }
-            buff.append('|');
-            buff.append(String.format("([\\\\%%]u)%04x", code)); // unicode hex
-            buff.append('|');
-            buff.append(String.format("&#(x%04x|0*%d);", code, code)); // unicode hex,decimal
-            if (charset != null) {
-                buff.append('|');
-                String s = value.substring(i, value.offsetByCodePoints(i, 1));
-                byte decode[] = s.getBytes(charset);
-                for (int k = 0; k < decode.length; k++) {
-                    buff.append(String.format("((\\\\x|%%)0*%x)", 0xff & decode[k])); // byte hex
-                }
-            } else {
-                if (ch <= 0xff) {
-                    buff.append('|');
-                    buff.append(String.format("((\\\\x0*%x|%%%02x))", 0xff & ch, 0xff & ch)); // byte hex
-                }
-            }
-            buff.append(')');
-        }
-        return buff.toString();
-    }
-
-    public static Pattern compileRegex(String text, boolean smartMatch, boolean regexp, boolean ignoreCase, int flags) {
-        if (ignoreCase) {
-            flags |= Pattern.CASE_INSENSITIVE;
-        }
-        Pattern p = RegexItem.compileRegex(text, flags, !regexp);
-        if (smartMatch) {
-            String smartRegex = TransUtil.toSmartMatch(text);
-            p = RegexItem.compileRegex(smartRegex, flags, false);
-        }
-        return p;
-    }
-
-    public static Pattern compileRegex(String text, boolean smartMatch, boolean regexp, boolean ignoreCase) {
-        return compileRegex(text, smartMatch, regexp, ignoreCase, 0);
-    }
 
     /**
      * リストを作成する
@@ -2009,58 +1831,6 @@ public class TransUtil {
         } catch (Exception e2) {
             logger.log(Level.SEVERE, e2.getMessage(), e2);
         }
-    }
-
-    public static String getUniversalGuessCode(byte[] bytes) {
-        return getUniversalGuessCode(bytes, null);
-    }
-
-    /**
-     *
-     * @param bytes 文字コードを調べるデータ
-     * @return 適当と思われるEncoding、判断できなかった時はnull
-     */
-    public static String getUniversalGuessCode(byte[] bytes, String defaultCharset) {
-        String guessCharset = null;
-        ByteArrayInputStream fis = new ByteArrayInputStream(bytes);
-        byte[] buf = new byte[4096];
-        UniversalDetector detector = new UniversalDetector(null);
-        int nread = -1;
-        try {
-            while ((nread = fis.read(buf)) >= 0 && !detector.isDone()) {
-                detector.handleData(buf, 0, nread);
-            }
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        detector.dataEnd();
-        guessCharset = detector.getDetectedCharset();
-        detector.reset();
-        if (guessCharset == null) {
-            guessCharset = defaultCharset;
-        }
-        return normalizeCharset(guessCharset);
-    }
-
-    private final static Map<String, String> CHARSET_ALIAS = new HashMap<>();
-
-    static {
-        // universalchardet unknown support
-        CHARSET_ALIAS.put("UTF-16BE", "UTF-16");
-        CHARSET_ALIAS.put("HZ-GB-23121", "GB2312");
-        CHARSET_ALIAS.put("X-ISO-10646-UCS-4-34121", "UTF-32");
-        CHARSET_ALIAS.put("X-ISO-10646-UCS-4-21431", "UTF-32");
-    }
-
-    public static String normalizeCharset(String charsetName) {
-        String charset = charsetName;
-        String aliasName = CHARSET_ALIAS.get(charsetName);
-        if (aliasName == null) {
-            charset = HttpUtil.normalizeCharset(charsetName);
-        } else {
-            charset = aliasName;
-        }
-        return charset;
     }
 
     public static String[] extractHTMLComments(String message, boolean uniqe) {

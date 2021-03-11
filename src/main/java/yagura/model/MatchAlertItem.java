@@ -7,6 +7,7 @@ import extension.burp.HighlightColor;
 import extension.burp.NotifyType;
 import extension.burp.Severity;
 import extension.burp.TargetTool;
+import extension.helpers.MatchUtil;
 import extension.view.base.MatchItem;
 import java.util.EnumSet;
 import java.util.regex.Pattern;
@@ -25,9 +26,9 @@ public class MatchAlertItem extends MatchItem {
 
     @Override
     public Pattern compileRegex(boolean quote) {
-        return TransUtil.compileRegex(this.getMatch(), this.isSmartMatch(), !quote, this.isIgnoreCase(), Pattern.MULTILINE);
+        return MatchUtil.compileRegex(this.getMatch(), this.isSmartMatch(), !quote, this.isIgnoreCase(), Pattern.MULTILINE);
     }
-    
+
     public static String[] getTypes() {
         return MESSAGE_TYPE;
     }
@@ -42,7 +43,7 @@ public class MatchAlertItem extends MatchItem {
     public boolean isSmartMatch() {
         return this.smartMatch;
     }
-        
+
     @Expose
     private EnumSet<NotifyType> notifyTypes = EnumSet.noneOf(NotifyType.class);
 
@@ -62,7 +63,7 @@ public class MatchAlertItem extends MatchItem {
 
     @Expose
     private EnumSet<TargetTool> targetTools = EnumSet.allOf(TargetTool.class);
-    
+
     /**
      * @return the targetTools
      */
@@ -214,7 +215,7 @@ public class MatchAlertItem extends MatchItem {
         this.setRegexp(item.isRegexp());
         this.setReplace(item.getReplace());
     }
-    
+
     public void setProperty(MatchAlertItem item) {
         this.setProperty((MatchItem)item);
         this.setSmartMatch(item.isSmartMatch());
@@ -226,5 +227,5 @@ public class MatchAlertItem extends MatchItem {
         this.setNotifyTypes(item.getNotifyTypes());
         this.setComment(item.getComment());
     }
-        
+
 }

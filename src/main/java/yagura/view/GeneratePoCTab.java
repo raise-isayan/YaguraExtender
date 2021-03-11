@@ -13,6 +13,7 @@ import extension.burp.HttpService;
 import extension.helpers.HttpRequest;
 import extension.helpers.HttpResponse;
 import extension.helpers.HttpUtil;
+import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import java.awt.Component;
@@ -889,10 +890,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                         }
                         else {
-                            if (TransUtil.isUrlencoded(paramName)) {
+                            if (MatchUtil.isUrlencoded(paramName)) {
                                 paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
                             }
-                            if (TransUtil.isUrlencoded(paramValue)) {
+                            if (MatchUtil.isUrlencoded(paramValue)) {
                                 paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
                             }
                         }
@@ -1056,10 +1057,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                         }
                         else {
-                            if (TransUtil.isUrlencoded(paramName)) {
+                            if (MatchUtil.isUrlencoded(paramName)) {
                                 paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
                             }
-                            if (TransUtil.isUrlencoded(paramValue)) {
+                            if (MatchUtil.isUrlencoded(paramValue)) {
                                 paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
                             }
                         }

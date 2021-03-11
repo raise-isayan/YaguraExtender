@@ -34,6 +34,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import extend.util.external.TransUtil;
 import extension.burp.HighlightColor;
+import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.DefaultObjectTableModel;
 import extension.view.base.NamedColor;
@@ -694,7 +695,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         // all clear
         this.modelSearch.removeAll();
         JSearchProperty searchProp = getProperty();
-        Pattern p = TransUtil.compileRegex(text, searchProp.isSmartMatch(), searchProp.isRegexp(),  searchProp.isIgnoreCase());
+        Pattern p = MatchUtil.compileRegex(text, searchProp.isSmartMatch(), searchProp.isRegexp(),  searchProp.isIgnoreCase());
 
         IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
         try {

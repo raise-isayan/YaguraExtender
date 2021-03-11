@@ -305,10 +305,10 @@ image:images/custom_sendto_server_proxy.png[SendToItem Edit Proxy Settings Dialo
 This setting is only available if the server is checked.
 
 * Use Burp Proxy Settings
-Use Burp settings for proxy settings.
+** Use Burp settings for proxy settings.
 
 * Use Custom Proxy Settings
-Use custom proxy settings.
+** Use custom proxy settings.
 
 Protocol:: 
     protocol of the proxy, HTTP or SOCKS.

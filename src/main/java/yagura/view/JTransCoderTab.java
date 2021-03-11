@@ -40,6 +40,7 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.HashUtil;
 import extension.helpers.HttpUtil;
+import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
@@ -2760,7 +2761,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void btnSmartMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartMatchActionPerformed
         try {
             String enc = (this.chkWithByte.isSelected()) ? this.getSelectEncode() : null;
-            String inputText = TransUtil.toSmartMatch(getInputText(), enc);
+            String inputText = MatchUtil.toSmartMatch(getInputText(), enc);
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException e1) {
             logger.log(Level.SEVERE, null, e1);

@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.text.JTextComponent;
 import extend.util.external.TransUtil;
+import extension.helpers.MatchUtil;
 import extension.view.base.RegexItem;
 import javax.swing.event.EventListenerList;
 import yagura.model.QuickSearchEvent;
@@ -230,7 +231,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     }//GEN-LAST:event_popQuickPopupMenuWillBecomeVisible
 
     private IKeywordHighlighter highlightKeyword;
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnQuckOption;
     private javax.swing.JButton btnQuickBack;
@@ -257,10 +258,10 @@ public class QuickSearchTab extends javax.swing.JPanel {
 
     public void setSelectedTextArea(javax.swing.text.JTextComponent textArea) {
         this.txtTextArea = textArea;
-        this.highlightKeyword = new KeywordHighlighter();        
+        this.highlightKeyword = new KeywordHighlighter();
         this.txtTextArea.setHighlighter(this.highlightKeyword);
     }
-    
+
     public void setSelectedTextArea(org.fife.ui.rtextarea.RTextArea textArea) {
         this.txtTextArea = textArea;
         this.highlightKeyword = new RSyntaxKeywordHighlighter();
@@ -317,7 +318,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
                     && this.ignoreCase == this.mnuIgnoreCase.isSelected()
                     && (this.keyword.equals(searchText)
                     || (this.mnuSmartMatch.isSelected()
-                    && keyword.equals(TransUtil.toSmartMatch(searchText))))) {
+                    && keyword.equals(MatchUtil.toSmartMatch(searchText))))) {
                 high.searchPosition(forward);
             } else {
                 if (isValidRegex(searchText)) {
@@ -372,7 +373,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
             this.regex = this.mnuRegex.isSelected();
             this.ignoreCase = this.mnuIgnoreCase.isSelected();
             if (this.mnuSmartMatch.isSelected()) {
-                this.keyword = TransUtil.toSmartMatch(keyword);
+                this.keyword = MatchUtil.toSmartMatch(keyword);
                 hc.setHighlightKeyword(ta.getDocument(), this.keyword, false, this.ignoreCase, Color.YELLOW);
             } else {
                 this.keyword = keyword;
@@ -394,7 +395,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     public void clearViewAndSearch() {
         clearView();
         this.quickSearchPerformed(true);
-        this.fireForwardPerformedhEvent(newQuickSearchEvent(true));        
+        this.fireForwardPerformedhEvent(newQuickSearchEvent(true));
     }
 
     @SuppressWarnings("unchecked")
@@ -407,7 +408,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     }
 
     private final EventListenerList quickSearchEventList = new EventListenerList();
-        
+
     protected void fireBackPerformedhEvent(QuickSearchEvent evt) {
         Object[] listeners = this.quickSearchEventList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -437,5 +438,5 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private QuickSearchEvent newQuickSearchEvent(boolean clearView) {
         return new QuickSearchEvent(this, this.keyword, this.smartMatch, this.regex, this.ignoreCase, clearView);
     }
-            
+
 }

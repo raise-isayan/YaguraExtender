@@ -27,6 +27,7 @@ import javax.swing.table.TableColumn;
 import extend.util.external.TransUtil;
 import extension.helpers.HttpMessage;
 import extension.helpers.HttpRequest;
+import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
@@ -266,7 +267,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         TableColumn colorColumn = this.tableParams.getColumnModel().getColumn(1);
         colorColumn.setCellEditor(new DefaultCellEditor(this.cmbParamType));
 
-        // Data        
+        // Data
         this.tableParams.getColumnModel().getColumn(0).setMinWidth(0);
         this.tableParams.getColumnModel().getColumn(0).setPreferredWidth(0);
         this.tableParams.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -397,9 +398,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                             final HttpRequest request = HttpRequest.parseHttpRequest(content);
                             HttpMessage httpmessage = request;
                             if (reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
-                                guessCharset = TransUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
+                                guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
                             } else {
-                                guessCharset = TransUtil.getUniversalGuessCode(request.getBodyBytes());
+                                guessCharset = HttpUtil.getUniversalGuessCode(request.getBodyBytes());
                             }
 
                             if (guessCharset == null) {
@@ -423,7 +424,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                         }
                     }
                 };
-                swParam.execute();                    
+                swParam.execute();
 
             }
 

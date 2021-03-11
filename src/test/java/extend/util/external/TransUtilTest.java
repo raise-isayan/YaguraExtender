@@ -4,6 +4,7 @@ import extend.util.external.TransUtil.EncodePattern;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HashUtil;
 import extension.helpers.HttpUtil;
+import extension.helpers.MatchUtil;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
@@ -67,18 +68,6 @@ public class TransUtilTest {
     @Test
     public void testNewLine() {
         System.out.println(TransUtil.newLine("\r\n", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 76));
-    }
-
-    @Test
-    public void testIsUrlencoded() {
-        assertEquals(false, TransUtil.isUrlencoded("あああ"));
-        assertEquals(true, TransUtil.isUrlencoded("%82%a0%82%a2%82%a4%82%a6%82%a8"));
-        assertEquals(true, TransUtil.isUrlencoded("0abcAZz9%23%Ff"));
-        assertEquals(false, TransUtil.isUrlencoded("0abc AZz9"));
-        assertEquals(true, TransUtil.isUrlencoded("0abcAZz9%25"));
-        assertEquals(false, TransUtil.isUrlencoded("<0abcAZz9%25>"));
-        assertEquals(true, TransUtil.isUrlencoded("eyJjb3VudGVyIjozLCJsb25nIjoiNDQzODkxMDkyMTgzNjQ3NzkyMTIzODY2Mzg5MzY0NDk0MTg5ODYzMjczOTA1ODc1OTI2OTkwNDIzMzk1MDM0NzE0MDcwOTk0NjA2ODc3NDUyNjM2OTMyMjUyNzg4OTA1OTgxODU0ODI1MjczNDQxNDA4NzQ3MTM3MTcwODMyODU4OTk2ODU0MjQxMTQxNzIyMDk0NzA1MjIwNTQwMTk4Mzc5NzA3MDU3OTQ0NjQxNTEwMTk4NjQwNjUxMDQ1NjI3NjkwNTc1MDEwODkyMDE3NTIxNTI3MDQxMTg5MDY4MjU1MjkxNjk1NDgwMDQxNTE0NDg1MDc5NDk1Mzg2ODE5NTQ4MTA0ODk1MzU3Nzc0NDU3NTY2NzM0MzI0NTQ0NDI0NjU4NDcxNDgwMTE4Mzk1OTQ5NTQ2Mjk5NjU0NjY0MzE3MTA4MjU3MjA5NTU5NDgwOTczMjQ0MjA2Njg2ODY4ODU2MTUyNzg5NzE1MTU1MDE0MTM5NTYwNTA4MDQxNjcxODY1OTk3NDkyNjM3OTAzNjkxNDYwNjg2OTA5NzA3NzQ5NDU0MjgxNDI1NzEzNzc2NTU2MjA1MjczMjk3MjM2OTYwNjcxMzcxNTAwMDMyNjkxNDA4MDIwNjI4MjU3NzExMDUzODIxOTk1MjAyNjIzMzA1Mjc5MDIwMDQxMzg3ODUyMzA0MTg3ODQyNDI4ODMyMTA5NjU3MTY5NzEzMTU3NTIyMjg0NDUzNzQwNzgyNDg0NjUwMjA0MjM3MTUwODg0MTI1NzE4MzI5ODc5OTMwNjg0MjYxOTk3MjkzNzMzOTM1NTIwNDg3OTQ4ODg1NDUwOTE2ODYxNDczNDg0MTg2Nzc0NjMxNjIwMTgzMDk1MjQ0ODY1MjUwNjA3MDIxOTM5NzcyMzA0ODMyNzY1NTkzNDEyMTEzOTQ1MzU0MzY2MTA1OTY4NjM3OTQyOTA1NjM2MTI1NDg5NTc4OTczNzU5Mjg5OTg1MTg4NTY1NzMwOTIzMjg2NTU3OTk0ODU3MzM2ODAwNDk3Nzc4NDYzNzYyMzg3MTA4NDc2ODkzMDU4Mjc5MDMyODg2ODA5NDcyNjc4NDMzMTk1NjM5ODEwNzc1MzM0NDQwNDQ0OTgyMzk4NzU2MzYwNjQ3MDQ5NTA4NjUxMTM5MjA4NDQ1OTY4OTkxNjA5MzY2MDIyOTIwNjgxMTY3MjUxNjY5MjI5NjYzODA5NTkyNDgxNDUxNTEyNjU3NjMzOTM4MDgyNTk4OTIyNTczNDg3MDA4MjA0OTM5ODY1NjU4NjY4MjUwMjQ4MjE2MzYxNDY4NDY5NjEwOTc3OTgwMzMwMzA2OSJ9Cg%3d%3d"));
-        assertEquals(true, TransUtil.isUrlencoded("JTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmJTAxJTAyJTAzJTA0JTA1JTA2JTA3JTA4JTA5JTBhJTBiJTBjJTBkJTBlJTBmJTEwJTExJTEyJTEzJTE0JTE1JTE2JTE3JTE4JTE5JTFhJTFiJTFjJTFkJTFlJTFmJTIwJTIxJTIyJTIzJTI0JTI1JTI2JTI3JTI4JTI5JTJhJTJiJTJjJTJkJTJlJTJmJTMwJTMxJTMyJTMzJTM0JTM1JTM2JTM3JTM4JTM5JTNhJTNiJTNjJTNkJTNlJTNmJTQwJTQxJTQyJTQzJTQ0JTQ1JTQ2JTQ3JTQ4JTQ5JTRhJTRiJTRjJTRkJTRlJTRmJTUwJTUxJTUyJTUzJTU0JTU1JTU2JTU3JTU4JTU5JTVhJTViJTVjJTVkJTVlJTVmJTYwJTYxJTYyJTYzJTY0JTY1JTY2JTY3JTY4JTY5JTZhJTZiJTZjJTZkJTZlJTZmJTcwJTcxJTcyJTczJTc0JTc1JTc2JTc3JTc4JTc5JTdhJTdiJTdjJTdkJTdlJTdmJTgwJTgxJTgyJTgzJTg0JTg1JTg2JTg3JTg4JTg5JThhJThiJThjJThkJThlJThmJTkwJTkxJTkyJTkzJTk0JTk1JTk2JTk3JTk4JTk5JTlhJTliJTljJTlkJTllJTlmJWEwJWExJWEyJWEzJWE0JWE1JWE2JWE3JWE4JWE5JWFhJWFiJWFjJWFkJWFlJWFmJWIwJWIxJWIyJWIzJWI0JWI1JWI2JWI3JWI4JWI5JWJhJWJiJWJjJWJkJWJlJWJmJWMwJWMxJWMyJWMzJWM0JWM1JWM2JWM3JWM4JWM5JWNhJWNiJWNjJWNkJWNlJWNmJWQwJWQxJWQyJWQzJWQ0JWQ1JWQ2JWQ3JWQ4JWQ5JWRhJWRiJWRjJWRkJWRlJWRmJWUwJWUxJWUyJWUzJWU0JWU1JWU2JWU3JWU4JWU5JWVhJWViJWVjJWVkJWVlJWVmJWYwJWYxJWYyJWYzJWY0JWY1JWY2JWY3JWY4JWY5JWZhJWZiJWZjJWZkJWZlJWZmCg%3d%3d"));
     }
 
     @Test
@@ -262,10 +251,10 @@ public class TransUtilTest {
     public void toLocalDate() {
         for (int i = -12; i <= 12; i++) {
             ZoneOffset offset = ZoneOffset.ofHours(i);
-            System.out.println("x:" + i + " " +  offset.getId());        
+            System.out.println("x:" + i + " " +  offset.getId());
         }
     }
-        
+
     /**
      * Test of toSmartDecode method, of class TransUtil.
      */
@@ -517,18 +506,18 @@ public class TransUtilTest {
     @Test
     public void testToByteArrayJsEncode() {
         System.out.println("toByteHexEncode");
-//        byte [] b1 = new byte[] {(byte)0x0a, (byte)0x0f, (byte)0x25, (byte)0xff}; 
+//        byte [] b1 = new byte[] {(byte)0x0a, (byte)0x0f, (byte)0x25, (byte)0xff};
 //        assertEquals("[0x0a,0x0f,0x25,0xff]", TransUtil.toByteArrayJsEncode(b1, false));
-//        byte [] b2 = new byte[] {}; 
+//        byte [] b2 = new byte[] {};
 //        assertEquals("[]", TransUtil.toByteArrayJsEncode(b2, false));
-//        byte [] b3 = new byte[] {(byte)0x00}; 
+//        byte [] b3 = new byte[] {(byte)0x00};
 //        assertEquals("[0x00]", TransUtil.toByteArrayJsEncode(b3, false));
 //
-//        byte [] b11 = new byte[] {(byte)0x0a, (byte)0x0f, (byte)0x25, (byte)0xff}; 
+//        byte [] b11 = new byte[] {(byte)0x0a, (byte)0x0f, (byte)0x25, (byte)0xff};
 //        assertEquals("[0X0A,0X0F,0X25,0XFF]", TransUtil.toByteArrayJsEncode(b11, true));
-//        byte [] b12 = new byte[] {}; 
+//        byte [] b12 = new byte[] {};
 //        assertEquals("[]", TransUtil.toByteArrayJsEncode(b12, true));
-//        byte [] b13 = new byte[] {(byte)0x00}; 
+//        byte [] b13 = new byte[] {(byte)0x00};
 //        assertEquals("[0X00]", TransUtil.toByteArrayJsEncode(b13, true));
     }
 
@@ -666,7 +655,7 @@ public class TransUtilTest {
         assertEquals("abcdefghi\tIJK", TransUtil.decodeJsLangMeta("\\u0061bcdefghi\\u0009I\\u004A\\u004b"));
         assertEquals("あいうえお", TransUtil.decodeJsLangMeta("\\u3042\\u3044\\u3046\\u3048\\u304a"));
         assertEquals("あ\r\nいうえお", TransUtil.decodeJsLangMeta("\\u3042\\r\\n\\u3044\\u3046\\u3048\\u304a"));
-        // regexp        
+        // regexp
         assertEquals("\\$1", Matcher.quoteReplacement(TransUtil.decodeJsLangMeta("$1")));
         assertEquals("\\\\\\$1", Matcher.quoteReplacement(TransUtil.decodeJsLangMeta("\\$1")));
         assertEquals("\r\\\\\\$1", Matcher.quoteReplacement(TransUtil.decodeJsLangMeta("\\r\\$1")));
@@ -703,196 +692,6 @@ public class TransUtilTest {
         System.out.println("testSQLLangQuote");
         assertEquals("\\123\'\'456\\", TransUtil.encodeSQLLangQuote("\\123\'456\\"));
         assertEquals("\\123\'456\\", TransUtil.decodeSQLangQuote("\\123\'\'456\\"));
-    }
-
-    /**
-     * Test of ToSmartMatch method, of class TransUtil.
-     */
-    @Test
-    public void testToSmartMatch() {
-        System.out.println("ToSmartMatch");
-        {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%21%22%23%24%25%26%27%28%29%3d%2d%5e%7e%5c%7c%40%7b%7d%3a%2a%3b%2b%3f%5f%3c%3e%2c%2e%2f").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%u0021%u0022%u0023%u0024%u0025%u0026%u0027%u0028%u0029%u003d%u002d%u005e%u007e%u005c%u007c%u0040%u007b%u007d%u003a%u002a%u003b%u002b%u003f%u005f%u003c%u003e%u002c%u002e%u002f").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("!&quot;#$%&amp;&#39;()=-^~\\|@{}:*;+?_&lt;&gt;,./").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("\\u0021\\u0022\\u0023\\u0024\\u0025\\u0026\\u0027\\u0028\\u0029\\u003d\\u002d\\u005e\\u007e\\u005c\\u007c\\u0040\\u007b\\u007d\\u003a\\u002a\\u003b\\u002b\\u003f\\u005f\\u003c\\u003e\\u002c\\u002e\\u002f").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
-        }
-        /* wild card */
-        {
-            String regex = TransUtil.toSmartMatch("a?a");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("aXa").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("a?a??b???c");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("aXaYYbZZZc").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("a?a??bc?");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("aXaYYbcZ").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("*aa");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("XYZaa").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("a*a");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("aa").matches());
-            assertTrue(p.matcher("aXa").matches());
-            assertTrue(p.matcher("aXYa").matches());
-            assertTrue(p.matcher("aXYZa").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("aa*");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("aaXYZ").matches());
-        }
-        /* wild card escape */
-        {
-            String regex = TransUtil.toSmartMatch("a\\?a");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("a?a").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("a\\?a\\??b?\\??c");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("a?a?YbZ?Zc").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("a?a\\");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("aZa\\").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("a\\*a");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("a*a").matches());
-        }
-        {
-            String regex = TransUtil.toSmartMatch("a*a\\");
-            Pattern p = Pattern.compile(regex);
-            assertTrue(p.matcher("aXa\\").matches());
-        }
-        
-        
-    }
-
-    /**
-     * Test of ToSmartMatch_charset method, of class TransUtil.
-     */
-    @Test
-    public void testToSmartMatch_charset() {
-        System.out.println("ToSmartMatch_charset");
-        try {
-            {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%21%22%23%24%25%26%27%28%29%3d%2d%5e%7e%5c%7c%40%7b%7d%3a%2a%3b%2b%3f%5f%3c%3e%2c%2e%2f").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%u0021%u0022%u0023%u0024%u0025%u0026%u0027%u0028%u0029%u003d%u002d%u005e%u007e%u005c%u007c%u0040%u007b%u007d%u003a%u002a%u003b%u002b%u003f%u005f%u003c%u003e%u002c%u002e%u002f").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("!&quot;#$%&amp;&#39;()=-^~\\|@{}:*;+?_&lt;&gt;,./").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("\\u0021\\u0022\\u0023\\u0024\\u0025\\u0026\\u0027\\u0028\\u0029\\u003d\\u002d\\u005e\\u007e\\u005c\\u007c\\u0040\\u007b\\u007d\\u003a\\u002a\\u003b\\u002b\\u003f\\u005f\\u003c\\u003e\\u002c\\u002e\\u002f").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e!\"#$%&'()=-^~\\|@{}:*;+?_<>,./").matches());
-            }
-            {
-                String regex = TransUtil.toSmartMatch("<script>alert(/0/)</script>!\"#$%&'()=-^~\\|@{}:*;+?_<>,./", "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher("%3c%73%63%72%69%70%74%3e%61%6c%65%72%74%28%2f%30%2f%29%3c%2f%73%63%72%69%70%74%3e\\x21\\x22\\x23\\x24\\x25\\x26\\x27\\x28\\x29\\x3d\\x2d\\x5e\\x7e\\x5c\\x7c\\x40\\x7b\\x7d\\x3a\\x2a\\x3b\\x2b\\x3f\\x5f\\x3c\\x3e\\x2c\\x2e\\x2f").matches());
-            }
-            {
-                String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-                String regex = TransUtil.toSmartMatch(expValue, "UTF-8");
-                Pattern p = Pattern.compile(regex);
-                assertTrue(p.matcher(expValue).matches());
-            }
-            {
-                String expValue = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-                char[] ch = expValue.toCharArray();
-                for (char c : ch) {
-                    String regex = TransUtil.toSmartMatch(Character.toString(c), "UTF-8");
-                    Pattern p = Pattern.compile(regex);
-                    System.out.println("ch:" + Character.toString(c));
-                    assertTrue(p.matcher(Character.toString(c)).matches());
-                }
-            }
-
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            assertTrue(false);
-        }
     }
 
     /**
@@ -1015,141 +814,6 @@ public class TransUtilTest {
         System.out.println(sb.toString());
     }
 
-    /**
-     */
-    @Test
-    public void testGetUniversalGuessCode() {
-        System.out.println("testGetUniversalGuessCode");
-        {
-            try {
-                assertEquals("US-ASCII", TransUtil.getUniversalGuessCode("0123456ABCDEF".getBytes("UTF-8"), "US-ASCII"));
-                assertEquals("Shift_JIS", TransUtil.getUniversalGuessCode("入口入口入口入口".getBytes("Shift_JIS")));
-                assertEquals("EUC-JP", TransUtil.getUniversalGuessCode("入口入口入口入口".getBytes("EUC-JP")));
-                assertEquals("UTF-8", TransUtil.getUniversalGuessCode("入口入口入口入口".getBytes("UTF-8")));
-//                assertEquals("UTF-16", TransUtil.getUniversalGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16BE")));
-//                assertEquals("UTF-16", TransUtil.getUniversalGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16LE"))); // UTF-16LE になるのがベスト
-                assertEquals("UTF-16", TransUtil.getUniversalGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16")));
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        {
-            try {
-                String expResult = "Shift_JIS";
-                String expValue = "あいうえお";
-                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("Shift_JIS"), "UTF-8");
-                assertEquals(expResult, guessCharset);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        {
-            try {
-                String expResult = "Shift_JIS";
-                String expValue = "①②③④⑤⑥⑦ⅩⅨあいうえおかきくけこ";
-                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("MS932"), "UTF-8");
-                assertEquals(expResult, guessCharset);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        {
-            try {
-                String expResult = "EUC-JP";
-                String expValue = "あいうえお";
-                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("EUC-JP"), "UTF-8");
-                assertEquals(expResult, guessCharset);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        {
-            try {
-                String expResult = "ISO-2022-JP";
-                String expValue = "あいうえお";
-                String guessCharset = TransUtil.getUniversalGuessCode(expValue.getBytes("ISO-2022-JP"), "UTF-8");
-                assertEquals(expResult, guessCharset);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-    }
-
-    /**
-     */
-    @Test
-    public void testUniversalCharCode() {
-        System.out.println("testUniversalCharCode");
-        // Chinese
-        String[] list = {
-            "ISO-2022-CN",
-            "BIG5",
-            "EUC-TW",
-            "GB18030",
-            "HZ-GB-23121",
-            // Cyrillic
-            "ISO-8859-5",
-            "KOI8-R",
-            "WINDOWS-1251",
-            // MACCYRILLIC
-            "IBM866",
-            "IBM855",
-            // Greek
-            "ISO-8859-7",
-            "WINDOWS-1253",
-            // Hebrew
-            "ISO-8859-8",
-            "WINDOWS-1255",
-            // Japanese
-            "ISO-2022-JP",
-            "SHIFT_JIS",
-            "EUC-JP",
-            // Korean
-            "ISO-2022-KR",
-            "EUC-KR",
-            // Unicode
-            "UTF-8",
-            "UTF-16BE",
-            "UTF-16LE",
-            "UTF-32BE",
-            "UTF-32LE",
-            "X-ISO-10646-UCS-4-34121", // unk
-            "X-ISO-10646-UCS-4-21431", // unk
-            // Others
-            "WINDOWS-1252",};
-        for (String l : list) {
-            String normChar = HttpUtil.normalizeCharset(l);
-            if (normChar == null) {
-                System.out.println("unk=" + l);
-
-            } else {
-                if (l.compareToIgnoreCase(normChar) != 0) {
-                    System.out.println(l + "=" + normChar);
-                }
-            }
-
-        }
-
-    }
-
-    @Test
-    public void testLocale() {
-        System.out.println(Locale.JAPANESE.toString());
-        System.out.println(Locale.JAPANESE.getCountry());
-        System.out.println(Locale.JAPANESE.getDisplayLanguage());
-        System.out.println(Locale.JAPANESE.getDisplayName());
-        System.out.println(Locale.JAPANESE.toLanguageTag());
-        System.out.println(Locale.JAPANESE.getISO3Language());
-        System.out.println(Locale.JAPANESE.getLanguage());
-        System.out.println(Locale.JAPANESE.getDisplayScript());
-        System.out.println(Locale.JAPANESE.getVariant());
-        System.out.println(Locale.JAPANESE.toLanguageTag());
-    }
 
     @Test
     public void testToRegexEscape() {
@@ -1158,14 +822,13 @@ public class TransUtilTest {
         char[] ch = expValue.toCharArray();
         try {
             for (char c : ch) {
-                String regex = TransUtil.toRegexEscape(c);
+                String regex = MatchUtil.toRegexEscape(c);
                 Pattern ptn = Pattern.compile(regex);
                 assertTrue(ptn.matcher(Character.toString(c)).matches());
             }
         } catch (java.util.regex.PatternSyntaxException ex) {
             fail("toRegexEscape");
         }
-
     }
 
     @Test
@@ -1201,29 +864,29 @@ public class TransUtilTest {
         {
             BigDecimal bd = new BigDecimal("44202.782396"); // 2021/01/06 18:46:39 +09:00
             long unix_time = TransUtil.toEpochSecond(bd);
-            assertEquals(unix_time, 1609958799L - 60 * 60 * 9);            
+            assertEquals(unix_time, 1609958799L - 60 * 60 * 9);
             LocalDateTime ztm = LocalDateTime.ofEpochSecond(unix_time, 0, ZoneOffset.ofHours(9));
             assertEquals(ztm.getYear(), 2021);
             assertEquals(ztm.getMonthValue(), 1);
-            assertEquals(ztm.getDayOfMonth(), 6);            
+            assertEquals(ztm.getDayOfMonth(), 6);
             assertEquals(ztm.getHour(), 18);
             assertEquals(ztm.getMinute(), 46);
-            assertEquals(ztm.getSecond(), 39);            
+            assertEquals(ztm.getSecond(), 39);
             //System.out.println("toDate:" + Date.from(ztm.toInstant()));
         }
         {
             long unix_time = 1609958799L - 60 * 60 * 9;
             BigDecimal bd = TransUtil.toExcelSerial(unix_time);
-            System.out.println(bd.toPlainString());        
-            assertEquals(bd.toPlainString(), "44202.782396");            
+            System.out.println(bd.toPlainString());
+            assertEquals(bd.toPlainString(), "44202.782396");
         }
         {
             Calendar cal = Calendar.getInstance();
 //            cal.getTimeZone().
 //            long unix_time = 1609958799L;
 //            BigDecimal bd = TransUtil.toExcelSerial(unix_time);
-//            System.out.println(bd.toPlainString());        
-//            assertEquals(bd.toPlainString(), "44202.782396");            
+//            System.out.println(bd.toPlainString());
+//            assertEquals(bd.toPlainString(), "44202.782396");
         }
     }
 
@@ -1233,8 +896,6 @@ public class TransUtilTest {
         StringBuilder b = new StringBuilder();
         b.append((String)null);
         System.out.println("append:" + b.toString());
-        
-
     }
-    
+
 }
