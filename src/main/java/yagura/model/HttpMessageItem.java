@@ -225,7 +225,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
                 }
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return charset;
     }
@@ -242,7 +242,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
             System.out.println(String.format("[%d].getHighlight=%s", ordinal, this.getHighlight()));
             System.out.println(String.format("[%d].getStatusCode=%d", ordinal, this.getStatusCode()));
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -254,7 +254,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
                 mimeType = res.getContentMimeType();
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return mimeType;
     }
@@ -271,7 +271,7 @@ public class HttpMessageItem implements IHttpRequestResponse {
             this.setPort(httpService.getPort());
             this.setProtocol(httpService.getProtocol());
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

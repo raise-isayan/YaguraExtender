@@ -4,6 +4,7 @@ import burp.BurpExtender;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import extend.util.external.TransUtilTest;
 import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.HighlightColor;
 import extension.burp.NotifyType;
@@ -31,7 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -49,6 +50,7 @@ import yagura.model.UniversalViewProperty.UniversalView;
  * @author isayan
  */
 public class ConfigTest {
+    private final static Logger logger = Logger.getLogger(ConfigTest.class.getName());
 
     public ConfigTest() {
     }
@@ -92,9 +94,11 @@ public class ConfigTest {
             String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
         } catch (IOException ex) {
-            Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            fail(ex.getMessage());
         } catch (URISyntaxException ex) {
-            Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            fail(ex.getMessage());
         }
 
     }
@@ -116,7 +120,8 @@ public class ConfigTest {
             prop.storeToXML(bstm, "");
             System.out.println(bstm.toString(StandardCharsets.ISO_8859_1.name()));
         } catch (IOException ex) {
-            Logger.getLogger(ConfigTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            fail(ex.getMessage());
         }
     }
 

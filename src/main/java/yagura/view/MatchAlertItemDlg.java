@@ -12,6 +12,7 @@ import yagura.model.MatchAlertItem;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.util.EnumSet;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
@@ -409,13 +410,13 @@ public class MatchAlertItemDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (InstantiationException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IllegalAccessException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         //</editor-fold>
         //</editor-fold>

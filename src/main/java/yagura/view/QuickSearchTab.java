@@ -15,7 +15,6 @@ import java.util.TimerTask;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.text.JTextComponent;
-import extend.util.external.TransUtil;
 import extension.helpers.MatchUtil;
 import extension.view.base.RegexItem;
 import javax.swing.event.EventListenerList;
@@ -340,7 +339,6 @@ public class QuickSearchTab extends javax.swing.JPanel {
                     public void run() {
                         lblMatch.setBackground(null);
                         lblMatch.setOpaque(false);
-                        timer.cancel();
                     }
                 };
                 timer.schedule(task, 1000);

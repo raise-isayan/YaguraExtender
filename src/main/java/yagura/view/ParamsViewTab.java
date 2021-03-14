@@ -414,27 +414,20 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
                             textModified = false;
 
                         } catch (InterruptedException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         } catch (ExecutionException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         } catch (ParseException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         } catch (UnsupportedEncodingException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 };
                 swParam.execute();
-
             }
 
         }
-//        try {
-//        } catch (ParseException ex) {
-//            logger.log(Level.SEVERE, null, ex);
-//        } catch (UnsupportedEncodingException ex) {
-//            logger.log(Level.SEVERE, null, ex);
-//        }
     }
 
     @Override

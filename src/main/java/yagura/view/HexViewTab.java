@@ -205,10 +205,10 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 hexmod[17] = hexText;
                 this.modelHex.addRow(hexmod);
             }
-        } catch (UnsupportedEncodingException e1) {
-            logger.log(Level.SEVERE, null, e1);
-        } catch (Exception e2) {
-            logger.log(Level.SEVERE, null, e2);
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

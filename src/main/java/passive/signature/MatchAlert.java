@@ -7,13 +7,13 @@ import burp.IHttpService;
 import burp.IRequestInfo;
 import burp.IScanIssue;
 import burp.IScannerCheck;
+import extension.burp.ScannerCheckAdapter;
 import extension.burp.Severity;
 import extension.helpers.HttpUtil;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import passive.IssueItem;
-import passive.PassiveCheckAdapter;
 import passive.SignatureItem;
 import yagura.model.MatchAlertProperty;
 
@@ -123,7 +123,7 @@ public class MatchAlert extends SignatureItem<IssueItem> {
 
     @Override
     public IScannerCheck passiveScanCheck() {
-        return new PassiveCheckAdapter();
+        return new ScannerCheckAdapter();
     }
 
     public List<IScanIssue> makeIssueList(boolean messageIsRequest, IHttpRequestResponse baseRequestResponse, List<IssueItem> markIssueList) {

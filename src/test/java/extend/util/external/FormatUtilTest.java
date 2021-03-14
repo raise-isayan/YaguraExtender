@@ -18,6 +18,7 @@ import static org.junit.Assert.*;
  * @author isayan
  */
 public class FormatUtilTest {
+    private final static Logger logger = Logger.getLogger(FormatUtilTest.class.getName());
 
     public FormatUtilTest() {
     }
@@ -49,7 +50,8 @@ public class FormatUtilTest {
             URL url = new URL(plainURL);
             System.out.println(url.getFile());
         } catch (MalformedURLException ex) {
-            Logger.getLogger(FormatUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            fail();
         }
         try {
             System.out.println("URL");
@@ -58,7 +60,7 @@ public class FormatUtilTest {
             System.out.println(url.getFile());
             System.out.println(url.getPort());
         } catch (MalformedURLException ex) {
-            Logger.getLogger(FormatUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             fail();
         }
 

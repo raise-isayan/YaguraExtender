@@ -63,7 +63,7 @@ public class RSyntaxKeywordHighlighter extends org.fife.ui.rsyntaxtextarea.RSynt
             Pattern p = RegexItem.compileRegex(keyword, flags, quote);
             this.setHighlight(doc, p, color);
         } catch (BadLocationException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -184,5 +184,5 @@ public class RSyntaxKeywordHighlighter extends org.fife.ui.rsyntaxtextarea.RSynt
             }
         }
     }
-        
+
 }

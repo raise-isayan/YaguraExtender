@@ -82,13 +82,13 @@ public class MainFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (InstantiationException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IllegalAccessException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+       } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         //</editor-fold>
 
@@ -197,7 +197,7 @@ public class MainFrame extends javax.swing.JFrame {
             UIManager.setLookAndFeel(this.currentLookAndFeel.getClassName());
             SwingUtilities.updateComponentTreeUI(this);
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

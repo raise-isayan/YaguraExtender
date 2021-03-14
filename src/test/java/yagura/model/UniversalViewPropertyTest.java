@@ -1,6 +1,5 @@
 package yagura.model;
 
-import extension.burp.NotifyType;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;

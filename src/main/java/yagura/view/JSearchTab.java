@@ -766,7 +766,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 }
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } finally {
             this.cancel = false;
             this.querying = false;

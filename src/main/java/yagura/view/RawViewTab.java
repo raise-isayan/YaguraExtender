@@ -72,19 +72,19 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollURaw;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtURaw;    
-    
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtURaw;
+
     private void customizeComponents() {
 
         /*** UI design start ***/
 
-        this.txtURaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.txtURaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollURaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtURaw);
         this.txtURaw.setWrapStyleWord(false);
-        
+
         this.txtURaw.setCodeFoldingEnabled(true);
         this.txtURaw.setClearWhitespaceLinesEnabled(true);
-        this.txtURaw.setHighlightCurrentLine(true);       
+        this.txtURaw.setHighlightCurrentLine(true);
         this.txtURaw.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtURaw.setBackground(SystemColor.text);
         this.txtURaw.setEditable(false);
@@ -165,7 +165,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 //                txtURaw.setText(StringUtil.getStringCharset(content, encoding));
 //                txtURaw.setCaretPosition(0);
 //                quickSearchTab.clearViewAndSearch();
-               
+
                 SwingWorker swText = new SwingWorker<String, Object>() {
                     @Override
                     protected String doInBackground() throws Exception {
@@ -185,16 +185,16 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                             quickSearchTab.clearViewAndSearch();
                             // quickSearchTab.clearView();
                         } catch (InterruptedException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         } catch (ExecutionException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 };
                 swText.execute();
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -211,7 +211,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     public Component getMessageComponent() {
         return this.txtURaw;
     }
-    
+
     @Override
     public boolean isEnabled(byte[] content, boolean isRequest) {
         if (content == null || content.length == 0) {
@@ -236,7 +236,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     }
 
     private final static Map<String, String> CODE_MAP = new HashMap<>();
-    
+
     static {
         CODE_MAP.put("text/css", SyntaxConstants.SYNTAX_STYLE_CSS);
         CODE_MAP.put("tex/javascript", SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
@@ -248,16 +248,16 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         CODE_MAP.put("text/xml", SyntaxConstants.SYNTAX_STYLE_XML);
         CODE_MAP.put("application/xml", SyntaxConstants.SYNTAX_STYLE_XML);
     }
-    
+
     public static String getSyntaxEditingStyle(String mimeType) {
         if (mimeType != null) {
-            return CODE_MAP.getOrDefault(mimeType.toLowerCase(), SyntaxConstants.SYNTAX_STYLE_HTML);    
+            return CODE_MAP.getOrDefault(mimeType.toLowerCase(), SyntaxConstants.SYNTAX_STYLE_HTML);
         }
         else {
             return SyntaxConstants.SYNTAX_STYLE_HTML;
         }
     }
-        
+
     private byte[] content = null;
 
     @Override
@@ -296,7 +296,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
                 this.textModified = false;
             }
         } catch (ParseException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -350,5 +350,5 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     public void setLineWrap(boolean lineWrap) {
         this.txtURaw.setLineWrap(lineWrap);
     }
-        
+
 }

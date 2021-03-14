@@ -1,6 +1,7 @@
 package yagura.view;
 
 import extension.view.base.CustomDialog;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import yagura.model.MatchReplaceItem;
 import javax.swing.JOptionPane;
@@ -258,13 +259,13 @@ public class MatchReplaceItemDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (InstantiationException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IllegalAccessException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         //</editor-fold>
         //</editor-fold>

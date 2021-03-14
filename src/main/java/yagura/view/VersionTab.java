@@ -128,7 +128,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 File file = filechooser.getSelectedFile();
                 Config.loadFromJson(file, BurpExtender.getInstance().getProperty());
             } catch (IOException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
         this.firePropertyChange(TabbetOption.LOAD_CONFIG_PROPERTY, null, this);
@@ -148,7 +148,7 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 }
                 Config.saveToJson(file, BurpExtender.getInstance().getProperty());
             } catch (IOException ex) {
-                logger.log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
 

@@ -117,7 +117,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             }
             this.quickSearchTab.clearViewAndSearch();
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -242,7 +242,7 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
 
         } catch (ParseException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

@@ -37,7 +37,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
 
     private JWTToken jwtinstance = new JWTToken();
-    
+
     private IMessageEditorController controller = null;
 
     private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
@@ -67,28 +67,28 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 //    private final JSONView jsonPayloadView = new JSONView();
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;        
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollPayloadJSON;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;        
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;        
-    
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
+
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
         /*** UI design start ***/
 
         /* Header */
-        
-        this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+
+        this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
         this.txtHeaderJSON.setWrapStyleWord(false);
 
         this.txtHeaderJSON.setCodeFoldingEnabled(true);
         this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
-        this.txtHeaderJSON.setHighlightCurrentLine(false);       
+        this.txtHeaderJSON.setHighlightCurrentLine(false);
         this.txtHeaderJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtHeaderJSON.setBackground(SystemColor.text);
         this.txtHeaderJSON.setEditable(false);
@@ -100,14 +100,14 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.pnlHeader.add(this.scrollHeaderJSON, java.awt.BorderLayout.CENTER);
 
         /* Payload */
-        
-        this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+
+        this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
         this.txtPayloadJSON.setWrapStyleWord(false);
-        
+
         this.txtPayloadJSON.setCodeFoldingEnabled(true);
         this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
-        this.txtPayloadJSON.setHighlightCurrentLine(false);       
+        this.txtPayloadJSON.setHighlightCurrentLine(false);
         this.txtPayloadJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtPayloadJSON.setBackground(SystemColor.text);
         this.txtPayloadJSON.setEditable(false);
@@ -118,13 +118,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
         /* Signature */
 
-        this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea(); 
+        this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
         this.txtSignatureSign.setWrapStyleWord(false);
 
         this.txtSignatureSign.setCodeFoldingEnabled(true);
         this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
-        this.txtSignatureSign.setHighlightCurrentLine(false);       
+        this.txtSignatureSign.setHighlightCurrentLine(false);
         this.txtSignatureSign.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtSignatureSign.setBackground(SystemColor.text);
         this.txtSignatureSign.setEditable(false);
@@ -133,7 +133,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.scrollSignatureSign.setLineNumbersEnabled(false);
 
         this.pnlSignature.add(this.scrollSignatureSign, java.awt.BorderLayout.CENTER);
-        
+
         /*** UI design end ***/
 
 //        this.txtHeaderJSON.setEditable(false);
@@ -249,7 +249,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     public void setMessageFont(Font font) {
 //        this.jsonHeaderView.setMessageFont(font);
-//        this.jsonPayloadView.setMessageFont(font);        
+//        this.jsonPayloadView.setMessageFont(font);
         this.txtPayloadJSON.setFont(font);
         this.txtPayloadJSON.setFont(font);
         this.txtSignatureSign.setFont(font);
@@ -317,7 +317,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
                 find = JWTToken.containsTokenFormat(body);
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return find;
     }
@@ -397,7 +397,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
             }
             this.message = httpmessage;
         } catch (ParseException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -428,5 +428,5 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.txtPayloadJSON.setLineWrap(lineWrap);
         this.txtSignatureSign.setLineWrap(lineWrap);
     }
-    
+
 }

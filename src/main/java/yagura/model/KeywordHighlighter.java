@@ -59,7 +59,7 @@ public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHi
             Pattern p = RegexItem.compileRegex(keyword, flags, quote);
             this.setHighlight(doc, p, color);
         } catch (BadLocationException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

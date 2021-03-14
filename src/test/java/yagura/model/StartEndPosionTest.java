@@ -50,7 +50,7 @@ public class StartEndPosionTest {
                 StartEndPosion instance = new StartEndPosion(e, s);
                 fail();
             } catch (IllegalArgumentException ex) {
-
+                assertTrue(true);
             }
         }
     }

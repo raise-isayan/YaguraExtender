@@ -245,7 +245,7 @@ public class SendToItem {
         try {
             this.extendProperties.storeToXML(os, "");
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return StringUtil.getStringUTF8(os.toByteArray());
     }
@@ -255,7 +255,7 @@ public class SendToItem {
             ByteArrayInputStream is = new ByteArrayInputStream(StringUtil.getBytesUTF8(propString));
             this.extendProperties.loadFromXML(is);
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

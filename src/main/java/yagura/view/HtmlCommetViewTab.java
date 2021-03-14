@@ -138,16 +138,16 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
                             txtHtmlComment.setCaretPosition(0);
                             quickSearchTab.clearViewAndSearch();
                         } catch (InterruptedException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         } catch (ExecutionException ex) {
-                            logger.log(Level.SEVERE, null, ex);
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 };
                 swText.execute();
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -168,7 +168,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

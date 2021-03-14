@@ -77,7 +77,7 @@ public class SendToExtend extends SendToMenuItem {
                     }
                     break;
                 } catch (UnsupportedEncodingException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
 
@@ -128,11 +128,11 @@ public class SendToExtend extends SendToMenuItem {
                     }
                     this.currentDirectory = file;
                 } catch (IOException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -163,11 +163,11 @@ public class SendToExtend extends SendToMenuItem {
                     }
                     this.currentDirectory = file;
                 } catch (IOException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

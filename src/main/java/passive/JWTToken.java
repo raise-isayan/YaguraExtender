@@ -26,12 +26,12 @@ public class JWTToken extends JsonToken {
     private final static JWTToken jwtInstance = new JWTToken();
 
     public JWTToken getInstance() {
-        return jwtInstance; 
+        return jwtInstance;
     }
-    
+
     public JWTToken() {
     }
-    
+
     public JWTToken(JWTToken token) {
         this.algorithm = token.algorithm;
         this.header = token.header;
@@ -55,7 +55,7 @@ public class JWTToken extends JsonToken {
         PS256(""),
         PS384(""),
         PS512("");
- 
+
         private final String signAlgorithm;
 
         Algorithm(String signAlgorithm) {
@@ -69,9 +69,9 @@ public class JWTToken extends JsonToken {
         public static Algorithm parseValue(String s) {
             return Algorithm.valueOf(s.toUpperCase());
         }
-                
+
     };
-        
+
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
 
     private static Algorithm findAlgorithm(String header) {
@@ -79,7 +79,6 @@ public class JWTToken extends JsonToken {
         Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
         try {
             if (m.find()) {
-//                return Enum.valueOf(Algorithm.class, m.group(1));
                 return Algorithm.parseValue(m.group(1));
             }
         } catch (java.lang.IllegalArgumentException ex) {
@@ -95,7 +94,7 @@ public class JWTToken extends JsonToken {
         Matcher m = PTN_JWT.matcher(value);
         if (m.matches()) {
             if (jwtInstance.parseToken(value, true) != null) {
-                return true;            
+                return true;
             }
         }
         return false;
@@ -132,12 +131,12 @@ public class JWTToken extends JsonToken {
                 item.setCaptureValue(capture);
                 item.setStart(m.start());
                 item.setEnd(m.end());
-                tokens.add(item);            
+                tokens.add(item);
             }
         }
         return tokens.toArray(new CaptureItem[0]);
     }
-    
+
     @Override
     public boolean isValidFormat(String value) {
         return isTokenFormat(value);
@@ -253,7 +252,7 @@ public class JWTToken extends JsonToken {
     public String getPayloadJSON(boolean pretty) {
         return JsonUtil.prettyJson(decodeBase64UrlSafe(this.getPayload()), pretty);
     }
-    
+
     @Override
     public boolean signatureEqual(final String secret) {
         return signatureEqual(this.algorithm, StringUtil.getBytesRaw(this.getData()), this.signatureByte, StringUtil.getBytesRaw(secret));
@@ -262,7 +261,7 @@ public class JWTToken extends JsonToken {
     public static boolean signatureEqual(Algorithm algo, String encrypt, final byte[] signature, String secret) {
         return signatureEqual(algo, StringUtil.getBytesRaw(encrypt), signature,  StringUtil.getBytesRaw(secret));
     }
-    
+
     protected static boolean signatureEqual(Algorithm algo, byte [] encrypt, final byte[] signature, final byte [] secret) {
         try {
             switch (algo) {
@@ -279,9 +278,9 @@ public class JWTToken extends JsonToken {
                     break;
             }
         } catch (InvalidKeyException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (NoSuchAlgorithmException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return false;
     }
@@ -290,10 +289,6 @@ public class JWTToken extends JsonToken {
         return String.format("{\"alg\":\"%s\",\"typ\":\"JWT\"}", algo.toString());
     }
 
-//    public static String jwtHeader2(Algorithm algo) {
-//        return String.format("{\"typ\":\"JWT\",\"alg\":\"%s\"}", algo.toString());
-//    }
-        
     public static byte [] sign(Algorithm algo, String payload, String secret) throws NoSuchAlgorithmException {
         return sign(algo, payload, StringUtil.getBytesRaw(secret));
     }
@@ -312,7 +307,7 @@ public class JWTToken extends JsonToken {
                     mac.reset();
                     String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
                     final byte[] mac_bytes = mac.doFinal(StringUtil.getBytesRaw(data));
-                    return mac_bytes;                
+                    return mac_bytes;
                 }
 //                case RS256:
 //                case RS384:
@@ -323,7 +318,7 @@ public class JWTToken extends JsonToken {
 //                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
 //                    rsaSignature.update(StringUtil.getBytesRaw(data));
 //                    byte[] mac_bytes = rsaSignature.sign();
-//                    return mac_bytes;                
+//                    return mac_bytes;
 //                }
 //                case ES256:
 //                case ES384:
@@ -333,25 +328,21 @@ public class JWTToken extends JsonToken {
 //                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
 //                    rsaSignature.update(StringUtil.getBytesRaw(data));
 //                    byte[] mac_bytes = rsaSignature.sign();
-//                    return mac_bytes;                                    
+//                    return mac_bytes;
 //                }
                 default:
                     throw new NoSuchAlgorithmException(algo.name());
             }
         } catch (InvalidKeyException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (GeneralSecurityException ex) {
-            logger.log(Level.SEVERE, null, ex);
-//        } catch (SignatureException ex) {
-//            logger.log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         throw new NoSuchAlgorithmException(algo.name());
     }
-    
-    private final static String [] algNone = {"none", "NONE", "None"}; 
-    
+
+    private final static String [] algNone = {"none", "NONE", "None"};
+
     public static String [] generateNoneToken(String baseJWT) {
         final List<String> tokens = new ArrayList<>();
         JWTToken jwt = jwtInstance.parseToken(baseJWT, true);
@@ -371,8 +362,8 @@ public class JWTToken extends JsonToken {
         return tokens.toArray(new String[0]);
     }
 
-    private final static Algorithm [] algHS = {Algorithm.HS256, Algorithm.HS384, Algorithm.HS512}; 
-    
+    private final static Algorithm [] algHS = {Algorithm.HS256, Algorithm.HS384, Algorithm.HS512};
+
     public static String [] generatePublicToHashToken(String baseToken, byte [] publicKey) {
         final List<String> tokens = new ArrayList<>();
         JWTToken jwt = jwtInstance.parseToken(baseToken, true);
@@ -381,15 +372,15 @@ public class JWTToken extends JsonToken {
                 byte [] sign;
                 try {
                     sign = JWTToken.sign(alg, jwt.getPayload(), publicKey);
-                    String signature = JWTToken.encodeBase64UrlSafe(sign);  
-                    String result = JWTToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;  
+                    String signature = JWTToken.encodeBase64UrlSafe(sign);
+                    String result = JWTToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;
                     tokens.add(result);
                 } catch (NoSuchAlgorithmException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         }
         return tokens.toArray(new String[0]);
     }
-    
+
 }

@@ -28,6 +28,7 @@ import yagura.model.HttpMessageItem;
  * @author isayan
  */
 public class ResultFilterPopup extends javax.swing.JFrame {
+    private final static Logger logger = Logger.getLogger(ResultFilterPopup.class.getName());
 
     /**
      * Creates new form ResultFilterPopup
@@ -504,7 +505,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 // 条件のAND
                 allFilter = (statusFilter && colorFilter && commentFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses);
             } catch (Exception ex) {
-                Logger.getLogger(ResultFilterPopup.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
             return allFilter;
         }

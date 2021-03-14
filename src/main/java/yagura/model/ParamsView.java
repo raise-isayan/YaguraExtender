@@ -59,7 +59,7 @@ public class ParamsView extends Parameter implements ObjectTableMapping {
         try {
             IParameter param = this;
             switch (column) {
-                case 0: // 
+                case 0: //
                 {
                     value = param;
                     break;
@@ -83,7 +83,7 @@ public class ParamsView extends Parameter implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return value;
     }
@@ -106,7 +106,7 @@ public class ParamsView extends Parameter implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

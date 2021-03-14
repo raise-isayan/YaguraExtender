@@ -10,6 +10,7 @@ import extend.util.external.TransUtil;
 import extension.helpers.HttpUtil;
 import extension.view.base.CustomDialog;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -354,7 +355,7 @@ public class SendToItemDlg extends CustomDialog {
     }//GEN-LAST:event_btnSelectExecuteActionPerformed
 
     private void btnExtendPropertyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExtendPropertyActionPerformed
-        showSendToServerExtendDlg(true);        
+        showSendToServerExtendDlg(true);
     }//GEN-LAST:event_btnExtendPropertyActionPerformed
 
     private void chkServerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServerStateChanged
@@ -382,13 +383,13 @@ public class SendToItemDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (InstantiationException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IllegalAccessException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -436,7 +437,7 @@ public class SendToItemDlg extends CustomDialog {
     // End of variables declaration//GEN-END:variables
 
     private final Properties extendProperty = new Properties();
-    
+
     private boolean isSelectedBase() {
         return (this.tabbetSendTo.getSelectedIndex() == 0);
     }
@@ -468,7 +469,7 @@ public class SendToItemDlg extends CustomDialog {
         }
         return item;
     }
-    
+
     /**
      * @param item the item to set
      */

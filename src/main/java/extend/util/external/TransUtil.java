@@ -527,10 +527,10 @@ public class TransUtil {
 
     public static String toBase64Encode(String src, Charset charset, boolean padding) {
         if (padding) {
-            byte bytes[] = Base64.encodeBase64(src.getBytes(charset));
+            byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset));
             return StringUtil.getBytesRawString(bytes);
         } else {
-            byte bytes[] = removePadding(Base64.encodeBase64(src.getBytes(charset)));
+            byte bytes[] = removePadding(Base64.encodeBase64(StringUtil.getBytesCharset(src, charset)));
             return StringUtil.getBytesRawString(bytes);
         }
     }
@@ -543,10 +543,10 @@ public class TransUtil {
     public static String toBase64Encode(String src, String charset, boolean padding)
             throws UnsupportedEncodingException {
         if (padding) {
-            byte bytes[] = Base64.encodeBase64(src.getBytes(charset));
+            byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset));
             return StringUtil.getBytesRawString(bytes);
         } else {
-            byte bytes[] = removePadding(Base64.encodeBase64(src.getBytes(charset)));
+            byte bytes[] = removePadding(Base64.encodeBase64(StringUtil.getBytesCharset(src, charset)));
            return StringUtil.getBytesRawString(bytes);
         }
     }
@@ -568,13 +568,13 @@ public class TransUtil {
 
     public static String toBase64Decode(String str, Charset charset) {
         byte bytes[] = Base64.decodeBase64(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static String toBase64Decode(String str, String charset)
             throws UnsupportedEncodingException {
         byte bytes[] = Base64.decodeBase64(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static byte[] toBase64Decode(String str) {
@@ -583,13 +583,13 @@ public class TransUtil {
     }
 
     public static String toBase64URLSafeEncode(String src, Charset charset) {
-        byte bytes[] = Base64.encodeBase64(src.getBytes(charset), false, true);
+        byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset), false, true);
         return StringUtil.getBytesRawString(bytes);
     }
 
     public static String toBase64URLSafeEncode(String src, String charset)
             throws UnsupportedEncodingException {
-        byte bytes[] = Base64.encodeBase64(src.getBytes(charset), false, true);
+        byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset), false, true);
         return StringUtil.getBytesRawString(bytes);
     }
 
@@ -600,13 +600,13 @@ public class TransUtil {
 
     public static String toBase64URLSafeDecode(String str, Charset charset) {
         byte bytes[] = Base64.decodeBase64(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static String toBase64URLSafeDecode(String str, String charset)
             throws UnsupportedEncodingException {
         byte bytes[] = Base64.decodeBase64(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static byte[] toBase64URLSafeDecode(String str) {
@@ -620,10 +620,10 @@ public class TransUtil {
 
     public static String toBase32Encode(String src, Charset charset, boolean padding) {
         if (padding) {
-            byte bytes[] = encodeBase32(src.getBytes(charset));
+            byte bytes[] = encodeBase32(StringUtil.getBytesCharset(src, charset));
             return StringUtil.getBytesRawString(bytes);
         } else {
-            byte bytes[] = removePadding(encodeBase32(src.getBytes(charset)));
+            byte bytes[] = removePadding(encodeBase32(StringUtil.getBytesCharset(src, charset)));
             return StringUtil.getBytesRawString(bytes);
         }
     }
@@ -636,10 +636,10 @@ public class TransUtil {
     public static String toBase32Encode(String src, String charset, boolean padding)
             throws UnsupportedEncodingException {
         if (padding) {
-            byte bytes[] = encodeBase32(src.getBytes(charset));
+            byte bytes[] = encodeBase32(StringUtil.getBytesCharset(src, charset));
             return StringUtil.getBytesRawString(bytes);
         } else {
-            byte bytes[] = removePadding(encodeBase32(src.getBytes(charset)));
+            byte bytes[] = removePadding(encodeBase32(StringUtil.getBytesCharset(src, charset)));
             return StringUtil.getBytesRawString(bytes);
         }
     }
@@ -661,13 +661,13 @@ public class TransUtil {
 
     public static String toBase32Decode(String str, Charset charset) {
         byte bytes[] = decodeBase32(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static String toBase32Decode(String str, String charset)
             throws UnsupportedEncodingException {
         byte bytes[] = decodeBase32(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static byte[] toBase32Decode(String str) {
@@ -691,10 +691,10 @@ public class TransUtil {
 
     public static String toBase16Encode(String src, Charset charset, boolean padding) {
         if (padding) {
-            byte bytes[] = encodeBase16(src.getBytes(charset));
+            byte bytes[] = encodeBase16(StringUtil.getBytesCharset(src, charset));
             return StringUtil.getStringRaw(bytes);
         } else {
-            byte bytes[] = removePadding(encodeBase16(src.getBytes(charset)));
+            byte bytes[] = removePadding(encodeBase16(StringUtil.getBytesCharset(src, charset)));
             return StringUtil.getStringRaw(bytes);
         }
     }
@@ -707,10 +707,10 @@ public class TransUtil {
     public static String toBase16Encode(String src, String charset, boolean padding)
             throws UnsupportedEncodingException {
         if (padding) {
-            byte bytes[] = encodeBase16(src.getBytes(charset));
+            byte bytes[] = encodeBase16(StringUtil.getBytesCharset(src, charset));
             return StringUtil.getStringRaw(bytes);
         } else {
-            byte bytes[] = removePadding(encodeBase16(src.getBytes(charset)));
+            byte bytes[] = removePadding(encodeBase16(StringUtil.getBytesCharset(src, charset)));
             return StringUtil.getStringRaw(bytes);
         }
     }
@@ -732,13 +732,13 @@ public class TransUtil {
 
     public static String toBase16Decode(String str, Charset charset) {
         byte bytes[] = decodeBase16(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static String toBase16Decode(String str, String charset)
             throws UnsupportedEncodingException {
         byte bytes[] = decodeBase16(str);
-        return new String(bytes, charset);
+        return StringUtil.getStringCharset(bytes, charset);
     }
 
     public static byte[] toBase16Decode(String str) {
@@ -777,12 +777,12 @@ public class TransUtil {
         ByteBuffer bb = utf7cs.encode(str);
         byte[] content = new byte[bb.limit()];
         System.arraycopy(bb.array(), 0, content, 0, content.length);
-        return new String(content, StandardCharsets.US_ASCII);
+        return StringUtil.getStringCharset(content, StandardCharsets.US_ASCII);
     }
 
     public static String toUTF7Decode(String str) {
         UTF7Charset utf7cs = new UTF7Charset("UTF-7", new String[]{});
-        CharBuffer cb = utf7cs.decode(ByteBuffer.wrap(str.getBytes(StandardCharsets.US_ASCII)));
+        CharBuffer cb = utf7cs.decode(ByteBuffer.wrap(StringUtil.getBytesCharset(str, StandardCharsets.US_ASCII)));
         return cb.toString();
     }
     private final static String SPECIAL_CHAR = "!\"#$%&'()*+,-./:;<=>?@[\\]{|}~";
@@ -802,7 +802,7 @@ public class TransUtil {
 
     public static int getCharCode(String str, String enc)
             throws UnsupportedEncodingException {
-        byte caretbyte[] = str.getBytes(enc);
+        byte caretbyte[] = StringUtil.getBytesCharset(str, enc);
         return ConvertUtil.toInteger(caretbyte);
     }
 
@@ -901,27 +901,27 @@ public class TransUtil {
     }
 
     public static String decodeUrl(String pString, Charset charset) {
-        return new String(decodeUrl(pString.getBytes(StandardCharsets.US_ASCII)), charset);
+        return StringUtil.getStringCharset(decodeUrl(StringUtil.getBytesCharset(pString, StandardCharsets.US_ASCII)), charset);
     }
 
     public static String decodeUrl(String pString, String charset) throws UnsupportedEncodingException {
-        return new String(decodeUrl(pString.getBytes(StandardCharsets.US_ASCII)), charset);
+        return StringUtil.getStringCharset(decodeUrl(StringUtil.getBytesCharset(pString, StandardCharsets.US_ASCII)), charset);
     }
 
     public static String encodeUrl(String pString, Charset charset, boolean upperCase) {
-        return new String(encodeUrl(pString.getBytes(charset), PTN_ENCODE_ALPHANUM, upperCase), StandardCharsets.US_ASCII);
+        return StringUtil.getStringCharset(encodeUrl(StringUtil.getBytesCharset(pString, charset), PTN_ENCODE_ALPHANUM, upperCase), StandardCharsets.US_ASCII);
     }
 
     public static String encodeUrl(String pString, String charset, boolean upperCase) throws UnsupportedEncodingException {
-        return new String(encodeUrl(pString.getBytes(charset), PTN_ENCODE_ALPHANUM, upperCase), StandardCharsets.US_ASCII);
+        return StringUtil.getStringCharset(encodeUrl(StringUtil.getBytesCharset(pString, charset), PTN_ENCODE_ALPHANUM, upperCase), StandardCharsets.US_ASCII);
     }
 
     public static String encodeUrl(String pString, Charset charset, Pattern pattern, boolean upperCase) {
-        return new String(encodeUrl(pString.getBytes(charset), pattern, upperCase), StandardCharsets.US_ASCII);
+        return StringUtil.getStringCharset(encodeUrl(StringUtil.getBytesCharset(pString, charset), pattern, upperCase), StandardCharsets.US_ASCII);
     }
 
     public static String encodeUrl(String pString, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return new String(encodeUrl(pString.getBytes(charset), pattern, upperCase), StandardCharsets.US_ASCII);
+        return StringUtil.getStringCharset(encodeUrl(StringUtil.getBytesCharset(pString, charset), pattern, upperCase), StandardCharsets.US_ASCII);
     }
 
     private static byte[] decodeUrl(byte[] bytes) {
@@ -1013,11 +1013,11 @@ public class TransUtil {
     }
 
     public static String toByteHexEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(input.getBytes(charset), pattern, upperCase);
+        return toByteHexEncode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
     }
 
     public static String toByteHexEncode(String input, Charset charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(input.getBytes(charset), pattern, upperCase);
+        return toByteHexEncode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
     }
 
     public static String toByteHex2Encode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
@@ -1029,11 +1029,11 @@ public class TransUtil {
     }
 
     public static String toByteHex2Encode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHex2Encode(input.getBytes(charset), pattern, upperCase);
+        return toByteHex2Encode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
     }
 
     public static String toByteHex2Encode(String input, Charset charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHex2Encode(input.getBytes(charset), pattern, upperCase);
+        return toByteHex2Encode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
     }
 
     public static String toByteDecEncode(String input, String charset) throws UnsupportedEncodingException {
@@ -1045,11 +1045,11 @@ public class TransUtil {
     }
 
     public static String toByteDecEncode(String input, String charset, Pattern pattern) throws UnsupportedEncodingException {
-        return toByteDecEncode(input.getBytes(charset), pattern);
+        return toByteDecEncode(StringUtil.getBytesCharset(input, charset), pattern);
     }
 
     public static String toByteDecEncode(String input, Charset charset, Pattern pattern) throws UnsupportedEncodingException {
-        return toByteDecEncode(input.getBytes(charset), pattern);
+        return toByteDecEncode(StringUtil.getBytesCharset(input, charset), pattern);
     }
 
     public static String toByteOctEncode(String input, String charset) throws UnsupportedEncodingException {
@@ -1061,11 +1061,11 @@ public class TransUtil {
     }
 
     public static String toByteOctEncode(String input, String charset, Pattern pattern) throws UnsupportedEncodingException {
-        return toByteOctEncode(input.getBytes(charset), pattern);
+        return toByteOctEncode(StringUtil.getBytesCharset(input, charset), pattern);
     }
 
     public static String toByteOctEncode(String input, Charset charset, Pattern pattern) throws UnsupportedEncodingException {
-        return toByteOctEncode(input.getBytes(charset), pattern);
+        return toByteOctEncode(StringUtil.getBytesCharset(input, charset), pattern);
     }
 
     public static String toByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
@@ -1218,7 +1218,7 @@ public class TransUtil {
                     buf.flip();
                     byte[] value = new byte[buf.limit()];
                     buf.get(value);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(new String(value, charset)));
+                    m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
                 } else if (hex2 != null) {
                     Matcher m3 = PTN_BYTE_HEX2.matcher(hex2);
                     ByteBuffer buf = ByteBuffer.allocate(hex2.length());
@@ -1231,7 +1231,7 @@ public class TransUtil {
                     buf.flip();
                     byte[] value = new byte[buf.limit()];
                     buf.get(value);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(new String(value, charset)));
+                    m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
                 }
             }
             m.appendTail(buff);
@@ -1330,7 +1330,7 @@ public class TransUtil {
     }
 
     public static String toHtmlByteHexEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return toHtmlByteHexEncode(input.getBytes(charset), pattern, upperCase);
+        return toHtmlByteHexEncode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
     }
 
     public static String toHtmlByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
@@ -1898,12 +1898,12 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toMd2Sum(String str, String enc, boolean upperCase)
+    public static String toMd2Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase)
-            return DigestUtils.md2Hex(str.getBytes(enc)).toUpperCase();
+            return DigestUtils.md2Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
         else
-            return DigestUtils.md2Hex(str.getBytes(enc));
+            return DigestUtils.md2Hex(StringUtil.getBytesCharset(str, charset));
     }
 
     /**
@@ -1940,12 +1940,12 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toMd5Sum(String str, String enc, boolean upperCase)
+    public static String toMd5Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase)
-            return DigestUtils.md5Hex(str.getBytes(enc)).toUpperCase();
+            return DigestUtils.md5Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
         else
-            return DigestUtils.md5Hex(str.getBytes(enc));
+            return DigestUtils.md5Hex(StringUtil.getBytesCharset(str, charset));
     }
 
     /**
@@ -1982,12 +1982,12 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toSHA1Sum(String str, String enc, boolean upperCase)
+    public static String toSHA1Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase)
-            return DigestUtils.sha1Hex(str.getBytes(enc)).toUpperCase();
+            return DigestUtils.sha1Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
         else
-            return DigestUtils.sha1Hex(str.getBytes(enc));
+            return DigestUtils.sha1Hex(StringUtil.getBytesCharset(str, charset));
     }
 
     /**
@@ -2024,12 +2024,12 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toSHA256Sum(String str, String enc, boolean upperCase)
+    public static String toSHA256Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase)
-            return DigestUtils.sha256Hex(str.getBytes(enc)).toUpperCase();
+            return DigestUtils.sha256Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
         else
-            return DigestUtils.sha256Hex(str.getBytes(enc));
+            return DigestUtils.sha256Hex(StringUtil.getBytesCharset(str, charset));
     }
 
     /**
@@ -2066,12 +2066,12 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toSHA384Sum(String str, String enc, boolean upperCase)
+    public static String toSHA384Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase)
-            return DigestUtils.sha384Hex(str.getBytes(enc)).toUpperCase();
+            return DigestUtils.sha384Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
         else
-            return DigestUtils.sha384Hex(str.getBytes(enc));
+            return DigestUtils.sha384Hex(StringUtil.getBytesCharset(str, charset));
     }
 
     /**
@@ -2108,12 +2108,12 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toSHA512Sum(String str, String enc, boolean upperCase)
+    public static String toSHA512Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase)
-            return DigestUtils.sha512Hex(str.getBytes(enc)).toUpperCase();
+            return DigestUtils.sha512Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
         else
-            return DigestUtils.sha512Hex(str.getBytes(enc));
+            return DigestUtils.sha512Hex(StringUtil.getBytesCharset(str, charset));
     }
 
    /**
@@ -2144,9 +2144,9 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static int toMurmurHash32(String str, String enc)
+    public static int toMurmurHash32(String str, String charset)
             throws UnsupportedEncodingException {
-        byte [] body = str.getBytes(enc);
+        byte [] body = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash32(body, body.length);
     }
 
@@ -2178,9 +2178,9 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static long toMurmurHash64(String str, String enc)
+    public static long toMurmurHash64(String str, String charset)
             throws UnsupportedEncodingException {
-        byte [] body = str.getBytes(enc);
+        byte [] body = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash64(body, body.length);
     }
 

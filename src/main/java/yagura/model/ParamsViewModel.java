@@ -42,7 +42,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
         try {
             ParamsView param = super.getData(rowIndex);
             switch (columnIndex) {
-                case 0: // 
+                case 0: //
                 {
                     value = param;
                     break;
@@ -76,7 +76,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     break;
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return value;
     }
@@ -114,7 +114,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
             }
             super.setData(rowIndex, param);
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

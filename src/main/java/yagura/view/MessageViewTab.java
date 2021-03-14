@@ -66,7 +66,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             @Override
             public void mouseClicked(MouseEvent e) {
                 showBurpMenu(e);
-            }        
+            }
         });
         this.tabbetMessageView.addTab("JRequest", this.tabbetRequestView);
 
@@ -75,7 +75,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             @Override
             public void mouseClicked(MouseEvent e) {
                 showBurpMenu(e);
-            }        
+            }
         });
 
         this.tabbetMessageView.addTab("JResponse", this.tabbetResponseView);
@@ -115,7 +115,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         this.mesageView.clear();
         this.mesageView.addAll(view);
     }
-        
+
     private HttpMessageItem messageItem = null;
 
     /**
@@ -162,7 +162,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 }
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -194,7 +194,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 }
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -282,6 +282,6 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     public void setResponseLineWrap(boolean lineWrap) {
         this.tabResponseRawView.setLineWrap(lineWrap);
     }
-    
+
 
 }

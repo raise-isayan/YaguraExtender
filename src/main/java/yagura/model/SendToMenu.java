@@ -354,7 +354,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             callbacks.sendToRepeater(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
                     messageItem[0].getRequest(), "v" + this.repeternum++);
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -365,7 +365,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             callbacks.sendToIntruder(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
                     messageItem[0].getRequest());
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -374,7 +374,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             IHttpRequestResponse[] messageItem = message.getSelectedMessages();
             callbacks.sendToSpider(BurpExtender.getHelpers().getURL(messageItem[0]));
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

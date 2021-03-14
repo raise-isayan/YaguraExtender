@@ -112,7 +112,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return value;
 
@@ -148,7 +148,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     break;
             }
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

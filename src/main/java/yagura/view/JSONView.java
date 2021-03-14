@@ -200,9 +200,9 @@ public class JSONView extends javax.swing.JPanel {
                     txtJSON.setText(get());
                     txtJSON.setCaretPosition(0);
                 } catch (InterruptedException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (ExecutionException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
 
@@ -256,11 +256,11 @@ public class JSONView extends javax.swing.JPanel {
                     txtJSON.setText(jsonpElement.pretty());
                     txtJSON.setCaretPosition(0);
                 } catch (InterruptedException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (ExecutionException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (IOException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
 
@@ -287,9 +287,9 @@ public class JSONView extends javax.swing.JPanel {
                     treeJSON.setModel(modelJSON);
                     expandJsonTree();
                 } catch (InterruptedException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (ExecutionException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         };
@@ -352,5 +352,5 @@ public class JSONView extends javax.swing.JPanel {
     public void setLineWrap(boolean lineWrap) {
         this.txtJSON.setLineWrap(lineWrap);
     }
-    
+
 }
