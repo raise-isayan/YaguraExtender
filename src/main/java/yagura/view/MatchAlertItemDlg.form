@@ -282,17 +282,21 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="chkComment" min="-2" max="-2" attributes="0"/>
-                                      <Component id="chkTray_message" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="chkAlerts_tab" min="-2" max="-2" attributes="0"/>
-                                      <Component id="chkItem_highlight" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="0" pref="176" max="32767" attributes="0"/>
-                              </Group>
                               <Component id="txtComment" alignment="0" max="32767" attributes="0"/>
                               <Component id="cmbAlertColor" alignment="1" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="chkTrayMessage" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="chkAlertsTab" min="-2" max="-2" attributes="0"/>
+                                      <Component id="chkItemHighlight" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="chkComment" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="chkReplacement" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="0" pref="113" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="pnlScannerIssue" min="-2" max="-2" attributes="0"/>
@@ -304,15 +308,18 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="chkAlerts_tab" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkAlertsTab" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="chkTray_message" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkTrayMessage" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="chkItem_highlight" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkItemHighlight" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cmbAlertColor" min="-2" pref="21" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="chkComment" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="chkComment" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkReplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtComment" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
@@ -356,21 +363,21 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbAlertColorActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkItem_highlight">
+                <Component class="javax.swing.JCheckBox" name="chkItemHighlight">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="item highlight"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkItem_highlightActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkItemHighlightActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkTray_message">
+                <Component class="javax.swing.JCheckBox" name="chkTrayMessage">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="tray message"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkAlerts_tab">
+                <Component class="javax.swing.JCheckBox" name="chkAlertsTab">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="alerts tab"/>
                   </Properties>
@@ -455,6 +462,14 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JCheckBox" name="chkReplacement">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="replacement"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkReplacementActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
             <Component class="javax.swing.JCheckBox" name="chkSmartMatch">

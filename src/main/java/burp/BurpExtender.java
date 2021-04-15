@@ -543,6 +543,7 @@ public class BurpExtender extends BurpExtenderImpl
                 } else if (bean.isResponse() && !messageIsRequest) {
                     decodeMessage = StringUtil.getStringRaw(messageInfo.getResponse());
                 }
+                String replacemeComment = null;
                 List<IssueItem> markList = new ArrayList<>();
                 Matcher m = p.matcher(decodeMessage);
                 int count = 0;
@@ -554,6 +555,9 @@ public class BurpExtender extends BurpExtenderImpl
                     issue.setConfidence(bean.getConfidence());
                     issue.setStart(m.start());
                     issue.setEnd(m.end());
+                    if (bean.isReplacement()) {
+                        replacemeComment = m.replaceFirst(bean.getComment());
+                    }
                     markList.add(issue);
                     count++;
                 }
@@ -568,7 +572,12 @@ public class BurpExtender extends BurpExtenderImpl
                         messageInfo.setHighlight(StringUtil.toString(bean.getHighlightColor()));
                     }
                     if (bean.getNotifyTypes().contains(NotifyType.COMMENT)) {
-                        messageInfo.setComment(bean.getComment());
+                        if (replacemeComment != null) {
+                            messageInfo.setComment(replacemeComment);
+                        }
+                        else {
+                            messageInfo.setComment(bean.getComment());
+                        }
                     }
                     if (bean.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
                         MatchAlert alert = new MatchAlert(toolName, this.option.getMatchAlertProperty());
