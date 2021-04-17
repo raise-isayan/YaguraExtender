@@ -172,20 +172,20 @@ public class MatchAlertItem extends MatchItem {
     }
 
     @Expose
-    private boolean replacement = false;
+    private boolean captureGroup = false;
 
     /**
-     * @return the replacement
+     * @return the captureGroup
      */
-    public boolean isReplacement() {
-        return replacement;
+    public boolean isCaptureGroup() {
+        return captureGroup;
     }
 
     /**
-     * @param replacement the replacement to set
+     * @param captureGroup the captureGroup to set
      */
-    public void setReplacement(boolean replacement) {
-        this.replacement = replacement;
+    public void setCaptureGroup(boolean captureGroup) {
+        this.captureGroup = captureGroup;
     }
 
     public static Object[] toObjects(MatchAlertItem matchAlert) {
@@ -196,7 +196,7 @@ public class MatchAlertItem extends MatchItem {
         beans[3] = matchAlert.isSmartMatch();
         beans[4] = matchAlert.isRegexp();
         beans[5] = matchAlert.isIgnoreCase();
-        beans[6] = matchAlert.isReplacement();
+        beans[6] = matchAlert.isCaptureGroup();
         beans[7] = matchAlert.getNotifyTypes();
         beans[8] = matchAlert.getTargetTools();
         beans[9] = matchAlert.getHighlightColor();
@@ -216,7 +216,7 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setSmartMatch((Boolean) rows[3]);
         matchAlert.setRegexp((Boolean) rows[4]);
         matchAlert.setIgnoreCase((Boolean) rows[5]);
-        matchAlert.setReplacement((Boolean) rows[6]);
+        matchAlert.setCaptureGroup((Boolean) rows[6]);
         matchAlert.setNotifyTypes((EnumSet<NotifyType>) rows[7]);
         matchAlert.setTargetTools((EnumSet<TargetTool>) rows[8]);
         matchAlert.setHighlightColor((HighlightColor) rows[9]);
@@ -239,7 +239,7 @@ public class MatchAlertItem extends MatchItem {
     public void setProperty(MatchAlertItem item) {
         this.setProperty((MatchItem)item);
         this.setSmartMatch(item.isSmartMatch());
-        this.setReplacement(item.isReplacement());
+        this.setCaptureGroup(item.isCaptureGroup());
         this.setIssueName(item.getIssueName());
         this.setSeverity(item.getSeverity());
         this.setConfidence(item.getConfidence());

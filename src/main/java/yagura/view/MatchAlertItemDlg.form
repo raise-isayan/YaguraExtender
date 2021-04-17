@@ -292,7 +292,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="chkComment" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="chkReplacement" min="-2" max="-2" attributes="0"/>
+                                          <Component id="chkCaptureGroup" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace min="0" pref="113" max="32767" attributes="0"/>
@@ -318,7 +318,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="chkComment" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="chkReplacement" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkCaptureGroup" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="txtComment" min="-2" max="-2" attributes="0"/>
@@ -462,12 +462,12 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JCheckBox" name="chkReplacement">
+                <Component class="javax.swing.JCheckBox" name="chkCaptureGroup">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="replacement"/>
+                    <Property name="text" type="java.lang.String" value="capture group"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkReplacementActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkCaptureGroupActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

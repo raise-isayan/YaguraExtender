@@ -74,7 +74,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         cmbSeverity = new javax.swing.JComboBox<>();
         cmbConfidence = new javax.swing.JComboBox<>();
         txtIssueName = new javax.swing.JTextField();
-        chkReplacement = new javax.swing.JCheckBox();
+        chkCaptureGroup = new javax.swing.JCheckBox();
         chkSmartMatch = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -217,10 +217,10 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        chkReplacement.setText("replacement");
-        chkReplacement.addActionListener(new java.awt.event.ActionListener() {
+        chkCaptureGroup.setText("capture group");
+        chkCaptureGroup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkReplacementActionPerformed(evt);
+                chkCaptureGroupActionPerformed(evt);
             }
         });
 
@@ -241,7 +241,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                             .addGroup(pnlMatchLayout.createSequentialGroup()
                                 .addComponent(chkComment)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chkReplacement)))
+                                .addComponent(chkCaptureGroup)))
                         .addGap(0, 113, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(pnlScannerIssue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -261,7 +261,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlMatchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkComment)
-                    .addComponent(chkReplacement))
+                    .addComponent(chkCaptureGroup))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -392,7 +392,7 @@ public class MatchAlertItemDlg extends CustomDialog {
 
     private void chkCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCommentActionPerformed
         this.txtComment.setEnabled(this.chkComment.isSelected());
-        this.chkReplacement.setEnabled(this.chkComment.isSelected());
+        this.chkCaptureGroup.setEnabled(this.chkComment.isSelected());
     }//GEN-LAST:event_chkCommentActionPerformed
 
     private void chkItemHighlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkItemHighlightActionPerformed
@@ -403,9 +403,9 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.chkRegExp.setEnabled(!this.chkSmartMatch.isSelected());
     }//GEN-LAST:event_chkSmartMatchStateChanged
 
-    private void chkReplacementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkReplacementActionPerformed
+    private void chkCaptureGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCaptureGroupActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_chkReplacementActionPerformed
+    }//GEN-LAST:event_chkCaptureGroupActionPerformed
 
     /**
      * @param args the command line arguments
@@ -462,6 +462,7 @@ public class MatchAlertItemDlg extends CustomDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox chkAlertsTab;
+    private javax.swing.JCheckBox chkCaptureGroup;
     private javax.swing.JCheckBox chkComment;
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkIntruder;
@@ -469,7 +470,6 @@ public class MatchAlertItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkProxy;
     private javax.swing.JCheckBox chkRegExp;
     private javax.swing.JCheckBox chkRepeater;
-    private javax.swing.JCheckBox chkReplacement;
     private javax.swing.JCheckBox chkScanner;
     private javax.swing.JCheckBox chkScannerIssue;
     private javax.swing.JCheckBox chkSequencer;
@@ -521,7 +521,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         });
 
         this.txtComment.setEnabled(false);
-        this.chkReplacement.setEnabled(false);
+        this.chkCaptureGroup.setEnabled(false);
 
         this.txtIssueName.setEnabled(false);
         this.cmbSeverity.setEnabled(false);
@@ -547,7 +547,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         item.setSmartMatch(this.chkSmartMatch.isSelected());
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
-        item.setReplacement(this.chkReplacement.isSelected());
+        item.setCaptureGroup(this.chkCaptureGroup.isSelected());
 
         //item.setNotifyType((MatchItem.NotifyType) this.cmbAlertNotify.getSelectedItem());
         EnumSet<NotifyType> notifys = EnumSet.noneOf(NotifyType.class);
@@ -614,7 +614,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.chkSmartMatch.setSelected(item.isSmartMatch());
         this.chkRegExp.setSelected(item.isRegexp());
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
-        this.chkReplacement.setSelected(item.isReplacement());
+        this.chkCaptureGroup.setSelected(item.isCaptureGroup());
 
         EnumSet<NotifyType> notifys = item.getNotifyTypes();
         this.chkAlertsTab.setSelected(notifys.contains(NotifyType.ALERTS_TAB));

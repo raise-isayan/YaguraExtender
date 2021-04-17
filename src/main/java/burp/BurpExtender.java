@@ -555,8 +555,9 @@ public class BurpExtender extends BurpExtenderImpl
                     issue.setConfidence(bean.getConfidence());
                     issue.setStart(m.start());
                     issue.setEnd(m.end());
-                    if (bean.isReplacement()) {
-                        replacemeComment = m.replaceFirst(bean.getComment());
+                    if (bean.isCaptureGroup()) {
+                        String group = m.group();
+                        replacemeComment= p.matcher(group).replaceFirst(bean.getComment());
                     }
                     markList.add(issue);
                     count++;
