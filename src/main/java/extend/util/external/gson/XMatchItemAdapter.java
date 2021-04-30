@@ -40,6 +40,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             jsonObject.add("smartMatch", jsc.serialize(matchItem.isSmartMatch()));
             jsonObject.add("issueName", jsc.serialize(matchItem.getIssueName()));
             jsonObject.add("severity", jsc.serialize(matchItem.getSeverity()));
+            jsonObject.add("captureGroup", jsc.serialize(matchItem.isCaptureGroup()));
             jsonObject.add("confidence", jsc.serialize(matchItem.getConfidence()));
             jsonObject.add("notifyTypes", jsc.serialize(matchItem.getNotifyTypes()));
             jsonObject.add("targetTools", jsc.serialize(matchItem.getTargetTools()));
@@ -71,6 +72,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
             if (jsonObject.has("issueName")) matchItem.setIssueName(jdc.deserialize(jsonObject.get("issueName"), String.class));
             if (jsonObject.has("severity")) matchItem.setSeverity(jdc.deserialize(jsonObject.get("severity"), Severity.class));
+            if (jsonObject.has("captureGroup")) matchItem.setCaptureGroup(jdc.deserialize(jsonObject.get("captureGroup"), Boolean.TYPE));
             if (jsonObject.has("confidence")) matchItem.setConfidence(jdc.deserialize(jsonObject.get("confidence"), Confidence.class));
             if (jsonObject.has("notifyTypes")) matchItem.setNotifyTypes(NotifyType.parseEnumSet(jsonObject.get("notifyTypes").getAsJsonArray().toString()));
             if (jsonObject.has("targetTools")) matchItem.setTargetTools(TargetTool.parseEnumSet(jsonObject.get("targetTools").getAsJsonArray().toString()));

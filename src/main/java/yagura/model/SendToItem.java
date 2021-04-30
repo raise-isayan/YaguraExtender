@@ -30,6 +30,7 @@ public class SendToItem {
     public enum ExtendType {
         SEND_TO_JTRANSCODER,
         REQUEST_AND_RESPONSE_TO_FILE,
+        REQUEST_BODY_TO_FILE,
         RESPONSE_BODY_TO_FILE,
         PASTE_FROM_JTRANSCODER,
         PASTE_FROM_CLIPBOARD,

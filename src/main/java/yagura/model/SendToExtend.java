@@ -57,6 +57,10 @@ public class SendToExtend extends SendToMenuItem {
                 saveAsMessage(SendToItem.MessageType.REQUEST_AND_RESPONSE, messageInfo);
                 break;
             }
+            case REQUEST_BODY_TO_FILE: {
+                saveAsMessageBody(SendToItem.MessageType.REQUEST, messageInfo);
+                break;
+            }
             case RESPONSE_BODY_TO_FILE: {
                 saveAsMessageBody(SendToItem.MessageType.RESPONSE, messageInfo);
                 break;
@@ -190,6 +194,7 @@ public class SendToExtend extends SendToMenuItem {
                 enabled = true;
                 break;
             }
+            case REQUEST_BODY_TO_FILE:
             case RESPONSE_BODY_TO_FILE: {
                 enabled = true;
                 break;

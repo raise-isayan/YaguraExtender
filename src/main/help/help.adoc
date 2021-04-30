@@ -410,6 +410,8 @@ image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
         Sends the selected string to the input of JTransCoder.
     request and response to file:: 
         Save request and response to a file.
+    request body to file:: 
+        Save only the body part of the request to a file.
     response body to file:: 
         Save only the body part of the response to a file.
     paste from jtranscoder:: 
@@ -424,6 +426,8 @@ image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
         Add URL scheme and host to exclude in scope.
     add exclude scope:: 
         Add URL to exclude in scope.
+
+COUTION: SOCKS Proxy does not work due to a JDK bug
 
 === Logging tabs
 

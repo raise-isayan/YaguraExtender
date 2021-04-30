@@ -308,7 +308,7 @@ image:images/custom_sendto_server_proxy.png[SendToItem編集 Proxy設定 ダイ�
 ** プロキシ設定に独自の設定を利用します。
 
 Protocol:: 
-    Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡(SOCKSは現状動作しません)
+    Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡
 
 Host:: 
     Proxyのホストを入力します。
@@ -321,6 +321,9 @@ User::
   
 Password:: 
     Proxyの認証パスワードを指定します。
+
+
+COUTION: JDKのバグのためSOCKS Proxyは動作しません
 
 ===== サーバチェック時にサーバに送信される形式
 
@@ -404,6 +407,8 @@ image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
           JTransCoder のInputに選択した文字列を送ります。
      request and response to file:: 
           リクエストとレスポンスをファイルに保存します。
+     request body to file:: 
+          リクエストのボディの部分のみをファイルに保存します。
      response body to file:: 
           レスポンスのボディの部分のみをファイルに保存します。
      paste from jtranscoder:: 

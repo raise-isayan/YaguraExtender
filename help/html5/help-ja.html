@@ -964,7 +964,7 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 <dl>
 <dt class="hdlist1">Protocol</dt>
 <dd>
-<p>Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡(SOCKSは現状動作しません)</p>
+<p>Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡</p>
 </dd>
 <dt class="hdlist1">Host</dt>
 <dd>
@@ -989,6 +989,9 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 </div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>COUTION: JDKのバグのためSOCKS Proxyは動作しません</p>
 </div>
 </div>
 <div class="sect4">
@@ -1105,6 +1108,10 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 <dt class="hdlist1">request and response to file</dt>
 <dd>
 <p>リクエストとレスポンスをファイルに保存します。</p>
+</dd>
+<dt class="hdlist1">request body to file</dt>
+<dd>
+<p>リクエストのボディの部分のみをファイルに保存します。</p>
 </dd>
 <dt class="hdlist1">response body to file</dt>
 <dd>
@@ -1837,7 +1844,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <div id="footer">
 <div id="footer-text">
 Version unspecified<br>
-Last updated 2021-04-17 12:29:05 +0900
+Last updated 2021-04-29 10:45:19 +0900
 </div>
 </div>
 </body>

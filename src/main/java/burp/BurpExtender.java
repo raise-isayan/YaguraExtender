@@ -280,6 +280,7 @@ public class BurpExtender extends BurpExtenderImpl
             MatchReplaceGroup group = this.option.getMatchReplaceProperty().getReplaceSelectedGroup(this.option.getMatchReplaceProperty().getSelectedName());
             if (group != null && group.isInScopeOnly()) {
                 IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(msgInfo.getHttpService(), messageByte);
+                //BurpExtender.outPrintln("isScope:" + BurpExtender.getCallbacks().isInScope(reqInfo.getUrl()) + ":" + reqInfo.getUrl());
                 if (BurpExtender.getCallbacks().isInScope(reqInfo.getUrl())) {
                     resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);
                 }
@@ -555,9 +556,10 @@ public class BurpExtender extends BurpExtenderImpl
                     issue.setConfidence(bean.getConfidence());
                     issue.setStart(m.start());
                     issue.setEnd(m.end());
-                    if (bean.isCaptureGroup()) {
+                    // コメントは最初にマッチしたもののみ
+                    if (bean.isCaptureGroup() && replacemeComment == null) {
                         String group = m.group();
-                        replacemeComment= p.matcher(group).replaceFirst(bean.getComment());
+                        replacemeComment = p.matcher(group).replaceFirst(bean.getComment());
                     }
                     markList.add(issue);
                     count++;
