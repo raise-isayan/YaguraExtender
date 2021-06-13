@@ -373,6 +373,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         rdoCLang = new javax.swing.JRadioButton();
         rdoSQLLang = new javax.swing.JRadioButton();
         rdoRegex = new javax.swing.JRadioButton();
+        chkMetaChar = new javax.swing.JCheckBox();
         pnlFormat = new javax.swing.JPanel();
         rdoMinifyFormat = new javax.swing.JRadioButton();
         rdoBeautifyFormat = new javax.swing.JRadioButton();
@@ -795,6 +796,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
         pnlLang.add(rdoRegex);
+
+        chkMetaChar.setText("Metachar");
+        pnlLang.add(chkMetaChar);
 
         pnlEncodeDecode.add(pnlLang);
 
@@ -1436,7 +1440,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbDateUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(spnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(713, Short.MAX_VALUE))
+                .addContainerGap(712, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1567,7 +1571,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(710, Short.MAX_VALUE))
+                .addContainerGap(703, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1745,7 +1749,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblBin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1178, Short.MAX_VALUE))
+                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1186, Short.MAX_VALUE))
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblHex, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1801,7 +1805,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     .addComponent(txtRadix32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRadix32)
                     .addComponent(btnRadix32Copy))
-                .addContainerGap(448, Short.MAX_VALUE))
+                .addContainerGap(442, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Base", tabBaseConverter);
@@ -1886,7 +1890,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 .addContainerGap()
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(lblDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblJavaSerial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(lblJavaSerial, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblBin1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1930,7 +1934,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     .addComponent(lblExcelSerial)
                     .addComponent(btnExcelSerial)
                     .addComponent(txtExcelSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(470, Short.MAX_VALUE))
+                .addContainerGap(488, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Date", tabDateConverter);
@@ -1996,7 +2000,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(968, Short.MAX_VALUE))
+                .addContainerGap(929, Short.MAX_VALUE))
         );
         pnlCertificateLayout.setVerticalGroup(
             pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2017,7 +2021,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoConvertPEM)
                     .addComponent(btnExport))
-                .addContainerGap(467, Short.MAX_VALUE))
+                .addContainerGap(473, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Certificate", pnlCertificate);
@@ -2083,7 +2087,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2113,7 +2117,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addContainerGap(384, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -2162,6 +2166,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         try {
             String value = this.getInputText();
             String encode = value;
+            boolean metaChar = this.chkMetaChar.isSelected();
             if (this.rdoUrl.isSelected()) {
                 encode = TransUtil.encodeUrl(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUrlUnicode.isSelected()) {
@@ -2237,16 +2242,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     }
                 }
                 encode = buff.toString();
-            } else if (this.rdoCLang.isSelected()) {
-                encode = TransUtil.encodeCLangQuote(encode);
+            } else if (this.rdoCLang.isSelected()) {                
+                encode = TransUtil.encodeCLangQuote(encode, metaChar);
             } else if (this.rdoSQLLang.isSelected()) {
-                encode = TransUtil.encodeSQLLangQuote(encode);
-            } else if (this.rdoCLang.isSelected()) {
-                encode = TransUtil.encodeCLangQuote(encode);
-            } else if (this.rdoSQLLang.isSelected()) {
-                encode = TransUtil.encodeSQLLangQuote(encode);
+                encode = TransUtil.encodeSQLLangQuote(encode, metaChar);
             } else if (this.rdoRegex.isSelected()) {
-                encode = TransUtil.toRegexEncode(encode);
+                encode = TransUtil.toRegexEncode(encode, metaChar);
             }
             this.setOutput(encode);
         } catch (Exception ex) {
@@ -3055,6 +3056,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JCheckBox chkCharacterUnderline;
     private javax.swing.JCheckBox chkCharacterUpperCase;
     private javax.swing.JCheckBox chkGuess;
+    private javax.swing.JCheckBox chkMetaChar;
     private javax.swing.JCheckBox chkNPadding;
     private javax.swing.JCheckBox chkPadding;
     private javax.swing.JCheckBox chkRawMode;
@@ -3298,7 +3300,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             if (!this.chkGuess.isSelected() && this.getSelectEncode() != null) {
                 applyCharset = this.getSelectEncode();
             }
-            String decode = TransUtil.toSmartDecode(inputText, encodePattern, applyCharset);
+            boolean metaChar = this.chkMetaChar.isSelected();
+            String decode = TransUtil.toSmartDecode(inputText, encodePattern, metaChar, applyCharset);
             this.setOutput(decode, applyCharset);
         } catch (java.lang.NumberFormatException ex) {
             this.setOutputText(StringUtil.getStackTraceMessage(ex));

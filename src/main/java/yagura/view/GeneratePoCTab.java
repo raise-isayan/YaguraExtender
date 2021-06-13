@@ -1017,7 +1017,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 buff.append("\tmsleep(msec);\n");
             }
             buff.append("\tvar xhr = new XMLHttpRequest();\r\n");
-            buff.append(String.format("\txhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl)}));
+            buff.append(String.format("\txhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl, false)}));
             buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
             if (csrfHtml5WithXHeader) {
                 List<String> headers = requestInfo.getHeaders();
@@ -1026,7 +1026,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         String pair [] = header.split(":");
                         String key = (pair.length > 0) ?  pair[0] : "";
                         String value = (pair.length > 1) ?  pair[1] : "";
-                        buff.append(String.format("\txhr.setRequestHeader('%s', '%s');\r\n", TransUtil.encodeJsLangQuote(key), TransUtil.encodeJsLangQuote(value)));
+                        buff.append(String.format("\txhr.setRequestHeader('%s', '%s');\r\n", TransUtil.encodeJsLangQuote(key, false), TransUtil.encodeJsLangQuote(value, false)));
                     }
                 }
             }
@@ -1128,8 +1128,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             else {
                                 // js escape
                                 buff.append(String.format("'%s' + '=' + '%s';\r\n",
-                                    new Object[]{TransUtil.encodeJsLangQuote(paramName),
-                                        TransUtil.encodeJsLangQuote(paramValue)}));
+                                    new Object[]{TransUtil.encodeJsLangQuote(paramName, false),
+                                        TransUtil.encodeJsLangQuote(paramValue, false)}));
                             }
                             first = false;
                         } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {

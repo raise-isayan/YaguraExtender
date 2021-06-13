@@ -29,7 +29,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-118,0,0,5,56"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-60,0,0,5,93"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -479,6 +479,11 @@
                           <Events>
                             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="rdoRegexStateChanged"/>
                           </Events>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="chkMetaChar">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Metachar"/>
+                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -1526,7 +1531,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="713" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="712" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -1673,7 +1678,7 @@
                                               <Component id="pnlCount" min="-2" pref="240" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="710" max="32767" attributes="0"/>
+                                      <EmptySpace pref="703" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -1978,7 +1983,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="lblBin" min="-2" pref="55" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtBin" pref="1178" max="32767" attributes="0"/>
+                                          <Component id="txtBin" pref="1186" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
                                           <Component id="lblHex" min="-2" pref="55" max="-2" attributes="0"/>
@@ -2051,7 +2056,7 @@
                               <Component id="lblRadix32" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnRadix32Copy" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="448" max="32767" attributes="0"/>
+                          <EmptySpace pref="442" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2187,7 +2192,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="lblDate" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblJavaSerial" alignment="0" pref="65" max="32767" attributes="0"/>
+                              <Component id="lblJavaSerial" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblBin1" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblExcelSerial" max="32767" attributes="0"/>
                           </Group>
@@ -2243,7 +2248,7 @@
                               <Component id="btnExcelSerial" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtExcelSerial" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="470" max="32767" attributes="0"/>
+                          <EmptySpace pref="488" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2396,7 +2401,7 @@
                               <Component id="btnStoreTypePKCS12" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="968" max="32767" attributes="0"/>
+                      <EmptySpace pref="929" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2422,7 +2427,7 @@
                           <Component id="rdoConvertPEM" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnExport" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="467" max="32767" attributes="0"/>
+                      <EmptySpace pref="473" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2523,7 +2528,7 @@
                                       <Component id="btnCalc" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="jLabel3" pref="366" max="32767" attributes="0"/>
+                                  <Component id="jLabel3" pref="365" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="671" max="-2" attributes="0"/>
                           </Group>
@@ -2564,7 +2569,7 @@
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="348" max="32767" attributes="0"/>
+                      <EmptySpace pref="384" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

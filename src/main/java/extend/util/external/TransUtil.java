@@ -282,18 +282,18 @@ public class TransUtil {
     }
 
     public static String toSmartDecode(String value) {
-        return toSmartDecode(value, getSmartDecode(value), (String) null);
+        return toSmartDecode(value, getSmartDecode(value), false, (String) null);
     }
 
-    public static String toSmartDecode(String value, TransUtil.EncodePattern encodePattern, String charset) {
+    public static String toSmartDecode(String value, TransUtil.EncodePattern encodePattern, boolean metaChar, String charset) {
         if (charset == null) {
-            return toSmartDecode(value, encodePattern, new StringBuffer());
+            return toSmartDecode(value, encodePattern, metaChar, new StringBuffer());
         } else {
-            return toSmartDecode(value, encodePattern, new StringBuffer(charset));
+            return toSmartDecode(value, encodePattern, metaChar, new StringBuffer(charset));
         }
     }
 
-    public static String toSmartDecode(String value, TransUtil.EncodePattern encodePattern, StringBuffer selectCharset) {
+    public static String toSmartDecode(String value, TransUtil.EncodePattern encodePattern, boolean metaChar, StringBuffer selectCharset) {
         if (selectCharset == null) {
             throw new IllegalArgumentException("charset is not null");
         }
@@ -499,13 +499,13 @@ public class TransUtil {
                         // nothing
                         break;
                     case C_LANG:
-                        decode = TransUtil.decodeCLangQuote(value);
+                        decode = TransUtil.decodeCLangQuote(value, metaChar);
                         break;
                     case SQL_LANG:
-                        decode = TransUtil.decodeSQLangQuote(value);
+                        decode = TransUtil.decodeSQLangQuote(value, metaChar);
                         break;
                     case REGEX:
-                        decode = TransUtil.toRegexDecode(value);
+                        decode = TransUtil.toRegexDecode(value, metaChar);
                         break;
                     default:
                         break;
@@ -1350,21 +1350,7 @@ public class TransUtil {
         }
         return buff.toString();
     }
-
-    public static String toRegexEncode(String input) {
-        StringBuilder buff = new StringBuilder();
-        int length = input.length();
-        for (int i = 0; i < length; i++) {
-            char c = input.charAt(i);
-            buff.append(MatchUtil.toRegexEscape(c));
-        }
-        return buff.toString();
-    }
-
-    public static String toRegexDecode(String input) {
-        return input.replaceAll("\\\\([\\\\\\.\\+\\*\\?\\[\\^\\]\\$\\(\\)\\{\\}\\=\\!\\<\\>\\|\\:\\-])", "$1");
-    }
-
+        
     public static String toHtmlDecode(String input) {
         StringBuffer buff = new StringBuffer();
         Pattern p = Pattern.compile("(&(?:(#\\d+)|(#[xX][0-9a-fA-F]+)|(\\w+));)");
@@ -1563,7 +1549,7 @@ public class TransUtil {
         }
         return value;
     }
-
+       
     private final static Pattern PTN_JS_META = Pattern.compile("(\\\\[rnbftv\\\\])|(\\\\x[0-9a-fA-F]{2})|((\\\\u[dD][89abAB][0-9a-fA-F]{2}\\\\u[dD][c-fC-F][0-9a-fA-F]{2})|(\\\\u[0-9a-fA-F]{4}))");
 
     /**
@@ -1627,14 +1613,103 @@ public class TransUtil {
         return buff.toString();
     }
 
+    private final static Pattern PTN_STANDARD_DECODE_META = Pattern.compile("\\\\([rnt])");
+
+    /**
+     * 標準言語形式のメタ文字デコード(エスケープされたものを戻す)
+     *
+     * @param value
+     * @return デコードされた値
+     */
+    public static String decodeStandardLangMeta(String input) {
+        StringBuffer buff = new StringBuffer();
+        Matcher m = PTN_STANDARD_DECODE_META.matcher(input);
+        while (m.find()) {
+            String p1 = m.group(1);
+            int code = p1.codePointAt(0);
+            switch (code) {
+                case 'r':
+                    m.appendReplacement(buff, "\r");
+                    break;
+                case 'n':
+                    m.appendReplacement(buff, "\n");
+                    break;
+                case 't':
+                    m.appendReplacement(buff, "\t");
+                    break;
+                default:
+                    break;
+            }
+        }
+        m.appendTail(buff);
+        return buff.toString();
+    }
+
+    private final static Pattern PTN_STANDARD_ENCODE_META = Pattern.compile("([\r\n\t])");
+    /**
+     * 標準言語形式のメタ文字エンコード(エスケープする)
+     * 
+     * @param value
+     * @return エンコードされた値
+     */
+    public static String encodeStandardLangMeta(String input) {
+        StringBuffer buff = new StringBuffer();
+        Matcher m = PTN_STANDARD_ENCODE_META.matcher(input);
+        while (m.find()) {
+            String p1 = m.group(1);
+            int code = p1.codePointAt(0);
+            switch (code) {
+                case '\r':
+                    m.appendReplacement(buff, "\\\\r");
+                    break;
+                case '\n':
+                    m.appendReplacement(buff, "\\\\n");
+                    break;
+                case '\t':
+                    m.appendReplacement(buff, "\\\\t");
+                    break;
+                default:
+                    break;
+            }
+        }
+        m.appendTail(buff);
+        return buff.toString();
+    }
+    
+    public static String toRegexEncode(String value, boolean metachar) {
+        String encode = value;
+        if (metachar) {
+            encode = encodeStandardLangMeta(encode);
+        }
+        StringBuilder buff = new StringBuilder();
+        int length = encode.length();
+        for (int i = 0; i < length; i++) {
+            char c = encode.charAt(i);
+            buff.append(MatchUtil.toRegexEscape(c));
+        }
+        return buff.toString();
+    }
+
+    public static String toRegexDecode(String value, boolean metachar) {
+        String decode = value.replaceAll("\\\\([\\\\\\.\\+\\*\\?\\[\\^\\]\\$\\(\\)\\{\\}\\=\\!\\<\\>\\|\\:\\-])", "$1");
+        if (metachar) {
+            decode = decodeStandardLangMeta(decode);
+        }
+        return decode;
+    }
+
     /**
      * JavaScript言語形式のリテラルエンコード(エスケープ)
      *
      * @param value
      * @return エンコードされた値
      */
-    public static String encodeJsLangQuote(String value) {
-        return value.replaceAll("([\\\\\"'])", "\\\\$1");
+    public static String encodeJsLangQuote(String value, boolean metachar) {
+        String encode = value.replaceAll("([\\\\\"'])", "\\\\$1");
+        if (metachar) {
+            encode = encodeStandardLangMeta(encode);
+        }
+        return encode;
     }
 
     /**
@@ -1643,8 +1718,12 @@ public class TransUtil {
      * @param value
      * @return デコードされた値
      */
-    public static String decodeJsLangQuote(String value) {
-        return value.replaceAll("\\\\([\\\\\"'])", "$1");
+    public static String decodeJsLangQuote(String value, boolean metachar) {
+        String decode = value;
+        if (metachar) {
+            decode = decodeStandardLangMeta(decode);
+        }
+        return decode.replaceAll("\\\\([\\\\\"'])", "$1");
     }
 
     /**
@@ -1653,8 +1732,12 @@ public class TransUtil {
      * @param value
      * @return エンコードされた値
      */
-    public static String encodeCLangQuote(String value) {
-        return value.replaceAll("([\\\\\"])", "\\\\$1");
+    public static String encodeCLangQuote(String value, boolean metachar) {
+        String encode = value.replaceAll("([\\\\\"])", "\\\\$1");
+        if (metachar) {
+            encode = encodeStandardLangMeta(encode);
+        }
+        return encode;
     }
 
     /**
@@ -1663,8 +1746,12 @@ public class TransUtil {
      * @param value
      * @return デコードされた値
      */
-    public static String decodeCLangQuote(String value) {
-        return value.replaceAll("\\\\([\\\\\"])", "$1");
+    public static String decodeCLangQuote(String value, boolean metachar) {
+        String decode = value;
+        if (metachar) {
+            decode = decodeStandardLangMeta(decode);
+        }
+        return decode.replaceAll("\\\\([\\\\\"])", "$1");
     }
 
     /**
@@ -1673,8 +1760,12 @@ public class TransUtil {
      * @param value
      * @return エンコードされた値
      */
-    public static String encodeSQLLangQuote(String value) {
-        return value.replaceAll("([\'])", "\'$1");
+    public static String encodeSQLLangQuote(String value, boolean metachar) {
+        String encode = value.replaceAll("'", "''");
+        if (metachar) {
+            encode = encodeStandardLangMeta(encode);
+        }
+        return encode;
     }
 
     /**
@@ -1683,10 +1774,13 @@ public class TransUtil {
      * @param value
      * @return デコードされた値
      */
-    public static String decodeSQLangQuote(String value) {
-        return value.replaceAll("''", "'");
+    public static String decodeSQLangQuote(String value, boolean metachar) {
+        String decode = value;
+        if (metachar) {
+            decode = decodeStandardLangMeta(decode);
+        }
+        return decode.replaceAll("''", "'");
     }
-
 
     /**
      * リストを作成する
