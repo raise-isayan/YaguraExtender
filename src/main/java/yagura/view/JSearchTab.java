@@ -39,7 +39,10 @@ import extension.helpers.StringUtil;
 import extension.view.base.DefaultObjectTableModel;
 import extension.view.base.NamedColor;
 import extension.view.base.RegexItem;
+import java.awt.Color;
 import java.util.EnumSet;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
@@ -389,13 +392,16 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
             }
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (isSelected) {
+                component.setForeground(table.getSelectionForeground());
+                component.setBackground(table.getSelectionBackground());
             } else {
-                if (namedColor != null) {
+                if (namedColor != null && Color.white != namedColor.getColor()) {
                     component.setForeground(namedColor.getTextColor());
                     component.setBackground(namedColor);
-                } else {
-                    component.setForeground(SystemColor.textText);
-                    component.setBackground(SystemColor.text);
+                } 
+                else {
+                    component.setForeground(table.getForeground());
+                    component.setBackground(table.getBackground());
                 }
             }
             return component;
@@ -421,8 +427,10 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 component.setBackground(c);
                 component.setForeground(c.getTextColor());
             } else {
-                component.setForeground(SystemColor.textText);
-                component.setBackground(SystemColor.text);
+//                component.setForeground(SystemColor.textText);
+//                component.setBackground(SystemColor.text);
+                component.setForeground(list.getForeground());
+                component.setBackground(list.getBackground());
             }
             return component;
         }
