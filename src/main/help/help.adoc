@@ -154,14 +154,14 @@ Replace(After replacement)::
 [IgnoreCase] check box::
     When checked, ignore case.
 
-[Metachar] check box:: 
+[Metachar] check box::
     Enable metacharacters.
     The following meta characters are available.
 
 [options="header", cols="2,8"]
 |=======================
 |meta char|conversion character
-|\r       |Convert to CR(0x0d) 
+|\r       |Convert to CR(0x0d)
 |\n       |Convert to LF(0x0a)
 |\b       |Convert to 0x08
 |\f       |Convert to 0x0c
@@ -629,6 +629,18 @@ SQL::
 
 Regex:: 
     Escapes a regular expression.
+
+Metachar checkbox:: 
+    Enables encoding and decoding of meta characters.
+    The following meta characters are available.
+
+[options="header", cols="2,8"]
+|=======================
+|meta char|conversion character
+|\r       |Convert to CR(0x0d)
+|\n       |Convert to LF(0x0a)
+|\t       |Convert to TAB(0x09)
+|=======================
 
 ===== Format
 
