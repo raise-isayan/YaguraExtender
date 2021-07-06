@@ -3,14 +3,17 @@ package yagura.view;
 import burp.BurpExtender;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
-import extension.helpers.ConvertUtil;
+import extend.util.external.ThemeUI;
 import extension.helpers.HttpMessage;
 import extension.helpers.HttpRequest;
 import extension.helpers.HttpResponse;
 import extension.helpers.StringUtil;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
@@ -21,7 +24,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -34,6 +39,13 @@ import yagura.model.UniversalViewProperty;
 public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab {
     private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.changeStyleTheme(txtURaw);        
+        }
+    };
+               
     private boolean request = false;
     private boolean textModified = false;
     private boolean editable = false;
@@ -66,7 +78,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         //this.editable = editable;
         this.editable = false;
         initComponents();
-        customizeComponents();
+        customizeComponents();        
     }
 
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
@@ -86,7 +98,6 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.txtURaw.setClearWhitespaceLinesEnabled(true);
         this.txtURaw.setHighlightCurrentLine(true);
         this.txtURaw.setCurrentLineHighlightColor(SystemColor.textHighlight);
-        this.txtURaw.setBackground(SystemColor.text);
         this.txtURaw.setEditable(false);
 //        this.txtURaw.setComponentPopupMenu(popup);
 //        scrollURaw.setViewportView(txtURaw);
@@ -124,6 +135,9 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 //        this.txtRaw.setContentType("text/html");
 
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
+    
+        this.listener.propertyChange(null);
+        UIManager.addPropertyChangeListener(listener);                
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {

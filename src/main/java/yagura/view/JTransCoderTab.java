@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 import extend.util.external.FormatUtil;
+import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
@@ -46,11 +47,14 @@ import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
 import extension.view.layout.VerticalFlowLayout;
 import java.awt.SystemColor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
@@ -63,12 +67,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private final static Logger logger = Logger.getLogger(JTransCoderTab.class.getName());
 
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.changeStyleTheme(txtOutputRaw);        
+            ThemeUI.changeStyleTheme(txtOutputFormat);        
+        }
+    };
+    
     /**
      * Creates new form JTransCoder
      */
     public JTransCoderTab() {
         initComponents();
         customizeComponents();
+        this.listener.propertyChange(null);
+        UIManager.addPropertyChangeListener(this.listener);                
     }
     private final QuickSearchTab quickSearchTabRaw = new QuickSearchTab();
     private final QuickSearchTab quickSearchTabFormat = new QuickSearchTab();
@@ -108,7 +122,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
          * * UI design start **
          */
 
-        tabbetTranscoder.addTab(viewStateDecoderTab.getTabCaption(), viewStateDecoderTab);
+        this.tabbetTranscoder.addTab(this.viewStateDecoderTab.getTabCaption(), this.viewStateDecoderTab);
 
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtInputRaw = new javax.swing.JTextArea();
@@ -119,7 +133,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 //        this.txtInputRaw.setHyperlinksEnabled(false);
 //        this.txtInputRaw.setHighlightCurrentLine(false);
 //        this.txtInputRaw.setHyperlinksEnabled(false);
-        this.txtInputRaw.setBackground(SystemColor.text);
+//        this.txtInputRaw.setBackground(SystemColor.text);
 
         // Drag and Drop
         this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
@@ -145,7 +159,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtOutputRaw.setHyperlinksEnabled(false);
         this.txtOutputRaw.setHighlightCurrentLine(false);
         this.txtOutputRaw.setHyperlinksEnabled(false);
-        this.txtOutputRaw.setBackground(SystemColor.text);
+//        this.txtOutputRaw.setBackground(SystemColor.text);
 
         this.scrollOutputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputRaw);
         this.pnlOutputRaw.add(this.scrollOutputRaw, BorderLayout.CENTER);
@@ -156,8 +170,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtOutputFormat.setCodeFoldingEnabled(true);
         this.txtOutputFormat.setHyperlinksEnabled(false);
         this.txtOutputFormat.setHighlightCurrentLine(false);
-        this.txtOutputFormat.setBackground(SystemColor.text);
-        this.txtOutputFormat.setCurrentLineHighlightColor(SystemColor.textHighlight);
+//        this.txtOutputFormat.setBackground(SystemColor.text);
+//        this.txtOutputFormat.setCurrentLineHighlightColor(SystemColor.textHighlight);
 
         this.scrollOutputFormat = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputFormat);
 

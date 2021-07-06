@@ -7,7 +7,6 @@ import burp.IResponseInfo;
 import burp.ITab;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.SystemColor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -32,7 +31,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import extend.util.external.TransUtil;
 import extension.burp.HighlightColor;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
@@ -41,8 +39,6 @@ import extension.view.base.NamedColor;
 import extension.view.base.RegexItem;
 import java.awt.Color;
 import java.util.EnumSet;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
@@ -395,7 +391,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 component.setForeground(table.getSelectionForeground());
                 component.setBackground(table.getSelectionBackground());
             } else {
-                if (namedColor != null && Color.white != namedColor.getColor()) {
+                if (namedColor != null && namedColor.isDefaultColor()) {
                     component.setForeground(namedColor.getTextColor());
                     component.setBackground(namedColor);
                 } 
