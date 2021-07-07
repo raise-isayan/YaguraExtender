@@ -1442,8 +1442,39 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 <dd>
 <p>Escapes a regular expression.</p>
 </dd>
+<dt class="hdlist1">Metachar checkbox</dt>
+<dd>
+<p>Enables encoding and decoding of meta characters.
+The following meta characters are available.</p>
+</dd>
 </dl>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 20%;">
+<col style="width: 80%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">meta char</th>
+<th class="tableblock halign-left valign-top">conversion character</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\r</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to CR(0x0d)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\n</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to LF(0x0a)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">\t</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Convert to TAB(0x09)</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect4">
 <h5 id="_format">Format</h5>
@@ -1850,7 +1881,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 <div id="footer">
 <div id="footer-text">
 Version unspecified<br>
-Last updated 2021-06-13 17:17:51 +0900
+Last updated 2021-07-06 22:42:21 +0900
 </div>
 </div>
 </body>
