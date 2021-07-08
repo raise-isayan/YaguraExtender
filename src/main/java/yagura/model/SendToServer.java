@@ -6,6 +6,7 @@ import burp.IHttpRequestResponse;
 import burp.IHttpService;
 import extension.burp.HttpService;
 import extension.helpers.ConvertUtil;
+import extension.helpers.FileUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.awt.event.ActionEvent;
@@ -94,8 +95,8 @@ public class SendToServer extends SendToMenuItem {
                         ostm.write(StringUtil.getBytesRaw(String.format("Content-Type: %s", "multipart/form-data;boundary=" + boundary) + StringUtil.NEW_LINE));
                         try (ByteArrayOutputStream bodyStream = new ByteArrayOutputStream()) {
                             outMultipart(boundary, bodyStream, messageInfo);
-                            //ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
-                            //ostm.write(StringUtil.getBytesRaw("Connection: close" + StringUtil.NEW_LINE));
+                            ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
+                            ostm.write(StringUtil.getBytesRaw("Connection: close" + StringUtil.NEW_LINE));
                             ostm.write(StringUtil.getBytesRaw(StringUtil.NEW_LINE));
                             ostm.write(bodyStream.toByteArray());
                         }
@@ -227,7 +228,7 @@ public class SendToServer extends SendToMenuItem {
 
     protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
         HttpService httpService = new HttpService(tagetURL);
-        out.write(StringUtil.getBytesRaw(String.format("POST %s HTTP/1.1", tagetURL.getFile()) + HttpUtil.LINE_TERMINATE));
+        out.write(StringUtil.getBytesRaw(String.format("POST %s HTTP/1.1", FileUtil.appendLastSeparator(tagetURL.getFile(), "/")) + HttpUtil.LINE_TERMINATE));
         out.write(StringUtil.getBytesRaw(String.format("Host: %s", HttpUtil.buildHost(httpService.getHost(), httpService.getPort(), httpService.isHttps())) + HttpUtil.LINE_TERMINATE));
         out.write(StringUtil.getBytesRaw(String.format("User-Agent: %s", "Java-http-client/BurpSuite") + StringUtil.NEW_LINE));
     }
