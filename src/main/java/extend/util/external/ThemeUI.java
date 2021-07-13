@@ -1,11 +1,11 @@
 package extend.util.external;
 
+import java.awt.Color;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
-import yagura.model.SendToMenu;
 
 /**
  *

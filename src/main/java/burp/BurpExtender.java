@@ -72,7 +72,7 @@ import yagura.view.ViewStateTab;
  * @author isayan
  */
 public class BurpExtender extends BurpExtenderImpl
-        implements IHttpListener, IProxyListener, IExtensionStateListener {
+        implements IHttpListener, IProxyListener {
     private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
 
 
@@ -224,9 +224,9 @@ public class BurpExtender extends BurpExtenderImpl
 
         callbacks.registerHttpListener(this);
         callbacks.registerProxyListener(this);
-        callbacks.registerExtensionStateListener(this);
         SwingUtilities.invokeLater(() -> {
             callbacks.addSuiteTab(this.tabbetOption);
+            callbacks.registerExtensionStateListener(this.tabbetOption);
             setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
             callbacks.registerContextMenuFactory(this.getSendToMenu());
         });
@@ -234,12 +234,6 @@ public class BurpExtender extends BurpExtenderImpl
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
         this.registerView();
-    }
-
-    @Override
-    public void extensionUnloaded() {
-        System.gc();
-//        DefaultKeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventPostProcessor(dispatcher);
     }
 
     public void registerView() {
