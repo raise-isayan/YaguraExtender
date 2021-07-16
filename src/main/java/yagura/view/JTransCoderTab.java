@@ -289,7 +289,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab, IExtensi
             this.spnDatetime.commitEdit();
             date = (Date)this.spnDatetime.getValue();
         } catch (ParseException ex) {
-            logger.log(Level.INFO, null, ex);
+            logger.log(Level.INFO, ex.getMessage(), ex);
         }
         return date;
     }
@@ -304,7 +304,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab, IExtensi
             this.spnDateStart.commitEdit();
             date = (Date)this.spnDateStart.getValue();
         } catch (ParseException ex) {
-            logger.log(Level.INFO, null, ex);
+            logger.log(Level.INFO, ex.getMessage(), ex);
         }
         return date;
     }
@@ -319,7 +319,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab, IExtensi
             this.spnDateEnd.commitEdit();
             date = (Date)this.spnDateEnd.getValue();
         } catch (ParseException ex) {
-            logger.log(Level.INFO, null, ex);
+            logger.log(Level.INFO, ex.getMessage(), ex);
         }
         return date;
     }
@@ -3320,7 +3320,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab, IExtensi
             this.setOutput(decode, applyCharset);
         } catch (java.lang.NumberFormatException ex) {
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
-            logger.log(Level.INFO, null, ex);
+            logger.log(Level.INFO, ex.getMessage(), ex);
         }
     }
 

@@ -6,6 +6,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -131,10 +132,10 @@ public class MainFrame extends javax.swing.JFrame {
             if (CONFIG_FILE.exists()) {
                 Config.loadFromJson(CONFIG_FILE, option);
             }
-            this.jTransCoder.setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE), "UTF-8");
+            this.jTransCoder.setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE), StandardCharsets.UTF_8.name());
             this.jTransCoder.setProperty(option.getJTransCoderProperty());
         } catch (IOException ex) {
-            logger.log(Level.WARNING, null, ex);
+            logger.log(Level.WARNING, ex.getMessage(), ex);
         }
 
         UIManager.LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
@@ -172,7 +173,7 @@ public class MainFrame extends javax.swing.JFrame {
             LookAndFeel newLAF = (LookAndFeel) (lnfClass.getDeclaredConstructor().newInstance());
             return newLAF.isSupportedLookAndFeel();
         } catch (Exception ex) {
-            logger.log(Level.WARNING, null, ex);
+            logger.log(Level.WARNING, ex.getMessage(), ex);
             return false;
         }
     }

@@ -35,7 +35,7 @@ public class ThemeUI {
                 Gutter gutter = RSyntaxUtilities.getGutter(textArea);
                 if (gutter!=null) {
                     gutter.setBackground(UIManager.getColor("TextField.background"));
-                    gutter.setLineNumberColor(UIManager.getColor("TextField.background"));
+                    gutter.setLineNumberColor(UIManager.getColor("TextField.foreground"));
                 }
             });
         } catch (NullPointerException ex) {

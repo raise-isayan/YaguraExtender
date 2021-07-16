@@ -228,9 +228,10 @@ public class SendToServer extends SendToMenuItem {
 
     protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
         HttpService httpService = new HttpService(tagetURL);
-        out.write(StringUtil.getBytesRaw(String.format("POST %s HTTP/1.1", FileUtil.appendLastSeparator(tagetURL.getFile(), "/")) + HttpUtil.LINE_TERMINATE));
+        String target = tagetURL.getFile().isEmpty() ? "/" : tagetURL.getFile();
+        out.write(StringUtil.getBytesRaw(String.format("POST %s HTTP/1.1", target) + HttpUtil.LINE_TERMINATE));
         out.write(StringUtil.getBytesRaw(String.format("Host: %s", HttpUtil.buildHost(httpService.getHost(), httpService.getPort(), httpService.isHttps())) + HttpUtil.LINE_TERMINATE));
-        out.write(StringUtil.getBytesRaw(String.format("User-Agent: %s", "Java-http-client/BurpSuite") + StringUtil.NEW_LINE));
+        out.write(StringUtil.getBytesRaw(String.format("User-Agent: %s", "Java-http-client/BurpSuite") + HttpUtil.LINE_TERMINATE));
     }
 
     protected void outMultipart(String boundary, OutputStream out, IHttpRequestResponse messageInfo) throws IOException, Exception {
