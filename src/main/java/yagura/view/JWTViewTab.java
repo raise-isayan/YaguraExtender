@@ -15,9 +15,11 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -325,7 +327,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
     private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
 
-    private final HashMap<String, JWTToken> tokenMap = new HashMap<>();
+    private final Map<String, JWTToken> tokenMap = Collections.synchronizedMap(new HashMap<>());
 
     private final static String[] TYPES = {"(URL)", "(Body)", "(Cookie)", "(XML)", "-", "(file)", "(JSON)"};
 

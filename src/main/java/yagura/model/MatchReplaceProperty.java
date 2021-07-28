@@ -3,6 +3,7 @@ package yagura.model;
 import com.google.gson.annotations.Expose;
 import extension.helpers.ConvertUtil;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class MatchReplaceProperty {
     }
 
     @Expose
-    private final Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>(16, (float) 0.75, true);
+    private final Map<String, MatchReplaceGroup> replaceMap = Collections.synchronizedMap(new LinkedHashMap<String, MatchReplaceGroup>(16, (float) 0.75, true));
 
     /**
      * @return the replaceMap

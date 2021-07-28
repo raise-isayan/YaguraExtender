@@ -1,5 +1,7 @@
 package passive;
 
+import extension.helpers.HttpUtil;
+import extension.helpers.MatchUtil;
 import extension.helpers.json.JsonUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
@@ -113,7 +115,9 @@ public class JWTToken extends JsonToken {
     }
 
     public static boolean containsTokenFormat(String value) {
-        value = JsonToken.decodeUrl(value);
+        if (MatchUtil.isUrlencoded(value)) {
+            value = JsonToken.decodeUrl(value);
+        }
         Matcher m = PTN_JWT.matcher(value);
         if (m.find()) {
             return isTokenFormat(m.group(0));
@@ -151,7 +155,9 @@ public class JWTToken extends JsonToken {
     @Override
     public JWTToken parseToken(String value, boolean matches) {
         JWTToken token = null;
-        value = JsonToken.decodeUrl(value);
+        if (MatchUtil.isUrlencoded(value)) {
+            value = JsonToken.decodeUrl(value);
+        }
         Matcher m = PTN_JWT.matcher(value);
         boolean find = false;
         if (matches) {

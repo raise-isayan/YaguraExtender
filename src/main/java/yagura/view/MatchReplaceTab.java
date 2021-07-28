@@ -13,6 +13,7 @@ import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -358,7 +359,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
         firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
     }
 
-    private final Map<String, MatchReplaceGroup> replaceMap = new LinkedHashMap<String, MatchReplaceGroup>();
+    private final Map<String, MatchReplaceGroup> replaceMap = Collections.synchronizedMap(new LinkedHashMap<String, MatchReplaceGroup>());
 
     private Map<String, MatchReplaceGroup> renewReplaceMap() {
         Map<String, MatchReplaceGroup> newMap = new LinkedHashMap<String, MatchReplaceGroup>();
