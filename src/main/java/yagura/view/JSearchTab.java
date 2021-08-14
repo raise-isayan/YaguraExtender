@@ -1,6 +1,7 @@
 package yagura.view;
 
 import burp.BurpExtender;
+import burp.IExtensionStateListener;
 import burp.IHttpRequestResponse;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
@@ -37,7 +38,6 @@ import extension.helpers.StringUtil;
 import extension.view.base.DefaultObjectTableModel;
 import extension.view.base.NamedColor;
 import extension.view.base.RegexItem;
-import java.awt.Color;
 import java.util.EnumSet;
 import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
@@ -49,7 +49,7 @@ import yagura.model.UniversalViewProperty.UniversalView;
  *
  * @author isayan
  */
-public class JSearchTab extends javax.swing.JPanel implements ITab {
+public class JSearchTab extends javax.swing.JPanel implements ITab, IExtensionStateListener {
     private final static Logger logger = Logger.getLogger(JSearchTab.class.getName());
 
     /**
@@ -873,6 +873,11 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
     public void setLineWrap(boolean lineWrap) {
         this.tabMessageView.setRequestLineWrap(lineWrap);
         this.tabMessageView.setResponseLineWrap(lineWrap);
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        this.tabMessageView.extensionUnloaded();
     }
 
 

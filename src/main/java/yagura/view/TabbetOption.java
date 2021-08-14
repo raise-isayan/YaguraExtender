@@ -225,6 +225,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     @Override
     public void extensionUnloaded() {
         this.tabJTransCoder.extensionUnloaded();
+        this.tabJSearch.extensionUnloaded();
     }
 
 }

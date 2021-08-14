@@ -15,6 +15,7 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 import javax.swing.DropMode;
 import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
@@ -28,6 +29,7 @@ import javax.swing.event.TableModelListener;
  * @author isayan
  */
 public class SendToTab extends javax.swing.JPanel implements ITab {
+    private final static Logger logger = Logger.getLogger(SendToTab.class.getName());
 
     /**
      * Creates new form SendToTab

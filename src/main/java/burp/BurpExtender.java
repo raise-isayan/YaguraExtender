@@ -72,9 +72,9 @@ import yagura.view.ViewStateTab;
  * @author isayan
  */
 public class BurpExtender extends BurpExtenderImpl
-        implements IHttpListener, IProxyListener {
-    private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
+        implements IHttpListener, IProxyListener, IExtensionStateListener {
 
+    private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
 
     public BurpExtender() {
     }
@@ -89,16 +89,14 @@ public class BurpExtender extends BurpExtenderImpl
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
     static {
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        try {
+        try (ByteArrayOutputStream bout = new ByteArrayOutputStream()) {
             Properties prop = new Properties();
             File logDir = Config.getExtensionHomeDir();
             logDir.mkdirs();
             File logPropFile = new File(Config.getExtensionHomeDir(), Config.getLoggingPropertyName());
             if (logPropFile.exists()) {
                 prop.load(new FileInputStream(logPropFile));
-            }
-            else {
+            } else {
                 prop.load(BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES));
             }
             String pattern = prop.getProperty(FileHandler.class.getName() + ".pattern");
@@ -141,6 +139,7 @@ public class BurpExtender extends BurpExtenderImpl
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, false);
             tab.getMessageComponent().addMouseListener(newContextMenu(controller));
+//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
@@ -157,6 +156,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, true);
+//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
@@ -165,6 +165,7 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, false);
+//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
@@ -178,17 +179,18 @@ public class BurpExtender extends BurpExtenderImpl
                     return true;
                 }
             };
+//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
 
     private MouseListener newContextMenu(IMessageEditorController controller) {
         return new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    getSendToMenu().showBurpMenu(controller, e);
-                }
-            };
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                getSendToMenu().showBurpMenu(controller, e);
+            }
+        };
     }
 
     @Override
@@ -227,13 +229,15 @@ public class BurpExtender extends BurpExtenderImpl
         SwingUtilities.invokeLater(() -> {
             callbacks.addSuiteTab(this.tabbetOption);
             callbacks.registerExtensionStateListener(this.tabbetOption);
+            callbacks.registerExtensionStateListener(this.generatePoCTab);
+            callbacks.registerExtensionStateListener(this.commentViewTab);
+            this.registerView();
             setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
             callbacks.registerContextMenuFactory(this.getSendToMenu());
         });
 
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
-        this.registerView();
     }
 
     public void registerView() {
@@ -358,7 +362,7 @@ public class BurpExtender extends BurpExtenderImpl
                         }
                     }
                     if (includeLog) {
-                        try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
+                        try ( BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
                             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpService.getURLString(httpService) + HttpUtil.LINE_TERMINATE));
@@ -422,7 +426,7 @@ public class BurpExtender extends BurpExtenderImpl
                     }
                 }
                 if (includeLog) {
-                    try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
+                    try ( BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
                         fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                         fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpService.getURLString(messageInfo.getHttpService()) + HttpUtil.LINE_TERMINATE));
                         fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
@@ -571,8 +575,7 @@ public class BurpExtender extends BurpExtenderImpl
                     if (bean.getNotifyTypes().contains(NotifyType.COMMENT)) {
                         if (replacemeComment != null) {
                             messageInfo.setComment(replacemeComment);
-                        }
-                        else {
+                        } else {
                             messageInfo.setComment(bean.getComment());
                         }
                     }
@@ -816,12 +819,10 @@ public class BurpExtender extends BurpExtenderImpl
             if (String.class.isAssignableFrom(table.getColumnClass(i))) {
                 table.getColumnClass(i).asSubclass(String.class);
                 cols[i] = true;
-            }
-            else if (Integer.class.isAssignableFrom(table.getColumnClass(i))) {
+            } else if (Integer.class.isAssignableFrom(table.getColumnClass(i))) {
                 table.getColumnClass(i).asSubclass(Integer.class);
                 cols[i] = true;
-            }
-            else if (Long.class.isAssignableFrom(table.getColumnClass(i))) {
+            } else if (Long.class.isAssignableFrom(table.getColumnClass(i))) {
                 table.getColumnClass(i).asSubclass(Long.class);
                 cols[i] = true;
             }
@@ -886,6 +887,11 @@ public class BurpExtender extends BurpExtenderImpl
         for (IHttpRequestResponse messageInfo : messageInfoList) {
             BurpExtender.getCallbacks().excludeFromScope(BurpExtender.getHelpers().getURL(messageInfo));
         }
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        
     }
 
 }

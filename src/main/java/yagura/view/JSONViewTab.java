@@ -1,6 +1,7 @@
 package yagura.view;
 
 import burp.BurpExtender;
+import burp.IExtensionStateListener;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IRequestInfo;
@@ -28,7 +29,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
+public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab, IExtensionStateListener {
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
     private final boolean isRequest;
@@ -281,6 +282,11 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
      */
     public void setLineWrap(boolean lineWrap) {
         this.jsonView.setLineWrap(lineWrap);
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        this.jsonView.extensionUnloaded();
     }
 
 }

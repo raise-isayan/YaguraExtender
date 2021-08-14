@@ -1,11 +1,15 @@
 package yagura.view;
 
+import burp.IExtensionStateListener;
+import extend.util.external.ThemeUI;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
 import extension.helpers.json.JsonpElement;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -13,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -24,7 +29,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
  *
  * @author isayan
  */
-public class JSONView extends javax.swing.JPanel {
+public class JSONView extends javax.swing.JPanel implements IExtensionStateListener {
     private final static Logger logger = Logger.getLogger(JSONView.class.getName());
 
     private final boolean isJsonp;
@@ -45,6 +50,13 @@ public class JSONView extends javax.swing.JPanel {
         customizeComponents();
     }
 
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.changeStyleTheme(txtJSON);
+        }
+    };
+    
 //    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
 //        @Override
 //        public Document createDefaultDocument() {
@@ -146,6 +158,9 @@ public class JSONView extends javax.swing.JPanel {
         renderer.setLeafIcon(emptyIcon);
         this.modelJSON = (DefaultTreeModel) this.treeJSON.getModel();
 
+        this.listener.propertyChange(null);
+        UIManager.addPropertyChangeListener(listener);
+        
     }
 
     private void btnExpandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpandActionPerformed
@@ -351,6 +366,11 @@ public class JSONView extends javax.swing.JPanel {
      */
     public void setLineWrap(boolean lineWrap) {
         this.txtJSON.setLineWrap(lineWrap);
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        UIManager.removePropertyChangeListener(listener);
     }
 
 }

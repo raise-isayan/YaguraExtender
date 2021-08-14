@@ -12,6 +12,7 @@ import extension.helpers.SwingUtil;
 import yagura.model.LoggingProperty;
 import java.awt.Component;
 import java.io.File;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -20,6 +21,7 @@ import javax.swing.JOptionPane;
  * @author isayan
  */
 public class LoggingTab extends javax.swing.JPanel implements ITab {
+    private final static Logger logger = Logger.getLogger(LoggingTab.class.getName());
 
     /**
      * Creates new form LoggingTab

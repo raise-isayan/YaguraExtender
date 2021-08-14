@@ -27,6 +27,7 @@ import javax.swing.JMenuItem;
  * @author isayan
  */
 public class SendToMenu implements IContextMenuFactory, SendToListener {
+
     private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
 
     private final SendToProperty property;
@@ -82,8 +83,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                                 this.menuList.add(mnuItem);
                             }
                         }
-                    }
-                    else {
+                    } else {
                         javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
                         mnuItem.setText(item.getCaption());
                         sendToList.add(sendToItem);
@@ -113,12 +113,13 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                             public void warning(SendToEvent evt) {
                                 BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.WARNING);
                                 logger.log(Level.WARNING, evt.getMessage());
-                             }
+                            }
 
                             @Override
                             public void error(SendToEvent evt) {
-                               BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.ERROR);
-                                logger.log(Level.SEVERE, evt.getMessage());                            }
+                                BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.ERROR);
+                                logger.log(Level.SEVERE, evt.getMessage());
+                            }
 
                         });
 

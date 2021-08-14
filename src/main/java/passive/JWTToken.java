@@ -1,6 +1,5 @@
 package passive;
 
-import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.json.JsonUtil;
 import extension.helpers.StringUtil;

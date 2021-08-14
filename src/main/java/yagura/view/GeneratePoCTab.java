@@ -2,12 +2,14 @@ package yagura.view;
 
 import burp.BurpExtender;
 import burp.IBurpExtenderCallbacks;
+import burp.IExtensionStateListener;
 import burp.IHttpService;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
+import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
 import extension.burp.HttpService;
 import extension.helpers.HttpRequest;
@@ -19,6 +21,8 @@ import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +37,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.UniversalViewProperty;
@@ -41,9 +46,16 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab, IExtensionStateListener {
     private final static Logger logger = Logger.getLogger(GeneratePoCTab.class.getName());
 
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.changeStyleTheme(txtGeneratorPoC);
+        }
+    };
+    
     /**
      * Creates new form GeneraterPoC
      */
@@ -96,6 +108,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 //        this.txtGeneratorPoC.setContentType("text/html");
 
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
+
+        this.listener.propertyChange(null);
+        UIManager.addPropertyChangeListener(listener);                
+        
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
@@ -338,7 +354,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
-        GenerateCsrfParameter csrfParam  = getGenerateCsrfParameter();
+        final GenerateCsrfParameter csrfParam  = getGenerateCsrfParameter();
         SwingWorker swPoC = new SwingWorker<String, Object>() {
             @Override
             protected String doInBackground() throws Exception {
@@ -360,6 +376,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 } catch (InterruptedException ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (ExecutionException ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
@@ -1201,4 +1219,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         this.txtGeneratorPoC.setLineWrap(lineWrap);
     }
 
+    @Override
+    public void extensionUnloaded() {
+        UIManager.removePropertyChangeListener(listener);
+    }
+    
 }

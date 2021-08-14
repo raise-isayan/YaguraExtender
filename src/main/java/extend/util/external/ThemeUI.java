@@ -1,6 +1,5 @@
 package extend.util.external;
 
-import java.awt.Color;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;

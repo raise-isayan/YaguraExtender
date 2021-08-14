@@ -1,11 +1,13 @@
 package yagura.view;
 
 import burp.BurpExtender;
+import burp.IExtensionStateListener;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IParameter;
 import burp.IRequestInfo;
+import extend.util.external.ThemeUI;
 import extension.helpers.HttpMessage;
 import extension.helpers.HttpRequest;
 import extension.helpers.StringUtil;
@@ -13,6 +15,8 @@ import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,9 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
-import javax.swing.text.StyledEditorKit;
+import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import passive.JWTToken;
 import yagura.model.UniversalViewProperty;
@@ -35,19 +37,13 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab, IExtensionStateListener {
+
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
 
     private JWTToken jwtinstance = new JWTToken();
 
     private IMessageEditorController controller = null;
-
-    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
-        @Override
-        public Document createDefaultDocument() {
-            return new JSONSyntaxDocument();
-        }
-    };
 
     /**
      * Creates new form JWTView
@@ -65,9 +61,17 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         customizeComponents();
     }
 
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.changeStyleTheme(txtHeaderJSON);
+            ThemeUI.changeStyleTheme(txtPayloadJSON);
+            ThemeUI.changeStyleTheme(txtSignatureSign);
+        }
+    };
+
 //    private final JSONView jsonHeaderView = new JSONView();
 //    private final JSONView jsonPayloadView = new JSONView();
-
     private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
 
@@ -80,10 +84,11 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
-        /*** UI design start ***/
+        /**
+         * * UI design start **
+         */
 
         /* Header */
-
         this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
         this.txtHeaderJSON.setWrapStyleWord(false);
@@ -97,12 +102,10 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.txtHeaderJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 
 //        scrollURaw.setViewportView(txtURaw);
-
         this.scrollHeaderJSON.setLineNumbersEnabled(false);
         this.pnlHeader.add(this.scrollHeaderJSON, java.awt.BorderLayout.CENTER);
 
         /* Payload */
-
         this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
         this.txtPayloadJSON.setWrapStyleWord(false);
@@ -119,7 +122,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.pnlPayload.add(this.scrollPayloadJSON, java.awt.BorderLayout.CENTER);
 
         /* Signature */
-
         this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
         this.txtSignatureSign.setWrapStyleWord(false);
@@ -136,15 +138,18 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
         this.pnlSignature.add(this.scrollSignatureSign, java.awt.BorderLayout.CENTER);
 
-        /*** UI design end ***/
-
+        /**
+         * * UI design end **
+         */
 //        this.txtHeaderJSON.setEditable(false);
 //        this.txtHeaderJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
 //        this.txtHeaderJSON.setContentType("text/json");
-
 //        this.txtPayloadJSON.setEditable(false);
 //        this.txtPayloadJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
 //        this.txtPayloadJSON.setContentType("text/json");
+
+        this.listener.propertyChange(null);
+        UIManager.addPropertyChangeListener(listener);
 
     }
 
@@ -429,6 +434,11 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.txtHeaderJSON.setLineWrap(lineWrap);
         this.txtPayloadJSON.setLineWrap(lineWrap);
         this.txtSignatureSign.setLineWrap(lineWrap);
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        UIManager.removePropertyChangeListener(listener);
     }
 
 }

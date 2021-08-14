@@ -1,10 +1,12 @@
 package yagura.view;
 
 import burp.BurpExtender;
+import burp.IExtensionStateListener;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
 import burp.IResponseInfo;
+import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
 import extension.burp.ResponseInfo;
 import extension.helpers.HttpMessage;
@@ -13,6 +15,8 @@ import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.List;
@@ -20,15 +24,24 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import yagura.model.UniversalViewProperty;
 
 /**
  *
  * @author isayan
  */
-public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab, IExtensionStateListener {
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.changeStyleTheme(txtHtmlComment);
+        }
+    };
+    
+    
     /**
      * Creates new form HtmlCommetViewTab
      */
@@ -77,6 +90,10 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
 //        this.txtHtmlComment.setContentType("text/html");
 
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
+
+        this.listener.propertyChange(null);
+        UIManager.addPropertyChangeListener(listener);        
+        
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
@@ -254,6 +271,11 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
      */
     public void setLineWrap(boolean lineWrap) {
         this.txtHtmlComment.setLineWrap(lineWrap);
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        UIManager.removePropertyChangeListener(listener);
     }
 
 

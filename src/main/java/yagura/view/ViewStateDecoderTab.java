@@ -3,12 +3,14 @@ package yagura.view;
 import burp.ITab;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.logging.Logger;
 
 /**
  *
  * @author isayan
  */
 public class ViewStateDecoderTab extends javax.swing.JPanel implements ITab {
+    private final static Logger logger = Logger.getLogger(ViewStateDecoderTab.class.getName());
 
     /**
      * Creates new form ViewStateView

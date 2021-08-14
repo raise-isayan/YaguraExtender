@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.JMenuItem;
@@ -28,6 +29,7 @@ import javax.swing.event.ListDataListener;
  * @author isayan
  */
 public class UniversalViewTab extends javax.swing.JPanel implements ITab {
+    private final static Logger logger = Logger.getLogger(UniversalViewTab.class.getName());
 
     /**
      * Creates new form EncodingTab

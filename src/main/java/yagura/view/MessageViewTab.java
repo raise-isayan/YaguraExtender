@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.UIManager;
 import yagura.model.UniversalViewProperty.UniversalView;
 
 /**
@@ -289,6 +288,10 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage,
     public void extensionUnloaded() {
         this.tabRequestRawView.extensionUnloaded();
         this.tabResponseRawView.extensionUnloaded();
+        this.tabGeneratePoC.extensionUnloaded();
+        this.tabHtmlComment.extensionUnloaded();
+        this.tabRequestJSONViewTab.extensionUnloaded();
+        this.tabResponseJSONViewTab.extensionUnloaded();
     }
 
 
