@@ -496,16 +496,27 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         try {
             BurpExtender extenderImpl = BurpExtender.getInstance();
             String guessCharset = null;
+            boolean useHttps = false;
             HttpRequest request = null;
             if (this.controller.getResponse() != null) {
                 HttpResponse response = HttpResponse.parseHttpResponse(this.controller.getResponse());
                 guessCharset = response.getGuessCharset();
             }
             if (isMessageRequest) {
-                if (this.controller != null) {
-                    request = HttpRequest.parseHttpRequest(content, HttpUtil.isSSL(this.controller.getHttpService().getProtocol()));
+                IHttpService service = null;
+                try {
+                    // getHttpService の内部で NullPointerException となるケースがあるバグの対応。
+                    // Burp 2020.8.1 起動直後のRepeterで「Generate PoC」を行うと発生（Pro版のみ）
+                    service = this.controller.getHttpService();
+                } catch (NullPointerException ex) {
+                    logger.log(Level.WARNING, ex.getMessage(), ex);
+                }
+                if (service != null) {
+                    request = HttpRequest.parseHttpRequest(content, HttpUtil.isSSL(service.getProtocol()));
+                    useHttps = HttpUtil.isSSL(service.getProtocol());
                 } else {
                     request = HttpRequest.parseHttpRequest(content);
+                    useHttps = request.isSSL();
                 }
                 if (guessCharset == null) {
                     guessCharset = request.getGuessCharset();
@@ -515,18 +526,14 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 }
                 this.message = request;
             }
-            if (this.controller != null) {
-                this.chkUseHttps.setSelected(HttpUtil.isSSL(this.controller.getHttpService().getProtocol()));
-            } else if (request != null) {
-                this.chkUseHttps.setSelected(request.isSSL());
-            } else {
-                this.chkUseHttps.setSelected(false);
-            }
+            this.chkUseHttps.setSelected(useHttps);
             this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
             encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         } catch (ParseException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }

@@ -89,7 +89,7 @@ public class BurpExtender extends BurpExtenderImpl
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
     static {
-        try (ByteArrayOutputStream bout = new ByteArrayOutputStream()) {
+        try ( ByteArrayOutputStream bout = new ByteArrayOutputStream()) {
             Properties prop = new Properties();
             File logDir = Config.getExtensionHomeDir();
             logDir.mkdirs();
@@ -891,7 +891,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     @Override
     public void extensionUnloaded() {
-        
+
     }
 
 }
