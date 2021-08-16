@@ -1,7 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IExtensionStateListener;
 import burp.IHttpRequestResponse;
 import burp.IRequestInfo;
 import burp.IResponseInfo;
@@ -49,7 +48,7 @@ import yagura.model.UniversalViewProperty.UniversalView;
  *
  * @author isayan
  */
-public class JSearchTab extends javax.swing.JPanel implements ITab, IExtensionStateListener {
+public class JSearchTab extends javax.swing.JPanel implements ITab {
     private final static Logger logger = Logger.getLogger(JSearchTab.class.getName());
 
     /**
@@ -874,11 +873,5 @@ public class JSearchTab extends javax.swing.JPanel implements ITab, IExtensionSt
         this.tabMessageView.setRequestLineWrap(lineWrap);
         this.tabMessageView.setResponseLineWrap(lineWrap);
     }
-
-    @Override
-    public void extensionUnloaded() {
-        this.tabMessageView.extensionUnloaded();
-    }
-
 
 }

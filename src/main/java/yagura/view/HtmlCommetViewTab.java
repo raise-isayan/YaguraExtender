@@ -1,7 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IExtensionStateListener;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
@@ -31,7 +30,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab, IExtensionStateListener {
+public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -272,11 +271,5 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     public void setLineWrap(boolean lineWrap) {
         this.txtHtmlComment.setLineWrap(lineWrap);
     }
-
-    @Override
-    public void extensionUnloaded() {
-        UIManager.removePropertyChangeListener(listener);
-    }
-
 
 }

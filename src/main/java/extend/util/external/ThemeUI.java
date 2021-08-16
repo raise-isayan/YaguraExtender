@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import java.beans.PropertyChangeListener;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -25,7 +26,7 @@ public class ThemeUI {
     **/
 
    public static void changeStyleTheme(RSyntaxTextArea textArea) {
-        try {
+       try {
             SwingUtilities.invokeLater(() -> {
                 textArea.setForeground(UIManager.getColor("EditorPane.foreground"));
                 textArea.setBackground(UIManager.getColor("TextField.background"));
@@ -39,6 +40,13 @@ public class ThemeUI {
             });
         } catch (NullPointerException ex) {
         }
+   }
+
+   public static void removeAllUIManagerListener() {
+       PropertyChangeListener[] listener = UIManager.getPropertyChangeListeners();
+       for (PropertyChangeListener l : listener) {
+           UIManager.removePropertyChangeListener(l);
+       }
    }
    
 }

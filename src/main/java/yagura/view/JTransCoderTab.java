@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.IExtensionStateListener;
 import burp.ITab;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
@@ -64,7 +63,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JTransCoderTab extends javax.swing.JPanel implements ITab, IExtensionStateListener {
+public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private final static Logger logger = Logger.getLogger(JTransCoderTab.class.getName());
 
@@ -3625,11 +3624,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab, IExtensi
         chkRawModeActionPerformed(null);
         chkGuessActionPerformed(null);
         chkViewLineWrapActionPerformed(null);
-    }
-
-    @Override
-    public void extensionUnloaded() {
-        UIManager.removePropertyChangeListener(listener);                
     }
 
 }

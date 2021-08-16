@@ -1,7 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IExtensionStateListener;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import extend.util.external.ThemeUI;
@@ -35,7 +34,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab, IExtensionStateListener {
+public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab {
     private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -362,11 +361,6 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab,
      */
     public void setLineWrap(boolean lineWrap) {
         this.txtURaw.setLineWrap(lineWrap);
-    }
-
-    @Override
-    public void extensionUnloaded() {
-        UIManager.removePropertyChangeListener(listener);                
     }
 
 }

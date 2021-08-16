@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.IExtensionStateListener;
 import burp.ITab;
 import extension.helpers.BurpUtil;
 import java.awt.Component;
@@ -20,7 +19,7 @@ import yagura.model.IOptionProperty;
  *
  * @author isayan
  */
-public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProperty, ITab, IExtensionStateListener, PropertyChangeListener {
+public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProperty, ITab, PropertyChangeListener {
 
     public TabbetOption() {
         super();
@@ -220,12 +219,6 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 
     public byte[] receiveFromJTransCoder() {
         return this.tabJTransCoder.receiveFromJTransCoder();
-    }
-
-    @Override
-    public void extensionUnloaded() {
-        this.tabJTransCoder.extensionUnloaded();
-        this.tabJSearch.extensionUnloaded();
     }
 
 }

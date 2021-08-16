@@ -1,7 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IExtensionStateListener;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
 import burp.IMessageEditorTabFactory;
@@ -37,7 +36,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab, IExtensionStateListener {
+public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
 
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
 
@@ -434,11 +433,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         this.txtHeaderJSON.setLineWrap(lineWrap);
         this.txtPayloadJSON.setLineWrap(lineWrap);
         this.txtSignatureSign.setLineWrap(lineWrap);
-    }
-
-    @Override
-    public void extensionUnloaded() {
-        UIManager.removePropertyChangeListener(listener);
     }
 
 }

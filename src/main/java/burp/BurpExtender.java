@@ -1,5 +1,6 @@
 package burp;
 
+import extend.util.external.ThemeUI;
 import extend.util.external.gson.XMatchItemAdapter;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchReplaceItem;
@@ -77,6 +78,12 @@ public class BurpExtender extends BurpExtenderImpl
     private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
 
     public BurpExtender() {
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        });
     }
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
@@ -139,7 +146,6 @@ public class BurpExtender extends BurpExtenderImpl
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final RawViewTab tab = new RawViewTab(controller, editable, false);
             tab.getMessageComponent().addMouseListener(newContextMenu(controller));
-//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
@@ -156,7 +162,6 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, true);
-//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
@@ -165,7 +170,6 @@ public class BurpExtender extends BurpExtenderImpl
         @Override
         public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
             final JSONViewTab tab = new JSONViewTab(controller, editable, false);
-//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
@@ -179,7 +183,6 @@ public class BurpExtender extends BurpExtenderImpl
                     return true;
                 }
             };
-//            getCallbacks().registerExtensionStateListener(tab);
             return tab;
         }
     };
@@ -197,12 +200,6 @@ public class BurpExtender extends BurpExtenderImpl
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         super.registerExtenderCallbacks(callbacks);
         callbacks.setExtensionName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        });
 
         // 設定ファイル読み込み
         try {
@@ -228,9 +225,7 @@ public class BurpExtender extends BurpExtenderImpl
         callbacks.registerProxyListener(this);
         SwingUtilities.invokeLater(() -> {
             callbacks.addSuiteTab(this.tabbetOption);
-            callbacks.registerExtensionStateListener(this.tabbetOption);
-            callbacks.registerExtensionStateListener(this.generatePoCTab);
-            callbacks.registerExtensionStateListener(this.commentViewTab);
+            callbacks.registerExtensionStateListener(this);
             this.registerView();
             setSendToMenu(new SendToMenu(callbacks, this.option.getSendToProperty()));
             callbacks.registerContextMenuFactory(this.getSendToMenu());
@@ -891,7 +886,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     @Override
     public void extensionUnloaded() {
-
+        ThemeUI.removeAllUIManagerListener();
     }
 
 }

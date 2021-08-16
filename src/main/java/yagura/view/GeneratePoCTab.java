@@ -2,7 +2,6 @@ package yagura.view;
 
 import burp.BurpExtender;
 import burp.IBurpExtenderCallbacks;
-import burp.IExtensionStateListener;
 import burp.IHttpService;
 import burp.IMessageEditorController;
 import burp.IMessageEditorTab;
@@ -46,7 +45,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab, IExtensionStateListener {
+public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
     private final static Logger logger = Logger.getLogger(GeneratePoCTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -506,7 +505,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 IHttpService service = null;
                 try {
                     // getHttpService の内部で NullPointerException となるケースがあるバグの対応。
-                    // Burp 2020.8.1 起動直後のRepeterで「Generate PoC」を行うと発生（Pro版のみ）
+                    // Burp 2021.8.1 起動直後のRepeterで「Generate PoC」を行うと発生（Pro版のみ）
                     service = this.controller.getHttpService();
                 } catch (NullPointerException ex) {
                     logger.log(Level.WARNING, ex.getMessage(), ex);
@@ -1224,11 +1223,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
      */
     public void setLineWrap(boolean lineWrap) {
         this.txtGeneratorPoC.setLineWrap(lineWrap);
-    }
-
-    @Override
-    public void extensionUnloaded() {
-        UIManager.removePropertyChangeListener(listener);
     }
     
 }

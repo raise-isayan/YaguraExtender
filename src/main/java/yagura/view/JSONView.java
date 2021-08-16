@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.IExtensionStateListener;
 import extend.util.external.ThemeUI;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -29,7 +28,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
  *
  * @author isayan
  */
-public class JSONView extends javax.swing.JPanel implements IExtensionStateListener {
+public class JSONView extends javax.swing.JPanel {
     private final static Logger logger = Logger.getLogger(JSONView.class.getName());
 
     private final boolean isJsonp;
@@ -366,11 +365,6 @@ public class JSONView extends javax.swing.JPanel implements IExtensionStateListe
      */
     public void setLineWrap(boolean lineWrap) {
         this.txtJSON.setLineWrap(lineWrap);
-    }
-
-    @Override
-    public void extensionUnloaded() {
-        UIManager.removePropertyChangeListener(listener);
     }
 
 }

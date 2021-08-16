@@ -2,7 +2,6 @@ package yagura.view;
 
 import burp.IHttpRequestResponse;
 import burp.BurpExtender;
-import burp.IExtensionStateListener;
 import yagura.model.*;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -16,7 +15,7 @@ import yagura.model.UniversalViewProperty.UniversalView;
  *
  * @author isayan
  */
-public class MessageViewTab extends javax.swing.JPanel implements SendToMessage, IExtensionStateListener {
+public class MessageViewTab extends javax.swing.JPanel implements SendToMessage {
     private final static Logger logger = Logger.getLogger(MessageViewTab.class.getName());
 
     /**
@@ -283,16 +282,5 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage,
     public void setResponseLineWrap(boolean lineWrap) {
         this.tabResponseRawView.setLineWrap(lineWrap);
     }
-
-    @Override
-    public void extensionUnloaded() {
-        this.tabRequestRawView.extensionUnloaded();
-        this.tabResponseRawView.extensionUnloaded();
-        this.tabGeneratePoC.extensionUnloaded();
-        this.tabHtmlComment.extensionUnloaded();
-        this.tabRequestJSONViewTab.extensionUnloaded();
-        this.tabResponseJSONViewTab.extensionUnloaded();
-    }
-
 
 }
