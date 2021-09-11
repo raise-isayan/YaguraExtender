@@ -2198,24 +2198,19 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="spnDatetime" max="32767" attributes="0"/>
+                              <Component id="spnDatetime" pref="319" max="32767" attributes="0"/>
                               <Component id="txtExcelSerial" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtJavaSerial" alignment="1" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="txtUnixtime" min="-2" pref="299" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="txtUnixtime" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="btnJavaSerialCopy" pref="72" max="32767" attributes="0"/>
-                                  <Component id="btnExcelSerial" max="32767" attributes="0"/>
-                                  <Component id="btnUnixtimeCopy" alignment="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="btnJavaSerialCopy" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="btnUnixtimeCopy" min="-2" pref="72" max="-2" attributes="0"/>
+                              <Component id="btnExcelSerial" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
                               <Component id="cmbTimezone" min="-2" pref="174" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="757" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="777" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2248,7 +2243,7 @@
                               <Component id="btnExcelSerial" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtExcelSerial" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="488" max="32767" attributes="0"/>
+                          <EmptySpace pref="527" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2361,6 +2356,244 @@
                   <Events>
                     <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtUnixtimeKeyReleased"/>
                   </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="tabIPFormatConverter">
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                  <JTabbedPaneConstraints tabName="IP Format">
+                    <Property name="tabTitle" type="java.lang.String" value="IP Format"/>
+                  </JTabbedPaneConstraints>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="lblIntIP" max="32767" attributes="0"/>
+                                  <Component id="lblDotDeclIP" max="32767" attributes="0"/>
+                                  <Component id="lblDotOctIP" max="32767" attributes="0"/>
+                                  <Component id="lblHexIP" max="32767" attributes="0"/>
+                                  <Component id="lblOctIP" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="lblDotHexIP" alignment="0" min="-2" pref="95" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtDotOctIP" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
+                                      <Component id="txtOctIP" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
+                                      <Component id="txtDotHexIP" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
+                                      <Component id="txtHexIP" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
+                                      <Component id="txtIntIP" alignment="0" min="-2" pref="181" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="btnDecIPConvert" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnIntIP" min="-2" pref="72" max="-2" attributes="0"/>
+                                      <Component id="btnHexIP" min="-2" pref="72" max="-2" attributes="0"/>
+                                      <Component id="btnDotHexIP" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                                      <Component id="btnDotOctIP" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                                      <Component id="btnOctIP" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="txtDec1" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtDec2" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtDec3" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txtDec4" min="-2" pref="40" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblIPValid" min="-2" pref="256" max="-2" attributes="0"/>
+                          <EmptySpace pref="722" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblDotDeclIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDec1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDec2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDec3" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtDec4" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnDecIPConvert" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="lblIPValid" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblDotOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDotOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDotOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txtOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblDotHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDotHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDotHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblIntIP" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
+                              <Component id="txtIntIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnIntIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="471" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="lblDotDeclIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Dotted Decimal IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDec1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="192"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDec2">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="0"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDec3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="2"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDec4">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="1"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDecIPConvert">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Convert"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDecIPConvertActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblDotOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Dotted Octal IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDotHexIP">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblHexIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Hex IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDotOctIP">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblIntIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Integer IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtIntIP">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDotOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotOctIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDotHexIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotHexIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnIntIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIntIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtOctIP">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnOctIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Octal IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblDotHexIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Dotted Hex IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtHexIP">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnHexIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHexIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblIPValid">
                 </Component>
               </SubComponents>
             </Container>
