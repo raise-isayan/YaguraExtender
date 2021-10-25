@@ -381,12 +381,12 @@ Content-Disposition: form-data; name="highlight"
 red
 -----------------------------265001916915724
 Content-Disposition: form-data; name="request"; filename="request"
-Content-Type: text/plain
+Content-Type: application/octet-stream
 
 request header and body
 -----------------------------265001916915724
 Content-Disposition: form-data; name="response"; filename="response"
-Content-Type: text/plain
+Content-Type: application/octet-stream
 
 Response header and body
 -----------------------------265001916915724

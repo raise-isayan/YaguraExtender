@@ -37,8 +37,8 @@ public class SendToServerExtendDlg extends CustomDialog {
         chkIgnoreValidateCertification = new javax.swing.JCheckBox();
         pnlProxy = new javax.swing.JPanel();
         pnlUseProxy = new javax.swing.JPanel();
-        rdoCustomProxy = new javax.swing.JRadioButton();
-        rdoBurpProxy = new javax.swing.JRadioButton();
+        rdoCustomClient = new javax.swing.JRadioButton();
+        rdoBurpClient = new javax.swing.JRadioButton();
         pnlCustomProxy = new javax.swing.JPanel();
         lblProtocol = new javax.swing.JLabel();
         lblProxyHost = new javax.swing.JLabel();
@@ -86,20 +86,20 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         pnlProxy.setLayout(new java.awt.BorderLayout());
 
-        buttonGroup1.add(rdoCustomProxy);
-        rdoCustomProxy.setSelected(true);
-        rdoCustomProxy.setText("Use Custom proxy settings");
-        rdoCustomProxy.addChangeListener(new javax.swing.event.ChangeListener() {
+        buttonGroup1.add(rdoCustomClient);
+        rdoCustomClient.setSelected(true);
+        rdoCustomClient.setText("Use Custom http client");
+        rdoCustomClient.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rdoCustomProxyStateChanged(evt);
+                rdoCustomClientStateChanged(evt);
             }
         });
 
-        buttonGroup1.add(rdoBurpProxy);
-        rdoBurpProxy.setText("Use Burp proxy settings");
-        rdoBurpProxy.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(rdoBurpClient);
+        rdoBurpClient.setText("Use Burp http client (with burp settings)");
+        rdoBurpClient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoBurpProxyActionPerformed(evt);
+                rdoBurpClientActionPerformed(evt);
             }
         });
 
@@ -110,17 +110,17 @@ public class SendToServerExtendDlg extends CustomDialog {
             .addGroup(pnlUseProxyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlUseProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rdoCustomProxy)
-                    .addComponent(rdoBurpProxy))
-                .addContainerGap(353, Short.MAX_VALUE))
+                    .addComponent(rdoCustomClient)
+                    .addComponent(rdoBurpClient, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(234, Short.MAX_VALUE))
         );
         pnlUseProxyLayout.setVerticalGroup(
             pnlUseProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUseProxyLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(rdoBurpProxy)
+                .addComponent(rdoBurpClient)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(rdoCustomProxy)
+                .addComponent(rdoCustomClient)
                 .addContainerGap())
         );
 
@@ -273,13 +273,13 @@ public class SendToServerExtendDlg extends CustomDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtProxyPasswdActionPerformed
 
-    private void rdoBurpProxyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpProxyActionPerformed
+    private void rdoBurpClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpClientActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rdoBurpProxyActionPerformed
+    }//GEN-LAST:event_rdoBurpClientActionPerformed
 
-    private void rdoCustomProxyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomProxyStateChanged
-        SwingUtil.setContainerEnable(pnlCustomProxy, this.rdoCustomProxy.isSelected());
-    }//GEN-LAST:event_rdoCustomProxyStateChanged
+    private void rdoCustomClientStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomClientStateChanged
+        SwingUtil.setContainerEnable(pnlCustomProxy, this.rdoCustomClient.isSelected());
+    }//GEN-LAST:event_rdoCustomClientStateChanged
 
     /**
      * @param args the command line arguments
@@ -316,8 +316,8 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnlProxy;
     private javax.swing.JPanel pnlUseProxy;
-    private javax.swing.JRadioButton rdoBurpProxy;
-    private javax.swing.JRadioButton rdoCustomProxy;
+    private javax.swing.JRadioButton rdoBurpClient;
+    private javax.swing.JRadioButton rdoCustomClient;
     private javax.swing.JSpinner spnProxyPort;
     private javax.swing.JTextField txtProxyHost;
     private javax.swing.JPasswordField txtProxyPasswd;
@@ -345,10 +345,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         this.txtProxyUser.setText(proxyUser);
         this.txtProxyPasswd.setText(proxyPasswd);
         if (SendToExtend.USE_CUSTOM_PROXY.equals(useProxy)) {
-            this.rdoCustomProxy.setSelected(true);
+            this.rdoCustomClient.setSelected(true);
         }
         else {
-            this.rdoBurpProxy.setSelected(true);
+            this.rdoBurpClient.setSelected(true);
         }
         this.chkIgnoreValidateCertification.setSelected(ConvertUtil.parseBooleanDefault(ignoreValidateCertification, false));
     }
@@ -359,7 +359,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         prop.setProperty("proxyPort", StringUtil.toString(this.spnProxyPort.getValue()));
         prop.setProperty("proxyUser", this.txtProxyUser.getText());
         prop.setProperty("proxyPasswd", String.valueOf(this.txtProxyPasswd.getPassword()));
-        String useProxy = this.rdoCustomProxy.isSelected() ? SendToExtend.USE_CUSTOM_PROXY : SendToExtend.USE_BURP_PROXY;
+        String useProxy = this.rdoCustomClient.isSelected() ? SendToExtend.USE_CUSTOM_PROXY : SendToExtend.USE_BURP_PROXY;
         prop.setProperty("useProxy", useProxy);
         prop.setProperty("ignoreValidateCertification", String.valueOf(this.chkIgnoreValidateCertification.isSelected()));
     }
