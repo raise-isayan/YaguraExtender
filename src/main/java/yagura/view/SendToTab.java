@@ -58,6 +58,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
         chkSubmenu = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableSendTo = new javax.swing.JTable();
+        chkForceSortOrder = new javax.swing.JCheckBox();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -149,6 +150,13 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
             tableSendTo.getColumnModel().getColumn(10).setResizable(false);
         }
 
+        chkForceSortOrder.setText("Force sort order");
+        chkForceSortOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkForceSortOrderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
@@ -158,7 +166,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSendToEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,14 +180,18 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
                             .addComponent(btnSendToAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(chkSubmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 552, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkForceSortOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chkSubmenu)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkSubmenu)
+                    .addComponent(chkForceSortOrder))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
@@ -345,12 +357,17 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
     private void tableSendToKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableSendToKeyPressed
     }//GEN-LAST:event_tableSendToKeyPressed
 
+    private void chkForceSortOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkForceSortOrderActionPerformed
+        this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
+    }//GEN-LAST:event_chkForceSortOrderActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendToAdd;
     private javax.swing.JButton btnSendToDownArraw;
     private javax.swing.JButton btnSendToEdit;
     private javax.swing.JButton btnSendToRemove;
     private javax.swing.JButton btnSendToUpArraw;
+    private javax.swing.JCheckBox chkForceSortOrder;
     private javax.swing.JCheckBox chkSubmenu;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlCenter;
@@ -419,12 +436,14 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
     public void setSendToProperty(SendToProperty sendToProperty) {
         this.setSendToItemList(sendToProperty.getSendToItemList());
         this.chkSubmenu.setSelected(sendToProperty.isSubMenu());
+        this.chkForceSortOrder.setSelected(sendToProperty.isForceSortOrder());
     }
 
     public SendToProperty getSendToProperty() {
         SendToProperty sendToProperty = new SendToProperty();
         sendToProperty.setSendToItemList(this.getSendToItemList());
         sendToProperty.setSubMenu(this.chkSubmenu.isSelected());
+        sendToProperty.setForceSortOrder(this.chkForceSortOrder.isSelected());
         return sendToProperty;
     }
 

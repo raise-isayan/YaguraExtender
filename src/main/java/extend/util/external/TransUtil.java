@@ -2298,4 +2298,9 @@ public class TransUtil {
         return excel_serial.add(BigDecimal.valueOf(tz_offset)).divide(BigDecimal.valueOf(60 * 60 * 24), 6, RoundingMode.HALF_EVEN).add(BigDecimal.valueOf(25569L));
     }
 
+    private final static String ORDERD_CHAR = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    
+    public static char getOrderdChar(int ord) {
+        return ORDERD_CHAR.charAt(ord % ORDERD_CHAR.length());
+    }    
 }

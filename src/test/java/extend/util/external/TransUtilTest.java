@@ -954,4 +954,34 @@ public class TransUtilTest {
         System.out.println("append:" + b.toString());
     }
 
+
+    
+    @Test
+    public void testOrderdChar() {
+        {
+            char ord = TransUtil.getOrderdChar(0);
+            assertEquals(ord, '0');        
+        }
+        {
+            char ord = TransUtil.getOrderdChar(10);
+            assertEquals(ord, 'A');        
+        }
+        {
+            char ord = TransUtil.getOrderdChar(9 + 26);
+            assertEquals(ord, 'Z');        
+        }
+        {
+            char ord = TransUtil.getOrderdChar(10 + 26);
+            assertEquals(ord, 'a');        
+        }
+        {
+            char ord = TransUtil.getOrderdChar(9 + 26 + 26);
+            assertEquals(ord, 'z');        
+        }
+        {
+            char ord = TransUtil.getOrderdChar(10 + 26 + 26);
+            assertEquals(ord, '0');        
+        }
+    }
+        
 }

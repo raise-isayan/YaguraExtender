@@ -40,9 +40,27 @@ public class SendToProperty {
         this.submenu = submenu;
     }
 
+    @Expose
+    private boolean forceSortOrder = false;
+    
+    /**
+     * @return the forceSortOrder
+     */
+    public boolean isForceSortOrder() {
+        return forceSortOrder;
+    }
+
+    /**
+     * @param forceSortOrder the forceSortOrder to set
+     */
+    public void setForceSortOrder(boolean forceSortOrder) {
+        this.forceSortOrder = forceSortOrder;
+    }
+        
     public void setProperty(SendToProperty property) {
         this.setSendToItemList(property.getSendToItemList());
         this.setSubMenu(property.isSubMenu());
+        this.setForceSortOrder(property.isForceSortOrder());
     }
 
 }
