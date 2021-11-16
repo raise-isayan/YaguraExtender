@@ -66,7 +66,14 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
         else
             return caption; 
     }
-        
+
+    private int getMenuItemCount(boolean isSubmenu) {
+        if (isSubmenu) 
+            return this.mnuSendTo.getItemCount();
+        else
+            return this.menuList.size();
+    }
+    
     public void renewMenu(SendToProperty property) {
         this.mnuSendTo.setText("Send To");
         this.sendToList.clear();
@@ -75,7 +82,6 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             this.mnuSendTo.removeAll();
             this.menuList.add(this.mnuSendTo);
         }
-        BurpExtender.outPrintln("renewMenu:");
         List<SendToItem> sendToItemList = property.getSendToItemList();
         for (SendToItem item : sendToItemList) {
             if (item.isSelected()) {
@@ -83,7 +89,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                     SendToExtend sendToItem = new SendToExtend(item, this.invocation);
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
-                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), this.menuList.size(), item.getCaption()));
+                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
                         List<String> encodingList = BurpExtender.getInstance().getSelectEncodingList();
                         for (String encoding : encodingList) {
                             javax.swing.JMenuItem mnuItemEncoding = new javax.swing.JMenuItem();
@@ -102,7 +108,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                         }
                     } else {
                         javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
-                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), this.menuList.size(), item.getCaption()));
+                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
                         sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
@@ -117,7 +123,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
                     }
                 } else {
                     javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
-                    mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), this.menuList.size(), item.getCaption()));
+                    mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
                     if (item.isServer()) {
                         SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
                         sendToItem.addSendToListener(new SendToListener() {
