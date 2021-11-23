@@ -295,6 +295,9 @@ public class SendToServer extends SendToMenuItem {
                         builder = builder.sslContext(HttpUtil.ignoreSSLContext());
                     }
 
+                    final Properties props = System.getProperties(); 
+                    props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.valueOf(ignoreValidateCertification).toString());
+                    
                     if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
                         ProxySelector staticProxy = new HttpUtil.StaticProxySelector(proxy) {
                             @Override
