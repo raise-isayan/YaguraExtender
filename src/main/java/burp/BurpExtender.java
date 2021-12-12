@@ -562,7 +562,7 @@ public class BurpExtender extends BurpExtenderImpl
                         issueAlert(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
                     }
                     if (bean.getNotifyTypes().contains(NotifyType.TRAY_MESSAGE)) {
-//                        trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
+            //                        trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
                     }
                     if (bean.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
                         messageInfo.setHighlight(StringUtil.toString(bean.getHighlightColor()));
@@ -587,7 +587,7 @@ public class BurpExtender extends BurpExtenderImpl
             }
         }
     }
-
+        
     /**
      * 選択可能なエンコーディングリストの取得
      *
@@ -749,7 +749,7 @@ public class BurpExtender extends BurpExtenderImpl
      * @param text
      */
     public void sendToJTransCoder(String text) {
-        tabbetOption.sendToJTransCoder(text);
+        this.tabbetOption.sendToJTransCoder(text);
     }
 
     public byte[] receiveFromJTransCoder() {

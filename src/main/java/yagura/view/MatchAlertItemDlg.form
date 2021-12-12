@@ -18,7 +18,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-100,0,0,2,103"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-86,0,0,2,109"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -39,7 +39,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="412" max="32767" attributes="0"/>
+                  <EmptySpace pref="426" max="32767" attributes="0"/>
                   <Component id="btnOK" min="-2" pref="84" max="-2" attributes="1"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnCancel" min="-2" pref="95" max="-2" attributes="1"/>
@@ -55,7 +55,7 @@
                       <Component id="btnCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnOK" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="20" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -88,7 +88,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="pnlNotice">
+        <Container class="javax.swing.JPanel" name="pnlContaner">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
               <BorderConstraints direction="Before"/>
@@ -99,175 +99,37 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                                      <Component id="lblType" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="lblMatch" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="cmbAlertType" pref="311" max="32767" attributes="0"/>
-                                  <Component id="txtAlertMatch" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="chkRegExp" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="chkIgnoreCase" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="chkSmartMatch" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Component id="pnlMatch" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="pnlTarget" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblTarget" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="chkSpider" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkProxy" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="chkIntruder" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkScanner" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="chkSequencer" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkRepeater" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="pnlNotice" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="pnlMatch" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="cmbAlertType" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkSmartMatch" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="txtAlertMatch" alignment="3" min="-2" max="-2" attributes="1"/>
-                                  <Component id="lblMatch" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkIgnoreCase" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkRegExp" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Component id="lblType" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblTarget" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="chkProxy" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkScanner" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkRepeater" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="chkSpider" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkIntruder" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkSequencer" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="pnlMatch" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="pnlTarget" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="pnlNotice" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="66" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JCheckBox" name="chkSequencer">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="sequencer"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="chkRepeater">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="repeater"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="chkIntruder">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="intruder"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="chkScanner">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="scanner"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="chkSpider">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="spider"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="chkProxy">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="proxy"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblTarget">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Target:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblMatch">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Match:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblType">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Type:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JComboBox" name="cmbAlertType">
-              <Properties>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="0"/>
-                </Property>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtAlertMatch">
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="chkIgnoreCase">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="IgnoreCase"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JCheckBox" name="chkRegExp">
-              <Properties>
-                <Property name="selected" type="boolean" value="true"/>
-                <Property name="text" type="java.lang.String" value="RegExp"/>
-              </Properties>
-            </Component>
-            <Container class="javax.swing.JPanel" name="pnlMatch">
+            <Container class="javax.swing.JPanel" name="pnlNotice">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -472,14 +334,196 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JCheckBox" name="chkSmartMatch">
+            <Container class="javax.swing.JPanel" name="pnlTarget">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Smart Match"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                    <TitledBorder title="Target"/>
+                  </Border>
+                </Property>
               </Properties>
-              <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkSmartMatchStateChanged"/>
-              </Events>
-            </Component>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="chkSpider" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkProxy" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="chkIntruder" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkScanner" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="chkRepeater" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="chkSequencer" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="chkExtender" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace pref="279" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="chkProxy" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkScanner" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkRepeater" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="chkSpider" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkIntruder" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkSequencer" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkExtender" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="4" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JCheckBox" name="chkProxy">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="proxy"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkSpider">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="spider"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkIntruder">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="intruder"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkScanner">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="scanner"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkRepeater">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="repeater"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkSequencer">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="sequencer"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkExtender">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="extender"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="pnlMatch">
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lblMatch" max="32767" attributes="0"/>
+                              <Component id="lblType" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="cmbAlertType" pref="362" max="32767" attributes="0"/>
+                              <Component id="txtAlertMatch" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="chkRegExp" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="chkIgnoreCase" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="chkSmartMatch" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblType" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmbAlertType" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkSmartMatch" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblMatch" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtAlertMatch" alignment="3" min="-2" max="-2" attributes="1"/>
+                              </Group>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="chkRegExp" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="chkIgnoreCase" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="lblType">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Type:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JComboBox" name="cmbAlertType">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" value=""/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkSmartMatch">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Smart Match"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkSmartMatchStateChanged"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblMatch">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Match:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtAlertMatch">
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkRegExp">
+                  <Properties>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="RegExp"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkIgnoreCase">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="IgnoreCase"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
           </SubComponents>
         </Container>
       </SubComponents>

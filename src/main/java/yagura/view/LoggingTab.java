@@ -70,7 +70,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        chkToolLog.setText("ToolLog:(proxy, spider, scanner, intruder, repeater tool)");
+        chkToolLog.setText("ToolLog:(proxy, spider, scanner, intruder, repeater, extender tool)");
         chkToolLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkToolLogActionPerformed(evt);

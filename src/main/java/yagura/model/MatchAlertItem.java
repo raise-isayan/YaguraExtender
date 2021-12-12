@@ -43,7 +43,7 @@ public class MatchAlertItem extends MatchItem {
     public boolean isSmartMatch() {
         return this.smartMatch;
     }
-
+    
     @Expose
     private EnumSet<NotifyType> notifyTypes = EnumSet.noneOf(NotifyType.class);
 

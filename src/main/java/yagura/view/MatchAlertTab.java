@@ -261,7 +261,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
         this.tableAlert.getColumnModel().getColumn(13).setMinWidth(0);
         this.tableAlert.getColumnModel().getColumn(13).setPreferredWidth(0);
         this.tableAlert.getColumnModel().getColumn(13).setMaxWidth(0);
-
+        
     }
 
     private void btnAlertEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlertEditActionPerformed
