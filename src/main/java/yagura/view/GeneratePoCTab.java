@@ -28,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -775,6 +777,19 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     }
 
+    protected String generateMultiFormFunction(boolean isCsrfTimeDelay) {
+        String timeDelay = isCsrfTimeDelay ? "msec" : "";
+        StringBuilder buff = new StringBuilder();
+        buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
+        buff.append("\tfor(let i = 0; i < document.forms.length; i++) {\n");
+        if (isCsrfTimeDelay) {
+            buff.append("\t\tmsleep(msec);\n");
+        }
+        buff.append("\t\tdocument.forms[i].submit();\n");
+        buff.append("\t}\n");
+        buff.append("}\n");
+        return buff.toString();
+    }
     protected String generateTimeDelayFunction() {
         StringBuilder buff = new StringBuilder();
         buff.append("function msleep(msec) {\n");
@@ -787,8 +802,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         buff.append("\n");
         return buff.toString();
     }
-    
-    
+        
     protected GenerateCsrfParameter getGenerateCsrfParameter() {
         GenerateCsrfParameter csrfParam  = new GenerateCsrfParameter();
         csrfParam.setCsrfAutoSubmit(this.chkAutoSubmit.isSelected());
@@ -821,7 +835,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             final HttpRequest reqmsg = this.message;
             // 自動判定
             String contentType = reqmsg.getEnctype();
-            BurpExtender.outPrintln("contentType:" + contentType);
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // select auto
             if (csrfParam.isCsrfAuto()) {
@@ -861,18 +874,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             if (csrfParam.isCsrfTimeDelay()) {
                 buff.append(generateTimeDelayFunction());
             }
-            String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
             if (csrfMultiForm) {
-                buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
-                buff.append("\tfor(let i = 0; i < document.forms.length; i++) {\n");
-                if (csrfParam.isCsrfTimeDelay()) {
-                    buff.append("\t\tmsleep(msec);\n");
-                }
-                buff.append("\t\tdocument.forms[i].submit();\n");
-                buff.append("\t}\n");
-                buff.append("}\n");
+                buff.append(generateMultiFormFunction(csrfParam.isCsrfTimeDelay()));
             }
             else {
+                String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
                 buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
                 if (csrfParam.isCsrfTimeDelay()) {
                     buff.append("\tmsleep(msec);\n");
@@ -971,7 +977,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             if (!csrfAutoSubmit) {
                 autoSubmit = " onClick=\"csrfPoC()\"";
                 if (csrfParam.isCsrfTimeDelay()) {
-                    autoSubmit = String.format(" onClick=\"csrfPoC(%d)\"",  new Object[]{ timeOutValue });
+                    autoSubmit = String.format(" onClick=\"csrfPoC(%d);\"",  new Object[]{ timeOutValue });
                 }
                 buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>\n", autoSubmit));
             }
@@ -1025,22 +1031,32 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     csrfEnctype = "text/plain"; // 固定
                 }
             }
-            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();
-
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();            
             IHttpService httpService = HttpService.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>\n");
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{ csrfEncoding }));
+
+            // 現在時刻
+            LocalDateTime localDateTime = LocalDateTime.now();
+            DateTimeFormatter localfmt = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
             String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
+            buff.append("<!-- begen script -->\n");
             buff.append("<script type=\"text/javascript\">\n");
             if (csrfParam.isCsrfTimeDelay()) {
                 buff.append(generateTimeDelayFunction());
             }
-            buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
-            if (csrfParam.isCsrfTimeDelay()) {
-                buff.append("\tmsleep(msec);\n");
+            if (csrfMultiForm) {
+                buff.append(generateMultiFormFunction(csrfParam.isCsrfTimeDelay()));
             }
+
+            String submitFunction = "csrfPoC";
+            if (csrfParam.isCsrfMultiForm()) {
+                submitFunction = String.format("csrfSubmit%s", new Object[]{ localfmt.format(localDateTime) });
+            }
+            buff.append(String.format("function %s(%s) {\n", new Object[]{ submitFunction, timeDelay }));
             buff.append("\tvar xhr = new XMLHttpRequest();\r\n");
             buff.append(String.format("\txhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl, false)}));
             buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
@@ -1176,32 +1192,37 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 buff.append("\t\tblob[i] = req.charCodeAt(i);\r\n");
                 buff.append("\txhr.send(new Blob([blob]));\r\n");
             }
-            if (csrfMultiForm) {
-                buff.append("\tfor(let i = 0; i < document.forms.length; i++) {\n");
-                if (csrfParam.isCsrfTimeDelay()) {
-                    buff.append("\t\tmsleep(msec);\n");
-                }
-                buff.append("\t\tdocument.forms[i].submit();\n");
-                buff.append("\t}\n");
-            }
             buff.append("}\n");
-            buff.append("</script></head>\n");
+            buff.append("</script>\n");
+            buff.append("<!-- end script -->\n");
+            buff.append("</head>\n");
             String autoSubmit = "";
             if (csrfAutoSubmit) {
-                autoSubmit = " onload=\"csrfPoC()\"";
+                autoSubmit = " onload=\"csrfPoC();\"";
                 if (this.chkTimeDelay.isSelected()) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"",  new Object[]{ timeOutValue });
+                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{ timeOutValue });
                 }
             }
             buff.append(String.format("<body%s>\n", new Object[]{autoSubmit}));
-            autoSubmit = " onClick=\"csrfPoC()\"";
+
+            autoSubmit = " onClick=\"csrfPoC();\"";
             if (csrfParam.isCsrfTimeDelay()) {
                 autoSubmit = String.format(" onClick=\"csrfPoC(%d)\"",  new Object[]{ timeOutValue });
             }
+            
+            if (csrfParam.isCsrfMultiForm()) {
+                buff.append("<!-- begen form -->\n");
+                buff.append(String.format("<form action=\"javascript:csrfSubmit%s();\">\n", new Object[]{ localfmt.format(localDateTime) }));
+                buff.append("</form>\n");
+                buff.append("<!-- end form -->\n");                
+            }
+            
             if (!csrfAutoSubmit) {
                 buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>\n", autoSubmit));
-            }
+            }            
+
             buff.append("</body></html>\n");
+            
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
