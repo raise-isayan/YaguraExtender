@@ -775,6 +775,20 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     }
 
+    protected String generateTimeDelayFunction() {
+        StringBuilder buff = new StringBuilder();
+        buff.append("function msleep(msec) {\n");
+        buff.append("\tvar preDate = new Date();\n");
+        buff.append("\tvar curDate = preDate;\n");
+        buff.append("\tdo {\n");
+        buff.append("\t\tcurDate = new Date();\n");
+        buff.append("\t} while(curDate - preDate < msec);\n");
+        buff.append("}\n");
+        buff.append("\n");
+        return buff.toString();
+    }
+    
+    
     protected GenerateCsrfParameter getGenerateCsrfParameter() {
         GenerateCsrfParameter csrfParam  = new GenerateCsrfParameter();
         csrfParam.setCsrfAutoSubmit(this.chkAutoSubmit.isSelected());
@@ -807,6 +821,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             final HttpRequest reqmsg = this.message;
             // 自動判定
             String contentType = reqmsg.getEnctype();
+            BurpExtender.outPrintln("contentType:" + contentType);
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // select auto
             if (csrfParam.isCsrfAuto()) {
@@ -844,14 +859,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
             buff.append("<script type=\"text/javascript\">\n");
             if (csrfParam.isCsrfTimeDelay()) {
-                buff.append("function msleep(msec) {\n");
-                buff.append("\tvar preDate = new Date();\n");
-                buff.append("\tvar curDate = preDate;\n");
-                buff.append("\tdo {\n");
-                buff.append("\t\tcurDate = new Date();\n");
-                buff.append("\t} while(curDate - preDate < msec);\n");
-                buff.append("}\n");
-                buff.append("\n");
+                buff.append(generateTimeDelayFunction());
             }
             String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
             if (csrfMultiForm) {
@@ -939,8 +947,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         binaryParam = false;
                     }
                 }
-                // csrf textplain
             } else {
+                // csrf textplain
                 buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>\n",
                         new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
                 Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(StringUtil.getBytesRaw(reqmsg.getBody()), csrfEncoding));
@@ -1027,14 +1035,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
             buff.append("<script type=\"text/javascript\">\n");
             if (csrfParam.isCsrfTimeDelay()) {
-                buff.append("function msleep(msec) {\n");
-                buff.append("\tvar preDate = new Date();\n");
-                buff.append("\tvar curDate = preDate;\n");
-                buff.append("\tdo {\n");
-                buff.append("\t\tcurDate = new Date();\n");
-                buff.append("\t} while(curDate - preDate < msec);\n");
-                buff.append("}\n");
-                buff.append("\n");
+                buff.append(generateTimeDelayFunction());
             }
             buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
             if (csrfParam.isCsrfTimeDelay()) {
