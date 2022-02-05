@@ -64,6 +64,13 @@ import javax.swing.table.TableModel;
 import passive.IssueItem;
 import yagura.Config;
 import yagura.Version;
+import yagura.model.JSearchProperty;
+import yagura.model.JTransCoderProperty;
+import yagura.model.LoggingProperty;
+import yagura.model.MatchAlertProperty;
+import yagura.model.MatchReplaceProperty;
+import yagura.model.SendToProperty;
+import yagura.model.UniversalViewProperty;
 import yagura.view.JWTViewTab;
 import yagura.view.ParamsViewTab;
 import yagura.view.RawViewTab;
@@ -681,14 +688,14 @@ public class BurpExtender extends BurpExtenderImpl
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if (TabbetOption.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
+                if (UniversalViewProperty.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setEncodingProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
                     applyOptionProperty();
-                } else if (TabbetOption.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
+                } else if (MatchReplaceProperty.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());
                     applyOptionProperty();
-                } else if (TabbetOption.SENDTO_PROPERTY.equals(evt.getPropertyName())) {
+                } else if (SendToProperty.SENDTO_PROPERTY.equals(evt.getPropertyName())) {
                     option.setSendToProperty(tabbetOption.getSendToProperty());
                     if (getCallbacks() != null) {
                         IBurpExtenderCallbacks cb = getCallbacks();
@@ -697,16 +704,16 @@ public class BurpExtender extends BurpExtenderImpl
                         cb.registerContextMenuFactory(getSendToMenu());
                     }
                     applyOptionProperty();
-                } else if (TabbetOption.LOGGING_PROPERTY.equals(evt.getPropertyName())) {
+                } else if (LoggingProperty.LOGGING_PROPERTY.equals(evt.getPropertyName())) {
                     option.setLoggingProperty(tabbetOption.getLoggingProperty());
                     applyOptionProperty();
-                } else if (TabbetOption.MATCHALERT_PROPERTY.equals(evt.getPropertyName())) {
+                } else if (MatchAlertProperty.MATCHALERT_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
                     applyOptionProperty();
-                } else if (TabbetOption.JSEARCH_FILTER_PROPERTY.equals(evt.getPropertyName())) {
+                } else if (JSearchProperty.JSEARCH_FILTER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setJSearchProperty(tabbetOption.getJSearchProperty());
                     applyOptionProperty();
-                } else if (TabbetOption.JTRANS_CODER_PROPERTY.equals(evt.getPropertyName())) {
+                } else if (JTransCoderProperty.JTRANS_CODER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setJTransCoderProperty(tabbetOption.getJTransCoderProperty());
                     applyOptionProperty();
                 } else if (TabbetOption.VERSION_PROPERTY.equals(evt.getPropertyName())) {

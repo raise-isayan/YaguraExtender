@@ -426,31 +426,31 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
 
     private void btnEncRightArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncRightArrawActionPerformed
         this.moveItemList(this.listTarget, this.listSelect);
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_btnEncRightArrawActionPerformed
 
     private void btnEncLerftArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncLerftArrawActionPerformed
         this.moveItemList(this.listSelect, this.listTarget);
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_btnEncLerftArrawActionPerformed
 
     private void popActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popActionPerformed
         int index = this.modelSelect.moveUp(this.listSelect.getSelectedIndex());
         this.listSelect.setSelectedIndex(index);
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_popActionPerformed
 
     private void btnEncDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncDownArrawActionPerformed
         int index = this.modelSelect.moveDown(this.listSelect.getSelectedIndex());
         this.listSelect.setSelectedIndex(index);
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
 }//GEN-LAST:event_btnEncDownArrawActionPerformed
 
     private void chkClipboardAutoDecodeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkClipboardAutoDecodeStateChanged
     }//GEN-LAST:event_chkClipboardAutoDecodeStateChanged
 
     private void chkClipboardAutoDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkClipboardAutoDecodeActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkClipboardAutoDecodeActionPerformed
 
     private void btnSelectDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectDownActionPerformed
@@ -470,47 +470,47 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         } else if (encoding.equals("Other")) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.US));
         }
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void chkUniversalParamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniversalParamsActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkUniversalParamsActionPerformed
 
     private void chkUniversalRawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniversalRawActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkUniversalRawActionPerformed
 
     private void chkJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJSONActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkJSONActionPerformed
 
     private void chkHTMLCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHTMLCommentActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkHTMLCommentActionPerformed
 
     private void chkGeneratePoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGeneratePoCActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkGeneratePoCActionPerformed
 
     private void chkJWTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJWTActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkJWTActionPerformed
 
     private void spnDispayMaxLengthStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnDispayMaxLengthStateChanged
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_spnDispayMaxLengthStateChanged
 
     private void chkJSONPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJSONPActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkJSONPActionPerformed
 
     private void chkViewStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewStateActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkViewStateActionPerformed
 
     private void chklineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chklineWrapActionPerformed
-        this.firePropertyChange(TabbetOption.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chklineWrapActionPerformed
 
     private void renewPopup() {

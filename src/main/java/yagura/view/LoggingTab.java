@@ -248,7 +248,7 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
     }
 
     private void chkAutoLoggingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAutoLoggingActionPerformed
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkAutoLoggingActionPerformed
 
     private void chkAutoLoggingStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkAutoLoggingStateChanged
@@ -269,35 +269,35 @@ public class LoggingTab extends javax.swing.JPanel implements ITab {
                 JOptionPane.showMessageDialog(this, "Logging", BUNDLE.getString("view.logging.choosedir"), JOptionPane.OK_OPTION);
             }
         }
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_btnSelectImageActionPerformed
 
     private void txtExcludeExtensionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExcludeExtensionFocusLost
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_txtExcludeExtensionFocusLost
 
     private void txtLogDirFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLogDirFocusLost
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_txtLogDirFocusLost
 
     private void txtFileLimitSizeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFileLimitSizeFocusLost
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_txtFileLimitSizeFocusLost
 
     private void chkHistoryLogIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHistoryLogIncludeActionPerformed
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkHistoryLogIncludeActionPerformed
 
     private void chkExcludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExcludeActionPerformed
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkExcludeActionPerformed
 
     private void chkProxyLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkProxyLogActionPerformed
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkProxyLogActionPerformed
 
     private void chkToolLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkToolLogActionPerformed
-        this.firePropertyChange(TabbetOption.LOGGING_PROPERTY, null, this.getLoggingProperty());
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkToolLogActionPerformed
 
     private void chkExcludeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExcludeStateChanged

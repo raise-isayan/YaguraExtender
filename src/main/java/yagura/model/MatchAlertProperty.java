@@ -1,6 +1,8 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.burp.IPropertyConfig;
+import extension.helpers.json.JsonUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,8 +11,10 @@ import java.util.List;
  *
  * @author isayan
  */
-public class MatchAlertProperty {
+public class MatchAlertProperty implements IPropertyConfig {
 
+    public final static String MATCHALERT_PROPERTY = "MatchAlertProperty";
+    
     @Expose
     private boolean selectedMatchAlert = false;
 
@@ -52,6 +56,28 @@ public class MatchAlertProperty {
     public void setProperty(MatchAlertProperty property) {
         this.setMatchAlertEnable(property.isMatchAlertEnable());
         this.setMatchAlertItemList(property.getMatchAlertItemList());
+    }
+
+    @Override
+    public String getSettingName() {
+        return MATCHALERT_PROPERTY;
+    }
+
+    @Override
+    public void saveSetting(String value) {
+        MatchAlertProperty property = JsonUtil.jsonFromString(value, MatchAlertProperty.class, true);
+        this.setProperty(property);
+    }
+
+    @Override
+    public String loadSetting() {
+        return JsonUtil.jsonToString(this, true);
+    }
+
+    @Override
+    public String defaultSetting() {
+        MatchAlertProperty property = new MatchAlertProperty();
+        return JsonUtil.jsonToString(property, true);
     }
 
 }

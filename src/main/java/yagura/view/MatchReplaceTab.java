@@ -204,17 +204,17 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
 
         @Override
         public void intervalAdded(ListDataEvent e) {
-            firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+            firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
         }
 
         @Override
         public void intervalRemoved(ListDataEvent e) {
-            firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+            firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
         }
 
         @Override
         public void contentsChanged(ListDataEvent e) {
-            firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+            firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
         }
     };
 
@@ -262,20 +262,20 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
             String name = this.getReplaceSelectedName();
             this.modelReplace.removeElement(name);
             this.replaceMap.remove(name);
-            firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+            firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
         }
 }//GEN-LAST:event_btnRepRemoveActionPerformed
 
     private void btnRepUpArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepUpArrawActionPerformed
         int index = this.modelReplace.moveUp(this.listMatchReplace.getSelectedIndex());
         this.listMatchReplace.setSelectedIndex(index);
-        firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+        firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
 }//GEN-LAST:event_btnRepUpArrawActionPerformed
 
     private void btnRepDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepDownArrawActionPerformed
         int index = this.modelReplace.moveDown(this.listMatchReplace.getSelectedIndex());
         this.listMatchReplace.setSelectedIndex(index);
-        firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+        firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
 
 }//GEN-LAST:event_btnRepDownArrawActionPerformed
 
@@ -287,7 +287,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
             this.selectedName = name;
         }
         this.listMatchReplace.updateUI();
-        firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+        firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
     }//GEN-LAST:event_btnSelectActionPerformed
 
     private void listMatchReplaceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_listMatchReplaceKeyTyped
@@ -356,7 +356,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
             }
             this.listMatchReplace.setSelectedValue(name, true);
         }
-        firePropertyChange(TabbetOption.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
+        firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
     }
 
     private final Map<String, MatchReplaceGroup> replaceMap = Collections.synchronizedMap(new LinkedHashMap<String, MatchReplaceGroup>());

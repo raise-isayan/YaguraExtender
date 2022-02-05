@@ -1,13 +1,16 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.burp.IPropertyConfig;
+import extension.helpers.json.JsonUtil;
 import extension.view.base.RegexItem;
 
 /**
  *
  * @author isayan
  */
-public class JSearchProperty extends RegexItem {
+public class JSearchProperty extends RegexItem implements IPropertyConfig {
+    public final static String JSEARCH_FILTER_PROPERTY = "JSearchFilterProperty";
 
     @Expose
     private boolean smartMatch = false;
@@ -137,6 +140,28 @@ public class JSearchProperty extends RegexItem {
         this.setSmartMatch(property.isSmartMatch());
         this.setRegexp(property.isRegexp());
         this.setIgnoreCase(property.isIgnoreCase());
+    }
+
+    @Override
+    public String getSettingName() {
+        return JSEARCH_FILTER_PROPERTY;
+    }
+
+    @Override
+    public void saveSetting(String value) {
+        JSearchProperty property = JsonUtil.jsonFromString(value, JSearchProperty.class, true);
+        this.setProperty(property);
+    }
+
+    @Override
+    public String loadSetting() {
+        return JsonUtil.jsonToString(this, true);
+    }
+
+    @Override
+    public String defaultSetting() {
+        JSearchProperty property = new JSearchProperty();
+        return JsonUtil.jsonToString(property, true);
     }
 
 }

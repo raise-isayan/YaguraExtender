@@ -1,6 +1,8 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.burp.IPropertyConfig;
+import extension.helpers.json.JsonUtil;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -12,8 +14,10 @@ import yagura.Config;
  *
  * @author isayan
  */
-public class LoggingProperty {
+public class LoggingProperty implements IPropertyConfig {
 
+   public final static String LOGGING_PROPERTY = "LoggingProperty";
+     
     private final static String DEFAULT_LOG_TIMESTAMP_FORMAT = "yyyyMMdd HH:mm:ss";
     private final static String DEFAULT_LOG_DIR_FORMAT = "yyyyMMdd";
 
@@ -142,6 +146,28 @@ public class LoggingProperty {
         this.setLogTimestampFormat(property.getLogTimestampFormat());
         this.setExclude(property.isExclude());
         this.setExcludeExtension(getExcludeExtension());
+    }
+
+    @Override
+    public String getSettingName() {
+        return LOGGING_PROPERTY;
+    }
+
+    @Override
+    public void saveSetting(String value) {
+        LoggingProperty property = JsonUtil.jsonFromString(value, LoggingProperty.class, true);
+        this.setProperty(property);
+    }
+
+    @Override
+    public String loadSetting() {
+        return JsonUtil.jsonToString(this, true);
+    }
+
+    @Override
+    public String defaultSetting() {
+        LoggingProperty property = new LoggingProperty();
+        return JsonUtil.jsonToString(property, true);
     }
 
 }

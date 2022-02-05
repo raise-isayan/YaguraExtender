@@ -1,7 +1,9 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.burp.IPropertyConfig;
 import extension.helpers.ConvertUtil;
+import extension.helpers.json.JsonUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -12,8 +14,10 @@ import java.util.Map;
  *
  * @author isayan
  */
-public class MatchReplaceProperty {
+public class MatchReplaceProperty implements IPropertyConfig {
 
+    public final static String MATCHREPLACE_PROPERTY = "MatchReplaceProperty";
+    
     @Expose
     private String selectedName = "";
 
@@ -111,6 +115,28 @@ public class MatchReplaceProperty {
         this.setSelectedName(property.getSelectedName());
         this.setReplaceMap(property.getReplaceMap());
         this.setAutoRecogniseEncoding(property.getAutoRecogniseEncoding());
+    }
+
+    @Override
+    public String getSettingName() {
+        return MATCHREPLACE_PROPERTY;
+    }
+
+    @Override
+    public void saveSetting(String value) {
+        MatchReplaceProperty property = JsonUtil.jsonFromString(value, MatchReplaceProperty.class, true);
+        this.setProperty(property);
+    }
+
+    @Override
+    public String loadSetting() {
+        return JsonUtil.jsonToString(this, true);
+    }
+
+    @Override
+    public String defaultSetting() {
+        MatchReplaceProperty property = new MatchReplaceProperty();
+        return JsonUtil.jsonToString(property, true);
     }
 
 }

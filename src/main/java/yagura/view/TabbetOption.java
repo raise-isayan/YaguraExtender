@@ -60,14 +60,14 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
 //        this.addTab("RapidFire", this.tabRapidFireTab);
         this.addTab(this.tabVersion.getTabCaption(), this.tabVersion);
 
-        this.tabUniversalView.addPropertyChangeListener(CJK_VIEW_PROPERTY, this);
-        this.tabMatchReplace.addPropertyChangeListener(MATCHREPLACE_PROPERTY, this);
-        this.tabMatchAlert.addPropertyChangeListener(MATCHALERT_PROPERTY, this);
+        this.tabUniversalView.addPropertyChangeListener(UniversalViewProperty.CJK_VIEW_PROPERTY, this);
+        this.tabMatchReplace.addPropertyChangeListener(MatchReplaceProperty.MATCHREPLACE_PROPERTY, this);
+        this.tabMatchAlert.addPropertyChangeListener(MatchAlertProperty.MATCHALERT_PROPERTY, this);
 //        this.tabAutoResponder.addPropertyChangeListener(AUTO_RESPONDER_PROPERTY, this);
-        this.tabSendTo.addPropertyChangeListener(SENDTO_PROPERTY, this);
-        this.tabLogging.addPropertyChangeListener(LOGGING_PROPERTY, this);
-        this.tabJSearch.addPropertyChangeListener(JSEARCH_FILTER_PROPERTY, this);
-        this.tabJTransCoder.addPropertyChangeListener(JTRANS_CODER_PROPERTY, this);
+        this.tabSendTo.addPropertyChangeListener(SendToProperty.SENDTO_PROPERTY, this);
+        this.tabLogging.addPropertyChangeListener(LoggingProperty.LOGGING_PROPERTY, this);
+        this.tabJSearch.addPropertyChangeListener(JSearchProperty.JSEARCH_FILTER_PROPERTY, this);
+        this.tabJTransCoder.addPropertyChangeListener(JTransCoderProperty.JTRANS_CODER_PROPERTY, this);
         this.tabVersion.addPropertyChangeListener(VERSION_PROPERTY, this);
         this.tabVersion.addPropertyChangeListener(LOAD_CONFIG_PROPERTY, this);
     }

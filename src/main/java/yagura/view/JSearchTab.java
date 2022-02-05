@@ -545,35 +545,35 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_tableResultMouseClicked
 
     private void chkResponseBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseBodyStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkResponseBodyStateChanged
 
     private void chkResponseHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseHeaderStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkResponseHeaderStateChanged
 
     private void chkRequestBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestBodyStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkRequestBodyStateChanged
 
     private void chkRequestHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestHeaderStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkRequestHeaderStateChanged
 
     private void rdoRepEnc_AutoRecogniseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoRepEnc_AutoRecogniseStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoRepEnc_AutoRecogniseStateChanged
 
     private void chkCommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCommentStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkCommentStateChanged
 
     private void chkIgnoreCaseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkIgnoreCaseStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkIgnoreCaseStateChanged
 
     private void chkRegExpStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRegExpStateChanged
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkRegExpStateChanged
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -582,7 +582,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
 
     private void chkSmartMatchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkSmartMatchStateChanged
         this.chkRegExp.setEnabled(!this.chkSmartMatch.isSelected());
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkSmartMatchStateChanged
 
 
@@ -819,7 +819,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         TableRowSorter<TableModel> sorter = new ResultFilterPopup.PropertyRowSorter<>(model);
         sorter.setRowFilter(new ResultFilterPopup.PropertyRowFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
-        firePropertyChange(TabbetOption.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }
 
     public void setProperty(JSearchProperty searchProp) {

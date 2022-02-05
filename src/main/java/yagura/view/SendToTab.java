@@ -241,7 +241,7 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 
             @Override
             public void tableChanged(TableModelEvent e) {
-                firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, getSendToProperty());
+                firePropertyChange(SendToProperty.SENDTO_PROPERTY, null, getSendToProperty());
             }
         });
 
@@ -351,14 +351,14 @@ public class SendToTab extends javax.swing.JPanel implements ITab {
 }//GEN-LAST:event_btnSendToAddActionPerformed
 
     private void chkSubmenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSubmenuActionPerformed
-        this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
+        this.firePropertyChange(SendToProperty.SENDTO_PROPERTY, null, this.getSendToProperty());
     }//GEN-LAST:event_chkSubmenuActionPerformed
 
     private void tableSendToKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableSendToKeyPressed
     }//GEN-LAST:event_tableSendToKeyPressed
 
     private void chkForceSortOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkForceSortOrderActionPerformed
-        this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
+        this.firePropertyChange(SendToProperty.SENDTO_PROPERTY, null, this.getSendToProperty());
     }//GEN-LAST:event_chkForceSortOrderActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

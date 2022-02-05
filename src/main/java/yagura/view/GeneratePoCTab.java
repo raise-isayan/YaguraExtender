@@ -907,10 +907,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             if (!csrfTextPlain) {
                 if (HttpUtil.isUrlEencoded(csrfEnctype)) {
                     buff.append(String.format("<form action=\"%s\" method=\"%s\" %s>\n",
-                            new Object[]{csrfUrl, csrfFormMethod, targetLink}));
+                        new Object[]{csrfUrl, csrfFormMethod, targetLink}));
                 } else {
                     buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>\n",
-                            new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
+                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
                 }
                 List<IParameter> parameters = requestInfo.getParameters();
                 logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
@@ -936,13 +936,19 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         String decodename = HttpUtil.toHtmlEncode(paramName);
                         String decodevalue = HttpUtil.toHtmlEncode(paramValue);
                         buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">\n",
-                                new Object[]{decodename, decodevalue}));
+                            new Object[]{decodename, decodevalue}));
                     }
                     else if (paramType == IParameter.PARAM_BODY && !binaryParam) {
                         //if Resuest MultiPart binaryParam;
                         if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
                             paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
-                            paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
+                            // ファイルアップロード時エンコードを判定しない
+                            if (binaryParam) {
+                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), StandardCharsets.ISO_8859_1);
+                            }
+                            else {
+                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
+                            }
                         } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
                                 paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
@@ -954,7 +960,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         String decodename = HttpUtil.toHtmlEncode(paramName);
                         String decodevalue = HttpUtil.toHtmlEncode(paramValue);
                         buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">\n",
-                                new Object[]{decodename, decodevalue}));
+                            new Object[]{decodename, decodevalue}));
                     } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {
                         binaryParam = true;
                         filename = paramValue;
@@ -1111,7 +1117,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
                         if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
                             paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
-                            paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
+                            // ファイルアップロード時エンコードを判定しない
+                            if (binaryParam) {
+                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), StandardCharsets.ISO_8859_1);
+                            }
+                            else {
+                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
+                            }
                         } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
                                 paramName = TransUtil.decodeUrl(paramName, csrfEncoding);

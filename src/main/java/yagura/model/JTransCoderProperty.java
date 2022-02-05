@@ -4,15 +4,17 @@ import com.google.gson.annotations.Expose;
 import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
+import extension.burp.IPropertyConfig;
+import extension.helpers.json.JsonUtil;
 import java.nio.charset.StandardCharsets;
 
 /**
  *
  * @author isayan
  */
-public class JTransCoderProperty {
+public class JTransCoderProperty implements IPropertyConfig {
 
-    public final static String CONFIG_PROPERTY = "JTransCoderProperty";
+    public final static String JTRANS_CODER_PROPERTY = "JTransCoderProperty";
 
     @Expose
     private EncodeType encodeType = EncodeType.ALL;
@@ -162,6 +164,28 @@ public class JTransCoderProperty {
     @Override
     public String toString() {
         return this.getCurrentInput();
+    }
+
+    @Override
+    public String getSettingName() {
+        return JTRANS_CODER_PROPERTY;
+    }
+
+    @Override
+    public void saveSetting(String value) {
+        JTransCoderProperty property = JsonUtil.jsonFromString(value, JTransCoderProperty.class, true);
+        this.setProperty(property);
+    }
+
+    @Override
+    public String loadSetting() {
+        return JsonUtil.jsonToString(this, true);
+    }
+
+    @Override
+    public String defaultSetting() {
+        JTransCoderProperty property = new JTransCoderProperty();
+        return JsonUtil.jsonToString(property, true);
     }
 
 }

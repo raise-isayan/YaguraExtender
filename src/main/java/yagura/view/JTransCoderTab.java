@@ -2348,7 +2348,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_txtNumFormatKeyPressed
 
     private void rdoAlphaNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoAlphaNumActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoAlphaNumActionPerformed
 
     private void btnSmartDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartDecodeActionPerformed
@@ -2600,7 +2600,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnHashSha512ActionPerformed
 
     private void rdoCRLFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCRLFActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoCRLFActionPerformed
 
     private void btnOutputfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutputfileActionPerformed
@@ -2619,7 +2619,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnOutputfileActionPerformed
 
     private void rdoLigthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoLigthActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoLigthActionPerformed
 
     private void txtCustomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomActionPerformed
@@ -2639,11 +2639,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_rdoQuotedPrintableActionPerformed
 
     private void rdoURLSafeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoURLSafeActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoURLSafeActionPerformed
 
     private void rdoLowerCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoLowerCaseActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoLowerCaseActionPerformed
 
     private void btnCalcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcActionPerformed
@@ -2759,23 +2759,23 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_chk76NewlineActionPerformed
 
     private void rdoAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoAllActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoAllActionPerformed
 
     private void rdoUpperCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoUpperCaseActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoUpperCaseActionPerformed
 
     private void rdoNoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNoneActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoNoneActionPerformed
 
     private void rdoCRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCRActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoCRActionPerformed
 
     private void rdoLFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoLFActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoLFActionPerformed
 
     private void chkViewLineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewLineWrapActionPerformed
@@ -2784,7 +2784,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtOutputRaw.setLineWrap(this.chkViewLineWrap.isSelected());
         this.txtOutputRaw.setWrapStyleWord(false);
         if (evt != null) {
-            firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+            firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
         }
     }//GEN-LAST:event_chkViewLineWrapActionPerformed
 
@@ -2792,7 +2792,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.cmbEncoding.setEnabled(!(this.chkRawMode.isSelected() || this.chkGuess.isSelected()));
         SwingUtil.setContainerEnable(this.pnlNewLine, !this.chkRawMode.isSelected());
         if (evt != null) {
-            firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+            firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
         }
     }//GEN-LAST:event_chkRawModeActionPerformed
 
@@ -2800,12 +2800,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.chkRawMode.setEnabled(!this.chkGuess.isSelected());
         this.cmbEncoding.setEnabled(!(this.chkRawMode.isSelected() || this.chkGuess.isSelected()));
         if (evt != null) {
-            firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+            firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
         }
     }//GEN-LAST:event_chkGuessActionPerformed
 
     private void cmbEncodingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEncodingActionPerformed
-        firePropertyChange(TabbetOption.JTRANS_CODER_PROPERTY, null, this.getProperty());
+        firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_cmbEncodingActionPerformed
 
     private void txtDateFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDateFormatKeyPressed

@@ -189,7 +189,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
         this.modelAlert.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                firePropertyChange(TabbetOption.MATCHALERT_PROPERTY, null, getMatchAlertProperty());
+                firePropertyChange(MatchAlertProperty.MATCHALERT_PROPERTY, null, getMatchAlertProperty());
             }
         });
 
@@ -298,7 +298,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_tableAlertKeyTyped
 
     private void btnEnableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnableActionPerformed
-        firePropertyChange(TabbetOption.MATCHALERT_PROPERTY, null, getMatchAlertProperty());
+        firePropertyChange(MatchAlertProperty.MATCHALERT_PROPERTY, null, getMatchAlertProperty());
     }//GEN-LAST:event_btnEnableActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

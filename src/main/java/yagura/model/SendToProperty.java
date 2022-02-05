@@ -1,6 +1,8 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.burp.IPropertyConfig;
+import extension.helpers.json.JsonUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,8 +11,10 @@ import java.util.List;
  *
  * @author isayan
  */
-public class SendToProperty {
+public class SendToProperty implements IPropertyConfig {
 
+    public final static String SENDTO_PROPERTY = "SendToProperty";
+    
     @Expose
     private final List<SendToItem> sendToItemList = new ArrayList<>();
 
@@ -61,6 +65,28 @@ public class SendToProperty {
         this.setSendToItemList(property.getSendToItemList());
         this.setSubMenu(property.isSubMenu());
         this.setForceSortOrder(property.isForceSortOrder());
+    }
+
+    @Override
+    public String getSettingName() {
+        return SENDTO_PROPERTY;
+    }
+
+    @Override
+    public void saveSetting(String value) {
+        SendToProperty property = JsonUtil.jsonFromString(value, SendToProperty.class, true);
+        this.setProperty(property);
+    }
+
+    @Override
+    public String loadSetting() {
+        return JsonUtil.jsonToString(this, true);
+    }
+
+    @Override
+    public String defaultSetting() {
+        SendToProperty property = new SendToProperty();
+        return JsonUtil.jsonToString(property, true);
     }
 
 }

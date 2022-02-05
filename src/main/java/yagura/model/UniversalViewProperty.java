@@ -1,8 +1,8 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import extension.helpers.ConvertUtil;
-import extension.helpers.StringUtil;
+import extension.burp.IPropertyConfig;
+import extension.helpers.json.JsonUtil;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -11,15 +11,15 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.SortedMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
  * @author isayan
  */
-public class UniversalViewProperty {
+public class UniversalViewProperty implements IPropertyConfig {
 
+    public final static String CJK_VIEW_PROPERTY = "EncodingProperty";
+    
     /**
      * https://l0.cm/encodings/table/ http://userguide.icu-project.org/conversion/detection
      * https://code.google.com/archive/p/juniversalchardet/
@@ -136,6 +136,7 @@ public class UniversalViewProperty {
         return this.encodingList;
     }
 
+
     public enum UniversalView {
         GENERATE_POC, HTML_COMMENT, JSON, JSONP, JWT, VIEW_STATE, JRAW, JPARAM;
 
@@ -185,6 +186,28 @@ public class UniversalViewProperty {
         this.setMessageView(property.getMessageView());
         this.setDispayMaxLength(property.getDispayMaxLength());
         this.setLineWrap(property.isLineWrap());
+    }
+    
+    @Override
+    public String getSettingName() {
+        return CJK_VIEW_PROPERTY;
+    }
+
+    @Override
+    public void saveSetting(String value) {
+        UniversalViewProperty property = JsonUtil.jsonFromString(value, UniversalViewProperty.class, true);
+        this.setProperty(property);
+    }
+
+    @Override
+    public String loadSetting() {
+        return JsonUtil.jsonToString(this, true);
+    }
+
+    @Override
+    public String defaultSetting() {
+        UniversalViewProperty property = new UniversalViewProperty();
+        return JsonUtil.jsonToString(property, true);
     }
 
 }
