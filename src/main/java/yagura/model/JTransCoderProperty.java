@@ -12,6 +12,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class JTransCoderProperty {
 
+    public final static String CONFIG_PROPERTY = "JTransCoderProperty";
+
     @Expose
     private EncodeType encodeType = EncodeType.ALL;
 

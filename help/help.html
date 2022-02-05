@@ -445,14 +445,72 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_start_up">1. Start up</a></li>
 <li><a href="#_yaguraextender_tab">2. YaguraExtender tab</a>
 <ul class="sectlevel2">
-<li><a href="#_cjk_view_tab">2.1. CJK View tab</a></li>
-<li><a href="#_matchreplace_tab">2.2. MatchReplace tab</a></li>
-<li><a href="#_matchalert_tab">2.3. MatchAlert tab</a></li>
-<li><a href="#_sendto_tab">2.4. SendTo tab</a></li>
-<li><a href="#_logging_tabs">2.5. Logging tabs</a></li>
-<li><a href="#_jsearch_tab">2.6. JSearch tab</a></li>
-<li><a href="#_jtranscoder_tab">2.7. JTransCoder tab</a></li>
-<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a></li>
+<li><a href="#_cjk_view_tab">2.1. CJK View tab</a>
+<ul class="sectlevel3">
+<li><a href="#_cjk_view">2.1.1. CJK View</a></li>
+<li><a href="#_cjk_message_view">2.1.2. CJK Message View</a></li>
+</ul>
+</li>
+<li><a href="#_matchreplace_tab">2.2. MatchReplace tab</a>
+<ul class="sectlevel3">
+<li><a href="#_matchreplace">2.2.1. MatchReplace</a></li>
+<li><a href="#_matchreplace_dialog">2.2.2. MatchReplace Dialog</a></li>
+<li><a href="#_matchreplace_item_edit_dialog">2.2.3. MatchReplace Item Edit dialog</a></li>
+</ul>
+</li>
+<li><a href="#_matchalert_tab">2.3. MatchAlert tab</a>
+<ul class="sectlevel3">
+<li><a href="#_matchalert">2.3.1. MatchAlert</a></li>
+<li><a href="#_matchalert_item_edit_dialog">2.3.2. MatchAlert Item Edit dialog</a></li>
+</ul>
+</li>
+<li><a href="#_sendto_tab">2.4. SendTo tab</a>
+<ul class="sectlevel3">
+<li><a href="#_sendto">2.4.1. SendTo</a></li>
+<li><a href="#_sendtoitem_edit_dialog">2.4.2. SendToItem Edit dialog</a></li>
+<li><a href="#_base_tab">2.4.3. Base tab</a>
+<ul class="sectlevel4">
+<li><a href="#_proxy_configuration_dialog">Proxy Configuration Dialog</a></li>
+<li><a href="#_the_format_sent_to_the_server_when_checking_the_server">The format sent to the server when checking the server</a></li>
+</ul>
+</li>
+<li><a href="#_extend_tab">2.4.4. Extend tab</a></li>
+</ul>
+</li>
+<li><a href="#_logging_tabs">2.5. Logging tabs</a>
+<ul class="sectlevel3">
+<li><a href="#_logging">2.5.1. Logging</a>
+<ul class="sectlevel4">
+<li><a href="#_logging_target">Logging target</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#_jsearch_tab">2.6. JSearch tab</a>
+<ul class="sectlevel3">
+<li><a href="#_jsearch">2.6.1. JSearch</a></li>
+</ul>
+</li>
+<li><a href="#_jtranscoder_tab">2.7. JTransCoder tab</a>
+<ul class="sectlevel3">
+<li><a href="#_translator">2.7.1. Translator</a>
+<ul class="sectlevel4">
+<li><a href="#_encodedecode">Encode/Decode</a></li>
+<li><a href="#_format">Format</a></li>
+<li><a href="#_regex">Regex</a></li>
+<li><a href="#_hashchecksum">Hash/Checksum</a></li>
+</ul>
+</li>
+<li><a href="#_generater_tab">2.7.2. Generater tab</a></li>
+<li><a href="#_converter_tab">2.7.3. Converter tab</a></li>
+</ul>
+</li>
+<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a>
+<ul class="sectlevel3">
+<li><a href="#_jwt_tab">2.8.1. JWT tab</a></li>
+<li><a href="#_viewstate_tab">2.8.2. ViewState tab</a></li>
+</ul>
+</li>
 <li><a href="#_version">2.9. Version</a></li>
 </ul>
 </li>
@@ -1719,6 +1777,68 @@ A format string can specify only one numeric format.</p>
 </dd>
 </dl>
 </div>
+<div class="paragraph">
+<div class="title">IP Format Tab</div>
+<p>Converts an IP address to each format.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Dotted Decimal IP </dt>
+<dd>
+<p>Enter the IPv4 address to be converted from.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 192.168.2.1</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Octal IP </dt>
+<dd>
+<p>Convert to an octal IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 0300.0000.0002.0001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Octal IP </dt>
+<dd>
+<p>Converts to an octal IP address.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 030000001001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex IP </dt>
+<dd>
+<p>Converts to a hexadecimal IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 0xc0.0x00.0x02.0x01</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Hex IP </dt>
+<dd>
+<p>Converts to a hexadecimal IP address.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 0xc0000201</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Ineger IP </dt>
+<dd>
+<p>Converts to a decimal IP address.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 3221225985</pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1883,7 +2003,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-11-14 16:30:22 +0900
+Last updated 2022-01-29 23:19:33 +0900
 </div>
 </div>
 </body>

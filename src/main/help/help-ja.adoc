@@ -1,5 +1,6 @@
 = YaguraExtender ヘルプ
 :toc2:
+:toclevels: 3
 :figure-caption: 図
 :table-caption: 表
 :numbered:
@@ -796,6 +797,40 @@ Java serial::
 
 Excel serial:: 
     Excelのシリアル値で表される時間を入力します。
+
+.IP Formatタブ
+
+IPアドレスを各形式に変換します。
+
+Dotted Decimal IP :: 
+    変換元になるIPv4のアドレスを入力します。
+
+    例:192.168.2.1
+
+Dotted Octal IP :: 
+    「.」で区切られた8進数のIPアドレスに変換します。
+
+     例:0300.0000.0002.0001
+
+Octal IP :: 
+    8進数のIPアドレスに変換します。
+
+    例:030000001001
+
+Dotted Hex IP :: 
+   「.」で区切られた16進数のIPアドレスに変換します。
+
+    例:0xc0.0x00.0x02.0x01
+
+Hex IP :: 
+    16進数のIPアドレスに変換します。
+
+    例:0xc0000201
+
+Ineger IP :: 
+    10進数のIPアドレスに変換します。
+
+    例:3221225985
 
 === Generate CSRF PoC
 

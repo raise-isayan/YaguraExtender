@@ -48,6 +48,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+
     private final static Logger logger = Logger.getLogger(GeneratePoCTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -56,7 +57,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             ThemeUI.changeStyleTheme(txtGeneratorPoC);
         }
     };
-    
+
     /**
      * Creates new form GeneraterPoC
      */
@@ -71,7 +72,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 //            return new HTMLSyntaxDocument();
 //        }
 //    };
-
     private org.fife.ui.rtextarea.RTextScrollPane scrollGeneratorPoC;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtGeneratorPoC;
 
@@ -79,8 +79,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private void customizeComponents() {
 
-        /*** UI design start ***/
-
+        /**
+         * * UI design start **
+         */
         this.txtGeneratorPoC = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollGeneratorPoC = new org.fife.ui.rtextarea.RTextScrollPane(txtGeneratorPoC);
         this.txtGeneratorPoC.setWrapStyleWord(false);
@@ -94,8 +95,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
         this.splitGeneratorPoC.setRightComponent(this.scrollGeneratorPoC);
 
-        /*** UI design end ***/
-
+        /**
+         * * UI design end **
+         */
         this.grpGene.add(this.rdoAuto);
         this.grpGene.add(this.rdoUrlencode);
         this.grpGene.add(this.rdoMultipart);
@@ -107,12 +109,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
 //        this.txtGeneratorPoC.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
 //        this.txtGeneratorPoC.setContentType("text/html");
-
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);                
-        
+        UIManager.addPropertyChangeListener(listener);
+
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
@@ -338,13 +339,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         int selected = filechooser.showSaveDialog(null);
         if (selected == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
-                if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                    try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
-                        fstm.write(StringUtil.getBytesCharset(ta.getText(), encoding));
-                    } catch (IOException ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
+            if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
+                try ( BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+                    fstm.write(StringUtil.getBytesCharset(ta.getText(), encoding));
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
+            }
         }
     }//GEN-LAST:event_btnSavetoFileActionPerformed
 
@@ -355,7 +356,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
-        final GenerateCsrfParameter csrfParam  = getGenerateCsrfParameter();
+        final GenerateCsrfParameter csrfParam = getGenerateCsrfParameter();
         SwingWorker swPoC = new SwingWorker<String, Object>() {
             @Override
             protected String doInBackground() throws Exception {
@@ -486,7 +487,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             if (!("POST".equals(request.getMethod()) || "GET".equals(request.getMethod()))) {
                 return false;
             }
-            return (request.getBody().length() > 0);
+            return (request.getBody().length() > 0) || (request.hasQueryParameter());
         } catch (ParseException ex) {
             return false;
         }
@@ -563,7 +564,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         return selectText;
     }
 
-    protected class GenerateCsrfParameter  {
+    protected class GenerateCsrfParameter {
+
         private boolean csrfAutoSubmit = false;
         private int timeOutValue = 1000;
         public boolean csrfAuto = false;
@@ -780,7 +782,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     protected String generateMultiFormFunction(boolean isCsrfTimeDelay) {
         String timeDelay = isCsrfTimeDelay ? "msec" : "";
         StringBuilder buff = new StringBuilder();
-        buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
+        buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{timeDelay}));
         buff.append("\tfor(let i = 0; i < document.forms.length; i++) {\n");
         if (isCsrfTimeDelay) {
             buff.append("\t\tmsleep(msec);\n");
@@ -790,6 +792,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         buff.append("}\n");
         return buff.toString();
     }
+
     protected String generateTimeDelayFunction() {
         StringBuilder buff = new StringBuilder();
         buff.append("function msleep(msec) {\n");
@@ -802,11 +805,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         buff.append("\n");
         return buff.toString();
     }
-        
+
     protected GenerateCsrfParameter getGenerateCsrfParameter() {
-        GenerateCsrfParameter csrfParam  = new GenerateCsrfParameter();
+        GenerateCsrfParameter csrfParam = new GenerateCsrfParameter();
         csrfParam.setCsrfAutoSubmit(this.chkAutoSubmit.isSelected());
-        csrfParam.setTimeOutValue((int)this.spnTime.getValue());
+        csrfParam.setTimeOutValue((int) this.spnTime.getValue());
         csrfParam.setCsrfAuto(this.rdoAuto.isSelected());
         csrfParam.setCsrfUrlencode(this.rdoUrlencode.isSelected());
         csrfParam.setCsrfMultiPart(this.rdoMultipart.isSelected());
@@ -866,9 +869,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();
             IHttpService httpService = HttpService.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
+            if ("GET".equals(reqmsg.getMethod())) {
+                csrfUrl = reqmsg.gePath(httpService);            
+            }
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>\n");
-            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{ csrfEncoding }));
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{csrfEncoding}));
 
             buff.append("<script type=\"text/javascript\">\n");
             if (csrfParam.isCsrfTimeDelay()) {
@@ -876,10 +882,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             }
             if (csrfMultiForm) {
                 buff.append(generateMultiFormFunction(csrfParam.isCsrfTimeDelay()));
-            }
-            else {
+            } else {
                 String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
-                buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{ timeDelay }));
+                buff.append(String.format("function csrfPoC(%s) {\n", new Object[]{timeDelay}));
                 if (csrfParam.isCsrfTimeDelay()) {
                     buff.append("\tmsleep(msec);\n");
                 }
@@ -892,10 +897,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             if (csrfAutoSubmit) {
                 autoSubmit = " onload=\"csrfPoC();\"";
                 if (csrfParam.isCsrfTimeDelay()) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"",  new Object[]{ timeOutValue });
+                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
             }
-            buff.append(String.format("<body%s>\n", new Object[]{ autoSubmit }));
+            buff.append(String.format("<body%s>\n", new Object[]{autoSubmit}));
             buff.append("<!-- begen form -->\n");
             String targetLink = (csrfParam.isCsrfMultiForm()) ? "target=\"_blank\"" : "";
             // csrf urlencoded/multipart
@@ -903,8 +908,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 if (HttpUtil.isUrlEencoded(csrfEnctype)) {
                     buff.append(String.format("<form action=\"%s\" method=\"%s\" %s>\n",
                             new Object[]{csrfUrl, csrfFormMethod, targetLink}));
-                }
-                else {
+                } else {
                     buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>\n",
                             new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
                 }
@@ -917,17 +921,29 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     String paramName = param.getName();
                     String paramValue = param.getValue();
                     byte paramType = param.getType();
-                    if (paramType == IParameter.PARAM_URL || paramType == IParameter.PARAM_COOKIE) {
+                    if (paramType == IParameter.PARAM_COOKIE) {
                         continue;
                     }
-                    //if Resuest MultiPart binaryParam;
-                    if (paramType == IParameter.PARAM_BODY && !binaryParam) {
-
+                    if (paramType == IParameter.PARAM_URL) {
+                        paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
+                        paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
+                        if (MatchUtil.isUrlencoded(paramName)) {
+                            paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
+                        }
+                        if (MatchUtil.isUrlencoded(paramValue)) {
+                            paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
+                        }
+                        String decodename = HttpUtil.toHtmlEncode(paramName);
+                        String decodevalue = HttpUtil.toHtmlEncode(paramValue);
+                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">\n",
+                                new Object[]{decodename, decodevalue}));
+                    }
+                    else if (paramType == IParameter.PARAM_BODY && !binaryParam) {
+                        //if Resuest MultiPart binaryParam;
                         if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
                             paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
                             paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
-                        }
-                        else {
+                        } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
                                 paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
                             }
@@ -977,7 +993,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             if (!csrfAutoSubmit) {
                 autoSubmit = " onClick=\"csrfPoC()\"";
                 if (csrfParam.isCsrfTimeDelay()) {
-                    autoSubmit = String.format(" onClick=\"csrfPoC(%d);\"",  new Object[]{ timeOutValue });
+                    autoSubmit = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
                 buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>\n", autoSubmit));
             }
@@ -1031,19 +1047,18 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                     csrfEnctype = "text/plain"; // 固定
                 }
             }
-            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();            
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : reqmsg.getMethod();
             IHttpService httpService = HttpService.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>\n");
-            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{ csrfEncoding }));
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">\n", new Object[]{csrfEncoding}));
 
             // 現在時刻
             LocalDateTime localDateTime = LocalDateTime.now();
             DateTimeFormatter localfmt = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
             String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
-            buff.append("<!-- begen script -->\n");
             buff.append("<script type=\"text/javascript\">\n");
             if (csrfParam.isCsrfTimeDelay()) {
                 buff.append(generateTimeDelayFunction());
@@ -1054,9 +1069,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
 
             String submitFunction = "csrfPoC";
             if (csrfParam.isCsrfMultiForm()) {
-                submitFunction = String.format("csrfSubmit%s", new Object[]{ localfmt.format(localDateTime) });
+                submitFunction = String.format("csrfSubmit%s", new Object[]{localfmt.format(localDateTime)});
             }
-            buff.append(String.format("function %s(%s) {\n", new Object[]{ submitFunction, timeDelay }));
+            buff.append("// begen script \n");
+            buff.append(String.format("function %s(%s) {\n", new Object[]{submitFunction, timeDelay}));
             buff.append("\tvar xhr = new XMLHttpRequest();\r\n");
             buff.append(String.format("\txhr.open('%s', '%s', true);\r\n", new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl, false)}));
             buff.append("\txhr.withCredentials = true;\r\n");       // Cookieを付与
@@ -1064,9 +1080,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 List<String> headers = requestInfo.getHeaders();
                 for (String header : headers) {
                     if (header.startsWith("X-")) {
-                        String pair [] = header.split(":");
-                        String key = (pair.length > 0) ?  pair[0] : "";
-                        String value = (pair.length > 1) ?  pair[1] : "";
+                        String pair[] = header.split(":");
+                        String key = (pair.length > 0) ? pair[0] : "";
+                        String value = (pair.length > 1) ? pair[1] : "";
                         buff.append(String.format("\txhr.setRequestHeader('%s', '%s');\r\n", TransUtil.encodeJsLangQuote(key, false), TransUtil.encodeJsLangQuote(value, false)));
                     }
                 }
@@ -1076,7 +1092,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             if (!csrfTextPlain) {
                 String boundary = HttpUtil.generateBoundary();
                 if (csrfMultiPart) {
-                    buff.append(String.format("\tvar boundary = '--%s';\r\n", new Object[]{ boundary }));
+                    buff.append(String.format("\tvar boundary = '--%s';\r\n", new Object[]{boundary}));
                     buff.append("\txhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);\r\n");
                     List<IParameter> parameters = requestInfo.getParameters();
                     logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
@@ -1096,8 +1112,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                         if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
                             paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
                             paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
-                        }
-                        else {
+                        } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
                                 paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
                             }
@@ -1126,7 +1141,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                             parambuff.append("\t'Content-Type: application/octet-stream\\r\\n\\r\\n'");
                             parambuff.append("+ \r\n");
                             String encodeHex = TransUtil.toByteHexEncode(StringUtil.getBytesRaw(paramValue), TransUtil.PTN_ENCODE_JS, false);
-                            parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{ encodeHex }));
+                            parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                             binaryParam = false;
                             filename = "";
                         }
@@ -1157,20 +1172,19 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                                 buff.append("'&' + ");
                             }
                             if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
-                                paramName =   StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
+                                paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
                                 paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                             }
                             if (contentType != null && HttpUtil.isMaltiPart(contentType) && HttpUtil.isUrlEencoded(csrfEnctype)) {
                                 // urlencodeの必要がある場合
                                 buff.append(String.format("'%s' + '=' + '%s';\r\n",
-                                    new Object[]{TransUtil.encodeUrl(paramName, csrfEncoding, true),
-                                        TransUtil.encodeUrl(paramValue, csrfEncoding, true)}));
-                            }
-                            else {
+                                        new Object[]{TransUtil.encodeUrl(paramName, csrfEncoding, true),
+                                            TransUtil.encodeUrl(paramValue, csrfEncoding, true)}));
+                            } else {
                                 // js escape
                                 buff.append(String.format("'%s' + '=' + '%s';\r\n",
-                                    new Object[]{TransUtil.encodeJsLangQuote(paramName, false),
-                                        TransUtil.encodeJsLangQuote(paramValue, false)}));
+                                        new Object[]{TransUtil.encodeJsLangQuote(paramName, false),
+                                            TransUtil.encodeJsLangQuote(paramValue, false)}));
                             }
                             first = false;
                         } else if (paramType == IParameter.PARAM_MULTIPART_ATTR) {
@@ -1193,36 +1207,36 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
                 buff.append("\txhr.send(new Blob([blob]));\r\n");
             }
             buff.append("}\n");
+            buff.append("// end script\n");
             buff.append("</script>\n");
-            buff.append("<!-- end script -->\n");
             buff.append("</head>\n");
             String autoSubmit = "";
             if (csrfAutoSubmit) {
                 autoSubmit = " onload=\"csrfPoC();\"";
                 if (this.chkTimeDelay.isSelected()) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{ timeOutValue });
+                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
             }
             buff.append(String.format("<body%s>\n", new Object[]{autoSubmit}));
 
             autoSubmit = " onClick=\"csrfPoC();\"";
             if (csrfParam.isCsrfTimeDelay()) {
-                autoSubmit = String.format(" onClick=\"csrfPoC(%d)\"",  new Object[]{ timeOutValue });
+                autoSubmit = String.format(" onClick=\"csrfPoC(%d)\"", new Object[]{timeOutValue});
             }
-            
+
             if (csrfParam.isCsrfMultiForm()) {
                 buff.append("<!-- begen form -->\n");
-                buff.append(String.format("<form action=\"javascript:csrfSubmit%s();\">\n", new Object[]{ localfmt.format(localDateTime) }));
+                buff.append(String.format("<form action=\"javascript:csrfSubmit%s();\">\n", new Object[]{localfmt.format(localDateTime)}));
                 buff.append("</form>\n");
-                buff.append("<!-- end form -->\n");                
+                buff.append("<!-- end form -->\n");
             }
-            
+
             if (!csrfAutoSubmit) {
                 buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>\n", autoSubmit));
-            }            
+            }
 
             buff.append("</body></html>\n");
-            
+
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -1246,5 +1260,5 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
     public void setLineWrap(boolean lineWrap) {
         this.txtGeneratorPoC.setLineWrap(lineWrap);
     }
-    
+
 }

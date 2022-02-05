@@ -1,5 +1,6 @@
 = YaguraExtender Help
 :toc2:
+:toclevels: 4
 :figure-caption: figure
 :table-caption: table
 :numbered:
@@ -801,6 +802,40 @@ Java serial::
 
 Excel serial:: 
     Input the time represented by the serial value of Excel
+
+.IP Format Tab
+
+Converts an IP address to each format.
+
+Dotted Decimal IP :: 
+    Enter the IPv4 address to be converted from.
+
+    Example: 192.168.2.1
+
+Dotted Octal IP :: 
+    Convert to an octal IP address separated by a "."
+
+    Example: 0300.0000.0002.0001
+
+Octal IP :: 
+    Converts to an octal IP address.
+
+    Example: 030000001001
+
+Dotted Hex IP :: 
+    Converts to a hexadecimal IP address separated by a "."
+
+    Example: 0xc0.0x00.0x02.0x01
+
+Hex IP :: 
+    Converts to a hexadecimal IP address.
+
+    Example: 0xc0000201
+
+Ineger IP :: 
+    Converts to a decimal IP address.
+
+    Example: 3221225985
 
 === Generate CSRF PoC
 

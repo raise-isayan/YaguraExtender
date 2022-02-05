@@ -445,14 +445,56 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_start_up">1. Start up</a></li>
 <li><a href="#_yaguraextenderタブ">2. YaguraExtenderタブ</a>
 <ul class="sectlevel2">
-<li><a href="#_cjk_viewタブ">2.1. CJK Viewタブ</a></li>
-<li><a href="#_matchreplaceタブ">2.2. MatchReplaceタブ</a></li>
-<li><a href="#_matchalertタブ">2.3. MatchAlertタブ</a></li>
-<li><a href="#_sendtoタブ">2.4. SendToタブ</a></li>
-<li><a href="#_loggingタブ">2.5. Loggingタブ</a></li>
-<li><a href="#_jsearchタブ">2.6. JSearchタブ</a></li>
-<li><a href="#_jtranscoderタブ">2.7. JTransCoderタブ</a></li>
-<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a></li>
+<li><a href="#_cjk_viewタブ">2.1. CJK Viewタブ</a>
+<ul class="sectlevel3">
+<li><a href="#_cjk_view">2.1.1. CJK View</a></li>
+<li><a href="#_cjk_message_view">2.1.2. CJK Message View</a></li>
+</ul>
+</li>
+<li><a href="#_matchreplaceタブ">2.2. MatchReplaceタブ</a>
+<ul class="sectlevel3">
+<li><a href="#_matchreplace">2.2.1. MatchReplace</a></li>
+<li><a href="#_matchreplace_ダイヤログ">2.2.2. MatchReplace ダイヤログ</a></li>
+<li><a href="#_matchreplace_item_編集ダイヤログ">2.2.3. MatchReplace Item 編集ダイヤログ</a></li>
+</ul>
+</li>
+<li><a href="#_matchalertタブ">2.3. MatchAlertタブ</a>
+<ul class="sectlevel3">
+<li><a href="#_matchalert">2.3.1. MatchAlert</a></li>
+<li><a href="#_matchalert_item_編集ダイヤログ">2.3.2. MatchAlert Item 編集ダイヤログ</a></li>
+</ul>
+</li>
+<li><a href="#_sendtoタブ">2.4. SendToタブ</a>
+<ul class="sectlevel3">
+<li><a href="#_sendto">2.4.1. SendTo</a></li>
+<li><a href="#_sendtoitem_編集ダイヤログ">2.4.2. SendToItem 編集ダイヤログ</a></li>
+<li><a href="#_baseタブ">2.4.3. Baseタブ</a></li>
+<li><a href="#_extendタブ">2.4.4. Extendタブ</a></li>
+</ul>
+</li>
+<li><a href="#_loggingタブ">2.5. Loggingタブ</a>
+<ul class="sectlevel3">
+<li><a href="#_logging">2.5.1. Logging</a></li>
+</ul>
+</li>
+<li><a href="#_jsearchタブ">2.6. JSearchタブ</a>
+<ul class="sectlevel3">
+<li><a href="#_jsearch">2.6.1. JSearch</a></li>
+</ul>
+</li>
+<li><a href="#_jtranscoderタブ">2.7. JTransCoderタブ</a>
+<ul class="sectlevel3">
+<li><a href="#_translator">2.7.1. Translator</a></li>
+<li><a href="#_generaterタブ">2.7.2. Generaterタブ</a></li>
+<li><a href="#_converter_tab">2.7.3. Converter tab</a></li>
+</ul>
+</li>
+<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a>
+<ul class="sectlevel3">
+<li><a href="#_jwt_タブ">2.8.1. JWT タブ</a></li>
+<li><a href="#_viewstate_タブ">2.8.2. ViewState タブ</a></li>
+</ul>
+</li>
 <li><a href="#_version">2.9. Version</a></li>
 </ul>
 </li>
@@ -1718,6 +1760,68 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </dd>
 </dl>
 </div>
+<div class="paragraph">
+<div class="title">IP Formatタブ</div>
+<p>IPアドレスを各形式に変換します。</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Dotted Decimal IP </dt>
+<dd>
+<p>変換元になるIPv4のアドレスを入力します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:192.168.2.1</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Octal IP </dt>
+<dd>
+<p>「.」で区切られた8進数のIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0300.0000.0002.0001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Octal IP </dt>
+<dd>
+<p>8進数のIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:030000001001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex IP </dt>
+<dd>
+<p>「.」で区切られた16進数のIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0xc0.0x00.0x02.0x01</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Hex IP </dt>
+<dd>
+<p>16進数のIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0xc0000201</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Ineger IP </dt>
+<dd>
+<p>10進数のIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:3221225985</pre>
+</div>
+</div>
+</dd>
+</dl>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1877,7 +1981,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-11-14 16:30:22 +0900
+Last updated 2022-01-29 23:14:00 +0900
 </div>
 </div>
 </body>
