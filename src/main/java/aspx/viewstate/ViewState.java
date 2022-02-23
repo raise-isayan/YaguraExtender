@@ -10,7 +10,6 @@ import extension.helpers.ConvertUtil;
  * @author isayan
  */
 public class ViewState {
-
     public static final ViewState ENCRYPTED_VIEW_STATE;
     public static final ViewState EXCEPTION_VIEW_STATE;
     public static final ViewState ILL_FORMAT_VIEW_STATE;
@@ -45,17 +44,18 @@ public class ViewState {
         }
     }
 
-    private final static String[] UNIT_TYPE = {
+    private final static String [] UNIT_TYPE = {
         "pixel", // 1
         "point", // 2
-        "pica", // 3
-        "inch", // 4
-        "mm", // 5
-        "cm", // 6
+        "pica",  // 3
+        "inch",  // 4
+        "mm",    // 5
+        "cm",    // 6
         "percentage", // 7
-        "em", // 8
-        "ex", // 9
+        "em",	  // 8
+        "ex",	  // 9
     };
+
 
     ViewState() {
         this.jsonRoot = JsonNull.INSTANCE;
@@ -99,13 +99,13 @@ public class ViewState {
     public Algorithm getMacAlgorithm() {
         Algorithm algorithm = Algorithm.HMAC_UNKNOWN;
         switch (digest.length) {
-            case 20:
+            case 0x20:
                 algorithm = Algorithm.HMAC_SHA256;
                 break;
-            case 30:
+            case 0x30:
                 algorithm = Algorithm.HMAC_SHA384;
                 break;
-            case 40:
+            case 0x40:
                 algorithm = Algorithm.HMAC_SHA512;
                 break;
         }
