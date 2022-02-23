@@ -279,7 +279,7 @@
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="rdoEncodeDecodeGrp"/>
                             </Property>
-                            <Property name="text" type="java.lang.String" value="HTML(&lt;,&gt;,&quot;,&apos;)"/>
+                            <Property name="text" type="java.lang.String" value="HTML(&lt;,&gt;,&amp;,&quot;,&apos;)"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="rdoHtmlDec">

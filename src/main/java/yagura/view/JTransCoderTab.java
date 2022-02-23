@@ -117,6 +117,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
     private final ViewStateDecoderTab viewStateDecoderTab = new ViewStateDecoderTab();
 
+    private final JWTTokenDecoderTab jwtTokenDecoderTab = new JWTTokenDecoderTab();
+    
     private void customizeComponents() {
 
         /**
@@ -124,6 +126,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
          */
 
         this.tabbetTranscoder.addTab(this.viewStateDecoderTab.getTabCaption(), this.viewStateDecoderTab);
+        this.tabbetTranscoder.addTab(this.jwtTokenDecoderTab.getTabCaption(), this.jwtTokenDecoderTab);
 
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtInputRaw = new javax.swing.JTextArea();
@@ -713,7 +716,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 4));
 
         rdoEncodeDecodeGrp.add(rdoHtml);
-        rdoHtml.setText("HTML(<,>,\",')");
+        rdoHtml.setText("HTML(<,>,&,\",')");
         pnlHtmlEnc.add(rdoHtml);
 
         rdoEncodeDecodeGrp.add(rdoHtmlDec);

@@ -428,7 +428,7 @@ image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
     add exclude scope:: 
         Add URL to exclude in scope.
 
-COUTION: SOCKS Proxy does not work due to a JDK bug
+CAUTION: SOCKS Proxy does not work due to a JDK bug
 
 === Logging tabs
 
@@ -837,6 +837,57 @@ Ineger IP ::
 
     Example: 3221225985
 
+==== Certificate tab
+
+image:images/custom_certificate.png[Certificate tab]
+
+[JKS] [PKCS12] button::
+    Select the certificate type.
+
+[Import] button::
+    Import the certificate.
+
+[Certificate and Private key in PEM format] button::
+    Export the file in PEM format, including the private and public keys.
+  
+[Export] button::
+    Export the certificate.
+
+==== View State Decoder tab
+
+image:images/custom_viewstate_decoder.png[View State Decoder tab]
+
+[ViewState] text area::
+  Input the ViewState to decode.
+
+[expand] button::
+    Expand the selected tree.
+
+[collapse] button::
+    Collapse the selected tree.
+
+[Decode] button:: 
+    Decode ViewState.
+
+[Clear] button:: 
+    Clear ViewState.
+
+==== JWT token Decoder tab
+
+image:images/custom_JWT_decoder.png[JWT token Decoder tab]
+
+[JWT] text area::
+  Input the JWT to decode.
+
+[Header] text area::
+  Decode and display the JWT Header.
+
+[Payload] text area::
+  Decode and display the JWT Payload.
+
+[Signature] text area::
+  Decode and display the JWT Signature.
+
 === Generate CSRF PoC
 
 This function is mainly for creating PoC for CSRF (Cross Site Request Forgery).
@@ -891,6 +942,22 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
         Select when you want to send the contents of the Body as it is. +
         This may not work for items that contain binaries. In that case, please use Binay of HTML5.
 
+==== View State tab
+
+image:images/custom_viewstate.png[View State  tab]
+
+[expand] button::
+    Expand the selected tree.
+
+[collapse] button::
+    Collapse the selected tree.
+
+[Decode] button:: 
+    Decode ViewState.
+
+[Clear] button:: 
+    Clear ViewState.
+
 ==== JWT tab
 
 image:images/custom_JWT.png[JWT tab]
@@ -906,22 +973,6 @@ image:images/custom_JWT.png[JWT tab]
 
 [Signature] text area::
   Decode and display the JWT Signature.
-
-==== ViewState tab
-
-image:images/custom_viewstate_decoder.png[ViewStateDecoder tab]
-
-[expand] button::
-    Expand the selected tree.
-
-[collapse] button::
-    Collapse the selected tree.
-
-[Decode] button:: 
-    Decode ViewState.
-
-[Clear] button:: 
-    Clear ViewState.
 
 === Version
 Displays version information.

@@ -503,12 +503,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_generater_tab">2.7.2. Generater tab</a></li>
 <li><a href="#_converter_tab">2.7.3. Converter tab</a></li>
+<li><a href="#_certificate_tab">2.7.4. Certificate tab</a></li>
+<li><a href="#_view_state_decoder_tab">2.7.5. View State Decoder tab</a></li>
+<li><a href="#_jwt_token_decoder_tab">2.7.6. JWT token Decoder tab</a></li>
 </ul>
 </li>
 <li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a>
 <ul class="sectlevel3">
-<li><a href="#_jwt_tab">2.8.1. JWT tab</a></li>
-<li><a href="#_viewstate_tab">2.8.2. ViewState tab</a></li>
+<li><a href="#_view_state_tab">2.8.1. View State tab</a></li>
+<li><a href="#_jwt_tab">2.8.2. JWT tab</a></li>
 </ul>
 </li>
 <li><a href="#_version">2.9. Version</a></li>
@@ -1202,8 +1205,17 @@ sample/cgi-bin/sendto.cgi contains a sample CGI application that only receives a
 </dd>
 </dl>
 </div>
-<div class="paragraph">
-<p>COUTION: SOCKS Proxy does not work due to a JDK bug</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+SOCKS Proxy does not work due to a JDK bug
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1840,6 +1852,88 @@ A format string can specify only one numeric format.</p>
 </dl>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_certificate_tab">2.7.4. Certificate tab</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_certificate.png" alt="Certificate tab"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JKS] [PKCS12] button</dt>
+<dd>
+<p>Select the certificate type.</p>
+</dd>
+<dt class="hdlist1">[Import] button</dt>
+<dd>
+<p>Import the certificate.</p>
+</dd>
+<dt class="hdlist1">[Certificate and Private key in PEM format] button</dt>
+<dd>
+<p>Export the file in PEM format, including the private and public keys.</p>
+</dd>
+<dt class="hdlist1">[Export] button</dt>
+<dd>
+<p>Export the certificate.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_view_state_decoder_tab">2.7.5. View State Decoder tab</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="View State Decoder tab"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[ViewState] text area</dt>
+<dd>
+<p>Input the ViewState to decode.</p>
+</dd>
+<dt class="hdlist1">[expand] button</dt>
+<dd>
+<p>Expand the selected tree.</p>
+</dd>
+<dt class="hdlist1">[collapse] button</dt>
+<dd>
+<p>Collapse the selected tree.</p>
+</dd>
+<dt class="hdlist1">[Decode] button</dt>
+<dd>
+<p>Decode ViewState.</p>
+</dd>
+<dt class="hdlist1">[Clear] button</dt>
+<dd>
+<p>Clear ViewState.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_token_decoder_tab">2.7.6. JWT token Decoder tab</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_JWT_decoder.png" alt="JWT token Decoder tab"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JWT] text area</dt>
+<dd>
+<p>Input the JWT to decode.</p>
+</dd>
+<dt class="hdlist1">[Header] text area</dt>
+<dd>
+<p>Decode and display the JWT Header.</p>
+</dd>
+<dt class="hdlist1">[Payload] text area</dt>
+<dd>
+<p>Decode and display the JWT Payload.</p>
+</dd>
+<dt class="hdlist1">[Signature] text area</dt>
+<dd>
+<p>Decode and display the JWT Signature.</p>
+</dd>
+</dl>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_generate_csrf_poc">2.8. Generate CSRF PoC</h3>
@@ -1928,7 +2022,33 @@ This may not work for items that contain binaries. In that case, please use Bina
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_jwt_tab">2.8.1. JWT tab</h4>
+<h4 id="_view_state_tab">2.8.1. View State tab</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_viewstate.png" alt="View State  tab"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[expand] button</dt>
+<dd>
+<p>Expand the selected tree.</p>
+</dd>
+<dt class="hdlist1">[collapse] button</dt>
+<dd>
+<p>Collapse the selected tree.</p>
+</dd>
+<dt class="hdlist1">[Decode] button</dt>
+<dd>
+<p>Decode ViewState.</p>
+</dd>
+<dt class="hdlist1">[Clear] button</dt>
+<dd>
+<p>Clear ViewState.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_tab">2.8.2. JWT tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT.png" alt="JWT tab"></span></p>
 </div>
@@ -1949,32 +2069,6 @@ This may not work for items that contain binaries. In that case, please use Bina
 <dt class="hdlist1">[Signature] text area</dt>
 <dd>
 <p>Decode and display the JWT Signature.</p>
-</dd>
-</dl>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_viewstate_tab">2.8.2. ViewState tab</h4>
-<div class="paragraph">
-<p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="ViewStateDecoder tab"></span></p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">[expand] button</dt>
-<dd>
-<p>Expand the selected tree.</p>
-</dd>
-<dt class="hdlist1">[collapse] button</dt>
-<dd>
-<p>Collapse the selected tree.</p>
-</dd>
-<dt class="hdlist1">[Decode] button</dt>
-<dd>
-<p>Decode ViewState.</p>
-</dd>
-<dt class="hdlist1">[Clear] button</dt>
-<dd>
-<p>Clear ViewState.</p>
 </dd>
 </dl>
 </div>
@@ -2003,7 +2097,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-30 06:44:00 +0900
+Last updated 2022-02-23 11:59:31 +0900
 </div>
 </div>
 </body>

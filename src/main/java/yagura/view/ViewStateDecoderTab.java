@@ -127,7 +127,7 @@ public class ViewStateDecoderTab extends javax.swing.JPanel implements ITab {
 
     @Override
     public String getTabCaption() {
-        return "ViewStateDecoder";
+        return "View State Decoder";
     }
 
     @Override

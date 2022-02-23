@@ -29,27 +29,6 @@ public abstract class JsonToken {
 
     public abstract boolean signatureEqual(final String secret);
 
-    public static long bytesToLong(final byte[] bytes) {
-        long result = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            result <<= Byte.SIZE;
-            result |= (bytes[i] & 0xFF);
-        }
-        return result;
-    }
-
-    public static byte []longToBytes(final long value) {
-        int mag = Long.SIZE - Long.numberOfLeadingZeros(value);
-        int bsize = Math.max(((mag + (Byte.SIZE - 1)) / Byte.SIZE), 1);
-        byte [] bytes = new byte [bsize];
-        long val = value;
-        for (int i = bytes.length - 1; i >= 0; i--) {
-            bytes[i] = (byte)(val & 0xFF);
-            val >>= Byte.SIZE;
-        }
-        return bytes;
-    }
-
     public static String decodeUrl(String value) {
         return URLDecoder.decode(value, StandardCharsets.ISO_8859_1);
     }

@@ -209,7 +209,7 @@ Match(マッチ文字列)::
     マッチさせたい文字列を入力します。
 
 Target(アラート対象):: 
-    proxy,repeater,spider,intruder,scanner,sequencer
+    proxy,repeater,spider,intruder,scanner,sequencer,extender
     チェックした対象がMatchAlertの対象になります。
 
 [Regexp]チェックボックス:: 
@@ -324,7 +324,7 @@ Password::
     Proxyの認証パスワードを指定します。
 
 
-COUTION: JDKのバグのためSOCKS Proxyは動作しません
+CAUTION: JDKのバグのためSOCKS Proxyは動作しません
 
 ===== サーバチェック時にサーバに送信される形式
 
@@ -832,6 +832,54 @@ Ineger IP ::
 
     例:3221225985
 
+==== Certificate タブ
+
+image:images/custom_certificate.png[Certificateタブ]
+
+[JKS] [PKCS12]ボタン::
+    証明書の種類を選択します。
+
+[Import]ボタン::
+    証明書をインポートします。
+
+[Certificate and Private key in PEM format]ボタン::
+    秘密鍵と公開鍵を含めてPEM形式でエクスポートします。
+  
+[Export]ボタン::
+    証明書をエクスポートします。
+
+==== View State Decoder タブ
+
+image:images/custom_viewstate_decoder.png[View State Decoderタブ]
+
+[expand]ボタン::
+    選択したツリーを展開します。
+
+[collapse]ボタン::
+    選択したツリーを折りたたみます。
+
+[Decode]ボタン:: 
+     ViewStateのデコードを行います。
+
+[Clear]ボタン:: 
+     ViewStateをクリアします。
+
+==== JWT Token Decoder タブ
+
+image:images/custom_JWT_decoder.png[JWT Token Decoderタブ]
+
+[JWT]テキストエリア::
+  デコードするJWTを入力します。
+
+[Header]テキストエリア::
+  JWTのHeaderをデコードして表示します。
+
+[Payload]テキストエリア::
+  JWTのPayloadをデコードして表示します。
+
+[Signature]テキストエリア::
+  JWTのSignatureを表示します。
+
 === Generate CSRF PoC
 
 主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。
@@ -882,6 +930,22 @@ plain:: text area を利用してPoCを作成します。 +
     Bodyの内容をそのまま送信したい場合に選択します。 +
     バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。
 
+==== ViewState タブ
+
+image:images/custom_viewstate.png[View Stateタブ]
+
+[expand]ボタン::
+    選択したツリーを展開します。
+
+[collapse]ボタン::
+    選択したツリーを折りたたみます。
+
+[Decode]ボタン:: 
+     ViewStateのデコードを行います。
+
+[Clear]ボタン:: 
+     ViewStateをクリアします。
+
 ==== JWT タブ
 
 image:images/custom_JWT.png[JWTタブ]
@@ -897,22 +961,6 @@ image:images/custom_JWT.png[JWTタブ]
 
 [Signature]テキストエリア::
   JWTのSignatureを表示します。
-
-==== ViewState タブ
-
-image:images/custom_viewstate_decoder.png[ViewStateDecoderタブ]
-
-[expand]ボタン::
-    選択したツリーを展開します。
-
-[collapse]ボタン::
-    選択したツリーを折りたたみます。
-
-[Decode]ボタン:: 
-     ViewStateのデコードを行います。
-
-[Clear]ボタン:: 
-     ViewStateをクリアします。
 
 === Version
 バージョン情報を表示します。

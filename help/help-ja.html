@@ -487,12 +487,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_translator">2.7.1. Translator</a></li>
 <li><a href="#_generaterタブ">2.7.2. Generaterタブ</a></li>
 <li><a href="#_converter_tab">2.7.3. Converter tab</a></li>
+<li><a href="#_certificate_タブ">2.7.4. Certificate タブ</a></li>
+<li><a href="#_view_state_decoder_タブ">2.7.5. View State Decoder タブ</a></li>
+<li><a href="#_jwt_token_decoder_タブ">2.7.6. JWT Token Decoder タブ</a></li>
 </ul>
 </li>
 <li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a>
 <ul class="sectlevel3">
-<li><a href="#_jwt_タブ">2.8.1. JWT タブ</a></li>
-<li><a href="#_viewstate_タブ">2.8.2. ViewState タブ</a></li>
+<li><a href="#_viewstate_タブ">2.8.1. ViewState タブ</a></li>
+<li><a href="#_jwt_タブ">2.8.2. JWT タブ</a></li>
 </ul>
 </li>
 <li><a href="#_version">2.9. Version</a></li>
@@ -853,7 +856,7 @@ proxyにチェックが入っている場合に有効です。</p>
 </dd>
 <dt class="hdlist1">Target(アラート対象)</dt>
 <dd>
-<p>proxy,repeater,spider,intruder,scanner,sequencer
+<p>proxy,repeater,spider,intruder,scanner,sequencer,extender
 チェックした対象がMatchAlertの対象になります。</p>
 </dd>
 <dt class="hdlist1">[Regexp]チェックボックス</dt>
@@ -1035,8 +1038,17 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>COUTION: JDKのバグのためSOCKS Proxyは動作しません</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+JDKのバグのためSOCKS Proxyは動作しません
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect4">
@@ -1823,6 +1835,84 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </dl>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_certificate_タブ">2.7.4. Certificate タブ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_certificate.png" alt="Certificateタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JKS] [PKCS12]ボタン</dt>
+<dd>
+<p>証明書の種類を選択します。</p>
+</dd>
+<dt class="hdlist1">[Import]ボタン</dt>
+<dd>
+<p>証明書をインポートします。</p>
+</dd>
+<dt class="hdlist1">[Certificate and Private key in PEM format]ボタン</dt>
+<dd>
+<p>秘密鍵と公開鍵を含めてPEM形式でエクスポートします。</p>
+</dd>
+<dt class="hdlist1">[Export]ボタン</dt>
+<dd>
+<p>証明書をエクスポートします。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_view_state_decoder_タブ">2.7.5. View State Decoder タブ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="View State Decoderタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[expand]ボタン</dt>
+<dd>
+<p>選択したツリーを展開します。</p>
+</dd>
+<dt class="hdlist1">[collapse]ボタン</dt>
+<dd>
+<p>選択したツリーを折りたたみます。</p>
+</dd>
+<dt class="hdlist1">[Decode]ボタン</dt>
+<dd>
+<p>ViewStateのデコードを行います。</p>
+</dd>
+<dt class="hdlist1">[Clear]ボタン</dt>
+<dd>
+<p>ViewStateをクリアします。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_token_decoder_タブ">2.7.6. JWT Token Decoder タブ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_JWT_decoder.png" alt="JWT Token Decoderタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JWT]テキストエリア</dt>
+<dd>
+<p>デコードするJWTを入力します。</p>
+</dd>
+<dt class="hdlist1">[Header]テキストエリア</dt>
+<dd>
+<p>JWTのHeaderをデコードして表示します。</p>
+</dd>
+<dt class="hdlist1">[Payload]テキストエリア</dt>
+<dd>
+<p>JWTのPayloadをデコードして表示します。</p>
+</dd>
+<dt class="hdlist1">[Signature]テキストエリア</dt>
+<dd>
+<p>JWTのSignatureを表示します。</p>
+</dd>
+</dl>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_generate_csrf_poc">2.8. Generate CSRF PoC</h3>
@@ -1906,7 +1996,33 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_jwt_タブ">2.8.1. JWT タブ</h4>
+<h4 id="_viewstate_タブ">2.8.1. ViewState タブ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_viewstate.png" alt="View Stateタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[expand]ボタン</dt>
+<dd>
+<p>選択したツリーを展開します。</p>
+</dd>
+<dt class="hdlist1">[collapse]ボタン</dt>
+<dd>
+<p>選択したツリーを折りたたみます。</p>
+</dd>
+<dt class="hdlist1">[Decode]ボタン</dt>
+<dd>
+<p>ViewStateのデコードを行います。</p>
+</dd>
+<dt class="hdlist1">[Clear]ボタン</dt>
+<dd>
+<p>ViewStateをクリアします。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_タブ">2.8.2. JWT タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT.png" alt="JWTタブ"></span></p>
 </div>
@@ -1927,32 +2043,6 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <dt class="hdlist1">[Signature]テキストエリア</dt>
 <dd>
 <p>JWTのSignatureを表示します。</p>
-</dd>
-</dl>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_viewstate_タブ">2.8.2. ViewState タブ</h4>
-<div class="paragraph">
-<p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="ViewStateDecoderタブ"></span></p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">[expand]ボタン</dt>
-<dd>
-<p>選択したツリーを展開します。</p>
-</dd>
-<dt class="hdlist1">[collapse]ボタン</dt>
-<dd>
-<p>選択したツリーを折りたたみます。</p>
-</dd>
-<dt class="hdlist1">[Decode]ボタン</dt>
-<dd>
-<p>ViewStateのデコードを行います。</p>
-</dd>
-<dt class="hdlist1">[Clear]ボタン</dt>
-<dd>
-<p>ViewStateをクリアします。</p>
 </dd>
 </dl>
 </div>
@@ -1981,7 +2071,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-30 06:43:28 +0900
+Last updated 2022-02-23 11:52:09 +0900
 </div>
 </div>
 </body>
