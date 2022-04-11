@@ -33,7 +33,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import yagura.model.IOptionProperty;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
 import yagura.model.MatchReplaceGroup;
@@ -100,7 +99,7 @@ public class ConfigTest {
 
     }
 
-    private final IOptionProperty optionProperty = new OptionProperty();
+    private final OptionProperty optionProperty = new OptionProperty();
 
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 

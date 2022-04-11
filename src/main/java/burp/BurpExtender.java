@@ -201,24 +201,24 @@ public class BurpExtender extends BurpExtenderImpl
                 getSendToMenu().showBurpMenu(controller, e);
             }
         };
-    }
-
+    }    
+    
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         super.registerExtenderCallbacks(callbacks);
         callbacks.setExtensionName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
 
         // 設定ファイル読み込み
+        Map<String, String> config = this.option.loadConfigSetting();
         try {
             if (CONFIG_FILE.exists()) {
-                Config.loadFromJson(CONFIG_FILE, this.option);
+                Config.loadFromJson(CONFIG_FILE, config);
             }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (RuntimeException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-
+        }        
+        this.option.setProperty(config);
+                
         try {
             // 自動ログ作成時のみディレクトリ作成
             if (this.option.getLoggingProperty().isAutoLogging()) {
@@ -742,7 +742,8 @@ public class BurpExtender extends BurpExtenderImpl
         }
 
         try {
-            Config.saveToJson(CONFIG_FILE, this.option);
+            Map<String, String> config = this.option.loadConfigSetting();
+            Config.saveToJson(CONFIG_FILE, config);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (Exception ex) {

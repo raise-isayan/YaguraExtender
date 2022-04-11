@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
@@ -128,16 +129,19 @@ public class MainFrame extends javax.swing.JFrame {
         this.jTransCoder = new JTransCoderTab();
         this.pnlMain.add(jTransCoder, java.awt.BorderLayout.CENTER);
 
+        
+        // 設定ファイル読み込み
+        Map<String, String> config = this.option.loadConfigSetting();
         try {
             if (CONFIG_FILE.exists()) {
-                Config.loadFromJson(CONFIG_FILE, option);
+                Config.loadFromJson(CONFIG_FILE, config);
             }
             this.jTransCoder.setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE), StandardCharsets.UTF_8.name());
             this.jTransCoder.setProperty(option.getJTransCoderProperty());
         } catch (IOException ex) {
-            logger.log(Level.WARNING, ex.getMessage(), ex);
-        }
-
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }        
+               
         UIManager.LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
         for (int i = 0; i < lafInfo.length; i++) {
             createLafMenuItem(this.menuLookAndFeel, new LookAndFeelUI(lafInfo[i].getName(), lafInfo[i].getClassName()));

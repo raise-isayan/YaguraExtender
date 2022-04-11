@@ -1,10 +1,12 @@
 package yagura.view;
 
 import burp.ITab;
+import extension.burp.IOptionProperty;
 import extension.helpers.BurpUtil;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Map;
 import yagura.Version;
 import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
@@ -13,14 +15,18 @@ import yagura.model.MatchReplaceProperty;
 import yagura.model.SendToProperty;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
-import yagura.model.IOptionProperty;
+import yagura.model.OptionProperty;
 
 /**
  *
  * @author isayan
  */
-public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProperty, ITab, PropertyChangeListener {
+public class TabbetOption extends javax.swing.JTabbedPane implements ITab, PropertyChangeListener {
 
+    public final static String VERSION_PROPERTY = "versionProperty";
+
+    public final static String LOAD_CONFIG_PROPERTY = "loadConfigProperty";
+    
     public TabbetOption() {
         super();
         customizeComponents();
@@ -97,7 +103,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         return this;
     }
 
-    public void setProperty(IOptionProperty property) {
+    public void setProperty(OptionProperty property) {
         this.setEncodingProperty(property.getEncodingProperty());
         this.setLoggingProperty(property.getLoggingProperty());
         this.setMatchReplaceProperty(property.getMatchReplaceProperty());
@@ -110,51 +116,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.setDebugMode(property.getDebugMode());
         this.setJTransCoderProperty(property.getEncodingProperty());
     }
-
-    public IOptionProperty getProperty() {
-        return this;
-    }
-
-    @Override
-    public void setEncodingProperty(UniversalViewProperty encProperty) {
-        this.tabUniversalView.setEncodingProperty(encProperty);
-    }
-
-    @Override
-    public UniversalViewProperty getEncodingProperty() {
-        return this.tabUniversalView.getEncodingProperty();
-    }
-
-    @Override
-    public void setMatchReplaceProperty(MatchReplaceProperty matchReplaceProperty) {
-        this.tabMatchReplace.setMatchReplaceProperty(matchReplaceProperty);
-    }
-
-    @Override
-    public MatchReplaceProperty getMatchReplaceProperty() {
-        return this.tabMatchReplace.getMatchReplaceProperty();
-    }
-
-    @Override
-    public void setSendToProperty(SendToProperty sendToProperty) {
-        this.tabSendTo.setSendToProperty(sendToProperty);
-    }
-
-    @Override
-    public SendToProperty getSendToProperty() {
-        return this.tabSendTo.getSendToProperty();
-    }
-
-    @Override
-    public void setLoggingProperty(LoggingProperty loggingProperty) {
-        this.tabLogging.setLoggingProperty(loggingProperty);
-    }
-
-    @Override
-    public LoggingProperty getLoggingProperty() {
-        return tabLogging.getLoggingProperty();
-    }
-
+        
     public boolean isLogDirChanged() {
         return this.tabLogging.isLogDirChanged();
     }
@@ -163,22 +125,51 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         return this.tabLogging.isHistoryLogInclude();
     }
 
-    @Override
+    public void setEncodingProperty(UniversalViewProperty encProperty) {
+        this.tabUniversalView.setEncodingProperty(encProperty);
+    }
+
+    public UniversalViewProperty getEncodingProperty() {
+        return this.tabUniversalView.getEncodingProperty();
+    }
+
+    public void setMatchReplaceProperty(MatchReplaceProperty matchReplaceProperty) {
+        this.tabMatchReplace.setMatchReplaceProperty(matchReplaceProperty);
+    }
+
+    public MatchReplaceProperty getMatchReplaceProperty() {
+        return this.tabMatchReplace.getMatchReplaceProperty();
+    }
+
+    public void setSendToProperty(SendToProperty sendToProperty) {
+        this.tabSendTo.setSendToProperty(sendToProperty);
+    }
+
+    public SendToProperty getSendToProperty() {
+        return this.tabSendTo.getSendToProperty();
+    }
+
+    public void setLoggingProperty(LoggingProperty loggingProperty) {
+        this.tabLogging.setLoggingProperty(loggingProperty);
+    }
+
+    public LoggingProperty getLoggingProperty() {
+        return tabLogging.getLoggingProperty();
+    }
+
     public MatchAlertProperty getMatchAlertProperty() {
         return this.tabMatchAlert.getMatchAlertProperty();
     }
 
-    @Override
     public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty) {
         this.tabMatchAlert.setMatchAlertProperty(matchAlertProperty);
     }
 
-    @Override
     public JSearchProperty getJSearchProperty() {
         return this.tabJSearch.getProperty();
     }
 
-    @Override
+
     public void setJSearchProperty(JSearchProperty jsearch) {
         this.tabJSearch.setProperty(jsearch);
     }
@@ -187,22 +178,18 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
         this.tabJTransCoder.setEncodingList(encodingProperty.getEncodingList(), "");
     }
 
-    @Override
     public JTransCoderProperty getJTransCoderProperty() {
         return this.tabJTransCoder.getProperty();
     }
-
-    @Override
+    
     public void setJTransCoderProperty(JTransCoderProperty transcoder) {
         this.tabJTransCoder.setProperty(transcoder);
     }
 
-    @Override
     public boolean getDebugMode() {
         return this.tabVersion.getDebugMode();
     }
 
-    @Override
     public void setDebugMode(boolean debugMode) {
         this.tabVersion.setDebugMode(debugMode);
     }
@@ -220,5 +207,6 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IOptionProp
     public byte[] receiveFromJTransCoder() {
         return this.tabJTransCoder.receiveFromJTransCoder();
     }
+
 
 }

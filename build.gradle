@@ -100,7 +100,7 @@ dependencies {
 
     implementation 'org.jsoup:jsoup:1.13.1'
     // Unit Test
-    testImplementation 'net.portswigger.burp.extender:burp-extender-api:2.1'
+    testImplementation 'net.portswigger.burp.extender:burp-extender-api:2.3'
     testImplementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.13.2'
 }

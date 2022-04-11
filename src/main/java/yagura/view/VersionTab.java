@@ -7,12 +7,14 @@ import yagura.Version;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import yagura.Config;
+import yagura.model.OptionProperty;
 
 /**
  *
@@ -126,7 +128,10 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = filechooser.getSelectedFile();
-                Config.loadFromJson(file, BurpExtender.getInstance().getProperty());
+                OptionProperty option = BurpExtender.getInstance().getProperty();
+                Map<String, String> config = option.loadConfigSetting();
+                Config.loadFromJson(file, config);
+                option.saveConfigSetting(config);
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
@@ -146,7 +151,9 @@ public class VersionTab extends javax.swing.JPanel implements ITab {
                 if (!BURP_CONFIG_FILTER.accept(file)) {
                     file = new File(file.getAbsolutePath() + ".json");
                 }
-                Config.saveToJson(file, BurpExtender.getInstance().getProperty());
+                OptionProperty option = BurpExtender.getInstance().getProperty();
+                Map<String, String> config = option.loadConfigSetting();
+                Config.saveToJson(file, config);
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
