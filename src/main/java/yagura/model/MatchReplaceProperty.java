@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class MatchReplaceProperty implements IPropertyConfig {
 
-    public final static String MATCHREPLACE_PROPERTY = "MatchReplaceProperty";
+    public final static String MATCHREPLACE_PROPERTY = "matchReplaceProperty";
     
     @Expose
     private String selectedName = "";

@@ -10,7 +10,7 @@ import extension.view.base.RegexItem;
  * @author isayan
  */
 public class JSearchProperty extends RegexItem implements IPropertyConfig {
-    public final static String JSEARCH_FILTER_PROPERTY = "JSearchFilterProperty";
+    public final static String JSEARCH_FILTER_PROPERTY = "jSearchFilterProperty";
 
     @Expose
     private boolean smartMatch = false;

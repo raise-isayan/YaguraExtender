@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class SendToProperty implements IPropertyConfig {
 
-    public final static String SENDTO_PROPERTY = "SendToProperty";
+    public final static String SENDTO_PROPERTY = "sendToProperty";
     
     @Expose
     private final List<SendToItem> sendToItemList = new ArrayList<>();

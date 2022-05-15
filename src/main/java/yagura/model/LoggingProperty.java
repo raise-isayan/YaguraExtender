@@ -16,7 +16,7 @@ import yagura.Config;
  */
 public class LoggingProperty implements IPropertyConfig {
 
-   public final static String LOGGING_PROPERTY = "LoggingProperty";
+   public final static String LOGGING_PROPERTY = "loggingProperty";
      
     private final static String DEFAULT_LOG_TIMESTAMP_FORMAT = "yyyyMMdd HH:mm:ss";
     private final static String DEFAULT_LOG_DIR_FORMAT = "yyyyMMdd";

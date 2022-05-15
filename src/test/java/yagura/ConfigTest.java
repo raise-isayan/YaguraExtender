@@ -210,8 +210,11 @@ public class ConfigTest {
         System.out.println("loadOptionHierarchy");
         URL url = this.getClass().getResource("/resources/YaguraExtender.json");
         File fi = new File(url.toURI());
+        OptionProperty option = new OptionProperty();
         if (fi.exists()) {
-            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);
+            Map<String, String> config = option.loadConfigSetting();
+            Config.loadFromJson(fi, config);
+            option.setProperty(config);
             assertEquals(5, option.getEncodingProperty().getEncodingList().size());
             assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());
@@ -227,8 +230,11 @@ public class ConfigTest {
         System.out.println("loadOptionHierarchyLegacy1");
         URL url = this.getClass().getResource("/resources/YaguraExtender_legacy1.json");
         File fi = new File(url.toURI());
+        OptionProperty option = new OptionProperty();
         if (fi.exists()) {
-            OptionProperty option = JsonUtil.loadFromJson(fi, OptionProperty.class, true);
+            Map<String, String> config = option.loadConfigSetting();
+            Config.loadFromJson(fi, config);
+            option.setProperty(config);
             assertEquals(5, option.getEncodingProperty().getEncodingList().size());
             assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());

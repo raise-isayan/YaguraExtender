@@ -148,7 +148,29 @@ public class TransUtil {
     }
 
     public enum DateUnit {
-        DAYS, WEEKS, MONTHS, YEARS
+        DAYS, WEEKS, MONTHS, YEARS;
+
+        public static ChronoUnit toChronoUnit(DateUnit unit) {
+            ChronoUnit dateUnit = ChronoUnit.DAYS;
+            switch (unit) {
+                case DAYS:
+                    dateUnit = ChronoUnit.DAYS;
+                    break;
+                case WEEKS:
+                    dateUnit = ChronoUnit.WEEKS;
+                    break;
+                case MONTHS:
+                    dateUnit = ChronoUnit.MONTHS;
+                    break;
+                case YEARS:
+                    dateUnit = ChronoUnit.YEARS;
+                    break;
+                default:
+                    break;
+            }
+            return dateUnit;
+        }
+
     }
 
     public enum EncodeType {
@@ -1834,23 +1856,7 @@ public class TransUtil {
         }
         LocalDate startValue = startDate.compareTo(endDate) < 0 ? startDate : endDate;
         LocalDate endValue = startDate.compareTo(endDate) > 0 ? startDate : endDate;
-        ChronoUnit dateUnit = ChronoUnit.DAYS;
-        switch (unit) {
-            case DAYS:
-                dateUnit = ChronoUnit.DAYS;
-                break;
-            case WEEKS:
-                dateUnit = ChronoUnit.WEEKS;
-                break;
-            case MONTHS:
-                dateUnit = ChronoUnit.MONTHS;
-                break;
-            case YEARS:
-                dateUnit = ChronoUnit.YEARS;
-                break;
-            default:
-                break;
-        }
+        ChronoUnit dateUnit = DateUnit.toChronoUnit(unit);
 
         ArrayList<String> list = new ArrayList<>();
         final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern(format);

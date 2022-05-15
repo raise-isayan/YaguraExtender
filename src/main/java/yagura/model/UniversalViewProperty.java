@@ -18,7 +18,7 @@ import java.util.SortedMap;
  */
 public class UniversalViewProperty implements IPropertyConfig {
 
-    public final static String CJK_VIEW_PROPERTY = "EncodingProperty";
+    public final static String CJK_VIEW_PROPERTY = "universalViewProperty";
     
     /**
      * https://l0.cm/encodings/table/ http://userguide.icu-project.org/conversion/detection

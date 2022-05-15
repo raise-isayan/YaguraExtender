@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class MatchAlertProperty implements IPropertyConfig {
 
-    public final static String MATCHALERT_PROPERTY = "MatchAlertProperty";
+    public final static String MATCHALERT_PROPERTY = "matchAlertProperty";
     
     @Expose
     private boolean selectedMatchAlert = false;

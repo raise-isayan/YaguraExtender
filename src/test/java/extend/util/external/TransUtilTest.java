@@ -22,8 +22,12 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -953,8 +957,6 @@ public class TransUtilTest {
         b.append((String)null);
         System.out.println("append:" + b.toString());
     }
-
-
     
     @Test
     public void testOrderdChar() {
@@ -983,5 +985,21 @@ public class TransUtilTest {
             assertEquals(ord, '0');        
         }
     }
-        
+
+    @Test
+    public void testDateTime() {
+        System.out.println("testDateTime");
+        Date date = new Date();
+        ZonedDateTime cdtm = ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+        System.out.println("testDateTime.current:" + cdtm);
+        System.out.println("testDateTime.date.current:" + Date.from(cdtm.toInstant()));
+        ZonedDateTime zdtm = ZonedDateTime.ofInstant(date.toInstant(), ZoneId.of("Europe/Paris"));
+        System.out.println("testDateTime.zone:" + zdtm);
+        System.out.println("testDateTime.date.zone:" + Date.from(zdtm.toInstant()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd H:mm:ss zzz");
+        String s = formatter.format(zdtm);
+        System.out.println("testDateTime.format:" + s);
+}
+    
+    
 }
