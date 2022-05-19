@@ -10,9 +10,9 @@ import java.util.Map;
  * @author raise.isayan
  */
 public class OptionProperty implements IOptionProperty {
-  
-    private final Map<String, String> config = new HashMap(); 
-    
+
+    private final Map<String, String> config = new HashMap();
+
     @Override
     public void saveConfigSetting(final Map<String, String> value) {
         this.config.putAll(value);
@@ -24,7 +24,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements UniversalViewProperty 
+     * implements UniversalViewProperty
      */
     @Expose
     private final UniversalViewProperty universalViewProperty = new UniversalViewProperty();
@@ -34,7 +34,7 @@ public class OptionProperty implements IOptionProperty {
         String value = map.get(UniversalViewProperty.CJK_VIEW_PROPERTY);
         if (value == null) {
             value = this.universalViewProperty.defaultSetting();
-        }        
+        }
         this.universalViewProperty.saveSetting(value);
         return this.universalViewProperty;
     }
@@ -44,7 +44,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements MatchReplaceProperty 
+     * implements MatchReplaceProperty
      */
     @Expose
     private final MatchReplaceProperty matchReplaceProperty = new MatchReplaceProperty();
@@ -58,7 +58,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements MatchAlertProperty 
+     * implements MatchAlertProperty
      */
     @Expose
     private final MatchAlertProperty matchAlertProperty = new MatchAlertProperty();
@@ -72,7 +72,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements SendToProperty 
+     * implements SendToProperty
      */
     @Expose
     private final SendToProperty sendToProperty = new SendToProperty();
@@ -86,7 +86,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements LoggingProperty 
+     * implements LoggingProperty
      */
     @Expose
     private final LoggingProperty logProperty = new LoggingProperty();
@@ -100,7 +100,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements JSearchProperty 
+     * implements JSearchProperty
      */
     @Expose
     private final JSearchProperty searchProperty = new JSearchProperty();
@@ -114,7 +114,7 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
-     * implements JTransCoderProperty 
+     * implements JTransCoderProperty
      */
     @Expose
     private final JTransCoderProperty transcoderProperty = new JTransCoderProperty();
@@ -125,8 +125,8 @@ public class OptionProperty implements IOptionProperty {
 
     public void setJTransCoderProperty(JTransCoderProperty transcoderProperty) {
         this.transcoderProperty.setProperty(transcoderProperty);
-    }    
-           
+    }
+
     /**
      * debugModeの取得
      */
@@ -164,6 +164,10 @@ public class OptionProperty implements IOptionProperty {
         if (configMatchReplaceProperty != null) {
             this.matchReplaceProperty.saveSetting(configMatchReplaceProperty);
         }
+        String configMatchAlertProperty = config.get(this.matchAlertProperty.getSettingName());
+        if (configMatchAlertProperty != null) {
+            this.matchAlertProperty.saveSetting(configMatchAlertProperty);
+        }
         String configSendToProperty = config.get(this.sendToProperty.getSettingName());
         if (configSendToProperty != null) {
             this.sendToProperty.saveSetting(configSendToProperty);
@@ -177,9 +181,9 @@ public class OptionProperty implements IOptionProperty {
             this.searchProperty.saveSetting(configSearchProperty);
         }
         String transcoderProperty = config.get(this.transcoderProperty.getSettingName());
-        if (configSearchProperty != null) {
-            this.transcoderProperty.saveSetting(configSearchProperty);
-        }        
+        if (transcoderProperty != null) {
+            this.transcoderProperty.saveSetting(transcoderProperty);
+        }
     }
 
 }
