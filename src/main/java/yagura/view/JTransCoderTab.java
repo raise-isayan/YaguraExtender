@@ -74,11 +74,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtOutputRaw);        
-            ThemeUI.changeStyleTheme(txtOutputFormat);        
+            ThemeUI.changeStyleTheme(txtOutputRaw);
+            ThemeUI.changeStyleTheme(txtOutputFormat);
         }
     };
-    
+
     /**
      * Creates new form JTransCoder
      */
@@ -86,7 +86,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         initComponents();
         customizeComponents();
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(this.listener);                
+        UIManager.addPropertyChangeListener(this.listener);
     }
     private final QuickSearchTab quickSearchTabRaw = new QuickSearchTab();
     private final QuickSearchTab quickSearchTabFormat = new QuickSearchTab();
@@ -115,15 +115,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputFormat;
 
     private final static DateTimeFormatter GMT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd H:mm:ss zzz");
-        
+
     private final static String [] SHORT_ZONEIDS = {
-        "ACT", "AET", "AGT", "ART", "AST", "BET", "BST", "CAT", "CNT", "CST", "CTT", "EAT", "ECT", "IET", "IST", "JST", "MIT", "NET", "NST", "PLT", "PNT", "PRT", "PST", "SST", "VST", "EST", "MST", "HST"
+        "GMT", "ACT", "AET", "AGT", "ART", "AST", "BET", "BST", "CAT", "CNT", "CST", "CTT", "EAT", "ECT", "IET", "IST", "JST", "MIT", "NET", "NST", "PLT", "PNT", "PRT", "PST", "SST", "VST", "EST", "MST", "HST"
     };
 
     private final ViewStateDecoderTab viewStateDecoderTab = new ViewStateDecoderTab();
 
     private final JWTTokenDecoderTab jwtTokenDecoderTab = new JWTTokenDecoderTab();
-    
+
     private void customizeComponents() {
 
         /**
@@ -217,12 +217,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
          * * UI design end **
          */
 
+
         int tz_offset = 0;
         ZoneId systemZone = ZoneId.systemDefault();
         for (int i = 0; i < SHORT_ZONEIDS.length; i++) {
-            ZoneId zone = ZoneId.of(ZoneId.SHORT_IDS.get(SHORT_ZONEIDS[i]));
-            this.cmbTimezone.addItem(SHORT_ZONEIDS[i] + " - " + zone.getId());
-            if (systemZone.equals(zone)) {
+            ZoneId zoneId = ZoneId.of(SHORT_ZONEIDS[i], ZoneId.SHORT_IDS);
+            String shortIDS = "GMT".equals(SHORT_ZONEIDS[i]) ? "Greenwich Mean Time" : ZoneId.SHORT_IDS.get(SHORT_ZONEIDS[i]);
+            this.cmbTimezone.addItem(SHORT_ZONEIDS[i] + " - " + shortIDS + " (" + zoneId.getRules().getOffset(Instant.EPOCH) + ")");
+            if (systemZone.equals(zoneId)) {
                 tz_offset = i;
             }
         }
@@ -280,7 +282,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private ZoneId getSelectZoneId() {
         int index = this.cmbTimezone.getSelectedIndex();
         if (0 <= index && index < SHORT_ZONEIDS.length) {
-            return ZoneId.of(ZoneId.SHORT_IDS.get(SHORT_ZONEIDS[index]));
+            return ZoneId.of(SHORT_ZONEIDS[index], ZoneId.SHORT_IDS);
         }
         else {
             return ZoneId.systemDefault();
@@ -2065,7 +2067,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        txtExcelSerial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("####.00"))));
+        txtExcelSerial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("####.000000"))));
         txtExcelSerial.setHorizontalAlignment(javax.swing.JTextField.TRAILING);
         txtExcelSerial.setToolTipText("");
         txtExcelSerial.setMinimumSize(new java.awt.Dimension(180, 22));
@@ -2140,8 +2142,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     .addComponent(btnZoneDateCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnJavaSerialCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExcelSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(824, 824, 824))
+                    .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(716, 716, 716))
         );
         tabDateConverterLayout.setVerticalGroup(
             tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2481,7 +2483,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                     }
                 }
                 encode = buff.toString();
-            } else if (this.rdoCLang.isSelected()) {                
+            } else if (this.rdoCLang.isSelected()) {
                 encode = TransUtil.encodeCLangQuote(encode, metaChar);
             } else if (this.rdoSQLLang.isSelected()) {
                 encode = TransUtil.encodeSQLLangQuote(encode, metaChar);
@@ -3178,7 +3180,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void cmbTimezoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTimezoneItemStateChanged
         Date date = this.getConverterDateTime();
         ZoneId zoneId = getSelectZoneId();
-        BurpExtender.errPrintln("ZoneId:" + zoneId);
         ZonedDateTime zdtm = ZonedDateTime.ofInstant(date.toInstant(), zoneId);
         this.txtZoneDate.setText(GMT_DATE_FORMATTER.format(zdtm));
     }//GEN-LAST:event_cmbTimezoneItemStateChanged
@@ -3216,27 +3217,27 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnHexIPActionPerformed
 
     private void btnDecIPConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecIPConvertActionPerformed
-        int dec1 = ConvertUtil.parseIntDefault(this.txtDec1.getText(), -1); 
-        int dec2 = ConvertUtil.parseIntDefault(this.txtDec2.getText(), -1); 
-        int dec3 = ConvertUtil.parseIntDefault(this.txtDec3.getText(), -1); 
+        int dec1 = ConvertUtil.parseIntDefault(this.txtDec1.getText(), -1);
+        int dec2 = ConvertUtil.parseIntDefault(this.txtDec2.getText(), -1);
+        int dec3 = ConvertUtil.parseIntDefault(this.txtDec3.getText(), -1);
         int dec4 = ConvertUtil.parseIntDefault(this.txtDec4.getText(), -1);
         if (dec1 < 0 || dec2 < 0 || dec3 < 0 || dec4 < 0 ) {
             this.lblIPValid.setText("IP addres Invalid");
             return;
         }
-        if (!(0 <= dec1 && dec1 <= 255 && 
-            0 <= dec2 && dec2 <= 255 && 
-            0 <= dec3 && dec3 <= 255 && 
+        if (!(0 <= dec1 && dec1 <= 255 &&
+            0 <= dec2 && dec2 <= 255 &&
+            0 <= dec3 && dec3 <= 255 &&
             0 <= dec4 && dec4 <= 255)) {
             this.lblIPValid.setText("IP addres renge Invalid");
             return;
         }
-        
+
         this.txtDotOctIP.setText(IpUtil.ipv4ToDotOct(dec1, dec2, dec3, dec4));
         this.txtOctIP.setText(IpUtil.ipv4ToOct(dec1, dec2, dec3, dec4));
         this.txtHexIP.setText(IpUtil.ipv4ToHex(dec1, dec2, dec3, dec4));
-        this.txtDotHexIP.setText(IpUtil.ipv4ToDotHex(dec1, dec2, dec3, dec4));        
-        this.txtIntIP.setText(IpUtil.ipv4ToInt(dec1, dec2, dec3, dec4));        
+        this.txtDotHexIP.setText(IpUtil.ipv4ToDotHex(dec1, dec2, dec3, dec4));
+        this.txtIntIP.setText(IpUtil.ipv4ToInt(dec1, dec2, dec3, dec4));
     }//GEN-LAST:event_btnDecIPConvertActionPerformed
 
     private void txtUnixtimeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnixtimeFocusLost

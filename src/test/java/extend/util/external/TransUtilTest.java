@@ -19,6 +19,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -660,7 +661,7 @@ public class TransUtilTest {
         assertEquals("a\\tb\\rc\\nd", TransUtil.encodeStandardLangMeta("a\tb\rc\nd"));
         assertEquals("a\\\\d", TransUtil.encodeStandardLangMeta("a\\\\d"));
     }
-    
+
     /**
      * Test of encodeJsLangMeta,decodeJsLangMeta method, of class TransUtil.
      */
@@ -718,7 +719,7 @@ public class TransUtilTest {
         assertEquals("host", TransUtil.decodeCLangQuote("host", false));
         assertEquals("\\123\"456\\", TransUtil.decodeCLangQuote("\\\\123\\\"456\\\\", false));
         assertEquals("\\123'456\\", TransUtil.decodeCLangQuote("\\\\123'456\\\\", false));
-        
+
         // metachar
         assertEquals("\\r\\nhost\\t", TransUtil.encodeCLangQuote("\r\nhost\t", true));
         assertEquals("ho\\\\st", TransUtil.encodeCLangQuote("ho\\st", true));
@@ -728,7 +729,7 @@ public class TransUtilTest {
         assertEquals("\r\nhost\t", TransUtil.decodeCLangQuote("\\r\\nhost\\t", true));
         assertEquals("ho\\st", TransUtil.decodeCLangQuote("ho\\\\st", true));
         assertEquals("\\123\"456\\", TransUtil.decodeCLangQuote("\\\\123\\\"456\\\\", true));
-        assertEquals("\\123'456\\", TransUtil.decodeCLangQuote("\\\\123'456\\\\", true));        
+        assertEquals("\\123'456\\", TransUtil.decodeCLangQuote("\\\\123'456\\\\", true));
     }
 
     /**
@@ -745,12 +746,12 @@ public class TransUtilTest {
         // metachar
         assertEquals("\\r\\nhost\\t", TransUtil.encodeSQLLangQuote("\r\nhost\t", true));
         assertEquals("ho\\st", TransUtil.encodeSQLLangQuote("ho\\st", true));
-        assertEquals("\\\\123'456\\\\", TransUtil.decodeSQLangQuote("\\\\123''456\\\\", true));        
+        assertEquals("\\\\123'456\\\\", TransUtil.decodeSQLangQuote("\\\\123''456\\\\", true));
         assertEquals("\\123\"456\\", TransUtil.encodeSQLLangQuote("\\123\"456\\", true));
 
         assertEquals("\r\nhost\t", TransUtil.decodeSQLangQuote("\\r\\nhost\\t", true));
         assertEquals("ho\\st", TransUtil.decodeSQLangQuote("ho\\st", true));
-        assertEquals("\\\\123'456\\\\", TransUtil.decodeSQLangQuote("\\\\123''456\\\\", true));        
+        assertEquals("\\\\123'456\\\\", TransUtil.decodeSQLangQuote("\\\\123''456\\\\", true));
         assertEquals("\\123\"456\\", TransUtil.decodeSQLangQuote("\\123\"456\\", true));
     }
 
@@ -957,32 +958,32 @@ public class TransUtilTest {
         b.append((String)null);
         System.out.println("append:" + b.toString());
     }
-    
+
     @Test
     public void testOrderdChar() {
         {
             char ord = TransUtil.getOrderdChar(0);
-            assertEquals(ord, '0');        
+            assertEquals(ord, '0');
         }
         {
             char ord = TransUtil.getOrderdChar(10);
-            assertEquals(ord, 'A');        
+            assertEquals(ord, 'A');
         }
         {
             char ord = TransUtil.getOrderdChar(9 + 26);
-            assertEquals(ord, 'Z');        
+            assertEquals(ord, 'Z');
         }
         {
             char ord = TransUtil.getOrderdChar(10 + 26);
-            assertEquals(ord, 'a');        
+            assertEquals(ord, 'a');
         }
         {
             char ord = TransUtil.getOrderdChar(9 + 26 + 26);
-            assertEquals(ord, 'z');        
+            assertEquals(ord, 'z');
         }
         {
             char ord = TransUtil.getOrderdChar(10 + 26 + 26);
-            assertEquals(ord, '0');        
+            assertEquals(ord, '0');
         }
     }
 
@@ -999,7 +1000,16 @@ public class TransUtilTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd H:mm:ss zzz");
         String s = formatter.format(zdtm);
         System.out.println("testDateTime.format:" + s);
-}
-    
-    
+    }
+
+    @Test
+    public void testZoneDateTime() {
+        System.out.println("testZoneDateTime");
+        ZoneId id = ZoneId.of("JST", ZoneId.SHORT_IDS);
+        System.out.println(id.getId());
+        System.out.println(id.getRules().getOffset(Instant.EPOCH));
+        System.out.println(id.getRules().toString());
+    }
+
+
 }
