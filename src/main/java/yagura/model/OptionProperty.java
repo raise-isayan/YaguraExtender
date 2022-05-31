@@ -144,16 +144,16 @@ public class OptionProperty implements IOptionProperty {
 //     * IOptionProperty
 //     * @param property
 //     */
-//    public void setProperty(IOptionProperty property) {
-//        this.setEncodingProperty(property.getEncodingProperty());
-//        this.setMatchReplaceProperty(property.getMatchReplaceProperty());
-//        this.setMatchAlertProperty(property.getMatchAlertProperty());
-//        this.setSendToProperty(property.getSendToProperty());
-//        this.setLoggingProperty(property.getLoggingProperty());
-//        this.setJSearchProperty(property.getJSearchProperty());
-//        this.setJTransCoderProperty(property.getJTransCoderProperty());
-//        this.setDebugMode(property.getDebugMode());
-//    }
+    public Map<String, String> getProperty() {
+        this.config.put(this.universalViewProperty.getSettingName(), this.universalViewProperty.loadSetting());
+        this.config.put(this.matchReplaceProperty.getSettingName(), this.matchReplaceProperty.loadSetting());
+        this.config.put(this.matchAlertProperty.getSettingName(), this.matchAlertProperty.loadSetting());
+        this.config.put(this.sendToProperty.getSettingName(), this.sendToProperty.loadSetting());
+        this.config.put(this.logProperty.getSettingName(), this.logProperty.loadSetting());
+        this.config.put(this.searchProperty.getSettingName(), this.searchProperty.loadSetting());
+        this.config.put(this.transcoderProperty.getSettingName(), this.transcoderProperty.loadSetting());
+        return this.config;
+    }
 
     public void setProperty(Map<String, String> config) {
         String configUniversalViewProperty = config.get(this.universalViewProperty.getSettingName());

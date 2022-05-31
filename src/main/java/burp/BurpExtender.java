@@ -201,8 +201,8 @@ public class BurpExtender extends BurpExtenderImpl
                 getSendToMenu().showBurpMenu(controller, e);
             }
         };
-    }    
-    
+    }
+
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         super.registerExtenderCallbacks(callbacks);
@@ -216,9 +216,9 @@ public class BurpExtender extends BurpExtenderImpl
             }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }        
+        }
         this.option.setProperty(config);
-                
+
         try {
             // 自動ログ作成時のみディレクトリ作成
             if (this.option.getLoggingProperty().isAutoLogging()) {
@@ -594,7 +594,7 @@ public class BurpExtender extends BurpExtenderImpl
             }
         }
     }
-        
+
     /**
      * 選択可能なエンコーディングリストの取得
      *
@@ -742,7 +742,8 @@ public class BurpExtender extends BurpExtenderImpl
         }
 
         try {
-            Map<String, String> config = this.option.loadConfigSetting();
+//            Map<String, String> config = this.option.loadConfigSetting();
+            Map<String, String> config = this.option.getProperty();
             Config.saveToJson(CONFIG_FILE, config);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
