@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;

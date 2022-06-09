@@ -9,6 +9,7 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.HttpUtil.DummyOutputStream;
 import extension.helpers.StringUtil;
+import java.lang.UnsupportedOperationException;
 import java.awt.event.ActionEvent;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -78,7 +79,7 @@ public class SendToServer extends SendToMenuItem {
         Properties prop = getExtendProperty();
         String useProxy = prop.getProperty("useProxy", SendToExtend.USE_CUSTOM_PROXY);
         if (SendToExtend.USE_CUSTOM_PROXY.equals(useProxy)) {
-            sendToServerUseJDKClient(messageInfo);
+            sendToServerUseHttpClient(messageInfo);
         } else {
             sendToServerUseBurpClient(messageInfo);
         }
@@ -131,124 +132,125 @@ public class SendToServer extends SendToMenuItem {
     }
 
     protected void sendToServerUseJDKClient(IHttpRequestResponse messageInfo) {
-        Runnable sendTo = new Runnable() {
-            @Override
-            public void run() {
-                String boundary = HttpUtil.generateBoundary();
-                HttpURLConnection conn = null;
-                try {
-                    DummyOutputStream dummy = new DummyOutputStream();
-                    outMultipart(boundary, dummy, messageInfo);
-                    int contentLength = dummy.getSize();
-                    
-                    URL url = new URL(getTarget()); // 送信先
-                    // 拡張オプションを取得
-                    Properties prop = getExtendProperty();
-                    String proxyProtocol =  prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name());
-                    Proxy proxy = Proxy.NO_PROXY;
-                    if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
-                        String proxyHost =  prop.getProperty("proxyHost", "");
-                        if (Proxy.Type.HTTP.name().equals(proxyProtocol)) {
-                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "8080"), 8080);
-                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
-                            proxy = new Proxy(Proxy.Type.HTTP, addr);                                                                
-                        }
-                        else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
-                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
-                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
-                            proxy = new Proxy(Proxy.Type.SOCKS, addr);                                                                                        
-                        }
-                    } 
-                    String proxyUser = prop.getProperty("proxyUser", "");
-                    String proxyPasswd = prop.getProperty("proxyPasswd", "");                    
-                    Authenticator authenticator = new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
-                        }               
-                    };
-//                    if (!proxyUser.isEmpty()) {
-                        Authenticator.setDefault(authenticator);
+        throw new UnsupportedOperationException();
+//        Runnable sendTo = new Runnable() {
+//            @Override
+//            public void run() {
+//                String boundary = HttpUtil.generateBoundary();
+//                HttpURLConnection conn = null;
+//                try {
+//                    DummyOutputStream dummy = new DummyOutputStream();
+//                    outMultipart(boundary, dummy, messageInfo);
+//                    int contentLength = dummy.getSize();
+//                    
+//                    URL url = new URL(getTarget()); // 送信先
+//                    // 拡張オプションを取得
+//                    Properties prop = getExtendProperty();
+//                    String proxyProtocol =  prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name());
+//                    Proxy proxy = Proxy.NO_PROXY;
+//                    if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
+//                        String proxyHost =  prop.getProperty("proxyHost", "");
+//                        if (Proxy.Type.HTTP.name().equals(proxyProtocol)) {
+//                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "8080"), 8080);
+//                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+//                            proxy = new Proxy(Proxy.Type.HTTP, addr);                                                                
+//                        }
+//                        else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
+//                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
+//                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+//                            proxy = new Proxy(Proxy.Type.SOCKS, addr);                                                                                        
+//                        }
+//                    } 
+//                    String proxyUser = prop.getProperty("proxyUser", "");
+//                    String proxyPasswd = prop.getProperty("proxyPasswd", "");                    
+//                    Authenticator authenticator = new Authenticator() {
+//                        @Override
+//                        protected PasswordAuthentication getPasswordAuthentication() {
+//                            return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
+//                        }               
+//                    };
+////                    if (!proxyUser.isEmpty()) {
+//                        Authenticator.setDefault(authenticator);
+////                    }
+////                    else {
+////                        Authenticator.setDefault(null);                    
+////                    }
+//
+////                    boolean ignoreValidateCertification = ConvertUtil.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
+////                    if (ignoreValidateCertification) {
+//                        HttpUtil.ignoreSocketFactory();
+////                    }
+//
+//                    conn = (HttpURLConnection) url.openConnection(proxy);
+//                    conn.setFixedLengthStreamingMode(contentLength);
+//                    conn.setRequestMethod("POST");
+//                    conn.setDoOutput(true);
+//                    if (!proxyUser.isEmpty() && Proxy.Type.HTTP.name().equals(proxyProtocol)) {
+//                        byte [] basicAuth = Base64.getEncoder().encode(StringUtil.getBytesRaw(String.format("%s:%s", new Object [] {proxyUser, proxyPasswd})));
+//                        conn.setRequestProperty("Authorization", "Basic " + StringUtil.getStringRaw(basicAuth));
 //                    }
-//                    else {
-//                        Authenticator.setDefault(null);                    
+//                    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+//                    conn.connect();
+//                    OutputStream ostm = null;
+//                    try {
+//                        ostm = conn.getOutputStream();
+//                        outMultipart(boundary, ostm, messageInfo);
+//                    } catch (IOException e) {
+//                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
+//                    } catch (Exception e) {
+//                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
+//                    } finally {
+//                        if (ostm != null) {
+//                            ostm.close();
+//                        }
 //                    }
-
-//                    boolean ignoreValidateCertification = ConvertUtil.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
-//                    if (ignoreValidateCertification) {
-                        HttpUtil.ignoreSocketFactory();
+//
+//                    InputStream istm = conn.getInputStream();
+//                    ByteArrayOutputStream bostm = new ByteArrayOutputStream();
+//                    try {
+//                        BufferedInputStream bistm = new BufferedInputStream(istm);
+//                        String decodeMessage;
+//                        byte buf[] = new byte[4096];
+//                        int len;
+//                        while ((len = bistm.read(buf)) != -1) {
+//                            bostm.write(buf, 0, len);
+//                        }
+//                        int statusCode = conn.getResponseCode();
+//                        decodeMessage = StringUtil.getBytesRawString(bostm.toByteArray());
+//                        if (statusCode == HttpURLConnection.HTTP_OK) {
+//                            if (decodeMessage.length() == 0) {
+//                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+//                            } else {
+//                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + decodeMessage));
+//                            }
+//                        } else {
+//                            // 200以外
+//                            fireSendToErrorEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + decodeMessage));
+//                        }
+//
+//                    } catch (IOException e) {
+//                        fireSendToErrorEvent(new SendToEvent(this, "Error[" + e.getClass().getName() + "]:" + e.getMessage()));
+//                    } finally {
+//                        if (istm != null) {
+//                            istm.close();
+//                        }
+//                        if (bostm != null) {
+//                            bostm.close();
+//                        }
 //                    }
-
-                    conn = (HttpURLConnection) url.openConnection(proxy);
-                    conn.setFixedLengthStreamingMode(contentLength);
-                    conn.setRequestMethod("POST");
-                    conn.setDoOutput(true);
-                    if (!proxyUser.isEmpty() && Proxy.Type.HTTP.name().equals(proxyProtocol)) {
-                        byte [] basicAuth = Base64.getEncoder().encode(StringUtil.getBytesRaw(String.format("%s:%s", new Object [] {proxyUser, proxyPasswd})));
-                        conn.setRequestProperty("Authorization", "Basic " + StringUtil.getStringRaw(basicAuth));
-                    }
-                    conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-                    conn.connect();
-                    OutputStream ostm = null;
-                    try {
-                        ostm = conn.getOutputStream();
-                        outMultipart(boundary, ostm, messageInfo);
-                    } catch (IOException e) {
-                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
-                    } catch (Exception e) {
-                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
-                    } finally {
-                        if (ostm != null) {
-                            ostm.close();
-                        }
-                    }
-
-                    InputStream istm = conn.getInputStream();
-                    ByteArrayOutputStream bostm = new ByteArrayOutputStream();
-                    try {
-                        BufferedInputStream bistm = new BufferedInputStream(istm);
-                        String decodeMessage;
-                        byte buf[] = new byte[4096];
-                        int len;
-                        while ((len = bistm.read(buf)) != -1) {
-                            bostm.write(buf, 0, len);
-                        }
-                        int statusCode = conn.getResponseCode();
-                        decodeMessage = StringUtil.getBytesRawString(bostm.toByteArray());
-                        if (statusCode == HttpURLConnection.HTTP_OK) {
-                            if (decodeMessage.length() == 0) {
-                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
-                            } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + decodeMessage));
-                            }
-                        } else {
-                            // 200以外
-                            fireSendToErrorEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + decodeMessage));
-                        }
-
-                    } catch (IOException e) {
-                        fireSendToErrorEvent(new SendToEvent(this, "Error[" + e.getClass().getName() + "]:" + e.getMessage()));
-                    } finally {
-                        if (istm != null) {
-                            istm.close();
-                        }
-                        if (bostm != null) {
-                            bostm.close();
-                        }
-                    }
-                } catch (IOException ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                } catch (Exception ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                } finally {
-                    if (conn != null) {
-                        conn.disconnect();
-                    }
-                }
-            }
-
-        };
-        this.threadExecutor.submit(sendTo);
+//                } catch (IOException ex) {
+//                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+//                } catch (Exception ex) {
+//                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+//                } finally {
+//                    if (conn != null) {
+//                        conn.disconnect();
+//                    }
+//                }
+//            }
+//
+//        };
+//        this.threadExecutor.submit(sendTo);
     }
     
     protected void sendToServerUseHttpClient(IHttpRequestResponse messageInfo) {
