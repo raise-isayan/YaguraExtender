@@ -16,10 +16,15 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
@@ -1372,7 +1377,7 @@ public class TransUtil {
         }
         return buff.toString();
     }
-        
+
     public static String toHtmlDecode(String input) {
         StringBuffer buff = new StringBuffer();
         Pattern p = Pattern.compile("(&(?:(#\\d+)|(#[xX][0-9a-fA-F]+)|(\\w+));)");
@@ -1571,7 +1576,7 @@ public class TransUtil {
         }
         return value;
     }
-       
+
     private final static Pattern PTN_JS_META = Pattern.compile("(\\\\[rnbftv\\\\])|(\\\\x[0-9a-fA-F]{2})|((\\\\u[dD][89abAB][0-9a-fA-F]{2}\\\\u[dD][c-fC-F][0-9a-fA-F]{2})|(\\\\u[0-9a-fA-F]{4}))");
 
     /**
@@ -1670,7 +1675,7 @@ public class TransUtil {
     private final static Pattern PTN_STANDARD_ENCODE_META = Pattern.compile("([\r\n\t])");
     /**
      * 標準言語形式のメタ文字エンコード(エスケープする)
-     * 
+     *
      * @param value
      * @return エンコードされた値
      */
@@ -1697,7 +1702,7 @@ public class TransUtil {
         m.appendTail(buff);
         return buff.toString();
     }
-    
+
     public static String toRegexEncode(String value, boolean metachar) {
         String encode = value;
         if (metachar) {
@@ -2305,8 +2310,28 @@ public class TransUtil {
     }
 
     private final static String ORDERD_CHAR = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    
+
     public static char getOrderdChar(int ord) {
         return ORDERD_CHAR.charAt(ord % ORDERD_CHAR.length());
-    }    
+    }
+
+    /*
+     * DateへはZoneがデフォルトのZoneになるため強制的に変更
+     */
+    public static Date toZoneWithDate(LocalDateTime ldtm) {
+        GregorianCalendar cal = new GregorianCalendar(ldtm.getYear(), ldtm.getMonthValue(), ldtm.getDayOfMonth(), ldtm.getHour(), ldtm.getMinute(), ldtm.getSecond());
+        return cal.getTime();
+    }
+
+    /*
+     * DateへはZoneが
+     */
+    public static LocalDateTime toZoneWithLocalDate(Date date) {
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(date);
+        LocalDateTime ldtm = LocalDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
+        return ldtm;
+    }
+
+
 }

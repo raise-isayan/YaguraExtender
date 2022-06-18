@@ -48,16 +48,22 @@ import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
 import extension.view.layout.VerticalFlowLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
@@ -114,7 +120,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputFormat;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputFormat;
 
-    private final static DateTimeFormatter GMT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd H:mm:ss zzz");
+    private final static DateTimeFormatter SYSTEM_ZONE_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd H:mm:ss zzz");
 
     private final static String [] SHORT_ZONEIDS = {
         "GMT", "ACT", "AET", "AGT", "ART", "AST", "BET", "BST", "CAT", "CNT", "CST", "CTT", "EAT", "ECT", "IET", "IST", "JST", "MIT", "NET", "NST", "PLT", "PNT", "PRT", "PST", "SST", "VST", "EST", "MST", "HST"
@@ -123,6 +129,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final ViewStateDecoderTab viewStateDecoderTab = new ViewStateDecoderTab();
 
     private final JWTTokenDecoderTab jwtTokenDecoderTab = new JWTTokenDecoderTab();
+
+    final FocusListener FIRE_FOCUS = new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                ZonedDateTime cdtm = getConverterZoneDateTime();
+                long java_value = cdtm.toInstant().toEpochMilli();
+                long unix_value = java_value / 1000L;
+
+                ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), ZoneId.systemDefault());
+                setSystemZoneDate(zdtm.toInstant());
+
+                txtUnixtime.setValue(unix_value);
+                txtJavaSerial.setValue(java_value);
+                BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
+                txtExcelSerial.setValue(excel_serial.doubleValue());
+
+            }
+        };
 
     private void customizeComponents() {
 
@@ -217,7 +245,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
          * * UI design end **
          */
 
-
         int tz_offset = 0;
         ZoneId systemZone = ZoneId.systemDefault();
         for (int i = 0; i < SHORT_ZONEIDS.length; i++) {
@@ -228,8 +255,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                 tz_offset = i;
             }
         }
+
         this.cmbTimezone.setSelectedIndex(tz_offset);
         //this.cmbTimezone.setVisible(false);
+
+        this.lblDate.setText(String.format("Date(%s):", ZoneId.systemDefault().getId()));
 
         this.txtInputRaw.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
@@ -258,15 +288,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         this.txtRadix32.setDocument(RDX32_DOC);
         this.txtRadix32.setText("0");
 
-        // Date conversion
-//        this.txtUnixtime.setDocument(UNIXTIME_DOC);
-//        this.txtUnixtime.setValue(0L);
-//        this.txtJavaSerial.setDocument(JAVASERIAL_DOC);
-//        this.txtJavaSerial.setValue(0L);
-        //this.txtExcelSerial.setDocument(EXCELSERIAL_DOC);
-//        this.txtExcelSerial.setValue(new BigDecimal(0L));
+        this.spnZoneDateTime.addFocusListener(FIRE_FOCUS);
+        final JTextField innerDateLimit = ((JSpinner.DefaultEditor) this.spnZoneDateTime.getEditor()).getTextField();
+        innerDateLimit.addFocusListener(FIRE_FOCUS);
 
-        this.spnDatetimeStateChanged(null);
+        this.FIRE_FOCUS.focusLost(null);
 
         this.doStateDecodeChange();
     }
@@ -290,18 +316,31 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }
 
     private void setConverterDateTime(Date value) {
-        this.spnDatetime.setValue(value);
+        this.spnZoneDateTime.setValue(value);
     }
 
     private Date getConverterDateTime() {
         Date date = new Date();
         try {
-            this.spnDatetime.commitEdit();
-            date = (Date)this.spnDatetime.getValue();
+            this.spnZoneDateTime.commitEdit();
+            date = (Date)this.spnZoneDateTime.getValue();
         } catch (ParseException ex) {
             logger.log(Level.INFO, ex.getMessage(), ex);
         }
         return date;
+    }
+
+    private void setConverterZoneDateTime(long java_serial_time) {
+        ZoneId zoneId = getSelectZoneId();
+        LocalDateTime ldtm = LocalDateTime.ofInstant(Instant.ofEpochMilli(java_serial_time), zoneId);
+        this.spnZoneDateTime.setValue(TransUtil.toZoneWithDate(ldtm));
+    }
+
+    private ZonedDateTime getConverterZoneDateTime() {
+        Date date = this.getConverterDateTime();
+        LocalDateTime ldtm = TransUtil.toZoneWithLocalDate(date);
+        ZoneId zoneId = getSelectZoneId();
+        return ldtm.atZone(zoneId);
     }
 
     private void setGeneraterDateStart(Date value) {
@@ -562,15 +601,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         btnJavaSerialCopy = new javax.swing.JButton();
         lblExcelSerial = new javax.swing.JLabel();
         btnExcelSerial = new javax.swing.JButton();
-        lblDate = new javax.swing.JLabel();
-        spnDatetime = new javax.swing.JSpinner();
+        lblZoneDate = new javax.swing.JLabel();
+        spnZoneDateTime = new javax.swing.JSpinner();
         cmbTimezone = new javax.swing.JComboBox<>();
         txtExcelSerial = new javax.swing.JFormattedTextField();
         txtJavaSerial = new javax.swing.JFormattedTextField();
         txtUnixtime = new javax.swing.JFormattedTextField();
-        lblZoneDate = new javax.swing.JLabel();
+        lblDate = new javax.swing.JLabel();
         btnZoneDateCopy = new javax.swing.JButton();
-        txtZoneDate = new javax.swing.JTextField();
+        txtSystemZoneDate = new javax.swing.JTextField();
         pnlCertificate = new javax.swing.JPanel();
         btnExport = new javax.swing.JButton();
         rdoConvertPEM = new javax.swing.JRadioButton();
@@ -2046,20 +2085,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        lblDate.setText("Date:");
+        lblZoneDate.setText("ZoneDate:");
 
-        spnDatetime.setModel(new javax.swing.SpinnerDateModel());
-        spnDatetime.setToolTipText("");
-        spnDatetime.setEditor(new javax.swing.JSpinner.DateEditor(spnDatetime, "yyyy/MM/dd H:mm:ss"));
-        spnDatetime.setMinimumSize(new java.awt.Dimension(180, 22));
-        spnDatetime.setName(""); // NOI18N
-        spnDatetime.setPreferredSize(new java.awt.Dimension(200, 22));
-        spnDatetime.setRequestFocusEnabled(false);
-        spnDatetime.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                spnDatetimeStateChanged(evt);
-            }
-        });
+        spnZoneDateTime.setModel(new javax.swing.SpinnerDateModel());
+        spnZoneDateTime.setToolTipText("");
+        spnZoneDateTime.setEditor(new javax.swing.JSpinner.DateEditor(spnZoneDateTime, "yyyy/MM/dd H:mm:ss"));
+        spnZoneDateTime.setMinimumSize(new java.awt.Dimension(180, 22));
+        spnZoneDateTime.setName(""); // NOI18N
+        spnZoneDateTime.setPreferredSize(new java.awt.Dimension(200, 22));
+        spnZoneDateTime.setRequestFocusEnabled(false);
 
         cmbTimezone.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -2103,7 +2137,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        lblZoneDate.setText("ZoneDate:");
+        lblDate.setText("Date(+0000):");
 
         btnZoneDateCopy.setText("Copy");
         btnZoneDateCopy.addActionListener(new java.awt.event.ActionListener() {
@@ -2112,10 +2146,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             }
         });
 
-        txtZoneDate.setMinimumSize(new java.awt.Dimension(180, 22));
-        txtZoneDate.setName(""); // NOI18N
-        txtZoneDate.setPreferredSize(new java.awt.Dimension(200, 22));
-        txtZoneDate.setRequestFocusEnabled(false);
+        txtSystemZoneDate.setMinimumSize(new java.awt.Dimension(180, 22));
+        txtSystemZoneDate.setName(""); // NOI18N
+        txtSystemZoneDate.setPreferredSize(new java.awt.Dimension(200, 22));
+        txtSystemZoneDate.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout tabDateConverterLayout = new javax.swing.GroupLayout(tabDateConverter);
         tabDateConverter.setLayout(tabDateConverterLayout);
@@ -2123,19 +2157,19 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabDateConverterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblExcelSerial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
                     .addComponent(lblUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(lblExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spnDatetime, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                    .addComponent(txtZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(spnZoneDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUnixtimeCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2149,16 +2183,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabDateConverterLayout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblDate)
-                    .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(spnDatetime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spnZoneDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblZoneDate))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblZoneDate)
+                    .addComponent(lblDate)
                     .addComponent(btnZoneDateCopy)
-                    .addComponent(txtZoneDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUnixtimeCopy)
@@ -3163,26 +3196,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         SwingUtil.systemClipboardCopy(this.txtExcelSerial.getText());
     }//GEN-LAST:event_btnExcelSerialActionPerformed
 
-    private void spnDatetimeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnDatetimeStateChanged
-        Date date = this.getConverterDateTime();
-        ZonedDateTime cdtm = ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-        long java_value = cdtm.toInstant().toEpochMilli();
-        long unix_value = java_value / 1000L;
-        ZoneId zoneId = getSelectZoneId();
-        ZonedDateTime zdtm = ZonedDateTime.ofInstant(date.toInstant(), zoneId);
-        this.txtZoneDate.setText(GMT_DATE_FORMATTER.format(zdtm));
-        this.txtUnixtime.setValue(Long.valueOf(unix_value));
-        this.txtJavaSerial.setValue(Long.valueOf(java_value));
-        BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
-        this.txtExcelSerial.setValue(excel_serial.doubleValue());
-    }//GEN-LAST:event_spnDatetimeStateChanged
-
     private void cmbTimezoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTimezoneItemStateChanged
         Date date = this.getConverterDateTime();
-        ZoneId zoneId = getSelectZoneId();
-        ZonedDateTime zdtm = ZonedDateTime.ofInstant(date.toInstant(), zoneId);
-        this.txtZoneDate.setText(GMT_DATE_FORMATTER.format(zdtm));
+        this.setSystemZoneDate(date.toInstant());
     }//GEN-LAST:event_cmbTimezoneItemStateChanged
+
+    private void setSystemZoneDate(Instant instant) {
+        ZonedDateTime zdtm = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
+        this.txtSystemZoneDate.setText(SYSTEM_ZONE_DATE_FORMATTER.format(zdtm.withZoneSameInstant(ZoneId.systemDefault())));
+    }
 
     private void spnDateStartStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnDateStartStateChanged
         // TODO add your handling code here:
@@ -3247,14 +3269,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             long java_value = unix_value * 1000L;
             BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
 
+            this.txtJavaSerial.setValue(java_value);
             // Excel Serial = 25569 + ((Unixtime + (60 * 60 * 9)) / (60 * 60 * 24))
-            this.txtJavaSerial.setValue(Long.valueOf(java_value));
             this.txtExcelSerial.setValue(excel_serial.doubleValue());
-            ZonedDateTime cdtm = ZonedDateTime.ofInstant(Instant.ofEpochSecond(unix_value), ZoneId.systemDefault());
-            this.spnDatetime.setValue(Date.from(cdtm.toInstant()));
-            ZoneId zoneId = getSelectZoneId();
-            ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochSecond(unix_value), zoneId);
-            this.txtZoneDate.setText(GMT_DATE_FORMATTER.format(zdtm));
+
+            ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), ZoneId.systemDefault());
+            this.setSystemZoneDate(zdtm.toInstant());
+
+            this.setConverterZoneDateTime(java_value);
+
         } catch (ParseException ex) {
             logger.log(Level.INFO, ex.getMessage(), ex);
         }
@@ -3267,13 +3290,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             long unix_value = java_value / 1000L;
             BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
 
-            this.txtUnixtime.setValue(Long.valueOf(unix_value));
+            this.txtUnixtime.setValue(unix_value);
+            // Excel Serial = 25569 + ((Unixtime + (60 * 60 * 9)) / (60 * 60 * 24))
             this.txtExcelSerial.setValue(excel_serial.doubleValue());
-            ZonedDateTime cdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), ZoneId.systemDefault());
-            this.spnDatetime.setValue(Date.from(cdtm.toInstant()));
-            ZoneId zoneId = getSelectZoneId();
-            ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), zoneId);
-            this.txtZoneDate.setText(GMT_DATE_FORMATTER.format(zdtm));
+
+            ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), ZoneId.systemDefault());
+            this.setSystemZoneDate(zdtm.toInstant());
+
+            this.setConverterZoneDateTime(java_value);
+
         } catch (ParseException ex) {
             logger.log(Level.INFO, ex.getMessage(), ex);
         }
@@ -3289,18 +3314,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             this.txtUnixtime.setValue(unix_value);
             this.txtJavaSerial.setValue(java_value);
 
-            ZonedDateTime cdtm = ZonedDateTime.ofInstant(Instant.ofEpochSecond(unix_value), ZoneId.systemDefault());
-            this.spnDatetime.setValue(Date.from(cdtm.toInstant()));
-            ZoneId zoneId = getSelectZoneId();
-            ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochSecond(unix_value), zoneId);
-            this.txtZoneDate.setText(GMT_DATE_FORMATTER.format(zdtm));
+            ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), ZoneId.systemDefault());
+            this.setSystemZoneDate(zdtm.toInstant());
+
+            this.setConverterZoneDateTime(java_value);
+
         } catch (ParseException ex) {
             logger.log(Level.INFO, ex.getMessage(), ex);
         }
     }//GEN-LAST:event_txtExcelSerialFocusLost
 
     private void btnZoneDateCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoneDateCopyActionPerformed
-        SwingUtil.systemClipboardCopy(this.txtZoneDate.getText());
+        SwingUtil.systemClipboardCopy(this.txtSystemZoneDate.getText());
     }//GEN-LAST:event_btnZoneDateCopyActionPerformed
 
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
@@ -3517,11 +3542,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JSpinner spnDateEnd;
     private javax.swing.JSpinner spnDateStart;
     private javax.swing.JSpinner spnDateStep;
-    private javax.swing.JSpinner spnDatetime;
     private javax.swing.JSpinner spnLengthNum;
     private javax.swing.JSpinner spnNumEnd;
     private javax.swing.JSpinner spnNumStart;
     private javax.swing.JSpinner spnNumStep;
+    private javax.swing.JSpinner spnZoneDateTime;
     private javax.swing.JPanel tabBaseConverter;
     private javax.swing.JPanel tabDateConverter;
     private javax.swing.JPanel tabGenerator;
@@ -3563,9 +3588,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JTextField txtStoreFile;
     private javax.swing.JTextField txtStorePassword;
     private javax.swing.JTextField txtStrength;
+    private javax.swing.JTextField txtSystemZoneDate;
     private javax.swing.JTextArea txtTokenList;
     private javax.swing.JFormattedTextField txtUnixtime;
-    private javax.swing.JTextField txtZoneDate;
     // End of variables declaration//GEN-END:variables
 
     public void caretUpdate(javax.swing.JTextArea textArea) {

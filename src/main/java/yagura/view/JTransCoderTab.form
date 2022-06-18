@@ -2428,20 +2428,20 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="lblZoneDate" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblJavaSerial" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblExcelSerial" alignment="1" max="32767" attributes="0"/>
+                              <Component id="lblZoneDate" max="32767" attributes="0"/>
+                              <Component id="lblDate" alignment="0" pref="76" max="32767" attributes="0"/>
                               <Component id="lblUnixtime" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblDate" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblExcelSerial" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtUnixtime" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtJavaSerial" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtExcelSerial" alignment="0" max="32767" attributes="0"/>
-                              <Component id="spnDatetime" alignment="0" pref="300" max="32767" attributes="0"/>
-                              <Component id="txtZoneDate" alignment="0" max="32767" attributes="0"/>
+                              <Component id="spnZoneDateTime" alignment="0" pref="290" max="32767" attributes="0"/>
+                              <Component id="txtSystemZoneDate" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -2459,18 +2459,16 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblDate" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="spnDatetime" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cmbTimezone" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="spnZoneDateTime" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmbTimezone" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblZoneDate" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblZoneDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblDate" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnZoneDateCopy" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtZoneDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtSystemZoneDate" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -2537,12 +2535,12 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcelSerialActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblDate">
+                <Component class="javax.swing.JLabel" name="lblZoneDate">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Date:"/>
+                    <Property name="text" type="java.lang.String" value="ZoneDate:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JSpinner" name="spnDatetime">
+                <Component class="javax.swing.JSpinner" name="spnZoneDateTime">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                       <SpinnerModel initial="now" stepSize="5" type="date"/>
@@ -2560,9 +2558,6 @@
                     </Property>
                     <Property name="requestFocusEnabled" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnDatetimeStateChanged"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cmbTimezone">
                   <Properties>
@@ -2634,9 +2629,9 @@
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtUnixtimeFocusLost"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblZoneDate">
+                <Component class="javax.swing.JLabel" name="lblDate">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="ZoneDate:"/>
+                    <Property name="text" type="java.lang.String" value="Date(+0000):"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnZoneDateCopy">
@@ -2647,7 +2642,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnZoneDateCopyActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtZoneDate">
+                <Component class="javax.swing.JTextField" name="txtSystemZoneDate">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[180, 22]"/>
