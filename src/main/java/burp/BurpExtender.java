@@ -279,7 +279,8 @@ public class BurpExtender extends BurpExtenderImpl
         if (this.option.getMatchReplaceProperty().isSelectedMatchReplace()) {
             MatchReplaceGroup group = this.option.getMatchReplaceProperty().getReplaceSelectedGroup(this.option.getMatchReplaceProperty().getSelectedName());
             if (group != null && group.isInScopeOnly()) {
-                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(msgInfo.getHttpService(), messageByte);
+                byte[] messageRequest = message.getMessageInfo().getRequest();
+                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(msgInfo.getHttpService(), messageRequest);
                 //BurpExtender.outPrintln("isScope:" + BurpExtender.getCallbacks().isInScope(reqInfo.getUrl()) + ":" + reqInfo.getUrl());
                 if (BurpExtender.getCallbacks().isInScope(reqInfo.getUrl())) {
                     resultBytes = this.replaceProxyMessage(message.getMessageReference(), messageIsRequest, messageByte);

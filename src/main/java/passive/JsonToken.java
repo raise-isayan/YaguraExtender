@@ -11,23 +11,23 @@ import java.util.Base64;
  *
  * @author isayan
  */
-public abstract class JsonToken {
+public interface JsonToken {
 
-    public abstract JsonToken parseToken(String value, boolean matches);
+    public JsonToken parseToken(String value, boolean matches);
 
-    public abstract boolean isValidFormat(String value);
+    public boolean isValidFormat(String value);
 
-    public abstract boolean isSignFormat();
+    public boolean isSignFormat();
 
-    public abstract String getToken();
+    public String getToken();
 
-    public abstract String getData();
+    public String getData();
 
-    public abstract String getPayload();
+    public String getPayload();
 
-    public abstract String getSignature();
+    public String getSignature();
 
-    public abstract boolean signatureEqual(final String secret);
+    public boolean signatureEqual(final String secret);
 
     public static String decodeUrl(String value) {
         return URLDecoder.decode(value, StandardCharsets.ISO_8859_1);
@@ -46,11 +46,11 @@ public abstract class JsonToken {
         return Base64.getUrlDecoder().decode(value);
     }
 
-    protected static String decodeBase64UrlSafe(byte [] value) {
+    static String decodeBase64UrlSafe(byte [] value) {
         return StringUtil.getStringUTF8(Base64.getUrlDecoder().decode(value));
     }
 
-    protected static String decodeBase64UrlSafe(String value) {
+    static String decodeBase64UrlSafe(String value) {
         return StringUtil.getStringUTF8(decodeBase64UrlSafeByte(value));
     }
 
@@ -66,7 +66,7 @@ public abstract class JsonToken {
         return StringUtil.getStringUTF8(JsonToken.encodeBase64UrlSafeByte(value));
     }
 
-    protected static String encodeBase64UrlSafe(String value) {
+    static String encodeBase64UrlSafe(String value) {
         return StringUtil.getStringUTF8(encodeBase64UrlSafeByte(value));
     }
 

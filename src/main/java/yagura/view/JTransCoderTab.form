@@ -2431,9 +2431,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblJavaSerial" alignment="0" max="32767" attributes="0"/>
                               <Component id="lblZoneDate" max="32767" attributes="0"/>
-                              <Component id="lblDate" alignment="0" pref="76" max="32767" attributes="0"/>
                               <Component id="lblUnixtime" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblExcelSerial" alignment="0" max="32767" attributes="0"/>
+                              <Component id="lblExcelSerial" alignment="0" pref="76" max="32767" attributes="0"/>
+                              <Component id="lblDate" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -2446,10 +2446,10 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnUnixtimeCopy" min="-2" pref="90" max="-2" attributes="0"/>
-                              <Component id="btnZoneDateCopy" min="-2" pref="90" max="-2" attributes="0"/>
                               <Component id="btnJavaSerialCopy" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
                               <Component id="btnExcelSerial" min="-2" pref="90" max="-2" attributes="0"/>
                               <Component id="cmbTimezone" min="-2" pref="261" max="-2" attributes="0"/>
+                              <Component id="btnZoneDateCopy" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="716" max="-2" attributes="0"/>
                       </Group>

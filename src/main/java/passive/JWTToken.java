@@ -21,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author isayan
  */
-public class JWTToken extends JsonToken {
+public class JWTToken implements JsonToken {
     private final static Logger logger = Logger.getLogger(JWTToken.class.getName());
 
     private final static JWTToken jwtInstance = new JWTToken();
@@ -38,7 +38,7 @@ public class JWTToken extends JsonToken {
         this.header = token.header;
         this.payload = token.payload;
         this.signature = token.signature;
-        this.signatureByte = decodeBase64UrlSafeByte(token.signature);
+        this.signatureByte = JsonToken.decodeBase64UrlSafeByte(token.signature);
     }
 
     public enum Algorithm {
@@ -76,7 +76,7 @@ public class JWTToken extends JsonToken {
     private final static Pattern PTN_JWT_HEADER_ALGORITHM = Pattern.compile("\"alg\"\\s*?:\\s*?\"(\\w+?)\"");
 
     private static Algorithm findAlgorithm(String header) {
-        String decodeHeader = decodeBase64UrlSafe(header);
+        String decodeHeader = JsonToken.decodeBase64UrlSafe(header);
         Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
         try {
             if (m.find()) {
@@ -174,7 +174,7 @@ public class JWTToken extends JsonToken {
             token.header = header;
             token.payload = payload;
             token.signature = signature;
-            token.signatureByte = decodeBase64UrlSafeByte(signature);
+            token.signatureByte = JsonToken.decodeBase64UrlSafeByte(signature);
         }
         return token;
     }
@@ -247,7 +247,7 @@ public class JWTToken extends JsonToken {
      * @return the header
      */
     public String getHeaderJSON(boolean pretty) {
-        return JsonUtil.prettyJson(decodeBase64UrlSafe(this.getHeader()), pretty);
+        return JsonUtil.prettyJson(JsonToken.decodeBase64UrlSafe(this.getHeader()), pretty);
     }
 
     /**
@@ -255,7 +255,7 @@ public class JWTToken extends JsonToken {
      * @return the payload
      */
     public String getPayloadJSON(boolean pretty) {
-        return JsonUtil.prettyJson(decodeBase64UrlSafe(this.getPayload()), pretty);
+        return JsonUtil.prettyJson(JsonToken.decodeBase64UrlSafe(this.getPayload()), pretty);
     }
 
     @Override
@@ -310,7 +310,7 @@ public class JWTToken extends JsonToken {
                     final SecretKeySpec sk = new SecretKeySpec(secret, algo.getSignAlgorithm());
                     mac.init(sk);
                     mac.reset();
-                    String data = encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
+                    String data = JsonToken.encodeBase64UrlSafe(jwtHeader(algo)) + "." + payload;
                     final byte[] mac_bytes = mac.doFinal(StringUtil.getBytesRaw(data));
                     return mac_bytes;
                 }
@@ -353,14 +353,14 @@ public class JWTToken extends JsonToken {
         JWTToken jwt = jwtInstance.parseToken(baseJWT, true);
         if (jwt != null) {
             for (String alg : algNone) {
-                String decodeHeader = decodeBase64UrlSafe(jwt.getHeader());
+                String decodeHeader = JsonToken.decodeBase64UrlSafe(jwt.getHeader());
                 Matcher m = PTN_JWT_HEADER_ALGORITHM.matcher(decodeHeader);
                 StringBuffer header = new StringBuffer();
                 if (m.find()) {
                     m.appendReplacement(header, String.format("\"alg\":\"%s\"", alg));
                 }
                 m.appendTail(header);
-                String token = encodeBase64UrlSafe(header.toString()) + "." + jwt.getPayload() + ".";
+                String token = JsonToken.encodeBase64UrlSafe(header.toString()) + "." + jwt.getPayload() + ".";
                 tokens.add(token);
             }
         }
@@ -377,8 +377,8 @@ public class JWTToken extends JsonToken {
                 byte [] sign;
                 try {
                     sign = JWTToken.sign(alg, jwt.getPayload(), publicKey);
-                    String signature = JWTToken.encodeBase64UrlSafe(sign);
-                    String result = JWTToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;
+                    String signature = JsonToken.encodeBase64UrlSafe(sign);
+                    String result = JsonToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;
                     tokens.add(result);
                 } catch (NoSuchAlgorithmException ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
