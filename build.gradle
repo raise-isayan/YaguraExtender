@@ -6,13 +6,16 @@ buildscript {
   }
   dependencies {
     classpath "org.asciidoctor:asciidoctor-gradle-jvm:3.3.2"
+    classpath "org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.3.2"
   }
 }
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'application'
+apply plugin: "org.asciidoctor.jvm.base"
 apply plugin: 'org.asciidoctor.jvm.convert'
+apply plugin: 'org.asciidoctor.jvm.pdf'
 
 sourceCompatibility = '11' // -source
 targetCompatibility = '11' // -target
@@ -32,6 +35,7 @@ asciidoctor {
     sources {
       include 'help.adoc', 'help-ja.adoc'
     }
+
     outputDir = file('help')
 }
 
@@ -98,8 +102,8 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.15'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.2.0'
-
-    implementation 'org.jsoup:jsoup:1.13.1'
+    // https://mvnrepository.com/artifact/org.jsoup/jsoup/
+    implementation 'org.jsoup:jsoup:1.15.2'
     // Unit Test
     testImplementation 'net.portswigger.burp.extender:burp-extender-api:2.3'
     testImplementation fileTree(dir: 'libs', include: ['*.jar'])

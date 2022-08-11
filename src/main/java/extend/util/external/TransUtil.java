@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -217,7 +216,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
@@ -358,6 +357,10 @@ public class TransUtil {
                     // Unicode
                     case UNICODE:
                         decode = toUnocodeDecode(value);
+                        break;
+                    // Unicode2
+                    case UNICODE2:
+                        decode = toUnocodeDecode(value, "$");
                         break;
                     // Byte Hex
                     case BYTE_HEX:
@@ -1015,9 +1018,12 @@ public class TransUtil {
 
     public static String toUnocodeEncode(String input, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            Matcher m = pattern.matcher(new String(new char[]{c}));
+        int length = input.length();
+//        for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
+//            int c = input.codePointAt(i);
+        for (int i = 0; i < length; i++) {
+            int c = input.charAt(i);
+            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("\\U%04X", (int) c));
@@ -1025,11 +1031,33 @@ public class TransUtil {
                     buff.append(String.format("\\u%04x", (int) c));
                 }
             } else {
-                buff.append(c);
+                buff.appendCodePoint(c);
             }
         }
         return buff.toString();
     }
+
+    public static String toUnocodeEncode(String input, String prefix, Pattern pattern, boolean upperCase) {
+        StringBuilder buff = new StringBuilder();
+        int length = input.length();
+//        for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
+//            int c = input.codePointAt(i);
+        for (int i = 0; i < length; i++) {
+            int c = input.charAt(i);
+            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
+            if (m.matches()) {
+                if (upperCase) {
+                    buff.append(String.format("%s%04X", prefix, (int) c));
+                } else {
+                    buff.append(String.format("%s%04x", prefix, (int) c));
+                }
+            } else {
+                buff.appendCodePoint(c);
+            }
+        }
+        return buff.toString();
+    }
+
 
     public static String toByteHexEncode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
         return toByteHexEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
@@ -1182,6 +1210,30 @@ public class TransUtil {
         return buff.toString();
     }
 
+    public static String toUnocodeDecode(String input, String prefix) {
+        final Pattern PTN_UNICODE2_STR_SURROGATE = Pattern.compile(String.format("(%s([dD][89abAB][0-9a-fA-F]{2})%s([dD][c-fC-F][0-9a-fA-F]{2}))|%s([0-9a-fA-F]{4})", Pattern.quote(prefix), Pattern.quote(prefix), Pattern.quote(prefix)));
+        StringBuffer buff = new StringBuffer();
+        // 上位サロゲート(\uD800-\uDBFF)
+        // 下位サロゲート(\uDC00-\uDFFF)
+        Matcher m = PTN_UNICODE2_STR_SURROGATE.matcher(input);
+        while (m.find()) {
+            String unicode = m.group(1);
+            if (unicode != null) {
+                String gpHigh = m.group(2);
+                String gpLow = m.group(3);
+                int chHigh = Integer.parseInt(gpHigh, 16);
+                int chLow = Integer.parseInt(gpLow, 16);
+                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) chHigh, (char) chLow})));
+            } else {
+                unicode = m.group(4);
+                int ch = Integer.parseInt(unicode, 16);
+                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) ch})));
+            }
+        }
+        m.appendTail(buff);
+        return buff.toString();
+    }
+
     private final static Pattern PTN_BYTE_GROUP = Pattern.compile("((\\\\[xX][0-9a-fA-F]{2})+)|((\\\\[0-9]{1,3})+)");
 
     public static String toByteDecode(String input, String charset) {
@@ -1275,17 +1327,21 @@ public class TransUtil {
 
     public static String toUnocodeUrlEncode(String input, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            Matcher m = pattern.matcher(new String(new char[]{c}));
+        int length = input.length();
+//        for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
+//            int c = input.codePointAt(i);
+        for (int i = 0; i < length; i++) {
+            int c = input.charAt(i);
+            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("%%U%04X", (int) c));
                 } else {
                     buff.append(String.format("%%u%04x", (int) c));
                 }
-            } else {
-                buff.append(c);
+            }
+            else {
+                buff.appendCodePoint((int) c);
             }
         }
         return buff.toString();
@@ -1582,7 +1638,7 @@ public class TransUtil {
     /**
      * JavaScript言語形式のメタ文字デコード(エスケープされたものを戻す)
      *
-     * @param value
+     * @param input
      * @return デコードされた値
      */
     public static String decodeJsLangMeta(String input) {
@@ -1645,7 +1701,7 @@ public class TransUtil {
     /**
      * 標準言語形式のメタ文字デコード(エスケープされたものを戻す)
      *
-     * @param value
+     * @param input
      * @return デコードされた値
      */
     public static String decodeStandardLangMeta(String input) {
@@ -1676,7 +1732,7 @@ public class TransUtil {
     /**
      * 標準言語形式のメタ文字エンコード(エスケープする)
      *
-     * @param value
+     * @param input
      * @return エンコードされた値
      */
     public static String encodeStandardLangMeta(String input) {
@@ -1729,6 +1785,7 @@ public class TransUtil {
      * JavaScript言語形式のリテラルエンコード(エスケープ)
      *
      * @param value
+     * @param metachar
      * @return エンコードされた値
      */
     public static String encodeJsLangQuote(String value, boolean metachar) {
@@ -1743,6 +1800,7 @@ public class TransUtil {
      * JavaScript言語形式のリテラルデコード(エスケープされたものを戻す)
      *
      * @param value
+     * @param metachar
      * @return デコードされた値
      */
     public static String decodeJsLangQuote(String value, boolean metachar) {
@@ -1757,6 +1815,7 @@ public class TransUtil {
      * C言語形式のエンコード(エスケープ)
      *
      * @param value
+     * @param metachar
      * @return エンコードされた値
      */
     public static String encodeCLangQuote(String value, boolean metachar) {
@@ -1771,6 +1830,7 @@ public class TransUtil {
      * C言語形式のデコード(エスケープされたものを戻す)
      *
      * @param value
+     * @param metachar
      * @return デコードされた値
      */
     public static String decodeCLangQuote(String value, boolean metachar) {
@@ -1785,6 +1845,7 @@ public class TransUtil {
      * PL/SQL言語形式のエンコード(エスケープ)
      *
      * @param value
+     * @param metachar
      * @return エンコードされた値
      */
     public static String encodeSQLLangQuote(String value, boolean metachar) {
@@ -1799,6 +1860,7 @@ public class TransUtil {
      * PL/SQL言語形式のデコード(エスケープされたものを戻す)
      *
      * @param value
+     * @param metachar
      * @return デコードされた値
      */
     public static String decodeSQLangQuote(String value, boolean metachar) {
@@ -1853,6 +1915,7 @@ public class TransUtil {
      * @param startDate 開始
      * @param endDate 終了
      * @param stepDate ステップ
+     * @param unit
      * @return 作成済みのリスト
      */
     public static String[] dateList(String format, LocalDate startDate, LocalDate endDate, int stepDate, DateUnit unit) {
@@ -1973,6 +2036,7 @@ public class TransUtil {
      * MD2値の取得
      *
      * @param body 対象バイト
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toMd2Sum(byte[] body, boolean upperCase) {
@@ -1986,6 +2050,7 @@ public class TransUtil {
      * MD2値の取得
      *
      * @param str 対象文字列
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toMd2Sum(String str, boolean upperCase) {
@@ -1999,7 +2064,8 @@ public class TransUtil {
      * MD2値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset エンコーディング
+     * @param upperCase
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
@@ -2015,6 +2081,7 @@ public class TransUtil {
      * MD5値の取得
      *
      * @param body 対象バイト
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toMd5Sum(byte[] body, boolean upperCase) {
@@ -2028,6 +2095,7 @@ public class TransUtil {
      * MD5値の取得
      *
      * @param str 対象文字列
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toMd5Sum(String str, boolean upperCase) {
@@ -2041,7 +2109,8 @@ public class TransUtil {
      * MD5値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset
+     * @param upperCase
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
@@ -2057,6 +2126,7 @@ public class TransUtil {
      * SHA-1値の取得
      *
      * @param body 対象バイト
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA1Sum(byte[] body, boolean upperCase) {
@@ -2070,6 +2140,7 @@ public class TransUtil {
      * SHA-1値の取得
      *
      * @param str 対象文字列
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA1Sum(String str, boolean upperCase) {
@@ -2083,7 +2154,8 @@ public class TransUtil {
      * SHA-1値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset
+     * @param upperCase
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
@@ -2099,6 +2171,7 @@ public class TransUtil {
      * SHA-256値の取得
      *
      * @param body 対象バイト
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA256Sum(byte[] body, boolean upperCase) {
@@ -2112,6 +2185,7 @@ public class TransUtil {
      * SHA-256値の取得
      *
      * @param str 対象文字列
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA256Sum(String str, boolean upperCase) {
@@ -2125,7 +2199,8 @@ public class TransUtil {
      * SHA-256値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset エンコーディング
+     * @param upperCase
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
@@ -2141,6 +2216,7 @@ public class TransUtil {
      * SHA-384値の取得
      *
      * @param body 対象バイト
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA384Sum(byte[] body, boolean upperCase) {
@@ -2154,6 +2230,7 @@ public class TransUtil {
      * SHA-384値の取得
      *
      * @param str 対象文字列
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA384Sum(String str, boolean upperCase) {
@@ -2167,7 +2244,8 @@ public class TransUtil {
      * SHA-384値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset エンコーディング
+     * @param upperCase
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
@@ -2183,6 +2261,7 @@ public class TransUtil {
      * SHA-512値の取得
      *
      * @param body 対象バイト
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA512Sum(byte[] body, boolean upperCase) {
@@ -2196,6 +2275,7 @@ public class TransUtil {
      * SHA-512値の取得
      *
      * @param str 対象文字列
+     * @param upperCase
      * @return ハッシュ値
      */
     public static String toSHA512Sum(String str, boolean upperCase) {
@@ -2209,7 +2289,8 @@ public class TransUtil {
      * SHA-512値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset エンコーディング
+     * @param upperCase
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
@@ -2245,7 +2326,7 @@ public class TransUtil {
      * MurmurHash値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset エンコーディング
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
@@ -2279,7 +2360,7 @@ public class TransUtil {
      * MurmurHash値の取得
      *
      * @param str 対象文字列
-     * @param enc エンコーディング
+     * @param charset エンコーディング
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */

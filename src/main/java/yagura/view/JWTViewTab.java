@@ -328,7 +328,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         return find;
     }
 
-    private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)");
+    private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)$");
     private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
 
     private final Map<String, JWTToken> tokenMap = Collections.synchronizedMap(new HashMap<>());

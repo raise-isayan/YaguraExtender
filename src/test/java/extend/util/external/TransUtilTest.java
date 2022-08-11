@@ -1,6 +1,7 @@
 package extend.util.external;
 
 import extend.util.external.TransUtil.EncodePattern;
+import static extend.util.external.TransUtil.PTN_ENCODE_ALPHANUM;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
@@ -466,6 +467,23 @@ public class TransUtilTest {
     }
 
     /**
+     * Test of toUnocodeEncode2 method, of class TransUtil.
+     */
+    @Test
+    public void testToUnocodeEncode2() {
+        System.out.println("toUnocodeEncode");
+        assertEquals("abcdef$000d$000a$0021$0022ghi$0023$0024$0025jkf", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", "$", TransUtil.PTN_ENCODE_ALPHANUM, false));
+        assertEquals("$0061$0062$0063$0064$0065$0066$000d$000a$0021$0022$0067$0068$0069$0023$0024$0025$006a$006b$0066", TransUtil.toUnocodeEncode("abcdef\r\n!\"ghi#$%jkf", "$", TransUtil.PTN_ENCODE_ALL, false));
+
+        assertEquals("$3042$3044$3046$3048$304a", TransUtil.toUnocodeEncode("あいうえお", "$", TransUtil.PTN_ENCODE_ALPHANUM, false));
+
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
+        String x = new String(ch, 0, ch.length);
+        assertEquals("jkf$d840$dc0b$d844$de3dghi$d844$df1b$d845$dc6e$d846$dcbd$d842$df9f$d845$deb4$d847$de34$d84c$ddc4$d84d$ddc4abz019", TransUtil.toUnocodeEncode(x, "$", TransUtil.PTN_ENCODE_ALPHANUM, false));
+        assertEquals("$006a$006b$0066$d840$dc0b$d844$de3d$0067$0068$0069$d844$df1b$d845$dc6e$d846$dcbd$d842$df9f$d845$deb4$d847$de34$d84c$ddc4$d84d$ddc4$0061$0062$007a$0030$0031$0039", TransUtil.toUnocodeEncode(x, "$", TransUtil.PTN_ENCODE_ALL, false));
+    }
+
+    /**
      * Test of toUnocodeDecode method, of class TransUtil.
      */
     @Test
@@ -481,6 +499,19 @@ public class TransUtilTest {
         String x = new String(ch, 0, ch.length);
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\ud840\\udc0b\\ud844\\ude3dghi\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4abz019"));
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\UD840\\UDC0B\\UD844\\UDE3Dghi\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4abz019"));
+    }
+
+    /**
+     * Test of toUnocodeDecode2 method, of class TransUtil.
+     */
+    @Test
+    public void testToUnocodeDecode2() {
+        System.out.println("toUnocodeDecode2");
+        assertEquals("abcdef!\"#$%", TransUtil.toUnocodeDecode("abcdef$0021$0022$0023$0024$0025","$"));
+        assertEquals("あいうえお", TransUtil.toUnocodeDecode("$3042$3044$3046$3048$304a","$"));
+        int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
+        String x = new String(ch, 0, ch.length);
+        assertEquals(x, TransUtil.toUnocodeDecode("jkf$d840$dc0b$d844$de3dghi$d844$df1b$d845$dc6e$d846$dcbd$d842$df9f$d845$deb4$d847$de34$d84c$ddc4$d84d$ddc4abz019","$"));
     }
 
     /**
