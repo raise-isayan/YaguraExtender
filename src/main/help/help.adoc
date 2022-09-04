@@ -607,6 +607,9 @@ HTML(<,>,",')::
 \uhhhh;:: 
     Encodes and decodes in Unicode format.
 
+$hhhh;:: 
+    Encodes and decodes in $ format.
+
 Gzip::
     Gzip compression and decompression.
 
