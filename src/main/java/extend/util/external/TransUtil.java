@@ -17,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -2399,20 +2402,32 @@ public class TransUtil {
     /*
      * DateへはZoneがデフォルトのZoneになるため強制的に変更
      */
-    public static Date toZoneWithDate(LocalDateTime ldtm) {
-        GregorianCalendar cal = new GregorianCalendar(ldtm.getYear(), ldtm.getMonthValue(), ldtm.getDayOfMonth(), ldtm.getHour(), ldtm.getMinute(), ldtm.getSecond());
+    public static Date toZoneWithDate(LocalDateTime ldtm, ZoneId zoneId) {
+        GregorianCalendar cal = new GregorianCalendar(ldtm.getYear(), ldtm.getMonthValue()-1, ldtm.getDayOfMonth(), ldtm.getHour(), ldtm.getMinute(), ldtm.getSecond());
+        cal.setTimeZone(TimeZone.getTimeZone(zoneId));
         return cal.getTime();
     }
 
     /*
-     * DateへはZoneが
+     * DateへはZoneがデフォルトのZoneになるため強制的に変更
      */
-    public static LocalDateTime toZoneWithLocalDate(Date date) {
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(date);
-        LocalDateTime ldtm = LocalDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
-        return ldtm;
-    }
+//    public static LocalDateTime toZoneWithLocalDate(Date date, ZoneId zoneId) {
+//        Calendar cal = GregorianCalendar.getInstance();
+//        cal.setTimeZone(TimeZone.getTimeZone(zoneId));
+//        cal.setTime(date);
+//        LocalDateTime ldtm = LocalDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
+//        return ldtm;
+//    }
 
+    /*
+     * DateへはZoneがデフォルトのZoneになるため強制的に変更
+     */
+    public static ZonedDateTime toZoneWithZoneDate(Date date, ZoneId zoneId) {
+        Calendar cal = GregorianCalendar.getInstance();
+        //cal.setTimeZone(TimeZone.getTimeZone(zoneId));
+        cal.setTime(date);
+        ZonedDateTime zdtm = ZonedDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND), 0, zoneId);
+        return zdtm;
+    }
 
 }
