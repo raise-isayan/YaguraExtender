@@ -5,7 +5,6 @@
  */
 package yagura.view;
 
-import burp.ITab;
 import extension.view.base.TableRowTransferHandler;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
@@ -23,12 +22,13 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class SendToTab extends javax.swing.JPanel implements ITab {
+public class SendToTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(SendToTab.class.getName());
 
     /**

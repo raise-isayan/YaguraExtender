@@ -1,7 +1,6 @@
 package extend.util.external;
 
 import extend.util.external.TransUtil.EncodePattern;
-import static extend.util.external.TransUtil.PTN_ENCODE_ALPHANUM;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
@@ -12,12 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -42,19 +41,19 @@ public class TransUtilTest {
     public TransUtilTest() {
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() throws Exception {
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() throws Exception {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
     }
 
@@ -936,20 +935,20 @@ public class TransUtilTest {
         }
     }
 
-    @Test
-    public void testExtractComment() {
-        System.out.println("testExtractComment");
-        String expValue = "<html><head></head><body>"
-                + "<div><!-- foo --><p>bar<!-- baz --></div><!--qux--></body></html>";
-        {
-            String[] expResult = TransUtil.extractHTMLComments(expValue, true);
-            assertEquals(3, expResult.length);
-            assertEquals("<!-- foo -->", expResult[0]);
-            assertEquals("<!-- baz -->", expResult[1]);
-            assertEquals("<!--qux-->", expResult[2]);
-        }
-
-    }
+//    @Test
+//    public void testExtractComment() {
+//        System.out.println("testExtractComment");
+//        String expValue = "<html><head></head><body>"
+//                + "<div><!-- foo --><p>bar<!-- baz --></div><!--qux--></body></html>";
+//        {
+//            String[] expResult = TransUtil.extractHTMLComments(expValue, true);
+//            assertEquals(3, expResult.length);
+//            assertEquals("<!-- foo -->", expResult[0]);
+//            assertEquals("<!-- baz -->", expResult[1]);
+//            assertEquals("<!--qux-->", expResult[2]);
+//        }
+//
+//    }
 
     @Test
     public void testToConv() {
@@ -1047,6 +1046,7 @@ public class TransUtilTest {
 
     @Test
     public void testCovertDate() {
+        System.out.println("testCovertDate");
         long unix_time = 1655470800L;
         LocalDateTime udtm = LocalDateTime.ofInstant(Instant.ofEpochSecond(unix_time), ZoneOffset.UTC);
         System.out.println("LocalDateTime(UTC): " + udtm);
@@ -1055,7 +1055,7 @@ public class TransUtilTest {
         System.out.println("LocalDateTime(JST): " + ldtm.getYear() + "-" + ldtm.getMonthValue() + "-" + ldtm.getDayOfMonth() + " " + ldtm.getHour() + ":" + ldtm.getMinute() + ":" + ldtm.getSecond());
         Date dateLocal = Date.from(ldtm.toInstant(ZoneOffset.UTC));
         System.out.println("LocalDateTime(Z): " + dateLocal);
-        System.out.println("TransUtil.toZoneWithDate: " + TransUtil.toZoneWithDate(ldtm));
+        System.out.println("TransUtil.toZoneWithDate: " + TransUtil.toZoneWithDate(ldtm, ZoneOffset.UTC));
         ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochSecond(unix_time), ZoneOffset.UTC);
         System.out.println("ZoneDateTime: " + zdtm);
         Date dateZone = Date.from(ldtm.toInstant(ZoneOffset.UTC));
@@ -1074,4 +1074,18 @@ public class TransUtilTest {
         System.out.println("Calendar.get(z): " + cl.get(Calendar.YEAR) + "-" + clz.get(Calendar.MONTH) + "-" + clz.get(Calendar.DAY_OF_MONTH) + " " + clz.get(Calendar.HOUR) + ":" + clz.get(Calendar.MINUTE) + ":" + clz.get(Calendar.SECOND));
     }
 
+        @Test
+    public void testToZoneWithDate() {
+        System.out.println("testToZoneWithDate");
+        long unix_time = 1665835871;
+        // 2022/10/15 21:11:11 Asia/Tokyo
+        // 2022/10/15 12:11:11 UTC
+        Date date = new Date(unix_time * 1000);
+        System.out.println("date:" + date.toString());
+        ZonedDateTime zdtm = TransUtil.toZoneWithZoneDate(date, ZoneOffset.UTC);
+        System.out.println("zdtm:" + zdtm);
+
+    }
+
 }
+

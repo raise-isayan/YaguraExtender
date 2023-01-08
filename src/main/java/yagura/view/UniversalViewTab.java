@@ -5,7 +5,6 @@
  */
 package yagura.view;
 
-import burp.ITab;
 import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
 import yagura.model.UniversalViewProperty;
@@ -23,12 +22,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class UniversalViewTab extends javax.swing.JPanel implements ITab {
+public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(UniversalViewTab.class.getName());
 
     /**
@@ -513,33 +513,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
         this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chklineWrapActionPerformed
 
-    private void renewPopup() {
-        String encodeList[] = {"PlatformDefault", "AutoRecognise", "RawBytes"};
-        this.popEncodeMenu.removeAll();
-        ButtonGroup group = new ButtonGroup();
-        for (String enc : encodeList) {
-            JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
-            group.add(item);
-            this.popEncodeMenu.add(item);
-        }
-        if (this.listSelect.getModel().getSize() > 0) {
-            this.popEncodeMenu.addSeparator();
-        }
-        for (int i = 0; i < this.listSelect.getModel().getSize(); i++) {
-            String enc = StringUtil.toString(this.listSelect.getModel().getElementAt(i));
-            JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
-            item.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    JMenuItem menuItem = (JMenuItem) e.getSource();
-                    menuItem.getText();
-                }
-            });
-            group.add(item);
-            this.popEncodeMenu.add(item);
-        }
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;
     private javax.swing.JButton btnEncLerftArraw;
@@ -573,6 +546,33 @@ public class UniversalViewTab extends javax.swing.JPanel implements ITab {
     private javax.swing.JPanel tabEncoding;
     private javax.swing.JPanel tabMessageView;
     // End of variables declaration//GEN-END:variables
+
+    private void renewPopup() {
+        String encodeList[] = {"PlatformDefault", "AutoRecognise", "RawBytes"};
+        this.popEncodeMenu.removeAll();
+        ButtonGroup group = new ButtonGroup();
+        for (String enc : encodeList) {
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
+            group.add(item);
+            this.popEncodeMenu.add(item);
+        }
+        if (this.listSelect.getModel().getSize() > 0) {
+            this.popEncodeMenu.addSeparator();
+        }
+        for (int i = 0; i < this.listSelect.getModel().getSize(); i++) {
+            String enc = StringUtil.toString(this.listSelect.getModel().getElementAt(i));
+            JRadioButtonMenuItem item = new JRadioButtonMenuItem(enc);
+            item.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    JMenuItem menuItem = (JMenuItem) e.getSource();
+                    menuItem.getText();
+                }
+            });
+            group.add(item);
+            this.popEncodeMenu.add(item);
+        }
+    }
 
     public void setClipboardAutoDecode(boolean value) {
         this.chkClipboardAutoDecode.setSelected(value);

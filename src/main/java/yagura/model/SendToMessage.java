@@ -1,6 +1,6 @@
 package yagura.model;
-
-import burp.IHttpRequestResponse;
+import java.util.List;
+import burp.api.montoya.http.message.HttpRequestResponse;
 
 /**
  *
@@ -8,7 +8,7 @@ import burp.IHttpRequestResponse;
  */
 public interface SendToMessage {
 
-    public IHttpRequestResponse[] getSelectedMessages();
+    public List<HttpRequestResponse> getSelectedMessages();
 
     public String getSelectedText();
 

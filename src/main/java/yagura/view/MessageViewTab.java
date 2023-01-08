@@ -1,12 +1,14 @@
 package yagura.view;
 
-import burp.IHttpRequestResponse;
 import burp.BurpExtender;
+import burp.api.montoya.http.message.HttpRequestResponse;
 import yagura.model.*;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import yagura.model.UniversalViewProperty.UniversalView;
@@ -129,36 +131,36 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
      * @param messageInfo the messageItem to set
      */
     @SuppressWarnings("unchecked")
-    public void setMessageInfo(IHttpRequestResponse messageInfo) {
+    public void setMessageInfo(HttpRequestResponse messageInfo) {
         try {
             this.messageItem = new HttpMessageItem(messageInfo);
             this.clearView();
-            this.tabGeneratePoC.createNewInstance(messageItem.getController(), false);
+//            this.tabGeneratePoC.createNewInstance(messageItem.getController(), false);
             if (this.messageItem.getRequest() != null) {
-                this.setEnabled(messageItem.getRequest(), true);
+                this.isEnabledFor(messageItem, true);
                 if (this.tabbetRequestView.indexOfComponent(this.tabRequestRawView) > -1) {
-                    this.tabRequestRawView.setMessage(this.messageItem.getRequest(), true);
+                    this.tabRequestRawView.setHttpRequestResponse(messageInfo);
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabRequestJSONViewTab) > -1) {
-                    this.tabRequestJSONViewTab.setMessage(this.messageItem.getRequest(), true);
+                    this.tabRequestJSONViewTab.setHttpRequestResponse(messageInfo);
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabGeneratePoC) > -1) {
-                    this.tabGeneratePoC.setMessage(this.messageItem.getRequest(), true);
+                    this.tabGeneratePoC.setHttpRequestResponse(messageInfo);
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabViewState) > -1) {
-                    this.tabViewState.setMessage(this.messageItem.getRequest(), true);
+                    this.tabViewState.setHttpRequestResponse(messageInfo);
                 }
             }
             if (this.messageItem.getResponse() != null) {
-                this.setEnabled(messageItem.getResponse(), false);
+                this.isEnabledFor(messageItem, false);
                 if (this.tabbetResponseView.indexOfComponent(this.tabResponseRawView) > -1) {
-                    this.tabResponseRawView.setMessage(this.messageItem.getResponse(), false);
+                    this.tabResponseRawView.setHttpRequestResponse(messageInfo);
                 }
                 if (this.tabbetResponseView.indexOfComponent(this.tabResponseJSONViewTab) > -1) {
-                    this.tabResponseJSONViewTab.setMessage(this.messageItem.getResponse(), false);
+                    this.tabResponseJSONViewTab.setHttpRequestResponse(messageInfo);
                 }
                 if (this.tabbetResponseView.indexOfComponent(this.tabHtmlComment) > -1) {
-                    this.tabHtmlComment.setMessage(this.messageItem.getResponse(), false);
+                    this.tabHtmlComment.setHttpRequestResponse(messageInfo);
                 }
             }
         } catch (Exception ex) {
@@ -172,10 +174,10 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 return;
             }
             if (messageItem.getRequest() != null) {
-                if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabRequestRawView.getTabCaption())) {
+                if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabRequestRawView.caption())) {
                     this.tabRequestRawView.setMessageEncoding(encoding);
                     this.tabRequestRawView.clearView();
-                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabResponseRawView.getTabCaption())) {
+                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabResponseRawView.caption())) {
                     this.tabResponseRawView.setMessageEncoding(encoding);
                     this.tabResponseRawView.clearView();
                 } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab("JSON")) {
@@ -183,13 +185,13 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                     this.tabRequestJSONViewTab.clearView();
                     this.tabResponseJSONViewTab.setMessageEncoding(encoding);
                     this.tabResponseJSONViewTab.clearView();
-                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabHtmlComment.getTabCaption())) {
+                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabHtmlComment.caption())) {
                     this.tabHtmlComment.setMessageEncoding(encoding);
                     this.tabHtmlComment.clearView();
-                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabGeneratePoC.getTabCaption())) {
+                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabGeneratePoC.caption())) {
                     this.tabGeneratePoC.setMessageEncoding(encoding);
                     this.tabGeneratePoC.clearView();
-                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabViewState.getTabCaption())) {
+                } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabViewState.caption())) {
 
                 }
             }
@@ -198,31 +200,31 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         }
     }
 
-    public void setEnabled(byte[] content, boolean isMessageRequest) {
+    public void isEnabledFor(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
         if (isMessageRequest) {
             this.tabbetRequestView.removeAll();
-            if (this.tabRequestRawView.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JRAW)) {
+            if (this.tabRequestRawView.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JRAW)) {
                 this.tabbetRequestView.addTab("Raw", this.tabRequestRawView);
             }
-            if (this.tabRequestJSONViewTab.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JSON)) {
-                this.tabbetRequestView.addTab(this.tabRequestJSONViewTab.getTabCaption(), this.tabRequestJSONViewTab);
+            if (this.tabRequestJSONViewTab.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JSON)) {
+                this.tabbetRequestView.addTab(this.tabRequestJSONViewTab.caption(), this.tabRequestJSONViewTab);
             }
-            if (this.tabGeneratePoC.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.GENERATE_POC)) {
-                this.tabbetRequestView.addTab(this.tabGeneratePoC.getTabCaption(), this.tabGeneratePoC);
+            if (this.tabGeneratePoC.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.GENERATE_POC)) {
+                this.tabbetRequestView.addTab(this.tabGeneratePoC.caption(), this.tabGeneratePoC);
             }
-            if (this.tabViewState.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.VIEW_STATE)) {
-                this.tabbetRequestView.addTab(this.tabViewState.getTabCaption(), this.tabViewState);
+            if (this.tabViewState.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.VIEW_STATE)) {
+                this.tabbetRequestView.addTab(this.tabViewState.caption(), this.tabViewState);
             }
         } else {
             this.tabbetResponseView.removeAll();
-            if (this.tabResponseRawView.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JRAW)) {
+            if (this.tabResponseRawView.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JRAW)) {
                 this.tabbetResponseView.addTab("Raw", this.tabResponseRawView);
             }
-            if (this.tabResponseJSONViewTab.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.JSON)) {
-                this.tabbetResponseView.addTab(this.tabResponseJSONViewTab.getTabCaption(), this.tabResponseJSONViewTab);
+            if (this.tabResponseJSONViewTab.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JSON)) {
+                this.tabbetResponseView.addTab(this.tabResponseJSONViewTab.caption(), this.tabResponseJSONViewTab);
             }
-            if (this.tabHtmlComment.isEnabled(content, isMessageRequest) || mesageView.contains(UniversalView.HTML_COMMENT)) {
-                this.tabbetResponseView.addTab(this.tabHtmlComment.getTabCaption(), this.tabHtmlComment);
+            if (this.tabHtmlComment.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.HTML_COMMENT)) {
+                this.tabbetResponseView.addTab(this.tabHtmlComment.caption(), this.tabHtmlComment);
             }
         }
     }
@@ -237,17 +239,33 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         this.tabViewState.clearViewState();
     }
 
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setRequestLineWrap(boolean lineWrap) {
+        this.tabRequestRawView.setLineWrap(lineWrap);
+    }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setResponseLineWrap(boolean lineWrap) {
+        this.tabResponseRawView.setLineWrap(lineWrap);
+    }
+
     @Override
-    public IHttpRequestResponse[] getSelectedMessages() {
-        return new IHttpRequestResponse[]{this.messageItem};
+    public List<HttpRequestResponse> getSelectedMessages() {
+        List<HttpRequestResponse> selectedMessages = new ArrayList<>();
+        selectedMessages.add(messageItem);
+        return selectedMessages;
     }
 
     @Override
     public String getSelectedText() {
         String text = "";
-        if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabRequestRawView.getTabCaption())) {
+        if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabRequestRawView.caption())) {
             text = this.tabRequestRawView.getSelectedText();
-        } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabResponseRawView.getTabCaption())) {
+        } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabResponseRawView.caption())) {
             text = this.tabResponseRawView.getSelectedText();
         } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab("JSON")) {
             if (this.tabbetMessageView.getSelectedComponent() == this.tabResponseRawView) {
@@ -255,9 +273,9 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             } else if (this.tabbetMessageView.getSelectedComponent() == this.tabResponseJSONViewTab) {
                 text = this.tabResponseJSONViewTab.getSelectedText();
             }
-        } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabHtmlComment.getTabCaption())) {
+        } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabHtmlComment.caption())) {
             text = this.tabHtmlComment.getSelectedText();
-        } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabGeneratePoC.getTabCaption())) {
+        } else if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabGeneratePoC.caption())) {
             text = this.tabGeneratePoC.getSelectedText();
         }
         return text;
@@ -266,21 +284,6 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     @Override
     public boolean isExtendVisible() {
         return false;
-    }
-
-    /**
-     * @param lineWrap the lineWrap to set
-     */
-    public void setRequestLineWrap(boolean lineWrap) {
-        this.tabRequestRawView.setLineWrap(lineWrap);
-    }
-
-
-    /**
-     * @param lineWrap the lineWrap to set
-     */
-    public void setResponseLineWrap(boolean lineWrap) {
-        this.tabResponseRawView.setLineWrap(lineWrap);
     }
 
 }

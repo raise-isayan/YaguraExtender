@@ -1,15 +1,15 @@
 package yagura.view;
 
-import burp.ITab;
 import java.awt.Component;
 import java.util.logging.Logger;
 import passive.JWTToken;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class JWTTokenDecoderTab extends javax.swing.JPanel implements ITab {
+public class JWTTokenDecoderTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(JWTTokenDecoderTab.class.getName());
 
     private final JWTToken jwtInstance = new JWTToken();
@@ -21,7 +21,7 @@ public class JWTTokenDecoderTab extends javax.swing.JPanel implements ITab {
         initComponents();
         customizeComponents();
     }
-    
+
     private void customizeComponents() {
         this.txtJWTToken.setWrapStyleWord(false);
     }
@@ -191,7 +191,7 @@ public class JWTTokenDecoderTab extends javax.swing.JPanel implements ITab {
         this.txtPayloadJSON.setText("");
         this.txtSignatureSign.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
-            
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Signature;
     private javax.swing.JButton btnClear;

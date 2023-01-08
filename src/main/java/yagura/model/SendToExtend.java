@@ -2,7 +2,11 @@ package yagura.model;
 
 import burp.*;
 import burp.BurpExtender;
-import burp.IContextMenuInvocation;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.InvocationType;
 import extension.helpers.BurpUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
@@ -13,7 +17,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -32,17 +38,16 @@ public class SendToExtend extends SendToMenuItem {
     private File currentDirectory = new File(Config.getUserHomePath());
     private int repeternum = 0;
 
-    public SendToExtend(SendToItem item, IContextMenuInvocation contextMenu) {
+    public SendToExtend(SendToItem item, ContextMenuEvent contextMenu) {
         super(item, contextMenu);
     }
 
-    @Override
-    public void menuItemClicked(String menuItemCaption, IHttpRequestResponse[] messageInfo) {
+    public void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
         sendToEvent(menuItemCaption, messageInfo);
     }
 
-    public void sendToEvent(String menuItemCaption, IHttpRequestResponse[] messageInfo) {
-        if (messageInfo.length == 0) {
+    public void sendToEvent(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
+        if (messageInfo.isEmpty()) {
             return;
         }
         switch (this.getExtend()) {
@@ -86,19 +91,19 @@ public class SendToExtend extends SendToMenuItem {
             }
 
             case MESSAGE_INFO_COPY: {
-                BurpExtender.getInstance().sendToTableInfoCopy(this.contextMenu, messageInfo);
+                BurpExtender.helpers().sendToTableInfoCopy(this.contextMenu);
                 break;
             }
             case ADD_HOST_TO_INCLUDE_SCOPE: {
-                BurpExtender.getInstance().sendToAddHostIncludeToScope(this.contextMenu, messageInfo);
+                BurpExtender.helpers().sendToAddHostIncludeToScope(this.contextMenu);
                 break;
             }
             case ADD_HOST_TO_EXCLUDE_SCOPE: {
-                BurpExtender.getInstance().sendToAddHostToExcludeScope(this.contextMenu, messageInfo);
+                BurpExtender.helpers().sendToAddHostToExcludeScope(this.contextMenu);
                 break;
             }
             case ADD_TO_EXCLUDE_SCOPE: {
-                BurpExtender.getInstance().sendToAddToExcludeScope(this.contextMenu, messageInfo);
+                BurpExtender.helpers().sendToAddToExcludeScope(this.contextMenu);
                 break;
             }
             default:
@@ -107,12 +112,12 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
-    private void saveAsMessage(SendToItem.MessageType messageType, IHttpRequestResponse[] messageInfo) {
-        IHttpRequestResponse messageItem = messageInfo[0];
+    private void saveAsMessage(SendToItem.MessageType messageType, List<HttpRequestResponse> messageInfo) {
+        HttpRequestResponse messageItem = messageInfo.get(0);
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(BurpExtender.getHelpers().getURL(messageItem))));
+            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.httpRequest().url()))));
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -120,11 +125,11 @@ public class SendToExtend extends SendToMenuItem {
                     if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                         try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                fstm.write(messageItem.getRequest());
+                                fstm.write(messageItem.httpRequest().asBytes().getBytes());
                                 fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                fstm.write(messageItem.getResponse());
+                                fstm.write(messageItem.httpResponse().asBytes().getBytes());
                                 fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             fstm.flush();
@@ -140,12 +145,12 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
-    private void saveAsMessageBody(SendToItem.MessageType messageType, IHttpRequestResponse[] messageInfo) {
-        IHttpRequestResponse messageItem = messageInfo[0];
+    private void saveAsMessageBody(SendToItem.MessageType messageType, List<HttpRequestResponse> messageInfo) {
+        HttpRequestResponse messageItem = messageInfo.get(0);
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(BurpExtender.getHelpers().getURL(messageItem))));
+            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.httpRequest().url()))));
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -153,13 +158,15 @@ public class SendToExtend extends SendToMenuItem {
                     if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                         try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageItem.getRequest());
-                                byte reqMessage[] = Arrays.copyOfRange(messageItem.getRequest(), reqInfo.getBodyOffset(), messageItem.getRequest().length);
+                                HttpRequest httpRequest = messageItem.httpRequest();
+                                byte reqMessage[] = httpRequest.asBytes().getBytes();
+                                reqMessage = Arrays.copyOfRange(reqMessage, httpRequest.bodyOffset(), reqMessage.length);
                                 fstm.write(reqMessage);
                             }
                             if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(messageItem.getResponse());
-                                byte resMessage[] = Arrays.copyOfRange(messageItem.getResponse(), resInfo.getBodyOffset(), messageItem.getResponse().length);
+                                HttpResponse httpResponse = messageItem.httpResponse();
+                                byte resMessage[] = httpResponse.asBytes().getBytes();
+                                resMessage = Arrays.copyOfRange(resMessage, httpResponse.bodyOffset(), resMessage.length);
                                 fstm.write(resMessage);
                             }
                             fstm.flush();
@@ -178,7 +185,7 @@ public class SendToExtend extends SendToMenuItem {
     @Override
     public void actionPerformed(ActionEvent e) {
         javax.swing.JMenuItem item = (javax.swing.JMenuItem)e.getSource();
-        IHttpRequestResponse[] messageInfo = this.contextMenu.getSelectedMessages();
+        List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
         sendToEvent(item.getText(), messageInfo);
     }
 
@@ -187,7 +194,7 @@ public class SendToExtend extends SendToMenuItem {
         boolean enabled = false;
         switch (this.getExtend()) {
             case SEND_TO_JTRANSCODER: {
-                enabled = (this.contextMenu.getSelectionBounds() != null);
+                enabled = (this.contextMenu.messageEditorRequestResponse() != null);
                 break;
             }
             case REQUEST_AND_RESPONSE_TO_FILE: {
@@ -200,27 +207,27 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case PASTE_FROM_JTRANSCODER: {
-                enabled = (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_PAYLOAD_POSITIONS);
+                enabled = (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);
                 break;
             }
             case PASTE_FROM_CLIPBOARD: {
-                enabled = (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_PAYLOAD_POSITIONS);
+                enabled = (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);
                 break;
             }
             case MESSAGE_INFO_COPY:
             case ADD_HOST_TO_INCLUDE_SCOPE:
             case ADD_HOST_TO_EXCLUDE_SCOPE: {
-                enabled = (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_PROXY_HISTORY)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_SEARCH_RESULTS)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_INTRUDER_ATTACK_RESULTS)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.getInvocationContext() == IContextMenuInvocation.CONTEXT_MESSAGE_EDITOR_RESPONSE);
+                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);
                 break;
             }
             default:

@@ -1,7 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.ITab;
 import extension.view.layout.VerticalFlowLayout;
 import yagura.Version;
 import java.awt.Component;
@@ -15,12 +14,13 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import yagura.Config;
 import yagura.model.OptionProperty;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class VersionTab extends javax.swing.JPanel implements ITab {
+public class VersionTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(VersionTab.class.getName());
 
     /**

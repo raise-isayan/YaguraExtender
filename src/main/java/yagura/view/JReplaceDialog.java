@@ -464,7 +464,7 @@ public class JReplaceDialog extends CustomDialog {
         return this.chkScopeOnly.isSelected();
     }
 
-    private List<String> replaceNameList = new ArrayList<String>();
+    private List<String> replaceNameList = new ArrayList<>();
 
     protected void setReplaceNameList(List<String> replaceNameList) {
         this.replaceNameList = replaceNameList;
@@ -489,7 +489,7 @@ public class JReplaceDialog extends CustomDialog {
 
     public List<MatchReplaceItem> getMathReplaceList() {
         javax.swing.JTable srcTable = this.tableReplace;
-        List<MatchReplaceItem> list = new ArrayList<MatchReplaceItem>();
+        List<MatchReplaceItem> list = new ArrayList<>();
         for (int i = 0; i < srcTable.getRowCount(); i++) {
             Object editRows[] = this.modelReplace.getRows(i);
             list.add(MatchReplaceItem.fromObjects(editRows));

@@ -38,7 +38,7 @@ public class FormatUtil {
         Matcher m = XML_TYPE.matcher(xmlString);
         if (m.lookingAt()) {
             return validXml(xmlString);
-        }        
+        }
         return false;
     }
 
@@ -53,7 +53,7 @@ public class FormatUtil {
         }
         return true;
     }
-    
+
     public static boolean isJson(String jsonString) {
         return JsonUtil.isJson(jsonString);
     }
@@ -61,7 +61,7 @@ public class FormatUtil {
     public static boolean isJsonp(String jsonString) {
         return JsonUtil.isJsonp(jsonString);
     }
-        
+
     public static String prettyXml(String xmlString) throws IOException {
         return prettyXml(xmlString, true);
     }
@@ -97,5 +97,5 @@ public class FormatUtil {
     public static String prettyJson(String jsonString, boolean pretty) throws IOException {
         return JsonUtil.prettyJson(jsonString, pretty);
     }
-        
+
 }

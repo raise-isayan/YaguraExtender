@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.ITab;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -67,12 +66,13 @@ import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class JTransCoderTab extends javax.swing.JPanel implements ITab {
+public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
 
     private final static Logger logger = Logger.getLogger(JTransCoderTab.class.getName());
 
@@ -119,7 +119,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputFormat;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputFormat;
 
-    private final static DateTimeFormatter SYSTEM_ZONE_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd H:mm:ss zzz");
+    private final static DateTimeFormatter SYSTEM_ZONE_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss zzz");
 
     private final static String [] SHORT_ZONEIDS = {
         "GMT", "ACT", "AET", "AGT", "ART", "AST", "BET", "BST", "CAT", "CNT", "CST", "CTT", "EAT", "ECT", "IET", "IST", "JST", "MIT", "NET", "NST", "PLT", "PNT", "PRT", "PST", "SST", "VST", "EST", "MST", "HST"
@@ -130,26 +130,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private final JWTTokenDecoderTab jwtTokenDecoderTab = new JWTTokenDecoderTab();
 
     final FocusListener FIRE_FOCUS = new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-            }
+        @Override
+        public void focusGained(FocusEvent e) {
+        }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                ZonedDateTime cdtm = getConverterZoneDateTime();
-                long java_value = cdtm.toInstant().toEpochMilli();
-                long unix_value = java_value / 1000L;
+        @Override
+        public void focusLost(FocusEvent e) {
+            updateZoneDateTime();
+        }
+    };
 
-                ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), ZoneId.systemDefault());
-                setSystemZoneDate(zdtm.toInstant());
+    private void updateZoneDateTime() {
+        ZonedDateTime cdtm = getConverterZoneDateTime();
+        long java_value = cdtm.toInstant().toEpochMilli();
+        long unix_value = java_value / 1000L;
 
-                txtUnixtime.setValue(unix_value);
-                txtJavaSerial.setValue(java_value);
-                BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
-                txtExcelSerial.setValue(excel_serial.doubleValue());
+        this.txtUnixtime.setValue(unix_value);
+        this.txtJavaSerial.setValue(java_value);
+        BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
+        this.txtExcelSerial.setValue(excel_serial.doubleValue());
 
-            }
-        };
+        this.setSystemZoneDate(cdtm);
+    }
 
     private void customizeComponents() {
 
@@ -332,14 +334,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void setConverterZoneDateTime(long java_serial_time) {
         ZoneId zoneId = getSelectZoneId();
         LocalDateTime ldtm = LocalDateTime.ofInstant(Instant.ofEpochMilli(java_serial_time), zoneId);
-        this.spnZoneDateTime.setValue(TransUtil.toZoneWithDate(ldtm));
+        this.spnZoneDateTime.setValue(TransUtil.toZoneWithDate(ldtm, zoneId));
     }
 
     private ZonedDateTime getConverterZoneDateTime() {
         Date date = this.getConverterDateTime();
-        LocalDateTime ldtm = TransUtil.toZoneWithLocalDate(date);
         ZoneId zoneId = getSelectZoneId();
-        return ldtm.atZone(zoneId);
+        ZonedDateTime zdtm = TransUtil.toZoneWithZoneDate(date, zoneId);
+        return zdtm;
     }
 
     private void setGeneraterDateStart(Date value) {
@@ -1450,7 +1452,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1520, Short.MAX_VALUE))
+                .addContainerGap(1526, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1544,7 +1546,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbDateUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(spnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1467, Short.MAX_VALUE))
+                .addContainerGap(1473, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1675,7 +1677,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(1467, Short.MAX_VALUE))
+                .addContainerGap(1473, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1853,7 +1855,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblBin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1907, Short.MAX_VALUE))
+                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1913, Short.MAX_VALUE))
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblHex, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2027,7 +2029,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(txtDec4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblIPValid, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1422, Short.MAX_VALUE))
+                .addContainerGap(1428, Short.MAX_VALUE))
         );
         tabIPFormatConverterLayout.setVerticalGroup(
             tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2103,7 +2105,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
         spnZoneDateTime.setModel(new javax.swing.SpinnerDateModel());
         spnZoneDateTime.setToolTipText("");
-        spnZoneDateTime.setEditor(new javax.swing.JSpinner.DateEditor(spnZoneDateTime, "yyyy/MM/dd H:mm:ss"));
+        spnZoneDateTime.setEditor(new javax.swing.JSpinner.DateEditor(spnZoneDateTime, "yyyy/MM/dd HH:mm:ss"));
         spnZoneDateTime.setMinimumSize(new java.awt.Dimension(180, 22));
         spnZoneDateTime.setName(""); // NOI18N
         spnZoneDateTime.setPreferredSize(new java.awt.Dimension(200, 22));
@@ -2124,6 +2126,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         txtExcelSerial.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtExcelSerialFocusLost(evt);
+            }
+        });
+        txtExcelSerial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtExcelSerialActionPerformed(evt);
             }
         });
 
@@ -2172,57 +2179,57 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
             .addGroup(tabDateConverterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
-                    .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblJavaSerial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblZoneDate, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spnZoneDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
-                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spnZoneDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUnixtimeCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnJavaSerialCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnExcelSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnZoneDateCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(716, 716, 716))
+                    .addComponent(btnZoneDateCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExcelSerial, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1039, 1039, 1039))
         );
         tabDateConverterLayout.setVerticalGroup(
             tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabDateConverterLayout.createSequentialGroup()
                 .addGap(13, 13, 13)
-                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(spnZoneDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblZoneDate))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDate)
-                    .addComponent(btnZoneDateCopy)
-                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnUnixtimeCopy)
-                    .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblUnixtime)
-                        .addComponent(txtUnixtime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(6, 6, 6)
-                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblJavaSerial)
-                    .addComponent(btnJavaSerialCopy)
-                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(spnZoneDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblZoneDate)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblDate)
+                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnZoneDateCopy))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblUnixtime)
+                    .addComponent(txtUnixtime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUnixtimeCopy))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblJavaSerial)
+                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnJavaSerialCopy))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblExcelSerial)
-                    .addComponent(btnExcelSerial)
-                    .addComponent(txtExcelSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(495, Short.MAX_VALUE))
+                    .addComponent(txtExcelSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnExcelSerial))
+                .addContainerGap(493, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Date", tabDateConverter);
@@ -2288,7 +2295,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(1694, Short.MAX_VALUE))
+                .addContainerGap(1700, Short.MAX_VALUE))
         );
         pnlCertificateLayout.setVerticalGroup(
             pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2375,7 +2382,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1095, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1101, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3215,13 +3222,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     }//GEN-LAST:event_btnExcelSerialActionPerformed
 
     private void cmbTimezoneItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbTimezoneItemStateChanged
-        Date date = this.getConverterDateTime();
-        this.setSystemZoneDate(date.toInstant());
+//        Date date = this.getConverterDateTime();
+//        this.setSystemZoneDate(date.toInstant());
+        this.updateZoneDateTime();
     }//GEN-LAST:event_cmbTimezoneItemStateChanged
 
     private void setSystemZoneDate(Instant instant) {
         ZonedDateTime zdtm = ZonedDateTime.ofInstant(instant, ZoneOffset.UTC);
-        this.txtSystemZoneDate.setText(SYSTEM_ZONE_DATE_FORMATTER.format(zdtm.withZoneSameInstant(ZoneId.systemDefault())));
+        this.txtSystemZoneDate.setText(SYSTEM_ZONE_DATE_FORMATTER.withZone(ZoneId.systemDefault()).format(zdtm));
+    }
+
+    private void setSystemZoneDate(ZonedDateTime zdtm) {
+        this.txtSystemZoneDate.setText(SYSTEM_ZONE_DATE_FORMATTER.withZone(ZoneId.systemDefault()).format(zdtm));
     }
 
     private void spnDateStartStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnDateStartStateChanged
@@ -3293,7 +3305,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
 
             ZonedDateTime zdtm = ZonedDateTime.ofInstant(Instant.ofEpochMilli(java_value), ZoneId.systemDefault());
             this.setSystemZoneDate(zdtm.toInstant());
-
             this.setConverterZoneDateTime(java_value);
 
         } catch (ParseException ex) {
@@ -3349,6 +3360,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
     private void rdoUnicodeHex2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoUnicodeHex2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoUnicodeHex2ActionPerformed
+
+    private void txtExcelSerialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExcelSerialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtExcelSerialActionPerformed
 
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override

@@ -17,6 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -37,10 +40,6 @@ import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MurmurHash2;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Comment;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Node;
 
 /**
  * @author isayan
@@ -805,8 +804,7 @@ public class TransUtil {
     public static String toUTF7Encode(String str) {
         UTF7Charset utf7cs = new UTF7Charset("UTF-7", new String[]{});
         ByteBuffer bb = utf7cs.encode(str);
-        byte[] content = new byte[bb.limit()];
-        System.arraycopy(bb.array(), 0, content, 0, content.length);
+        byte[] content = Arrays.copyOfRange(bb.array(), 0, bb.limit());
         return StringUtil.getStringCharset(content, StandardCharsets.US_ASCII);
     }
 
@@ -899,6 +897,17 @@ public class TransUtil {
                 buff.append(separator);
             }
             buff.append(lines[i]);
+        }
+        return buff.toString();
+    }
+
+    public static String join(String separator, List lines) {
+        StringBuilder buff = new StringBuilder();
+        for (int i = 0; i < lines.size(); i++) {
+            if (i > 0) {
+                buff.append(separator);
+            }
+            buff.append(lines.get(i));
         }
         return buff.toString();
     }
@@ -2001,33 +2010,6 @@ public class TransUtil {
         }
     }
 
-    public static String[] extractHTMLComments(String message, boolean uniqe) {
-        List<String> lists = new ArrayList<>();
-        Document doc = Jsoup.parse(message);
-        lists.addAll(extractHTMLComments(doc));
-        if (uniqe) {
-            List<String> uniqList = ConvertUtil.toUniqList(lists);
-            return uniqList.toArray(new String[uniqList.size()]);
-        } else {
-            return lists.toArray(new String[lists.size()]);
-        }
-    }
-
-    private static List<String> extractHTMLComments(Node node) {
-        List<String> lists = new ArrayList<>();
-        for (int i = 0; i < node.childNodeSize(); i++) {
-            Node child = node.childNode(i);
-            if (child instanceof Comment) {
-                Comment comment = (Comment)child;
-                lists.add("<!--" + comment.getData() + "-->");
-            }
-            else {
-               lists.addAll(extractHTMLComments(child));
-            }
-        }
-        return lists;
-    }
-
     /**
      * HashUtil
      **/
@@ -2399,20 +2381,32 @@ public class TransUtil {
     /*
      * DateへはZoneがデフォルトのZoneになるため強制的に変更
      */
-    public static Date toZoneWithDate(LocalDateTime ldtm) {
-        GregorianCalendar cal = new GregorianCalendar(ldtm.getYear(), ldtm.getMonthValue(), ldtm.getDayOfMonth(), ldtm.getHour(), ldtm.getMinute(), ldtm.getSecond());
+    public static Date toZoneWithDate(LocalDateTime ldtm, ZoneId zoneId) {
+        GregorianCalendar cal = new GregorianCalendar(ldtm.getYear(), ldtm.getMonthValue()-1, ldtm.getDayOfMonth(), ldtm.getHour(), ldtm.getMinute(), ldtm.getSecond());
+        cal.setTimeZone(TimeZone.getTimeZone(zoneId));
         return cal.getTime();
     }
 
     /*
-     * DateへはZoneが
+     * DateへはZoneがデフォルトのZoneになるため強制的に変更
      */
-    public static LocalDateTime toZoneWithLocalDate(Date date) {
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(date);
-        LocalDateTime ldtm = LocalDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
-        return ldtm;
-    }
+//    public static LocalDateTime toZoneWithLocalDate(Date date, ZoneId zoneId) {
+//        Calendar cal = GregorianCalendar.getInstance();
+//        cal.setTimeZone(TimeZone.getTimeZone(zoneId));
+//        cal.setTime(date);
+//        LocalDateTime ldtm = LocalDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
+//        return ldtm;
+//    }
 
+    /*
+     * DateへはZoneがデフォルトのZoneになるため強制的に変更
+     */
+    public static ZonedDateTime toZoneWithZoneDate(Date date, ZoneId zoneId) {
+        Calendar cal = GregorianCalendar.getInstance();
+        //cal.setTimeZone(TimeZone.getTimeZone(zoneId));
+        cal.setTime(date);
+        ZonedDateTime zdtm = ZonedDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND), 0, zoneId);
+        return zdtm;
+    }
 
 }

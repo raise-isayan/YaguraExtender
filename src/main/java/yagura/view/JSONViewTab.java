@@ -1,21 +1,22 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IMessageEditorController;
-import burp.IMessageEditorTab;
-import burp.IRequestInfo;
-import burp.IResponseInfo;
+import burp.api.montoya.http.ContentType;
+import burp.api.montoya.http.MimeType;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.EditorMode;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpMessageEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
 import extend.util.external.FormatUtil;
-import extension.burp.RequestInfo;
-import extension.burp.ResponseInfo;
-import extension.helpers.HttpMessage;
-import extension.helpers.HttpRequest;
-import extension.helpers.HttpResponse;
+import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,23 +29,35 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab {
+public class JSONViewTab extends javax.swing.JPanel implements ExtensionHttpMessageEditor, ExtensionHttpRequestEditor, ExtensionHttpResponseEditor {
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
     private final boolean isRequest;
+    private final HttpRequestResponse messageRequestResponse;
+    private HttpRequestResponse httpRequestResponse;
 
-    /**
-     * Creates new form JSONView
-     */
-    public JSONViewTab(boolean isResuest) {
-        this(null, false, isResuest);
+    public JSONViewTab(boolean request) {
+        this(null, EditorMode.READ_ONLY, request);
     }
 
     /**
      * Creates new form JSONView
+     * @param httpRequestResponse
+     * @param isResuest
      */
-    public JSONViewTab(IMessageEditorController controller, boolean editable, boolean isResuest) {
+    public JSONViewTab(HttpRequestResponse httpRequestResponse, boolean isResuest) {
+        this(httpRequestResponse, EditorMode.READ_ONLY, isResuest);
+    }
+
+    /**
+     * Creates new form JSONView
+     * @param httpRequestResponse
+     * @param editorMode
+     * @param isResuest
+     */
+    public JSONViewTab(HttpRequestResponse httpRequestResponse, EditorMode editorMode, boolean isResuest) {
         this.isRequest = isResuest;
+        this.messageRequestResponse = httpRequestResponse;
         initComponents();
         customizeComponents();
     }
@@ -108,10 +121,16 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
 
     public void setMessageEncoding(String encoding) {
         try {
-            if (this.message != null) {
-                String msg = StringUtil.getStringCharset(this.message.getBodyBytes(), encoding);
-                // Raw
-                this.jsonView.setMessage(msg);
+            if (this.httpRequestResponse != null) {
+                if (this.isRequest) {
+                    String msg = StringUtil.getStringCharset(this.httpRequestResponse.httpRequest().body().getBytes(), encoding);
+                    this.jsonView.setMessage(msg);
+                }
+                else {
+                    String msg = StringUtil.getStringCharset(this.httpRequestResponse.httpResponse().body().getBytes(), encoding);
+                    this.jsonView.setMessage(msg);
+                }
+
             } else {
                 this.jsonView.setMessage(null);
             }
@@ -139,55 +158,38 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         return false;
     }
 
-    @Override
-    public String getTabCaption() {
-        if (this.isJsonp()) {
-            return "JSONP";
-        }
-        else {
-            return "JSON";
-        }
+    public void setMessage(HttpRequestResponse messageInfo) {
+
     }
 
-    @Override
-    public Component getUiComponent() {
-        return this;
-    }
 
-    @Override
-    public boolean isEnabled(byte[] content, boolean isMessageRequest) {
-        if (content == null || content.length == 0) {
-            return false;
-        }
-        if (this.isJsonp()) {
-            return isEnabledJsonp(content, isMessageRequest);
-        }
-        else {
-            return isEnabledJson(content, isMessageRequest);
-        }
-    }
-
-    public boolean isEnabledJson(byte[] content, boolean isMessageRequest) {
+    public boolean isEnabledJson(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
         UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
         }
-        if (content.length > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
+        HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        HttpResponse httpResponse = httpRequestResponse.httpResponse();
+
+        if ((isMessageRequest && httpRequest.body().length() > viewProperty.getDispayMaxLength() ||
+           (!isMessageRequest && httpResponse.body().length() > viewProperty.getDispayMaxLength()))
+           && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
+
         this.setLineWrap(viewProperty.isLineWrap());
         boolean mimeJsonType = false;
         byte[] body = new byte[0];
+
         if (this.isRequest && isMessageRequest) {
-            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
-            mimeJsonType = (reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_JSON);
-            body = RequestInfo.getBodyBytes(reqInfo, content);
+            ContentType contentType = httpRequest.contentType();
+            mimeJsonType = (contentType == ContentType.JSON);
+            body = httpRequest.body().getBytes();
         } else if (!this.isRequest && !isMessageRequest) {
-            IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
-            String mimeType = resInfo.getInferredMimeType();
-            mimeJsonType = "JSON".equals(mimeType);
-            body = ResponseInfo.getBodyBytes(resInfo, content);
+            MimeType mimeType = httpResponse.statedMimeType();
+            mimeJsonType = (mimeType == MimeType.JSON);
+            body = httpResponse.body().getBytes();
         }
         if (body.length > 0 && mimeJsonType) {
             return FormatUtil.isJson(StringUtil.getBytesRawString(body));
@@ -196,73 +198,33 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
         }
     }
 
-    public boolean isEnabledJsonp(byte[] content, boolean isMessageRequest) {
+    public boolean isEnabledJsonp(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
+        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
             return false;
         }
-        if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+        HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        HttpResponse httpResponse = httpRequestResponse.httpResponse();
+
+        if ((isMessageRequest && httpRequest.asBytes().length() > viewProperty.getDispayMaxLength() ||
+           (!isMessageRequest && httpResponse.asBytes().length() > viewProperty.getDispayMaxLength()))
+           && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
+
         byte[] body = new byte[0];
         if (this.isRequest && isMessageRequest) {
-            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
-            body = RequestInfo.getBodyBytes(reqInfo, content);
+            body = httpRequest.body().getBytes();
         } else if (!this.isRequest && !isMessageRequest) {
-            IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
-            body = ResponseInfo.getBodyBytes(resInfo, content);
+            body = httpResponse.body().getBytes();
         }
         return FormatUtil.isJsonp(StringUtil.getBytesRawString(body));
-    }
-
-    private HttpMessage message = null;
-
-    @Override
-    public void setMessage(byte[] content, boolean isMessageRequest) {
-        try {
-            BurpExtender extenderImpl = BurpExtender.getInstance();
-            String guessCharset = null;
-            HttpMessage httpmessage = null;
-            if (isMessageRequest) {
-                HttpRequest request = HttpRequest.parseHttpRequest(content);
-                httpmessage = request;
-                guessCharset = request.getGuessCharset();
-            } else {
-                HttpResponse response = HttpResponse.parseHttpResponse(content);
-                httpmessage = response;
-                guessCharset = response.getGuessCharset();
-            }
-            if (guessCharset == null) {
-                guessCharset = StandardCharsets.ISO_8859_1.name();
-            }
-            this.message = httpmessage;
-            this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-            this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-            encodingItemStateChanged.itemStateChanged(null);
-            this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
-
-        } catch (ParseException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    @Override
-    public byte[] getMessage() {
-        if (this.message != null) {
-            return this.message.getMessageBytes();
-        } else {
-            return new byte[]{};
-        }
     }
 
     @Override
     public boolean isModified() {
         return false;
-    }
-
-    @Override
-    public byte[] getSelectedData() {
-        return null;
     }
 
     public void clearView() {
@@ -282,5 +244,74 @@ public class JSONViewTab extends javax.swing.JPanel implements IMessageEditorTab
     public void setLineWrap(boolean lineWrap) {
         this.jsonView.setLineWrap(lineWrap);
     }
+
+    @Override
+    public HttpRequest getHttpRequest() {
+        return httpRequestResponse.httpRequest();
+    }
+
+    @Override
+    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.httpRequestResponse = httpRequestResponse;
+        String guessCharset = null;
+        if (this.isRequest) {
+            HttpRequest httpRequest = httpRequestResponse.httpRequest();
+            guessCharset = HttpMesageHelper.getGuessCharset(httpRequest);
+        } else {
+            HttpResponse httpResponse = httpRequestResponse.httpResponse();
+            guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
+        }
+        if (guessCharset == null) {
+            guessCharset = StandardCharsets.ISO_8859_1.name();
+        }
+        BurpExtender extenderImpl = BurpExtender.getInstance();
+        this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
+        this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
+        encodingItemStateChanged.itemStateChanged(null);
+        this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+    }
+
+    @Override
+    public HttpResponse getHttpResponse() {
+        return this.httpRequestResponse.httpResponse();
+    }
+
+    public HttpRequestResponse getHttpRequestResponse() {
+        return this.httpRequestResponse;
+    }
+
+    @Override
+    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        if (httpRequestResponse == null) {
+            return false;
+        }
+        if (this.isJsonp()) {
+            return isEnabledJsonp(httpRequestResponse, this.isRequest);
+        }
+        else {
+            return isEnabledJson(httpRequestResponse, this.isRequest);
+        }
+    }
+
+    @Override
+    public String caption() {
+        if (this.isJsonp()) {
+            return "JSONP";
+        }
+        else {
+            return "JSON";
+        }
+    }
+
+    @Override
+    public Component uiComponent() {
+        return this;
+    }
+
+    @Override
+    public Selection selectedData() {
+        return null;
+    }
+
 
 }

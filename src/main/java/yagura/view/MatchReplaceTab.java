@@ -5,7 +5,6 @@
  */
 package yagura.view;
 
-import burp.ITab;
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
@@ -24,12 +23,13 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import yagura.model.MatchReplaceGroup;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class MatchReplaceTab extends javax.swing.JPanel implements ITab {
+public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
 
     /**
      * Creates new form MatchReplace

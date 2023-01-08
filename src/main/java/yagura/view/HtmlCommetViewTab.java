@@ -1,22 +1,21 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IMessageEditorController;
-import burp.IMessageEditorTab;
-import burp.IMessageEditorTabFactory;
-import burp.IResponseInfo;
+import burp.api.montoya.http.MimeType;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.http.message.responses.analysis.Attribute;
+import burp.api.montoya.http.message.responses.analysis.AttributeType;
+import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
 import extend.util.external.ThemeUI;
-import extend.util.external.TransUtil;
-import extension.burp.ResponseInfo;
-import extension.helpers.HttpMessage;
-import extension.helpers.HttpResponse;
+import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -30,7 +29,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHttpResponseEditor {
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -39,8 +38,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             ThemeUI.changeStyleTheme(txtHtmlComment);
         }
     };
-    
-    
+
     /**
      * Creates new form HtmlCommetViewTab
      */
@@ -50,13 +48,6 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     }
 
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
-
-//    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
-//        @Override
-//        public Document createDefaultDocument() {
-//            return new HTMLSyntaxDocument();
-//        }
-//    };
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollHtmlComment;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHtmlComment;
@@ -91,8 +82,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);        
-        
+        UIManager.addPropertyChangeListener(listener);
+
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
@@ -120,138 +111,64 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
-
     public void setMessageFont(Font font) {
         this.txtHtmlComment.setFont(font);
     }
 
-    private HttpMessage message = null;
+    private HttpRequestResponse httpRequestResponse;
 
     public void setMessageEncoding(String encoding) {
         try {
-            if (this.message == null) {
+            if (this.httpRequestResponse == null) {
                 return;
             }
             final boolean uniq = this.quickSearchTab.getUniqCheckBox().isSelected();
 
             this.txtHtmlComment.setText("");
-            if (this.message != null) {
-                SwingWorker swText = new SwingWorker<String, Object>() {
-                    @Override
-                    protected String doInBackground() throws Exception {
-                        publish("...");
-                        String comments[] = TransUtil.extractHTMLComments(StringUtil.getStringCharset(message.getBodyBytes(), encoding), uniq);
-                        return TransUtil.join("\r\n", comments);
+            SwingWorker swText = new SwingWorker<String, Object>() {
+                @Override
+                protected String doInBackground() throws Exception {
+                    publish("...");
+                    // String comments[] = TransUtil.extractHTMLComments(StringUtil.getStringCharset(httpRequestResponse.getBodyBytes(), encoding), uniq);
+                    List<Attribute> comments = httpRequestResponse.httpResponse().attributes(AttributeType.COMMENTS);
+                    StringBuilder buff = new StringBuilder();
+                    for (Attribute c : comments) {
+                        buff.append(c.value());
+                        buff.append(HttpMesageHelper.LINE_TERMINATE);
                     }
+                    return buff.toString();
+//                    return TransUtil.join("\r\n", ConvertUtil.toUniqList(comments));
+                }
 
-                    protected void process(List<Object> chunks) {
-                        txtHtmlComment.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
-                    }
+                protected void process(List<Object> chunks) {
+                    txtHtmlComment.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
+                }
 
-                    protected void done() {
-                        try {
-                            txtHtmlComment.setText(get());
-                            txtHtmlComment.setCaretPosition(0);
-                            quickSearchTab.clearViewAndSearch();
-                        } catch (InterruptedException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        } catch (ExecutionException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                protected void done() {
+                    try {
+                        txtHtmlComment.setText(get());
+                        txtHtmlComment.setCaretPosition(0);
+                        quickSearchTab.clearViewAndSearch();
+                    } catch (InterruptedException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    } catch (ExecutionException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
-                };
-                swText.execute();
-            }
+                }
+            };
+            swText.execute();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
-    @Override
-    public void setMessage(byte[] content, boolean isRequest) {
-        try {
-            BurpExtender extenderImpl = BurpExtender.getInstance();
-            String guessCharset = null;
-            HttpMessage httpmessage = null;
-            if (!isRequest) {
-                HttpResponse response = HttpResponse.parseHttpResponse(content);
-                httpmessage = response;
-                guessCharset = response.getGuessCharset();
-                this.message = httpmessage;
-            }
-            this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-            this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-            encodingItemStateChanged.itemStateChanged(null);
-            this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
-        } catch (ParseException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    @Override
-    public byte[] getMessage() {
-        if (this.message != null) {
-            return this.message.getMessageBytes();
-        } else {
-            return new byte[]{};
-        }
-    }
-
-    @Override
-    public boolean isModified() {
-        return false;
-    }
-
-    @Override
-    public byte[] getSelectedData() {
-        return null;
+    public Component getMessageComponent() {
+        return this.txtHtmlComment;
     }
 
     public String getSelectedText() {
         String selectText = this.txtHtmlComment.getSelectedText();
         return selectText;
-    }
-
-    @Override
-    public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-        this.txtHtmlComment.setEditable(false);
-        return this;
-    }
-
-    @Override
-    public String getTabCaption() {
-        return "HTML Comment";
-    }
-
-    @Override
-    public Component getUiComponent() {
-        return this;
-    }
-
-    @Override
-    public boolean isEnabled(byte[] content, boolean isMessageRequest) {
-        if (content == null || content.length == 0) {
-            return false;
-        }
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-        this.setLineWrap(viewProperty.isLineWrap());
-        if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
-            return false;
-        }
-        boolean mimeHTMLType = false;
-        byte[] body = new byte[0];
-        if (!isMessageRequest) {
-            IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(content);
-            String mimeType = resInfo.getInferredMimeType();
-            mimeHTMLType = ("HTML".equals(mimeType) || "XML".equals(mimeType));
-            body = ResponseInfo.getBodyBytes(resInfo, content);
-        }
-        if (body.length > 0 && mimeHTMLType) {
-            return TransUtil.extractHTMLComments(StringUtil.getBytesRawString(body), false).length  > 0;
-        } else {
-            return false;
-        }
     }
 
     public void clearView() {
@@ -271,5 +188,80 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
     public void setLineWrap(boolean lineWrap) {
         this.txtHtmlComment.setLineWrap(lineWrap);
     }
+
+    /**
+     * @return
+     */
+    public HttpRequestResponse getHttpRequestResponse() {
+        if (this.httpRequestResponse != null) {
+            return this.httpRequestResponse;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.httpRequestResponse = httpRequestResponse;
+        HttpResponse response = httpRequestResponse.httpResponse();
+        String guessCharset = HttpMesageHelper.getGuessCharset(response);
+        this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
+        this.quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
+        encodingItemStateChanged.itemStateChanged(null);
+        this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+    }
+
+    @Override
+    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        if (httpRequestResponse == null) {
+            return false;
+        }
+        burp.api.montoya.http.message.responses.HttpResponse httpResponse = httpRequestResponse.httpResponse();
+        if (httpResponse == null) {
+            return false;
+        }
+
+        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+        this.setLineWrap(viewProperty.isLineWrap());
+        if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
+            return false;
+        }
+        boolean mimeHTMLType = false;
+        MimeType mimeType = httpResponse.inferredMimeType();
+        mimeHTMLType = (mimeType == mimeType.HTML || mimeType == mimeType.XML || mimeType == mimeType.IMAGE_SVG_XML);
+        if (httpResponse.body().length() > 0 && mimeHTMLType) {
+            List<Attribute> comments = httpRequestResponse.httpResponse().attributes(AttributeType.COMMENTS);
+            return !comments.isEmpty();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String caption() {
+        return "HTML Comment";
+    }
+
+    @Override
+    public Component uiComponent() {
+        return this;
+    }
+
+    @Override
+    public Selection selectedData() {
+        return null;
+    }
+
+    @Override
+    public HttpResponse getHttpResponse() {
+        return this.httpRequestResponse.httpResponse();
+    }
+
+    @Override
+    public boolean isModified() {
+        return false;
+    }
+
 
 }

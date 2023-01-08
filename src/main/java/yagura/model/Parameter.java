@@ -1,6 +1,10 @@
 package yagura.model;
 
-import burp.IParameter;
+import burp.api.montoya.core.Range;
+import burp.api.montoya.http.message.params.HttpParameter;
+import burp.api.montoya.http.message.params.HttpParameterType;
+import burp.api.montoya.http.message.params.ParsedHttpParameter;
+
 import extension.helpers.StringUtil;
 import java.io.UnsupportedEncodingException;
 
@@ -8,37 +12,66 @@ import java.io.UnsupportedEncodingException;
  *
  * @author raise.isayan
  */
-public class Parameter implements IParameter {
+public class Parameter implements ParsedHttpParameter {
+    private final ParsedHttpParameter parameter;
 
-    private final IParameter parameter;
-
-    private byte type = -1;
+    private HttpParameterType type = null;
     private String name = null;
     private String value = null;
 
-    public Parameter(IParameter parameter) {
+    public Parameter(HttpParameter parameter) {
+        this.parameter = new ParsedHttpParameter() {
+
+            @Override
+            public HttpParameterType type() {
+                return parameter.type();
+            }
+
+            @Override
+            public String name() {
+                return parameter.name();
+            }
+
+            @Override
+            public String value() {
+                return parameter.value();
+            }
+
+            @Override
+            public Range nameOffsets() {
+                return null;
+            }
+
+            @Override
+            public Range valueOffsets() {
+                return null;
+            }
+
+        };
+
+    }
+
+    public Parameter(ParsedHttpParameter parameter) {
         this.parameter = parameter;
     }
 
-    @Override
-    public byte getType() {
-        if (this.type >= 0) {
+    public HttpParameterType getType() {
+        if (this.type != null) {
             return this.type;
         } else {
-            return this.parameter.getType();
+            return this.parameter.type();
         }
     }
 
-    public void setType(byte type) {
+    public void setType(HttpParameterType type) {
         this.type = type;
     }
 
-    @Override
     public String getName() {
         if (this.name != null) {
             return this.name;
         } else {
-            return this.parameter.getName();
+            return this.parameter.name();
         }
     }
 
@@ -46,12 +79,11 @@ public class Parameter implements IParameter {
         this.name = name;
     }
 
-    @Override
     public String getValue() {
         if (this.value != null) {
             return this.value;
         } else {
-            return this.parameter.getValue();
+            return this.parameter.value();
         }
     }
 
@@ -59,47 +91,27 @@ public class Parameter implements IParameter {
         this.value = value;
     }
 
-    @Override
-    public int getNameStart() {
-        return this.parameter.getNameStart();
-    }
-
-    @Override
-    public int getNameEnd() {
-        return this.parameter.getNameEnd();
-    }
-
-    @Override
-    public int getValueStart() {
-        return this.parameter.getValueStart();
-    }
-
-    @Override
-    public int getValueEnd() {
-        return this.parameter.getValueEnd();
-    }
-
     public String getUniversalName() {
         if (this.encoding != null) {
             try {
-                return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getName()), this.encoding);
+                return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.name()), this.encoding);
             } catch (UnsupportedEncodingException ex) {
                 return null;
             }
         } else {
-            return StringUtil.getStringRaw(StringUtil.getBytesRaw(parameter.getName()));
+            return StringUtil.getStringRaw(StringUtil.getBytesRaw(parameter.name()));
         }
     }
 
     public String getUniversalValue() {
         if (this.encoding != null) {
             try {
-               return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.getValue()), this.encoding);
+               return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.value()), this.encoding);
             } catch (UnsupportedEncodingException ex) {
                 return null;
             }
         } else {
-            return StringUtil.getStringRaw(StringUtil.getBytesRaw(parameter.getName()));
+            return StringUtil.getStringRaw(StringUtil.getBytesRaw(parameter.name()));
         }
     }
 
@@ -120,48 +132,36 @@ public class Parameter implements IParameter {
     }
 
     public boolean isModified() {
-        return (this.type >= 0 || this.name != null || this.value != null);
+        return (this.type != null || this.name != null || this.value != null);
     }
 
     public static Parameter newPameter() {
-        Parameter p = new Parameter(new IParameter() {
-            @Override
-            public byte getType() {
-                return IParameter.PARAM_URL;
-            }
+        return new Parameter(HttpParameter.parameter("", "", HttpParameterType.URL));
+    }
 
-            @Override
-            public String getName() {
-                return "";
-            }
+    @Override
+    public HttpParameterType type() {
+        return this.getType();
+    }
 
-            @Override
-            public String getValue() {
-                return "";
-            }
+    @Override
+    public String name() {
+        return this.getName();
+    }
 
-            @Override
-            public int getNameStart() {
-                return -1;
-            }
+    @Override
+    public String value() {
+        return this.getValue();
+    }
 
-            @Override
-            public int getNameEnd() {
-                return -1;
-            }
+    @Override
+    public Range nameOffsets() {
+        return this.parameter.nameOffsets();
+    }
 
-            @Override
-            public int getValueStart() {
-                return -1;
-            }
-
-            @Override
-            public int getValueEnd() {
-                return -1;
-            }
-
-        });
-        return p;
+    @Override
+    public Range valueOffsets() {
+        return this.parameter.valueOffsets();
     }
 
 }

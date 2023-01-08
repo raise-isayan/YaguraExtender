@@ -1,11 +1,13 @@
 package yagura.model;
 
-import burp.IContextMenuInvocation;
-import burp.IHttpRequestResponse;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.InvocationSource;
 import extension.helpers.ConvertUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,31 +18,27 @@ import java.util.logging.Logger;
 public class SendToMultiEditor extends SendToMenuItem {
     private final static Logger logger = Logger.getLogger(SendToMultiEditor.class.getName());
 
-    public SendToMultiEditor(SendToItem item, IContextMenuInvocation contextMenu) {
+    public SendToMultiEditor(SendToItem item, ContextMenuEvent contextMenu) {
         super(item, contextMenu);
     }
 
-    @Override
-    public void menuItemClicked(String menuItemCaption, IHttpRequestResponse[] messageInfo) {
-        sendToEvent(messageInfo);
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IHttpRequestResponse[] messageInfo = contextMenu.getSelectedMessages();
+        List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
         sendToEvent(messageInfo);
     }
 
-    public void sendToEvent(IHttpRequestResponse[] messageInfo) {
-        if (messageInfo.length > 0) {
-            File[] msgFiles = new File[messageInfo.length];
+    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
+        if (!messageInfo.isEmpty()) {
+            File[] msgFiles = new File[messageInfo.size()];
             if (this.isReverseOrder()) {
-                for (int i = messageInfo.length - 1; i >= 0; i--) {
-                    msgFiles[i] = tempMessageFile(messageInfo[i], i);
+                for (int i = messageInfo.size() - 1; i >= 0; i--) {
+                    msgFiles[i] = tempMessageFile(messageInfo.get(i), i);
                 }
             } else {
-                for (int i = 0; i < messageInfo.length; i++) {
-                    msgFiles[i] = tempMessageFile(messageInfo[i], i);
+                for (int i = 0; i < messageInfo.size(); i++) {
+                    msgFiles[i] = tempMessageFile(messageInfo.get(i), i);
                 }
             }
             try {
@@ -59,6 +57,11 @@ public class SendToMultiEditor extends SendToMenuItem {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
+        sendToEvent(messageInfo);
     }
 
 }

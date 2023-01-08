@@ -1,14 +1,14 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IMessageEditorController;
-import burp.IMessageEditorTab;
-import burp.IMessageEditorTabFactory;
-import burp.IParameter;
-import burp.IRequestInfo;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.headers.HttpHeader;
+import burp.api.montoya.http.message.params.HttpParameterType;
+import burp.api.montoya.http.message.params.ParsedHttpParameter;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
 import extend.util.external.ThemeUI;
-import extension.helpers.HttpMessage;
-import extension.helpers.HttpRequest;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import java.awt.Component;
@@ -16,8 +16,6 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -25,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -36,26 +33,14 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
-
+public class JWTViewTab extends javax.swing.JPanel implements ExtensionHttpRequestEditor {
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
-
     private JWTToken jwtinstance = new JWTToken();
-
-    private IMessageEditorController controller = null;
 
     /**
      * Creates new form JWTView
      */
     public JWTViewTab() {
-        this(null, false);
-    }
-
-    /**
-     * Creates new form JWTView
-     */
-    public JWTViewTab(IMessageEditorController controller, boolean editable) {
-        this.controller = controller;
         initComponents();
         customizeComponents();
     }
@@ -146,7 +131,6 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 //        this.txtPayloadJSON.setEditable(false);
 //        this.txtPayloadJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
 //        this.txtPayloadJSON.setContentType("text/json");
-
         this.listener.propertyChange(null);
         UIManager.addPropertyChangeListener(listener);
 
@@ -239,6 +223,128 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         }
     }//GEN-LAST:event_btnCopyActionPerformed
 
+    private HttpRequestResponse httpRequestResponse = null;
+
+    @Override
+    public HttpRequest getHttpRequest() {
+        return httpRequestResponse.httpRequest();
+    }
+
+    @Override
+    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+        final HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        this.httpRequestResponse = httpRequestResponse;
+        this.tokenMap.clear();
+        this.cmbParam.removeAllItems();
+        List<HttpHeader> headers = httpRequest.headers();
+        for (HttpHeader h : headers) {
+            String value = h.value();
+            JWTToken token = jwtinstance.parseToken(value, false);
+            if (token != null) {
+                tokenMap.put(h.name(), token);
+                this.cmbParam.addItem(h.name());
+            }
+        }
+        boolean find = false;
+        List<ParsedHttpParameter> parameters = httpRequest.parameters();
+        for (ParsedHttpParameter p : parameters) {
+            if (JWTToken.containsTokenFormat(p.value())) {
+                if (p.type() == HttpParameterType.COOKIE) {
+                    String name = p.name();
+                    String value = p.value();
+                    String key = p.type().name() + " " + name;
+                    JWTToken token = jwtinstance.parseToken(value, true);
+                    if (token != null) {
+                        tokenMap.put(key, token);
+                        this.cmbParam.addItem(key);
+                    }
+                } else if (p.type() == HttpParameterType.URL || p.type() == HttpParameterType.BODY) {
+                    String name = p.name();
+                    String value = p.value();
+                    String key = p.type().name() + " " + name;
+                    JWTToken token = jwtinstance.parseToken(value, true);
+                    if (token != null) {
+                        tokenMap.put(key, token);
+                        this.cmbParam.addItem(key);
+                        find = true;
+                    }
+                }
+            }
+        }
+        if (!find) {
+            String body = StringUtil.getBytesRawString(httpRequest.body().getBytes());
+            if (JWTToken.containsTokenFormat(body)) {
+                JWTToken token = jwtinstance.parseToken(body, false);
+                if (token != null) {
+                    String key = "(body)";
+                    tokenMap.put(key, token);
+                    this.cmbParam.addItem(key);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        if (httpRequestResponse == null) {
+            return false;
+        }
+        final HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        boolean find = false;
+        try {
+            UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
+                return false;
+            }
+            if (httpRequest.asBytes().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
+                return false;
+            }
+            this.setLineWrap(viewProperty.isLineWrap());
+            List<HttpHeader> headers = httpRequest.headers();
+            for (HttpHeader h : headers) {
+                if (JWTToken.containsTokenFormat(h.value())) {
+                    return true;
+                }
+            }
+            List<ParsedHttpParameter> parameters = httpRequest.parameters();
+            for (ParsedHttpParameter p : parameters) {
+                if (p.type() == HttpParameterType.URL || p.type() == HttpParameterType.BODY) {
+                    find = jwtinstance.isValidFormat(p.value());
+                    if (find) {
+                        break;
+                    }
+                }
+            }
+            if (!find) {
+                String body = StringUtil.getStringRaw(httpRequest.body().getBytes());
+                find = JWTToken.containsTokenFormat(body);
+            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return find;
+    }
+
+    @Override
+    public boolean isModified() {
+        return false;
+    }
+
+    @Override
+    public String caption() {
+        return "JWT";
+    }
+
+    @Override
+    public Component uiComponent() {
+        return this;
+    }
+
+    @Override
+    public Selection selectedData() {
+        return null;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopy;
@@ -265,166 +371,10 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         return false;
     }
 
-    @Override
-    public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-        this.txtPayloadJSON.setEditable(false);
-        this.txtPayloadJSON.setEditable(false);
-        this.txtSignatureSign.setEditable(false);
-        return this;
-    }
-
-    @Override
-    public String getTabCaption() {
-        return "JWT";
-    }
-
-    @Override
-    public Component getUiComponent() {
-        return this;
-    }
-
-    @Override
-    public boolean isEnabled(byte[] content, boolean isMessageRequest) {
-        if (!isMessageRequest) {
-            return false;
-        }
-        if (content == null || content.length == 0) {
-            return false;
-        }
-        boolean find = false;
-        try {
-            UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
-            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-            if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
-                return false;
-            }
-            if (content.length > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
-                return false;
-            }
-            this.setLineWrap(viewProperty.isLineWrap());
-            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(content);
-            List<String> headers = reqInfo.getHeaders();
-            for (String h : headers) {
-                if (JWTToken.containsTokenFormat(h)) {
-                    return true;
-                }
-            }
-            List<IParameter> parameters = reqInfo.getParameters();
-            for (IParameter p : parameters) {
-                if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
-                    find = jwtinstance.isValidFormat(p.getValue());
-                    if (find) {
-                        break;
-                    }
-                }
-            }
-            if (!find) {
-                String body = StringUtil.getStringRaw(Arrays.copyOfRange(content, reqInfo.getBodyOffset(), content.length));
-                find = JWTToken.containsTokenFormat(body);
-            }
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return find;
-    }
-
     private final static Pattern HEADER = Pattern.compile("^(\\w+):\\s*(.*)$");
     private final static Pattern COOKIE = Pattern.compile("([^\\s=]+)=([^\\s;]+);?");
 
     private final Map<String, JWTToken> tokenMap = Collections.synchronizedMap(new HashMap<>());
-
-    private final static String[] TYPES = {"(URL)", "(Body)", "(Cookie)", "(XML)", "-", "(file)", "(JSON)"};
-
-    public void setJWT(byte[] message) {
-        this.tokenMap.clear();
-        this.cmbParam.removeAllItems();
-        IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(message);
-        List<String> headers = reqInfo.getHeaders();
-        for (String h : headers) {
-            Matcher m = HEADER.matcher(h);
-            if (m.matches()) {
-                String value = m.group(2);
-                JWTToken token = jwtinstance.parseToken(value, false);
-                if (token != null) {
-                    tokenMap.put(h, token);
-                    this.cmbParam.addItem(h);
-                }
-            }
-        }
-        boolean find = false;
-        List<IParameter> parameters = reqInfo.getParameters();
-        for (IParameter p : parameters) {
-            if (JWTToken.containsTokenFormat(p.getValue())) {
-                if (p.getType() == IParameter.PARAM_COOKIE) {
-                    String name = p.getName();
-                    String value = p.getValue();
-                    String key = TYPES[p.getType()] + " " + name;
-                    JWTToken token = jwtinstance.parseToken(value, true);
-                    if (token != null) {
-                        tokenMap.put(key, token);
-                        this.cmbParam.addItem(key);
-                    }
-                } else if (p.getType() == IParameter.PARAM_URL || p.getType() == IParameter.PARAM_BODY) {
-                    String name = p.getName();
-                    String value = p.getValue();
-                    String key = TYPES[p.getType()] + " " + name;
-                    JWTToken token = jwtinstance.parseToken(value, true);
-                    if (token != null) {
-                        tokenMap.put(key, token);
-                        this.cmbParam.addItem(key);
-                        find = true;
-                    }
-                }
-            }
-        }
-        if (!find) {
-            String body = StringUtil.getBytesRawString(Arrays.copyOfRange(message, reqInfo.getBodyOffset(), message.length));
-            if (JWTToken.containsTokenFormat(body)) {
-                JWTToken token = jwtinstance.parseToken(body, false);
-                if (token != null) {
-                    String key = "(body)";
-                    tokenMap.put(key, token);
-                    this.cmbParam.addItem(key);
-                }
-            }
-        }
-    }
-
-    private HttpMessage message = null;
-
-    @Override
-    public void setMessage(byte[] content, boolean isMessageRequest) {
-        try {
-            HttpMessage httpmessage = null;
-            if (isMessageRequest) {
-                HttpRequest request = HttpRequest.parseHttpRequest(content);
-                httpmessage = request;
-                this.setJWT(content);
-            }
-            this.message = httpmessage;
-        } catch (ParseException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    @Override
-    public byte[] getMessage() {
-        if (this.message != null) {
-            return this.message.getMessageBytes();
-        } else {
-            return new byte[]{};
-        }
-    }
-
-    @Override
-    public boolean isModified() {
-        return false;
-    }
-
-    @Override
-    public byte[] getSelectedData() {
-        return null;
-    }
 
     /**
      * @param lineWrap the lineWrap to set

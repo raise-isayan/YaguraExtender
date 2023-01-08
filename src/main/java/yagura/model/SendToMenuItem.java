@@ -1,17 +1,21 @@
 package yagura.model;
 
 import burp.BurpExtender;
-import burp.IContextMenuInvocation;
-import burp.IHttpRequestResponse;
-import burp.IRequestInfo;
-import burp.IResponseInfo;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.ui.contextmenu.ComponentEvent;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.InvocationSource;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,14 +27,13 @@ public abstract class SendToMenuItem
         extends SendToItem implements java.awt.event.ActionListener  {
     private final static Logger logger = Logger.getLogger(SendToMenuItem.class.getName());
 
-    protected IContextMenuInvocation contextMenu = null;
+    protected ContextMenuEvent contextMenu = null;
 
     public SendToMenuItem(SendToItem item) {
         super(item);
-
     }
 
-    public SendToMenuItem(SendToItem item, IContextMenuInvocation contextMenu) {
+    public SendToMenuItem(SendToItem item, ContextMenuEvent contextMenu) {
         super(item);
         this.contextMenu = contextMenu;
     }
@@ -38,44 +41,44 @@ public abstract class SendToMenuItem
     /**
      * @return the contextMenu
      */
-    protected IContextMenuInvocation getContextMenu() {
+    protected ContextMenuEvent getContextMenu() {
         return contextMenu;
     }
 
     /**
      * @param contextMenu the contextMenu to set
      */
-    protected void setContextMenu(IContextMenuInvocation contextMenu) {
+    protected void setContextMenu(ContextMenuEvent contextMenu) {
         this.contextMenu = contextMenu;
     }
 
-    protected File tempMessageFile(IHttpRequestResponse messageInfo, int index) {
+    protected File tempMessageFile(HttpRequestResponse messageInfo, int index) {
         File file = null;
         try {
-            file = File.createTempFile(HttpUtil.getBaseName(BurpExtender.getHelpers().getURL(messageInfo)) + "." + index + ".", ".tmp");
+            file = File.createTempFile(HttpUtil.getBaseName(new URL(messageInfo.httpRequest().url())) + "." + index + ".", ".tmp");
             file.deleteOnExit();
             try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(file, true))) {
-                if ((this.isRequestHeader() || this.isRequestBody()) && messageInfo.getRequest() != null) {
-                    byte reqMessage[] = messageInfo.getRequest();
+                if ((this.isRequestHeader() || this.isRequestBody()) && messageInfo.httpRequest() != null) {
+                    HttpRequest httpRequest = messageInfo.httpRequest();
+                    byte[] reqMessage = httpRequest.asBytes().getBytes();
                     if (!(this.isRequestHeader() && this.isRequestBody())) {
-                        IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo.getRequest());
                         if (this.isRequestHeader()) {
-                            reqMessage = Arrays.copyOfRange(messageInfo.getRequest(), 0, reqInfo.getBodyOffset());
+                            reqMessage = Arrays.copyOfRange(reqMessage, 0, httpRequest.bodyOffset());
                         } else if (this.isRequestBody()) {
-                            reqMessage = Arrays.copyOfRange(messageInfo.getRequest(), reqInfo.getBodyOffset(), messageInfo.getRequest().length);
+                            reqMessage = Arrays.copyOfRange(reqMessage, httpRequest.bodyOffset(), reqMessage.length);
                         }
                     }
                     fostm.write(reqMessage);
                     fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                 }
-                if ((this.isResponseHeader() || this.isResponseBody()) && messageInfo.getResponse() != null) {
-                    byte resMessage[] = messageInfo.getResponse();
+                if ((this.isResponseHeader() || this.isResponseBody()) && messageInfo.httpResponse() != null) {
+                    HttpResponse httpResponse = messageInfo.httpResponse();
+                    byte resMessage[] = httpResponse.asBytes().getBytes();
                     if (!(this.isResponseHeader() && this.isResponseBody())) {
-                        IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(resMessage);
                         if (this.isResponseHeader()) {
-                            resMessage = Arrays.copyOfRange(messageInfo.getResponse(), 0, resInfo.getBodyOffset());
+                            resMessage = Arrays.copyOfRange(resMessage, 0, httpResponse.bodyOffset());
                         } else if (this.isResponseBody()) {
-                            resMessage = Arrays.copyOfRange(messageInfo.getResponse(), resInfo.getBodyOffset(), messageInfo.getResponse().length);
+                            resMessage = Arrays.copyOfRange(resMessage, httpResponse.bodyOffset(), resMessage.length);
                         }
                     }
                     fostm.write(resMessage);
@@ -90,7 +93,7 @@ public abstract class SendToMenuItem
         return file;
     }
 
-    public abstract void menuItemClicked(String menuItemCaption, IHttpRequestResponse[] messageInfo);
+    public abstract void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo);
 
     public abstract boolean isEnabled();
 

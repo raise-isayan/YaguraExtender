@@ -1,10 +1,10 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IHttpRequestResponse;
-import burp.IRequestInfo;
-import burp.IResponseInfo;
-import burp.ITab;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.proxy.ProxyRequestResponse;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import extension.burp.HighlightColor;
+import extension.burp.MessageHighlightColor;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.DefaultObjectTableModel;
@@ -43,12 +43,14 @@ import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
 import yagura.model.ResultView;
 import yagura.model.UniversalViewProperty.UniversalView;
+import extension.burp.IBurpTab;
+import java.util.List;
 
 /**
  *
  * @author isayan
  */
-public class JSearchTab extends javax.swing.JPanel implements ITab {
+public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(JSearchTab.class.getName());
 
     /**
@@ -374,7 +376,8 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
     private final DefaultTableCellRenderer colorTableRenderer = new DefaultTableCellRenderer() {
 
         @Override
-        public Component getTableCellRendererComponent(JTable table,
+        public Component getTableCellRendererComponent(
+                JTable table,
                 Object value,
                 boolean isSelected,
                 boolean hasFocus,
@@ -382,8 +385,8 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 int column) {
             Object c = table.getValueAt(row, 1);
             NamedColor namedColor = null;
-            if (c instanceof NamedColor) {
-                namedColor = (NamedColor) c;
+            if (c instanceof NamedColor namedColor1) {
+                namedColor = namedColor1;
             }
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (isSelected) {
@@ -393,7 +396,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 if (namedColor != null && namedColor.isDefaultColor()) {
                     component.setForeground(namedColor.getTextColor());
                     component.setBackground(namedColor);
-                } 
+                }
                 else {
                     component.setForeground(table.getForeground());
                     component.setBackground(table.getBackground());
@@ -413,8 +416,8 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 boolean cellHasFocus) {
 
             NamedColor c = null;
-            if (value instanceof NamedColor) {
-                c = (NamedColor) value;
+            if (value instanceof NamedColor namedColor) {
+                c = namedColor;
                 value = c.getText();
             }
             Component component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -487,8 +490,8 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.cmbColor.setMaximumRowCount(10);
         this.cmbColor.setRenderer(this.colorComboBoxRenderer);
         this.cmbColor.addItem(""); // nonselect
-        for (HighlightColor c : HighlightColor.values()) {
-            if (c == HighlightColor.WHITE) {
+        for (MessageHighlightColor c : MessageHighlightColor.values()) {
+            if (c == MessageHighlightColor.WHITE) {
                 continue;
             }
             this.cmbColor.addItem(new NamedColor(c.toColor(), c.name().toLowerCase()));
@@ -627,7 +630,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         }
         int rowIndex = this.tableResult.convertRowIndexToModel(row);
         if (rowIndex > -1) {
-            IHttpRequestResponse msgItem = this.modelSearch.getData(rowIndex);
+            HttpRequestResponse msgItem = this.modelSearch.getData(rowIndex);
             item = new HttpMessageItem(msgItem);
         }
         return item;
@@ -670,7 +673,7 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                     lblProgress.setText(BUNDLE.getString("view.invalid.regex"));
                     return;
                 }
-                Runnable search = new Runnable() {
+                final Runnable search = new Runnable() {
                     @Override
                     public void run() {
                         modelSearch.removeAll();
@@ -697,14 +700,14 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
         this.btnSearch.setText("Stop");
         // all clear
         this.modelSearch.removeAll();
-        JSearchProperty searchProp = getProperty();
+        JSearchProperty searchProp = this.getProperty();
         Pattern p = MatchUtil.compileRegex(text, searchProp.isSmartMatch(), searchProp.isRegexp(),  searchProp.isIgnoreCase());
-
-        IHttpRequestResponse messageInfo[] = BurpExtender.getCallbacks().getProxyHistory();
+        final List<ProxyRequestResponse> proxyHistory = BurpExtender.getMontoyaApi().proxy().history();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
-            for (int i = 0; i < messageInfo.length; i++) {
-                HttpMessageItem item = new HttpMessageItem(messageInfo[i], i);
+            for (int i = 0; i < proxyHistory.size(); i++) {
+                ProxyRequestResponse info = proxyHistory.get(i);
+                HttpMessageItem item = new HttpMessageItem(HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.messageAnnotations()), i);
                 Matcher m = null;
                 boolean find = false;
                 do {
@@ -713,18 +716,18 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                         encoding = item.getGuessCharset();
                     }
                     if (this.chkScopeOnly.isSelected()) {
-                        if (!BurpExtender.getCallbacks().isInScope(item.getUrl())) {
+                        if (!BurpExtender.helpers().isInScope(item.getUrl())) {
                             continue;
                         }
                     }
                     if ((searchProp.isRequestHeader() || searchProp.isRequestBody()) && item.getRequest() != null) {
-                        byte reqMessage[] = item.getRequest();
+                        HttpRequest httpRequest = item.httpRequest();
+                        byte [] reqMessage = item.httpRequest().asBytes().getBytes();
                         if (!(searchProp.isRequestHeader() && searchProp.isRequestBody())) {
-                            IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(reqMessage);
                             if (searchProp.isRequestHeader()) {
-                                reqMessage = Arrays.copyOfRange(item.getRequest(), 0, reqInfo.getBodyOffset());
+                                reqMessage = Arrays.copyOfRange(reqMessage, 0, httpRequest.bodyOffset());
                             } else if (searchProp.isRequestBody()) {
-                                reqMessage = Arrays.copyOfRange(item.getRequest(), reqInfo.getBodyOffset(), item.getRequest().length);
+                                reqMessage = Arrays.copyOfRange(reqMessage, httpRequest.bodyOffset(), reqMessage.length);
                             }
                         }
                         String req = StringUtil.getStringCharset(reqMessage, encoding);
@@ -735,13 +738,13 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                         }
                     }
                     if ((searchProp.isResponseHeader() || searchProp.isResponseBody()) && item.getResponse() != null) {
-                        byte resMessage[] = item.getResponse();
+                        HttpResponse httpResponse = item.httpResponse();
+                        byte resMessage[] = httpResponse.asBytes().getBytes();
                         if (!(searchProp.isResponseHeader() && searchProp.isResponseBody())) {
-                            IResponseInfo resInfo = BurpExtender.getHelpers().analyzeResponse(resMessage);
                             if (searchProp.isResponseHeader()) {
-                                resMessage = Arrays.copyOfRange(item.getResponse(), 0, resInfo.getBodyOffset());
+                                resMessage = Arrays.copyOfRange(item.getResponse(), 0, httpResponse.bodyOffset());
                             } else if (searchProp.isResponseBody()) {
-                                resMessage = Arrays.copyOfRange(item.getResponse(), resInfo.getBodyOffset(), item.getResponse().length);
+                                resMessage = Arrays.copyOfRange(item.getResponse(), httpResponse.bodyOffset(), resMessage.length);
                             }
                         }
                         String res = StringUtil.getStringCharset(resMessage, encoding);
@@ -751,17 +754,16 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                             break;
                         }
                     }
-                    if (searchProp.isComment() && item.getComment() != null) {
+                   if (searchProp.isComment() && item.getComment() != null) {
                         m = p.matcher(item.getComment());
                         if (m.find()) {
                             find = true;
                             break;
                         }
                     }
-                    this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double) i / messageInfo.length * 100.0));
+                    this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double) i / proxyHistory.size() * 100.0));
                 } while (false);
                 if (m != null && find) {
-                    //item.dump(); // debug
                     this.modelSearch.addRow(new ResultView(item, item.getOrdinal()));
                 }
                 if (this.cancel) {

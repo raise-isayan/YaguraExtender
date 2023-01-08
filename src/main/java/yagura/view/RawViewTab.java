@@ -1,12 +1,18 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IMessageEditorController;
-import burp.IMessageEditorTab;
+import burp.api.montoya.core.ByteArray;
+import burp.api.montoya.http.MimeType;
+import burp.api.montoya.ui.Selection;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.ui.editor.extension.EditorMode;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpMessageEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
 import extend.util.external.ThemeUI;
-import extension.helpers.HttpMessage;
-import extension.helpers.HttpRequest;
-import extension.helpers.HttpResponse;
+import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -15,7 +21,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -34,27 +39,21 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab {
+public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessageEditor, ExtensionHttpRequestEditor, ExtensionHttpResponseEditor {
     private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtURaw);        
+            ThemeUI.changeStyleTheme(txtURaw);
         }
     };
-               
-    private boolean request = false;
-    private boolean textModified = false;
-    private boolean editable = false;
-    private IMessageEditorController controller = null;
 
-//    private final EditorKit htmlStyleEditorKit = new StyledEditorKit() {
-//        @Override
-//        public Document createDefaultDocument() {
-//            return new HTMLSyntaxDocument();
-//        }
-//    };
+    private boolean isRequest = false;
+    private boolean textModified = false;
+    private EditorMode editorMode = EditorMode.DEFAULT;
+    private final HttpRequestResponse messageRequestResponse;
+    private HttpRequestResponse httpRequestResponse;
 
     /**
      * Creates new form RawViewTab
@@ -62,21 +61,21 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
      * @param request
      */
     public RawViewTab(boolean request) {
-        this.request = request;
-        initComponents();
-        customizeComponents();
+        this(null, EditorMode.READ_ONLY, request);
     }
 
     /**
      * Creates new form RawViewTab
+     * @param httpRequestResponse
+     * @param editorMode
+     * @param isResuest
      */
-    public RawViewTab(IMessageEditorController controller, boolean editable, boolean isResuest) {
-        this.request = isResuest;
-        this.controller = controller;
-        //this.editable = editable;
-        this.editable = false;
+    public RawViewTab(HttpRequestResponse httpRequestResponse, EditorMode editorMode, boolean isResuest) {
+        this.isRequest = isResuest;
+        this.messageRequestResponse = httpRequestResponse;
+        this.editorMode = editorMode;
         initComponents();
-        customizeComponents();        
+        customizeComponents();
     }
 
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
@@ -87,7 +86,6 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     private void customizeComponents() {
 
         /*** UI design start ***/
-
         this.txtURaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollURaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtURaw);
         this.txtURaw.setWrapStyleWord(false);
@@ -103,7 +101,6 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         add(this.scrollURaw, java.awt.BorderLayout.CENTER);
 
         /*** UI design end ***/
-
         this.quickSearchTab.setSelectedTextArea(this.txtURaw);
         this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
         this.txtURaw.getDocument().addDocumentListener(new DocumentListener() {
@@ -123,19 +120,12 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
             }
 
         });
-        this.txtURaw.setEditable(this.editable);
-
-//        this.txtRaw.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
-//        this.txtRaw.setEditorKitForContentType("application/xhtml+xml", this.htmlStyleEditorKit);
-//        this.txtRaw.setEditorKitForContentType("text/xml", this.htmlStyleEditorKit);
-//        this.txtRaw.setEditorKitForContentType("application/xml", this.htmlStyleEditorKit);
-//        this.txtRaw.setEditorKitForContentType("image/svg+xml", this.htmlStyleEditorKit);
-//        this.txtRaw.setContentType("text/html");
+        this.txtURaw.setEditable(!this.editorMode.equals(EditorMode.READ_ONLY));
 
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
-    
+
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);                
+        UIManager.addPropertyChangeListener(this.listener);
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {
@@ -169,180 +159,78 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 
     public void setMessageEncoding(String encoding) {
         try {
-            if (this.content == null) {
+            if (this.httpRequestResponse == null) {
                 return;
             }
             this.txtURaw.setText("");
-            if (this.content != null) {
-//                txtURaw.setText(StringUtil.getStringCharset(content, encoding));
-//                txtURaw.setCaretPosition(0);
-//                quickSearchTab.clearViewAndSearch();
-
-                SwingWorker swText = new SwingWorker<String, Object>() {
-                    @Override
-                    protected String doInBackground() throws Exception {
-                        // Raw
-                        publish("...");
-                        return StringUtil.getStringCharset(content, encoding);
+            SwingWorker swText = new SwingWorker<String, Object>() {
+                @Override
+                protected String doInBackground() throws Exception {
+                    // Raw
+                    publish("...");
+                    if (isRequest) {
+                        return StringUtil.getStringCharset(httpRequestResponse.httpRequest().asBytes().getBytes(), encoding);
+                    } else {
+                        return StringUtil.getStringCharset(httpRequestResponse.httpResponse().asBytes().getBytes(), encoding);
                     }
+                }
 
-                    protected void process(List<Object> chunks) {
-                        txtURaw.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
-                    }
+                protected void process(List<Object> chunks) {
+                    txtURaw.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
+                }
 
-                    protected void done() {
-                        try {
-                            txtURaw.setText(get());
-                            txtURaw.setCaretPosition(0);
-                            quickSearchTab.clearViewAndSearch();
-                            // quickSearchTab.clearView();
-                        } catch (InterruptedException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        } catch (ExecutionException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                protected void done() {
+                    try {
+                        txtURaw.setText(get());
+                        txtURaw.setCaretPosition(0);
+                        quickSearchTab.clearViewAndSearch();
+                        // quickSearchTab.clearView();
+                    } catch (InterruptedException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    } catch (ExecutionException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
-                };
-                swText.execute();
-            }
+                }
+            };
+            swText.execute();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
-    @Override
-    public String getTabCaption() {
-        return "JRaw";
-    }
-
-    @Override
-    public Component getUiComponent() {
-        return this;
-    }
 
     public Component getMessageComponent() {
         return this.txtURaw;
     }
 
-    @Override
-    public boolean isEnabled(byte[] content, boolean isRequest) {
-        if (content == null || content.length == 0) {
-            return false;
-        }
-        // "This message is too large to display"
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-        if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
-            return false;
-        }
-        if (content.length > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
-            return false;
-        }
-        this.setLineWrap(viewProperty.isLineWrap());
-        if (this.request && isRequest && content.length > 0) {
-            return true;
-        } else if (!this.request && !isRequest && content.length > 0) {
-            return true;
-        }
-        return false;
-    }
-
-    private final static Map<String, String> CODE_MAP = new HashMap<>();
+    private final static Map<MimeType, String> MIME_MAP = new HashMap<>();
 
     static {
-        CODE_MAP.put("text/css", SyntaxConstants.SYNTAX_STYLE_CSS);
-        CODE_MAP.put("tex/javascript", SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        CODE_MAP.put("application/javascript", SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        CODE_MAP.put("application/x-javascript", SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-        CODE_MAP.put("text/html", SyntaxConstants.SYNTAX_STYLE_HTML);
-        CODE_MAP.put("text/json", SyntaxConstants.SYNTAX_STYLE_JSON_WITH_COMMENTS);
-        CODE_MAP.put("application/json", SyntaxConstants.SYNTAX_STYLE_JSON);
-        CODE_MAP.put("text/xml", SyntaxConstants.SYNTAX_STYLE_XML);
-        CODE_MAP.put("application/xml", SyntaxConstants.SYNTAX_STYLE_XML);
+        MIME_MAP.put(MimeType.CSS, SyntaxConstants.SYNTAX_STYLE_CSS);
+        MIME_MAP.put(MimeType.SCRIPT, SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        MIME_MAP.put(MimeType.HTML, SyntaxConstants.SYNTAX_STYLE_HTML);
+        MIME_MAP.put(MimeType.JSON, SyntaxConstants.SYNTAX_STYLE_JSON_WITH_COMMENTS);
+        MIME_MAP.put(MimeType.IMAGE_SVG_XML, SyntaxConstants.SYNTAX_STYLE_XML);
+        MIME_MAP.put(MimeType.XML, SyntaxConstants.SYNTAX_STYLE_XML);
+        MIME_MAP.put(MimeType.YAML, SyntaxConstants.SYNTAX_STYLE_YAML);
     }
 
     public static String getSyntaxEditingStyle(String mimeType) {
         if (mimeType != null) {
-            return CODE_MAP.getOrDefault(mimeType.toLowerCase(), SyntaxConstants.SYNTAX_STYLE_HTML);
+            return MIME_MAP.getOrDefault(mimeType.toLowerCase(), SyntaxConstants.SYNTAX_STYLE_HTML);
         }
         else {
             return SyntaxConstants.SYNTAX_STYLE_HTML;
         }
     }
 
-    private byte[] content = null;
-
-    @Override
-    public void setMessage(byte[] content, boolean isRequest) {
-        try {
-            if (content == null) {
-                this.clearView();
-//                this.txtURaw.setContentType("text/html");
-                this.txtURaw.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
-            } else {
-                this.content = content;
-                BurpExtender extenderImpl = BurpExtender.getInstance();
-                String guessCharset = null;
-                HttpMessage httpMessage = null;
-                if (isRequest) {
-                    HttpRequest httpRequest = HttpRequest.parseHttpRequest(content);
-                    httpMessage = httpRequest;
-                    guessCharset = httpRequest.getGuessCharset();
-                } else {
-                    HttpResponse httpResponse = HttpResponse.parseHttpResponse(content);
-                    httpMessage = httpResponse;
-                    guessCharset = httpResponse.getGuessCharset();
-                    String contentType = httpResponse.getContentMimeType();
-  //                  this.txtURaw.setContentType(contentType == null ? "text/html" : contentType);
-                    this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
-                }
-                if (guessCharset == null) {
-                    guessCharset = StandardCharsets.ISO_8859_1.name();
-                }
-                this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
-                this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-
-                this.encodingItemStateChanged.itemStateChanged(null);
-                this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
-
-                this.textModified = false;
-            }
-        } catch (ParseException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
+    public static String getSyntaxEditingStyle(MimeType mimeType) {
+        if (mimeType != null) {
+            return MIME_MAP.getOrDefault(mimeType, SyntaxConstants.SYNTAX_STYLE_HTML);
         }
-    }
-
-    @Override
-    public byte[] getMessage() {
-        if (this.content != null) {
-            if (this.textModified) {
-                String modifiedText = this.txtURaw.getText();
-                String encoding = quickSearchTab.getSelectedEncoding();
-                if (encoding != null) {
-                    try {
-                        return StringUtil.getBytesCharset(modifiedText, encoding);
-                    } catch (UnsupportedEncodingException ex) {
-                        return null;
-                    }
-                } else {
-                    return this.content;
-                }
-            } else {
-                return this.content;
-            }
-        } else {
-            return new byte[]{};
+        else {
+            return SyntaxConstants.SYNTAX_STYLE_HTML;
         }
-    }
-
-    @Override
-    public boolean isModified() {
-        return this.textModified;
-    }
-
-    @Override
-    public byte[] getSelectedData() {
-        return null;
     }
 
     public String getSelectedText() {
@@ -353,7 +241,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         this.txtURaw.setText("");
         this.txtURaw.setEditable(false);
         this.quickSearchTab.clearView();
-        this.content = null;
+        this.httpRequestResponse = null;
     }
 
     /**
@@ -361,6 +249,129 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
      */
     public void setLineWrap(boolean lineWrap) {
         this.txtURaw.setLineWrap(lineWrap);
+    }
+
+    @Override
+    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.httpRequestResponse = httpRequestResponse;
+        if (this.httpRequestResponse == null) {
+            this.clearView();
+            this.txtURaw.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+        } else {
+            String guessCharset = null;
+            if (this.isRequest) {
+                HttpRequest httpRequest = httpRequestResponse.httpRequest();
+                guessCharset = HttpMesageHelper.getGuessCharset(httpRequest);
+            } else {
+                HttpResponse httpResponse = httpRequestResponse.httpResponse();
+                guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
+                MimeType contentType = httpResponse.statedMimeType();
+                this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
+            }
+            if (guessCharset == null) {
+                guessCharset = StandardCharsets.ISO_8859_1.name();
+            }
+            BurpExtender extenderImpl = BurpExtender.getInstance();
+            this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
+            this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
+
+            this.encodingItemStateChanged.itemStateChanged(null);
+            this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
+
+            this.textModified = false;
+        }
+    }
+
+    @Override
+    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.httpRequest() == null) || (!this.isRequest && httpRequestResponse.httpResponse() == null)) {
+            return false;
+        }
+        // "This message is too large to display"
+        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+        if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
+            return false;
+        }
+        HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        HttpResponse httpResponse = httpRequestResponse.httpResponse();
+
+        if ((this.isRequest && httpRequest.asBytes().length() > viewProperty.getDispayMaxLength()) ||
+           (!this.isRequest && httpResponse.asBytes().length() > viewProperty.getDispayMaxLength())
+            && viewProperty.getDispayMaxLength() != 0) {
+            return false;
+        }
+        this.setLineWrap(viewProperty.isLineWrap());
+        if (this.isRequest && httpRequest.asBytes().length() > 0) {
+            return true;
+        } else if (!this.isRequest && httpResponse.asBytes().length() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String caption() {
+        return "JRaw";
+    }
+
+    @Override
+    public Component uiComponent() {
+        return this;
+    }
+
+    @Override
+    public Selection selectedData() {
+        return null;
+    }
+
+    @Override
+    public boolean isModified() {
+        return this.textModified;
+    }
+
+    @Override
+    public HttpRequest getHttpRequest() {
+        HttpRequestResponse http = this.getHttpRequestResponse();
+        return http.httpRequest();
+    }
+
+    @Override
+    public HttpResponse getHttpResponse() {
+        HttpRequestResponse http = this.getHttpRequestResponse();
+        return http.httpResponse();
+    }
+
+    public HttpRequestResponse getHttpRequestResponse() {
+        if (this.httpRequestResponse != null) {
+            if (this.textModified) {
+                String modifiedText = this.txtURaw.getText();
+                String encoding = this.quickSearchTab.getSelectedEncoding();
+                if (encoding != null) {
+                    try {
+                        if (this.isRequest) {
+                            HttpRequest httpRequest = HttpRequest.httpRequest(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
+                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(httpRequest, this.httpRequestResponse.httpResponse(), this.httpRequestResponse.messageAnnotations());
+                            return http;
+                        }
+                        else {
+                            HttpResponse httpResponse = HttpResponse.httpResponse(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
+                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(this.httpRequestResponse.httpRequest(), httpResponse, this.httpRequestResponse.messageAnnotations());
+                            return http;
+                        }
+
+                    } catch (UnsupportedEncodingException ex) {
+                        return null;
+                    }
+                } else {
+                    return this.httpRequestResponse;
+                }
+            } else {
+                return this.httpRequestResponse;
+            }
+        } else {
+            return null;
+        }
     }
 
 }

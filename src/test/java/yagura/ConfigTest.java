@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import extend.util.external.gson.XMatchItemAdapter;
-import extension.burp.HighlightColor;
+import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
 import extension.burp.TargetTool;
 import extension.helpers.FileUtil;
@@ -27,12 +27,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
 import yagura.model.MatchReplaceGroup;
@@ -51,20 +51,20 @@ public class ConfigTest {
     public ConfigTest() {
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDownClass() {
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         JsonUtil.removeTypeHierarchyAdapter(MatchItem.class);
     }
@@ -128,7 +128,7 @@ public class ConfigTest {
 
         MatchAlertItem matchAlertItem0 = new MatchAlertItem();
         matchAlertItem0.setNotifyTypes(EnumSet.allOf(NotifyType.class));
-        matchAlertItem0.setHighlightColor(HighlightColor.CYAN);
+        matchAlertItem0.setHighlightColor(MessageHighlightColor.CYAN);
         matchAlertItem0.setComment("comment");
         matchAlertItem0.setTargetTools(EnumSet.allOf(TargetTool.class));
         matchAlertList.add(matchAlertItem0);

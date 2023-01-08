@@ -1,0 +1,27 @@
+POST /cgi-bin/multienc.cgi?charset=UTF-8&mode=disp HTTP/1.1
+Host: 192.0.2.11
+Content-Length: 341
+Cache-Control: max-age=0
+Origin: http://192.0.2.11
+Upgrade-Insecure-Requests: 1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryz8oJskbCUIkTxicV
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+Referer: http://192.0.2.11/cgi-bin/multienc.cgi?charset=UTF-8&mode=input&enctype=m
+Accept-Encoding: gzip, deflate
+Accept-Language: ja,en-US;q=0.9,en;q=0.8
+Connection: close
+
+------WebKitFormBoundaryz8oJskbCUIkTxicV
+Content-Disposition: form-data; name="text"
+
+あいうえお
+------WebKitFormBoundaryz8oJskbCUIkTxicV
+Content-Disposition: form-data; name="OS"
+
+win
+------WebKitFormBoundaryz8oJskbCUIkTxicV
+Content-Disposition: form-data; name="submit"
+
+送信
+------WebKitFormBoundaryz8oJskbCUIkTxicV--

@@ -1,12 +1,9 @@
 package yagura.view;
 
-import burp.ITab;
-import extension.burp.IOptionProperty;
 import extension.helpers.BurpUtil;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Map;
 import yagura.Version;
 import yagura.model.UniversalViewProperty;
 import yagura.model.LoggingProperty;
@@ -16,17 +13,16 @@ import yagura.model.SendToProperty;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
 import yagura.model.OptionProperty;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class TabbetOption extends javax.swing.JTabbedPane implements ITab, PropertyChangeListener {
-
+public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, PropertyChangeListener {
     public final static String VERSION_PROPERTY = "versionProperty";
-
     public final static String LOAD_CONFIG_PROPERTY = "loadConfigProperty";
-    
+
     public TabbetOption() {
         super();
         customizeComponents();
@@ -116,7 +112,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements ITab, Prope
         this.setDebugMode(property.getDebugMode());
         this.setJTransCoderProperty(property.getEncodingProperty());
     }
-        
+
     public boolean isLogDirChanged() {
         return this.tabLogging.isLogDirChanged();
     }
@@ -181,7 +177,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements ITab, Prope
     public JTransCoderProperty getJTransCoderProperty() {
         return this.tabJTransCoder.getProperty();
     }
-    
+
     public void setJTransCoderProperty(JTransCoderProperty transcoder) {
         this.tabJTransCoder.setProperty(transcoder);
     }
@@ -207,6 +203,5 @@ public class TabbetOption extends javax.swing.JTabbedPane implements ITab, Prope
     public byte[] receiveFromJTransCoder() {
         return this.tabJTransCoder.receiveFromJTransCoder();
     }
-
 
 }

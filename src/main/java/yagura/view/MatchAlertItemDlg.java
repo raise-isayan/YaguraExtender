@@ -2,7 +2,7 @@ package yagura.view;
 
 import burp.BurpExtender;
 import extension.burp.Confidence;
-import extension.burp.HighlightColor;
+import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
 import extension.burp.Severity;
 import extension.burp.TargetTool;
@@ -250,6 +250,12 @@ public class MatchAlertItemDlg extends CustomDialog {
         chkProxy.setText("proxy");
 
         chkSpider.setText("spider");
+        chkSpider.setEnabled(false);
+        chkSpider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkSpiderActionPerformed(evt);
+            }
+        });
 
         chkIntruder.setText("intruder");
 
@@ -436,6 +442,10 @@ public class MatchAlertItemDlg extends CustomDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_chkCaptureGroupActionPerformed
 
+    private void chkSpiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSpiderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkSpiderActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -530,12 +540,11 @@ public class MatchAlertItemDlg extends CustomDialog {
             this.cmbAlertType.addItem(t);
         }
 
-        this.cmbAlertColor.setModel(
-                new DefaultComboBoxModel(
-                        new HighlightColor[]{HighlightColor.RED, HighlightColor.ORANGE,
-                            HighlightColor.YELLOW, HighlightColor.GREEN, HighlightColor.CYAN,
-                            HighlightColor.BLUE, HighlightColor.PINK, HighlightColor.MAGENTA,
-                            HighlightColor.GRAY}));
+        this.cmbAlertColor.setModel(new DefaultComboBoxModel(
+                        new MessageHighlightColor[]{MessageHighlightColor.RED, MessageHighlightColor.ORANGE,
+                            MessageHighlightColor.YELLOW, MessageHighlightColor.GREEN, MessageHighlightColor.CYAN,
+                            MessageHighlightColor.BLUE, MessageHighlightColor.PINK, MessageHighlightColor.MAGENTA,
+                            MessageHighlightColor.GRAY}));
 
         this.cmbAlertColor.setEnabled(false);
 
@@ -544,7 +553,7 @@ public class MatchAlertItemDlg extends CustomDialog {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                HighlightColor hc = (HighlightColor) value;
+                MessageHighlightColor hc = (MessageHighlightColor) value;
                 l.setIcon(hc.toIcon());
                 l.setIconTextGap(2);
                 return l;
@@ -557,7 +566,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.txtIssueName.setEnabled(false);
         this.cmbSeverity.setEnabled(false);
         this.cmbConfidence.setEnabled(false);
-        
+
         // FreeVersion only
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(ComponentEvent e) {
@@ -579,7 +588,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
         item.setCaptureGroup(this.chkCaptureGroup.isSelected());
-        
+
         //item.setNotifyType((MatchItem.NotifyType) this.cmbAlertNotify.getSelectedItem());
         EnumSet<NotifyType> notifys = EnumSet.noneOf(NotifyType.class);
         if (this.chkAlertsTab.isSelected()) {
@@ -609,9 +618,9 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (this.chkIntruder.isSelected()) {
             tools.add(TargetTool.INTRUDER);
         }
-        if (this.chkSpider.isSelected()) {
-            tools.add(TargetTool.SPIDER);
-        }
+//        if (this.chkSpider.isSelected()) {
+//            tools.add(TargetTool.SPIDER);
+//        }
         if (this.chkScanner.isSelected()) {
             tools.add(TargetTool.SCANNER);
         }
@@ -624,7 +633,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         item.setTargetTools(tools);
 
         if (item.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
-            item.setHighlightColor((HighlightColor) this.cmbAlertColor.getSelectedItem());
+            item.setHighlightColor((MessageHighlightColor) this.cmbAlertColor.getSelectedItem());
         }
         if (item.getNotifyTypes().contains(NotifyType.COMMENT)) {
             item.setComment(this.txtComment.getText());
@@ -661,7 +670,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.chkProxy.setSelected(tools.contains(TargetTool.PROXY));
         this.chkRepeater.setSelected(tools.contains(TargetTool.REPEATER));
         this.chkIntruder.setSelected(tools.contains(TargetTool.INTRUDER));
-        this.chkSpider.setSelected(tools.contains(TargetTool.SPIDER));
+//        this.chkSpider.setSelected(tools.contains(TargetTool.SPIDER));
         this.chkScanner.setSelected(tools.contains(TargetTool.SCANNER));
         this.chkSequencer.setSelected(tools.contains(TargetTool.SEQUENCER));
         this.chkExtender.setSelected(tools.contains(TargetTool.EXTENDER));

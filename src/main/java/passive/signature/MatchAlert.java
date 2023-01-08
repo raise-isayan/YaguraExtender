@@ -1,16 +1,18 @@
 package passive.signature;
 
 import burp.BurpExtender;
-import burp.IHttpRequestResponse;
-import burp.IHttpRequestResponseWithMarkers;
-import burp.IHttpService;
-import burp.IRequestInfo;
-import burp.IScanIssue;
-import burp.IScannerCheck;
+import burp.api.montoya.core.Range;
+import burp.api.montoya.http.HttpService;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.MarkedHttpRequestResponse;
+import burp.api.montoya.scanner.ScanCheck;
+import burp.api.montoya.scanner.audit.issues.AuditIssue;
+import burp.api.montoya.scanner.audit.issues.AuditIssueConfidence;
+import burp.api.montoya.scanner.audit.issues.AuditIssueDefinition;
+import burp.api.montoya.scanner.audit.issues.AuditIssueSeverity;
 import extension.burp.ScannerCheckAdapter;
 import extension.burp.Severity;
 import extension.helpers.HttpUtil;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import passive.IssueItem;
@@ -40,9 +42,9 @@ public class MatchAlert extends SignatureItem<IssueItem> {
     }
 
     @Override
-    public IScanIssue makeScanIssue(IHttpRequestResponse messageInfo, List<IssueItem> issueItem) {
+    public AuditIssue makeScanIssue(HttpRequestResponse messageInfo, List<IssueItem> issueItem) {
 
-        return new IScanIssue() {
+        return new AuditIssue() {
 
             public IssueItem getItem() {
                 if (issueItem.size() > 0) {
@@ -53,50 +55,12 @@ public class MatchAlert extends SignatureItem<IssueItem> {
             }
 
             @Override
-            public URL getUrl() {
-                IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(messageInfo.getHttpService(), messageInfo.getRequest());
-                return reqInfo.getUrl();
-            }
-
-            @Override
-            public String getIssueName() {
+            public String name() {
                 return String.format("Match Alert(%s)", getItem().getType());
             }
 
             @Override
-            public int getIssueType() {
-                /**
-                 * https://portswigger.net/knowledgebase/issues/ Extension
-                 * generated issue
-                 */
-                return 0x08000000;
-            }
-
-            @Override
-            public String getSeverity() {
-                return getItem().getServerity().toString();
-            }
-
-            @Override
-            public String getConfidence() {
-                return getItem().getConfidence().toString();
-            }
-
-            @Override
-            public String getIssueBackground() {
-                final String ISSUE_BACKGROUND = "\r\n"
-                        + "<h4>Reference:</h4>"
-                        + "<p>MatchAlert for YaguraExtender</p>";
-                return ISSUE_BACKGROUND;
-            }
-
-            @Override
-            public String getRemediationBackground() {
-                return null;
-            }
-
-            @Override
-            public String getIssueDetail() {
+            public String detail() {
                 StringBuilder buff = new StringBuilder();
                 buff.append("<h4>Match:</h4>");
                 buff.append(String.format("<p>toolName: %s</p>", HttpUtil.toHtmlEncode(toolName)));
@@ -105,42 +69,96 @@ public class MatchAlert extends SignatureItem<IssueItem> {
             }
 
             @Override
-            public String getRemediationDetail() {
+            public String remediation() {
                 return null;
             }
 
             @Override
-            public IHttpRequestResponse[] getHttpMessages() {
-                return new IHttpRequestResponse[]{messageInfo};
+            public HttpService httpService() {
+                return messageInfo.httpRequest().httpService();
             }
 
             @Override
-            public IHttpService getHttpService() {
-                return messageInfo.getHttpService();
+            public String baseUrl() {
+                return messageInfo.httpRequest().url();
             }
+
+            @Override
+            public AuditIssueSeverity severity() {
+                return AuditIssueSeverity.FALSE_POSITIVE;
+            }
+
+            @Override
+            public AuditIssueConfidence confidence() {
+                return AuditIssueConfidence.CERTAIN;
+            }
+
+            @Override
+            public List<MarkedHttpRequestResponse> requestResponses() {
+                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+
+            @Override
+            public AuditIssueDefinition definition() {
+                return new AuditIssueDefinition() {
+                    @Override
+                    public String name() {
+                        return String.format("Match Alert(%s)", getItem().getType());
+                    }
+
+                    @Override
+                    public String background() {
+                        final String ISSUE_BACKGROUND = "\r\n"
+                                + "<h4>Reference:</h4>"
+                                + "<p>MatchAlert for YaguraExtender</p>";
+                        return ISSUE_BACKGROUND;
+                    }
+
+                    @Override
+                    public String remediation() {
+                        return null;
+                    }
+
+                    @Override
+                    public AuditIssueSeverity typicalSeverity() {
+                         return AuditIssueSeverity.FALSE_POSITIVE;
+                    }
+
+                    /**
+                     * https://portswigger.net/knowledgebase/issues/ Extension
+                     * generated issue
+                     */
+                    @Override
+                    public int typeIndex() {
+                        return 0x08000000;
+                    }
+
+                };
+            }
+
         };
     }
 
     @Override
-    public IScannerCheck passiveScanCheck() {
+    public ScanCheck passiveScanCheck() {
         return new ScannerCheckAdapter();
     }
 
-    public List<IScanIssue> makeIssueList(boolean messageIsRequest, IHttpRequestResponse baseRequestResponse, List<IssueItem> markIssueList) {
-        List<int[]> requestResponseMarkers = new ArrayList<>();
+    public List<AuditIssue> makeIssueList(boolean messageIsRequest, HttpRequestResponse baseRequestResponse, List<IssueItem> markIssueList) {
+        List<Range> requestResponseMarkers = new ArrayList<>();
         for (int i = 0; i < markIssueList.size(); i++) {
             IssueItem pos = markIssueList.get(i);
-            requestResponseMarkers.add(new int[]{pos.start(), pos.end()});
+            requestResponseMarkers.add(Range.range(pos.start(), pos.end()));
         }
-        IHttpRequestResponseWithMarkers messageInfoMark = null;
+        MarkedHttpRequestResponse messageInfoMark = null;
         if (messageIsRequest) {
-            messageInfoMark = BurpExtender.getCallbacks().applyMarkers(baseRequestResponse, requestResponseMarkers, null);
+            messageInfoMark = baseRequestResponse.withRequestMarkers(requestResponseMarkers);
         } else {
-            messageInfoMark = BurpExtender.getCallbacks().applyMarkers(baseRequestResponse, null, requestResponseMarkers);
+            messageInfoMark = baseRequestResponse.withResponseMarkers(requestResponseMarkers);
         }
-
-        List<IScanIssue> issues = new ArrayList<>();
+        List<AuditIssue> issues = new ArrayList<>();
         issues.add(makeScanIssue(messageInfoMark, markIssueList));
         return issues;
     }
+
 }

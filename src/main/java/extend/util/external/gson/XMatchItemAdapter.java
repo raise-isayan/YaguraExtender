@@ -9,7 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import extension.burp.Confidence;
-import extension.burp.HighlightColor;
+import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
 import extension.burp.Severity;
 import extension.burp.TargetTool;
@@ -76,7 +76,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             if (jsonObject.has("confidence")) matchItem.setConfidence(jdc.deserialize(jsonObject.get("confidence"), Confidence.class));
             if (jsonObject.has("notifyTypes")) matchItem.setNotifyTypes(NotifyType.parseEnumSet(jsonObject.get("notifyTypes").getAsJsonArray().toString()));
             if (jsonObject.has("targetTools")) matchItem.setTargetTools(TargetTool.parseEnumSet(jsonObject.get("targetTools").getAsJsonArray().toString()));
-            if (jsonObject.has("highlightColor")) matchItem.setHighlightColor(jdc.deserialize(jsonObject.get("highlightColor"), HighlightColor.class));
+            if (jsonObject.has("highlightColor")) matchItem.setHighlightColor(jdc.deserialize(jsonObject.get("highlightColor"), MessageHighlightColor.class));
             if (jsonObject.has("comment")) matchItem.setComment(jdc.deserialize(jsonObject.get("comment"), String.class));
             return matchItem;
         } else if (cls.equals(MatchReplaceItem.class)) {

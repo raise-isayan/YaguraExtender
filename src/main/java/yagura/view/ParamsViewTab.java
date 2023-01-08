@@ -1,21 +1,24 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.IMessageEditorController;
-import burp.IMessageEditorTab;
-import burp.IParameter;
-import burp.IRequestInfo;
+import burp.api.montoya.http.ContentType;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.params.HttpParameterType;
+import burp.api.montoya.http.message.params.ParsedHttpParameter;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.EditorMode;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
+import extend.util.external.TransUtil;
+import extension.helpers.HttpMesageHelper;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -24,14 +27,13 @@ import javax.swing.JComboBox;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
-import extend.util.external.TransUtil;
-import extension.helpers.HttpMessage;
-import extension.helpers.HttpRequest;
-import extension.helpers.HttpUtil;
-import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
 import javax.swing.SwingWorker;
 import yagura.model.Parameter;
 import yagura.model.ParamsView;
@@ -42,20 +44,22 @@ import yagura.model.UniversalViewProperty;
  *
  * @author raise.isayan
  */
-public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorTab {
+public class ParamsViewTab extends javax.swing.JPanel implements ExtensionHttpRequestEditor {
+
     private final static Logger logger = Logger.getLogger(ParamsViewTab.class.getName());
 
     private boolean textModified = false;
     private boolean editable;
-    private IMessageEditorController controller = null;
+    private HttpRequestResponse httpRequestResponse;
 
     /**
      * Creates new form ParamsViewTab
+     *
+     * @param httpRequestResponse
+     * @param editorMode
      */
-    public ParamsViewTab(IMessageEditorController controller, boolean editable) {
-        this.controller = controller;
-        this.editable = editable;
-        this.editable = false;
+    public ParamsViewTab(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
+        this.editable = (EditorMode.READ_ONLY == editorMode);
         initComponents();
         customizeComponents();
     }
@@ -260,9 +264,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.cmbParamType.setMaximumRowCount(10);
-        this.cmbParamType.addItem(ParamsView.getType(IParameter.PARAM_URL));
-        this.cmbParamType.addItem(ParamsView.getType(IParameter.PARAM_COOKIE));
-        this.cmbParamType.addItem(ParamsView.getType(IParameter.PARAM_BODY));
+        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.URL));
+        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.COOKIE));
+        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.BODY));
 
         TableColumn colorColumn = this.tableParams.getColumnModel().getColumn(1);
         colorColumn.setCellEditor(new DefaultCellEditor(this.cmbParamType));
@@ -314,153 +318,62 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     private javax.swing.JTable tableParams;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public String getTabCaption() {
-        return "JParams";
-    }
-
-    @Override
-    public Component getUiComponent() {
-        return this;
-    }
-
-    @Override
-    public boolean isEnabled(byte[] content, boolean isRequest) {
-        if (isRequest) {
-            if (content == null || content.length == 0) {
-                return false;
-            }
-            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
-            if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
-                return false;
-            }
-            if (content.length > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
-                return false;
-            }
-            IRequestInfo requestInfo = BurpExtender.getHelpers().analyzeRequest(content);
-            List<IParameter> params = requestInfo.getParameters();
-            boolean isQueryParam = false;
-            int count = 0;
-            for (IParameter p : params) {
-                switch (p.getType()) {
-                    case IParameter.PARAM_URL:
-                        isQueryParam = true;
-                        count++;
-                        break;
-                    case IParameter.PARAM_COOKIE:
-                    case IParameter.PARAM_BODY:
-                    case IParameter.PARAM_MULTIPART_ATTR:
-                        count++;
-                        break;
-                }
-            }
-            this.btnDecode.setSelected(false);
-            boolean enabled = (requestInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) || (requestInfo.getContentType() == IRequestInfo.CONTENT_TYPE_NONE && isQueryParam);
-            this.btnDecode.setEnabled(enabled);
-            return count > 0;
-        }
-        return false;
-    }
-
     public void setMessageFont(Font font) {
         this.tableParams.setFont(font);
     }
 
-    private byte[] content = null;
-    private IRequestInfo reqInfo = null;
-
-    @Override
-    public void setMessage(byte[] content, boolean isRequest) {
-        if (content == null) {
-            this.clearView();
-        } else {
-            this.content = content;
-
-            if (isRequest) {
-                SwingWorker swParam = new SwingWorker<IRequestInfo, Object>() {
-                    @Override
-                    protected IRequestInfo doInBackground() throws Exception {
-                        final HttpRequest request = HttpRequest.parseHttpRequest(content);
-                        final HttpMessage httpmessage = request;
-                        final IRequestInfo reqInfo = BurpExtender.getHelpers().analyzeRequest(controller.getHttpService(), content);
-                        setLocation(reqInfo);
-                        setParams(reqInfo);
-                        return reqInfo;
-                    }
-
-                    protected void process(List<Object> chunks) {
-                    }
-
-                    protected void done() {
-                        try {
-                            reqInfo = get();
-                            String guessCharset = null;
-                            final HttpRequest request = HttpRequest.parseHttpRequest(content);
-                            HttpMessage httpmessage = request;
-                            if (reqInfo.getContentType() == IRequestInfo.CONTENT_TYPE_URL_ENCODED) {
-                                guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(request.getBody(), StandardCharsets.ISO_8859_1.name())));
-                            } else {
-                                guessCharset = HttpUtil.getUniversalGuessCode(request.getBodyBytes());
-                            }
-
-                            if (guessCharset == null) {
-                                guessCharset = StandardCharsets.ISO_8859_1.name();
-                            }
-
-                            quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-                            quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
-                            encodingItemStateChanged.itemStateChanged(null);
-                            quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
-                            textModified = false;
-
-                        } catch (InterruptedException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        } catch (ExecutionException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        } catch (ParseException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        } catch (UnsupportedEncodingException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        }
-                    }
-                };
-                swParam.execute();
-            }
-
-        }
+//    public void setMessageEncoding(String encoding) {
+//        if (this.httpRequestResponse == null) {
+//            return;
+//        }
+//
+//        SwingWorker swParam = new SwingWorker<HttpRequest, Object>() {
+//            @Override
+//            protected HttpRequest doInBackground() throws Exception {
+//                final HttpRequest httpRequest = httpRequestResponse.httpRequest();
+//                setLocation(httpRequest);
+//                setParams(httpRequest.parameters());
+//                return httpRequest;
+//            }
+//
+//            protected void process(List<Object> chunks) {
+//            }
+//
+//            protected void done() {
+//                try {
+//                    final HttpRequest httpRequest = get();
+//                    String guessCharset = null;
+//                    if (httpRequest.contentType() == ContentType.URL_ENCODED) {
+//                        guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(httpRequest.url(), StandardCharsets.ISO_8859_1.name())));
+//                    } else {
+//                        guessCharset = HttpUtil.getUniversalGuessCode(httpRequest.body().getBytes());
+//                    }
+//
+//                    if (guessCharset == null) {
+//                        guessCharset = StandardCharsets.ISO_8859_1.name();
+//                    }
+//
+//                    textModified = false;
+//
+//                } catch (InterruptedException ex) {
+//                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+//                } catch (ExecutionException ex) {
+//                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+//                } catch (UnsupportedEncodingException ex) {
+//                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+//                }
+//            }
+//        };
+//        swParam.execute();
+//    }
+    public void setLocation(HttpRequest httpRequest) {
+        this.lblLocation.setText(String.format("%s %s", httpRequest.method(), httpRequest.url()));
     }
 
-    @Override
-    public byte[] getMessage() {
-        if (this.content != null) {
-            if (this.textModified) {
-                List<IParameter> params = this.reqInfo.getParameters();
-                byte[] modify = Arrays.copyOf(this.content, this.content.length);
-                for (IParameter p : params) {
-                    modify = BurpExtender.getHelpers().removeParameter(modify, p);
-                }
-                for (Parameter p : this.getParams()) {
-                    modify = BurpExtender.getHelpers().addParameter(modify, p);
-                }
-                this.content = Arrays.copyOf(modify, modify.length);
-                return this.content;
-            } else {
-                return this.content;
-            }
-        } else {
-            return new byte[]{};
-        }
-    }
-
-    public void setLocation(IRequestInfo reqInfo) {
-        this.lblLocation.setText(String.format("%s %s", reqInfo.getMethod(), reqInfo.getUrl().getPath()));
-    }
-
-    public void setParams(IRequestInfo reqInfo) {
+    public void setParams(List<ParsedHttpParameter> params) {
         this.modelParams.removeAll();
-        List<IParameter> params = reqInfo.getParameters();
         for (int i = 0; i < params.size(); i++) {
-            IParameter p = params.get(i);
+            ParsedHttpParameter p = params.get(i);
             this.modelParams.addRow(new ParamsView(p));
         }
     }
@@ -468,8 +381,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
     public List<Parameter> getParams() {
         List<Parameter> params = new ArrayList<>();
         for (int i = 0; i < this.modelParams.getRowCount(); i++) {
-            Parameter p = this.modelParams.getData(i);
-            params.add(p);
+            ParamsView p = this.modelParams.getData(i);
+            params.add(p.getParameter());
         }
         return params;
     }
@@ -483,17 +396,140 @@ public class ParamsViewTab extends javax.swing.JPanel implements IMessageEditorT
         return this.textModified;
     }
 
-    @Override
-    public byte[] getSelectedData() {
-        return null;
-    }
-
     public void clearView() {
         this.modelParams.removeAll();
         this.quickSearchTab.clearView();
         this.modelParams.setCellEditable(false);
-        this.content = null;
-        this.reqInfo = null;
+//        this.httpRequestResponse = null;
+    }
+
+    @Override
+    public HttpRequest getHttpRequest() {
+//        if (this.content != null) {
+//            if (this.textModified) {
+//                List<IParameter> params = this.reqInfo.getParameters();
+//                byte[] modify = Arrays.copyOf(this.content, this.content.length);
+//                for (IParameter p : params) {
+//                    modify = BurpExtender.getHelpers().removeParameter(modify, p);
+//                }
+//                for (Parameter p : this.getParams()) {
+//                    modify = BurpExtender.getHelpers().addParameter(modify, p);
+//                }
+//                this.content = Arrays.copyOf(modify, modify.length);
+//                return this.content;
+//            } else {
+//                return this.content;
+//            }
+//        } else {
+//            return new byte[]{};
+//        }
+
+        return this.httpRequestResponse.httpRequest();
+    }
+
+    @Override
+    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.httpRequestResponse = httpRequestResponse;
+        if (this.httpRequestResponse == null) {
+            this.clearView();
+        } else {
+            SwingWorker swParam = new SwingWorker<HttpRequest, Object>() {
+                @Override
+                protected HttpRequest doInBackground() throws Exception {
+                    final HttpRequest httpRequest = httpRequestResponse.httpRequest();
+                    setLocation(httpRequest);
+                    setParams(httpRequest.parameters());
+                    return httpRequest;
+                }
+
+                protected void process(List<Object> chunks) {
+                }
+
+                protected void done() {
+                    try {
+                        final HttpRequest httpRequest = get();
+                        String guessCharset = null;
+                        if (httpRequest.contentType() == ContentType.URL_ENCODED) {
+                            guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(httpRequest.url(), StandardCharsets.ISO_8859_1.name())));
+                        } else {
+                            guessCharset = HttpUtil.getUniversalGuessCode(httpRequest.body().getBytes());
+                        }
+
+                        if (guessCharset == null) {
+                            guessCharset = StandardCharsets.ISO_8859_1.name();
+                        }
+
+                        quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
+                        quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
+                        encodingItemStateChanged.itemStateChanged(null);
+                        quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+                        textModified = false;
+
+                    } catch (InterruptedException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    } catch (ExecutionException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    } catch (UnsupportedEncodingException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+            };
+            swParam.execute();
+
+            this.textModified = false;
+        }
+
+    }
+
+    @Override
+    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        if (httpRequestResponse == null) {
+            return false;
+        }
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
+            return false;
+        }
+        HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        if (httpRequest.asBytes().length() > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
+                && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+            return false;
+        }
+        List<ParsedHttpParameter> params = httpRequest.parameters();
+        boolean isQueryParam = false;
+        int count = 0;
+        for (ParsedHttpParameter p : params) {
+            switch (p.type()) {
+                case URL:
+                    isQueryParam = true;
+                    count++;
+                    break;
+                case COOKIE:
+                case BODY:
+                case MULTIPART_ATTRIBUTE:
+                    count++;
+                    break;
+            }
+        }
+        this.btnDecode.setSelected(false);
+        boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isQueryParam);
+        this.btnDecode.setEnabled(enabled);
+        return count > 0;
+    }
+
+    @Override
+    public String caption() {
+        return "JParams";
+    }
+
+    @Override
+    public Component uiComponent() {
+        return this;
+    }
+
+    @Override
+    public Selection selectedData() {
+        return null;
     }
 
 }

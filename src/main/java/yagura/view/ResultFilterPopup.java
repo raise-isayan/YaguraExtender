@@ -6,7 +6,7 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import extension.burp.HighlightColor;
+import extension.burp.MessageHighlightColor;
 import extension.helpers.BurpUtil;
 import extension.helpers.StringUtil;
 import extension.view.layout.VerticalFlowLayout;
@@ -28,6 +28,7 @@ import yagura.model.HttpMessageItem;
  * @author isayan
  */
 public class ResultFilterPopup extends javax.swing.JFrame {
+
     private final static Logger logger = Logger.getLogger(ResultFilterPopup.class.getName());
 
     /**
@@ -364,52 +365,52 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         return filterProp;
     }
 
-    public EnumSet<HighlightColor> getHighlightColors() {
-        EnumSet<HighlightColor> colors = EnumSet.noneOf(HighlightColor.class);
+    public EnumSet<MessageHighlightColor> getHighlightColors() {
+        EnumSet<MessageHighlightColor> colors = EnumSet.noneOf(MessageHighlightColor.class);
         if (this.chkWhite.isSelected()) {
-            colors.add(HighlightColor.WHITE);
+            colors.add(MessageHighlightColor.WHITE);
         }
         if (this.chkRed.isSelected()) {
-            colors.add(HighlightColor.RED);
+            colors.add(MessageHighlightColor.RED);
         }
         if (this.chkOrange.isSelected()) {
-            colors.add(HighlightColor.ORANGE);
+            colors.add(MessageHighlightColor.ORANGE);
         }
         if (this.chkYellow.isSelected()) {
-            colors.add(HighlightColor.YELLOW);
+            colors.add(MessageHighlightColor.YELLOW);
         }
         if (this.chkGreen.isSelected()) {
-            colors.add(HighlightColor.GREEN);
+            colors.add(MessageHighlightColor.GREEN);
         }
         if (this.chkCyan.isSelected()) {
-            colors.add(HighlightColor.CYAN);
+            colors.add(MessageHighlightColor.CYAN);
         }
         if (this.chkBlue.isSelected()) {
-            colors.add(HighlightColor.BLUE);
+            colors.add(MessageHighlightColor.BLUE);
         }
         if (this.chkPink.isSelected()) {
-            colors.add(HighlightColor.PINK);
+            colors.add(MessageHighlightColor.PINK);
         }
         if (this.chkMagenta.isSelected()) {
-            colors.add(HighlightColor.MAGENTA);
+            colors.add(MessageHighlightColor.MAGENTA);
         }
         if (this.chkGray.isSelected()) {
-            colors.add(HighlightColor.GRAY);
+            colors.add(MessageHighlightColor.GRAY);
         }
         return colors;
     }
 
-    public void setHighlightColors(EnumSet<HighlightColor> colors) {
-        this.chkWhite.setSelected(colors.contains(HighlightColor.WHITE));
-        this.chkRed.setSelected(colors.contains(HighlightColor.RED));
-        this.chkOrange.setSelected(colors.contains(HighlightColor.ORANGE));
-        this.chkYellow.setSelected(colors.contains(HighlightColor.YELLOW));
-        this.chkGreen.setSelected(colors.contains(HighlightColor.GREEN));
-        this.chkCyan.setSelected(colors.contains(HighlightColor.CYAN));
-        this.chkBlue.setSelected(colors.contains(HighlightColor.BLUE));
-        this.chkPink.setSelected(colors.contains(HighlightColor.PINK));
-        this.chkMagenta.setSelected(colors.contains(HighlightColor.MAGENTA));
-        this.chkGray.setSelected(colors.contains(HighlightColor.GRAY));
+    public void setHighlightColors(EnumSet<MessageHighlightColor> colors) {
+        this.chkWhite.setSelected(colors.contains(MessageHighlightColor.WHITE));
+        this.chkRed.setSelected(colors.contains(MessageHighlightColor.RED));
+        this.chkOrange.setSelected(colors.contains(MessageHighlightColor.ORANGE));
+        this.chkYellow.setSelected(colors.contains(MessageHighlightColor.YELLOW));
+        this.chkGreen.setSelected(colors.contains(MessageHighlightColor.GREEN));
+        this.chkCyan.setSelected(colors.contains(MessageHighlightColor.CYAN));
+        this.chkBlue.setSelected(colors.contains(MessageHighlightColor.BLUE));
+        this.chkPink.setSelected(colors.contains(MessageHighlightColor.PINK));
+        this.chkMagenta.setSelected(colors.contains(MessageHighlightColor.MAGENTA));
+        this.chkGray.setSelected(colors.contains(MessageHighlightColor.GRAY));
     }
 
     public boolean getComments() {
@@ -437,7 +438,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 boolean showOnlyScopFilter = true;
                 // Filter by request type
                 if (this.filterProp.getShowOnlyScopeItems()) {
-                    showOnlyScopFilter = BurpExtender.isInScope(item.getUrl());
+                    showOnlyScopFilter = BurpExtender.helpers().isInScope(item.getUrl());
                 }
                 boolean hideItemsWithoutResponses = true;
                 if (this.filterProp.isHideItemsWithoutResponses()) {
@@ -469,8 +470,8 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 boolean colorFilter = false;
                 if (statusFilter && showOnlyScopFilter) {
                     // cololr
-                    EnumSet<HighlightColor> colors = this.filterProp.getHighlightColors();
-                    HighlightColor hc = HighlightColor.parseEnum(item.getHighlight());
+                    EnumSet<MessageHighlightColor> colors = this.filterProp.getHighlightColors();
+                    MessageHighlightColor hc = item.getHighlightColor();
                     if (colors.contains(hc)) {
                         colorFilter = true;
                     }
@@ -488,14 +489,14 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 if (statusFilter && showOnlyScopFilter && colorFilter) {
                     if (this.filterProp.getShowOnly()) {
                         Pattern patternShowOnly = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getShowOnlyExtension()));
-                        Matcher matchShowOnly = patternShowOnly.matcher(item.getUrl().getPath());
+                        Matcher matchShowOnly = patternShowOnly.matcher(item.toURL().getPath());
                         if (!matchShowOnly.find()) {
                             matchFilter = false;
                         }
                     } else {
                         if (this.filterProp.getHide()) {
                             Pattern patternHide = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getHideExtension()));
-                            Matcher matchHide = patternHide.matcher(item.getUrl().getPath());
+                            Matcher matchHide = patternHide.matcher(item.toURL().getPath());
                             if (matchHide.find()) {
                                 matchFilter = false;
                             }

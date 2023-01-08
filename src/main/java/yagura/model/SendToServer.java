@@ -1,20 +1,17 @@
 package yagura.model;
 
-import burp.BurpExtender;
-import burp.IContextMenuInvocation;
-import burp.IHttpRequestResponse;
-import burp.IHttpService;
-import extension.burp.HttpService;
+import burp.api.montoya.core.HighlightColor;
+import burp.api.montoya.http.HttpService;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.InvocationType;
+import extension.burp.HttpTarget;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
-import extension.helpers.HttpUtil.DummyOutputStream;
 import extension.helpers.StringUtil;
-import java.lang.UnsupportedOperationException;
 import java.awt.event.ActionEvent;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
@@ -34,7 +31,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Base64;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,23 +45,22 @@ import java.util.logging.Logger;
 public class SendToServer extends SendToMenuItem {
     private final static Logger logger = Logger.getLogger(SendToServer.class.getName());
 
-    public SendToServer(SendToItem item, IContextMenuInvocation contextMenu) {
+    public SendToServer(SendToItem item) {
+        super(item);
+    }
+
+    public SendToServer(SendToItem item, ContextMenuEvent contextMenu) {
         super(item, contextMenu);
     }
 
-    @Override
-    public void menuItemClicked(String menuItemCaption, IHttpRequestResponse[] messageInfo) {
-        sendToEvent(messageInfo);
-    }
-
-    public void sendToEvent(IHttpRequestResponse[] messageInfo) {
+    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
         if (this.isReverseOrder()) {
-            for (int i = messageInfo.length - 1; i >= 0; i--) {
-                sendToServer(messageInfo[i]);
+            for (int i = messageInfo.size() - 1; i >= 0; i--) {
+                sendToServer(messageInfo.get(i));
             }
         } else {
-            for (int i = 0; i < messageInfo.length; i++) {
-                sendToServer(messageInfo[i]);
+            for (int i = 0; i < messageInfo.size(); i++) {
+                sendToServer(messageInfo.get(i));
             }
         }
     }
@@ -74,7 +70,7 @@ public class SendToServer extends SendToMenuItem {
      */
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
-    protected void sendToServer(IHttpRequestResponse messageInfo) {
+    protected void sendToServer(HttpRequestResponse messageInfo) {
         // 拡張オプションを取得
         Properties prop = getExtendProperty();
         String useProxy = prop.getProperty("useProxy", SendToExtend.USE_CUSTOM_PROXY);
@@ -85,7 +81,7 @@ public class SendToServer extends SendToMenuItem {
         }
     }
 
-    protected void sendToServerUseBurpClient(IHttpRequestResponse messageInfo) {
+    protected void sendToServerUseBurpClient(HttpRequestResponse messageInfo) {
         Runnable sendTo = new Runnable() {
             @Override
             public void run() {
@@ -102,21 +98,20 @@ public class SendToServer extends SendToMenuItem {
                             ostm.write(StringUtil.getBytesRaw(StringUtil.NEW_LINE));
                             ostm.write(bodyStream.toByteArray());
                         }
-                        HttpService httpService = new HttpService(tagetURL);
-                        IHttpRequestResponse httpRequestResponse = BurpExtender.getCallbacks().makeHttpRequest(httpService, ostm.toByteArray());
-                        extension.helpers.HttpResponse response = extension.helpers.HttpResponse.parseHttpResponse(httpRequestResponse.getResponse());
-                        int statusCode = response.getStatusCode();
+                        HttpTarget httpService = new HttpTarget(tagetURL);
+                        burp.api.montoya.http.message.responses.HttpResponse response = messageInfo.httpResponse();
+                        int statusCode = response.statusCode();
                         if (statusCode == HttpURLConnection.HTTP_OK) {
-                            if (response.getBody().length() == 0) {
+                            if (response.body().length() == 0) {
                                 fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
                             } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + response.getBody()));
-                                logger.log(Level.WARNING, "[" + statusCode + "]", response.getBody());
+                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + response.bodyAsString()));
+                                logger.log(Level.WARNING, "[" + statusCode + "]", response.body());
                             }
                         } else {
                             // 200以外
-                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + response.getBody()));
-                            logger.log(Level.WARNING, "[" + statusCode + "]", response.getBody());
+                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + response.bodyAsString()));
+                            logger.log(Level.WARNING, "[" + statusCode + "]", response.body());
                         }
                     }
                 } catch (IOException ex) {
@@ -131,7 +126,7 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
-    protected void sendToServerUseJDKClient(IHttpRequestResponse messageInfo) {
+    protected void sendToServerUseJDKClient(HttpRequestResponse messageInfo) {
         throw new UnsupportedOperationException();
 //        Runnable sendTo = new Runnable() {
 //            @Override
@@ -142,7 +137,7 @@ public class SendToServer extends SendToMenuItem {
 //                    DummyOutputStream dummy = new DummyOutputStream();
 //                    outMultipart(boundary, dummy, messageInfo);
 //                    int contentLength = dummy.getSize();
-//                    
+//
 //                    URL url = new URL(getTarget()); // 送信先
 //                    // 拡張オプションを取得
 //                    Properties prop = getExtendProperty();
@@ -153,27 +148,27 @@ public class SendToServer extends SendToMenuItem {
 //                        if (Proxy.Type.HTTP.name().equals(proxyProtocol)) {
 //                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "8080"), 8080);
 //                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
-//                            proxy = new Proxy(Proxy.Type.HTTP, addr);                                                                
+//                            proxy = new Proxy(Proxy.Type.HTTP, addr);
 //                        }
 //                        else if (Proxy.Type.SOCKS.name().equals(proxyProtocol)) {
 //                            int proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort", "1080"), 1080);
 //                            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
-//                            proxy = new Proxy(Proxy.Type.SOCKS, addr);                                                                                        
+//                            proxy = new Proxy(Proxy.Type.SOCKS, addr);
 //                        }
-//                    } 
+//                    }
 //                    String proxyUser = prop.getProperty("proxyUser", "");
-//                    String proxyPasswd = prop.getProperty("proxyPasswd", "");                    
+//                    String proxyPasswd = prop.getProperty("proxyPasswd", "");
 //                    Authenticator authenticator = new Authenticator() {
 //                        @Override
 //                        protected PasswordAuthentication getPasswordAuthentication() {
 //                            return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
-//                        }               
+//                        }
 //                    };
 ////                    if (!proxyUser.isEmpty()) {
 //                        Authenticator.setDefault(authenticator);
 ////                    }
 ////                    else {
-////                        Authenticator.setDefault(null);                    
+////                        Authenticator.setDefault(null);
 ////                    }
 //
 ////                    boolean ignoreValidateCertification = ConvertUtil.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
@@ -252,8 +247,8 @@ public class SendToServer extends SendToMenuItem {
 //        };
 //        this.threadExecutor.submit(sendTo);
     }
-    
-    protected void sendToServerUseHttpClient(IHttpRequestResponse messageInfo) {
+
+    protected void sendToServerUseHttpClient(HttpRequestResponse messageInfo) {
         Runnable sendTo = new Runnable() {
             @Override
             public void run() {
@@ -297,9 +292,9 @@ public class SendToServer extends SendToMenuItem {
                         builder = builder.sslContext(HttpUtil.ignoreSSLContext());
                     }
 
-                    final Properties props = System.getProperties(); 
+                    final Properties props = System.getProperties();
                     props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.valueOf(ignoreValidateCertification).toString());
-                    
+
                     if (!Proxy.Type.DIRECT.name().equals(proxyProtocol)) {
                         ProxySelector staticProxy = new HttpUtil.StaticProxySelector(proxy) {
                             @Override
@@ -353,47 +348,56 @@ public class SendToServer extends SendToMenuItem {
     }
 
     protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
-        HttpService httpService = new HttpService(tagetURL);
+        HttpTarget httpService = new HttpTarget(tagetURL);
         String target = tagetURL.getFile().isEmpty() ? "/" : tagetURL.getFile();
         out.write(StringUtil.getBytesRaw(String.format("POST %s HTTP/1.1", target) + HttpUtil.LINE_TERMINATE));
-        out.write(StringUtil.getBytesRaw(String.format("Host: %s", HttpUtil.buildHost(httpService.getHost(), httpService.getPort(), httpService.isHttps())) + HttpUtil.LINE_TERMINATE));
+        out.write(StringUtil.getBytesRaw(String.format("Host: %s", HttpUtil.buildHost(httpService.getHost(), httpService.getPort(), httpService.secure())) + HttpUtil.LINE_TERMINATE));
         out.write(StringUtil.getBytesRaw(String.format("User-Agent: %s", "Java-http-client/BurpSuite") + HttpUtil.LINE_TERMINATE));
     }
 
-    protected void outMultipart(String boundary, OutputStream out, IHttpRequestResponse messageInfo) throws IOException, Exception {
-        IHttpService httpService = messageInfo.getHttpService();
-        HttpUtil.outMultipartText(boundary, out, "host", httpService.getHost());
-        HttpUtil.outMultipartText(boundary, out, "port", StringUtil.toString(httpService.getPort()));
-        HttpUtil.outMultipartText(boundary, out, "protocol", httpService.getProtocol());
-        HttpUtil.outMultipartText(boundary, out, "url", StringUtil.toString(BurpExtender.getHelpers().getURL(messageInfo)));
-        String comment = messageInfo.getComment();
+    protected void outMultipart(String boundary, OutputStream out, HttpRequestResponse messageInfo) throws IOException, Exception {
+        burp.api.montoya.http.message.requests.HttpRequest httpRequest = messageInfo.httpRequest();
+        burp.api.montoya.http.message.responses.HttpResponse httpResponse = messageInfo.httpResponse();
+
+        HttpService httpService = httpRequest.httpService();
+        HttpUtil.outMultipartText(boundary, out, "host", httpService.host());
+        HttpUtil.outMultipartText(boundary, out, "port", StringUtil.toString(httpService.port()));
+        HttpUtil.outMultipartText(boundary, out, "protocol", HttpTarget.getProtocol(httpService.secure()));
+        HttpUtil.outMultipartText(boundary, out, "url", httpRequest.url());
+        String comment = messageInfo.messageAnnotations().comment();
         if (comment != null) {
             HttpUtil.outMultipartText(boundary, out, "comment", comment, StandardCharsets.UTF_8);
         }
-        String color = messageInfo.getHighlight();
+        HighlightColor color = messageInfo.messageAnnotations().highlightColor();
         if (color != null) {
-            HttpUtil.outMultipartText(boundary, out, "highlight", color);
+            HttpUtil.outMultipartText(boundary, out, "highlight", color.name());
         }
-        if (messageInfo.getRequest() != null && this.isRequest()) {
-            HttpUtil.outMultipartBinary(boundary, out, "request", messageInfo.getRequest());
+        if (messageInfo.httpRequest() != null && this.isRequest()) {
+            HttpUtil.outMultipartBinary(boundary, out, "request", httpRequest.asBytes().getBytes());
         }
-        if (messageInfo.getResponse() != null && this.isResponse()) {
-            HttpUtil.outMultipartBinary(boundary, out, "response", messageInfo.getResponse());
+        if (messageInfo.httpResponse() != null && this.isResponse()) {
+            HttpUtil.outMultipartBinary(boundary, out, "response", messageInfo.httpResponse().asBytes().getBytes());
         }
         HttpUtil.outMultipartFinish(boundary, out);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IHttpRequestResponse[] messageInfo = this.contextMenu.getSelectedMessages();
+        List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
+        sendToEvent(messageInfo);
+    }
+
+    @Override
+    public void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
         sendToEvent(messageInfo);
     }
 
     @Override
     public boolean isEnabled() {
-        boolean enabled = (this.contextMenu.getInvocationContext() != IContextMenuInvocation.CONTEXT_INTRUDER_PAYLOAD_POSITIONS)
-                || (this.contextMenu.getInvocationContext() != IContextMenuInvocation.CONTEXT_TARGET_SITE_MAP_TREE);
+        boolean enabled = (this.contextMenu.invocationType() != InvocationType.INTRUDER_PAYLOAD_POSITIONS)
+                || (this.contextMenu.invocationType() != InvocationType.SITE_MAP_TREE);
         return enabled;
     }
-    
+
+
 }

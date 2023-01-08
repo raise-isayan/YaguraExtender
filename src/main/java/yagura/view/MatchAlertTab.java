@@ -5,7 +5,6 @@
  */
 package yagura.view;
 
-import burp.ITab;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
 import yagura.model.MatchAlertItem;
@@ -20,12 +19,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class MatchAlertTab extends javax.swing.JPanel implements ITab {
+public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
 
     /**
      * Creates new form MatchAlertTab
@@ -261,7 +261,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements ITab {
         this.tableAlert.getColumnModel().getColumn(13).setMinWidth(0);
         this.tableAlert.getColumnModel().getColumn(13).setPreferredWidth(0);
         this.tableAlert.getColumnModel().getColumn(13).setMaxWidth(0);
-        
+
     }
 
     private void btnAlertEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlertEditActionPerformed

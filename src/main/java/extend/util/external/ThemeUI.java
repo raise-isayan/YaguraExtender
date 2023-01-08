@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import burp.BurpExtender;
 import java.beans.PropertyChangeListener;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -13,30 +14,28 @@ import org.fife.ui.rtextarea.Gutter;
  */
 public class ThemeUI {
 
-    /***
-        StringBuilder builder = new StringBuilder();
-        BurpExtender.outPrintln("=====================");
-        Enumeration<Object> key = UIManager.getDefaults().keys();
-        while (key.hasMoreElements()) {
-            builder.append(key.nextElement());
-            builder.append("\n");
-        }
-        BurpExtender.outPrintln(builder.toString());
-        BurpExtender.outPrintln("=====================");
-    **/
+
 
    public static void changeStyleTheme(RSyntaxTextArea textArea) {
        try {
             SwingUtilities.invokeLater(() -> {
-                textArea.setForeground(UIManager.getColor("EditorPane.foreground"));
-                textArea.setBackground(UIManager.getColor("TextField.background"));
-                textArea.setSelectedTextColor(UIManager.getColor("TextArea.selectedForeground"));
-                textArea.setSelectionColor(UIManager.getColor("TextArea.selectedBackground"));
-                Gutter gutter = RSyntaxUtilities.getGutter(textArea);
-                if (gutter!=null) {
-                    gutter.setBackground(UIManager.getColor("TextField.background"));
-                    gutter.setLineNumberColor(UIManager.getColor("TextField.foreground"));
-                }
+//                ExtensionHelper.applyThemeToComponent(textArea);
+//                Gutter gutter = RSyntaxUtilities.getGutter(textArea);
+//                if (gutter!=null) {
+//                    BurpExtender.getMontoyaApi().userInterface().applyThemeToComponent(gutter);
+//                }
+
+//                textArea.setForeground(UIManager.getColor("EditorPane.foreground"));
+//                textArea.setBackground(UIManager.getColor("TextField.background"));
+//                textArea.setSelectedTextColor(UIManager.getColor("TextArea.selectedForeground"));
+//                textArea.setSelectionColor(UIManager.getColor("TextArea.selectedBackground"));
+//                Gutter gutter = RSyntaxUtilities.getGutter(textArea);
+//                if (gutter!=null) {
+//                    gutter.setBackground(UIManager.getColor("TextField.background"));
+//                    gutter.setLineNumberColor(UIManager.getColor("TextField.foreground"));
+//                }
+
+
             });
         } catch (NullPointerException ex) {
         }
@@ -48,5 +47,5 @@ public class ThemeUI {
            UIManager.removePropertyChangeListener(l);
        }
    }
-   
+
 }

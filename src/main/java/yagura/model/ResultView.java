@@ -1,8 +1,8 @@
 package yagura.model;
 
-import burp.IHttpRequestResponse;
-import extension.burp.HighlightColor;
-import extension.helpers.HttpRequest;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import extension.burp.HttpTarget;
+import extension.burp.MessageHighlightColor;
 import extension.helpers.StringUtil;
 import extension.view.base.NamedColor;
 import extension.view.base.ObjectTableColumn;
@@ -25,7 +25,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
         super(item);
     }
 
-    public ResultView(IHttpRequestResponse item, int ordinal) {
+    public ResultView(HttpRequestResponse item, int ordinal) {
         super(item, ordinal);
     }
 
@@ -74,23 +74,16 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     break;
                 case 1: // #
                     int ordinal = msg.getOrdinal();
-                    Color highlightColor = null;
-                    String color = msg.getHighlight();
-                    if (color != null) {
-                        HighlightColor hc = HighlightColor.parseEnum(color);
-                        highlightColor = hc.toColor();
-                        value = new NamedColor(highlightColor, StringUtil.toString(ordinal + 1));
-                    }
-                    if (value == null) {
-                        value = new NamedColor(Color.WHITE, StringUtil.toString(ordinal + 1));
-                    }
+                    MessageHighlightColor hc = msg.getHighlightColor();
+                    Color highlightColor = hc.toColor();
+                    value = new NamedColor(highlightColor, StringUtil.toString(ordinal + 1));
                     break;
                 case 2: // host
-                    value = msg.getProtocol() + "://" + msg.getHost();
+                    String protocol = HttpTarget.getProtocol(msg.httpRequest().httpService().secure());
+                    value = protocol + "://" + msg.getHost();
                     break;
                 case 3: // method
-                    HttpRequest reqmsg = HttpRequest.parseHttpRequest(msg.getRequest());
-                    value = reqmsg.getMethod();
+                    value = msg.httpRequest().method();
                     break;
                 case 4: // url
                     value = StringUtil.toString(msg.getUrl());
@@ -126,13 +119,13 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                 case 0: // Data
                     break;
                 case 1: // #
-                    if (value instanceof NamedColor) {
-                        NamedColor nc = (NamedColor) value;
+                    if (value instanceof NamedColor nc) {
                         msg.setHighlight(nc.toString());
                     } else {
                         msg.setHighlight(null);
                     }
                     break;
+
                 case 2: // host
                     break;
                 case 3: // method

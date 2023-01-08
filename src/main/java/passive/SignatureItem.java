@@ -1,10 +1,10 @@
 package passive;
 
-import burp.BurpExtender;
-import burp.IHttpRequestResponse;
-import burp.IHttpRequestResponseWithMarkers;
-import burp.IScanIssue;
-import burp.IScannerCheck;
+import burp.api.montoya.core.Range;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.MarkedHttpRequestResponse;
+import burp.api.montoya.scanner.ScanCheck;
+import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import extension.burp.ScannerCheckAdapter;
@@ -64,56 +64,63 @@ public class SignatureItem<M extends IssueItem> implements ISignatureItem {
         return serverity;
     }
 
-    public IScanIssue makeScanIssue(IHttpRequestResponse messageInfo, List<M> issueItem) {
+    public AuditIssue makeScanIssue(HttpRequestResponse messageInfo, List<M> issueItem) {
         return null;
     }
 
-    public IScannerCheck passiveScanCheck() {
+    public ScanCheck passiveScanCheck() {
         return new ScannerCheckAdapter();
     }
 
-    public IHttpRequestResponseWithMarkers applyMarkers(IHttpRequestResponse baseRequestResponse, List<M> issueList) {
-        List<int[]> requestMarkers = new ArrayList<>();
-        List<int[]> responseMarkers = new ArrayList<>();
+    public MarkedHttpRequestResponse applyMarkers(HttpRequestResponse baseRequestResponse, List<M> issueList) {
+        List<Range> requestMarkers = new ArrayList<>();
+        List<Range> responseMarkers = new ArrayList<>();
         for (IssueItem issue : issueList) {
             if (issue.isCapture()) {
                 if (issue.isMessageIsRequest()) {
-                    requestMarkers.add(new int[]{issue.start(), issue.end()});
+                    requestMarkers.add(Range.range(issue.start(), issue.end()));
                 } else {
-                    responseMarkers.add(new int[]{issue.start(), issue.end()});
+                    responseMarkers.add(Range.range(issue.start(), issue.end()));
                 }
             }
         }
-        List<int[]> applyRequestMarkers = (requestMarkers.size() > 0) ? requestMarkers : null;
-        List<int[]> applyResponseMarkers = (responseMarkers.size() > 0) ? responseMarkers : null;
-        return BurpExtender.getCallbacks().applyMarkers(baseRequestResponse, applyRequestMarkers, applyResponseMarkers);
+        if (!(requestMarkers.isEmpty() || responseMarkers.isEmpty())) {
+            return baseRequestResponse.withMarkers(requestMarkers, responseMarkers);
+        }
+        else if (!requestMarkers.isEmpty()) {
+            return baseRequestResponse.withRequestMarkers(requestMarkers);
+        }
+        else if (!responseMarkers.isEmpty()) {
+            return baseRequestResponse.withResponseMarkers(responseMarkers);
+        }
+        return baseRequestResponse.withNoMarkers();
     }
 
-    private final static Comparator<int[]> COMPARE_MARKS = new Comparator<int[]>() {
+    private final static Comparator<Range> COMPARE_MARKS = new Comparator<>() {
         @Override
-        public int compare(int[] o1, int[] o2) {
-            if (!(o1.length == 2 && o2.length == 2)) return 0;
-            int cmp = Integer.compare(o1[0], o2[0]);
+        public int compare(Range o1, Range o2) {
+            if ((o1 == null || o2 == null)) return 0;
+            int cmp = Integer.compare(o1.startIndexInclusive(), o2.startIndexInclusive());
             if (cmp == 0)
-                return Integer.compare(o2[1], o1[1]);
+                return Integer.compare(o2.endIndexExclusive(), o1.endIndexExclusive());
             else
                 return cmp;
         }
     };
 
-    protected static void markerSortOrder(List<int[]> applyRequestMarkers, List<int[]> applyResponseMarkers) {
+    protected static void markerSortOrder(List<Range> applyRequestMarkers, List<Range> applyResponseMarkers) {
         // ソートする
         if (applyRequestMarkers != null) applyRequestMarkers.sort(COMPARE_MARKS);
         if (applyResponseMarkers != null) applyResponseMarkers.sort(COMPARE_MARKS);
     }
 
-    protected static List<int[]> markerUnionRegion(List<int[]> markers) {
+    protected static List<Range> markerUnionRegion(List<Range> markers) {
         // 領域が重なってる場合に除外
         // A の領域のなかに B が一部でも含まれる場合にはBを含めない
-        List<int[]> regions= new ArrayList<>();
-        NEXT: for (int[] mark : markers) {
-            for (int[] reg : regions) {
-                if (reg[0] <= mark[0] && mark[0] <= reg[1]) continue NEXT;
+        List<Range> regions = new ArrayList<>();
+        NEXT: for (Range mark : markers) {
+            for (Range reg : regions) {
+                if (reg.startIndexInclusive() <= mark.startIndexInclusive() && mark.startIndexInclusive() <= reg.endIndexExclusive()) continue NEXT;
             }
             regions.add(mark);
         }

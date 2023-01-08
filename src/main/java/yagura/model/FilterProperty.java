@@ -1,7 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import extension.burp.HighlightColor;
+import extension.burp.MessageHighlightColor;
 import java.util.EnumSet;
 
 /**
@@ -127,13 +127,13 @@ public class FilterProperty {
     }
 
     @Expose
-    private EnumSet<HighlightColor> colors = EnumSet.allOf(HighlightColor.class);
+    private EnumSet<MessageHighlightColor> colors = EnumSet.allOf(MessageHighlightColor.class);
 
-    public EnumSet<HighlightColor> getHighlightColors() {
+    public EnumSet<MessageHighlightColor> getHighlightColors() {
         return this.colors;
     }
 
-    public void setHighlightColors(EnumSet<HighlightColor> colors) {
+    public void setHighlightColors(EnumSet<MessageHighlightColor> colors) {
         this.colors = colors;
     }
 

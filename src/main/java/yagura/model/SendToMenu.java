@@ -1,20 +1,15 @@
 package yagura.model;
 
 import burp.BurpExtender;
-import burp.IBurpExtenderCallbacks;
-import burp.IContextMenuFactory;
-import burp.IContextMenuInvocation;
-import burp.IHttpRequestResponse;
-import burp.IHttpService;
-import burp.IMessageEditorController;
-import burp.IScanIssue;
+import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import extend.util.external.TransUtil;
-import extension.helpers.HttpUtil;
-import java.awt.TrayIcon;
+import extension.burp.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +22,17 @@ import javax.swing.JMenuItem;
  *
  * @author isayan
  */
-public class SendToMenu implements IContextMenuFactory, SendToListener {
-
+public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
 
     private final SendToProperty property;
-    private final IBurpExtenderCallbacks callbacks;
-    private IContextMenuInvocation invocation;
+    private final MontoyaApi api;
+    private ContextMenuEvent invocation;
 
     private final javax.swing.JMenu mnuSendTo = new javax.swing.JMenu();
 
-    public SendToMenu(IBurpExtenderCallbacks cb, SendToProperty property) {
-        this.callbacks = cb;
+    public SendToMenu(MontoyaApi api, SendToProperty property) {
+        this.api = api;
         this.property = property;
 
     }
@@ -46,7 +40,7 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
     private final List<SendToMenuItem> sendToList = new ArrayList<>();
 
     @Override
-    public List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
+    public List<JMenuItem> provideMenuItems(ContextMenuEvent invocation) {
         this.invocation = invocation;
         this.renewMenu(this.property);
         return this.menuList;
@@ -57,23 +51,23 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
              String caption = TransUtil.getOrderdChar(ord) + ") " + menuItem.getCaption();
              menuItem.setCaption(caption);
         }
-        return menuItem; 
+        return menuItem;
     }
 
     private String getMenuItemCaption(boolean forceSortOrder, int ord, String caption) {
         if (forceSortOrder)
             return TransUtil.getOrderdChar(ord) + ") " + caption;
         else
-            return caption; 
+            return caption;
     }
 
     private int getMenuItemCount(boolean isSubmenu) {
-        if (isSubmenu) 
+        if (isSubmenu)
             return this.mnuSendTo.getItemCount();
         else
             return this.menuList.size();
     }
-    
+
     public void renewMenu(SendToProperty property) {
         this.mnuSendTo.setText("Send To");
         this.sendToList.clear();
@@ -133,13 +127,13 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
 
                             @Override
                             public void warning(SendToEvent evt) {
-                                BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.WARNING);
+                                BurpExtender.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.INFO);
                                 logger.log(Level.WARNING, evt.getMessage());
                             }
 
                             @Override
                             public void error(SendToEvent evt) {
-                                BurpExtender.issueAlert("SendToServer", evt.getMessage(), TrayIcon.MessageType.ERROR);
+                                BurpExtender.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.ERROR);
                                 logger.log(Level.SEVERE, evt.getMessage());
                             }
 
@@ -177,8 +171,9 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
 
     private final javax.swing.JPopupMenu popBurpMenu = new javax.swing.JPopupMenu();
 
-    public void showBurpMenu(IMessageEditorController controller, MouseEvent e) {
-        showBurpMenu(this.getSendToMessage(controller), e);
+
+    public void showBurpMenu(HttpRequestResponse httpRequestResponse, MouseEvent e) {
+        showBurpMenu(this.getSendToMessage(httpRequestResponse), e);
     }
 
     public void showBurpMenu(SendToMessage message, java.awt.event.MouseEvent evt) {
@@ -208,15 +203,15 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
             }
         });
         this.popBurpMenu.add(mnuIntruder);
-        javax.swing.JMenuItem mnuSpider = new javax.swing.JMenuItem();
-        mnuSpider.setText("Sendto Spider");
-        mnuSpider.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sendToSpider(message);
-            }
-        });
-        this.popBurpMenu.add(mnuSpider);
+//        javax.swing.JMenuItem mnuSpider = new javax.swing.JMenuItem();
+//        mnuSpider.setText("Sendto Spider");
+//        mnuSpider.addActionListener(new java.awt.event.ActionListener() {
+//            @Override
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                sendToSpider(message);
+//            }
+//        });
+//        this.popBurpMenu.add(mnuSpider);
         if (message.isExtendVisible()) {
             this.popBurpMenu.addSeparator();
             List<SendToItem> sendToItemList = property.getSendToItemList();
@@ -263,62 +258,13 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
 
     private int repeternum = 0;
 
-    public SendToMessage getSendToMessage(IMessageEditorController controller) {
+    public SendToMessage getSendToMessage(HttpRequestResponse httpRequestResponse) {
         return new SendToMessage() {
             @Override
-            public IHttpRequestResponse[] getSelectedMessages() {
-                return new IHttpRequestResponse[]{
-                    new IHttpRequestResponse() {
-                        @Override
-                        public byte[] getRequest() {
-                            return controller.getRequest();
-                        }
-
-                        @Override
-                        public void setRequest(byte[] bytes) {
-
-                        }
-
-                        @Override
-                        public byte[] getResponse() {
-                            return controller.getResponse();
-                        }
-
-                        @Override
-                        public void setResponse(byte[] bytes) {
-
-                        }
-
-                        @Override
-                        public String getComment() {
-                            return null;
-                        }
-
-                        @Override
-                        public void setComment(String string) {
-                        }
-
-                        @Override
-                        public String getHighlight() {
-                            return null;
-                        }
-
-                        @Override
-                        public void setHighlight(String string) {
-                        }
-
-                        @Override
-                        public IHttpService getHttpService() {
-                            return controller.getHttpService();
-                        }
-
-                        @Override
-                        public void setHttpService(IHttpService ihs) {
-
-                        }
-
-                    }
-                };
+            public List<HttpRequestResponse> getSelectedMessages() {
+                List<HttpRequestResponse> selectedMesage = new ArrayList<>();
+                selectedMesage.add(httpRequestResponse);
+                return selectedMesage;
             }
 
             @Override
@@ -334,47 +280,86 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
         };
     }
 
-    private IContextMenuInvocation getContextMenuInvocation(KeyEvent evt, IHttpRequestResponse[] messageInfo) {
-        return new IContextMenuInvocation() {
-            @Override
-            public InputEvent getInputEvent() {
-                return evt;
-            }
-
-            @Override
-            public int getToolFlag() {
-                return IBurpExtenderCallbacks.TOOL_PROXY;
-            }
-
-            @Override
-            public byte getInvocationContext() {
-                return IContextMenuInvocation.CONTEXT_PROXY_HISTORY;
-            }
-
-            @Override
-            public int[] getSelectionBounds() {
-                return null;
-            }
-
-            @Override
-            public IHttpRequestResponse[] getSelectedMessages() {
-                return messageInfo;
-            }
-
-            @Override
-            public IScanIssue[] getSelectedIssues() {
-                return null;
-            }
-
-        };
-    }
+//    private ContextMenuEvent getContextMenuInvocation(KeyEvent evt, HttpRequestResponse messageInfo) {
+//        return new ContextMenuEvent() {
+//            @Override
+//            public InputEvent getInputEvent() {
+//                return evt;
+//            }
+//
+//            @Override
+//            public int getToolFlag() {
+//                return IBurpExtenderCallbacks.TOOL_PROXY;
+//            }
+//
+//            @Override
+//            public byte getInvocationContext() {
+//                return IContextMenuInvocation.CONTEXT_PROXY_HISTORY;
+//            }
+//
+//            @Override
+//            public int[] getSelectionBounds() {
+//                return null;
+//            }
+//
+//            @Override
+//            public IHttpRequestResponse[] getSelectedMessages() {
+//                return messageInfo;
+//            }
+//
+//            @Override
+//            public IScanIssue[] getSelectedIssues() {
+//                return null;
+//            }
+//
+//            @Override
+//            public Optional<MessageEditorHttpRequestResponse> messageEditorRequestResponse() {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//            @Override
+//            public List<HttpRequestResponse> selectedRequestResponses() {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//            @Override
+//            public List<AuditIssue> selectedIssues() {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//            @Override
+//            public InputEvent inputEvent() {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//            @Override
+//            public ToolType toolType() {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//            @Override
+//            public boolean isFromTool(ToolType... tts) {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//            @Override
+//            public InvocationType invocationType() {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//            @Override
+//            public boolean isFrom(InvocationType... its) {
+//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//            }
+//
+//        };
+//    }
 
     public void sendToRepeater(SendToMessage message) {
         try {
-            IHttpRequestResponse[] messageItem = message.getSelectedMessages();
-            IHttpService httpService = messageItem[0].getHttpService();
-            callbacks.sendToRepeater(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
-                    messageItem[0].getRequest(), "v" + this.repeternum++);
+            List<HttpRequestResponse> messageItem = message.getSelectedMessages();
+            HttpRequest httpRequest = messageItem.get(0).httpRequest();
+            api.repeater().sendToRepeater("v" + this.repeternum++, httpRequest);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -382,19 +367,9 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
 
     public void sendToIntruder(SendToMessage message) {
         try {
-            IHttpRequestResponse[] messageItem = message.getSelectedMessages();
-            IHttpService httpService = messageItem[0].getHttpService();
-            callbacks.sendToIntruder(httpService.getHost(), httpService.getPort(), HttpUtil.isSSL(httpService.getProtocol()),
-                    messageItem[0].getRequest());
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    public void sendToSpider(SendToMessage message) {
-        try {
-            IHttpRequestResponse[] messageItem = message.getSelectedMessages();
-            callbacks.sendToSpider(BurpExtender.getHelpers().getURL(messageItem[0]));
+            List<HttpRequestResponse> messageItem = message.getSelectedMessages();
+            HttpRequest httpRequest = messageItem.get(0).httpRequest();
+            api.intruder().sendToIntruder(httpRequest);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -410,7 +385,8 @@ public class SendToMenu implements IContextMenuFactory, SendToListener {
 
     @Override
     public void error(SendToEvent evt) {
-        this.callbacks.issueAlert(evt.getMessage());
+        this.api.logging().raiseErrorEvent(evt.getMessage());
     }
+
 
 }

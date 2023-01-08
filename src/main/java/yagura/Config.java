@@ -11,14 +11,13 @@ import extension.helpers.json.JsonUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import yagura.model.OptionProperty;
 
 /**
  *
  * @author isayan
  */
 public class Config extends BurpConfig {
-        
+
     public static File getExtensionHomeDir() {
         return new File(getUserHomePath(), getExtensionDir());
     }
@@ -26,7 +25,7 @@ public class Config extends BurpConfig {
     public static String getTabCaption() {
         return "Yagura";
     }
-        
+
     public static String getExtensionDir() {
         return ".yaguraextender";
     }
@@ -34,7 +33,7 @@ public class Config extends BurpConfig {
     public static String getExtensionName() {
         return "YaguraExtender.json";
     }
-    
+
     public static String getLoggingPropertyName() {
         return "logging.properties";
     }
@@ -46,7 +45,7 @@ public class Config extends BurpConfig {
     public static String getToolLogName(String toolName) {
         return String.format("burp_tool_%s.log", toolName);
     }
-    
+
 //    public static void saveToJson(File fo, OptionProperty option) throws IOException {
 //        JsonUtil.saveToJson(fo, option, true);
 //    }
@@ -72,7 +71,7 @@ public class Config extends BurpConfig {
         String jsonString = StringUtil.getStringUTF8(FileUtil.bytesFromFile(fi));
         JsonElement jsonRoot = JsonUtil.parse(jsonString);
         if (jsonRoot.isJsonObject()) {
-            JsonObject jsonMap = jsonRoot.getAsJsonObject();    
+            JsonObject jsonMap = jsonRoot.getAsJsonObject();
             for (String memberName : jsonMap.keySet()) {
                 option.put(memberName, jsonMap.get(memberName).toString());
             }
@@ -83,12 +82,12 @@ public class Config extends BurpConfig {
         GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
         gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
         Gson gson = gsonBuilder.create();
-        JsonObject jsonMap = new JsonObject();    
+        JsonObject jsonMap = new JsonObject();
         for (String memberName : option.keySet()) {
             jsonMap.add(memberName, JsonUtil.parse(option.get(memberName)));
-        }        
+        }
         String jsonString = gson.toJson(jsonMap);
         FileUtil.bytesToFile(StringUtil.getBytesUTF8(jsonString), fo);
     }
-    
+
 }

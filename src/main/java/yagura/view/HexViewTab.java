@@ -1,8 +1,8 @@
 package yagura.view;
 
-import burp.IMessageEditorController;
-import burp.IMessageEditorTab;
-import burp.IMessageEditorTabFactory;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.ExtensionHttpMessageEditor;
 import extension.helpers.ConvertUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
@@ -29,7 +29,7 @@ import javax.swing.table.TableColumnModel;
  *
  * @author isayan
  */
-public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabFactory, IMessageEditorTab {
+public class HexViewTab extends javax.swing.JPanel implements ExtensionHttpMessageEditor {
     private final static Logger logger = Logger.getLogger(HexViewTab.class.getName());
 
     /**
@@ -104,6 +104,7 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 
     private static final DecimalFormat FORMAT_POSITION = new DecimalFormat("000000"); // @jve:decl-index=0:
 
+    private HttpRequestResponse httpRequestResponse;
     private byte[] data = new byte[]{};
     private CustomTableModel modelHex = null;
 
@@ -216,52 +217,42 @@ public class HexViewTab extends javax.swing.JPanel implements IMessageEditorTabF
         return this.data;
     }
 
-    @Override
-    public IMessageEditorTab createNewInstance(IMessageEditorController controller, boolean editable) {
-        return this;
-    }
-
-    @Override
-    public String getTabCaption() {
-        return "Hex";
-    }
-
-    @Override
-    public Component getUiComponent() {
-        return this;
-    }
-
-    @Override
-    public boolean isEnabled(byte[] content, boolean isRequest) {
-        return false;
-    }
-
-    @Override
-    public void setMessage(byte[] content, boolean isRequest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public byte[] getMessage() {
-        return this.data;
-    }
-
-    @Override
-    public boolean isModified() {
-        return false;
-    }
-
-    @Override
-    public byte[] getSelectedData() {
-        return null;
-    }
-
     public CustomTableModel getModel() {
         return this.modelHex;
     }
 
     public void setMessageFont(Font font) {
         this.tableHex.setFont(font);
+    }
+
+    @Override
+    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.setData(httpRequestResponse.httpRequest().asBytes().getBytes());
+    }
+
+    @Override
+    public boolean isEnabledFor(HttpRequestResponse hrr) {
+        return false;
+    }
+
+    @Override
+    public String caption() {
+        return "Hex";
+    }
+
+    @Override
+    public Component uiComponent() {
+        return this;
+    }
+
+    @Override
+    public Selection selectedData() {
+        return null;
+    }
+
+    @Override
+    public boolean isModified() {
+        return false;
     }
 
     // TableColumn.createDefaultHeaderRenderer

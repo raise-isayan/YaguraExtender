@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.api.montoya.http.message.params.HttpParameterType;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,6 +8,7 @@ import javax.swing.table.TableModel;
 import extend.util.external.TransUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.DefaultObjectTableModel;
+import java.io.UnsupportedEncodingException;
 
 /**
  *
@@ -49,12 +51,12 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 }
                 case 1: // Type
                 {
-                    value = ParamsView.getType(param.getType());
+                    value = param.type().name();
                     break;
                 }
                 case 2: // Name
                 {
-                    String raw = param.getName();
+                    String raw = param.name();
                     if (this.urldecode) {
                         value = TransUtil.decodeUrl(raw, encoding);
                     } else {
@@ -64,7 +66,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 }
                 case 3: // Value
                 {
-                    String raw = param.getValue();
+                    String raw = param.value();
                     if (this.urldecode) {
                         value = TransUtil.decodeUrl(raw, encoding);
                     } else {
@@ -75,7 +77,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 default:
                     break;
             }
-        } catch (Exception ex) {
+        } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return value;
@@ -84,31 +86,31 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
     @Override
     public void setValueAt(Object value, int rowIndex, int columnIndex) {
         try {
-            ParamsView param = new ParamsView();
+            ParamsView param = super.getData(rowIndex);
             switch (columnIndex) {
                 case 0: // Data
                     break;
                 case 1: // Type
-                    param.setType((ParamsView.parseType((String) value)));
+                    param.getParameter().setType((HttpParameterType.valueOf((String) value)));
                     break;
                 case 2: // Name
                     if (this.urldecode) {
                         String raw = StringUtil.getBytesCharsetString((String) value, encoding);
                         raw = TransUtil.encodeUrl(raw, encoding, true);
-                        param.setName(raw);
+                        param.getParameter().setName(raw);
                     } else {
                         String rowMessage = StringUtil.getBytesCharsetString((String) value, encoding);
-                        param.setName(rowMessage);
+                        param.getParameter().setName(rowMessage);
                     }
                     break;
                 case 3: // Value
                     if (this.urldecode) {
                         String raw = StringUtil.getBytesCharsetString((String) value, encoding);
                         raw = TransUtil.encodeUrl(raw, encoding, true);
-                        param.setValue(raw);
+                        param.getParameter().setValue(raw);
                     } else {
                         String raw = StringUtil.getBytesCharsetString((String) value, encoding);
-                        param.setValue(raw);
+                        param.getParameter().setValue(raw);
                     }
                     break;
             }

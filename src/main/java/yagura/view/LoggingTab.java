@@ -5,7 +5,6 @@
  */
 package yagura.view;
 
-import burp.ITab;
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -15,12 +14,13 @@ import java.io.File;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import extension.burp.IBurpTab;
 
 /**
  *
  * @author isayan
  */
-public class LoggingTab extends javax.swing.JPanel implements ITab {
+public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(LoggingTab.class.getName());
 
     /**

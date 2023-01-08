@@ -2,7 +2,7 @@ package yagura.model;
 
 import com.google.gson.annotations.Expose;
 import extension.burp.Confidence;
-import extension.burp.HighlightColor;
+import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
 import extension.burp.Severity;
 import extension.burp.TargetTool;
@@ -79,19 +79,19 @@ public class MatchAlertItem extends MatchItem {
     }
 
     @Expose
-    private HighlightColor highlightColor = null;
+    private MessageHighlightColor highlightColor = null;
 
     /**
      * @return the highlightColor
      */
-    public HighlightColor getHighlightColor() {
+    public MessageHighlightColor getHighlightColor() {
         return this.highlightColor;
     }
 
     /**
      * @param highlightColor the highlightColor to set
      */
-    public void setHighlightColor(HighlightColor highlightColor) {
+    public void setHighlightColor(MessageHighlightColor highlightColor) {
         this.highlightColor = highlightColor;
     }
 
@@ -219,7 +219,7 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setCaptureGroup((Boolean) rows[6]);
         matchAlert.setNotifyTypes((EnumSet<NotifyType>) rows[7]);
         matchAlert.setTargetTools((EnumSet<TargetTool>) rows[8]);
-        matchAlert.setHighlightColor((HighlightColor) rows[9]);
+        matchAlert.setHighlightColor((MessageHighlightColor) rows[9]);
         matchAlert.setComment((String) rows[10]);
         matchAlert.setIssueName((String) rows[11]);
         matchAlert.setSeverity((Severity) rows[12]);
