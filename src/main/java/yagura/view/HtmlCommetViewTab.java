@@ -82,7 +82,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHt
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);
+        ThemeUI.addPropertyChangeListener(listener);
 
     }
 

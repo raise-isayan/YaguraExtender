@@ -55,7 +55,7 @@ public class JSONView extends javax.swing.JPanel {
             ThemeUI.changeStyleTheme(txtJSON);
         }
     };
-    
+
 //    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
 //        @Override
 //        public Document createDefaultDocument() {
@@ -158,8 +158,8 @@ public class JSONView extends javax.swing.JPanel {
         this.modelJSON = (DefaultTreeModel) this.treeJSON.getModel();
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);
-        
+        ThemeUI.addPropertyChangeListener(listener);
+
     }
 
     private void btnExpandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpandActionPerformed

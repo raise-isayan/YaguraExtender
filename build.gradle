@@ -88,6 +88,12 @@ task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
 }
 
 dependencies {
+
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
+    compileOnly 'org.bouncycastle:bcpkix-jdk15on:1.67'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
+    compileOnly 'org.bouncycastle:bcprov-jdk15on:1.67'
+
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
         // https://mvnrepository.com/artifact/com.google.code.gson/gson
@@ -102,6 +108,8 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.15'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.3.1'
+
+
     // Unit Test
     testImplementation 'net.portswigger.burp.extensions:api:0.10.1'
     testImplementation fileTree(dir: 'libs', include: ['*.jar'])

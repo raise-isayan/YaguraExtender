@@ -29,7 +29,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -125,7 +124,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(this.listener);
+        ThemeUI.addPropertyChangeListener(this.listener);
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {

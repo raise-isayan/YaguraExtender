@@ -30,6 +30,7 @@ import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditorProvider;
+import extend.util.external.ThemeUI;
 import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.BurpExtenderImpl;
 import extension.burp.HttpTarget;
@@ -499,14 +500,12 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
         return StringUtil.getBytesCharset(clipbord, encoding);
     }
 
+    @Override
     public void extensionUnloaded() {
-//        ThemeUI.removeAllUIManagerListener();
-        MontoyaApi api = getMontoyaApi();
-
+        ThemeUI.removeAllUIManagerListener();
     }
 
     public final class ProxyHander implements HttpHandler, ProxyHttpRequestHandler, ProxyHttpResponseHandler {
-
         private final MontoyaApi api;
 
         public ProxyHander(MontoyaApi api) {

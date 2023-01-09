@@ -40,7 +40,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.UniversalViewProperty;
@@ -106,7 +105,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpR
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);
+        ThemeUI.addPropertyChangeListener(listener);
 
     }
 

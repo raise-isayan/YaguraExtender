@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -8,21 +9,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.X509Certificate;
 import java.time.LocalDate;
-import java.util.Map;
 import javax.swing.MutableComboBoxModel;
 import java.io.BufferedOutputStream;
 import java.math.BigInteger;
@@ -35,7 +30,6 @@ import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
-import extension.helpers.CertUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.HashUtil;
@@ -62,7 +56,6 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
@@ -90,8 +83,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     public JTransCoderTab() {
         initComponents();
         customizeComponents();
-        this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(this.listener);
     }
     private final QuickSearchTab quickSearchTabRaw = new QuickSearchTab();
     private final QuickSearchTab quickSearchTabFormat = new QuickSearchTab();
@@ -158,6 +149,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
         /**
          * * UI design start **
          */
+
+//        if (BurpExtender.getMontoyaApi() != null) {
+            final CertificateTab certificateTab = new CertificateTab();
+            this.tabbetTranscoder.addTab(certificateTab.getTabCaption(), certificateTab);
+//        }
 
         this.tabbetTranscoder.addTab(this.viewStateDecoderTab.getTabCaption(), this.viewStateDecoderTab);
         this.tabbetTranscoder.addTab(this.jwtTokenDecoderTab.getTabCaption(), this.jwtTokenDecoderTab);
@@ -296,6 +292,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
         this.FIRE_FOCUS.focusLost(null);
 
         this.doStateDecodeChange();
+
+        this.listener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(this.listener);
+
     }
 
     private void txtInputRawCaretUpdate(javax.swing.event.CaretEvent evt) {
@@ -613,15 +613,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
         lblDate = new javax.swing.JLabel();
         btnZoneDateCopy = new javax.swing.JButton();
         txtSystemZoneDate = new javax.swing.JTextField();
-        pnlCertificate = new javax.swing.JPanel();
-        btnExport = new javax.swing.JButton();
-        rdoConvertPEM = new javax.swing.JRadioButton();
-        txtStoreFile = new javax.swing.JTextField();
-        btnImport = new javax.swing.JButton();
-        lblPassword = new javax.swing.JLabel();
-        txtStorePassword = new javax.swing.JTextField();
-        btnStoreTypeJKS = new javax.swing.JToggleButton();
-        btnStoreTypePKCS12 = new javax.swing.JToggleButton();
         tabTokenStrength = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtTokenList = new javax.swing.JTextArea();
@@ -2236,91 +2227,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
 
         tabbetTranscoder.addTab("Converter", tabbetConverter);
 
-        btnExport.setText("Export");
-        btnExport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportActionPerformed(evt);
-            }
-        });
-
-        rdoConvertPEM.setSelected(true);
-        rdoConvertPEM.setText("Certificate and Private key in PEM format");
-
-        txtStoreFile.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtStoreFileKeyPressed(evt);
-            }
-        });
-
-        btnImport.setText("Import");
-        btnImport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImportActionPerformed(evt);
-            }
-        });
-
-        lblPassword.setText("Password:");
-
-        rdoCetificateGrp.add(btnStoreTypeJKS);
-        btnStoreTypeJKS.setText("JKS");
-        btnStoreTypeJKS.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStoreTypeJKSActionPerformed(evt);
-            }
-        });
-
-        rdoCetificateGrp.add(btnStoreTypePKCS12);
-        btnStoreTypePKCS12.setSelected(true);
-        btnStoreTypePKCS12.setText("PKCS12");
-
-        javax.swing.GroupLayout pnlCertificateLayout = new javax.swing.GroupLayout(pnlCertificate);
-        pnlCertificate.setLayout(pnlCertificateLayout);
-        pnlCertificateLayout.setHorizontalGroup(
-            pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertificateLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblPassword)
-                    .addComponent(txtStorePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(pnlCertificateLayout.createSequentialGroup()
-                            .addComponent(rdoConvertPEM)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnExport))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCertificateLayout.createSequentialGroup()
-                            .addComponent(txtStoreFile, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(btnImport)))
-                    .addGroup(pnlCertificateLayout.createSequentialGroup()
-                        .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnStoreTypePKCS12)))
-                .addContainerGap(1700, Short.MAX_VALUE))
-        );
-        pnlCertificateLayout.setVerticalGroup(
-            pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertificateLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnStoreTypeJKS)
-                    .addComponent(btnStoreTypePKCS12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtStoreFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnImport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblPassword)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtStorePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(pnlCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoConvertPEM)
-                    .addComponent(btnExport))
-                .addContainerGap(473, Short.MAX_VALUE))
-        );
-
-        tabbetTranscoder.addTab("Certificate", pnlCertificate);
-
         txtTokenList.setColumns(20);
         txtTokenList.setRows(5);
         jScrollPane1.setViewportView(txtTokenList);
@@ -2802,55 +2708,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         this.clearText();
     }//GEN-LAST:event_btnClearActionPerformed
-
-    private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
-        JFileChooser filechooser = new JFileChooser();
-        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int selected = filechooser.showOpenDialog(this);
-        if (selected == JFileChooser.APPROVE_OPTION) {
-            File file = filechooser.getSelectedFile();
-            this.txtStoreFile.setText(file.getAbsolutePath());
-        }
-    }//GEN-LAST:event_btnImportActionPerformed
-
-    private void txtStoreFileKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStoreFileKeyPressed
-    }//GEN-LAST:event_txtStoreFileKeyPressed
-
-    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-        try {
-            HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
-            File storeFile = new File(this.txtStoreFile.getText());
-            if (this.rdoConvertPEM.isSelected()) {
-                if (this.btnStoreTypeJKS.isSelected()) {
-                    mapCert = CertUtil.loadFromJKS(storeFile, this.txtStorePassword.getText());
-                } else {
-                    mapCert = CertUtil.loadFromPKCS12(storeFile, this.txtStorePassword.getText());
-                }
-            }
-            for (String ailias : mapCert.keySet()) {
-                Map.Entry<Key, X509Certificate> cert = mapCert.get(ailias);
-                JFileChooser filechooser = new JFileChooser();
-                filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                int selected = filechooser.showSaveDialog(this);
-                if (selected == JFileChooser.APPROVE_OPTION) {
-                    File pemFile = filechooser.getSelectedFile();
-                    String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
-                    FileUtil.bytesToFile(StringUtil.getBytesRaw(output), pemFile);
-                }
-                break;
-            }
-        } catch (CertificateEncodingException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
-        } catch (UnrecoverableKeyException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }//GEN-LAST:event_btnExportActionPerformed
-
-    private void btnStoreTypeJKSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreTypeJKSActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnStoreTypeJKSActionPerformed
 
     private void chk64NewlineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chk64NewlineActionPerformed
         if (this.chk64Newline.isSelected()) {
@@ -3391,7 +3248,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JButton btnDotOctIP;
     private javax.swing.JButton btnEncode;
     private javax.swing.JButton btnExcelSerial;
-    private javax.swing.JButton btnExport;
     private javax.swing.JButton btnGenerate;
     private javax.swing.ButtonGroup btnGrpEncodeType;
     private javax.swing.ButtonGroup btnGrpNewLine;
@@ -3403,7 +3259,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JButton btnHashSha512;
     private javax.swing.JButton btnHexCopy;
     private javax.swing.JButton btnHexIP;
-    private javax.swing.JButton btnImport;
     private javax.swing.JButton btnInputfile;
     private javax.swing.JButton btnIntIP;
     private javax.swing.JButton btnJavaSerialCopy;
@@ -3420,8 +3275,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JButton btnSmartDecode;
     private javax.swing.JButton btnSmartFormat;
     private javax.swing.JButton btnSmartMatch;
-    private javax.swing.JToggleButton btnStoreTypeJKS;
-    private javax.swing.JToggleButton btnStoreTypePKCS12;
     private javax.swing.JButton btnUnixtimeCopy;
     private javax.swing.JButton btnZoneDateCopy;
     private javax.swing.JCheckBox chk64Newline;
@@ -3471,7 +3324,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JLabel lblNumStep;
     private javax.swing.JLabel lblOct;
     private javax.swing.JLabel lblOctIP;
-    private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPositionStatus;
     private javax.swing.JLabel lblRadix32;
     private javax.swing.JLabel lblUnixtime;
@@ -3480,7 +3332,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JPanel pnlBase64;
     private javax.swing.JPanel pnlBase64URLSafe;
     private javax.swing.JPanel pnlBaseN;
-    private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlCharacter;
     private javax.swing.JPanel pnlCompress;
     private javax.swing.JPanel pnlConvert;
@@ -3535,7 +3386,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JRadioButton rdoCR;
     private javax.swing.JRadioButton rdoCRLF;
     private javax.swing.ButtonGroup rdoCetificateGrp;
-    private javax.swing.JRadioButton rdoConvertPEM;
     private javax.swing.JRadioButton rdoCount1;
     private javax.swing.JRadioButton rdoCount10;
     private javax.swing.JRadioButton rdoCount50;
@@ -3624,8 +3474,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JTextField txtOctIP;
     private javax.swing.JTextField txtRadix32;
     private javax.swing.JTextArea txtStatus;
-    private javax.swing.JTextField txtStoreFile;
-    private javax.swing.JTextField txtStorePassword;
     private javax.swing.JTextField txtStrength;
     private javax.swing.JTextField txtSystemZoneDate;
     private javax.swing.JTextArea txtTokenList;
