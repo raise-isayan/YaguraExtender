@@ -106,6 +106,18 @@ public class CertUtil {
         return x509cert.getEncoded();
     }
 
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromKeyStore(KeyStore ks, String keyPassword) throws CertificateEncodingException, IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = new HashMap<>();
+        Enumeration e = ks.aliases();
+        while (e.hasMoreElements()) {
+            String alias = (String) e.nextElement();
+            Key key = ks.getKey(alias, keyPassword.toCharArray());
+            X509Certificate cert = (X509Certificate) ks.getCertificate(alias);
+            certMap.put(alias, new AbstractMap.SimpleEntry<>(key, cert));
+        }
+        return certMap;
+    }
+
     protected static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromKeyStore(File storeFile, String keyPassword, String storeType) throws CertificateEncodingException, IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = new HashMap<>();
         KeyStore ks = KeyStore.getInstance(storeType);

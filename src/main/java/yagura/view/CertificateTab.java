@@ -2,16 +2,24 @@ package yagura.view;
 
 import extension.helpers.CertUtil;
 import extend.util.external.BoncyUtil;
+import extension.burp.BurpConfig;
 import extension.burp.IBurpTab;
+import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
 import java.security.Key;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateEncodingException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -26,6 +34,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
      */
     public CertificateTab() {
         initComponents();
+        customizeComponents();
     }
 
     /**
@@ -37,8 +46,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        btnGrpFormat = new javax.swing.ButtonGroup();
+        btnGrpCA = new javax.swing.ButtonGroup();
         pnlCertImport = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        rdoBurpCA = new javax.swing.JRadioButton();
+        rdoCustomCA = new javax.swing.JRadioButton();
+        pnlCertSIelectmport = new javax.swing.JPanel();
         btnStoreTypeJKS = new javax.swing.JToggleButton();
         btnStoreTypePKCS12 = new javax.swing.JToggleButton();
         txtStoreFile = new javax.swing.JTextField();
@@ -51,7 +65,57 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         setLayout(new java.awt.BorderLayout());
 
-        buttonGroup1.add(btnStoreTypeJKS);
+        pnlCertImport.setBorder(javax.swing.BorderFactory.createTitledBorder("Import"));
+        pnlCertImport.setLayout(new java.awt.BorderLayout());
+
+        btnGrpCA.add(rdoBurpCA);
+        rdoBurpCA.setSelected(true);
+        rdoBurpCA.setText("Burp suite default CA");
+        rdoBurpCA.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rdoBurpCAStateChanged(evt);
+            }
+        });
+        rdoBurpCA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoBurpCAActionPerformed(evt);
+            }
+        });
+
+        btnGrpCA.add(rdoCustomCA);
+        rdoCustomCA.setText("Custom CA File");
+        rdoCustomCA.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rdoCustomCAStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdoBurpCA)
+                    .addComponent(rdoCustomCA))
+                .addContainerGap(368, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(rdoBurpCA)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdoCustomCA)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlCertImport.add(jPanel1, java.awt.BorderLayout.NORTH);
+
+        pnlCertSIelectmport.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        btnGrpFormat.add(btnStoreTypeJKS);
         btnStoreTypeJKS.setText("JKS");
         btnStoreTypeJKS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -59,7 +123,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        buttonGroup1.add(btnStoreTypePKCS12);
+        btnGrpFormat.add(btnStoreTypePKCS12);
         btnStoreTypePKCS12.setSelected(true);
         btnStoreTypePKCS12.setText("PKCS12");
 
@@ -78,44 +142,48 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         lblPassword.setText("Password:");
 
-        javax.swing.GroupLayout pnlCertImportLayout = new javax.swing.GroupLayout(pnlCertImport);
-        pnlCertImport.setLayout(pnlCertImportLayout);
-        pnlCertImportLayout.setHorizontalGroup(
-            pnlCertImportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertImportLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlCertSIelectmportLayout = new javax.swing.GroupLayout(pnlCertSIelectmport);
+        pnlCertSIelectmport.setLayout(pnlCertSIelectmportLayout);
+        pnlCertSIelectmportLayout.setHorizontalGroup(
+            pnlCertSIelectmportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCertSIelectmportLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlCertImportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlCertImportLayout.createSequentialGroup()
+                .addGroup(pnlCertSIelectmportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlCertSIelectmportLayout.createSequentialGroup()
                         .addComponent(btnStoreTypeJKS, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnStoreTypePKCS12))
-                    .addGroup(pnlCertImportLayout.createSequentialGroup()
+                    .addGroup(pnlCertSIelectmportLayout.createSequentialGroup()
                         .addComponent(txtStoreFile, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnImport))
                     .addComponent(lblPassword)
                     .addComponent(txtStorePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(1694, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
-        pnlCertImportLayout.setVerticalGroup(
-            pnlCertImportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertImportLayout.createSequentialGroup()
+        pnlCertSIelectmportLayout.setVerticalGroup(
+            pnlCertSIelectmportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCertSIelectmportLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlCertImportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlCertSIelectmportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnStoreTypeJKS)
                     .addComponent(btnStoreTypePKCS12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlCertImportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlCertSIelectmportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtStoreFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImport))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtStorePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
+        pnlCertImport.add(pnlCertSIelectmport, java.awt.BorderLayout.CENTER);
+
         add(pnlCertImport, java.awt.BorderLayout.NORTH);
+
+        pnlCertExport.setBorder(javax.swing.BorderFactory.createTitledBorder("Export"));
 
         btnExport.setText("Export");
         btnExport.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +204,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addComponent(rdoConvertPEM, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnExport)
-                .addContainerGap(1697, Short.MAX_VALUE))
+                .addContainerGap(141, Short.MAX_VALUE))
         );
         pnlCertExportLayout.setVerticalGroup(
             pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,17 +213,26 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoConvertPEM)
                     .addComponent(btnExport))
-                .addContainerGap(637, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(pnlCertExport, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void customizeComponents() {
+        SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
+    }
+
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         try {
+
             HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
             File storeFile = new File(this.txtStoreFile.getText());
-            if (this.rdoConvertPEM.isSelected()) {
+            if (this.rdoBurpCA.isSelected()) {
+                KeyStore ks = BurpConfig.loadCACeart();
+                mapCert = CertUtil.loadFromKeyStore(ks, BurpConfig.getCAPassword());
+            }
+            else {
                 if (this.btnStoreTypeJKS.isSelected()) {
                     mapCert = CertUtil.loadFromJKS(storeFile, this.txtStorePassword.getText());
                 } else {
@@ -169,7 +246,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 int selected = filechooser.showSaveDialog(this);
                 if (selected == JFileChooser.APPROVE_OPTION) {
                     File pemFile = filechooser.getSelectedFile();
-                    BoncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), pemFile);
+                    if (this.rdoConvertPEM.isSelected()) {
+                        BoncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), pemFile);
+                    }
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
                     //FileUtil.bytesToFile(StringUtil.getBytesRaw(output), pemFile);
                 }
@@ -181,6 +260,12 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
+        } catch (KeyStoreException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CertificateException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnExportActionPerformed
 
@@ -199,20 +284,35 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_btnImportActionPerformed
 
     private void btnStoreTypeJKSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreTypeJKSActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnStoreTypeJKSActionPerformed
+
+    private void rdoBurpCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpCAActionPerformed
+    }//GEN-LAST:event_rdoBurpCAActionPerformed
+
+    private void rdoBurpCAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoBurpCAStateChanged
+        SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
+    }//GEN-LAST:event_rdoBurpCAStateChanged
+
+    private void rdoCustomCAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomCAStateChanged
+        SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
+    }//GEN-LAST:event_rdoCustomCAStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExport;
+    private javax.swing.ButtonGroup btnGrpCA;
+    private javax.swing.ButtonGroup btnGrpFormat;
     private javax.swing.JButton btnImport;
     private javax.swing.JToggleButton btnStoreTypeJKS;
     private javax.swing.JToggleButton btnStoreTypePKCS12;
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JPanel pnlCertExport;
     private javax.swing.JPanel pnlCertImport;
+    private javax.swing.JPanel pnlCertSIelectmport;
+    private javax.swing.JRadioButton rdoBurpCA;
     private javax.swing.JRadioButton rdoConvertPEM;
+    private javax.swing.JRadioButton rdoCustomCA;
     private javax.swing.JTextField txtStoreFile;
     private javax.swing.JTextField txtStorePassword;
     // End of variables declaration//GEN-END:variables
@@ -226,4 +326,5 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     public Component getUiComponent() {
         return this;
     }
+
 }

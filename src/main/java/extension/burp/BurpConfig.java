@@ -25,6 +25,10 @@ import javax.swing.UIManager;
 public class BurpConfig {
     private static final String CA_PASSWORD = "/burp/media/ps.p12";
 
+    public static String getCAPassword() {
+        return CA_PASSWORD;
+    }
+
     public static KeyStore loadCACeart() throws KeyStoreException {
         try {
             final KeyStore ks;
