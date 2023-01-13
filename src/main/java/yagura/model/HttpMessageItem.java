@@ -3,10 +3,11 @@ package yagura.model;
 import burp.api.montoya.core.Annotations;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.HighlightColor;
+import burp.api.montoya.core.Marker;
 import burp.api.montoya.core.Range;
 import burp.api.montoya.http.HttpService;
+import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.MarkedHttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import extension.burp.HttpTarget;
@@ -63,7 +64,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public String getHost() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.httpRequest().httpService().host();
+            return this.httpRequestResponse.request().httpService().host();
         } else {
             return this.host;
         }
@@ -71,7 +72,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public int getPort() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.httpRequest().httpService().port();
+            return this.httpRequestResponse.request().httpService().port();
         } else {
             return this.port;
         }
@@ -79,7 +80,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public boolean isSecure() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.httpRequest().httpService().secure();
+            return this.httpRequestResponse.request().httpService().secure();
         } else {
             return this.secure;
         }
@@ -87,8 +88,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setHost(String host) throws Exception {
         if (this.httpRequestResponse != null) {
-            HttpService service = this.httpRequestResponse.httpRequest().httpService();
-            this.httpRequestResponse.httpRequest().withService(HttpService.httpService(host, service.port(), service.secure()));
+            HttpService service = this.httpRequestResponse.request().httpService();
+            this.httpRequestResponse.request().withService(HttpService.httpService(host, service.port(), service.secure()));
         } else {
             this.host = host;
         }
@@ -96,8 +97,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setPort(int port) throws Exception {
         if (this.httpRequestResponse != null) {
-            HttpService service = this.httpRequestResponse.httpRequest().httpService();
-            this.httpRequestResponse.httpRequest().withService(HttpService.httpService(service.host(), port, service.secure()));
+            HttpService service = this.httpRequestResponse.request().httpService();
+            this.httpRequestResponse.request().withService(HttpService.httpService(service.host(), port, service.secure()));
         } else {
             this.port = port;
         }
@@ -105,8 +106,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setSecure(boolean secure) throws Exception {
         if (this.httpRequestResponse != null) {
-            HttpService service = this.httpRequestResponse.httpRequest().httpService();
-            this.httpRequestResponse.httpRequest().withService(HttpService.httpService(service.host(), service.port(), secure));
+            HttpService service = this.httpRequestResponse.request().httpService();
+            this.httpRequestResponse.request().withService(HttpService.httpService(service.host(), service.port(), secure));
         } else {
             this.secure = secure;
         }
@@ -114,7 +115,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public byte[] getRequest() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.httpRequest().asBytes().getBytes();
+            return this.httpRequestResponse.request().toByteArray().getBytes();
         } else {
             return this.request;
         }
@@ -122,7 +123,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public String getUrl() throws Exception {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.httpRequest().url();
+            return this.httpRequestResponse.request().url();
         } else {
             return this.url;
         }
@@ -130,7 +131,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setRequest(byte[] request) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.httpRequest().withBody(ByteArray.byteArray(request));
+            this.httpRequestResponse.request().withBody(ByteArray.byteArray(request));
         } else {
             this.request = new byte[request.length];
             System.arraycopy(request, 0, this.request, 0, request.length);
@@ -139,7 +140,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public byte[] getResponse() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.httpResponse().asBytes().getBytes();
+            return this.httpRequestResponse.response().toByteArray().getBytes();
         } else {
             return this.response;
         }
@@ -147,7 +148,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setResponse(byte[] response) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.httpResponse().withBody(ByteArray.byteArray(response));
+            this.httpRequestResponse.response().withBody(ByteArray.byteArray(response));
         } else {
             this.response = new byte[request.length];
             System.arraycopy(response, 0, this.response, 0, response.length);
@@ -156,8 +157,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public short getStatusCode() throws Exception {
         if (this.httpRequestResponse != null) {
-            if (this.httpRequestResponse.httpResponse() != null) {
-                return this.httpRequestResponse.httpResponse().statusCode();
+            if (this.httpRequestResponse.response() != null) {
+                return this.httpRequestResponse.response().statusCode();
             } else {
                 return 0;
             }
@@ -168,7 +169,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public String getComment() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.messageAnnotations().comment();
+            return this.httpRequestResponse.annotations().notes();
         } else {
             return this.comment;
         }
@@ -176,7 +177,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setComment(String comment) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.messageAnnotations().withComment(comment);
+            this.httpRequestResponse.annotations().withNotes(comment);
         } else {
             this.comment = comment;
         }
@@ -184,7 +185,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public String getHighlight() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.messageAnnotations().highlightColor().name();
+            return this.httpRequestResponse.annotations().highlightColor().name();
         } else {
             return this.color.name();
         }
@@ -192,7 +193,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setHighlight(String color) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.messageAnnotations().withHighlightColor(MessageHighlightColor.parseEnum(color).toHighlightColor());
+            this.httpRequestResponse.annotations().withHighlightColor(MessageHighlightColor.parseEnum(color).toHighlightColor());
         } else {
             this.color = MessageHighlightColor.parseEnum(color);
         }
@@ -200,7 +201,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setHighlightColor(HighlightColor color) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.withMessageAnnotations(this.httpRequestResponse.messageAnnotations().withHighlightColor(color));
+            this.httpRequestResponse.withAnnotations(this.httpRequestResponse.annotations().withHighlightColor(color));
         } else {
             this.color = MessageHighlightColor.valueOf(color);
         }
@@ -208,7 +209,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public MessageHighlightColor getHighlightColor() {
         if (this.httpRequestResponse != null) {
-            return MessageHighlightColor.valueOf(this.httpRequestResponse.messageAnnotations().highlightColor());
+            return MessageHighlightColor.valueOf(this.httpRequestResponse.annotations().highlightColor());
         } else {
             return this.color;
         }
@@ -223,7 +224,7 @@ public class HttpMessageItem implements HttpRequestResponse {
     }
 
     public URL toURL() throws MalformedURLException {
-        return new URL(this.httpRequestResponse.httpRequest().url());
+        return new URL(this.httpRequestResponse.request().url());
     }
 
     public static HttpMessageItem toHttpMessageItem(RowFilter.Entry<? extends Object, ? extends Object> entry) {
@@ -235,8 +236,8 @@ public class HttpMessageItem implements HttpRequestResponse {
     public String getGuessCharset() {
         String charset = StandardCharsets.ISO_8859_1.name();
         try {
-            if (this.httpResponse() != null) {
-                charset = HttpMesageHelper.getGuessCharset(this.httpResponse());
+            if (this.response() != null) {
+                charset = HttpMesageHelper.getGuessCharset(this.response());
                 if (charset == null) {
                     charset = StandardCharsets.ISO_8859_1.name();
                 }
@@ -262,8 +263,8 @@ public class HttpMessageItem implements HttpRequestResponse {
     public String getContentMimeType() {
         String mimeType = null;
         try {
-            if (this.httpResponse() != null) {
-                mimeType = HttpMesageHelper.getContentMimeType(this.httpResponse());
+            if (this.response() != null) {
+                mimeType = HttpMesageHelper.getContentMimeType(this.response());
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -286,53 +287,78 @@ public class HttpMessageItem implements HttpRequestResponse {
     }
 
     @Override
-    public HttpRequest httpRequest() {
-        return this.httpRequestResponse.httpRequest();
+    public HttpRequest request() {
+        return this.httpRequestResponse.request();
     }
 
     @Override
-    public HttpResponse httpResponse() {
-        return this.httpRequestResponse.httpResponse();
+    public HttpResponse response() {
+        return this.httpRequestResponse.response();
     }
 
     @Override
-    public Annotations messageAnnotations() {
-        return this.httpRequestResponse.messageAnnotations();
+    public Annotations annotations() {
+        return this.httpRequestResponse.annotations();
     }
 
     @Override
-    public HttpRequestResponse withMessageAnnotations(Annotations antns) {
-        return this.httpRequestResponse.withMessageAnnotations(antns);
+    public String url() {
+        return this.httpRequestResponse.url();
     }
 
     @Override
-    public MarkedHttpRequestResponse withMarkers(List<Range> list, List<Range> list1) {
-        return this.httpRequestResponse.withMarkers(list, list1);
+    public HttpService httpService() {
+        return this.httpRequestResponse.httpService();
     }
 
     @Override
-    public MarkedHttpRequestResponse withRequestMarkers(List<Range> list) {
+    public ContentType contentType() {
+        return this.httpRequestResponse.contentType();
+    }
+
+    @Override
+    public short statusCode() {
+        return this.httpRequestResponse.statusCode();
+    }
+
+    @Override
+    public List<Marker> requestMarkers() {
+        return this.httpRequestResponse.requestMarkers();
+    }
+
+    @Override
+    public List<Marker> responseMarkers() {
+        return this.httpRequestResponse.responseMarkers();
+    }
+
+    @Override
+    public HttpRequestResponse copyToTempFile() {
+        return this.httpRequestResponse.copyToTempFile();
+    }
+
+    @Override
+    public HttpRequestResponse withAnnotations(Annotations antns) {
+        return this.httpRequestResponse.withAnnotations(antns);
+    }
+
+    @Override
+    public HttpRequestResponse withRequestMarkers(Marker... markers) {
+        return this.httpRequestResponse.withResponseMarkers(markers);
+    }
+
+    @Override
+    public HttpRequestResponse withResponseMarkers(Marker... markers) {
+        return this.httpRequestResponse.withResponseMarkers(markers);
+    }
+
+    @Override
+    public HttpRequestResponse withRequestMarkers(List<Marker> list) {
         return this.httpRequestResponse.withRequestMarkers(list);
     }
 
     @Override
-    public MarkedHttpRequestResponse withRequestMarkers(Range... ranges) {
-        return this.httpRequestResponse.withRequestMarkers(ranges);
-    }
-
-    @Override
-    public MarkedHttpRequestResponse withResponseMarkers(List<Range> list) {
+    public HttpRequestResponse withResponseMarkers(List<Marker> list) {
         return this.httpRequestResponse.withResponseMarkers(list);
-    }
-
-    @Override
-    public MarkedHttpRequestResponse withResponseMarkers(Range... ranges) {
-        return this.httpRequestResponse.withResponseMarkers(ranges);
-    }
-
-    @Override
-    public MarkedHttpRequestResponse withNoMarkers() {
-        return this.httpRequestResponse.withNoMarkers();
     }
 
 }

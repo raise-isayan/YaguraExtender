@@ -7,29 +7,32 @@ import burp.api.montoya.core.Registration;
 import burp.api.montoya.core.ToolSource;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
-import burp.api.montoya.http.HttpHandler;
+import burp.api.montoya.http.handler.HttpHandler;
 import burp.api.montoya.http.HttpService;
-import burp.api.montoya.http.RequestResult;
-import burp.api.montoya.http.ResponseResult;
+import burp.api.montoya.http.handler.HttpRequestToBeSent;
+import burp.api.montoya.http.handler.HttpResponseReceived;
+import burp.api.montoya.http.handler.RequestToBeSentAction;
+import burp.api.montoya.http.handler.ResponseReceivedAction;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
-import burp.api.montoya.proxy.InitialInterceptAction;
-import burp.api.montoya.proxy.InterceptedHttpRequest;
-import burp.api.montoya.proxy.InterceptedHttpResponse;
-import burp.api.montoya.proxy.ProxyHttpRequestHandler;
-import burp.api.montoya.proxy.ProxyHttpResponseHandler;
-import burp.api.montoya.proxy.ProxyRequestResponse;
-import burp.api.montoya.proxy.RequestFinalInterceptResult;
-import burp.api.montoya.proxy.RequestInitialInterceptResult;
-import burp.api.montoya.proxy.ResponseFinalInterceptResult;
-import burp.api.montoya.proxy.ResponseInitialInterceptResult;
+import burp.api.montoya.proxy.MessageReceivedAction;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
+import burp.api.montoya.proxy.http.InterceptedRequest;
+import burp.api.montoya.proxy.http.InterceptedResponse;
+import burp.api.montoya.proxy.http.ProxyRequestHandler;
+import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
+import burp.api.montoya.proxy.http.ProxyRequestToBeSentAction;
+import burp.api.montoya.proxy.http.ProxyResponseHandler;
+import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
+import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
+import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditorProvider;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditorProvider;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
+import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
+import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import extend.util.external.ThemeUI;
 import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.BurpExtenderImpl;
@@ -159,99 +162,98 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
 
     private final TabbetOption tabbetOption = new TabbetOption();
 
-    private final ExtensionHttpRequestEditorProvider requestRawTab = new ExtensionHttpRequestEditorProvider() {
+    private final HttpRequestEditorProvider requestRawTab = new HttpRequestEditorProvider() {
 
         @Override
-        public ExtensionHttpRequestEditor provideHttpRequestEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-            final RawViewTab tab = new RawViewTab(httpRequestResponse, editorMode, true);
-            tab.getMessageComponent().addMouseListener(newContextMenu(httpRequestResponse));
+        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
+            final RawViewTab tab = new RawViewTab(editorCreationContext, true);
+//            tab.getMessageComponent().addMouseListener(newContextMenu(editorCreationContext));
             return tab;
         }
     };
 
-    private final ExtensionHttpResponseEditorProvider responseRawTab = new ExtensionHttpResponseEditorProvider() {
+    private final HttpResponseEditorProvider responseRawTab = new HttpResponseEditorProvider() {
 
         @Override
-        public ExtensionHttpResponseEditor provideHttpResponseEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-            final RawViewTab tab = new RawViewTab(httpRequestResponse, editorMode, false);
-            tab.getMessageComponent().addMouseListener(newContextMenu(httpRequestResponse));
+        public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
+            final RawViewTab tab = new RawViewTab(editorCreationContext, false);
+//            tab.getMessageComponent().addMouseListener(newContextMenu(editorCreationContext));
             return tab;
         }
     };
 
-    private final ExtensionHttpRequestEditorProvider requestParamsTab = new ExtensionHttpRequestEditorProvider() {
+    private final HttpRequestEditorProvider requestParamsTab = new HttpRequestEditorProvider() {
 
         @Override
-        public ExtensionHttpRequestEditor provideHttpRequestEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-            final ParamsViewTab tab = new ParamsViewTab(httpRequestResponse, editorMode);
+        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
+            final ParamsViewTab tab = new ParamsViewTab(editorCreationContext);
             return tab;
         }
     };
 
-    private final ExtensionHttpRequestEditorProvider requestJSONTab = new ExtensionHttpRequestEditorProvider() {
-
+    private final HttpRequestEditorProvider requestJSONTab = new HttpRequestEditorProvider() {
         @Override
-        public ExtensionHttpRequestEditor provideHttpRequestEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-            final JSONViewTab tab = new JSONViewTab(httpRequestResponse, editorMode, true);
+        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
+            final JSONViewTab tab = new JSONViewTab(editorCreationContext, true);
             return tab;
         }
     };
 
-    private final ExtensionHttpResponseEditorProvider responseJSONTab = new ExtensionHttpResponseEditorProvider() {
+    private final HttpResponseEditorProvider responseJSONTab = new HttpResponseEditorProvider() {
 
         @Override
-        public ExtensionHttpResponseEditor provideHttpResponseEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-            final JSONViewTab tab = new JSONViewTab(httpRequestResponse, editorMode, false);
+        public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
+            final JSONViewTab tab = new JSONViewTab(editorCreationContext, false);
             return tab;
         }
     };
 
-    private final ExtensionHttpResponseEditorProvider responseJSONPTab = new ExtensionHttpResponseEditorProvider() {
+    private final HttpResponseEditorProvider responseJSONPTab = new HttpResponseEditorProvider() {
 
         @Override
-        public ExtensionHttpResponseEditor provideHttpResponseEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-            final JSONViewTab tab = new JSONViewTab(httpRequestResponse, editorMode, false) {
-                @Override
-                public boolean isJsonp() {
-                    return true;
-                }
-            };
-            return tab;
+        public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
+                final JSONViewTab tab = new JSONViewTab(editorCreationContext, false) {
+                    @Override
+                    public boolean isJsonp() {
+                        return true;
+                    }
+                };
+                return tab;
         }
     };
 
-    private final ExtensionHttpResponseEditorProvider responseCommentViewTab = new ExtensionHttpResponseEditorProvider() {
+    private final HttpResponseEditorProvider responseCommentViewTab = new HttpResponseEditorProvider() {
 
         @Override
-        public ExtensionHttpResponseEditor provideHttpResponseEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
+        public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext ecc) {
             final HtmlCommetViewTab tab = new HtmlCommetViewTab();
-            tab.getMessageComponent().addMouseListener(newContextMenu(httpRequestResponse));
+//            tab.getMessageComponent().addMouseListener(newContextMenu(httpRequestResponse));
             return tab;
         }
     };
 
-    private final ExtensionHttpRequestEditorProvider requestViewStateTab = new ExtensionHttpRequestEditorProvider() {
+    private final HttpRequestEditorProvider requestViewStateTab = new HttpRequestEditorProvider() {
 
         @Override
-        public ExtensionHttpRequestEditor provideHttpRequestEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-            final ViewStateTab tab = new ViewStateTab(httpRequestResponse);
+        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
+            final ViewStateTab tab = new ViewStateTab(editorCreationContext);
             return tab;
         }
     };
 
-    private final ExtensionHttpRequestEditorProvider requestJwtViewTab = new ExtensionHttpRequestEditorProvider() {
+    private final HttpRequestEditorProvider requestJwtViewTab = new HttpRequestEditorProvider() {
 
         @Override
-        public ExtensionHttpRequestEditor provideHttpRequestEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
+        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
             final JWTViewTab tab = new JWTViewTab();
             return tab;
         }
     };
 
-    private final ExtensionHttpRequestEditorProvider requestGeneratePoCTab = new ExtensionHttpRequestEditorProvider() {
+    private final HttpRequestEditorProvider requestGeneratePoCTab = new HttpRequestEditorProvider() {
 
         @Override
-        public ExtensionHttpRequestEditor provideHttpRequestEditor(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
+        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext ecc) {
             final GeneratePoCTab tab = new GeneratePoCTab();
             return tab;
         }
@@ -502,10 +504,10 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
 
     @Override
     public void extensionUnloaded() {
-        ThemeUI.removeAllUIManagerListener();
+        ThemeUI.removePropertyChangeListener();
     }
 
-    public final class ProxyHander implements HttpHandler, ProxyHttpRequestHandler, ProxyHttpResponseHandler {
+    public final class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyResponseHandler {
         private final MontoyaApi api;
 
         public ProxyHander(MontoyaApi api) {
@@ -515,51 +517,77 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
             api.proxy().registerResponseHandler(this);
         }
 
+        /**
+         * implements HttpHandler
+         * @param httpRequestToBeSent
+         * @return
+         */
+
         @Override
-        public ResponseInitialInterceptResult handleReceivedResponse(InterceptedHttpResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
-            ResponseInitialInterceptResult responseResult = this.processProxyMessage(interceptedHttpResponse, httpRequest, annotations);
-            HttpRequestResponse modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, true, HttpRequestResponse.httpRequestResponse(httpRequest, responseResult.response(), annotations));
-            modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, false, modifyHttpRequestResponse);
-            return ResponseInitialInterceptResult.doNotIntercept(modifyHttpRequestResponse.httpResponse(), modifyHttpRequestResponse.messageAnnotations());
+        public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
+            return RequestToBeSentAction.continueWith(httpRequestToBeSent, httpRequestToBeSent.annotations());
         }
 
         @Override
-        public RequestInitialInterceptResult handleReceivedRequest(InterceptedHttpRequest interceptedHttpRequest, Annotations annotations) {
-            return RequestInitialInterceptResult.doNotIntercept(interceptedHttpRequest, annotations);
-        }
-
-        @Override
-        public ResponseFinalInterceptResult handleResponseToReturn(InterceptedHttpResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
-
-            // autologging 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isProxyLog()) {
-                this.writeProxyMessage(interceptedHttpResponse.messageId(), httpRequest.httpService(), httpRequest, interceptedHttpResponse);
-            }
-
-            return ResponseFinalInterceptResult.continueWith(interceptedHttpResponse, annotations);
-        }
-
-        @Override
-        public RequestFinalInterceptResult handleRequestToIssue(InterceptedHttpRequest httpRequest, Annotations annotations) {
-            return RequestFinalInterceptResult.continueWith(httpRequest, annotations);
-        }
-
-        @Override
-        public RequestResult handleHttpRequest(HttpRequest httpRequest, Annotations annotations, ToolSource toolSource) {
-            return RequestResult.requestResult(httpRequest, annotations);
-        }
-
-        @Override
-        public ResponseResult handleHttpResponse(HttpResponse httpResponse, HttpRequest httpRequest, Annotations annotations, ToolSource toolSource) {
-            HttpRequestResponse httpRequestResponse = HttpRequestResponse.httpRequestResponse(httpRequest, httpResponse, annotations);
-
+        public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived httpResponseReceived) {
+            ToolSource toolSource = httpResponseReceived.toolSource();
+            HttpRequestResponse messageInfo = HttpRequestResponse.httpRequestResponse(httpResponseReceived.initiatingRequest(), httpResponseReceived, httpResponseReceived.annotations());
             // Tool Log 出力
             if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isToolLog()) {
-                this.writeToolMessage(toolSource.toolType(), false, httpRequestResponse);
+                this.writeToolMessage(toolSource.toolType(), false, messageInfo);
             }
-
-            return ResponseResult.responseResult(httpResponse, annotations);
+            return ResponseReceivedAction.continueWith(httpResponseReceived, httpResponseReceived.annotations());
         }
+
+        /**
+         * implements ProxyRequestHandler
+         */
+
+        /**
+         *
+         * @param interceptedRequest
+         * @return
+         */
+        @Override
+        public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
+            ProxyRequestReceivedAction requestResult = this.processProxyMessage(interceptedRequest, interceptedRequest.annotations());
+            return ProxyRequestReceivedAction.proxyRequestReceivedAction(requestResult.request(), requestResult.annotations(), requestResult.action());
+        }
+
+        @Override
+        public ProxyRequestToBeSentAction handleRequestToBeSent(InterceptedRequest interceptedRequest) {
+            return ProxyRequestToBeSentAction.continueWith(interceptedRequest, interceptedRequest.annotations());
+        }
+
+        /**
+         * implements ProxyResponseHandler
+         */
+
+        /**
+         * @param interceptedResponse
+         * @return
+        */
+        @Override
+        public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse interceptedResponse) {
+            ProxyResponseReceivedAction responseResult = this.processProxyMessage(interceptedResponse, interceptedResponse.initiatingRequest(), interceptedResponse.annotations());
+            HttpRequestResponse modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, true, HttpRequestResponse.httpRequestResponse(interceptedResponse.initiatingRequest(), responseResult.response(), responseResult.annotations()));
+            modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, false, modifyHttpRequestResponse);
+            return ProxyResponseReceivedAction.proxyResponseReceivedAction(modifyHttpRequestResponse.response(), modifyHttpRequestResponse.annotations(), responseResult.action());
+        }
+
+        /**
+         * @param interceptedResponse
+         * @return
+        */
+        @Override
+        public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
+            // autologging 出力
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isProxyLog()) {
+                this.writeProxyMessage(interceptedResponse.messageId(), interceptedResponse.initiatingRequest().httpService(), interceptedResponse.initiatingRequest(), interceptedResponse);
+            }
+            return ProxyResponseToBeSentAction.continueWith(interceptedResponse, interceptedResponse.annotations());
+        }
+
 
         /**
          * プロキシログの出力
@@ -597,10 +625,10 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                             fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(httpService) + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            fostm.write(httpResuest.asBytes().getBytes());
+                            fostm.write(httpResuest.toByteArray().getBytes());
                             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
-                            fostm.write(httpResponse.asBytes().getBytes());
+                            fostm.write(httpResponse.toByteArray().getBytes());
                             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
                         }
@@ -637,7 +665,7 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                     boolean includeLog = true;
                     if (getProperty().getLoggingProperty().isExclude()) {
                         Pattern patternExclude = Pattern.compile(BurpUtil.parseFilterPattern(getProperty().getLoggingProperty().getExcludeExtension()));
-                        Matcher matchExclude = patternExclude.matcher(messageInfo.httpRequest().url());
+                        Matcher matchExclude = patternExclude.matcher(messageInfo.request().url());
                         if (matchExclude.find()) {
                             includeLog = false;
                         }
@@ -645,15 +673,15 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                     if (includeLog) {
                         try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(messageInfo.httpRequest().httpService()) + HttpUtil.LINE_TERMINATE));
+                            fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(messageInfo.request().httpService()) + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                            if (messageInfo.httpRequest() != null) {
-                                fostm.write(messageInfo.httpRequest().asBytes().getBytes());
+                            if (messageInfo.response() != null) {
+                                fostm.write(messageInfo.response().toByteArray().getBytes());
                                 fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
-                            if (messageInfo.httpResponse() != null) {
+                            if (messageInfo.response() != null) {
                                 fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                                fostm.write(messageInfo.httpResponse().asBytes().getBytes());
+                                fostm.write(messageInfo.response().toByteArray().getBytes());
                                 fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
@@ -669,9 +697,9 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
 
         protected void historyLogAppend() {
             if (api != null) {
-                List<ProxyRequestResponse> messageInfo = api.proxy().history();
-                for (ProxyRequestResponse info : messageInfo) {
-                    this.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.messageAnnotations()));
+                List<ProxyHttpRequestResponse> messageInfo = api.proxy().history();
+                for (ProxyHttpRequestResponse info : messageInfo) {
+                    this.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()));
                 }
             }
         }
@@ -695,12 +723,17 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
             return httpRequestResponse;
         }
 
-        public RequestInitialInterceptResult processProxyMessage(InterceptedHttpRequest httpRequest) {
+
+        /**
+         * Request
+         * @param httpRequest
+         */
+        public ProxyRequestReceivedAction processProxyMessage(InterceptedRequest httpRequest) {
             return this.processProxyMessage(httpRequest, Annotations.annotations());
         }
 
-        private RequestInitialInterceptResult processProxyMessage(InterceptedHttpRequest interceptedHttpRequest, Annotations annotations) {
-            byte[] requestBytes = interceptedHttpRequest.asBytes().getBytes();
+        private ProxyRequestReceivedAction processProxyMessage(InterceptedRequest interceptedHttpRequest, Annotations annotations) {
+            byte[] requestBytes = interceptedHttpRequest.toByteArray().getBytes();
             byte[] resultBytes = requestBytes;
             // Match and Replace
             if (getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
@@ -715,18 +748,21 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
             }
             if (requestBytes != resultBytes) {
                 HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
-                return RequestInitialInterceptResult.initialInterceptResult(modifyRequest, annotations, InitialInterceptAction.DO_NOT_INTERCEPT);
+                return ProxyRequestReceivedAction.continueWith(modifyRequest, annotations);
             } else {
-                return RequestInitialInterceptResult.doNotIntercept(interceptedHttpRequest, annotations);
+                return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
             }
         }
 
-        public ResponseInitialInterceptResult processProxyMessage(InterceptedHttpResponse interceptedHttpResponse, HttpRequest httpRequest) {
+        /**
+         * Response
+         */
+        public ProxyResponseReceivedAction processProxyMessage(InterceptedResponse interceptedHttpResponse, HttpRequest httpRequest) {
             return this.processProxyMessage(interceptedHttpResponse, httpRequest, Annotations.annotations());
         }
 
-        private ResponseInitialInterceptResult processProxyMessage(InterceptedHttpResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
-            byte[] responseByte = interceptedHttpResponse.asBytes().getBytes();
+        private ProxyResponseReceivedAction processProxyMessage(InterceptedResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
+            byte[] responseByte = interceptedHttpResponse.toByteArray().getBytes();
             byte[] resultBytes = responseByte;
 
             // Match and Replace
@@ -742,9 +778,9 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
             }
             if (responseByte != resultBytes) {
                 HttpResponse modifyResponse = HttpResponse.httpResponse(ByteArray.byteArray(resultBytes));
-                return ResponseInitialInterceptResult.initialInterceptResult(modifyResponse, annotations, InitialInterceptAction.DO_NOT_INTERCEPT);
+                return ProxyResponseReceivedAction.continueWith(modifyResponse, annotations);
             } else {
-                return ResponseInitialInterceptResult.doNotIntercept(interceptedHttpResponse, annotations);
+                return ProxyResponseReceivedAction.continueWith(interceptedHttpResponse, annotations);
             }
         }
 
@@ -756,7 +792,7 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
          * @param httpRequestResponse メッセージ情報
          */
         private HttpRequestResponse matchAlertMessage(ToolType toolType, boolean messageIsRequest, HttpRequestResponse httpRequestResponse) {
-            Annotations annotations = httpRequestResponse.messageAnnotations();
+            Annotations annotations = httpRequestResponse.annotations();
             List<MatchAlertItem> matchAlertItemList = option.getMatchAlertProperty().getMatchAlertItemList();
             for (int i = 0; i < matchAlertItemList.size(); i++) {
                 MatchAlertItem bean = matchAlertItemList.get(i);
@@ -771,9 +807,9 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                     Pattern p = bean.getRegexPattern();
                     String decodeMessage = "";
                     if (bean.isRequest() && messageIsRequest) {
-                        decodeMessage = StringUtil.getStringRaw(httpRequestResponse.httpRequest().asBytes().getBytes());
+                        decodeMessage = StringUtil.getStringRaw(httpRequestResponse.request().toByteArray().getBytes());
                     } else if (bean.isResponse() && !messageIsRequest) {
-                        decodeMessage = StringUtil.getStringRaw(httpRequestResponse.httpResponse().asBytes().getBytes());
+                        decodeMessage = StringUtil.getStringRaw(httpRequestResponse.response().toByteArray().getBytes());
                     }
                     String replacemeComment = null;
                     List<IssueItem> markList = new ArrayList<>();
@@ -797,7 +833,7 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                     }
                     if (count > 0) {
                         if (bean.getNotifyTypes().contains(NotifyType.ALERTS_TAB)) {
-                            helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.httpRequest().url()), MessageType.INFO);
+                            helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.request().url()), MessageType.INFO);
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.TRAY_MESSAGE)) {
                             // trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
@@ -808,11 +844,11 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.COMMENT)) {
                             if (replacemeComment != null) {
-                                annotations = annotations.withComment(replacemeComment);
-                                BurpExtender.helpers().outPrintln("Comment r:" + annotations.comment());
+                                annotations = annotations.withNotes(replacemeComment);
+                                BurpExtender.helpers().outPrintln("Comment r:" + annotations.notes());
                             } else {
-                                annotations = annotations.withComment(bean.getComment());
-                                BurpExtender.helpers().outPrintln("Comment b:" + annotations.comment());
+                                annotations = annotations.withNotes(bean.getComment());
+                                BurpExtender.helpers().outPrintln("Comment b:" + annotations.notes());
                             }
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
@@ -827,8 +863,8 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
-            HttpRequestResponse modifyRequestResponse = HttpRequestResponse.httpRequestResponse(httpRequestResponse.httpRequest(), httpRequestResponse.httpResponse(), annotations);
-            BurpExtender.helpers().outPrintln("matchAlertMessage:" + toolType + ":" + messageIsRequest + ":" + modifyRequestResponse.messageAnnotations().highlightColor() + ":" + modifyRequestResponse.messageAnnotations().comment());
+            HttpRequestResponse modifyRequestResponse = HttpRequestResponse.httpRequestResponse(httpRequestResponse.request(), httpRequestResponse.response(), annotations);
+            BurpExtender.helpers().outPrintln("matchAlertMessage:" + toolType + ":" + messageIsRequest + ":" + modifyRequestResponse.annotations().highlightColor() + ":" + modifyRequestResponse.annotations().notes());
             return modifyRequestResponse;
         }
 
@@ -898,6 +934,7 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
             }
             return httpMessage;
         }
+
     }
 
 }

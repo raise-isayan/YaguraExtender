@@ -27,7 +27,7 @@ public class ThemeUI {
         listeners.remove(listener);
     }
 
-    public static void removeAllUIManagerListener() {
+    public static void removePropertyChangeListener() {
         for (PropertyChangeListener l : listeners) {
             UIManager.removePropertyChangeListener(l);
         }

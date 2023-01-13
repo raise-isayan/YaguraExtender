@@ -2,25 +2,25 @@ package extension.burp;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpMessageEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import java.awt.Component;
 
 /**
  *
  * @author isayan
  */
-public abstract class ExtensionHttpRequestEditorAdapter implements ExtensionHttpRequestEditor {
+public abstract class ExtensionHttpRequestEditorAdapter implements ExtensionProvidedHttpRequestEditor {
 
-    private final ExtensionHttpMessageEditor editor;
+    private final ExtensionProvidedEditor editor;
 
-    public ExtensionHttpRequestEditorAdapter(ExtensionHttpMessageEditor editor) {
+    public ExtensionHttpRequestEditorAdapter(ExtensionProvidedEditor editor) {
         this.editor = editor;
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
-        this.editor.setHttpRequestResponse(httpRequestResponse);
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.editor.setRequestResponse(httpRequestResponse);
     }
 
     @Override

@@ -1,16 +1,16 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.api.montoya.http.ContentType;
+import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.TransUtil;
-import extension.helpers.HttpMesageHelper;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.awt.Component;
@@ -31,7 +31,6 @@ import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.swing.SwingWorker;
@@ -44,7 +43,8 @@ import yagura.model.UniversalViewProperty;
  *
  * @author raise.isayan
  */
-public class ParamsViewTab extends javax.swing.JPanel implements ExtensionHttpRequestEditor {
+
+public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
 
     private final static Logger logger = Logger.getLogger(ParamsViewTab.class.getName());
 
@@ -58,8 +58,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionHttpRe
      * @param httpRequestResponse
      * @param editorMode
      */
-    public ParamsViewTab(HttpRequestResponse httpRequestResponse, EditorMode editorMode) {
-        this.editable = (EditorMode.READ_ONLY == editorMode);
+    public ParamsViewTab(EditorCreationContext editorCreationContext) {
+        this.editable = (EditorMode.READ_ONLY == editorCreationContext.editorMode());
         initComponents();
         customizeComponents();
     }
@@ -404,31 +404,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionHttpRe
     }
 
     @Override
-    public HttpRequest getHttpRequest() {
-//        if (this.content != null) {
-//            if (this.textModified) {
-//                List<IParameter> params = this.reqInfo.getParameters();
-//                byte[] modify = Arrays.copyOf(this.content, this.content.length);
-//                for (IParameter p : params) {
-//                    modify = BurpExtender.getHelpers().removeParameter(modify, p);
-//                }
-//                for (Parameter p : this.getParams()) {
-//                    modify = BurpExtender.getHelpers().addParameter(modify, p);
-//                }
-//                this.content = Arrays.copyOf(modify, modify.length);
-//                return this.content;
-//            } else {
-//                return this.content;
-//            }
-//        } else {
-//            return new byte[]{};
-//        }
-
-        return this.httpRequestResponse.httpRequest();
+    public HttpRequest getRequest() {
+        return this.httpRequestResponse.request();
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
         if (this.httpRequestResponse == null) {
             this.clearView();
@@ -436,7 +417,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionHttpRe
             SwingWorker swParam = new SwingWorker<HttpRequest, Object>() {
                 @Override
                 protected HttpRequest doInBackground() throws Exception {
-                    final HttpRequest httpRequest = httpRequestResponse.httpRequest();
+                    final HttpRequest httpRequest = httpRequestResponse.request();
                     setLocation(httpRequest);
                     setParams(httpRequest.parameters());
                     return httpRequest;
@@ -478,7 +459,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionHttpRe
 
             this.textModified = false;
         }
-
     }
 
     @Override
@@ -490,8 +470,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionHttpRe
         if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
             return false;
         }
-        HttpRequest httpRequest = httpRequestResponse.httpRequest();
-        if (httpRequest.asBytes().length() > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
+        HttpRequest httpRequest = httpRequestResponse.request();
+        if (httpRequest.toByteArray().length() > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
                 && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
             return false;
         }

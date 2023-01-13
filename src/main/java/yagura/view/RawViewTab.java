@@ -2,15 +2,16 @@ package yagura.view;
 
 import burp.BurpExtender;
 import burp.api.montoya.core.ByteArray;
-import burp.api.montoya.http.MimeType;
+import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpMessageEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import extend.util.external.ThemeUI;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
@@ -38,7 +39,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessageEditor, ExtensionHttpRequestEditor, ExtensionHttpResponseEditor {
+public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
     private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -50,8 +51,8 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
 
     private boolean isRequest = false;
     private boolean textModified = false;
-    private EditorMode editorMode = EditorMode.DEFAULT;
-    private final HttpRequestResponse messageRequestResponse;
+    private boolean editable =false;
+    private final EditorCreationContext editorCreationContext;
     private HttpRequestResponse httpRequestResponse;
 
     /**
@@ -60,19 +61,18 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
      * @param request
      */
     public RawViewTab(boolean request) {
-        this(null, EditorMode.READ_ONLY, request);
+        this(null, request);
     }
 
     /**
      * Creates new form RawViewTab
-     * @param httpRequestResponse
-     * @param editorMode
+     * @param editorCreationContext
      * @param isResuest
      */
-    public RawViewTab(HttpRequestResponse httpRequestResponse, EditorMode editorMode, boolean isResuest) {
+    public RawViewTab(EditorCreationContext editorCreationContext, boolean isResuest) {
         this.isRequest = isResuest;
-        this.messageRequestResponse = httpRequestResponse;
-        this.editorMode = editorMode;
+        this.editorCreationContext = editorCreationContext;
+        this.editable = (editorCreationContext.editorMode() == EditorMode.READ_ONLY);
         initComponents();
         customizeComponents();
     }
@@ -119,7 +119,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
             }
 
         });
-        this.txtURaw.setEditable(!this.editorMode.equals(EditorMode.READ_ONLY));
+        this.txtURaw.setEditable(this.editable);
 
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
@@ -168,16 +168,18 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
                     // Raw
                     publish("...");
                     if (isRequest) {
-                        return StringUtil.getStringCharset(httpRequestResponse.httpRequest().asBytes().getBytes(), encoding);
+                        return StringUtil.getStringCharset(httpRequestResponse.request().toByteArray().getBytes(), encoding);
                     } else {
-                        return StringUtil.getStringCharset(httpRequestResponse.httpResponse().asBytes().getBytes(), encoding);
+                        return StringUtil.getStringCharset(httpRequestResponse.response().toByteArray().getBytes(), encoding);
                     }
                 }
 
+                @Override
                 protected void process(List<Object> chunks) {
                     txtURaw.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
                 }
 
+                @Override
                 protected void done() {
                     try {
                         txtURaw.setText(get());
@@ -251,7 +253,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
         if (this.httpRequestResponse == null) {
             this.clearView();
@@ -259,10 +261,10 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
         } else {
             String guessCharset = null;
             if (this.isRequest) {
-                HttpRequest httpRequest = httpRequestResponse.httpRequest();
+                HttpRequest httpRequest = httpRequestResponse.request();
                 guessCharset = HttpMesageHelper.getGuessCharset(httpRequest);
             } else {
-                HttpResponse httpResponse = httpRequestResponse.httpResponse();
+                HttpResponse httpResponse = httpRequestResponse.response();
                 guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
                 MimeType contentType = httpResponse.statedMimeType();
                 this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
@@ -282,8 +284,20 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
     }
 
     @Override
+    public HttpRequest getRequest() {
+        HttpRequestResponse http = this.getHttpRequestResponse();
+        return http.request();
+    }
+
+    @Override
+    public HttpResponse getResponse() {
+        HttpRequestResponse http = this.getHttpRequestResponse();
+        return http.response();
+    }
+
+    @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
-        if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.httpRequest() == null) || (!this.isRequest && httpRequestResponse.httpResponse() == null)) {
+        if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && httpRequestResponse.request() == null)) {
             return false;
         }
         // "This message is too large to display"
@@ -292,18 +306,18 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
         if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
             return false;
         }
-        HttpRequest httpRequest = httpRequestResponse.httpRequest();
-        HttpResponse httpResponse = httpRequestResponse.httpResponse();
+        HttpRequest httpRequest = httpRequestResponse.request();
+        HttpResponse httpResponse = httpRequestResponse.response();
 
-        if ((this.isRequest && httpRequest.asBytes().length() > viewProperty.getDispayMaxLength()) ||
-           (!this.isRequest && httpResponse.asBytes().length() > viewProperty.getDispayMaxLength())
+        if ((this.isRequest && httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength()) ||
+           (!this.isRequest && httpResponse.toByteArray().length() > viewProperty.getDispayMaxLength())
             && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
         this.setLineWrap(viewProperty.isLineWrap());
-        if (this.isRequest && httpRequest.asBytes().length() > 0) {
+        if (this.isRequest && httpRequest.toByteArray().length() > 0) {
             return true;
-        } else if (!this.isRequest && httpResponse.asBytes().length() > 0) {
+        } else if (!this.isRequest && httpResponse.toByteArray().length() > 0) {
             return true;
         }
         return false;
@@ -329,18 +343,6 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
         return this.textModified;
     }
 
-    @Override
-    public HttpRequest getHttpRequest() {
-        HttpRequestResponse http = this.getHttpRequestResponse();
-        return http.httpRequest();
-    }
-
-    @Override
-    public HttpResponse getHttpResponse() {
-        HttpRequestResponse http = this.getHttpRequestResponse();
-        return http.httpResponse();
-    }
-
     public HttpRequestResponse getHttpRequestResponse() {
         if (this.httpRequestResponse != null) {
             if (this.textModified) {
@@ -350,12 +352,12 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
                     try {
                         if (this.isRequest) {
                             HttpRequest httpRequest = HttpRequest.httpRequest(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
-                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(httpRequest, this.httpRequestResponse.httpResponse(), this.httpRequestResponse.messageAnnotations());
+                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(httpRequest, this.httpRequestResponse.response(), this.httpRequestResponse.annotations());
                             return http;
                         }
                         else {
                             HttpResponse httpResponse = HttpResponse.httpResponse(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
-                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(this.httpRequestResponse.httpRequest(), httpResponse, this.httpRequestResponse.messageAnnotations());
+                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(this.httpRequestResponse.request(), httpResponse, this.httpRequestResponse.annotations());
                             return http;
                         }
 

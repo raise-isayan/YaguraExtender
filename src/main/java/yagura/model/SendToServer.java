@@ -99,18 +99,18 @@ public class SendToServer extends SendToMenuItem {
                             ostm.write(bodyStream.toByteArray());
                         }
                         HttpTarget httpService = new HttpTarget(tagetURL);
-                        burp.api.montoya.http.message.responses.HttpResponse response = messageInfo.httpResponse();
+                        burp.api.montoya.http.message.responses.HttpResponse response = messageInfo.response();
                         int statusCode = response.statusCode();
                         if (statusCode == HttpURLConnection.HTTP_OK) {
                             if (response.body().length() == 0) {
                                 fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
                             } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + response.bodyAsString()));
+                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + response.bodyToString()));
                                 logger.log(Level.WARNING, "[" + statusCode + "]", response.body());
                             }
                         } else {
                             // 200以外
-                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + response.bodyAsString()));
+                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + response.bodyToString()));
                             logger.log(Level.WARNING, "[" + statusCode + "]", response.body());
                         }
                     }
@@ -356,27 +356,27 @@ public class SendToServer extends SendToMenuItem {
     }
 
     protected void outMultipart(String boundary, OutputStream out, HttpRequestResponse messageInfo) throws IOException, Exception {
-        burp.api.montoya.http.message.requests.HttpRequest httpRequest = messageInfo.httpRequest();
-        burp.api.montoya.http.message.responses.HttpResponse httpResponse = messageInfo.httpResponse();
+        burp.api.montoya.http.message.requests.HttpRequest httpRequest = messageInfo.request();
+        burp.api.montoya.http.message.responses.HttpResponse httpResponse = messageInfo.response();
 
         HttpService httpService = httpRequest.httpService();
         HttpUtil.outMultipartText(boundary, out, "host", httpService.host());
         HttpUtil.outMultipartText(boundary, out, "port", StringUtil.toString(httpService.port()));
         HttpUtil.outMultipartText(boundary, out, "protocol", HttpTarget.getProtocol(httpService.secure()));
         HttpUtil.outMultipartText(boundary, out, "url", httpRequest.url());
-        String comment = messageInfo.messageAnnotations().comment();
-        if (comment != null) {
-            HttpUtil.outMultipartText(boundary, out, "comment", comment, StandardCharsets.UTF_8);
+        String notes = messageInfo.annotations().notes();
+        if (notes != null) {
+            HttpUtil.outMultipartText(boundary, out, "comment", notes, StandardCharsets.UTF_8);
         }
-        HighlightColor color = messageInfo.messageAnnotations().highlightColor();
+        HighlightColor color = messageInfo.annotations().highlightColor();
         if (color != null) {
             HttpUtil.outMultipartText(boundary, out, "highlight", color.name());
         }
-        if (messageInfo.httpRequest() != null && this.isRequest()) {
-            HttpUtil.outMultipartBinary(boundary, out, "request", httpRequest.asBytes().getBytes());
+        if (messageInfo.request() != null && this.isRequest()) {
+            HttpUtil.outMultipartBinary(boundary, out, "request", httpRequest.toByteArray().getBytes());
         }
-        if (messageInfo.httpResponse() != null && this.isResponse()) {
-            HttpUtil.outMultipartBinary(boundary, out, "response", messageInfo.httpResponse().asBytes().getBytes());
+        if (messageInfo.response() != null && this.isResponse()) {
+            HttpUtil.outMultipartBinary(boundary, out, "response", httpResponse.toByteArray().getBytes());
         }
         HttpUtil.outMultipartFinish(boundary, out);
     }

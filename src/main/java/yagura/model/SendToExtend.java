@@ -117,7 +117,7 @@ public class SendToExtend extends SendToMenuItem {
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.httpRequest().url()))));
+            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.request().url()))));
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -125,11 +125,11 @@ public class SendToExtend extends SendToMenuItem {
                     if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                         try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                fstm.write(messageItem.httpRequest().asBytes().getBytes());
+                                fstm.write(messageItem.request().toByteArray().getBytes());
                                 fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                fstm.write(messageItem.httpResponse().asBytes().getBytes());
+                                fstm.write(messageItem.response().toByteArray().getBytes());
                                 fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             fstm.flush();
@@ -150,7 +150,7 @@ public class SendToExtend extends SendToMenuItem {
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.httpRequest().url()))));
+            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.request().url()))));
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -158,14 +158,14 @@ public class SendToExtend extends SendToMenuItem {
                     if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
                         try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                HttpRequest httpRequest = messageItem.httpRequest();
-                                byte reqMessage[] = httpRequest.asBytes().getBytes();
+                                HttpRequest httpRequest = messageItem.request();
+                                byte reqMessage[] = httpRequest.toByteArray().getBytes();
                                 reqMessage = Arrays.copyOfRange(reqMessage, httpRequest.bodyOffset(), reqMessage.length);
                                 fstm.write(reqMessage);
                             }
                             if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                HttpResponse httpResponse = messageItem.httpResponse();
-                                byte resMessage[] = httpResponse.asBytes().getBytes();
+                                HttpResponse httpResponse = messageItem.response();
+                                byte resMessage[] = httpResponse.toByteArray().getBytes();
                                 resMessage = Arrays.copyOfRange(resMessage, httpResponse.bodyOffset(), resMessage.length);
                                 fstm.write(resMessage);
                             }

@@ -1,6 +1,6 @@
 package extension.burp;
 
-import burp.api.montoya.http.message.cookies.Cookie;
+import burp.api.montoya.http.message.Cookie;
 import extension.helpers.DateUtil;
 import java.text.ParseException;
 import java.time.ZonedDateTime;
@@ -27,7 +27,7 @@ public class HttpCookie implements Cookie {
     private boolean httpOnly = false;
     private String sameSite;
 
-    public HttpCookie(burp.api.montoya.http.message.cookies.Cookie cookie) {
+    public HttpCookie(Cookie cookie) {
         this.name = cookie.name();
         this.value = cookie.value();
         this.domain = cookie.domain();

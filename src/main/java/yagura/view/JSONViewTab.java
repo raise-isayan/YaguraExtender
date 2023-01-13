@@ -1,16 +1,16 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.api.montoya.http.ContentType;
-import burp.api.montoya.http.MimeType;
+import burp.api.montoya.http.message.ContentType;
+import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpMessageEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
+import burp.api.montoya.ui.editor.extension.EditorCreationContext;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import extend.util.external.FormatUtil;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
@@ -29,35 +29,25 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JSONViewTab extends javax.swing.JPanel implements ExtensionHttpMessageEditor, ExtensionHttpRequestEditor, ExtensionHttpResponseEditor {
+public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
     private final boolean isRequest;
-    private final HttpRequestResponse messageRequestResponse;
+    private final EditorCreationContext editorCreationContext;
     private HttpRequestResponse httpRequestResponse;
 
     public JSONViewTab(boolean request) {
-        this(null, EditorMode.READ_ONLY, request);
+        this(null, request);
     }
 
     /**
      * Creates new form JSONView
-     * @param httpRequestResponse
+     * @param editorCreationContext
      * @param isResuest
      */
-    public JSONViewTab(HttpRequestResponse httpRequestResponse, boolean isResuest) {
-        this(httpRequestResponse, EditorMode.READ_ONLY, isResuest);
-    }
-
-    /**
-     * Creates new form JSONView
-     * @param httpRequestResponse
-     * @param editorMode
-     * @param isResuest
-     */
-    public JSONViewTab(HttpRequestResponse httpRequestResponse, EditorMode editorMode, boolean isResuest) {
+    public JSONViewTab(EditorCreationContext editorCreationContext, boolean isResuest) {
         this.isRequest = isResuest;
-        this.messageRequestResponse = httpRequestResponse;
+        this.editorCreationContext = editorCreationContext;
         initComponents();
         customizeComponents();
     }
@@ -123,11 +113,11 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionHttpMess
         try {
             if (this.httpRequestResponse != null) {
                 if (this.isRequest) {
-                    String msg = StringUtil.getStringCharset(this.httpRequestResponse.httpRequest().body().getBytes(), encoding);
+                    String msg = StringUtil.getStringCharset(this.httpRequestResponse.request().body().getBytes(), encoding);
                     this.jsonView.setMessage(msg);
                 }
                 else {
-                    String msg = StringUtil.getStringCharset(this.httpRequestResponse.httpResponse().body().getBytes(), encoding);
+                    String msg = StringUtil.getStringCharset(this.httpRequestResponse.response().body().getBytes(), encoding);
                     this.jsonView.setMessage(msg);
                 }
 
@@ -169,8 +159,8 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionHttpMess
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
         }
-        HttpRequest httpRequest = httpRequestResponse.httpRequest();
-        HttpResponse httpResponse = httpRequestResponse.httpResponse();
+        HttpRequest httpRequest = httpRequestResponse.request();
+        HttpResponse httpResponse = httpRequestResponse.response();
 
         if ((isMessageRequest && httpRequest.body().length() > viewProperty.getDispayMaxLength() ||
            (!isMessageRequest && httpResponse.body().length() > viewProperty.getDispayMaxLength()))
@@ -204,11 +194,11 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionHttpMess
         if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
             return false;
         }
-        HttpRequest httpRequest = httpRequestResponse.httpRequest();
-        HttpResponse httpResponse = httpRequestResponse.httpResponse();
+        HttpRequest httpRequest = httpRequestResponse.request();
+        HttpResponse httpResponse = httpRequestResponse.response();
 
-        if ((isMessageRequest && httpRequest.asBytes().length() > viewProperty.getDispayMaxLength() ||
-           (!isMessageRequest && httpResponse.asBytes().length() > viewProperty.getDispayMaxLength()))
+        if ((isMessageRequest && httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() ||
+           (!isMessageRequest && httpResponse.toByteArray().length() > viewProperty.getDispayMaxLength()))
            && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
@@ -245,20 +235,20 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionHttpMess
         this.jsonView.setLineWrap(lineWrap);
     }
 
-    @Override
-    public HttpRequest getHttpRequest() {
-        return httpRequestResponse.httpRequest();
+
+    public HttpRequestResponse getHttpRequestResponse() {
+        return this.httpRequestResponse;
     }
 
-    @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+   @Override
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = null;
         if (this.isRequest) {
-            HttpRequest httpRequest = httpRequestResponse.httpRequest();
+            HttpRequest httpRequest = httpRequestResponse.request();
             guessCharset = HttpMesageHelper.getGuessCharset(httpRequest);
         } else {
-            HttpResponse httpResponse = httpRequestResponse.httpResponse();
+            HttpResponse httpResponse = httpRequestResponse.response();
             guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
         }
         if (guessCharset == null) {
@@ -272,12 +262,13 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionHttpMess
     }
 
     @Override
-    public HttpResponse getHttpResponse() {
-        return this.httpRequestResponse.httpResponse();
+    public HttpRequest getRequest() {
+        return this.httpRequestResponse.request();
     }
 
-    public HttpRequestResponse getHttpRequestResponse() {
-        return this.httpRequestResponse;
+    @Override
+    public HttpResponse getResponse() {
+        return this.httpRequestResponse.response();
     }
 
     @Override

@@ -1,13 +1,13 @@
 package yagura.view;
 
 import burp.BurpExtender;
-import burp.api.montoya.http.MimeType;
+import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.http.message.responses.analysis.Attribute;
 import burp.api.montoya.http.message.responses.analysis.AttributeType;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import extend.util.external.ThemeUI;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
@@ -22,14 +22,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import yagura.model.UniversalViewProperty;
 
 /**
  *
  * @author isayan
  */
-public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHttpResponseEditor {
+
+public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionProvidedHttpResponseEditor {
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -130,7 +130,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHt
                 protected String doInBackground() throws Exception {
                     publish("...");
                     // String comments[] = TransUtil.extractHTMLComments(StringUtil.getStringCharset(httpRequestResponse.getBodyBytes(), encoding), uniq);
-                    List<Attribute> comments = httpRequestResponse.httpResponse().attributes(AttributeType.COMMENTS);
+                    List<Attribute> comments = httpRequestResponse.response().attributes(AttributeType.COMMENTS);
                     StringBuilder buff = new StringBuilder();
                     for (Attribute c : comments) {
                         buff.append(c.value());
@@ -140,10 +140,12 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHt
 //                    return TransUtil.join("\r\n", ConvertUtil.toUniqList(comments));
                 }
 
+                @Override
                 protected void process(List<Object> chunks) {
                     txtHtmlComment.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
                 }
 
+                @Override
                 protected void done() {
                     try {
                         txtHtmlComment.setText(get());
@@ -193,17 +195,18 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHt
      * @return
      */
     public HttpRequestResponse getHttpRequestResponse() {
-        if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse;
-        } else {
-            return null;
-        }
+        return this.httpRequestResponse;
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+    public HttpResponse getResponse() {
+        return this.httpRequestResponse.response();
+    }
+
+    @Override
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
-        HttpResponse response = httpRequestResponse.httpResponse();
+        HttpResponse response = httpRequestResponse.response();
         String guessCharset = HttpMesageHelper.getGuessCharset(response);
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
@@ -216,7 +219,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHt
         if (httpRequestResponse == null) {
             return false;
         }
-        burp.api.montoya.http.message.responses.HttpResponse httpResponse = httpRequestResponse.httpResponse();
+        burp.api.montoya.http.message.responses.HttpResponse httpResponse = httpRequestResponse.response();
         if (httpResponse == null) {
             return false;
         }
@@ -231,7 +234,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHt
         MimeType mimeType = httpResponse.inferredMimeType();
         mimeHTMLType = (mimeType == mimeType.HTML || mimeType == mimeType.XML || mimeType == mimeType.IMAGE_SVG_XML);
         if (httpResponse.body().length() > 0 && mimeHTMLType) {
-            List<Attribute> comments = httpRequestResponse.httpResponse().attributes(AttributeType.COMMENTS);
+            List<Attribute> comments = httpRequestResponse.response().attributes(AttributeType.COMMENTS);
             return !comments.isEmpty();
         } else {
             return false;
@@ -254,14 +257,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionHt
     }
 
     @Override
-    public HttpResponse getHttpResponse() {
-        return this.httpRequestResponse.httpResponse();
-    }
-
-    @Override
     public boolean isModified() {
         return false;
     }
-
 
 }

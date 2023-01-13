@@ -79,11 +79,11 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     value = new NamedColor(highlightColor, StringUtil.toString(ordinal + 1));
                     break;
                 case 2: // host
-                    String protocol = HttpTarget.getProtocol(msg.httpRequest().httpService().secure());
+                    String protocol = HttpTarget.getProtocol(msg.request().httpService().secure());
                     value = protocol + "://" + msg.getHost();
                     break;
                 case 3: // method
-                    value = msg.httpRequest().method();
+                    value = msg.request().method();
                     break;
                 case 4: // url
                     value = StringUtil.toString(msg.getUrl());

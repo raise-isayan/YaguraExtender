@@ -1,6 +1,7 @@
 package extension.burp;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.scanner.AuditResult;
 import burp.api.montoya.scanner.ConsolidationAction;
 import burp.api.montoya.scanner.ScanCheck;
 import burp.api.montoya.scanner.audit.insertionpoint.AuditInsertionPoint;
@@ -14,12 +15,12 @@ import java.util.List;
 public class ScannerCheckAdapter implements ScanCheck {
 
     @Override
-    public List<AuditIssue> activeAudit(HttpRequestResponse baseRequestResponse, AuditInsertionPoint auditInsertionPoint) {
+    public AuditResult activeAudit(HttpRequestResponse baseRequestResponse, AuditInsertionPoint auditInsertionPoint) {
         return null;
     }
 
     @Override
-    public List<AuditIssue> passiveAudit(HttpRequestResponse baseRequestResponse) {
+    public AuditResult passiveAudit(HttpRequestResponse httpRequestResponse) {
         return null;
     }
 

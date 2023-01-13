@@ -1,13 +1,13 @@
 package yagura.view;
 
 import burp.BurpExtender;
+import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.headers.HttpHeader;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.ThemeUI;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -32,7 +32,8 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JWTViewTab extends javax.swing.JPanel implements ExtensionHttpRequestEditor {
+
+public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
     private JWTToken jwtinstance = new JWTToken();
 
@@ -225,13 +226,13 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionHttpReque
     private HttpRequestResponse httpRequestResponse = null;
 
     @Override
-    public HttpRequest getHttpRequest() {
-        return httpRequestResponse.httpRequest();
+    public HttpRequest getRequest() {
+        return httpRequestResponse.request();
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
-        final HttpRequest httpRequest = httpRequestResponse.httpRequest();
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        final HttpRequest httpRequest = httpRequestResponse.request();
         this.httpRequestResponse = httpRequestResponse;
         this.tokenMap.clear();
         this.cmbParam.removeAllItems();
@@ -288,7 +289,7 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionHttpReque
         if (httpRequestResponse == null) {
             return false;
         }
-        final HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        final HttpRequest httpRequest = httpRequestResponse.request();
         boolean find = false;
         try {
             UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
@@ -296,7 +297,7 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionHttpReque
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
                 return false;
             }
-            if (httpRequest.asBytes().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
+            if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
                 return false;
             }
             this.setLineWrap(viewProperty.isLineWrap());
@@ -383,5 +384,6 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionHttpReque
         this.txtPayloadJSON.setLineWrap(lineWrap);
         this.txtSignatureSign.setLineWrap(lineWrap);
     }
+
 
 }

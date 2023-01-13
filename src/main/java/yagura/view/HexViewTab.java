@@ -2,7 +2,7 @@ package yagura.view;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpMessageEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extension.helpers.ConvertUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
@@ -29,7 +29,9 @@ import javax.swing.table.TableColumnModel;
  *
  * @author isayan
  */
-public class HexViewTab extends javax.swing.JPanel implements ExtensionHttpMessageEditor {
+//public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
+
+public class HexViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
     private final static Logger logger = Logger.getLogger(HexViewTab.class.getName());
 
     /**
@@ -226,8 +228,8 @@ public class HexViewTab extends javax.swing.JPanel implements ExtensionHttpMessa
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
-        this.setData(httpRequestResponse.httpRequest().asBytes().getBytes());
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.setData(httpRequestResponse.request().toByteArray().getBytes());
     }
 
     @Override

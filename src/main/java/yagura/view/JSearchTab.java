@@ -4,7 +4,7 @@ import burp.BurpExtender;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
-import burp.api.montoya.proxy.ProxyRequestResponse;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
@@ -702,12 +702,12 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.modelSearch.removeAll();
         JSearchProperty searchProp = this.getProperty();
         Pattern p = MatchUtil.compileRegex(text, searchProp.isSmartMatch(), searchProp.isRegexp(),  searchProp.isIgnoreCase());
-        final List<ProxyRequestResponse> proxyHistory = BurpExtender.getMontoyaApi().proxy().history();
+        final List<ProxyHttpRequestResponse> proxyHistory = BurpExtender.getMontoyaApi().proxy().history();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
             for (int i = 0; i < proxyHistory.size(); i++) {
-                ProxyRequestResponse info = proxyHistory.get(i);
-                HttpMessageItem item = new HttpMessageItem(HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.messageAnnotations()), i);
+                ProxyHttpRequestResponse info = proxyHistory.get(i);
+                HttpMessageItem item = new HttpMessageItem(HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()), i);
                 Matcher m = null;
                 boolean find = false;
                 do {
@@ -721,8 +721,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         }
                     }
                     if ((searchProp.isRequestHeader() || searchProp.isRequestBody()) && item.getRequest() != null) {
-                        HttpRequest httpRequest = item.httpRequest();
-                        byte [] reqMessage = item.httpRequest().asBytes().getBytes();
+                        HttpRequest httpRequest = item.request();
+                        byte [] reqMessage = item.request().toByteArray().getBytes();
                         if (!(searchProp.isRequestHeader() && searchProp.isRequestBody())) {
                             if (searchProp.isRequestHeader()) {
                                 reqMessage = Arrays.copyOfRange(reqMessage, 0, httpRequest.bodyOffset());
@@ -738,8 +738,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         }
                     }
                     if ((searchProp.isResponseHeader() || searchProp.isResponseBody()) && item.getResponse() != null) {
-                        HttpResponse httpResponse = item.httpResponse();
-                        byte resMessage[] = httpResponse.asBytes().getBytes();
+                        HttpResponse httpResponse = item.response();
+                        byte resMessage[] = httpResponse.toByteArray().getBytes();
                         if (!(searchProp.isResponseHeader() && searchProp.isResponseBody())) {
                             if (searchProp.isResponseHeader()) {
                                 resMessage = Arrays.copyOfRange(item.getResponse(), 0, httpResponse.bodyOffset());

@@ -1,12 +1,9 @@
 package yagura.model;
 
-import burp.BurpExtender;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
-import burp.api.montoya.ui.contextmenu.ComponentEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
-import burp.api.montoya.ui.contextmenu.InvocationSource;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.io.BufferedOutputStream;
@@ -55,12 +52,12 @@ public abstract class SendToMenuItem
     protected File tempMessageFile(HttpRequestResponse messageInfo, int index) {
         File file = null;
         try {
-            file = File.createTempFile(HttpUtil.getBaseName(new URL(messageInfo.httpRequest().url())) + "." + index + ".", ".tmp");
+            file = File.createTempFile(HttpUtil.getBaseName(new URL(messageInfo.request().url())) + "." + index + ".", ".tmp");
             file.deleteOnExit();
             try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(file, true))) {
-                if ((this.isRequestHeader() || this.isRequestBody()) && messageInfo.httpRequest() != null) {
-                    HttpRequest httpRequest = messageInfo.httpRequest();
-                    byte[] reqMessage = httpRequest.asBytes().getBytes();
+                if ((this.isRequestHeader() || this.isRequestBody()) && messageInfo.request() != null) {
+                    HttpRequest httpRequest = messageInfo.request();
+                    byte[] reqMessage = httpRequest.toByteArray().getBytes();
                     if (!(this.isRequestHeader() && this.isRequestBody())) {
                         if (this.isRequestHeader()) {
                             reqMessage = Arrays.copyOfRange(reqMessage, 0, httpRequest.bodyOffset());
@@ -71,9 +68,9 @@ public abstract class SendToMenuItem
                     fostm.write(reqMessage);
                     fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                 }
-                if ((this.isResponseHeader() || this.isResponseBody()) && messageInfo.httpResponse() != null) {
-                    HttpResponse httpResponse = messageInfo.httpResponse();
-                    byte resMessage[] = httpResponse.asBytes().getBytes();
+                if ((this.isResponseHeader() || this.isResponseBody()) && messageInfo.response() != null) {
+                    HttpResponse httpResponse = messageInfo.response();
+                    byte resMessage[] = httpResponse.toByteArray().getBytes();
                     if (!(this.isResponseHeader() && this.isResponseBody())) {
                         if (this.isResponseHeader()) {
                             resMessage = Arrays.copyOfRange(resMessage, 0, httpResponse.bodyOffset());

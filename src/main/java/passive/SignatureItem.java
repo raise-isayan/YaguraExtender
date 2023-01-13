@@ -1,8 +1,8 @@
 package passive;
 
+import burp.api.montoya.core.Marker;
 import burp.api.montoya.core.Range;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.MarkedHttpRequestResponse;
 import burp.api.montoya.scanner.ScanCheck;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import com.google.gson.annotations.Expose;
@@ -72,20 +72,23 @@ public class SignatureItem<M extends IssueItem> implements ISignatureItem {
         return new ScannerCheckAdapter();
     }
 
-    public MarkedHttpRequestResponse applyMarkers(HttpRequestResponse baseRequestResponse, List<M> issueList) {
-        List<Range> requestMarkers = new ArrayList<>();
-        List<Range> responseMarkers = new ArrayList<>();
+    public HttpRequestResponse applyMarkers(HttpRequestResponse baseRequestResponse, List<M> issueList) {
+        List<Marker> requestMarkers = new ArrayList<>();
+        List<Marker> responseMarkers = new ArrayList<>();
         for (IssueItem issue : issueList) {
             if (issue.isCapture()) {
                 if (issue.isMessageIsRequest()) {
-                    requestMarkers.add(Range.range(issue.start(), issue.end()));
+                    requestMarkers.add(Marker.marker(Range.range(issue.start(), issue.end())));
                 } else {
-                    responseMarkers.add(Range.range(issue.start(), issue.end()));
+                    responseMarkers.add(Marker.marker(Range.range(issue.start(), issue.end())));
                 }
             }
         }
         if (!(requestMarkers.isEmpty() || responseMarkers.isEmpty())) {
-            return baseRequestResponse.withMarkers(requestMarkers, responseMarkers);
+            List<Marker> markers = new ArrayList<>();
+            markers.addAll(requestMarkers);
+            markers.addAll(responseMarkers);
+            return baseRequestResponse.withRequestMarkers(markers);
         }
         else if (!requestMarkers.isEmpty()) {
             return baseRequestResponse.withRequestMarkers(requestMarkers);
@@ -93,7 +96,7 @@ public class SignatureItem<M extends IssueItem> implements ISignatureItem {
         else if (!responseMarkers.isEmpty()) {
             return baseRequestResponse.withResponseMarkers(responseMarkers);
         }
-        return baseRequestResponse.withNoMarkers();
+        return baseRequestResponse;
     }
 
     private final static Comparator<Range> COMPARE_MARKS = new Comparator<>() {

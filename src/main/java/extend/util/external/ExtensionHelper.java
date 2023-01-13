@@ -114,7 +114,7 @@ public class ExtensionHelper {
     public void sendToAddHostIncludeToScope(ContextMenuEvent contextMenuEvent) {
         final List<HttpRequestResponse> messageList = contextMenuEvent.selectedRequestResponses();
         for (HttpRequestResponse messageInfo : messageList) {
-            api.scope().includeInScope(HttpTarget.toURLString(messageInfo.httpRequest().httpService()));
+            api.scope().includeInScope(HttpTarget.toURLString(messageInfo.request().httpService()));
         }
     }
 
@@ -126,7 +126,7 @@ public class ExtensionHelper {
     public void sendToAddHostToExcludeScope(ContextMenuEvent contextMenuEvent) {
         final List<HttpRequestResponse> messageList = contextMenuEvent.selectedRequestResponses();
         for (HttpRequestResponse messageInfo : messageList) {
-            api.scope().excludeFromScope(HttpTarget.toURLString(messageInfo.httpRequest().httpService()));
+            api.scope().excludeFromScope(HttpTarget.toURLString(messageInfo.request().httpService()));
         }
     }
 
@@ -138,7 +138,7 @@ public class ExtensionHelper {
     public void sendToAddToExcludeScope(ContextMenuEvent contextMenuEvent) {
         final List<HttpRequestResponse> messageList = contextMenuEvent.selectedRequestResponses();
         for (HttpRequestResponse messageInfo : messageList) {
-            api.scope().excludeFromScope(messageInfo.httpRequest().url());
+            api.scope().excludeFromScope(messageInfo.request().url());
         }
     }
 
@@ -154,17 +154,17 @@ public class ExtensionHelper {
             buff.append("url\tquery\tmethod\tstatus\tlength\r\n");
             for (HttpRequestResponse messageInfo : messageList) {
 //                IRequestInfo reqInfo = api.getHelpers().analyzeRequest(messageInfo);
-                URL url = new URL(messageInfo.httpRequest().url());
+                URL url = new URL(messageInfo.request().url());
                 buff.append(HttpUtil.toURL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
                 buff.append("\t");
                 buff.append(url.getQuery());
                 buff.append("\t");
-                buff.append(messageInfo.httpRequest().method());
-                if (messageInfo.httpResponse() != null) {
+                buff.append(messageInfo.request().method());
+                if (messageInfo.response() != null) {
                     buff.append("\t");
-                    buff.append(messageInfo.httpResponse().statusCode());
+                    buff.append(messageInfo.response().statusCode());
                     buff.append("\t");
-                    buff.append(messageInfo.httpResponse().body().length());
+                    buff.append(messageInfo.response().body().length());
                 }
                 buff.append("\r\n");
             }

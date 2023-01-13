@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.api.montoya.http.message.HttpRequestResponse;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.logging.Logger;

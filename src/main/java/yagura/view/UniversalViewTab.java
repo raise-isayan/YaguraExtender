@@ -389,8 +389,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         return this;
     }
 
-    private final CustomListModel<String> modelTarget = new CustomListModel<String>();
-    private final CustomListModel<String> modelSelect = new CustomListModel<String>();
+    private final CustomListModel<String> modelTarget = new CustomListModel<>();
+    private final CustomListModel<String> modelSelect = new CustomListModel<>();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {

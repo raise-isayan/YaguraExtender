@@ -8,10 +8,9 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
-import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditor;
+import burp.api.montoya.ui.editor.extension.EditorCreationContext;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -39,10 +38,10 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class ViewStateTab extends javax.swing.JPanel implements ExtensionHttpRequestEditor {
+public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
     private final static Logger logger = Logger.getLogger(ViewStateTab.class.getName());
 
-    private final HttpRequestResponse messageRequestResponse;
+    private final EditorCreationContext editorCreationContext;
     private HttpRequestResponse httpRequestResponse = null;
 
     public ViewStateTab() {
@@ -51,10 +50,10 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionHttpReq
 
     /**
      * Creates new form ViewStateTab
-     * @param httpRequestResponse
+     * @param editorCreationContext
      */
-    public ViewStateTab(HttpRequestResponse httpRequestResponse) {
-        this.messageRequestResponse = httpRequestResponse;
+    public ViewStateTab(EditorCreationContext editorCreationContext) {
+        this.editorCreationContext = editorCreationContext;
         initComponents();
         customizeComponents();
     }
@@ -317,9 +316,14 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionHttpReq
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+    public HttpRequest getRequest() {
+        return this.httpRequestResponse.request();
+    }
+
+    @Override
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
-        HttpRequest httpRequest = httpRequestResponse.httpRequest();
+        HttpRequest httpRequest = httpRequestResponse.request();
         String viewStateValue = null;
         List<ParsedHttpParameter> parameters = httpRequest.parameters();
         for (ParsedHttpParameter p : parameters) {
@@ -344,8 +348,8 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionHttpReq
             return false;
         }
         // パラメータ値のサイズではなく全体のサイズで判断する
-        HttpRequest httpRequest = requestResponse.httpRequest();
-        if (httpRequest.asBytes().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
+        HttpRequest httpRequest = requestResponse.request();
+        if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
         List<ParsedHttpParameter> parameters = httpRequest.parameters();
@@ -377,11 +381,6 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionHttpReq
     @Override
     public Selection selectedData() {
         return null;
-    }
-
-    @Override
-    public HttpRequest getHttpRequest() {
-        return this.httpRequestResponse.httpRequest();
     }
 
     private static class ViewStateModel {

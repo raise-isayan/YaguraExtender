@@ -1,10 +1,10 @@
 package passive.signature;
 
 import burp.BurpExtender;
+import burp.api.montoya.core.Marker;
 import burp.api.montoya.core.Range;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.MarkedHttpRequestResponse;
 import burp.api.montoya.scanner.ScanCheck;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import burp.api.montoya.scanner.audit.issues.AuditIssueConfidence;
@@ -47,10 +47,10 @@ public class MatchAlert extends SignatureItem<IssueItem> {
         return new AuditIssue() {
 
             public IssueItem getItem() {
-                if (issueItem.size() > 0) {
-                    return issueItem.get(0);
-                } else {
+                if (issueItem.isEmpty()) {
                     return null;
+                } else {
+                    return issueItem.get(0);
                 }
             }
 
@@ -75,12 +75,12 @@ public class MatchAlert extends SignatureItem<IssueItem> {
 
             @Override
             public HttpService httpService() {
-                return messageInfo.httpRequest().httpService();
+                return messageInfo.request().httpService();
             }
 
             @Override
             public String baseUrl() {
-                return messageInfo.httpRequest().url();
+                return messageInfo.request().url();
             }
 
             @Override
@@ -94,8 +94,8 @@ public class MatchAlert extends SignatureItem<IssueItem> {
             }
 
             @Override
-            public List<MarkedHttpRequestResponse> requestResponses() {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            public List<HttpRequestResponse> requestResponses() {
+                return List.of(messageInfo);
             }
 
             @Override
@@ -145,12 +145,12 @@ public class MatchAlert extends SignatureItem<IssueItem> {
     }
 
     public List<AuditIssue> makeIssueList(boolean messageIsRequest, HttpRequestResponse baseRequestResponse, List<IssueItem> markIssueList) {
-        List<Range> requestResponseMarkers = new ArrayList<>();
+        List<Marker> requestResponseMarkers = new ArrayList<>();
         for (int i = 0; i < markIssueList.size(); i++) {
             IssueItem pos = markIssueList.get(i);
-            requestResponseMarkers.add(Range.range(pos.start(), pos.end()));
+            requestResponseMarkers.add(Marker.marker(Range.range(pos.start(), pos.end())));
         }
-        MarkedHttpRequestResponse messageInfoMark = null;
+        HttpRequestResponse messageInfoMark = null;
         if (messageIsRequest) {
             messageInfoMark = baseRequestResponse.withRequestMarkers(requestResponseMarkers);
         } else {

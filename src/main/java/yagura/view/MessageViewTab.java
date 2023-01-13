@@ -17,6 +17,8 @@ import yagura.model.UniversalViewProperty.UniversalView;
  *
  * @author isayan
  */
+// public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
+
 public class MessageViewTab extends javax.swing.JPanel implements SendToMessage {
     private final static Logger logger = Logger.getLogger(MessageViewTab.class.getName());
 
@@ -139,28 +141,28 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             if (this.messageItem.getRequest() != null) {
                 this.isEnabledFor(messageItem, true);
                 if (this.tabbetRequestView.indexOfComponent(this.tabRequestRawView) > -1) {
-                    this.tabRequestRawView.setHttpRequestResponse(messageInfo);
+                    this.tabRequestRawView.setRequestResponse(messageInfo);
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabRequestJSONViewTab) > -1) {
-                    this.tabRequestJSONViewTab.setHttpRequestResponse(messageInfo);
+                    this.tabRequestJSONViewTab.setRequestResponse(messageInfo);
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabGeneratePoC) > -1) {
-                    this.tabGeneratePoC.setHttpRequestResponse(messageInfo);
+                    this.tabGeneratePoC.setRequestResponse(messageInfo);
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabViewState) > -1) {
-                    this.tabViewState.setHttpRequestResponse(messageInfo);
+                    this.tabViewState.setRequestResponse(messageInfo);
                 }
             }
             if (this.messageItem.getResponse() != null) {
                 this.isEnabledFor(messageItem, false);
                 if (this.tabbetResponseView.indexOfComponent(this.tabResponseRawView) > -1) {
-                    this.tabResponseRawView.setHttpRequestResponse(messageInfo);
+                    this.tabResponseRawView.setRequestResponse(messageInfo);
                 }
                 if (this.tabbetResponseView.indexOfComponent(this.tabResponseJSONViewTab) > -1) {
-                    this.tabResponseJSONViewTab.setHttpRequestResponse(messageInfo);
+                    this.tabResponseJSONViewTab.setRequestResponse(messageInfo);
                 }
                 if (this.tabbetResponseView.indexOfComponent(this.tabHtmlComment) > -1) {
-                    this.tabHtmlComment.setHttpRequestResponse(messageInfo);
+                    this.tabHtmlComment.setRequestResponse(messageInfo);
                 }
             }
         } catch (Exception ex) {

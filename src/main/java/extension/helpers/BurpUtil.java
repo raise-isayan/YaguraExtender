@@ -3,19 +3,20 @@ package extension.helpers;
 import burp.api.montoya.core.Annotations;
 import burp.api.montoya.core.Range;
 import burp.api.montoya.core.ToolSource;
-import burp.api.montoya.http.HttpHandler;
-import burp.api.montoya.http.RequestResult;
-import burp.api.montoya.http.ResponseResult;
+import burp.api.montoya.http.handler.HttpHandler;
+import burp.api.montoya.http.handler.HttpRequestToBeSent;
+import burp.api.montoya.http.handler.HttpResponseReceived;
+import burp.api.montoya.http.handler.RequestToBeSentAction;
+import burp.api.montoya.http.handler.ResponseReceivedAction;
 import burp.api.montoya.http.message.requests.HttpRequest;
-import burp.api.montoya.http.message.responses.HttpResponse;
-import burp.api.montoya.proxy.InterceptedHttpRequest;
-import burp.api.montoya.proxy.InterceptedHttpResponse;
-import burp.api.montoya.proxy.ProxyHttpRequestHandler;
-import burp.api.montoya.proxy.ProxyHttpResponseHandler;
-import burp.api.montoya.proxy.RequestFinalInterceptResult;
-import burp.api.montoya.proxy.RequestInitialInterceptResult;
-import burp.api.montoya.proxy.ResponseFinalInterceptResult;
-import burp.api.montoya.proxy.ResponseInitialInterceptResult;
+import burp.api.montoya.proxy.http.InterceptedRequest;
+import burp.api.montoya.proxy.http.InterceptedResponse;
+import burp.api.montoya.proxy.http.ProxyRequestHandler;
+import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
+import burp.api.montoya.proxy.http.ProxyRequestToBeSentAction;
+import burp.api.montoya.proxy.http.ProxyResponseHandler;
+import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
+import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
 import burp.api.montoya.ui.contextmenu.MessageEditorHttpRequestResponse;
@@ -68,9 +69,9 @@ public class BurpUtil {
         MessageEditorHttpRequestResponse messageInfo = contextMenu.messageEditorRequestResponse().get();
         byte message[] = new byte[0];
         if (context == InvocationType.MESSAGE_EDITOR_REQUEST || context == InvocationType.MESSAGE_VIEWER_REQUEST) {
-            message = messageInfo.getRequestResponse().httpRequest().asBytes().getBytes();
+            message = messageInfo.requestResponse().request().toByteArray().getBytes();
         } else if (context == InvocationType.MESSAGE_EDITOR_RESPONSE || context == InvocationType.MESSAGE_EDITOR_RESPONSE) {
-            message = messageInfo.getRequestResponse().httpResponse().asBytes().getBytes();
+            message = messageInfo.requestResponse().response().toByteArray().getBytes();
         }
         Range range = messageInfo.selectionOffsets().get();
         if (message != null) {
@@ -92,9 +93,9 @@ public class BurpUtil {
 
         byte message[] = new byte[0];
         if (context == InvocationType.MESSAGE_EDITOR_REQUEST || context == InvocationType.MESSAGE_VIEWER_REQUEST) {
-            message = messageInfo.getRequestResponse().httpRequest().asBytes().getBytes();
+            message = messageInfo.requestResponse().request().toByteArray().getBytes();
         } else if (context == InvocationType.MESSAGE_EDITOR_RESPONSE || context == InvocationType.MESSAGE_VIEWER_RESPONSE) {
-            message = messageInfo.getRequestResponse().httpResponse().asBytes().getBytes();
+            message = messageInfo.requestResponse().response().toByteArray().getBytes();
         }
         Range range = messageInfo.selectionOffsets().get();
         if (message != null) {
@@ -130,41 +131,43 @@ public class BurpUtil {
     }
 
     public static class HttpHandlerAdapter implements HttpHandler {
+
         @Override
-        public RequestResult handleHttpRequest(HttpRequest httpRequest, Annotations annotations, ToolSource toolSource) {
-            return RequestResult.requestResult(httpRequest, annotations);
+        public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
+            return RequestToBeSentAction.continueWith(httpRequestToBeSent, httpRequestToBeSent.annotations());
         }
 
         @Override
-        public ResponseResult handleHttpResponse(HttpResponse httpResponse, HttpRequest httpRequest, Annotations annotations, ToolSource toolSource) {
-            return ResponseResult.responseResult(httpResponse, annotations);
+        public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived httpResponseReceived) {
+            return ResponseReceivedAction.continueWith(httpResponseReceived, httpResponseReceived.annotations());
         }
     }
 
-    public static class ProxyHttpRequestHandlerAdapter implements ProxyHttpRequestHandler {
+    public static class ProxyHttpRequestHandlerAdapter implements ProxyRequestHandler {
 
         @Override
-        public RequestInitialInterceptResult handleReceivedRequest(InterceptedHttpRequest interceptedHttpRequest, Annotations annotations) {
-            return RequestInitialInterceptResult.doNotIntercept(interceptedHttpRequest, annotations);
+        public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
+            return ProxyRequestReceivedAction.continueWith(interceptedRequest, interceptedRequest.annotations());
         }
 
         @Override
-        public RequestFinalInterceptResult handleRequestToIssue(InterceptedHttpRequest httpRequest, Annotations annotations) {
-            return RequestFinalInterceptResult.continueWith(httpRequest, annotations);
+        public ProxyRequestToBeSentAction handleRequestToBeSent(InterceptedRequest interceptedRequest) {
+            return ProxyRequestToBeSentAction.continueWith(interceptedRequest, interceptedRequest.annotations());
         }
 
     }
 
 
-    public static class ProxyHttpResponseHandlerAdapter implements ProxyHttpResponseHandler {
+    public static class ProxyHttpResponseHandlerAdapter implements ProxyResponseHandler {
+
         @Override
-        public ResponseInitialInterceptResult handleReceivedResponse(InterceptedHttpResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
-            return ResponseInitialInterceptResult.doNotIntercept(interceptedHttpResponse, annotations);
+        public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse interceptedResponse) {
+            return ProxyResponseReceivedAction.continueWith(interceptedResponse, interceptedResponse.annotations());
         }
 
         @Override
-        public ResponseFinalInterceptResult handleResponseToReturn(InterceptedHttpResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
-            return ResponseFinalInterceptResult.continueWith(interceptedHttpResponse, annotations);
+        public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
+            return ProxyResponseToBeSentAction.continueWith(interceptedResponse, interceptedResponse.annotations());
         }
 
     }

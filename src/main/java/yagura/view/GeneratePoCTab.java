@@ -4,14 +4,14 @@ import burp.BurpExtender;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.http.HttpService;
+import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.headers.HttpHeader;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditor;
 import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
 import extension.burp.HttpTarget;
@@ -47,7 +47,9 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpRequestEditor, ExtensionUnloadingHandler {
+// public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
+
+public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
     private final static Logger logger = Logger.getLogger(GeneratePoCTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -361,10 +363,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpR
                 }
             }
 
+            @Override
             protected void process(List<Object> chunks) {
                 ta.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
+            @Override
             protected void done() {
                 try {
                     ta.setText(get());
@@ -435,11 +439,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpR
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }
-
-    @Override
-    public void extensionUnloaded() {
-
     }
 
     protected class GenerateCsrfParameter {
@@ -713,7 +712,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpR
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
             MontoyaApi api = BurpExtender.getMontoyaApi();
-            final HttpRequest httpRequest = this.httpRequestResponse.httpRequest();
+            final HttpRequest httpRequest = this.httpRequestResponse.request();
             // 自動判定
             String contentType = HttpMesageHelper.getEncodeType(httpRequest);
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
@@ -898,7 +897,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpR
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             boolean csrfHtml5WithXHeader = csrfParam.isCsrfHtml5WithXHeader();
 
-            final HttpRequest httpRequest = this.httpRequestResponse.httpRequest();
+            final HttpRequest httpRequest = this.httpRequestResponse.request();
             String contentType = HttpMesageHelper.getEncodeType(httpRequest);
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // 自動判定
@@ -1155,18 +1154,18 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpR
     }
 
     @Override
-    public HttpRequest getHttpRequest() {
-        return httpRequestResponse.httpRequest();
+    public HttpRequest getRequest() {
+        return httpRequestResponse.request();
     }
 
     @Override
-    public void setHttpRequestResponse(HttpRequestResponse httpRequestResponse) {
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = null;
         boolean useHttps = false;
-        HttpRequest httpRequest = httpRequestResponse.httpRequest();
-        HttpResponse httpResponse = httpRequestResponse.httpResponse();
-        if (httpRequestResponse.httpResponse() != null) {
+        HttpRequest httpRequest = httpRequestResponse.request();
+        HttpResponse httpResponse = httpRequestResponse.response();
+        if (httpRequestResponse.response() != null) {
             guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
         }
         HttpService service = httpRequest.httpService();
@@ -1200,7 +1199,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionHttpR
         if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
             return false;
         }
-        HttpRequest request = httpRequestResponse.httpRequest();
+        HttpRequest request = httpRequestResponse.request();
         String host = request.httpService().host();
         if (host == null) {
             return false;

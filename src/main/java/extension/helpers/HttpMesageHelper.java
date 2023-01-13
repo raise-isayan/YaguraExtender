@@ -1,6 +1,6 @@
 package extension.helpers;
 
-import burp.api.montoya.http.message.headers.HttpHeader;
+import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;

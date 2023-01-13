@@ -14,9 +14,9 @@ import burp.api.montoya.core.Version;
 import burp.api.montoya.decoder.Decoder;
 import burp.api.montoya.extension.Extension;
 import burp.api.montoya.http.Http;
-import burp.api.montoya.http.HttpHandler;
 import burp.api.montoya.http.HttpMode;
 import burp.api.montoya.http.HttpService;
+import burp.api.montoya.http.handler.HttpHandler;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.analysis.ResponseKeywordsAnalyzer;
@@ -28,20 +28,23 @@ import burp.api.montoya.intruder.Intruder;
 import burp.api.montoya.intruder.PayloadGeneratorProvider;
 import burp.api.montoya.intruder.PayloadProcessor;
 import burp.api.montoya.logging.Logging;
+import burp.api.montoya.persistence.PersistedObject;
 import burp.api.montoya.persistence.Persistence;
 import burp.api.montoya.persistence.Preferences;
-import burp.api.montoya.persistence.TemporaryFile;
 import burp.api.montoya.proxy.Proxy;
 import burp.api.montoya.proxy.ProxyHistoryFilter;
-import burp.api.montoya.proxy.ProxyHttpRequestHandler;
-import burp.api.montoya.proxy.ProxyHttpResponseHandler;
-import burp.api.montoya.proxy.ProxyRequestResponse;
-import burp.api.montoya.proxy.ProxyWebSocketCreationHandler;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
+import burp.api.montoya.proxy.http.ProxyRequestHandler;
+import burp.api.montoya.proxy.http.ProxyResponseHandler;
+import burp.api.montoya.proxy.websocket.ProxyWebSocketCreationHandler;
 import burp.api.montoya.repeater.Repeater;
+import burp.api.montoya.scanner.AuditConfiguration;
+import burp.api.montoya.scanner.Crawl;
+import burp.api.montoya.scanner.CrawlConfiguration;
 import burp.api.montoya.scanner.ReportFormat;
-import burp.api.montoya.scanner.Scan;
 import burp.api.montoya.scanner.ScanCheck;
 import burp.api.montoya.scanner.Scanner;
+import burp.api.montoya.scanner.audit.Audit;
 import burp.api.montoya.scanner.audit.AuditIssueHandler;
 import burp.api.montoya.scanner.audit.insertionpoint.AuditInsertionPointProvider;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
@@ -56,8 +59,8 @@ import burp.api.montoya.ui.editor.EditorOptions;
 import burp.api.montoya.ui.editor.HttpRequestEditor;
 import burp.api.montoya.ui.editor.HttpResponseEditor;
 import burp.api.montoya.ui.editor.RawEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpRequestEditorProvider;
-import burp.api.montoya.ui.editor.extension.ExtensionHttpResponseEditorProvider;
+import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
+import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import burp.api.montoya.ui.swing.SwingUtils;
 import burp.api.montoya.utilities.Base64Utils;
 import burp.api.montoya.utilities.ByteUtils;
@@ -181,76 +184,6 @@ public class MontoyaApiAdapter implements MontoyaApi {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
-//        @Override
-//        public HttpRequest createRequest(HttpService hs, byte[] bytes) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpRequest createRequest(HttpService hs, String string) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpRequest createRequest(HttpService hs, List<String> list, byte[] bytes) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpRequest createRequest(HttpService hs, List<String> list, String string) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpRequest createVerbatimRequest(HttpService hs, List<HttpHeader> list, byte[] bytes) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpRequest createVerbatimRequest(HttpService hs, List<HttpHeader> list, String string) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpRequest createRequestFromUrl(String string) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpResponse createResponse(byte[] bytes) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpResponse createResponse(String string) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpResponse createResponse(List<String> list, byte[] bytes) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpResponse createResponse(List<String> list, String string) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public HttpRequestResponse createRequestResponse(HttpRequest hr, HttpResponse hr1, MessageAnnotations ma) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-//
-//        @Override
-//        public MarkedHttpRequestResponse createMarkedRequestResponse(HttpRequest hr, HttpResponse hr1, MessageAnnotations ma) {
-//            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//        }
-
-        @Override
-        public HttpRequestResponse issueRequest(HttpRequest hr, HttpMode hm, String string) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
         @Override
         public ResponseKeywordsAnalyzer createResponseKeywordsAnalyzer(List<String> list) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -263,6 +196,21 @@ public class MontoyaApiAdapter implements MontoyaApi {
 
         @Override
         public CookieJar cookieJar() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public HttpRequestResponse sendRequest(HttpRequest hr) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public HttpRequestResponse sendRequest(HttpRequest hr, HttpMode hm) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public HttpRequestResponse sendRequest(HttpRequest hr, HttpMode hm, String string) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -359,7 +307,7 @@ public class MontoyaApiAdapter implements MontoyaApi {
         }
 
         @Override
-        public TemporaryFile temporaryFile() {
+        public PersistedObject extensionData() {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -383,17 +331,22 @@ public class MontoyaApiAdapter implements MontoyaApi {
         }
 
         @Override
-        public List<ProxyRequestResponse> history(ProxyHistoryFilter phf) {
+        public List<ProxyHttpRequestResponse> history() {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
         @Override
-        public Registration registerRequestHandler(ProxyHttpRequestHandler phrh) {
+        public List<ProxyHttpRequestResponse> history(ProxyHistoryFilter phf) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
         @Override
-        public Registration registerResponseHandler(ProxyHttpResponseHandler phrh) {
+        public Registration registerRequestHandler(ProxyRequestHandler prh) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public Registration registerResponseHandler(ProxyResponseHandler prh) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -412,7 +365,12 @@ public class MontoyaApiAdapter implements MontoyaApi {
     public static class RepeaterAdapter implements Repeater {
 
         @Override
-        public void sendToRepeater(String string, HttpRequest hr) {
+        public void sendToRepeater(HttpRequest hr) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public void sendToRepeater(HttpRequest hr, String string) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -441,12 +399,17 @@ public class MontoyaApiAdapter implements MontoyaApi {
         }
 
         @Override
-        public Scan createScan() {
+        public void generateReport(List<AuditIssue> list, ReportFormat rf, Path path) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
         @Override
-        public void generateReport(List<AuditIssue> list, ReportFormat rf, Path path) {
+        public Crawl startCrawl(CrawlConfiguration cc) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public Audit startAudit(AuditConfiguration ac) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -475,7 +438,7 @@ public class MontoyaApiAdapter implements MontoyaApi {
         }
 
         @Override
-        public Registration registerHandler(ScopeChangeHandler sch) {
+        public Registration registerScopeChangeHandler(ScopeChangeHandler sch) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -505,12 +468,12 @@ public class MontoyaApiAdapter implements MontoyaApi {
 
         @Override
         public List<HttpRequestResponse> requestResponses() {
-            return SiteMap.super.requestResponses(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
         @Override
         public List<AuditIssue> issues() {
-            return SiteMap.super.issues(); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
         @Override
@@ -534,16 +497,6 @@ public class MontoyaApiAdapter implements MontoyaApi {
 
         @Override
         public Registration registerContextMenuItemsProvider(ContextMenuItemsProvider cmip) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
-        @Override
-        public Registration registerHttpRequestEditorProvider(ExtensionHttpRequestEditorProvider ehrep) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
-
-        @Override
-        public Registration registerHttpResponseEditorProvider(ExtensionHttpResponseEditorProvider ehrep) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -574,6 +527,16 @@ public class MontoyaApiAdapter implements MontoyaApi {
 
         @Override
         public SwingUtils swingUtils() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public Registration registerHttpRequestEditorProvider(HttpRequestEditorProvider hrep) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public Registration registerHttpResponseEditorProvider(HttpResponseEditorProvider hrep) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 

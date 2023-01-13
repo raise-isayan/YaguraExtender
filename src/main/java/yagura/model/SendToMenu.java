@@ -8,6 +8,7 @@ import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import extend.util.external.TransUtil;
 import extension.burp.MessageType;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -40,10 +41,11 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     private final List<SendToMenuItem> sendToList = new ArrayList<>();
 
     @Override
-    public List<JMenuItem> provideMenuItems(ContextMenuEvent invocation) {
-        this.invocation = invocation;
-        this.renewMenu(this.property);
-        return this.menuList;
+    public List<Component> provideMenuItems(ContextMenuEvent contextMenuEvent) {
+//        this.invocation = invocation;
+//        this.renewMenu(this.property);
+//        return this.menuList;
+        return null;
     }
 
     private SendToMenuItem getMenuItemCaption(boolean forceSortOrder, int ord, SendToMenuItem menuItem) {
@@ -358,8 +360,8 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     public void sendToRepeater(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
-            HttpRequest httpRequest = messageItem.get(0).httpRequest();
-            api.repeater().sendToRepeater("v" + this.repeternum++, httpRequest);
+            HttpRequest httpRequest = messageItem.get(0).request();
+            api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -368,7 +370,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     public void sendToIntruder(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
-            HttpRequest httpRequest = messageItem.get(0).httpRequest();
+            HttpRequest httpRequest = messageItem.get(0).request();
             api.intruder().sendToIntruder(httpRequest);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
