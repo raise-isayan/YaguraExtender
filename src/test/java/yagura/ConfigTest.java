@@ -1,6 +1,6 @@
 package yagura;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -108,7 +108,7 @@ public class ConfigTest {
      */
     @Test
     public void testLoadLogPropertyXML() {
-        InputStream inStream = BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES);
+        InputStream inStream = BurpExtension.class.getResourceAsStream(LOGGING_PROPERTIES);
         Properties prop = new Properties();
         try {
             prop.load(inStream);

@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
 import java.awt.Component;

@@ -1,6 +1,6 @@
 package passive.signature;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.core.Marker;
 import burp.api.montoya.core.Range;
 import burp.api.montoya.http.HttpService;
@@ -64,7 +64,7 @@ public class MatchAlert extends SignatureItem<IssueItem> {
                 StringBuilder buff = new StringBuilder();
                 buff.append("<h4>Match:</h4>");
                 buff.append(String.format("<p>toolName: %s</p>", HttpUtil.toHtmlEncode(toolName)));
-                buff.append(String.format("<p>Scan Date: %s</p>", BurpExtender.getInstance().getCurrentLogTimestamp()));
+                buff.append(String.format("<p>Scan Date: %s</p>", BurpExtension.getInstance().getCurrentLogTimestamp()));
                 return buff.toString();
             }
 

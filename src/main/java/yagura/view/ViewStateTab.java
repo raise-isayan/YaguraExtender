@@ -3,14 +3,17 @@ package yagura.view;
 import aspx.viewstate.ViewState;
 import aspx.viewstate.ViewState.Algorithm;
 import aspx.viewstate.ViewStateParser;
-import burp.BurpExtender;
-import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.BurpExtension;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
-import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.core.ToolType;
 import burp.api.montoya.ui.Selection;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
+import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
+import extend.util.external.ExtensionHelper;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -39,17 +42,19 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
+
     private final static Logger logger = Logger.getLogger(ViewStateTab.class.getName());
 
     private final EditorCreationContext editorCreationContext;
     private HttpRequestResponse httpRequestResponse = null;
 
     public ViewStateTab() {
-        this(null);
+        this(ExtensionHelper.newEditorCreationContext(ToolType.EXTENSIONS, EditorMode.READ_ONLY));
     }
 
     /**
      * Creates new form ViewStateTab
+     *
      * @param editorCreationContext
      */
     public ViewStateTab(EditorCreationContext editorCreationContext) {
@@ -342,7 +347,7 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
         if (requestResponse == null) {
             return false;
         }
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.VIEW_STATE)) {
             return false;

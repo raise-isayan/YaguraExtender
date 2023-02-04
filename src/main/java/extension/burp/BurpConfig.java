@@ -33,7 +33,7 @@ public class BurpConfig {
         try {
             final KeyStore ks;
             ks = KeyStore.getInstance("PKCS12");
-            Preferences prefs = Preferences.userNodeForPackage(burp.BurpExtender.class);
+            Preferences prefs = Preferences.userNodeForPackage(burp.BurpExtension.class);
             byte[] caCartByte = Base64.getDecoder().decode(prefs.get("caCert", ""));
             ks.load(new ByteArrayInputStream(caCartByte), CA_PASSWORD.toCharArray());
             return ks;

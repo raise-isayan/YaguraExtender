@@ -35,7 +35,7 @@ import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import extend.util.external.ThemeUI;
 import extend.util.external.gson.XMatchItemAdapter;
-import extension.burp.BurpExtenderImpl;
+import extension.burp.BurpExtensionImpl;
 import extension.burp.HttpTarget;
 import extension.burp.MessageType;
 import extension.burp.NotifyType;
@@ -106,13 +106,13 @@ import yagura.view.ViewStateTab;
 /**
  * @author isayan
  */
-public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloadingHandler {
+public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
 
-    private final static Logger logger = Logger.getLogger(BurpExtender.class.getName());
+    private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
     private ProxyHander proxyHandler;
     private Registration registerContextMenu;
 
-    public BurpExtender() {
+    public BurpExtension() {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable ex) {
@@ -139,7 +139,7 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
             if (logPropFile.exists()) {
                 prop.load(new FileInputStream(logPropFile));
             } else {
-                prop.load(BurpExtender.class.getResourceAsStream(LOGGING_PROPERTIES));
+                prop.load(BurpExtension.class.getResourceAsStream(LOGGING_PROPERTIES));
             }
             String pattern = prop.getProperty(FileHandler.class.getName() + ".pattern");
             prop.setProperty(FileHandler.class.getName() + ".pattern", new File(logDir, pattern).getAbsolutePath());
@@ -152,8 +152,8 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
     }
 
     @SuppressWarnings("unchecked")
-    public static BurpExtender getInstance() {
-        return BurpExtenderImpl.<BurpExtender>getInstance();
+    public static BurpExtension getInstance() {
+        return BurpExtensionImpl.<BurpExtension>getInstance();
     }
 
     public Component getUiComponent() {
@@ -840,15 +840,15 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
                             annotations = annotations.withHighlightColor(bean.getHighlightColor().toHighlightColor());
-                            BurpExtender.helpers().outPrintln("Highlight c:" + bean.getHighlightColor() + "," + annotations.highlightColor());
+                            BurpExtension.helpers().outPrintln("Highlight c:" + bean.getHighlightColor() + "," + annotations.highlightColor());
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.COMMENT)) {
                             if (replacemeComment != null) {
                                 annotations = annotations.withNotes(replacemeComment);
-                                BurpExtender.helpers().outPrintln("Comment r:" + annotations.notes());
+                                BurpExtension.helpers().outPrintln("Comment r:" + annotations.notes());
                             } else {
                                 annotations = annotations.withNotes(bean.getComment());
-                                BurpExtender.helpers().outPrintln("Comment b:" + annotations.notes());
+                                BurpExtension.helpers().outPrintln("Comment b:" + annotations.notes());
                             }
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
@@ -864,7 +864,7 @@ public class BurpExtender extends BurpExtenderImpl implements ExtensionUnloading
                 }
             }
             HttpRequestResponse modifyRequestResponse = HttpRequestResponse.httpRequestResponse(httpRequestResponse.request(), httpRequestResponse.response(), annotations);
-            BurpExtender.helpers().outPrintln("matchAlertMessage:" + toolType + ":" + messageIsRequest + ":" + modifyRequestResponse.annotations().highlightColor() + ":" + modifyRequestResponse.annotations().notes());
+            BurpExtension.helpers().outPrintln("matchAlertMessage:" + toolType + ":" + messageIsRequest + ":" + modifyRequestResponse.annotations().highlightColor() + ":" + modifyRequestResponse.annotations().notes());
             return modifyRequestResponse;
         }
 

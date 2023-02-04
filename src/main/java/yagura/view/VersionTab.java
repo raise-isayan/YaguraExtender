@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import extension.view.layout.VerticalFlowLayout;
 import yagura.Version;
 import java.awt.Component;
@@ -128,7 +128,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = filechooser.getSelectedFile();
-                OptionProperty option = BurpExtender.getInstance().getProperty();
+                OptionProperty option = BurpExtension.getInstance().getProperty();
                 Map<String, String> config = option.loadConfigSetting();
                 Config.loadFromJson(file, config);
                 option.saveConfigSetting(config);
@@ -151,7 +151,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
                 if (!BURP_CONFIG_FILTER.accept(file)) {
                     file = new File(file.getAbsolutePath() + ".json");
                 }
-                OptionProperty option = BurpExtender.getInstance().getProperty();
+                OptionProperty option = BurpExtension.getInstance().getProperty();
                 Map<String, String> config = option.loadConfigSetting();
                 Config.saveToJson(file, config);
             } catch (IOException ex) {

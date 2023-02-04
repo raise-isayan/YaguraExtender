@@ -5,7 +5,7 @@
  */
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import extension.burp.MessageHighlightColor;
 import extension.helpers.BurpUtil;
 import extension.helpers.StringUtil;
@@ -438,7 +438,7 @@ public class ResultFilterPopup extends javax.swing.JFrame {
                 boolean showOnlyScopFilter = true;
                 // Filter by request type
                 if (this.filterProp.getShowOnlyScopeItems()) {
-                    showOnlyScopFilter = BurpExtender.helpers().isInScope(item.getUrl());
+                    showOnlyScopFilter = BurpExtension.helpers().isInScope(item.getUrl());
                 }
                 boolean hideItemsWithoutResponses = true;
                 if (this.filterProp.isHideItemsWithoutResponses()) {

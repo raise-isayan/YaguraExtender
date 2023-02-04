@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import extension.burp.Confidence;
 import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
@@ -69,7 +69,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         chkScanner = new javax.swing.JCheckBox();
         chkRepeater = new javax.swing.JCheckBox();
         chkSequencer = new javax.swing.JCheckBox();
-        chkExtender = new javax.swing.JCheckBox();
+        chkExtension = new javax.swing.JCheckBox();
         pnlMatch = new javax.swing.JPanel();
         lblType = new javax.swing.JLabel();
         cmbAlertType = new javax.swing.JComboBox();
@@ -102,7 +102,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(426, Short.MAX_VALUE)
+                .addContainerGap(431, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -265,7 +265,7 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         chkSequencer.setText("sequencer");
 
-        chkExtender.setText("extender");
+        chkExtension.setText("extension");
 
         javax.swing.GroupLayout pnlTargetLayout = new javax.swing.GroupLayout(pnlTarget);
         pnlTarget.setLayout(pnlTargetLayout);
@@ -286,7 +286,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                     .addGroup(pnlTargetLayout.createSequentialGroup()
                         .addComponent(chkSequencer)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkExtender)))
+                        .addComponent(chkExtension)))
                 .addContainerGap(279, Short.MAX_VALUE))
         );
         pnlTargetLayout.setVerticalGroup(
@@ -301,7 +301,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                     .addComponent(chkSpider)
                     .addComponent(chkIntruder)
                     .addComponent(chkSequencer)
-                    .addComponent(chkExtender))
+                    .addComponent(chkExtension))
                 .addGap(0, 4, Short.MAX_VALUE))
         );
 
@@ -503,7 +503,7 @@ public class MatchAlertItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkAlertsTab;
     private javax.swing.JCheckBox chkCaptureGroup;
     private javax.swing.JCheckBox chkComment;
-    private javax.swing.JCheckBox chkExtender;
+    private javax.swing.JCheckBox chkExtension;
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkIntruder;
     private javax.swing.JCheckBox chkItemHighlight;
@@ -570,7 +570,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         // FreeVersion only
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(ComponentEvent e) {
-                SwingUtil.setContainerEnable(pnlScannerIssue, BurpExtender.getInstance().getBurpVersion().isProfessional());
+                SwingUtil.setContainerEnable(pnlScannerIssue, BurpExtension.getInstance().getBurpVersion().isProfessional());
             }
         });
 
@@ -627,8 +627,8 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (this.chkSequencer.isSelected()) {
             tools.add(TargetTool.SEQUENCER);
         }
-        if (this.chkExtender.isSelected()) {
-            tools.add(TargetTool.EXTENDER);
+        if (this.chkExtension.isSelected()) {
+            tools.add(TargetTool.EXTENSIONS);
         }
         item.setTargetTools(tools);
 
@@ -673,7 +673,7 @@ public class MatchAlertItemDlg extends CustomDialog {
 //        this.chkSpider.setSelected(tools.contains(TargetTool.SPIDER));
         this.chkScanner.setSelected(tools.contains(TargetTool.SCANNER));
         this.chkSequencer.setSelected(tools.contains(TargetTool.SEQUENCER));
-        this.chkExtender.setSelected(tools.contains(TargetTool.EXTENDER));
+        this.chkExtension.setSelected(tools.contains(TargetTool.EXTENSIONS));
 
         if (item.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
             this.cmbAlertColor.setSelectedItem(item.getHighlightColor());

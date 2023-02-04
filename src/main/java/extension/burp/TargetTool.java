@@ -8,7 +8,7 @@ import java.util.EnumSet;
  * @author isayan
  */
 public enum TargetTool {
-    SUITE, TARGET, PROXY, SCANNER, INTRUDER, REPEATER, LOGGER, SEQUENCER, DECODER, COMPARER, EXTENDER, RECORDED_LOGIN_REPLAYER;
+    SUITE, TARGET, PROXY, SCANNER, INTRUDER, REPEATER, LOGGER, SEQUENCER, DECODER, COMPARER, EXTENSIONS, RECORDED_LOGIN_REPLAYER;
 
     private final static EnumMap<TargetTool, burp.api.montoya.core.ToolType> toToolType = new EnumMap<>(TargetTool.class);
     private final static EnumMap<burp.api.montoya.core.ToolType, TargetTool> fromToolType = new EnumMap<>(burp.api.montoya.core.ToolType.class);
@@ -24,7 +24,7 @@ public enum TargetTool {
         toToolType.put(SEQUENCER, burp.api.montoya.core.ToolType.SEQUENCER);
         toToolType.put(DECODER, burp.api.montoya.core.ToolType.DECODER);
         toToolType.put(COMPARER, burp.api.montoya.core.ToolType.COMPARER);
-        toToolType.put(EXTENDER, burp.api.montoya.core.ToolType.EXTENSIONS);
+        toToolType.put(EXTENSIONS, burp.api.montoya.core.ToolType.EXTENSIONS);
         toToolType.put(RECORDED_LOGIN_REPLAYER, burp.api.montoya.core.ToolType.RECORDED_LOGIN_REPLAYER);
 
         fromToolType.put(burp.api.montoya.core.ToolType.SUITE, SUITE);
@@ -37,7 +37,7 @@ public enum TargetTool {
         fromToolType.put(burp.api.montoya.core.ToolType.SEQUENCER, SEQUENCER);
         fromToolType.put(burp.api.montoya.core.ToolType.DECODER, DECODER);
         fromToolType.put(burp.api.montoya.core.ToolType.COMPARER, COMPARER);
-        fromToolType.put(burp.api.montoya.core.ToolType.EXTENSIONS, EXTENDER);
+        fromToolType.put(burp.api.montoya.core.ToolType.EXTENSIONS, EXTENSIONS);
         fromToolType.put(burp.api.montoya.core.ToolType.RECORDED_LOGIN_REPLAYER, RECORDED_LOGIN_REPLAYER);
     }
 
@@ -69,6 +69,9 @@ public enum TargetTool {
             v = v.replaceAll("\"", "");
             if (isParseEnum(v)) {
                 targetTool.add(parseEnum(v));
+            }
+            else if ("EXTENDER".equals(v)) {
+                targetTool.add(TargetTool.EXTENSIONS);
             }
         }
         return targetTool;

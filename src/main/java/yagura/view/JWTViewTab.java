@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
@@ -292,7 +292,7 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedH
         final HttpRequest httpRequest = httpRequestResponse.request();
         boolean find = false;
         try {
-            UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
             EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
                 return false;

@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.responses.HttpResponse;
@@ -209,7 +209,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
         HttpResponse response = httpRequestResponse.response();
         String guessCharset = HttpMesageHelper.getGuessCharset(response);
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-        this.quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
+        this.quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
     }
@@ -224,7 +224,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
             return false;
         }
 
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         this.setLineWrap(viewProperty.isLineWrap());
         if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {

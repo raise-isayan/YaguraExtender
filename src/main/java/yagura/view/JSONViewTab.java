@@ -1,6 +1,7 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
+import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -8,9 +9,11 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
+import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
+import extend.util.external.ExtensionHelper;
 import extend.util.external.FormatUtil;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
@@ -37,7 +40,7 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
     private HttpRequestResponse httpRequestResponse;
 
     public JSONViewTab(boolean request) {
-        this(null, request);
+        this(ExtensionHelper.newEditorCreationContext(ToolType.EXTENSIONS, EditorMode.READ_ONLY), request);
     }
 
     /**
@@ -154,7 +157,7 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
 
 
     public boolean isEnabledJson(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
@@ -189,8 +192,8 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
     }
 
     public boolean isEnabledJsonp(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtension.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
             return false;
         }
@@ -254,7 +257,7 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
         if (guessCharset == null) {
             guessCharset = StandardCharsets.ISO_8859_1.name();
         }
-        BurpExtender extenderImpl = BurpExtender.getInstance();
+        BurpExtension extenderImpl = BurpExtension.getInstance();
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);

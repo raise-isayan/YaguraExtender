@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.http.HttpService;
@@ -711,7 +711,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
-            MontoyaApi api = BurpExtender.getMontoyaApi();
+            MontoyaApi api = BurpExtension.getMontoyaApi();
             final HttpRequest httpRequest = this.httpRequestResponse.request();
             // 自動判定
             String contentType = HttpMesageHelper.getEncodeType(httpRequest);
@@ -1180,7 +1180,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         if (guessCharset == null) {
             guessCharset = StandardCharsets.ISO_8859_1.name();
         }
-        final BurpExtender extenderImpl = BurpExtender.getInstance();
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.chkUseHttps.setSelected(useHttps);
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
@@ -1193,7 +1193,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         if (httpRequestResponse == null) {
             return false;
         }
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         this.setLineWrap(viewProperty.isLineWrap());
         if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {

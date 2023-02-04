@@ -1,8 +1,12 @@
 package extend.util.external;
 
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.core.ToolSource;
+import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.editor.extension.EditorCreationContext;
+import burp.api.montoya.ui.editor.extension.EditorMode;
 import extension.burp.HttpTarget;
 import extension.burp.MessageType;
 import extension.helpers.HttpUtil;
@@ -219,6 +223,38 @@ public class ExtensionHelper {
             export.append("\r\n");
         }
         return export.toString();
+    }
+
+    public static ToolSource newToolSource(ToolType toolType) {
+        return new ToolSource() {
+            @Override
+            public ToolType toolType() {
+                return toolType;
+            }
+
+            @Override
+            public boolean isFromTool(ToolType... tts) {
+                for (ToolType t : tts) {
+                    if (t.equals(toolType)) return true;
+                }
+                return false;
+            }
+        };
+    }
+
+
+    public static EditorCreationContext newEditorCreationContext(final ToolType toolType, final EditorMode editorMode) {
+        return new EditorCreationContext() {
+            @Override
+            public ToolSource toolSource() {
+                return newToolSource(toolType);
+            }
+
+            @Override
+            public EditorMode editorMode() {
+                return editorMode;
+            }
+        };
     }
 
 }

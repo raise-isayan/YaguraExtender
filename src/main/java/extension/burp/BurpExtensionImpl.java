@@ -10,10 +10,10 @@ import java.util.logging.Logger;
  *
  * @author isayan
  */
-public class BurpExtenderImpl implements BurpExtension {
-    private final static Logger logger = Logger.getLogger(BurpExtenderImpl.class.getName());
+public class BurpExtensionImpl implements BurpExtension {
+    private final static Logger logger = Logger.getLogger(BurpExtensionImpl.class.getName());
 
-    private static BurpExtenderImpl extenderImpl;
+    private static BurpExtensionImpl extenderImpl;
     private static MontoyaApi montoyaApi;
     private static ExtensionHelper helper = null;
     private BurpVersion burp_version = null;
@@ -27,7 +27,7 @@ public class BurpExtenderImpl implements BurpExtension {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends BurpExtenderImpl> T getInstance() {
+    public static <T extends BurpExtensionImpl> T getInstance() {
         return (T) extenderImpl;
     }
 

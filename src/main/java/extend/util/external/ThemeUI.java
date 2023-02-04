@@ -1,6 +1,6 @@
 package extend.util.external;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;

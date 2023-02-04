@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
@@ -441,7 +441,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                         }
 
                         quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-                        quickSearchTab.renewEncodingList(guessCharset, BurpExtender.getInstance().getSelectEncodingList());
+                        quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
                         encodingItemStateChanged.itemStateChanged(null);
                         quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
                         textModified = false;
@@ -466,13 +466,13 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         if (httpRequestResponse == null) {
             return false;
         }
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtender.getInstance().getProperty().getEncodingProperty().getMessageView();
+        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtension.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
             return false;
         }
         HttpRequest httpRequest = httpRequestResponse.request();
-        if (httpRequest.toByteArray().length() > BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
-                && BurpExtender.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+        if (httpRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
+                && BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
             return false;
         }
         List<ParsedHttpParameter> params = httpRequest.parameters();

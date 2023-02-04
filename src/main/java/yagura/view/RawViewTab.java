@@ -1,7 +1,8 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.core.ByteArray;
+import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -12,6 +13,7 @@ import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
+import extend.util.external.ExtensionHelper;
 import extend.util.external.ThemeUI;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
@@ -61,7 +63,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
      * @param request
      */
     public RawViewTab(boolean request) {
-        this(null, request);
+        this(ExtensionHelper.newEditorCreationContext(ToolType.EXTENSIONS, EditorMode.READ_ONLY), request);
     }
 
     /**
@@ -72,7 +74,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
     public RawViewTab(EditorCreationContext editorCreationContext, boolean isResuest) {
         this.isRequest = isResuest;
         this.editorCreationContext = editorCreationContext;
-        this.editable = (editorCreationContext.editorMode() == EditorMode.READ_ONLY);
+        this.editable = (this.editorCreationContext.editorMode() == EditorMode.READ_ONLY);
         initComponents();
         customizeComponents();
     }
@@ -272,7 +274,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
             if (guessCharset == null) {
                 guessCharset = StandardCharsets.ISO_8859_1.name();
             }
-            BurpExtender extenderImpl = BurpExtender.getInstance();
+            BurpExtension extenderImpl = BurpExtension.getInstance();
             this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
 
@@ -301,7 +303,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
             return false;
         }
         // "This message is too large to display"
-        UniversalViewProperty viewProperty = BurpExtender.getInstance().getProperty().getEncodingProperty();
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
             return false;

@@ -1,6 +1,6 @@
 package yagura.model;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
@@ -86,7 +86,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
                         mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
-                        List<String> encodingList = BurpExtender.getInstance().getSelectEncodingList();
+                        List<String> encodingList = BurpExtension.getInstance().getSelectEncodingList();
                         for (String encoding : encodingList) {
                             javax.swing.JMenuItem mnuItemEncoding = new javax.swing.JMenuItem();
                             mnuItemEncoding.setText(encoding);
@@ -129,13 +129,13 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
 
                             @Override
                             public void warning(SendToEvent evt) {
-                                BurpExtender.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.INFO);
+                                BurpExtension.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.INFO);
                                 logger.log(Level.WARNING, evt.getMessage());
                             }
 
                             @Override
                             public void error(SendToEvent evt) {
-                                BurpExtender.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.ERROR);
+                                BurpExtension.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.ERROR);
                                 logger.log(Level.SEVERE, evt.getMessage());
                             }
 

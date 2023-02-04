@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import yagura.model.*;
 import java.awt.Font;
@@ -94,7 +94,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
 
     public void showBurpMenu(java.awt.event.MouseEvent evt) {
         if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
-            SendToMenu popMenu = BurpExtender.getInstance().getSendToMenu();
+            SendToMenu popMenu = BurpExtension.getInstance().getSendToMenu();
             popMenu.showBurpMenu(this, evt);
         }
     }

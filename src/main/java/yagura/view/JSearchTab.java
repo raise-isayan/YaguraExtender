@@ -1,6 +1,6 @@
 package yagura.view;
 
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
@@ -702,7 +702,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.modelSearch.removeAll();
         JSearchProperty searchProp = this.getProperty();
         Pattern p = MatchUtil.compileRegex(text, searchProp.isSmartMatch(), searchProp.isRegexp(),  searchProp.isIgnoreCase());
-        final List<ProxyHttpRequestResponse> proxyHistory = BurpExtender.getMontoyaApi().proxy().history();
+        final List<ProxyHttpRequestResponse> proxyHistory = BurpExtension.getMontoyaApi().proxy().history();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
             for (int i = 0; i < proxyHistory.size(); i++) {
@@ -716,7 +716,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         encoding = item.getGuessCharset();
                     }
                     if (this.chkScopeOnly.isSelected()) {
-                        if (!BurpExtender.helpers().isInScope(item.getUrl())) {
+                        if (!BurpExtension.helpers().isInScope(item.getUrl())) {
                             continue;
                         }
                     }

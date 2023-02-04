@@ -1,7 +1,7 @@
 package yagura.model;
 
 import burp.*;
-import burp.BurpExtender;
+import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
@@ -54,7 +54,7 @@ public class SendToExtend extends SendToMenuItem {
             case SEND_TO_JTRANSCODER: {
                 String text = BurpUtil.copySelectionData(this.contextMenu, true);
                 if (text != null) {
-                    BurpExtender.getInstance().sendToJTransCoder(text);
+                    BurpExtension.getInstance().sendToJTransCoder(text);
                 }
                 break;
             }
@@ -71,7 +71,7 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case PASTE_FROM_JTRANSCODER: {
-                byte[] text = BurpExtender.getInstance().receiveFromJTransCoder();
+                byte[] text = BurpExtension.getInstance().receiveFromJTransCoder();
                 if (text != null) {
                     BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), true);
                 }
@@ -80,7 +80,7 @@ public class SendToExtend extends SendToMenuItem {
             case PASTE_FROM_CLIPBOARD: {
                 try {
                     // menuItemCaption にエンコーディングが入ってくる
-                    byte[] text = BurpExtender.getInstance().receiveFromClipbord(menuItemCaption);
+                    byte[] text = BurpExtension.getInstance().receiveFromClipbord(menuItemCaption);
                     if (text != null) {
                         BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), true);
                     }
@@ -91,19 +91,19 @@ public class SendToExtend extends SendToMenuItem {
             }
 
             case MESSAGE_INFO_COPY: {
-                BurpExtender.helpers().sendToTableInfoCopy(this.contextMenu);
+                BurpExtension.helpers().sendToTableInfoCopy(this.contextMenu);
                 break;
             }
             case ADD_HOST_TO_INCLUDE_SCOPE: {
-                BurpExtender.helpers().sendToAddHostIncludeToScope(this.contextMenu);
+                BurpExtension.helpers().sendToAddHostIncludeToScope(this.contextMenu);
                 break;
             }
             case ADD_HOST_TO_EXCLUDE_SCOPE: {
-                BurpExtender.helpers().sendToAddHostToExcludeScope(this.contextMenu);
+                BurpExtension.helpers().sendToAddHostToExcludeScope(this.contextMenu);
                 break;
             }
             case ADD_TO_EXCLUDE_SCOPE: {
-                BurpExtender.helpers().sendToAddToExcludeScope(this.contextMenu);
+                BurpExtension.helpers().sendToAddToExcludeScope(this.contextMenu);
                 break;
             }
             default:
