@@ -7,7 +7,7 @@ import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.ThemeUI;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -33,7 +33,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 
-public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
+public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
     private JWTToken jwtinstance = new JWTToken();
 
@@ -225,9 +225,8 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedH
 
     private HttpRequestResponse httpRequestResponse = null;
 
-    @Override
-    public HttpRequest getRequest() {
-        return httpRequestResponse.request();
+    public HttpRequestResponse getHttpRequestResponse() {
+        return this.httpRequestResponse;
     }
 
     @Override

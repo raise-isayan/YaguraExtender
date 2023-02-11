@@ -7,6 +7,7 @@ import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.http.message.responses.analysis.Attribute;
 import burp.api.montoya.http.message.responses.analysis.AttributeType;
 import burp.api.montoya.ui.Selection;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import extend.util.external.ThemeUI;
 import extension.helpers.HttpMesageHelper;
@@ -29,7 +30,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 
-public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionProvidedHttpResponseEditor {
+public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor  {
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -196,11 +197,6 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
      */
     public HttpRequestResponse getHttpRequestResponse() {
         return this.httpRequestResponse;
-    }
-
-    @Override
-    public HttpResponse getResponse() {
-        return this.httpRequestResponse.response();
     }
 
     @Override

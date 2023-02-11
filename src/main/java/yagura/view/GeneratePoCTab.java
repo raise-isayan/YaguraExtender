@@ -2,7 +2,6 @@ package yagura.view;
 
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
-import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -43,12 +42,11 @@ import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.UniversalViewProperty;
+
 /**
  *
  * @author isayan
  */
-// public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
-
 public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
     private final static Logger logger = Logger.getLogger(GeneratePoCTab.class.getName());
 

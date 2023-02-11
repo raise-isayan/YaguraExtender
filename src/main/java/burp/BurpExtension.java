@@ -16,7 +16,6 @@ import burp.api.montoya.http.handler.ResponseReceivedAction;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
-import burp.api.montoya.proxy.MessageReceivedAction;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
@@ -28,7 +27,6 @@ import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
 import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
-import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
@@ -77,12 +75,10 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import passive.IssueItem;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
 import yagura.view.GeneratePoCTab;
-import yagura.view.HtmlCommetViewTab;
 import yagura.view.TabbetOption;
 import yagura.model.OptionProperty;
 import yagura.Config;
@@ -97,17 +93,18 @@ import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
-import yagura.view.JSONViewTab;
-import yagura.view.JWTViewTab;
-import yagura.view.ParamsViewTab;
-import yagura.view.RawViewTab;
-import yagura.view.ViewStateTab;
+import yagura.view.GeneratePoCTabEditor;
+import yagura.view.HtmlCommetViewTabEditor;
+import yagura.view.JSONViewTabEditor;
+import yagura.view.JWTViewTabEditor;
+import yagura.view.ParamsViewTabEditor;
+import yagura.view.RawViewTabEditor;
+import yagura.view.ViewStateTabEditor;
 
 /**
  * @author isayan
  */
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
-
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
     private ProxyHander proxyHandler;
     private Registration registerContextMenu;
@@ -166,7 +163,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-            final RawViewTab tab = new RawViewTab(editorCreationContext, true);
+            final RawViewTabEditor tab = new RawViewTabEditor(editorCreationContext, true);
 //            tab.getMessageComponent().addMouseListener(newContextMenu(editorCreationContext));
             return tab;
         }
@@ -176,7 +173,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-            final RawViewTab tab = new RawViewTab(editorCreationContext, false);
+            final RawViewTabEditor tab = new RawViewTabEditor(editorCreationContext, false);
 //            tab.getMessageComponent().addMouseListener(newContextMenu(editorCreationContext));
             return tab;
         }
@@ -186,7 +183,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-            final ParamsViewTab tab = new ParamsViewTab(editorCreationContext);
+            final ParamsViewTabEditor tab = new ParamsViewTabEditor(editorCreationContext);
             return tab;
         }
     };
@@ -194,7 +191,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private final HttpRequestEditorProvider requestJSONTab = new HttpRequestEditorProvider() {
         @Override
         public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-            final JSONViewTab tab = new JSONViewTab(editorCreationContext, true);
+            final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, true);
             return tab;
         }
     };
@@ -203,7 +200,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-            final JSONViewTab tab = new JSONViewTab(editorCreationContext, false);
+            final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, false);
             return tab;
         }
     };
@@ -212,7 +209,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-                final JSONViewTab tab = new JSONViewTab(editorCreationContext, false) {
+                final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, false) {
                     @Override
                     public boolean isJsonp() {
                         return true;
@@ -225,8 +222,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private final HttpResponseEditorProvider responseCommentViewTab = new HttpResponseEditorProvider() {
 
         @Override
-        public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext ecc) {
-            final HtmlCommetViewTab tab = new HtmlCommetViewTab();
+        public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
+            final HtmlCommetViewTabEditor tab = new HtmlCommetViewTabEditor(editorCreationContext);
 //            tab.getMessageComponent().addMouseListener(newContextMenu(httpRequestResponse));
             return tab;
         }
@@ -236,7 +233,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-            final ViewStateTab tab = new ViewStateTab(editorCreationContext);
+            final ViewStateTabEditor tab = new ViewStateTabEditor(editorCreationContext);
             return tab;
         }
     };
@@ -245,7 +242,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-            final JWTViewTab tab = new JWTViewTab();
+            final JWTViewTabEditor tab = new JWTViewTabEditor(editorCreationContext);
             return tab;
         }
     };
@@ -253,8 +250,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private final HttpRequestEditorProvider requestGeneratePoCTab = new HttpRequestEditorProvider() {
 
         @Override
-        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext ecc) {
-            final GeneratePoCTab tab = new GeneratePoCTab();
+        public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
+            final GeneratePoCTabEditor tab = new GeneratePoCTabEditor(editorCreationContext);
             return tab;
         }
     };
@@ -292,14 +289,15 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        SwingUtilities.invokeLater(() -> {
+
+//        SwingUtilities.invokeLater(() -> {
             this.proxyHandler = new ProxyHander(api);
             api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
             this.registerView();
             setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
             this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
             api.extension().registerUnloadingHandler(this);
-        });
+//        });
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
 
@@ -746,6 +744,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     resultBytes = this.replaceProxyMessage(true, requestBytes, interceptedHttpRequest.bodyOffset());
                 }
             }
+            BurpExtension.helpers().outPrintln("processProxyMessage:" + (requestBytes != resultBytes));
             if (requestBytes != resultBytes) {
                 HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
                 return ProxyRequestReceivedAction.continueWith(modifyRequest, annotations);
@@ -934,7 +933,5 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
             return httpMessage;
         }
-
     }
-
 }

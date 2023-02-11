@@ -9,6 +9,7 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.TransUtil;
 import extension.helpers.HttpUtil;
@@ -44,7 +45,7 @@ import yagura.model.UniversalViewProperty;
  * @author raise.isayan
  */
 
-public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvidedHttpRequestEditor {
+public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
 
     private final static Logger logger = Logger.getLogger(ParamsViewTab.class.getName());
 
@@ -403,9 +404,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
 //        this.httpRequestResponse = null;
     }
 
-    @Override
-    public HttpRequest getRequest() {
-        return this.httpRequestResponse.request();
+    public HttpRequestResponse getHttpRequestResponse() {
+        return this.httpRequestResponse;
     }
 
     @Override

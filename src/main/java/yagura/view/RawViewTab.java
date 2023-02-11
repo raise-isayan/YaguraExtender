@@ -11,8 +11,6 @@ import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import extend.util.external.ExtensionHelper;
 import extend.util.external.ThemeUI;
 import extension.helpers.HttpMesageHelper;
@@ -41,7 +39,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
+public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
     private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -254,6 +252,7 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
         this.txtURaw.setLineWrap(lineWrap);
     }
 
+
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
@@ -283,18 +282,6 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
 
             this.textModified = false;
         }
-    }
-
-    @Override
-    public HttpRequest getRequest() {
-        HttpRequestResponse http = this.getHttpRequestResponse();
-        return http.request();
-    }
-
-    @Override
-    public HttpResponse getResponse() {
-        HttpRequestResponse http = this.getHttpRequestResponse();
-        return http.response();
     }
 
     @Override

@@ -11,8 +11,6 @@ import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import extend.util.external.ExtensionHelper;
 import extend.util.external.FormatUtil;
 import extension.helpers.HttpMesageHelper;
@@ -32,7 +30,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
+public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
     private final boolean isRequest;
@@ -262,16 +260,6 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
-    }
-
-    @Override
-    public HttpRequest getRequest() {
-        return this.httpRequestResponse.request();
-    }
-
-    @Override
-    public HttpResponse getResponse() {
-        return this.httpRequestResponse.response();
     }
 
     @Override

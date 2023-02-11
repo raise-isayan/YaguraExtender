@@ -34,6 +34,8 @@ import burp.api.montoya.persistence.Preferences;
 import burp.api.montoya.proxy.Proxy;
 import burp.api.montoya.proxy.ProxyHistoryFilter;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
+import burp.api.montoya.proxy.ProxyWebSocketHistoryFilter;
+import burp.api.montoya.proxy.ProxyWebSocketMessage;
 import burp.api.montoya.proxy.http.ProxyRequestHandler;
 import burp.api.montoya.proxy.http.ProxyResponseHandler;
 import burp.api.montoya.proxy.websocket.ProxyWebSocketCreationHandler;
@@ -59,8 +61,10 @@ import burp.api.montoya.ui.editor.EditorOptions;
 import burp.api.montoya.ui.editor.HttpRequestEditor;
 import burp.api.montoya.ui.editor.HttpResponseEditor;
 import burp.api.montoya.ui.editor.RawEditor;
+import burp.api.montoya.ui.editor.WebSocketMessageEditor;
 import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
+import burp.api.montoya.ui.menu.MenuBar;
 import burp.api.montoya.ui.swing.SwingUtils;
 import burp.api.montoya.utilities.Base64Utils;
 import burp.api.montoya.utilities.ByteUtils;
@@ -355,6 +359,16 @@ public class MontoyaApiAdapter implements MontoyaApi {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
+        @Override
+        public List<ProxyWebSocketMessage> webSocketHistory() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public List<ProxyWebSocketMessage> webSocketHistory(ProxyWebSocketHistoryFilter pwshf) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
     }
 
     @Override
@@ -537,6 +551,16 @@ public class MontoyaApiAdapter implements MontoyaApi {
 
         @Override
         public Registration registerHttpResponseEditorProvider(HttpResponseEditorProvider hrep) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public MenuBar menuBar() {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
+
+        @Override
+        public WebSocketMessageEditor createWebSocketMessageEditor(EditorOptions... eos) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
