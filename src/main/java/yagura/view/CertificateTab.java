@@ -61,11 +61,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         txtStorePassword = new javax.swing.JTextField();
         pnlCertExport = new javax.swing.JPanel();
         btnExport = new javax.swing.JButton();
-        rdoConvertPEM = new javax.swing.JRadioButton();
+        rdoConvertPairPEM = new javax.swing.JRadioButton();
+        rdoConvertCertificateDER = new javax.swing.JRadioButton();
+        rdoConvertPrivateDER = new javax.swing.JRadioButton();
 
         setLayout(new java.awt.BorderLayout());
 
-        pnlCertImport.setBorder(javax.swing.BorderFactory.createTitledBorder("Import"));
+        pnlCertImport.setBorder(javax.swing.BorderFactory.createTitledBorder("Load"));
         pnlCertImport.setLayout(new java.awt.BorderLayout());
 
         btnGrpCA.add(rdoBurpCA);
@@ -183,7 +185,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         add(pnlCertImport, java.awt.BorderLayout.NORTH);
 
-        pnlCertExport.setBorder(javax.swing.BorderFactory.createTitledBorder("Export"));
+        pnlCertExport.setBorder(javax.swing.BorderFactory.createTitledBorder("Store"));
 
         btnExport.setText("Export");
         btnExport.addActionListener(new java.awt.event.ActionListener() {
@@ -192,8 +194,14 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        rdoConvertPEM.setSelected(true);
-        rdoConvertPEM.setText("Certificate and Private key in PEM format");
+        btnGrpFormat.add(rdoConvertPairPEM);
+        rdoConvertPairPEM.setText("Certificate and Private key in PEM format");
+
+        btnGrpFormat.add(rdoConvertCertificateDER);
+        rdoConvertCertificateDER.setText("Certificate  in DER format");
+
+        btnGrpFormat.add(rdoConvertPrivateDER);
+        rdoConvertPrivateDER.setText("Private key  in DER format");
 
         javax.swing.GroupLayout pnlCertExportLayout = new javax.swing.GroupLayout(pnlCertExport);
         pnlCertExport.setLayout(pnlCertExportLayout);
@@ -201,9 +209,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCertExportLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(rdoConvertPEM, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnExport)
+                .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlCertExportLayout.createSequentialGroup()
+                        .addComponent(rdoConvertPairPEM, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExport))
+                    .addComponent(rdoConvertCertificateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rdoConvertPrivateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(141, Short.MAX_VALUE))
         );
         pnlCertExportLayout.setVerticalGroup(
@@ -211,9 +223,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlCertExportLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoConvertPEM)
+                    .addComponent(rdoConvertPairPEM)
                     .addComponent(btnExport))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdoConvertCertificateDER)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdoConvertPrivateDER)
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         add(pnlCertExport, java.awt.BorderLayout.CENTER);
@@ -225,7 +241,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         try {
-
             HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
             File storeFile = new File(this.txtStoreFile.getText());
             if (this.rdoBurpCA.isSelected()) {
@@ -235,7 +250,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             else {
                 if (this.btnStoreTypeJKS.isSelected()) {
                     mapCert = CertUtil.loadFromJKS(storeFile, this.txtStorePassword.getText());
-                } else {
+                } else if (this.btnStoreTypePKCS12.isSelected()) {
                     mapCert = CertUtil.loadFromPKCS12(storeFile, this.txtStorePassword.getText());
                 }
             }
@@ -245,9 +260,15 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 int selected = filechooser.showSaveDialog(this);
                 if (selected == JFileChooser.APPROVE_OPTION) {
-                    File pemFile = filechooser.getSelectedFile();
-                    if (this.rdoConvertPEM.isSelected()) {
-                        BoncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), pemFile);
+                    File saveFile = filechooser.getSelectedFile();
+                    if (this.rdoConvertPairPEM.isSelected()) {
+                        BoncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), saveFile);
+                    }
+                    else if (this.rdoConvertCertificateDER.isSelected()) {
+                        BoncyUtil.storeCertificateDer(cert.getValue(), saveFile);
+                    }
+                    else if (this.rdoConvertPrivateDER.isSelected()) {
+                        BoncyUtil.storeCertificateDer(cert.getKey(), saveFile);
                     }
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
                     //FileUtil.bytesToFile(StringUtil.getBytesRaw(output), pemFile);
@@ -311,7 +332,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JPanel pnlCertImport;
     private javax.swing.JPanel pnlCertSIelectmport;
     private javax.swing.JRadioButton rdoBurpCA;
-    private javax.swing.JRadioButton rdoConvertPEM;
+    private javax.swing.JRadioButton rdoConvertCertificateDER;
+    private javax.swing.JRadioButton rdoConvertPairPEM;
+    private javax.swing.JRadioButton rdoConvertPrivateDER;
     private javax.swing.JRadioButton rdoCustomCA;
     private javax.swing.JTextField txtStoreFile;
     private javax.swing.JTextField txtStorePassword;

@@ -3,6 +3,7 @@ package extension.helpers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -27,8 +28,13 @@ import java.util.Base64;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemReader;
 
 /**
  *
@@ -132,22 +138,26 @@ public class CertUtil {
         return certMap;
     }
 
-    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromPKCS12(File storeFile, String password) throws CertificateEncodingException, IOException, UnrecoverableKeyException {
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromPKCS12(File storeFile, String password) {
         try {
             return loadFromKeyStore(storeFile, password, "pkcs12");
         } catch (KeyStoreException ex) {
         } catch (CertificateException ex) {
         } catch (NoSuchAlgorithmException ex) {
+        } catch (IOException ex) {
+        } catch (UnrecoverableKeyException ex) {
         }
         return null;
     }
 
-    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromJKS(File storeFile, String password) throws CertificateEncodingException, IOException, UnrecoverableKeyException {
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromJKS(File storeFile, String password) {
         try {
             return loadFromKeyStore(storeFile, password, "jks");
         } catch (KeyStoreException ex) {
         } catch (CertificateException ex) {
         } catch (NoSuchAlgorithmException ex) {
+        } catch (IOException ex) {
+        } catch (UnrecoverableKeyException ex) {
         }
         return null;
     }

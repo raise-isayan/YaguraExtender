@@ -109,12 +109,15 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.3.1'
 
-
     // Unit Test
     testImplementation 'net.portswigger.burp.extensions:montoya-api:1.0.0'
     testImplementation fileTree(dir: 'libs', include: ['*.jar'])
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
+    testImplementation 'org.bouncycastle:bcpkix-jdk15on:1.67'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
+    testImplementation 'org.bouncycastle:bcprov-jdk15on:1.67'
 }
 
 tasks.named('test') {

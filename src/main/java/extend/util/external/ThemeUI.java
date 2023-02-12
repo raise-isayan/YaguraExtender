@@ -4,6 +4,8 @@ import burp.BurpExtension;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -54,4 +56,11 @@ public class ThemeUI {
         });
     }
 
+    public static void changeStyleTheme(JTable table) {
+        table.setGridColor(UIManager.getColor("Table.gridColor"));
+        table.setForeground(UIManager.getColor("Button.default.foreground"));
+        table.setBackground(UIManager.getColor("Burp.actionPanelBackground"));
+    }
+
 }
+

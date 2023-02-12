@@ -385,17 +385,26 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                 int column) {
             Object c = table.getValueAt(row, 1);
             NamedColor namedColor = null;
-            if (c instanceof NamedColor namedColor1) {
-                namedColor = namedColor1;
+            if (c instanceof NamedColor namedColorCast) {
+                namedColor = namedColorCast;
             }
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (isSelected) {
                 component.setForeground(table.getSelectionForeground());
                 component.setBackground(table.getSelectionBackground());
             } else {
-                if (namedColor != null && namedColor.isDefaultColor()) {
-                    component.setForeground(namedColor.getTextColor());
-                    component.setBackground(namedColor);
+                if (namedColor != null) {
+                    if (!namedColor.isDefaultColor()) {
+                        component.setForeground(namedColor.getTextColor());
+                        component.setBackground(namedColor);
+                    } else {
+                        if (namedColor.getColor().equals(table.getBackground())) {
+                            component.setForeground(table.getForeground());
+                        } else {
+                            component.setForeground(NamedColor.getTextColor(table.getForeground()));
+                        }
+                        component.setBackground(table.getBackground());
+                    }
                 }
                 else {
                     component.setForeground(table.getForeground());
@@ -425,8 +434,6 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                 component.setBackground(c);
                 component.setForeground(c.getTextColor());
             } else {
-//                component.setForeground(SystemColor.textText);
-//                component.setBackground(SystemColor.text);
                 component.setForeground(list.getForeground());
                 component.setBackground(list.getBackground());
             }
@@ -702,7 +709,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.modelSearch.removeAll();
         JSearchProperty searchProp = this.getProperty();
         Pattern p = MatchUtil.compileRegex(text, searchProp.isSmartMatch(), searchProp.isRegexp(),  searchProp.isIgnoreCase());
-        final List<ProxyHttpRequestResponse> proxyHistory = BurpExtension.getMontoyaApi().proxy().history();
+        final List<ProxyHttpRequestResponse> proxyHistory = BurpExtension.api().proxy().history();
         try {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
             for (int i = 0; i < proxyHistory.size(); i++) {

@@ -709,7 +709,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
-            MontoyaApi api = BurpExtension.getMontoyaApi();
+            MontoyaApi api = BurpExtension.api();
             final HttpRequest httpRequest = this.httpRequestResponse.request();
             // 自動判定
             String contentType = HttpMesageHelper.getEncodeType(httpRequest);

@@ -304,7 +304,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     public void registerView() {
-        MontoyaApi api = getMontoyaApi();
+        MontoyaApi api = api();
         api.userInterface().registerHttpRequestEditorProvider(this.requestRawTab);
         api.userInterface().registerHttpResponseEditorProvider(this.responseRawTab);
         api.userInterface().registerHttpRequestEditorProvider(this.requestParamsTab);
@@ -428,7 +428,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     applyOptionProperty();
                 } else if (SendToProperty.SENDTO_PROPERTY.equals(evt.getPropertyName())) {
                     option.setSendToProperty(tabbetOption.getSendToProperty());
-                    MontoyaApi api = getMontoyaApi();
+                    MontoyaApi api = api();
                     if (api != null) {
                         registerContextMenu.deregister();
                         setSendToMenu(new SendToMenu(api, option.getSendToProperty()));
@@ -863,7 +863,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 }
             }
             HttpRequestResponse modifyRequestResponse = HttpRequestResponse.httpRequestResponse(httpRequestResponse.request(), httpRequestResponse.response(), annotations);
-            BurpExtension.helpers().outPrintln("matchAlertMessage:" + toolType + ":" + messageIsRequest + ":" + modifyRequestResponse.annotations().highlightColor() + ":" + modifyRequestResponse.annotations().notes());
             return modifyRequestResponse;
         }
 

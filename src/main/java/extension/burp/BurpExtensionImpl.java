@@ -31,7 +31,7 @@ public class BurpExtensionImpl implements BurpExtension {
         return (T) extenderImpl;
     }
 
-    public static MontoyaApi getMontoyaApi() {
+    public static MontoyaApi api() {
         return montoyaApi;
     }
 

@@ -20,9 +20,13 @@ public class NamedColor extends Color implements Comparable<NamedColor> {
     }
 
     public Color getTextColor() {
-        int r = getRed();
-        int g = getGreen();
-        int b = getBlue();
+        return getTextColor(this);
+    }
+
+    public static Color getTextColor(Color color) {
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
         if (r > 240 || g > 240) {
             return Color.black;
         } else {
@@ -57,5 +61,5 @@ public class NamedColor extends Color implements Comparable<NamedColor> {
     public boolean isDefaultColor() {
         return Color.white.equals(this.color);
     }
-    
+
 }
