@@ -91,7 +91,7 @@ dependencies {
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
         // https://mvnrepository.com/artifact/com.google.code.gson/gson
-        implementation 'com.google.code.gson:gson:2.9.1'
+        implementation 'com.google.code.gson:gson:2.10.1'
         // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
         implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
@@ -101,7 +101,7 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
-    implementation 'com.fifesoft:rsyntaxtextarea:3.2.0'
+    implementation 'com.fifesoft:rsyntaxtextarea:3.3.2'
     // https://mvnrepository.com/artifact/org.jsoup/jsoup/
     implementation 'org.jsoup:jsoup:1.15.2'
     // Unit Test

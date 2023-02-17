@@ -39,8 +39,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
             ThemeUI.changeStyleTheme(txtHtmlComment);
         }
     };
-    
-    
+
+
     /**
      * Creates new form HtmlCommetViewTab
      */
@@ -91,8 +91,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IMessageEdi
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);        
-        
+        ThemeUI.addPropertyChangeListener(listener);
+
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {

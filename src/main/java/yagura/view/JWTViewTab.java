@@ -27,7 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import passive.JWTToken;
 import yagura.model.UniversalViewProperty;
@@ -148,7 +147,7 @@ public class JWTViewTab extends javax.swing.JPanel implements IMessageEditorTabF
 //        this.txtPayloadJSON.setContentType("text/json");
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);
+        ThemeUI.addPropertyChangeListener(listener);
 
     }
 

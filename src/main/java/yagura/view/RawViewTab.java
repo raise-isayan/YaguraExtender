@@ -24,7 +24,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -40,10 +39,10 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtURaw);        
+            ThemeUI.changeStyleTheme(txtURaw);
         }
     };
-               
+
     private boolean request = false;
     private boolean textModified = false;
     private boolean editable = false;
@@ -76,7 +75,7 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
         //this.editable = editable;
         this.editable = false;
         initComponents();
-        customizeComponents();        
+        customizeComponents();
     }
 
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
@@ -133,9 +132,9 @@ public class RawViewTab extends javax.swing.JPanel implements IMessageEditorTab 
 //        this.txtRaw.setContentType("text/html");
 
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
-    
+
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);                
+        ThemeUI.addPropertyChangeListener(listener);
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {

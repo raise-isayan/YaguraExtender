@@ -390,10 +390,19 @@ public class JSearchTab extends javax.swing.JPanel implements ITab {
                 component.setForeground(table.getSelectionForeground());
                 component.setBackground(table.getSelectionBackground());
             } else {
-                if (namedColor != null && namedColor.isDefaultColor()) {
-                    component.setForeground(namedColor.getTextColor());
-                    component.setBackground(namedColor);
-                } 
+                if (namedColor != null) {
+                    if (!namedColor.isDefaultColor()) {
+                        component.setForeground(namedColor.getTextColor());
+                        component.setBackground(namedColor);
+                    } else {
+                        if (namedColor.getColor().equals(table.getBackground())) {
+                            component.setForeground(table.getForeground());
+                        } else {
+                            component.setForeground(NamedColor.getTextColor(table.getForeground()));
+                        }
+                        component.setBackground(table.getBackground());
+                    }
+                }
                 else {
                     component.setForeground(table.getForeground());
                     component.setBackground(table.getBackground());

@@ -896,7 +896,7 @@ public class BurpExtender extends BurpExtenderImpl
 
     @Override
     public void extensionUnloaded() {
-        ThemeUI.removeAllUIManagerListener();
+        ThemeUI.removePropertyChangeListener();
     }
 
 }

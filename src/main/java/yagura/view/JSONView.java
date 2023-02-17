@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -55,7 +54,7 @@ public class JSONView extends javax.swing.JPanel {
             ThemeUI.changeStyleTheme(txtJSON);
         }
     };
-    
+
 //    private final EditorKit jsonStyleEditorKit = new StyledEditorKit() {
 //        @Override
 //        public Document createDefaultDocument() {
@@ -158,8 +157,8 @@ public class JSONView extends javax.swing.JPanel {
         this.modelJSON = (DefaultTreeModel) this.treeJSON.getModel();
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);
-        
+        ThemeUI.addPropertyChangeListener(listener);
+
     }
 
     private void btnExpandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpandActionPerformed

@@ -63,7 +63,6 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
@@ -91,7 +90,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements ITab {
         initComponents();
         customizeComponents();
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(this.listener);
+        ThemeUI.addPropertyChangeListener(this.listener);
     }
     private final QuickSearchTab quickSearchTabRaw = new QuickSearchTab();
     private final QuickSearchTab quickSearchTabFormat = new QuickSearchTab();

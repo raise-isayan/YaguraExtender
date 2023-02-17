@@ -38,7 +38,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
-import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.UniversalViewProperty;
@@ -112,7 +111,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
-        UIManager.addPropertyChangeListener(listener);
+        ThemeUI.addPropertyChangeListener(listener);
 
     }
 
@@ -870,7 +869,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements IMessageEditor
             IHttpService httpService = HttpService.getHttpService(reqmsg.getHost(), reqmsg.getPort(), csrfParam.isUseHttps());
             String csrfUrl = reqmsg.getUrl(httpService);
             if ("GET".equals(reqmsg.getMethod())) {
-                csrfUrl = reqmsg.gePath(httpService);            
+                csrfUrl = reqmsg.gePath(httpService);
             }
             IRequestInfo requestInfo = callback.getHelpers().analyzeRequest(reqmsg.getMessageBytes());
             buff.append("<html>\n");
