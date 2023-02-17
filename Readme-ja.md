@@ -20,11 +20,11 @@ Burp Suiteにはアジアの文字エンコーディングの利用に欠点が�
 利用するバージョンは以下のものをご利用ください
 
 * Burp suite v2023.1.2 より前のバージョン
-** YagraExtender v2.2.14.0 以前
+   * YagraExtender v2.2.14.0 以前
 
 * Burp suite v2023.1.2 より後のバージョン
-** YagraExtender v3.0.0 以降(ベータ版)
-** YagraExtension v2.2.14.0 以前(現時点で利用可)
+   * YagraExtender v3.0.0 以降(ベータ版)
+   * YagraExtension v2.2.14.0 以前(現時点で利用可)
 
 ## ヘルプ
 利用方法等の詳細なヘルプは、help ディレクトリの help.html を参照してください。
