@@ -1,13 +1,29 @@
 Burp suite Extension YaguraExtender
 =============
 
-Language/[Japanese](Readme-ja.md)
+Language/[日本語](Readme-ja.md)
 
 This tool is an extension of Burp Suite, a product of PortSwigger.
 
 Burp Suite has drawbacks when using Asian character encodings.
 This tool is an extension mainly targeting Japanese users.
 It also supports Chinese and Korean encodings, but may not be fully tested and may contain issues.
+
+## About the latest version
+
+The main repository (master) may contain code under development.
+Please download the stable release version from the following.
+
+* https://github.com/raise-isayan/YaguraExtender/releases
+
+Please use the following versions
+
+* Burp suite v2023.1.2 or less than
+** YagraExtender v2.2.14.0 or less than
+
+** Burp suite v2023.1.2 or above
+** YagraExtender v3.0.0 or above (beta version)
+** YagraExtension v2.2.14.0 or less (currently available)
 
 ## help
 
