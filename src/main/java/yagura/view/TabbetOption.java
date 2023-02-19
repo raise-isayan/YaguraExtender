@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import extension.helpers.BurpUtil;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
@@ -19,7 +20,7 @@ import extension.burp.IBurpTab;
  *
  * @author isayan
  */
-public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, PropertyChangeListener {
+public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, PropertyChangeListener, ExtensionUnloadingHandler {
     public final static String VERSION_PROPERTY = "versionProperty";
     public final static String LOAD_CONFIG_PROPERTY = "loadConfigProperty";
 
@@ -202,6 +203,11 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
 
     public byte[] receiveFromJTransCoder() {
         return this.tabJTransCoder.receiveFromJTransCoder();
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        this.tabJTransCoder.extensionUnloaded();
     }
 
 }

@@ -108,12 +108,23 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.15'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.3.1'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
+    implementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
 
     // Unit Test
     testImplementation 'net.portswigger.burp.extensions:montoya-api:1.0.0'
     testImplementation fileTree(dir: 'libs', include: ['*.jar'])
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+
+    // Use JUnit Jupiter for testing.
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    testImplementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    // https://mvnrepository.com/artifact/io.github.rburgst/okhttp-digest
+    testImplementation 'io.github.rburgst:okhttp-digest:3.0'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
+
     // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
     testImplementation 'org.bouncycastle:bcpkix-jdk15on:1.67'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on

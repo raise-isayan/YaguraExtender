@@ -78,7 +78,6 @@ import javax.swing.JOptionPane;
 import passive.IssueItem;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
-import yagura.view.GeneratePoCTab;
 import yagura.view.TabbetOption;
 import yagura.model.OptionProperty;
 import yagura.Config;
@@ -297,6 +296,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
             this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
             api.extension().registerUnloadingHandler(this);
+            api.extension().registerUnloadingHandler(this.tabbetOption);
 //        });
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());

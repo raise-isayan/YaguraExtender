@@ -1,6 +1,7 @@
 package yagura.view;
 
 import burp.BurpExtension;
+import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -65,7 +66,7 @@ import extension.burp.IBurpTab;
  *
  * @author isayan
  */
-public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
+public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, ExtensionUnloadingHandler {
 
     private final static Logger logger = Logger.getLogger(JTransCoderTab.class.getName());
 
@@ -144,16 +145,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
         this.setSystemZoneDate(cdtm);
     }
 
+    private final CertificateTab certificateTab = new CertificateTab();
+
     private void customizeComponents() {
 
         /**
          * * UI design start **
          */
-
-//        if (BurpExtender.getMontoyaApi() != null) {
-            final CertificateTab certificateTab = new CertificateTab();
-            this.tabbetTranscoder.addTab(certificateTab.getTabCaption(), certificateTab);
-//        }
+        this.tabbetTranscoder.addTab(certificateTab.getTabCaption(), certificateTab);
 
         this.tabbetTranscoder.addTab(this.viewStateDecoderTab.getTabCaption(), this.viewStateDecoderTab);
         this.tabbetTranscoder.addTab(this.jwtTokenDecoderTab.getTabCaption(), this.jwtTokenDecoderTab);
@@ -3852,6 +3851,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab {
         chkRawModeActionPerformed(null);
         chkGuessActionPerformed(null);
         chkViewLineWrapActionPerformed(null);
+    }
+
+    @Override
+    public void extensionUnloaded() {
+        this.certificateTab.stopMockServer();
     }
 
 }

@@ -1,11 +1,14 @@
 package extend.util.external;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.security.Key;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
@@ -83,6 +86,24 @@ public class BoncyUtil {
             pw.writeObject(key);
             pw.writeObject(cert);
         }
+    }
+
+
+    public static String exportCertificatePem(Certificate cert) throws IOException {
+        StringWriter sw = new StringWriter();
+        try (JcaPEMWriter pw = new JcaPEMWriter(sw)) {
+            pw.writeObject(cert);
+        }
+        return sw.toString();
+    }
+
+    public static String exportCertificatePem(Key key, Certificate cert) throws IOException {
+        StringWriter sw = new StringWriter();
+        try (JcaPEMWriter pw = new JcaPEMWriter(sw)) {
+            pw.writeObject(key);
+            pw.writeObject(cert);
+        }
+        return sw.toString();
     }
 
     public static void storeCertificateDer(Key key, File to) throws IOException {

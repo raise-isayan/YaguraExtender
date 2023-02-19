@@ -8,7 +8,7 @@ import java.util.EnumSet;
  * @author isayan
  */
 public enum TargetTool {
-    SUITE, TARGET, PROXY, SCANNER, INTRUDER, REPEATER, LOGGER, SEQUENCER, DECODER, COMPARER, EXTENSIONS, RECORDED_LOGIN_REPLAYER;
+    SUITE, TARGET, PROXY, SCANNER, INTRUDER, REPEATER, LOGGER, SEQUENCER, DECODER, COMPARER, EXTENSIONS, RECORDED_LOGIN_REPLAYER, EXTENDER;
 
     private final static EnumMap<TargetTool, burp.api.montoya.core.ToolType> toToolType = new EnumMap<>(TargetTool.class);
     private final static EnumMap<burp.api.montoya.core.ToolType, TargetTool> fromToolType = new EnumMap<>(burp.api.montoya.core.ToolType.class);
@@ -24,6 +24,7 @@ public enum TargetTool {
         toToolType.put(SEQUENCER, burp.api.montoya.core.ToolType.SEQUENCER);
         toToolType.put(DECODER, burp.api.montoya.core.ToolType.DECODER);
         toToolType.put(COMPARER, burp.api.montoya.core.ToolType.COMPARER);
+        toToolType.put(EXTENDER, burp.api.montoya.core.ToolType.EXTENSIONS);
         toToolType.put(EXTENSIONS, burp.api.montoya.core.ToolType.EXTENSIONS);
         toToolType.put(RECORDED_LOGIN_REPLAYER, burp.api.montoya.core.ToolType.RECORDED_LOGIN_REPLAYER);
 
@@ -68,10 +69,14 @@ public enum TargetTool {
             String v = t.trim();
             v = v.replaceAll("\"", "");
             if (isParseEnum(v)) {
-                targetTool.add(parseEnum(v));
-            }
-            else if ("EXTENDER".equals(v)) {
-                targetTool.add(TargetTool.EXTENSIONS);
+                TargetTool tool = parseEnum(v);
+                targetTool.add(tool);
+                if (TargetTool.EXTENDER.equals(tool)) {
+                    targetTool.add(TargetTool.EXTENSIONS);
+                }
+                if (TargetTool.EXTENSIONS.equals(tool)) {
+                    targetTool.add(TargetTool.EXTENDER);
+                }
             }
         }
         return targetTool;

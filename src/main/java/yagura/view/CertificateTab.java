@@ -4,6 +4,7 @@ import extension.helpers.CertUtil;
 import extend.util.external.BoncyUtil;
 import extension.burp.BurpConfig;
 import extension.burp.IBurpTab;
+import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.io.File;
@@ -13,7 +14,6 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
@@ -21,7 +21,12 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import okhttp3.mockwebserver.Dispatcher;
+import okhttp3.mockwebserver.MockResponse;
+
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
+import yagura.Version;
 
 /**
  *
@@ -48,8 +53,21 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         btnGrpFormat = new javax.swing.ButtonGroup();
         btnGrpCA = new javax.swing.ButtonGroup();
+        tabbetCertificate = new javax.swing.JTabbedPane();
+        pnlCACertificate = new javax.swing.JPanel();
+        pnlCertExport = new javax.swing.JPanel();
+        btnExport = new javax.swing.JButton();
+        rdoConvertPairPEM = new javax.swing.JRadioButton();
+        rdoConvertCertificateDER = new javax.swing.JRadioButton();
+        rdoConvertPrivateDER = new javax.swing.JRadioButton();
+        chkProvidedServer = new javax.swing.JCheckBox();
+        pnlListenPort = new javax.swing.JPanel();
+        lblListenPort = new javax.swing.JLabel();
+        spnListenPort = new javax.swing.JSpinner();
+        btnProvidedServer = new javax.swing.JToggleButton();
+        btnCopy = new javax.swing.JButton();
         pnlCertImport = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
+        pnlSelectCertificate = new javax.swing.JPanel();
         rdoBurpCA = new javax.swing.JRadioButton();
         rdoCustomCA = new javax.swing.JRadioButton();
         pnlCertSIelectmport = new javax.swing.JPanel();
@@ -59,13 +77,133 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnImport = new javax.swing.JButton();
         lblPassword = new javax.swing.JLabel();
         txtStorePassword = new javax.swing.JTextField();
-        pnlCertExport = new javax.swing.JPanel();
-        btnExport = new javax.swing.JButton();
-        rdoConvertPairPEM = new javax.swing.JRadioButton();
-        rdoConvertCertificateDER = new javax.swing.JRadioButton();
-        rdoConvertPrivateDER = new javax.swing.JRadioButton();
 
         setLayout(new java.awt.BorderLayout());
+
+        pnlCACertificate.setLayout(new java.awt.BorderLayout());
+
+        pnlCertExport.setBorder(javax.swing.BorderFactory.createTitledBorder("Store"));
+
+        btnExport.setText("Export");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
+
+        btnGrpFormat.add(rdoConvertPairPEM);
+        rdoConvertPairPEM.setSelected(true);
+        rdoConvertPairPEM.setText("Certificate and Private key in PEM format");
+
+        btnGrpFormat.add(rdoConvertCertificateDER);
+        rdoConvertCertificateDER.setText("Certificate  in DER format");
+
+        btnGrpFormat.add(rdoConvertPrivateDER);
+        rdoConvertPrivateDER.setText("Private key  in DER format");
+
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/view/Bundle"); // NOI18N
+        chkProvidedServer.setText(bundle.getString("server.ocsp.tab.auto_start")); // NOI18N
+        chkProvidedServer.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkProvidedServerStateChanged(evt);
+            }
+        });
+
+        lblListenPort.setText(bundle.getString("server.ocsp.tab.listen_port")); // NOI18N
+        lblListenPort.setToolTipText("");
+
+        spnListenPort.setModel(new javax.swing.SpinnerNumberModel(6060, 1024, 65535, 1));
+        spnListenPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnListenPort, "#0"));
+        spnListenPort.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnListenPortStateChanged(evt);
+            }
+        });
+
+        btnProvidedServer.setText("Start");
+        btnProvidedServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProvidedServerActionPerformed(evt);
+            }
+        });
+
+        btnCopy.setText("Copy URL");
+        btnCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopyActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlListenPortLayout = new javax.swing.GroupLayout(pnlListenPort);
+        pnlListenPort.setLayout(pnlListenPortLayout);
+        pnlListenPortLayout.setHorizontalGroup(
+            pnlListenPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlListenPortLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnProvidedServer, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnCopy)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlListenPortLayout.setVerticalGroup(
+            pnlListenPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlListenPortLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlListenPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnProvidedServer)
+                    .addComponent(lblListenPort)
+                    .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCopy))
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
+        lblListenPort.getAccessibleContext().setAccessibleName("");
+
+        javax.swing.GroupLayout pnlCertExportLayout = new javax.swing.GroupLayout(pnlCertExport);
+        pnlCertExport.setLayout(pnlCertExportLayout);
+        pnlCertExportLayout.setHorizontalGroup(
+            pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCertExportLayout.createSequentialGroup()
+                .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlListenPort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlCertExportLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rdoConvertCertificateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rdoConvertPrivateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlCertExportLayout.createSequentialGroup()
+                                .addComponent(rdoConvertPairPEM, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnExport))
+                            .addComponent(chkProvidedServer))
+                        .addGap(0, 137, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        pnlCertExportLayout.setVerticalGroup(
+            pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCertExportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoConvertPairPEM)
+                    .addComponent(btnExport))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdoConvertCertificateDER)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdoConvertPrivateDER)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkProvidedServer)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlListenPort, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        chkProvidedServer.getAccessibleContext().setAccessibleName("");
+
+        pnlCACertificate.add(pnlCertExport, java.awt.BorderLayout.CENTER);
 
         pnlCertImport.setBorder(javax.swing.BorderFactory.createTitledBorder("Load"));
         pnlCertImport.setLayout(new java.awt.BorderLayout());
@@ -92,20 +230,20 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlSelectCertificateLayout = new javax.swing.GroupLayout(pnlSelectCertificate);
+        pnlSelectCertificate.setLayout(pnlSelectCertificateLayout);
+        pnlSelectCertificateLayout.setHorizontalGroup(
+            pnlSelectCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSelectCertificateLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlSelectCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(rdoBurpCA)
                     .addComponent(rdoCustomCA))
-                .addContainerGap(368, Short.MAX_VALUE))
+                .addContainerGap(370, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        pnlSelectCertificateLayout.setVerticalGroup(
+            pnlSelectCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSelectCertificateLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(rdoBurpCA)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -113,7 +251,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlCertImport.add(jPanel1, java.awt.BorderLayout.NORTH);
+        pnlCertImport.add(pnlSelectCertificate, java.awt.BorderLayout.NORTH);
 
         pnlCertSIelectmport.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -126,7 +264,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         });
 
         btnGrpFormat.add(btnStoreTypePKCS12);
-        btnStoreTypePKCS12.setSelected(true);
         btnStoreTypePKCS12.setText("PKCS12");
 
         txtStoreFile.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -161,7 +298,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                         .addComponent(btnImport))
                     .addComponent(lblPassword)
                     .addComponent(txtStorePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         pnlCertSIelectmportLayout.setVerticalGroup(
             pnlCertSIelectmportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,91 +315,124 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addComponent(lblPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtStorePassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         pnlCertImport.add(pnlCertSIelectmport, java.awt.BorderLayout.CENTER);
 
-        add(pnlCertImport, java.awt.BorderLayout.NORTH);
+        pnlCACertificate.add(pnlCertImport, java.awt.BorderLayout.NORTH);
 
-        pnlCertExport.setBorder(javax.swing.BorderFactory.createTitledBorder("Store"));
+        tabbetCertificate.addTab("CA Certificate", pnlCACertificate);
 
-        btnExport.setText("Export");
-        btnExport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportActionPerformed(evt);
-            }
-        });
-
-        btnGrpFormat.add(rdoConvertPairPEM);
-        rdoConvertPairPEM.setText("Certificate and Private key in PEM format");
-
-        btnGrpFormat.add(rdoConvertCertificateDER);
-        rdoConvertCertificateDER.setText("Certificate  in DER format");
-
-        btnGrpFormat.add(rdoConvertPrivateDER);
-        rdoConvertPrivateDER.setText("Private key  in DER format");
-
-        javax.swing.GroupLayout pnlCertExportLayout = new javax.swing.GroupLayout(pnlCertExport);
-        pnlCertExport.setLayout(pnlCertExportLayout);
-        pnlCertExportLayout.setHorizontalGroup(
-            pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertExportLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlCertExportLayout.createSequentialGroup()
-                        .addComponent(rdoConvertPairPEM, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExport))
-                    .addComponent(rdoConvertCertificateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoConvertPrivateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(141, Short.MAX_VALUE))
-        );
-        pnlCertExportLayout.setVerticalGroup(
-            pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertExportLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlCertExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoConvertPairPEM)
-                    .addComponent(btnExport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rdoConvertCertificateDER)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rdoConvertPrivateDER)
-                .addContainerGap(105, Short.MAX_VALUE))
-        );
-
-        add(pnlCertExport, java.awt.BorderLayout.CENTER);
+        add(tabbetCertificate, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void customizeComponents() {
         SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
+        SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
+        mockServer.setDispatcher(dispatcher);
     }
 
-    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+    private final Dispatcher dispatcher = new Dispatcher() {
+        @Override
+        public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+            try {
+                if (request.getPath().equals("/")){
+                    return new MockResponse().addHeader("Content-Type", "text/html; " + "charset=utf-8")
+                        .setBody("<html><head><title>" + Version.getInstance().getProjectName() + "</title>\n" +
+                                "<style type=\"text/css\">\n" +
+                                "body { background: #dedede; font-family: Arial, sans-serif; color: #404042; -webkit-font-smoothing: antialiased; }\n" +
+                                "#container { padding: 0 15px; margin: 10px auto; background-color: #ffffff; }\n" +
+                                "a { word-wrap: break-word; }\n" +
+                                "a:link, a:visited { color: #2862e0; text-decoration: none; }\n" +
+                                "a:hover, a:active { color: #404042; text-decoration: underline; }\n" +
+                                "h1 { font-size: 1.6em; line-height: 1.2em; font-weight: normal; color: #404042; }\n" +
+                                "h2 { font-size: 1.3em; line-height: 1.2em; padding: 0; margin: 0.8em 0 0.3em 0; font-weight: normal; color: #404042;}\n" +
+                                ".title { color: #ffffff; background: #2862e0; padding: 10px 15px; margin: 0 -15px 10px -15px; overflow: hidden; }\n" +
+                                ".title h1 { color: #ffffff; padding: 0; margin: 0; font-size: 1.8em; }\n" +
+                                "</style>" +
+                                "</head>\n" +
+                                "<body>\n" +
+                                "<div id=\"container\">\n" +
+                                "<div class=\"title\"><h1>" + Version.getInstance().getProjectName() + "</h1></div>\n" +
+                                "</div>\n" +
+                                "<div><ul>\n" +
+                                "<li><a href=\"/burp-keycert.pem.der\">Certificate and Private key in PEM format</a></li>\n" +
+                                "<li><a href=\"/burp-cert.pem.der\">Certificate in PEM format</a></li>\n" +
+                                "</ul></div>\n" +
+                                "</body>\n" +
+                                "</html>").setResponseCode(200);
+                }
+                else if (request.getPath().equals("/burp-keycert.pem.der")){
+                    Map.Entry<Key, X509Certificate> cert = getExportCerticate();
+                    String exportCA = BoncyUtil.exportCertificatePem(cert.getKey(), cert.getValue());
+                    return new MockResponse()
+                        .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
+                        .addHeader("Content-Disposition", "attachment; filename=\"burp-keycert.pem.der\"")
+                        .setBody(exportCA).setResponseCode(200);
+                }
+                else if (request.getPath().equals("/burp-cert.pem.der")){
+                    Map.Entry<Key, X509Certificate> cert = getExportCerticate();
+                    String exportCA = BoncyUtil.exportCertificatePem(cert.getValue());
+                    return new MockResponse()
+                        .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
+                        .addHeader("Content-Disposition", "attachment; filename=\"burp-cert.pem.der\"")
+                        .setBody(exportCA).setResponseCode(200);
+                }
+            } catch (IOException ex) {
+                return new MockResponse().setResponseCode(500).setBody(StringUtil.getStackTrace(ex));
+            }
+            return new MockResponse().setResponseCode(404);
+        }
+    };
+
+    private Map.Entry<Key, X509Certificate> getExportCerticate() {
+        Map.Entry<Key, X509Certificate> cert = null;
+        HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
         try {
-            HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
-            File storeFile = new File(this.txtStoreFile.getText());
             if (this.rdoBurpCA.isSelected()) {
                 KeyStore ks = BurpConfig.loadCACeart();
                 mapCert = CertUtil.loadFromKeyStore(ks, BurpConfig.getCAPassword());
             }
             else {
+                File storeFile = new File(this.txtStoreFile.getText());
                 if (this.btnStoreTypeJKS.isSelected()) {
                     mapCert = CertUtil.loadFromJKS(storeFile, this.txtStorePassword.getText());
                 } else if (this.btnStoreTypePKCS12.isSelected()) {
                     mapCert = CertUtil.loadFromPKCS12(storeFile, this.txtStorePassword.getText());
                 }
             }
-            for (String ailias : mapCert.keySet()) {
-                Map.Entry<Key, X509Certificate> cert = mapCert.get(ailias);
+            if (mapCert != null) {
+                for (String ailias : mapCert.keySet()) {
+                    cert = mapCert.get(ailias);
+                    break;
+                }
+            }
+        } catch (KeyStoreException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CertificateException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnrecoverableKeyException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cert;
+    }
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        Map.Entry<Key, X509Certificate> cert = getExportCerticate();
+        if (cert != null) {
+            try {
                 JFileChooser filechooser = new JFileChooser();
                 filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 int selected = filechooser.showSaveDialog(this);
                 if (selected == JFileChooser.APPROVE_OPTION) {
                     File saveFile = filechooser.getSelectedFile();
                     if (this.rdoConvertPairPEM.isSelected()) {
-                        BoncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), saveFile);
+                            BoncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), saveFile);
                     }
                     else if (this.rdoConvertCertificateDER.isSelected()) {
                         BoncyUtil.storeCertificateDer(cert.getValue(), saveFile);
@@ -273,20 +443,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
                     //FileUtil.bytesToFile(StringUtil.getBytesRaw(output), pemFile);
                 }
-                break;
+            } catch (IOException ex) {
+                Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (CertificateEncodingException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
-        } catch (UnrecoverableKeyException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "JTransCoder", JOptionPane.INFORMATION_MESSAGE);
-        } catch (KeyStoreException ex) {
-            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CertificateException ex) {
-            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnExportActionPerformed
 
@@ -318,24 +477,59 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
     }//GEN-LAST:event_rdoCustomCAStateChanged
 
+    private void btnProvidedServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProvidedServerActionPerformed
+        if (this.btnProvidedServer.isSelected()) {
+            if (this.mockServer != null) {
+                startMockServer((int)this.spnListenPort.getValue());
+            }
+        } else {
+            this.stopMockServer();
+        }
+    }//GEN-LAST:event_btnProvidedServerActionPerformed
+
+    private void chkProvidedServerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkProvidedServerStateChanged
+        SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
+        if (!this.chkProvidedServer.isSelected()) {
+            this.btnProvidedServer.setSelected(false);
+            btnProvidedServerActionPerformed(null);
+        }
+    }//GEN-LAST:event_chkProvidedServerStateChanged
+
+    private void spnListenPortStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnListenPortStateChanged
+
+    }//GEN-LAST:event_spnListenPortStateChanged
+
+    private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
+        if (this.btnProvidedServer.isSelected()) {
+            SwingUtil.systemClipboardCopy(this.mockServer.url("/").url().toExternalForm());
+        }
+    }//GEN-LAST:event_btnCopyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCopy;
     private javax.swing.JButton btnExport;
     private javax.swing.ButtonGroup btnGrpCA;
     private javax.swing.ButtonGroup btnGrpFormat;
     private javax.swing.JButton btnImport;
+    private javax.swing.JToggleButton btnProvidedServer;
     private javax.swing.JToggleButton btnStoreTypeJKS;
     private javax.swing.JToggleButton btnStoreTypePKCS12;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JCheckBox chkProvidedServer;
+    private javax.swing.JLabel lblListenPort;
     private javax.swing.JLabel lblPassword;
+    private javax.swing.JPanel pnlCACertificate;
     private javax.swing.JPanel pnlCertExport;
     private javax.swing.JPanel pnlCertImport;
     private javax.swing.JPanel pnlCertSIelectmport;
+    private javax.swing.JPanel pnlListenPort;
+    private javax.swing.JPanel pnlSelectCertificate;
     private javax.swing.JRadioButton rdoBurpCA;
     private javax.swing.JRadioButton rdoConvertCertificateDER;
     private javax.swing.JRadioButton rdoConvertPairPEM;
     private javax.swing.JRadioButton rdoConvertPrivateDER;
     private javax.swing.JRadioButton rdoCustomCA;
+    private javax.swing.JSpinner spnListenPort;
+    private javax.swing.JTabbedPane tabbetCertificate;
     private javax.swing.JTextField txtStoreFile;
     private javax.swing.JTextField txtStorePassword;
     // End of variables declaration//GEN-END:variables
@@ -348,6 +542,24 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     @Override
     public Component getUiComponent() {
         return this;
+    }
+
+    private MockWebServer mockServer = new MockWebServer();
+
+    protected void startMockServer(int port) {
+        try {
+            this.mockServer.start(port);
+        } catch (IOException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    protected void stopMockServer() {
+        try {
+            this.mockServer.shutdown();
+        } catch (IOException ex) {
+            Logger.getLogger(CertificateTab.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
