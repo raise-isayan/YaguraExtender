@@ -15,6 +15,8 @@ import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
 import yagura.model.OptionProperty;
 import extension.burp.IBurpTab;
+import yagura.AutoMockServer;
+import yagura.model.AutoResponderProperty;
 
 /**
  *
@@ -42,11 +44,13 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     private final UniversalViewTab tabUniversalView = new UniversalViewTab();
     private final MatchReplaceTab tabMatchReplace = new MatchReplaceTab();
     private final MatchAlertTab tabMatchAlert = new MatchAlertTab();
-//    private final AutoResponderTab tabAutoResponder = new AutoResponderTab();
+    private final AutoResponderTab tabAutoResponder = new AutoResponderTab();
     private final SendToTab tabSendTo = new SendToTab();
     private final LoggingTab tabLogging = new LoggingTab();
     private final JSearchTab tabJSearch = new JSearchTab();
+
     private final JTransCoderTab tabJTransCoder = new JTransCoderTab();
+
 
     private final VersionTab tabVersion = new VersionTab();
 
@@ -55,7 +59,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         this.addTab(this.tabUniversalView.getTabCaption(), this.tabUniversalView);
         this.addTab(this.tabMatchReplace.getTabCaption(), this.tabMatchReplace);
         this.addTab(this.tabMatchAlert.getTabCaption(), this.tabMatchAlert);
-        //      this.addTab(this.tabAutoResponder.getTabCaption(), this.tabAutoResponder);
+        this.addTab(this.tabAutoResponder.getTabCaption(), this.tabAutoResponder);
         this.addTab(this.tabSendTo.getTabCaption(), this.tabSendTo);
         this.addTab(this.tabLogging.getTabCaption(), this.tabLogging);
         this.addTab(this.tabJSearch.getTabCaption(), this.tabJSearch);
@@ -66,7 +70,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         this.tabUniversalView.addPropertyChangeListener(UniversalViewProperty.CJK_VIEW_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MatchReplaceProperty.MATCHREPLACE_PROPERTY, this);
         this.tabMatchAlert.addPropertyChangeListener(MatchAlertProperty.MATCHALERT_PROPERTY, this);
-//        this.tabAutoResponder.addPropertyChangeListener(AUTO_RESPONDER_PROPERTY, this);
+        this.tabAutoResponder.addPropertyChangeListener(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, this);
         this.tabSendTo.addPropertyChangeListener(SendToProperty.SENDTO_PROPERTY, this);
         this.tabLogging.addPropertyChangeListener(LoggingProperty.LOGGING_PROPERTY, this);
         this.tabJSearch.addPropertyChangeListener(JSearchProperty.JSEARCH_FILTER_PROPERTY, this);
@@ -104,7 +108,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         this.setEncodingProperty(property.getEncodingProperty());
         this.setLoggingProperty(property.getLoggingProperty());
         this.setMatchReplaceProperty(property.getMatchReplaceProperty());
-//        this.setAutoResponderProperty(property.getAutoResponderProperty());
+        this.setAutoResponderProperty(property.getAutoResponderProperty());
         this.setMatchAlertProperty(property.getMatchAlertProperty());
         this.setSendToProperty(property.getSendToProperty());
         this.setJSearchProperty(property.getJSearchProperty());
@@ -112,6 +116,10 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         // common
         this.setDebugMode(property.getDebugMode());
         this.setJTransCoderProperty(property.getEncodingProperty());
+    }
+
+    public AutoMockServer getMockServer() {
+        return this.tabAutoResponder.getMockServer();
     }
 
     public boolean isLogDirChanged() {
@@ -160,6 +168,14 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
 
     public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty) {
         this.tabMatchAlert.setMatchAlertProperty(matchAlertProperty);
+    }
+
+    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
+        this.tabAutoResponder.setProperty(autoResponderProperty);
+    }
+
+    public AutoResponderProperty getAutoResponderProperty() {
+        return this.tabAutoResponder.getProperty();
     }
 
     public JSearchProperty getJSearchProperty() {

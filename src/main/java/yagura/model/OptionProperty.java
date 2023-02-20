@@ -128,6 +128,20 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
+     * implements AutoResponder
+     */
+    @Expose
+    private final AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
+
+    public AutoResponderProperty getAutoResponderProperty() {
+        return this.autoResponderProperty;
+    }
+
+    public void setAutoResponderProperty(AutoResponderProperty autoResponderProperty) {
+        this.autoResponderProperty.setProperty(autoResponderProperty);
+    }
+
+    /**
      * debugModeの取得
      */
     private boolean debugMode = false;
@@ -148,6 +162,7 @@ public class OptionProperty implements IOptionProperty {
         this.config.put(this.universalViewProperty.getSettingName(), this.universalViewProperty.loadSetting());
         this.config.put(this.matchReplaceProperty.getSettingName(), this.matchReplaceProperty.loadSetting());
         this.config.put(this.matchAlertProperty.getSettingName(), this.matchAlertProperty.loadSetting());
+        this.config.put(this.autoResponderProperty.getSettingName(), this.autoResponderProperty.loadSetting());
         this.config.put(this.sendToProperty.getSettingName(), this.sendToProperty.loadSetting());
         this.config.put(this.logProperty.getSettingName(), this.logProperty.loadSetting());
         this.config.put(this.searchProperty.getSettingName(), this.searchProperty.loadSetting());
@@ -167,6 +182,10 @@ public class OptionProperty implements IOptionProperty {
         String configMatchAlertProperty = config.get(this.matchAlertProperty.getSettingName());
         if (configMatchAlertProperty != null) {
             this.matchAlertProperty.saveSetting(configMatchAlertProperty);
+        }
+        String configAutoResponderProperty = config.get(this.autoResponderProperty.getSettingName());
+        if (configAutoResponderProperty != null) {
+            this.autoResponderProperty.saveSetting(configAutoResponderProperty);
         }
         String configSendToProperty = config.get(this.sendToProperty.getSettingName());
         if (configSendToProperty != null) {

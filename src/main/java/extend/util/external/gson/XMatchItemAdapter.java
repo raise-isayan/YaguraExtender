@@ -15,6 +15,7 @@ import extension.burp.Severity;
 import extension.burp.TargetTool;
 import extension.view.base.MatchItem;
 import java.lang.reflect.Type;
+import yagura.model.AutoResponderItem;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchReplaceItem;
 
@@ -50,6 +51,10 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             MatchReplaceItem matchItem = (MatchReplaceItem) t;
             jsonObject.add("smartMatch", jsc.serialize(matchItem.isSmartMatch()));
             jsonObject.add("metaChar", jsc.serialize(matchItem.isMetaChar()));
+        } else if (cls.equals(AutoResponderItem.class)) {
+            AutoResponderItem matchItem = (AutoResponderItem) t;
+            jsonObject.add("bodyOnly", jsc.serialize(matchItem.getBodyOnly()));
+            jsonObject.add("contentType", jsc.serialize(matchItem.getContentType()));
         }
         return jsonObject;
     }
@@ -84,6 +89,12 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             matchItem.setProperty((MatchItem) item);
             if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
             if (jsonObject.has("metaChar")) matchItem.setMetaChar(jdc.deserialize(jsonObject.get("metaChar"), Boolean.TYPE));
+            return matchItem;
+        } else if (cls.equals(AutoResponderItem.class)) {
+            final AutoResponderItem matchItem = new AutoResponderItem();
+            matchItem.setProperty((MatchItem) item);
+            if (jsonObject.has("bodyOnly")) matchItem.setBodyOnly(jdc.deserialize(jsonObject.get("bodyOnly"), Boolean.TYPE));
+            if (jsonObject.has("contentType")) matchItem.setContentType(jdc.deserialize(jsonObject.get("contentType"), String.class));
             return matchItem;
         }
         return item;

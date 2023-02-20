@@ -34,6 +34,7 @@ import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import extend.util.external.ThemeUI;
 import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.BurpExtensionImpl;
+import static extension.burp.BurpExtensionImpl.helpers;
 import extension.burp.HttpTarget;
 import extension.burp.MessageType;
 import extension.burp.NotifyType;
@@ -60,6 +61,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -82,6 +84,8 @@ import yagura.view.TabbetOption;
 import yagura.model.OptionProperty;
 import yagura.Config;
 import yagura.Version;
+import yagura.model.AutoResponderItem;
+import yagura.model.AutoResponderProperty;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
 import yagura.model.LoggingProperty;
@@ -106,6 +110,7 @@ import yagura.view.ViewStateTabEditor;
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
     private ProxyHander proxyHandler;
+    private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
 
     public BurpExtension() {
@@ -157,6 +162,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     private final TabbetOption tabbetOption = new TabbetOption();
+
+    protected URL getMockServiceURL() {
+        return this.tabbetOption.getMockServer().serviceURL();
+    }
 
     private final HttpRequestEditorProvider requestRawTab = new HttpRequestEditorProvider() {
 
@@ -291,6 +300,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
 //        SwingUtilities.invokeLater(() -> {
             this.proxyHandler = new ProxyHander(api);
+            this.autoResponderHandler = new AutoResponderHandler(api);
             api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
             this.registerView();
             setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
@@ -441,6 +451,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 } else if (MatchAlertProperty.MATCHALERT_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
                     applyOptionProperty();
+                } else if (AutoResponderProperty.AUTO_RESPONDER_PROPERTY.equals(evt.getPropertyName())) {
+                    option.setAutoResponderProperty(tabbetOption.getAutoResponderProperty());
+                    applyOptionProperty();
                 } else if (JSearchProperty.JSEARCH_FILTER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setJSearchProperty(tabbetOption.getJSearchProperty());
                     applyOptionProperty();
@@ -505,7 +518,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         ThemeUI.removePropertyChangeListener();
     }
 
-    public final class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyResponseHandler {
+    protected final class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyResponseHandler {
         private final MontoyaApi api;
 
         public ProxyHander(MontoyaApi api) {
@@ -725,6 +738,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         /**
          * Request
          * @param httpRequest
+         * @return
          */
         public ProxyRequestReceivedAction processProxyMessage(InterceptedRequest httpRequest) {
             return this.processProxyMessage(httpRequest, Annotations.annotations());
@@ -744,7 +758,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     resultBytes = this.replaceProxyMessage(true, requestBytes, interceptedHttpRequest.bodyOffset());
                 }
             }
-            BurpExtension.helpers().outPrintln("processProxyMessage:" + (requestBytes != resultBytes));
             if (requestBytes != resultBytes) {
                 HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
                 return ProxyRequestReceivedAction.continueWith(modifyRequest, annotations);
@@ -755,6 +768,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         /**
          * Response
+         * @param interceptedHttpResponse
+         * @param httpRequest
+         * @return
          */
         public ProxyResponseReceivedAction processProxyMessage(InterceptedResponse interceptedHttpResponse, HttpRequest httpRequest) {
             return this.processProxyMessage(interceptedHttpResponse, httpRequest, Annotations.annotations());
@@ -839,15 +855,12 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
                             annotations = annotations.withHighlightColor(bean.getHighlightColor().toHighlightColor());
-                            BurpExtension.helpers().outPrintln("Highlight c:" + bean.getHighlightColor() + "," + annotations.highlightColor());
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.COMMENT)) {
                             if (replacemeComment != null) {
                                 annotations = annotations.withNotes(replacemeComment);
-                                BurpExtension.helpers().outPrintln("Comment r:" + annotations.notes());
                             } else {
                                 annotations = annotations.withNotes(bean.getComment());
-                                BurpExtension.helpers().outPrintln("Comment b:" + annotations.notes());
                             }
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
@@ -933,4 +946,37 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             return httpMessage;
         }
     }
+
+    protected class AutoResponderHandler implements HttpHandler
+    {
+        private final MontoyaApi api;
+
+        public AutoResponderHandler(MontoyaApi api) {
+            this.api = api;
+            api.http().registerHttpHandler(this);
+        }
+
+        @Override
+        public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
+            // Autoresponder
+            if (option.getAutoResponderProperty().getAutoResponderEnable()) {
+                HttpService service = httpRequestToBeSent.httpService();
+                final String url = httpRequestToBeSent.url();
+                AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
+                if (item != null) {
+                    BurpExtension.api().logging().logToOutput("moc:" + getMockServiceURL());
+                    HttpTarget httpTarget = new HttpTarget(getMockServiceURL());
+                    HttpRequest updatedHttpServiceRequest = httpRequestToBeSent.withService(httpTarget).withAddedHeader(AutoResponderProperty.AUTO_RESPONDER_HEADER, url);
+                    return RequestToBeSentAction.continueWith(updatedHttpServiceRequest);
+                }
+            }
+            return RequestToBeSentAction.continueWith(httpRequestToBeSent);
+        }
+
+        @Override
+        public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived httpResponseReceived) {
+            return ResponseReceivedAction.continueWith(httpResponseReceived);
+        }
+    }
+
 }

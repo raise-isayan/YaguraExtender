@@ -1,6 +1,7 @@
 package extension.burp;
 
 import extension.helpers.HttpUtil;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -46,6 +47,10 @@ public class HttpTarget implements burp.api.montoya.http.HttpService {
 
     public static HttpTarget getHttpTarget(final String host, final int port, final String protocol) {
         return new HttpTarget(host, port, isSecure(protocol));
+    }
+
+    public static HttpTarget getHttpTarget(final String target) throws MalformedURLException {
+        return new HttpTarget(new URL(target));
     }
 
     public static String getProtocol(boolean secure) {
