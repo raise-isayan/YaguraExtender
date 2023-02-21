@@ -6,14 +6,14 @@ import extension.helpers.ConvertUtil;
 import java.io.File;
 
 public final class BurpVersion {
-    private final MontoyaApi montoyaApi;
+    private final MontoyaApi api;
     private String productName = "";
     private String majorVersion = "";
     private String minorVersion = "";
     private String build = "";
 
     public BurpVersion(MontoyaApi api) {
-        this.montoyaApi = api;
+        this.api = api;
         parseVersion(api);
     }
 

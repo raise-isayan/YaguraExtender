@@ -17,13 +17,14 @@ import java.util.Map;
  * @author isayan
  */
 public class Config extends BurpConfig {
+    protected final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
 
     public static File getExtensionHomeDir() {
         return new File(getUserHomePath(), getExtensionDir());
     }
 
     public static String getTabCaption() {
-        return "Yagura";
+        return BUNDLE.getString("projname");
     }
 
     public static String getExtensionDir() {
@@ -63,7 +64,6 @@ public class Config extends BurpConfig {
 //        OptionProperty load = JsonUtil.jsonFromString(json, OptionProperty.class, true);
 //        option.setProperty(load);
 //    }
-
     public static void loadFromJson(File fi, Map<String, String> option) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
         gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();

@@ -1,4 +1,4 @@
-package extension.helpers;
+package extension.burp;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

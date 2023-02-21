@@ -171,7 +171,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // Drag and Drop
         this.txtInputRaw.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
             @Override
-            public void setData(byte[] rawData) {
+            public void setData(File file, byte[] rawData) {
                 setInputText(StringUtil.getBytesRawString(rawData));
             }
         });

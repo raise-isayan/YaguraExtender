@@ -7,7 +7,7 @@ package yagura.view;
 
 import burp.BurpExtension;
 import extension.burp.MessageHighlightColor;
-import extension.helpers.BurpUtil;
+import extension.burp.BurpUtil;
 import extension.helpers.StringUtil;
 import extension.view.layout.VerticalFlowLayout;
 import yagura.model.FilterProperty;

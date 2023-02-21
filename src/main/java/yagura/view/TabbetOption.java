@@ -1,7 +1,7 @@
 package yagura.view;
 
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
-import extension.helpers.BurpUtil;
+import extension.burp.BurpUtil;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

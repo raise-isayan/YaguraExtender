@@ -7,7 +7,7 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
-import extension.helpers.BurpUtil;
+import extension.burp.BurpUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;

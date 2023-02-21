@@ -1,13 +1,11 @@
 package extend.util.external;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.security.Key;
 import java.security.NoSuchProviderException;
@@ -32,6 +30,7 @@ import org.bouncycastle.util.io.pem.PemObject;
  * @author isayan
  */
 public class BoncyUtil {
+
     private final static BouncyCastleProvider BC_PROVIDER = new BouncyCastleProvider();
 
     static {
@@ -51,9 +50,9 @@ public class BoncyUtil {
                 if ("TYPE_CERTIFICATE".equals(pemObject.getType())) {
                     byte cert[] = pemObject.getContent();
                     try (ByteArrayInputStream inStream = new ByteArrayInputStream(cert)) {
-                        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509",  BouncyCastleProvider.PROVIDER_NAME);
+                        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509", BouncyCastleProvider.PROVIDER_NAME);
                         Certificate certificate = certificateFactory.generateCertificate(inStream);
-                        x509Certificate = (X509Certificate)certificate;
+                        x509Certificate = (X509Certificate) certificate;
                     }
                 } else {
                     PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(pemObject);
@@ -88,7 +87,6 @@ public class BoncyUtil {
         }
     }
 
-
     public static String exportCertificatePem(Certificate cert) throws IOException {
         StringWriter sw = new StringWriter();
         try (JcaPEMWriter pw = new JcaPEMWriter(sw)) {
@@ -107,7 +105,7 @@ public class BoncyUtil {
     }
 
     public static void storeCertificateDer(Key key, File to) throws IOException {
-        byte [] keyBytes = key.getEncoded();
+        byte[] keyBytes = key.getEncoded();
         try (FileOutputStream fos = new FileOutputStream(to)) {
             fos.write(keyBytes);
         }
@@ -115,11 +113,11 @@ public class BoncyUtil {
 
     public static void storeCertificateDer(Certificate cert, File to) throws IOException {
         try {
-            byte [] certBytes = cert.getEncoded();
+            byte[] certBytes = cert.getEncoded();
             try (FileOutputStream fos = new FileOutputStream(to)) {
                 fos.write(certBytes);
             }
-        }   catch (CertificateEncodingException ex) {
+        } catch (CertificateEncodingException ex) {
             throw new IOException(ex);
         }
     }

@@ -27,6 +27,7 @@ import javax.swing.table.TableModel;
  * @author isayan
  */
 public class ExtensionHelper {
+
     private final static Logger logger = Logger.getLogger(ExtensionHelper.class.getName());
     private final MontoyaApi api;
 
@@ -45,8 +46,7 @@ public class ExtensionHelper {
     public boolean isInScope(String url) {
         if (api != null) {
             return api.scope().isInScope(url);
-        }
-        else {
+        } else {
             throw new NullPointerException();
         }
     }
@@ -59,8 +59,7 @@ public class ExtensionHelper {
         try {
             if (api != null) {
                 api.logging().logToOutput(message);
-            }
-            else {
+            } else {
                 System.out.print(message);
             }
         } catch (Exception ex) {
@@ -76,8 +75,7 @@ public class ExtensionHelper {
         try {
             if (api != null) {
                 api.logging().logToError(message);
-            }
-            else {
+            } else {
                 System.err.print(message);
             }
         } catch (Exception ex) {
@@ -95,18 +93,18 @@ public class ExtensionHelper {
     public void issueAlert(String caption, String text, MessageType messageType) {
         String msg = String.format("%s:%s", caption, text);
         switch (messageType) {
-        case CRITICAL:
-            api.logging().raiseCriticalEvent(msg);
-            break;
-        case ERROR:
-            api.logging().raiseErrorEvent(msg);
-            break;
-        case DEBUG:
-            api.logging().raiseDebugEvent(msg);
-            break;
-        case INFO:
-            api.logging().raiseInfoEvent(msg);
-            break;
+            case CRITICAL:
+                api.logging().raiseCriticalEvent(msg);
+                break;
+            case ERROR:
+                api.logging().raiseErrorEvent(msg);
+                break;
+            case DEBUG:
+                api.logging().raiseDebugEvent(msg);
+                break;
+            case INFO:
+                api.logging().raiseInfoEvent(msg);
+                break;
         }
     }
 
@@ -235,13 +233,14 @@ public class ExtensionHelper {
             @Override
             public boolean isFromTool(ToolType... tts) {
                 for (ToolType t : tts) {
-                    if (t.equals(toolType)) return true;
+                    if (t.equals(toolType)) {
+                        return true;
+                    }
                 }
                 return false;
             }
         };
     }
-
 
     public static EditorCreationContext newEditorCreationContext(final ToolType toolType, final EditorMode editorMode) {
         return new EditorCreationContext() {

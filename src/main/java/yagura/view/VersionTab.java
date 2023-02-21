@@ -120,14 +120,17 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
     private final static FileFilter BURP_CONFIG_FILTER = new FileNameExtensionFilter("burp config File(*.json)", "json");
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
+        File file = null;
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
         filechooser.setFileFilter(BURP_CONFIG_FILTER);
+        if (file != null && file.exists())
+            filechooser.setSelectedFile(file);
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
-                File file = filechooser.getSelectedFile();
+                file = filechooser.getSelectedFile();
                 OptionProperty option = BurpExtension.getInstance().getProperty();
                 Map<String, String> config = option.loadConfigSetting();
                 Config.loadFromJson(file, config);
@@ -140,14 +143,17 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_btnImportActionPerformed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        File file = null;
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
         filechooser.setFileFilter(BURP_CONFIG_FILTER);
+        if (file != null && file.exists())
+            filechooser.setSelectedFile(file);
         int selected = filechooser.showSaveDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
-                File file = filechooser.getSelectedFile();
+                file = filechooser.getSelectedFile();
                 if (!BURP_CONFIG_FILTER.accept(file)) {
                     file = new File(file.getAbsolutePath() + ".json");
                 }

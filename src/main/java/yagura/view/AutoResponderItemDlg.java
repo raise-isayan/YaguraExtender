@@ -5,6 +5,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
+import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
 
 /**
@@ -21,6 +22,17 @@ public class AutoResponderItemDlg extends CustomDialog {
     public AutoResponderItemDlg(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        customizeComponents();
+    }
+
+    private void customizeComponents() {
+        // Drag and Drop
+        this.txtRepReplace.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
+            @Override
+            public void setData(File file, byte[] rawData) {
+                txtRepReplace.setText(file.getAbsolutePath());
+            }
+        });
     }
 
     /**
@@ -317,5 +329,6 @@ public class AutoResponderItemDlg extends CustomDialog {
         this.chkBodyOnly.setSelected(item.getBodyOnly());
         this.cmbContentType.getEditor().setItem(item.getContentType());
     }
+
 
 }

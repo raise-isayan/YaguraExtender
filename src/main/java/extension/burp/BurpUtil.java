@@ -1,14 +1,11 @@
-package extension.helpers;
+package extension.burp;
 
-import burp.api.montoya.core.Annotations;
 import burp.api.montoya.core.Range;
-import burp.api.montoya.core.ToolSource;
 import burp.api.montoya.http.handler.HttpHandler;
 import burp.api.montoya.http.handler.HttpRequestToBeSent;
 import burp.api.montoya.http.handler.HttpResponseReceived;
 import burp.api.montoya.http.handler.RequestToBeSentAction;
 import burp.api.montoya.http.handler.ResponseReceivedAction;
-import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
 import burp.api.montoya.proxy.http.ProxyRequestHandler;
@@ -21,8 +18,8 @@ import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
 import burp.api.montoya.ui.contextmenu.MessageEditorHttpRequestResponse;
 import burp.api.montoya.ui.editor.EditorOptions;
-import extension.burp.BurpConfig;
-import extension.burp.IBurpTab;
+import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
 import java.awt.Color;
 import java.awt.Container;
 import java.nio.charset.StandardCharsets;

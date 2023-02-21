@@ -53,7 +53,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         btnAutoResponderEdit = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAutoResponder = new javax.swing.JTable();
-        spnListenPort = new javax.swing.JSpinner();
         btnEnable = new javax.swing.JToggleButton();
 
         btnAutoResponderAdd.setText("Add");
@@ -108,14 +107,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         });
         jScrollPane1.setViewportView(tableAutoResponder);
 
-        spnListenPort.setModel(new javax.swing.SpinnerNumberModel(0, 0, 65535, 1));
-        spnListenPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnListenPort, "#0"));
-        spnListenPort.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                spnListenPortStateChanged(evt);
-            }
-        });
-
         btnEnable.setText("Enable");
         btnEnable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,7 +125,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnAutoResponderRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
                     .addComponent(btnAutoResponderEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spnListenPort, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnEnable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAutoResponderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -146,9 +136,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnEnable)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
+                        .addGap(40, 40, 40)
                         .addComponent(btnAutoResponderEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAutoResponderRemove)
@@ -234,7 +222,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
 
     public AutoResponderProperty getProperty() {
         AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
-        autoResponderProperty.setRedirectPort((int) this.spnListenPort.getValue());
         autoResponderProperty.setAutoResponderEnable(this.btnEnable.isSelected());
         autoResponderProperty.setAutoResponderItemList(this.getAutoResponderItemList());
         return autoResponderProperty;
@@ -242,7 +229,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
 
     public void setProperty(AutoResponderProperty autoResponderProperty) {
         this.btnEnable.setSelected(autoResponderProperty.getAutoResponderEnable());
-        this.spnListenPort.setValue(autoResponderProperty.getRedirectPort());
         this.setAutoResponderItemList(autoResponderProperty.getAutoResponderItemList());
         this.enableRule();
     }
@@ -258,10 +244,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
     private void btnAutoResponderEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoResponderEditActionPerformed
         this.showAutoResponderItemDlg(true);
     }//GEN-LAST:event_btnAutoResponderEditActionPerformed
-
-    private void spnListenPortStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnListenPortStateChanged
-        this.firePropertyChange(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, null, getProperty());
-    }//GEN-LAST:event_spnListenPortStateChanged
 
     private final AutoMockServer mockServer = new AutoMockServer();
 
@@ -295,7 +277,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
     protected void enableRule() {
         if (this.btnEnable.isSelected()) {
             try {
-                this.mockServer.startServer((int)this.spnListenPort.getValue());
+                this.mockServer.startServer(0);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
                 BurpExtension.helpers().issueAlert("AutoResponder", StringUtil.getStackTraceMessage(ex), MessageType.ERROR);
@@ -303,7 +285,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
                 Logger.getLogger(AutoResponderTab.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            stopThreadServer();
+            this.stopThreadServer();
         }
     }
 
@@ -313,7 +295,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
     private javax.swing.JButton btnAutoResponderRemove;
     private javax.swing.JToggleButton btnEnable;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner spnListenPort;
     private javax.swing.JTable tableAutoResponder;
     // End of variables declaration//GEN-END:variables
 
@@ -393,7 +374,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
 
     @Override
     public void extensionUnloaded() {
-        stopThreadServer();
+        this.stopThreadServer();
     }
 
 }

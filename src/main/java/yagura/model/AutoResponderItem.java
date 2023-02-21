@@ -1,9 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
-import extend.util.external.TransUtil;
 import extension.view.base.MatchItem;
-import java.util.regex.Matcher;
 
 /**
  *

@@ -344,5 +344,4 @@ public class BurpConfig {
         }
    }
 
-
 }

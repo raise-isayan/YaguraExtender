@@ -8,6 +8,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
 import extension.helpers.HttpUtil;
+import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -298,6 +299,14 @@ public class SendToItemDlg extends CustomDialog {
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
+        // Drag and Drop
+        this.cmbTargetLocal.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
+            @Override
+            public void setData(File file, byte[] rawData) {
+                cmbTargetLocal.getModel().setSelectedItem(file.getAbsolutePath());
+            }
+        });
+
         this.modelExtend = new DefaultComboBoxModel();
         this.cmbExtend.setModel(this.modelExtend);
         this.btnExtendProperty.setEnabled(this.chkServer.isSelected());

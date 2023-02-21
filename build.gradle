@@ -10,10 +10,10 @@ buildscript {
   }
 }
 
-apply plugin: 'java'
-apply plugin: 'jacoco'
+apply plugin: 'java-library'
 apply plugin: 'application'
-apply plugin: "org.asciidoctor.jvm.base"
+
+apply plugin: 'org.asciidoctor.jvm.base'
 apply plugin: 'org.asciidoctor.jvm.convert'
 apply plugin: 'org.asciidoctor.jvm.pdf'
 
@@ -88,7 +88,6 @@ task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
 }
 
 dependencies {
-
     // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
     compileOnly 'org.bouncycastle:bcpkix-jdk15on:1.67'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
@@ -113,7 +112,7 @@ dependencies {
 
     // Unit Test
     testImplementation 'net.portswigger.burp.extensions:montoya-api:1.0.0'
-    testImplementation fileTree(dir: 'libs', include: ['*.jar'])
+//    testImplementation fileTree(dir: 'libs', include: ['*.jar'])
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 
@@ -131,7 +130,7 @@ dependencies {
     testImplementation 'org.bouncycastle:bcprov-jdk15on:1.67'
 }
 
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
+//tasks.named('test') {
+//    // Use JUnit Platform for unit tests.
+//    useJUnitPlatform()
+//}

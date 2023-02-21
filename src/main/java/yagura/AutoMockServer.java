@@ -2,12 +2,12 @@ package yagura;
 
 import burp.BurpExtension;
 import extension.burp.MessageType;
-import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import okhttp3.HttpUrl;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
 import yagura.model.AutoResponderItem;
@@ -15,24 +15,22 @@ import yagura.model.AutoResponderProperty;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
-import okio.BufferedSource;
 import okio.Okio;
-import okio.Source;
 
 /**
  *
  * @author isayan
  */
 public class AutoMockServer {
+    private final static Logger logger = Logger.getLogger(AutoMockServer.class.getName());
 
-    private MockWebServer server = new MockWebServer();
+    private final MockWebServer server = new MockWebServer();
 
 
     public AutoMockServer() {
     }
 
     private boolean running = false;
-
 
     public void startServer(int listenPort) {
         try {
@@ -43,7 +41,7 @@ public class AutoMockServer {
             this.server.start(listenPort);
             this.running = true;
         } catch (IOException ex) {
-
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -57,6 +55,7 @@ public class AutoMockServer {
             this.running = false;
             BurpExtension.helpers().issueAlert("MockServer", "stop server", MessageType.INFO);
         } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -99,7 +98,5 @@ public class AutoMockServer {
             }
             return new MockResponse().setResponseCode(404);
         }
-
     }
-
 }

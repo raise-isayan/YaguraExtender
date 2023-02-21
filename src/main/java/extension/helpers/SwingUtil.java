@@ -35,6 +35,7 @@ import javax.swing.tree.TreePath;
  * @author isayan
  */
 public final class SwingUtil {
+
     private final static Logger logger = Logger.getLogger(SwingUtil.class.getName());
 
     private SwingUtil() {
@@ -54,20 +55,20 @@ public final class SwingUtil {
     }
 
     public static JFrame getRootJFrame(Component c) {
-        for(Container p = c.getParent(); p != null; p = p.getParent()) {
+        for (Container p = c.getParent(); p != null; p = p.getParent()) {
             if (p instanceof JFrame) {
-                return (JFrame)p;
+                return (JFrame) p;
             }
         }
         return null;
     }
 
-    public static JFrame [] getJFrames() {
+    public static JFrame[] getJFrames() {
         java.util.List<JFrame> jframes = new ArrayList<>();
-        Frame [] frames = Frame.getFrames();
+        Frame[] frames = Frame.getFrames();
         for (int i = 0; i < frames.length; i++) {
             if (frames[i] instanceof JFrame) {
-                jframes.add((JFrame)frames[i]);
+                jframes.add((JFrame) frames[i]);
             }
         }
         return jframes.toArray(new JFrame[0]);
@@ -105,8 +106,7 @@ public final class SwingUtil {
         int lastIndex = modelSrc.getRowCount() - 1;
         if (modelSrc instanceof DefaultTableModel) {
             ((DefaultTableModel) modelSrc).addRow(items);
-        }
-        //        else if (modelSrc instanceof DefaultObjectTableModel) {
+        } //        else if (modelSrc instanceof DefaultObjectTableModel) {
         //            ((DefaultObjectTableModel)modelSrc).addRow(items);
         //        }
         else {
@@ -139,8 +139,7 @@ public final class SwingUtil {
             if (modelSrc instanceof DefaultTableModel) {
                 ((DefaultTableModel) modelSrc).removeRow(rowIndex);
                 ((DefaultTableModel) modelSrc).insertRow(rowIndex, items);
-            }
-            //            else if (modelSrc instanceof DefaultObjectTableModel) {
+            } //            else if (modelSrc instanceof DefaultObjectTableModel) {
             //                ((DefaultObjectTableModel)modelSrc).removeRow(rowIndex);
             //                ((DefaultObjectTableModel)modelSrc).insertRow(rowIndex, items);
             //            }
@@ -560,9 +559,11 @@ public final class SwingUtil {
 
         @Override
         public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
-            JTextComponent c = (JTextComponent) comp;
-            if (!(c.isEditable() && c.isEnabled())) {
-                return false;
+            if (comp instanceof JTextComponent) {
+                JTextComponent c = (JTextComponent) comp;
+                if (!(c.isEditable() && c.isEnabled())) {
+                    return false;
+                }
             }
             return (getFlavor(transferFlavors) != null);
         }
@@ -579,7 +580,7 @@ public final class SwingUtil {
                             File file = (File) item;
                             byte[] rawData = new byte[0];
                             rawData = FileUtil.readAllBytes(new FileInputStream(file));
-                            setData(rawData);
+                            setData(file, rawData);
                             break;
                         }
                     }
@@ -610,11 +611,9 @@ public final class SwingUtil {
             return false;
         }
 
-
-        public void setData(byte[] rawData) {
+        public void setData(File file, byte[] rawData) {
 
         }
-
 
         @Override
         public int getSourceActions(JComponent c) {

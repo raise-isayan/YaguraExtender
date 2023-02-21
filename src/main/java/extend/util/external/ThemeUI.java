@@ -1,10 +1,8 @@
 package extend.util.external;
 
-import burp.BurpExtension;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -17,6 +15,7 @@ import org.fife.ui.rtextarea.Gutter;
  * @author isayan
  */
 public class ThemeUI {
+
     private final static List<PropertyChangeListener> listeners = new ArrayList<>();
 
     public static void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -36,7 +35,9 @@ public class ThemeUI {
     }
 
     public static void changeStyleTheme(RSyntaxTextArea textArea) {
-        if (textArea == null) return;
+        if (textArea == null) {
+            return;
+        }
         SwingUtilities.invokeLater(() -> {
 //                    BurpExtender.getMontoyaApi().userInterface().applyThemeToComponent(textArea);
 //                    Gutter gutter = RSyntaxUtilities.getGutter(textArea);
@@ -49,7 +50,7 @@ public class ThemeUI {
             textArea.setSelectedTextColor(UIManager.getColor("TextArea.selectedForeground"));
             textArea.setSelectionColor(UIManager.getColor("TextArea.selectedBackground"));
             Gutter gutter = RSyntaxUtilities.getGutter(textArea);
-            if (gutter!=null) {
+            if (gutter != null) {
                 gutter.setBackground(UIManager.getColor("TextField.background"));
                 gutter.setLineNumberColor(UIManager.getColor("TextField.foreground"));
             }
@@ -63,4 +64,3 @@ public class ThemeUI {
     }
 
 }
-
