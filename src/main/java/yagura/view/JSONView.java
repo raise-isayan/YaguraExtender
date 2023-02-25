@@ -204,10 +204,12 @@ public class JSONView extends javax.swing.JPanel {
                 return JsonUtil.prettyJson(content);
             }
 
+            @Override
             protected void process(List<Object> chunks) {
                 txtJSON.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
+            @Override
             protected void done() {
                 try {
                     txtJSON.setText(get());
@@ -259,10 +261,12 @@ public class JSONView extends javax.swing.JPanel {
                 return JsonpElement.parseJsonp(content);
             }
 
+            @Override
             protected void process(List<Object> chunks) {
                 txtJSON.setText("Heavy Processing" + StringUtil.repeat("...", chunks.size()));
             }
 
+            @Override
             protected void done() {
                 try {
                     JsonpElement jsonpElement = get();
@@ -289,10 +293,12 @@ public class JSONView extends javax.swing.JPanel {
                 return (DefaultTreeModel) JsonUtil.toJsonTreeModel(jsonpElement);
             }
 
+            @Override
             protected void process(List<Object> chunks) {
                 modelJSON.setRoot(new DefaultMutableTreeNode("Heavy Processing" + StringUtil.repeat("...", chunks.size())));
             }
 
+            @Override
             protected void done() {
                 try {
                     modelJSON = get();

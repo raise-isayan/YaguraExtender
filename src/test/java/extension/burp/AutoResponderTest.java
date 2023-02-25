@@ -1,14 +1,11 @@
 package extension.burp;
 
-import java.security.KeyStore;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Properties;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import yagura.model.AutoResponderItem;
@@ -56,16 +53,48 @@ public class AutoResponderTest {
         property.setAutoResponderItemList(autoResponderItemList);
         {
             AutoResponderItem item = property.findItem("http://www.example.com/");
-            if (item != null) {
-                System.out.println("find:" + item.toString());
-            }
+            assertNotNull(item);
         }
         {
             AutoResponderItem item = property.findItem("http://www.example.com/test");
-            if (item != null) {
-                System.out.println("second:" + item.toString());
-            }
+            assertNotNull(item);
         }
+    }
+
+    /**
+     */
+    @Test
+    public void testAutoResponderMultiFindItem()  {
+        AutoResponderProperty property = new AutoResponderProperty();
+        List<AutoResponderItem> autoResponderItemList = new ArrayList<>();
+        {
+            AutoResponderItem autoResponderFirstItem = new AutoResponderItem();
+            autoResponderFirstItem.setMatch("https://redirect/");
+            autoResponderFirstItem.setSelected(true);
+            autoResponderFirstItem.setRegexp(false);
+            autoResponderFirstItem.setBodyOnly(true);
+            autoResponderFirstItem.setReplace("reponse");
+            autoResponderFirstItem.setContentType("text/html");
+            autoResponderItemList.add(autoResponderFirstItem);
+            AutoResponderItem autoResponderSecondtem = new AutoResponderItem();
+            autoResponderSecondtem.setMatch("https://www.example.com/");
+            autoResponderSecondtem.setSelected(true);
+            autoResponderSecondtem.setRegexp(false);
+            autoResponderSecondtem.setBodyOnly(false);
+            autoResponderSecondtem.setReplace("body");
+            autoResponderItemList.add(autoResponderSecondtem);
+            property.setAutoResponderItemList(autoResponderItemList);
+            {
+                AutoResponderItem item = property.findItem("https://redirect/");
+                assertNotNull(item);
+            }
+            {
+                AutoResponderItem item = property.findItem("https://redirect/nnn");
+                assertNotNull(item);
+            }
+
+        }
+
     }
 
 }

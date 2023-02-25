@@ -82,6 +82,7 @@ task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
     include 'sample/**'
     include 'release/*.jar'
     exclude 'build'
+    exclude 'nbproject'
     exclude '.git'
     exclude '.gradle'
     exclude '*.zip'
@@ -130,7 +131,7 @@ dependencies {
     testImplementation 'org.bouncycastle:bcprov-jdk15on:1.67'
 }
 
-//tasks.named('test') {
-//    // Use JUnit Platform for unit tests.
-//    useJUnitPlatform()
-//}
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}

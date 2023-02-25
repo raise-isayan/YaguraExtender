@@ -40,19 +40,19 @@ gradlew release
 ## Operating environment
 
 ### Java
-* JRE (JDK) 11 (Open JDK is recommended) (https://openjdk.java.net/)
+* JRE (JDK) 17 (Open JDK is recommended) (https://openjdk.java.net/)
 
 ### Burp suite
-* v2020 or higher (http://www.portswigger.net/burp/)
+* v2023.1.2 or higher (http://www.portswigger.net/burp/)
 
 ### Development environment
-* NetBean 12.6 (https://netbeans.apache.org/)
-* Gradle 7.0.2 (https://gradle.org/)
-* asciidoc (http://asciidoc.org/) 
+* NetBean 16 (https://netbeans.apache.org/)
+* Gradle 7.5 (https://gradle.org/)
+* asciidoc (http://asciidoc.org/)
 
 ## Required library
 Building requires a [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) library.
-* BurpExtensionCommons v0.4.x
+* BurpExtensionCommons v3.x (Comming soon)
 
 ## Use Library
 * Apache common codec (https://commons.apache.org/proper/commons-codec/)
@@ -66,6 +66,10 @@ Building requires a [BurpExtensionCommons](https://github.com/raise-isayan/BurpE
 * Google gson (https://github.com/google/gson)
   * Apache License 2.0
   * https://github.com/google/gson/blob/master/LICENSE
+
+* MockServer (https://github.com/square/okhttp/tree/master/mockwebserver)
+  * Apache License 2.0
+  * https://github.com/square/okhttp/blob/master/LICENSE.txt
 
 * Universal Chardet for java (https://code.google.com/archive/p/juniversalchardet/)
   * MPL 1.1

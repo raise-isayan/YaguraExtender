@@ -40,15 +40,15 @@ gradlew release
 ## 動作環境
 
 ### Java
-* JRE(JDK) 11 (Open JDK を推奨)(https://openjdk.java.net/)
+* JRE(JDK) 17 (Open JDK を推奨)(https://openjdk.java.net/)
 
 ### Burp suite
-* v2020以上 (http://www.portswigger.net/burp/)
+* v2023.1.2以上 (http://www.portswigger.net/burp/)
 
 ### 開発環境
-* NetBean 12.4 (https://netbeans.apache.org/)
-* Gradle 7.0.2 (https://gradle.org/)
-* asciidoc (http://asciidoc.org/) 
+* NetBean 16 (https://netbeans.apache.org/)
+* Gradle 7.5 (https://gradle.org/)
+* asciidoc (http://asciidoc.org/)
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) のライブラリを必要とします。
@@ -67,6 +67,10 @@ gradlew release
 * Google gson (https://github.com/google/gson)
   * Apache License 2.0
   * https://github.com/google/gson/blob/master/LICENSE
+
+* MockServer (https://github.com/square/okhttp/tree/master/mockwebserver)
+  * Apache License 2.0
+  * https://github.com/square/okhttp/blob/master/LICENSE.txt
 
 * Universal Chardet for java (https://code.google.com/archive/p/juniversalchardet/)
   * MPL 1.1

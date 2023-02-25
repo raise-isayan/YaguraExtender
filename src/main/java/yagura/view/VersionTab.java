@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import yagura.Config;
 import yagura.model.OptionProperty;
 import extension.burp.IBurpTab;
+import extension.helpers.json.JsonUtil;
 
 /**
  *
@@ -133,7 +134,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
                 file = filechooser.getSelectedFile();
                 OptionProperty option = BurpExtension.getInstance().getProperty();
                 Map<String, String> config = option.loadConfigSetting();
-                Config.loadFromJson(file, config);
+                JsonUtil.loadFromJson(file, config);
                 option.saveConfigSetting(config);
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -159,7 +160,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
                 }
                 OptionProperty option = BurpExtension.getInstance().getProperty();
                 Map<String, String> config = option.loadConfigSetting();
-                Config.saveToJson(file, config);
+                JsonUtil.saveToJson(file, config);
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }

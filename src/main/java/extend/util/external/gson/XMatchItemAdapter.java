@@ -53,7 +53,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             jsonObject.add("metaChar", jsc.serialize(matchItem.isMetaChar()));
         } else if (cls.equals(AutoResponderItem.class)) {
             AutoResponderItem matchItem = (AutoResponderItem) t;
-            jsonObject.add("bodyOnly", jsc.serialize(matchItem.getBodyOnly()));
+            jsonObject.add("bodyOnly", jsc.serialize(matchItem.isBodyOnly()));
             jsonObject.add("contentType", jsc.serialize(matchItem.getContentType()));
         }
         return jsonObject;

@@ -39,11 +39,11 @@ public class AutoResponderProperty implements IPropertyConfig {
     private boolean autoResponderEnable = false;
 
     public void setAutoResponderEnable(boolean selected) {
-        autoResponderEnable = selected;
+        this.autoResponderEnable = selected;
     }
 
     public boolean getAutoResponderEnable() {
-        return autoResponderEnable;
+        return this.autoResponderEnable;
     }
 
     @Expose

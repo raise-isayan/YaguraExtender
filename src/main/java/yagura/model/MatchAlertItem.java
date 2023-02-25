@@ -43,7 +43,7 @@ public class MatchAlertItem extends MatchItem {
     public boolean isSmartMatch() {
         return this.smartMatch;
     }
-    
+
     @Expose
     private EnumSet<NotifyType> notifyTypes = EnumSet.noneOf(NotifyType.class);
 
@@ -225,15 +225,6 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setSeverity((Severity) rows[12]);
         matchAlert.setConfidence((Confidence) rows[13]);
         return matchAlert;
-    }
-
-    public void setProperty(MatchItem item) {
-        this.setSelected(item.isSelected());
-        this.setType(item.getType());
-        this.setMatch(item.getMatch());
-        this.setIgnoreCase(item.isIgnoreCase());
-        this.setRegexp(item.isRegexp());
-        this.setReplace(item.getReplace());
     }
 
     public void setProperty(MatchAlertItem item) {

@@ -108,15 +108,6 @@ public class MatchReplaceItem extends MatchItem {
         return this.getType().endsWith("body");
     }
 
-    public void setProperty(MatchItem item) {
-        this.setSelected(item.isSelected());
-        this.setType(item.getType());
-        this.setMatch(item.getMatch());
-        this.setIgnoreCase(item.isIgnoreCase());
-        this.setRegexp(item.isRegexp());
-        this.setReplace(item.getReplace());
-    }
-
     public void setProperty(MatchReplaceItem item) {
         this.setProperty((MatchItem)item);
         this.setMetaChar(item.isMetaChar());

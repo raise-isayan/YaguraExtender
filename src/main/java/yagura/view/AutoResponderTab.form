@@ -150,7 +150,7 @@
         <Property name="text" type="java.lang.String" value="Enable"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEnableActionPerformed"/>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="btnEnableStateChanged"/>
       </Events>
     </Component>
   </SubComponents>

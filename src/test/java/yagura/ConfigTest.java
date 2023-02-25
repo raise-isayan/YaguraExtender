@@ -86,7 +86,7 @@ public class ConfigTest {
         try {
             URL url = this.getClass().getResource("/resources/default_project_burp.json");
             byte [] test = FileUtil.bytesFromFile(new File(url.toURI()));
-            JsonElement json = JsonUtil.parse(StringUtil.getStringUTF8(test));
+            JsonElement json = JsonUtil.parseJson(StringUtil.getStringUTF8(test));
             String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
         } catch (IOException ex) {
@@ -211,9 +211,9 @@ public class ConfigTest {
         URL url = this.getClass().getResource("/resources/YaguraExtender.json");
         File fi = new File(url.toURI());
         OptionProperty option = new OptionProperty();
+        Map<String, String> config = option.loadConfigSetting();
         if (fi.exists()) {
-            Map<String, String> config = option.loadConfigSetting();
-            Config.loadFromJson(fi, config);
+            JsonUtil.loadFromJson(fi, config);
             option.setProperty(config);
             assertEquals(5, option.getEncodingProperty().getEncodingList().size());
             assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
@@ -222,7 +222,17 @@ public class ConfigTest {
             assertEquals(null, option.getMatchReplaceProperty().getReplaceSelectedGroup(option.getMatchReplaceProperty().getSelectedName()));
             assertEquals(false, option.getMatchReplaceProperty().getReplaceSelectedGroup("xxx").isInScopeOnly());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceSelectedList("xxx").size());
+            assertEquals(true, option.getAutoResponderProperty().getAutoResponderEnable());
+            assertEquals(1234, option.getAutoResponderProperty().getRedirectPort());
+            assertEquals(1, option.getAutoResponderProperty().getAutoResponderItemList().size());
         }
+        File fo = File.createTempFile("yagura", "json");
+        option.getAutoResponderProperty().setAutoResponderEnable(false);
+        option.getAutoResponderProperty().setRedirectPort(4567);
+        System.out.println(fo.getAbsoluteFile());
+        config = option.getProperty();
+        JsonUtil.saveToJson(fo, config);
+
     }
 
     @Test
@@ -233,7 +243,7 @@ public class ConfigTest {
         OptionProperty option = new OptionProperty();
         if (fi.exists()) {
             Map<String, String> config = option.loadConfigSetting();
-            Config.loadFromJson(fi, config);
+            JsonUtil.loadFromJson(fi, config);
             option.setProperty(config);
             assertEquals(5, option.getEncodingProperty().getEncodingList().size());
             assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());

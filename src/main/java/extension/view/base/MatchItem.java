@@ -1,5 +1,6 @@
 package extension.view.base;
 
+import com.google.gson.annotations.Expose;
 import java.util.regex.Matcher;
 
 /**
@@ -8,8 +9,10 @@ import java.util.regex.Matcher;
  */
 public class MatchItem extends RegexItem {
 
+    @Expose
     private boolean selected = true;
 
+    @Expose
     private String type;
 
     /**
@@ -40,6 +43,7 @@ public class MatchItem extends RegexItem {
         this.type = type;
     }
 
+    @Expose
     private String replace = "";
 
     /**
@@ -68,4 +72,14 @@ public class MatchItem extends RegexItem {
         this.replace = replace;
     }
 
+    public void setProperty(MatchItem matchItem) {
+        this.setSelected(matchItem.isSelected());
+        this.setType(matchItem.getType());
+        this.setMatch(matchItem.getMatch());
+        this.setIgnoreCase(matchItem.isIgnoreCase());
+        this.setRegexp(matchItem.isRegexp());
+        this.setReplace(matchItem.getReplace());
+        this.recompileRegex();
+    }
+     
 }

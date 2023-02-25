@@ -108,9 +108,9 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         jScrollPane1.setViewportView(tableAutoResponder);
 
         btnEnable.setText("Enable");
-        btnEnable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnableActionPerformed(evt);
+        btnEnable.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                btnEnableStateChanged(evt);
             }
         });
 
@@ -228,9 +228,8 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
     }
 
     public void setProperty(AutoResponderProperty autoResponderProperty) {
-        this.btnEnable.setSelected(autoResponderProperty.getAutoResponderEnable());
         this.setAutoResponderItemList(autoResponderProperty.getAutoResponderItemList());
-        this.enableRule();
+        this.btnEnable.setSelected(autoResponderProperty.getAutoResponderEnable());
     }
 
     private void btnAutoResponderAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoResponderAddActionPerformed
@@ -269,23 +268,23 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         }
     }//GEN-LAST:event_tableAutoResponderKeyTyped
 
-    private void btnEnableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnableActionPerformed
-        enableRule();
+    private void btnEnableStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnEnableStateChanged
+        this.enableRule();
         firePropertyChange(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, null, getProperty());
-    }//GEN-LAST:event_btnEnableActionPerformed
+    }//GEN-LAST:event_btnEnableStateChanged
 
     protected void enableRule() {
         if (this.btnEnable.isSelected()) {
             try {
-                this.mockServer.startServer(0);
+                this.startMockServer();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
-                BurpExtension.helpers().issueAlert("AutoResponder", StringUtil.getStackTraceMessage(ex), MessageType.ERROR);
+                BurpExtension.helpers().issueAlert("AutoResponder", ex.getMessage(), MessageType.ERROR);
                 this.btnEnable.setSelected(false);
                 Logger.getLogger(AutoResponderTab.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            this.stopThreadServer();
+            this.stopMockServer();
         }
     }
 
@@ -324,6 +323,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         Object editRows[] = SwingUtil.editItem(this.tableAutoResponder);
         if (editRows != null) {
             item = AutoResponderItem.fromObjects(editRows);
+            item.recompileRegex();
         }
         return item;
     }
@@ -368,13 +368,17 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         }
     }
 
-    protected void stopThreadServer() {
+    protected void startMockServer() {
+        this.mockServer.startServer(0);
+    }
+
+    protected void stopMockServer() {
         this.mockServer.stopServer();
     }
 
     @Override
     public void extensionUnloaded() {
-        this.stopThreadServer();
+        this.stopMockServer();
     }
 
 }

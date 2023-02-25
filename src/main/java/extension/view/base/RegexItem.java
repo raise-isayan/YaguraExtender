@@ -1,5 +1,6 @@
 package extension.view.base;
 
+import com.google.gson.annotations.Expose;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -8,7 +9,11 @@ import java.util.regex.PatternSyntaxException;
  * @author isayan
  */
 public class RegexItem {
+
+    @Expose
     private String match = "";
+
+    @Expose
     private Pattern regex;
 
     /**
@@ -26,7 +31,10 @@ public class RegexItem {
         this.regex = compileRegex(!this.regexp);
     }
 
-    private boolean regexp = true;
+    @Expose
+    private boolean regexp = false;
+
+    @Expose
     private boolean ignoreCase = false;
 
     /**

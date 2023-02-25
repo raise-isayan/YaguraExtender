@@ -3,7 +3,7 @@ package extension.helpers.json;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import extension.helpers.json.JsonUtil;
+import extension.view.base.MatchItem;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class JsonUtilTest {
         jsonObject.addProperty("abc", 123);
         jsonObject.addProperty("def", "test");
         String expResult = "{\"abc\":123,\"def\":\"test\"}";
-        String result = JsonUtil.stringify(jsonObject);
+        String result = JsonUtil.stringifyJson(jsonObject);
         assertEquals(expResult, result);
     }
 
@@ -63,7 +63,7 @@ public class JsonUtilTest {
     public void testParse() {
         System.out.println("parse");
         String jsonElementString = "{ \n \"abc\": 123, \n \"def\": \"test\" }";
-        JsonElement result = JsonUtil.parse(jsonElementString);
+        JsonElement result = JsonUtil.parseJson(jsonElementString);
         assertEquals(true, result.isJsonObject());
         assertEquals(true, result.getAsJsonObject().has("abc"));
         assertEquals(false, result.getAsJsonObject().has("xyz"));
@@ -282,15 +282,48 @@ public class JsonUtilTest {
     }
 
     @Test
+    public void testToJson() {
+        System.out.println("testToJson");
+        MatchItem item = new MatchItem();
+        item.setMatch("matchItem");
+        item.setReplace("repaceItem");
+        JsonElement json = JsonUtil.jsonToJsonElement(item, true);
+        if (json.isJsonObject()) {
+            JsonObject jsonObject = json.getAsJsonObject();
+            assertEquals(jsonObject.get("selected").getAsBoolean(),true);
+            assertEquals(jsonObject.get("match").getAsString(), "matchItem");
+            assertEquals(jsonObject.get("replace").getAsString(), "repaceItem");
+        }
+        System.out.println(json.toString());
+    }
+
+    @Test
+    public void testFromJson() {
+        System.out.println("testFromJson");
+//        MatchItem item = JsonUtil.jsonFromJsonElement(item, true);
+//        if (json.isJsonObject()) {
+//            JsonObject jsonObject = json.getAsJsonObject();
+//            assertEquals(jsonObject.get("selected").getAsBoolean(),true);
+//            assertEquals(jsonObject.get("match").getAsString(), "matchItem");
+//            assertEquals(jsonObject.get("replace").getAsString(), "repaceItem");
+//        }
+//        System.out.println(json.toString());
+    }
+
+    @Test
     public void testConfigJson() {
         try {
             System.out.println("configJson");
             File file = File.createTempFile("json", ".tmp");
-            Map<String, String> config = new HashMap();
-            config.put("abc", "test");
-            config.put("def", "{\"abc\":123,\"def\":\"test\"}");
-            JsonUtil.saveToJson(file, config);
+            Map<String, String> saveConfig = new HashMap();
+            saveConfig.put("abc", "\"test\"");
+            saveConfig.put("def", "{\"abc\":123,\"def\":\"test\"}");
+            JsonUtil.saveToJson(file, saveConfig);
             System.out.println(file.getAbsoluteFile());
+            Map<String, String> loadConfig = new HashMap();
+            JsonUtil.loadFromJson(file, loadConfig);
+            assertEquals(loadConfig.get("abc"), saveConfig.get("abc"));
+            assertEquals(loadConfig.get("def"), saveConfig.get("def"));
         } catch (IOException ex) {
             Logger.getLogger(JsonUtilTest.class.getName()).log(Level.SEVERE, null, ex);
         }

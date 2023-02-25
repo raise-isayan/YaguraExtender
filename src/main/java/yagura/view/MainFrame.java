@@ -1,5 +1,6 @@
 package yagura.view;
 
+import extension.helpers.json.JsonUtil;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -129,18 +130,18 @@ public class MainFrame extends javax.swing.JFrame {
         this.jTransCoder = new JTransCoderTab();
         this.pnlMain.add(jTransCoder, java.awt.BorderLayout.CENTER);
 
-        
+
         // 設定ファイル読み込み
         Map<String, String> config = this.option.loadConfigSetting();
         try {
             if (CONFIG_FILE.exists()) {
-                Config.loadFromJson(CONFIG_FILE, config);
+                JsonUtil.loadFromJson(CONFIG_FILE, config);
             }
             this.jTransCoder.setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE), StandardCharsets.UTF_8.name());
             this.jTransCoder.setProperty(option.getJTransCoderProperty());
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }        
+        }
                
         UIManager.LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
         for (int i = 0; i < lafInfo.length; i++) {

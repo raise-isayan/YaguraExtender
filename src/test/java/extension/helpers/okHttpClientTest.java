@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.Authenticator;
+import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
 import okhttp3.OkHttpClient;
@@ -176,9 +177,22 @@ public class okHttpClientTest {
         } catch (IOException ex) {
             Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }
 
+    @Test
+    public void testHeaderParse() {
+        System.out.println("testHeaderParse");
+        Headers headers = Headers.of("Version", "510063551", "Content-Type", "application/json; charset=UTF-8");
+        for (int i = 0; i < headers.size(); i++) {
+            System.out.println(headers.name(i) + ":" + headers.value(i));
+        }
+        Headers.Builder builder = new Headers.Builder();
+        builder.add("Version", "510063551");
+        builder.add("Content-Type", "application/json; charset=UTF-8");
+        Headers headers2 = builder.build();
+        for (int i = 0; i < headers2.size(); i++) {
+            System.out.println(headers2.name(i) + ":" + headers2.value(i));
+        }
+    }
 
 }

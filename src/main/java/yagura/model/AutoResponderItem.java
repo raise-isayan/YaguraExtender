@@ -21,7 +21,7 @@ public class AutoResponderItem extends MatchItem {
      * body only
      * @return
      */
-    public boolean getBodyOnly() {
+    public boolean isBodyOnly() {
         return this.bodyOnly;
     }
 
@@ -49,7 +49,7 @@ public class AutoResponderItem extends MatchItem {
         beans[1] = matchReplace.getMatch();
         beans[2] = matchReplace.isRegexp();
         beans[3] = matchReplace.isIgnoreCase();
-        beans[4] = matchReplace.getBodyOnly();
+        beans[4] = matchReplace.isBodyOnly();
         beans[5] = matchReplace.getContentType();
         beans[6] = matchReplace.getReplace();
         return beans;
@@ -64,21 +64,13 @@ public class AutoResponderItem extends MatchItem {
         autoResponder.setBodyOnly(((Boolean) rows[4]));
         autoResponder.setContentType(((String) rows[5]));
         autoResponder.setReplace((String) rows[6]);
+        autoResponder.recompileRegex();
         return autoResponder;
-    }
-
-    public void setProperty(MatchItem matchItem) {
-        this.setSelected(matchItem.isSelected());
-        this.setType(matchItem.getType());
-        this.setMatch(matchItem.getMatch());
-        this.setIgnoreCase(matchItem.isIgnoreCase());
-        this.setRegexp(matchItem.isRegexp());
-        this.setReplace(matchItem.getReplace());
     }
 
     public void setProperty(AutoResponderItem item) {
         this.setProperty((MatchItem)item);
-        this.setBodyOnly(item.getBodyOnly());
+        this.setBodyOnly(item.isBodyOnly());
         this.setContentType(item.getContentType());
     }
 

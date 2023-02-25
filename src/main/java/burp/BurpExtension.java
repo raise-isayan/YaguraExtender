@@ -33,8 +33,9 @@ import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import extend.util.external.ThemeUI;
 import extend.util.external.gson.XMatchItemAdapter;
+import extension.burp.BurpConfig;
+import extension.burp.BurpConfig.HostnameResolution;
 import extension.burp.BurpExtensionImpl;
-import static extension.burp.BurpExtensionImpl.helpers;
 import extension.burp.HttpTarget;
 import extension.burp.MessageType;
 import extension.burp.NotifyType;
@@ -107,6 +108,7 @@ import yagura.view.ViewStateTabEditor;
  * @author isayan
  */
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
+
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
     private ProxyHander proxyHandler;
     private AutoResponderHandler autoResponderHandler;
@@ -216,13 +218,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-                final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, false) {
-                    @Override
-                    public boolean isJsonp() {
-                        return true;
-                    }
-                };
-                return tab;
+            final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, false) {
+                @Override
+                public boolean isJsonp() {
+                    return true;
+                }
+            };
+            return tab;
         }
     };
 
@@ -281,7 +283,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         Map<String, String> config = this.option.loadConfigSetting();
         try {
             if (CONFIG_FILE.exists()) {
-                Config.loadFromJson(CONFIG_FILE, config);
+                JsonUtil.loadFromJson(CONFIG_FILE, config);
             }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -297,15 +299,16 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
+        //BurpConfig.configHostnameResolution(api);
 //        SwingUtilities.invokeLater(() -> {
-            this.proxyHandler = new ProxyHander(api);
-            this.autoResponderHandler = new AutoResponderHandler(api);
-            api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
-            this.registerView();
-            setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
-            this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
-            api.extension().registerUnloadingHandler(this);
-            api.extension().registerUnloadingHandler(this.tabbetOption);
+        this.proxyHandler = new ProxyHander(api);
+        this.autoResponderHandler = new AutoResponderHandler(api);
+        api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
+        this.registerView();
+        setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
+        this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
+        api.extension().registerUnloadingHandler(this);
+        api.extension().registerUnloadingHandler(this.tabbetOption);
 //        });
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
@@ -328,7 +331,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     /**
      *
-     * @return  タイムスタンプ
+     * @return タイムスタンプ
      */
     public synchronized String getCurrentLogTimestamp() {
         DateFormat format = this.option.getLoggingProperty().getLogTimestampDateFormat();
@@ -486,7 +489,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         try {
             Map<String, String> config = this.option.getProperty();
-            Config.saveToJson(CONFIG_FILE, config);
+            JsonUtil.saveToJson(CONFIG_FILE, config);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (Exception ex) {
@@ -518,6 +521,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     protected final class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyResponseHandler {
+
         private final MontoyaApi api;
 
         public ProxyHander(MontoyaApi api) {
@@ -529,10 +533,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         /**
          * implements HttpHandler
+         *
          * @param httpRequestToBeSent
          * @return
          */
-
         @Override
         public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
             return RequestToBeSentAction.continueWith(httpRequestToBeSent, httpRequestToBeSent.annotations());
@@ -552,7 +556,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         /**
          * implements ProxyRequestHandler
          */
-
         /**
          *
          * @param interceptedRequest
@@ -572,11 +575,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         /**
          * implements ProxyResponseHandler
          */
-
         /**
          * @param interceptedResponse
          * @return
-        */
+         */
         @Override
         public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse interceptedResponse) {
             ProxyResponseReceivedAction responseResult = this.processProxyMessage(interceptedResponse, interceptedResponse.initiatingRequest(), interceptedResponse.annotations());
@@ -588,7 +590,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         /**
          * @param interceptedResponse
          * @return
-        */
+         */
         @Override
         public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
             // autologging 出力
@@ -597,7 +599,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
             return ProxyResponseToBeSentAction.continueWith(interceptedResponse, interceptedResponse.annotations());
         }
-
 
         /**
          * プロキシログの出力
@@ -733,9 +734,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             return httpRequestResponse;
         }
 
-
         /**
          * Request
+         *
          * @param httpRequest
          * @return
          */
@@ -767,6 +768,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         /**
          * Response
+         *
          * @param interceptedHttpResponse
          * @param httpRequest
          * @return
@@ -946,13 +948,15 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
     }
 
-    protected class AutoResponderHandler implements HttpHandler
-    {
+    protected class AutoResponderHandler implements HttpHandler, ProxyRequestHandler, ExtensionUnloadingHandler {
+
         private final MontoyaApi api;
+        private final List resolvHost = new ArrayList<>();
 
         public AutoResponderHandler(MontoyaApi api) {
             this.api = api;
             api.http().registerHttpHandler(this);
+            api.proxy().registerRequestHandler(this);
         }
 
         @Override
@@ -962,6 +966,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 HttpService service = httpRequestToBeSent.httpService();
                 final String url = httpRequestToBeSent.url();
                 AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
+                BurpExtension.api().logging().logToOutput("handleHttpRequestToBeSent:" + url + ":"+ item);
                 if (item != null) {
                     BurpExtension.api().logging().logToOutput("moc:" + getMockServiceURL());
                     HttpTarget httpTarget = new HttpTarget(getMockServiceURL());
@@ -975,6 +980,33 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public ResponseReceivedAction handleHttpResponseReceived(HttpResponseReceived httpResponseReceived) {
             return ResponseReceivedAction.continueWith(httpResponseReceived);
+        }
+
+        @Override
+        public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
+            if (option.getAutoResponderProperty().getAutoResponderEnable()) {
+                final String url = interceptedRequest.url();
+                AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
+                BurpExtension.api().logging().logToOutput("handleRequestReceived:" + url + ":"+ item + ":" + option.getAutoResponderProperty().getAutoResponderItemList().size());
+                if (item != null) {
+                    if (!HttpUtil.isInetAddressByName(interceptedRequest.httpService().host())) {
+                        BurpExtension.api().logging().logToOutput("resolv:" + interceptedRequest.httpService().host());
+                        resolvHost.add(new HostnameResolution(true, interceptedRequest.httpService().host(), "127.0.0.1"));
+                        BurpConfig.configHostnameResolution(api, resolvHost);
+                    }
+                }
+            }
+            return ProxyRequestReceivedAction.continueWith(interceptedRequest);
+        }
+
+        @Override
+        public ProxyRequestToBeSentAction handleRequestToBeSent(InterceptedRequest interceptedRequest) {
+            return ProxyRequestToBeSentAction.continueWith(interceptedRequest);
+        }
+
+        @Override
+        public void extensionUnloaded() {
+            BurpConfig.configHostnameResolution(api, resolvHost, true);
         }
     }
 

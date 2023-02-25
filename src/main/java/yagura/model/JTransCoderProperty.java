@@ -138,14 +138,15 @@ public class JTransCoderProperty implements IPropertyConfig {
     private String currentInput = "";
 
     /**
-     *
-     * @param property
      * @return
      */
     public String getCurrentInput() {
         return currentInput;
     }
 
+    /**
+     * @param currentInput
+     */
     public void setCurrentInput(String currentInput) {
         this.currentInput = currentInput;
     }

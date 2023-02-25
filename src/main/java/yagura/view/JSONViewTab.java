@@ -1,22 +1,24 @@
 package yagura.view;
 
 import burp.BurpExtension;
-import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.message.ContentType;
-import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
-import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
+import burp.api.montoya.core.ByteArray;
+import burp.api.montoya.core.ToolType;
+import burp.api.montoya.http.message.MimeType;
+import burp.api.montoya.ui.Selection;
 import extend.util.external.ExtensionHelper;
 import extend.util.external.FormatUtil;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.logging.Level;
@@ -34,6 +36,8 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
     private final boolean isRequest;
+    private boolean textModified = false;
+    private boolean editable =false;
     private final EditorCreationContext editorCreationContext;
     private HttpRequestResponse httpRequestResponse;
 
@@ -149,11 +153,6 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
         return false;
     }
 
-    public void setMessage(HttpRequestResponse messageInfo) {
-
-    }
-
-
     public boolean isEnabledJson(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
         UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
@@ -238,6 +237,35 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
 
 
     public HttpRequestResponse getHttpRequestResponse() {
+//        if (this.httpRequestResponse != null) {
+//            if (this.textModified) {
+//                String modifiedText = this.jsonView.getMessage();
+//                String encoding = this.quickSearchTab.getSelectedEncoding();
+//                if (encoding != null) {
+//                    try {
+//                        if (this.isRequest) {
+//                            HttpRequest httpRequest = HttpRequest.httpRequest(this.httpRequestResponse.request().httpService(), this.httpRequestResponse.request().headers(), ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
+//                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(httpRequest, this.httpRequestResponse.response(), this.httpRequestResponse.annotations());
+//                            return http;
+//                        }
+//                        else {
+//                            HttpResponse httpResponse = HttpResponse.httpResponse(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
+//                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(this.httpRequestResponse.request(), httpResponse, this.httpRequestResponse.annotations());
+//                            return http;
+//                        }
+//
+//                    } catch (UnsupportedEncodingException ex) {
+//                        return null;
+//                    }
+//                } else {
+//                    return this.httpRequestResponse;
+//                }
+//            } else {
+//                return this.httpRequestResponse;
+//            }
+//        } else {
+//            return null;
+//        }
         return this.httpRequestResponse;
     }
 
@@ -294,6 +322,5 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
     public Selection selectedData() {
         return null;
     }
-
 
 }

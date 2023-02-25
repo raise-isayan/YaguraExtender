@@ -35,11 +35,11 @@ public class JsonUtil {
         }
     }
 
-    public static String stringify(JsonElement jsonElement) {
+    public static String stringifyJson(JsonElement jsonElement) {
         return prettyJson(jsonElement, false);
     }
 
-    public static JsonElement parse(String jsonElementString)  throws JsonSyntaxException {
+    public static JsonElement parseJson(String jsonElementString)  throws JsonSyntaxException {
         return JsonParser.parseString(jsonElementString);
     }
 
@@ -53,7 +53,7 @@ public class JsonUtil {
     }
 
     public static String prettyJson(String jsonElementString, boolean pretty)  throws JsonSyntaxException {
-        return prettyJson(parse(jsonElementString), pretty);
+        return prettyJson(parseJson(jsonElementString), pretty);
     }
 
     public static String prettyJson(JsonElement jsonElement, boolean pretty) {
@@ -125,7 +125,6 @@ public class JsonUtil {
             DefaultMutableTreeNode jsonKeySet = new DefaultMutableTreeNode(jsonElement);
             parentNode.add(jsonKeySet);
         }
-
     }
 
     private final static Pattern JSON_TYPE = Pattern.compile("((\\[(.*)\\])|(\\{(.*)\\}))", Pattern.DOTALL);
@@ -186,6 +185,31 @@ public class JsonUtil {
         return gson.fromJson(jsonString, classOfT);
     }
 
+    public static JsonElement jsonToJsonElement(Object jsonObject, boolean exludeFields) {
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
+            gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
+        }
+        if (exludeFields) {
+            gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        }
+        Gson gson = gsonBuilder.create();
+        return gson.toJsonTree(jsonObject);
+    }
+
+    public static <T> T jsonFromJsonElement(JsonElement jsonElement, Type listType, boolean exludeFields) {
+        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
+            gsonBuilder.registerTypeHierarchyAdapter(set.getKey(), set.getValue());
+        }
+        if (exludeFields) {
+            gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        }
+        Gson gson = gsonBuilder.create();
+        return gson.fromJson(gson.toJson(jsonElement), listType);
+    }
+
+
     public static String jsonToString(Object bean, boolean exludeFields) {
         GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
         for (Map.Entry<Class<?>, Object> set : typeAdapterMap.entrySet()) {
@@ -224,8 +248,10 @@ public class JsonUtil {
 
     public static void loadFromJson(File fi, Map<String, String> option) throws IOException {
         GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
+        gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        Gson gson = gsonBuilder.create();
         String jsonString = StringUtil.getStringUTF8(FileUtil.bytesFromFile(fi));
-        JsonElement jsonRoot = JsonUtil.parse(jsonString);
+        JsonElement jsonRoot = JsonUtil.parseJson(jsonString);
         if (jsonRoot.isJsonObject()) {
             JsonObject jsonMap = jsonRoot.getAsJsonObject();
             for (String memberName : jsonMap.keySet()) {
@@ -240,7 +266,7 @@ public class JsonUtil {
         Gson gson = gsonBuilder.create();
         JsonObject jsonMap = new JsonObject();
         for (String memberName : option.keySet()) {
-            jsonMap.add(memberName, JsonUtil.parse(option.get(memberName)));
+            jsonMap.add(memberName, JsonUtil.parseJson(option.get(memberName)));
         }
         String jsonString = gson.toJson(jsonMap);
         FileUtil.bytesToFile(StringUtil.getBytesUTF8(jsonString), fo);

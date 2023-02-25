@@ -199,9 +199,9 @@ public class OptionProperty implements IOptionProperty {
         if (configSearchProperty != null) {
             this.searchProperty.saveSetting(configSearchProperty);
         }
-        String transcoderProperty = config.get(this.transcoderProperty.getSettingName());
-        if (transcoderProperty != null) {
-            this.transcoderProperty.saveSetting(transcoderProperty);
+        String configTranscoderProperty = config.get(this.transcoderProperty.getSettingName());
+        if (configTranscoderProperty != null) {
+            this.transcoderProperty.saveSetting(configTranscoderProperty);
         }
     }
 

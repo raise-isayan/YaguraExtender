@@ -1,11 +1,20 @@
 package extension.burp;
 
+import burp.BurpExtension;
+import burp.api.montoya.MontoyaApi;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
+import extension.helpers.json.JsonUtil;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -16,6 +25,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Scanner;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
 import javax.swing.UIManager;
 
 /**
@@ -341,6 +351,157 @@ public class BurpConfig {
             return UIManager.getColor("Burp.tabFlashColour");
         } catch (NullPointerException ex) {
             return new Color(0xff, 0x66, 0x33);
+        }
+   }
+
+/***
+config:
+{
+    "project_options":{
+        "connections":{
+            "hostname_resolution":[
+                {
+                    "enabled":true,
+                    "hostname":"test",
+                    "ip_address":"127.0.0.1"
+                },
+                {
+                    "enabled":true,
+                    "hostname":"hoge",
+                    "ip_address":"192.168.0.2"
+                }
+            ]
+        }
+    }
+}
+**/
+
+   /**
+    *
+    * @param api
+    * @param hosts
+    */
+   public static synchronized void configHostnameResolution(MontoyaApi api, List<HostnameResolution> hosts) {
+       configHostnameResolution(api, hosts, false);
+   }
+
+   /***
+    *
+    * @param api
+    * @param hosts
+    * @param remove
+    */
+   public static void configHostnameResolution(MontoyaApi api, List<HostnameResolution> hosts, boolean remove) {
+        String config = api.burpSuite().exportProjectOptionsAsJson("project_options.connections.hostname_resolution");
+        BurpExtension.helpers().outPrintln("loadConfig:" + config);
+        String updateConfig = updateHostnameResolution(config, hosts, remove);
+        BurpExtension.helpers().outPrintln("saveConfig:" + updateConfig);
+        api.burpSuite().importProjectOptionsFromJson(updateConfig);
+    }
+
+   /***
+    *
+    * @param config
+    * @param hosts
+    * @return
+    */
+   protected static String updateHostnameResolution(String config, List<HostnameResolution> hosts) {
+       return updateHostnameResolution(config, hosts, false);
+   }
+
+   /***
+    *
+    * @param config
+    * @param hosts
+    * @param remove
+    * @return
+    */
+   protected static synchronized String updateHostnameResolution(String config, List<HostnameResolution> hosts, boolean remove) {
+        JsonObject root_json = JsonUtil.parseJsonObject(config);
+        JsonObject connections = root_json.getAsJsonObject("project_options").getAsJsonObject("connections");
+        Type listType = new TypeToken<ArrayList<HostnameResolution>>(){}.getType();
+        JsonArray jsonArray = connections.getAsJsonArray("hostname_resolution");
+        List<HostnameResolution> hostnameResolution = JsonUtil.jsonFromJsonElement(jsonArray, listType, true);
+        List<HostnameResolution> resolvHost = new ArrayList<>();
+        if (remove) {
+            for (HostnameResolution h : hosts) {
+                hostnameResolution = hostnameResolution.stream().filter(m -> !m.hostname.equalsIgnoreCase(h.hostname)).collect(Collectors.toList());
+            }
+        }
+        else {
+            for (HostnameResolution h : hosts) {
+                if (hostnameResolution.stream().noneMatch(m -> m.hostname.equalsIgnoreCase(h.hostname))) {
+                    resolvHost.add(h);
+                }
+            }
+            if (!resolvHost.isEmpty()) {
+                hostnameResolution.addAll(resolvHost);
+            }
+        }
+
+        JsonElement updateJsonElemet = JsonUtil.jsonToJsonElement(hostnameResolution, true);
+        connections.add("hostname_resolution", updateJsonElemet);
+        return JsonUtil.prettyJson(root_json, true);
+   }
+
+   public static class HostnameResolution {
+       public HostnameResolution() {
+           this(true, "", "");
+       }
+
+       public HostnameResolution(boolean enabled, String hostname, String ip_address) {
+           this.enabled = enabled;
+           this.hostname = hostname;
+           this.ip_address = ip_address;
+       }
+
+       @Expose
+       private boolean enabled = true;
+       @Expose
+       private String hostname = "";
+       @Expose
+       private String ip_address = "";
+
+        /**
+         * @return the enabled
+         */
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        /**
+         * @param enabled the enabled to set
+         */
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        /**
+         * @return the hostname
+         */
+        public String getHostname() {
+            return hostname;
+        }
+
+        /**
+         * @param hostname the hostname to set
+         */
+        public void setHostname(String hostname) {
+            this.hostname = hostname;
+        }
+
+        /**
+         * @return the ip_address
+         */
+        public String getIPAddress() {
+            return ip_address;
+        }
+
+        /**
+         * @param ip_address the ip_address to set
+         */
+        public void setIPAddress(String ip_address) {
+            this.ip_address = ip_address;
         }
    }
 

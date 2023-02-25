@@ -1,5 +1,6 @@
 package extension.helpers;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.SortedMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -246,9 +249,22 @@ public class StringUtil {
         }
         return  new String(ch);
     }
-    
+
     public static String getStackTraceMessage(Exception ex) {
         return String.format("%s: %s", ex.getClass().getName(), ex.getMessage());
+    }
+
+    public static String currentStackTrace() {
+        final Writer result = new StringWriter();
+        StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+        for (int i = 0; i < ste.length; i++) {
+            try {
+                result.append(ste[i].toString());
+                result.append("\r\n");
+            } catch (IOException ex) {
+            }
+        }
+        return result.toString();
     }
 
     public static String getStackTrace(Throwable ex) {
@@ -257,6 +273,7 @@ public class StringUtil {
         ex.printStackTrace(printWriter);
         return result.toString();
     }
+
 
     public static String getStackTrace(String message, Throwable ex) {
         final Writer result = new StringWriter();
@@ -294,6 +311,5 @@ public class StringUtil {
         }
         return list.toArray(new String[0]);
     }
-
 
 }

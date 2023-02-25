@@ -23,7 +23,7 @@ public class JsonpElement {
             JsonpElement jsonp = new JsonpElement();
             jsonp.raw = m.group(0);
             jsonp.callbackName = m.group(1);
-            jsonp.jsonElement = JsonUtil.parse(m.group(2));
+            jsonp.jsonElement = JsonUtil.parseJson(m.group(2));
             return jsonp;
         }
         throw new JsonSyntaxException("jsonp invalid format");

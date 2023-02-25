@@ -25,16 +25,6 @@ public class AutoResponderItemDlg extends CustomDialog {
         customizeComponents();
     }
 
-    private void customizeComponents() {
-        // Drag and Drop
-        this.txtRepReplace.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
-            @Override
-            public void setData(File file, byte[] rawData) {
-                txtRepReplace.setText(file.getAbsolutePath());
-            }
-        });
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,9 +45,9 @@ public class AutoResponderItemDlg extends CustomDialog {
         chkRegExp = new javax.swing.JCheckBox();
         btnSelectExecute = new javax.swing.JButton();
         chkIgnoreCase = new javax.swing.JCheckBox();
-        chkBodyOnly = new javax.swing.JCheckBox();
         cmbContentType = new javax.swing.JComboBox<>();
         lblReplace1 = new javax.swing.JLabel();
+        chkBodyOnly = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -95,7 +85,7 @@ public class AutoResponderItemDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
@@ -135,14 +125,17 @@ public class AutoResponderItemDlg extends CustomDialog {
             }
         });
 
-        chkBodyOnly.setSelected(true);
-        chkBodyOnly.setText("Body only");
-        chkBodyOnly.setEnabled(false);
-
         cmbContentType.setEditable(true);
         cmbContentType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "text/html", "text/plain", "image/jpeg", "image/gif", "image/png", "application/json", "application/javascript" }));
 
         lblReplace1.setText("Content-Type:");
+
+        chkBodyOnly.setText("Body only");
+        chkBodyOnly.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkBodyOnlyStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
@@ -167,9 +160,9 @@ public class AutoResponderItemDlg extends CustomDialog {
                         .addComponent(chkIgnoreCase))
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkBodyOnly)))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,13 +184,24 @@ public class AutoResponderItemDlg extends CustomDialog {
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbContentType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblReplace1))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void customizeComponents() {
+      this.cmbContentType.setEnabled(this.chkBodyOnly.isSelected());
+      // Drag and Drop
+        this.txtRepReplace.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
+            @Override
+            public void setData(File file, byte[] rawData) {
+                txtRepReplace.setText(file.getAbsolutePath());
+            }
+        });
+    }
 
     protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
@@ -232,7 +236,7 @@ public class AutoResponderItemDlg extends CustomDialog {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else if (!item.isValidRegex()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.regex"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
-        } else if (mime.isEmpty()) {
+        } else if (item.isBodyOnly() && mime.isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.mime.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else {
             this.setModalResult(JOptionPane.OK_OPTION);
@@ -243,6 +247,10 @@ public class AutoResponderItemDlg extends CustomDialog {
     private void txtRepMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepMatchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRepMatchActionPerformed
+
+    private void chkBodyOnlyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkBodyOnlyStateChanged
+        this.cmbContentType.setEnabled(this.chkBodyOnly.isSelected());
+    }//GEN-LAST:event_chkBodyOnlyStateChanged
 
     /**
      * @param args the command line arguments
@@ -326,9 +334,8 @@ public class AutoResponderItemDlg extends CustomDialog {
         this.chkRegExp.setSelected(item.isRegexp());
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
         this.txtRepReplace.setText(item.getReplace());
-        this.chkBodyOnly.setSelected(item.getBodyOnly());
+        this.chkBodyOnly.setSelected(item.isBodyOnly());
         this.cmbContentType.getEditor().setItem(item.getContentType());
     }
-
 
 }

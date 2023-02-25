@@ -109,13 +109,13 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="chkIgnoreCase" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="btnSelectExecute" min="-2" pref="34" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="chkBodyOnly" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="14" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -136,14 +136,14 @@
                           <Component id="txtRepReplace" alignment="3" min="-2" max="-2" attributes="1"/>
                       </Group>
                       <Component id="btnSelectExecute" min="-2" max="-2" attributes="1"/>
-                      <Component id="chkBodyOnly" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Component id="chkBodyOnly" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cmbContentType" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblReplace1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="13" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -199,13 +199,6 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkIgnoreCaseActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="chkBodyOnly">
-          <Properties>
-            <Property name="selected" type="boolean" value="true"/>
-            <Property name="text" type="java.lang.String" value="Body only"/>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JComboBox" name="cmbContentType">
           <Properties>
             <Property name="editable" type="boolean" value="true"/>
@@ -229,6 +222,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Content-Type:"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="chkBodyOnly">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Body only"/>
+          </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkBodyOnlyStateChanged"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

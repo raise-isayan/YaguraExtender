@@ -6,12 +6,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
 import java.security.KeyManagementException;
@@ -581,6 +583,16 @@ public final class HttpUtil {
 
         public int getSize() {
             return this.size;
+        }
+    }
+
+    public static boolean isInetAddressByName(String hostName) {
+        try {
+            InetAddress.getByName(hostName);
+            return true;
+        }
+        catch (UnknownHostException ex) {
+            return false;
         }
     }
 
