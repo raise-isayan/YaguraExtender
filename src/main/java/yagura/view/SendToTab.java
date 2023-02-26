@@ -336,14 +336,14 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         int index = this.tableSendTo.getSelectedRow();
         index = this.modelSendTo.moveUp(index);
         this.tableSendTo.getSelectionModel().setSelectionInterval(index, index);
-        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
+        this.firePropertyChange(SendToProperty.SENDTO_PROPERTY, null, this.getSendToProperty());
 }//GEN-LAST:event_btnSendToUpArrawActionPerformed
 
     private void btnSendToDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToDownArrawActionPerformed
         int index = this.tableSendTo.getSelectedRow();
         index = this.modelSendTo.moveDn(index);
         this.tableSendTo.getSelectionModel().setSelectionInterval(index, index);
-        //this.firePropertyChange(TabbetOption.SENDTO_PROPERTY, null, this.getSendToProperty());
+        this.firePropertyChange(SendToProperty.SENDTO_PROPERTY, null, this.getSendToProperty());
 }//GEN-LAST:event_btnSendToDownArrawActionPerformed
 
     private void btnSendToAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToAddActionPerformed

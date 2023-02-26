@@ -47,6 +47,23 @@ public class AutoResponderProperty implements IPropertyConfig {
     }
 
     @Expose
+    private boolean hostNameForceResolv = true;
+
+    /**
+     * @return the hostNameForceResolv
+     */
+    public boolean isHostNameForceResolv() {
+        return hostNameForceResolv;
+    }
+
+    /**
+     * @param hostNameForceResolv the hostNameForceResolv to set
+     */
+    public void setForceHostNameResolv(boolean hostNameForceResolv) {
+        this.hostNameForceResolv = hostNameForceResolv;
+    }
+
+    @Expose
     private final List<AutoResponderItem> autoResponderList = new ArrayList<>();
 
     public void setAutoResponderItemList(List<AutoResponderItem> autoResponderItemList) {
@@ -76,8 +93,9 @@ public class AutoResponderProperty implements IPropertyConfig {
     }
 
     public void setProperty(AutoResponderProperty property) {
-        this.setRedirectPort(property.getRedirectPort());
         this.setAutoResponderEnable(property.getAutoResponderEnable());
+        this.setRedirectPort(property.getRedirectPort());
+        this.setForceHostNameResolv(property.isHostNameForceResolv());
         this.setAutoResponderItemList(property.getAutoResponderItemList());
     }
 

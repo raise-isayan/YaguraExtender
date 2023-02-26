@@ -28,7 +28,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
 
     private final SendToProperty property;
     private final MontoyaApi api;
-    private ContextMenuEvent invocation;
+    private ContextMenuEvent contextMenuEvent;
 
     private final javax.swing.JMenu mnuSendTo = new javax.swing.JMenu();
 
@@ -37,15 +37,14 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         this.property = property;
 
     }
-    private final List<JMenuItem> menuList = new ArrayList<>();
+    private final List<Component> menuList = new ArrayList<>();
     private final List<SendToMenuItem> sendToList = new ArrayList<>();
 
     @Override
     public List<Component> provideMenuItems(ContextMenuEvent contextMenuEvent) {
-//        this.invocation = invocation;
-//        this.renewMenu(this.property);
-//        return this.menuList;
-        return null;
+        this.contextMenuEvent = contextMenuEvent;
+        this.renewMenu(this.property);
+        return this.menuList;
     }
 
     private SendToMenuItem getMenuItemCaption(boolean forceSortOrder, int ord, SendToMenuItem menuItem) {
@@ -82,7 +81,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         for (SendToItem item : sendToItemList) {
             if (item.isSelected()) {
                 if (item.getExtend() != null) {
-                    SendToExtend sendToItem = new SendToExtend(item, this.invocation);
+                    SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
                         mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
@@ -121,7 +120,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                     javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
                     mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
                     if (item.isServer()) {
-                        SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
+                        SendToMenuItem sendToItem = new SendToServer(item, this.contextMenuEvent);
                         sendToItem.addSendToListener(new SendToListener() {
                             @Override
                             public void complete(SendToEvent evt) {
@@ -152,7 +151,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                             }
                         }
                     } else {
-                        SendToMenuItem sendToItem = new SendToMultiEditor(item, this.invocation);
+                        SendToMenuItem sendToItem = new SendToMultiEditor(item, this.contextMenuEvent);
                         sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
                         if (property.isSubMenu()) {
@@ -222,7 +221,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                     javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
                     mnuItem.setText(item.getCaption());
                     if (item.getExtend() != null) {
-                        final SendToExtend sendToItem = new SendToExtend(item, this.invocation);
+                        final SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
                         mnuItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
@@ -232,7 +231,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                         this.popBurpMenu.add(mnuItem);
                     } else {
                         if (item.isServer()) {
-                            final SendToMenuItem sendToItem = new SendToServer(item, this.invocation);
+                            final SendToMenuItem sendToItem = new SendToServer(item, this.contextMenuEvent);
                             sendToItem.addSendToListener(this);
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
@@ -242,7 +241,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                             });
                             this.popBurpMenu.add(mnuItem);
                         } else {
-                            final SendToMenuItem sendToItem = new SendToMultiEditor(item, this.invocation);
+                            final SendToMenuItem sendToItem = new SendToMultiEditor(item, this.contextMenuEvent);
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {

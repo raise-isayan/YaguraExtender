@@ -6,7 +6,6 @@ import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import yagura.model.AutoResponderItem;
 import extension.burp.IBurpTab;
 import extension.burp.MessageType;
-import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
 import java.awt.Component;
@@ -54,6 +53,9 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         jScrollPane1 = new javax.swing.JScrollPane();
         tableAutoResponder = new javax.swing.JTable();
         btnEnable = new javax.swing.JToggleButton();
+        btnUpArraw = new javax.swing.JButton();
+        btnDownArraw = new javax.swing.JButton();
+        chkHostNameForceResolv = new javax.swing.JCheckBox();
 
         btnAutoResponderAdd.setText("Add");
         btnAutoResponderAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -114,20 +116,51 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
             }
         });
 
+        btnUpArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
+        btnUpArraw.setText("up");
+        btnUpArraw.setHideActionText(true);
+        btnUpArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        btnUpArraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpArrawActionPerformed(evt);
+            }
+        });
+
+        btnDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
+        btnDownArraw.setText("down");
+        btnDownArraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDownArrawActionPerformed(evt);
+            }
+        });
+
+        chkHostNameForceResolv.setSelected(true);
+        chkHostNameForceResolv.setText("<html>Hostname Resolution<br/> to allow invalid <br/>hostname redirection.</html>");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAutoResponderRemove, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
-                    .addComponent(btnAutoResponderEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEnable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAutoResponderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnUpArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDownArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAutoResponderAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
+                            .addComponent(btnAutoResponderRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAutoResponderEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEnable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkHostNameForceResolv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,15 +169,23 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnEnable)
-                        .addGap(40, 40, 40)
+                        .addGap(18, 18, 18)
                         .addComponent(btnAutoResponderEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnAutoResponderRemove)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAutoResponderAdd))
+                        .addComponent(btnAutoResponderAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpArraw)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDownArraw)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkHostNameForceResolv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
+
+        chkHostNameForceResolv.getAccessibleContext().setAccessibleName("Hostname Resolution to allow invalid hostname redirection");
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
@@ -223,6 +264,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
     public AutoResponderProperty getProperty() {
         AutoResponderProperty autoResponderProperty = new AutoResponderProperty();
         autoResponderProperty.setAutoResponderEnable(this.btnEnable.isSelected());
+        autoResponderProperty.setForceHostNameResolv(this.chkHostNameForceResolv.isSelected());
         autoResponderProperty.setAutoResponderItemList(this.getAutoResponderItemList());
         return autoResponderProperty;
     }
@@ -230,6 +272,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
     public void setProperty(AutoResponderProperty autoResponderProperty) {
         this.setAutoResponderItemList(autoResponderProperty.getAutoResponderItemList());
         this.btnEnable.setSelected(autoResponderProperty.getAutoResponderEnable());
+        this.chkHostNameForceResolv.setSelected(autoResponderProperty.isHostNameForceResolv());
     }
 
     private void btnAutoResponderAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAutoResponderAddActionPerformed
@@ -273,6 +316,20 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         firePropertyChange(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, null, getProperty());
     }//GEN-LAST:event_btnEnableStateChanged
 
+    private void btnUpArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpArrawActionPerformed
+        int index = this.tableAutoResponder.getSelectedRow();
+        index = this.modelAutoResponder.moveUp(index);
+        this.tableAutoResponder.getSelectionModel().setSelectionInterval(index, index);
+        firePropertyChange(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, null, getProperty());
+    }//GEN-LAST:event_btnUpArrawActionPerformed
+
+    private void btnDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDownArrawActionPerformed
+        int index = this.tableAutoResponder.getSelectedRow();
+        index = this.modelAutoResponder.moveDn(index);
+        this.tableAutoResponder.getSelectionModel().setSelectionInterval(index, index);
+        firePropertyChange(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, null, getProperty());
+    }//GEN-LAST:event_btnDownArrawActionPerformed
+
     protected void enableRule() {
         if (this.btnEnable.isSelected()) {
             try {
@@ -292,7 +349,10 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
     private javax.swing.JButton btnAutoResponderAdd;
     private javax.swing.JButton btnAutoResponderEdit;
     private javax.swing.JButton btnAutoResponderRemove;
+    private javax.swing.JButton btnDownArraw;
     private javax.swing.JToggleButton btnEnable;
+    private javax.swing.JButton btnUpArraw;
+    private javax.swing.JCheckBox chkHostNameForceResolv;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableAutoResponder;
     // End of variables declaration//GEN-END:variables

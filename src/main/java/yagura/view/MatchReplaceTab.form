@@ -58,7 +58,7 @@
                                   <Component id="btnRepNew" alignment="0" max="32767" attributes="1"/>
                                   <Component id="btnSelect" alignment="0" pref="108" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="11" max="32767" attributes="0"/>
+                              <EmptySpace pref="37" max="32767" attributes="0"/>
                               <Component id="pnlRepEnc" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -66,7 +66,7 @@
                               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="2" attributes="0">
                                   <Component id="btnRepUpArraw" alignment="0" min="-2" pref="83" max="-2" attributes="1"/>
-                                  <Component id="btnRepDownArraw" alignment="0" min="-2" max="-2" attributes="1"/>
+                                  <Component id="btnRepDownArraw" alignment="0" min="-2" pref="83" max="-2" attributes="1"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>

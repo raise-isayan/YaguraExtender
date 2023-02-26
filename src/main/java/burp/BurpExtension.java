@@ -26,6 +26,8 @@ import burp.api.montoya.proxy.http.ProxyResponseHandler;
 import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
 import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
@@ -76,7 +78,10 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import passive.IssueItem;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
@@ -300,16 +305,17 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
 
         //BurpConfig.configHostnameResolution(api);
-//        SwingUtilities.invokeLater(() -> {
-        this.proxyHandler = new ProxyHander(api);
-        this.autoResponderHandler = new AutoResponderHandler(api);
-        api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
-        this.registerView();
-        setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
-        this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
-        api.extension().registerUnloadingHandler(this);
-        api.extension().registerUnloadingHandler(this.tabbetOption);
-//        });
+        SwingUtilities.invokeLater(() -> {
+            this.proxyHandler = new ProxyHander(api);
+            this.autoResponderHandler = new AutoResponderHandler(api);
+            this.registerView();
+            api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
+            setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
+
+
+            this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
+            api.extension().registerUnloadingHandler(this);
+        });
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
 
@@ -517,6 +523,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     @Override
     public void extensionUnloaded() {
+        this.tabbetOption.extensionUnloaded();
+        this.autoResponderHandler.extensionUnloaded();
         ThemeUI.removePropertyChangeListener();
     }
 
@@ -966,9 +974,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 HttpService service = httpRequestToBeSent.httpService();
                 final String url = httpRequestToBeSent.url();
                 AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
-                BurpExtension.api().logging().logToOutput("handleHttpRequestToBeSent:" + url + ":"+ item);
                 if (item != null) {
-                    BurpExtension.api().logging().logToOutput("moc:" + getMockServiceURL());
                     HttpTarget httpTarget = new HttpTarget(getMockServiceURL());
                     HttpRequest updatedHttpServiceRequest = httpRequestToBeSent.withService(httpTarget).withAddedHeader(AutoResponderProperty.AUTO_RESPONDER_HEADER, url);
                     return RequestToBeSentAction.continueWith(updatedHttpServiceRequest);
@@ -984,13 +990,12 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
-            if (option.getAutoResponderProperty().getAutoResponderEnable()) {
+            if (option.getAutoResponderProperty().getAutoResponderEnable() && option.getAutoResponderProperty().isHostNameForceResolv()) {
                 final String url = interceptedRequest.url();
                 AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
-                BurpExtension.api().logging().logToOutput("handleRequestReceived:" + url + ":"+ item + ":" + option.getAutoResponderProperty().getAutoResponderItemList().size());
                 if (item != null) {
                     if (!HttpUtil.isInetAddressByName(interceptedRequest.httpService().host())) {
-                        BurpExtension.api().logging().logToOutput("resolv:" + interceptedRequest.httpService().host());
+                        BurpExtension.helpers().issueAlert("MockServer", "resolv:" + interceptedRequest.httpService().host(), MessageType.INFO);
                         resolvHost.add(new HostnameResolution(true, interceptedRequest.httpService().host(), "127.0.0.1"));
                         BurpConfig.configHostnameResolution(api, resolvHost);
                     }

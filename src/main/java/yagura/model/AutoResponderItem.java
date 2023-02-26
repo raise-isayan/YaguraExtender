@@ -8,6 +8,7 @@ import extension.view.base.MatchItem;
  * @author isayan
  */
 public class AutoResponderItem extends MatchItem {
+
     public static final String TYPE_AUTO_RESPONDER = "auto responder";
 
     public AutoResponderItem() {

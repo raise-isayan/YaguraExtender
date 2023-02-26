@@ -42,6 +42,7 @@ public class RegexItemTest {
         RegexItem instance = new RegexItem();
         {
             boolean expResult = false;
+            instance.setRegexp(true);
             instance.setMatch("(");
             boolean result = instance.isValidRegex();
             assertEquals(expResult, result);
