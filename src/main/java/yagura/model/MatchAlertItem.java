@@ -228,7 +228,7 @@ public class MatchAlertItem extends MatchItem {
     }
 
     public void setProperty(MatchAlertItem item) {
-        this.setProperty((MatchItem)item);
+        this.setProperty((MatchItem) item);
         this.setSmartMatch(item.isSmartMatch());
         this.setCaptureGroup(item.isCaptureGroup());
         this.setIssueName(item.getIssueName());

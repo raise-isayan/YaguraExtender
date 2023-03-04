@@ -36,6 +36,7 @@ import java.util.TimeZone;
  * @author isayan
  */
 public class TransUtilTest {
+
     private final static Logger logger = Logger.getLogger(TransUtilTest.class.getName());
 
     public TransUtilTest() {
@@ -258,7 +259,7 @@ public class TransUtilTest {
     public void toLocalDate() {
         for (int i = -12; i <= 12; i++) {
             ZoneOffset offset = ZoneOffset.ofHours(i);
-            System.out.println("x:" + i + " " +  offset.getId());
+            System.out.println("x:" + i + " " + offset.getId());
         }
     }
 
@@ -506,11 +507,11 @@ public class TransUtilTest {
     @Test
     public void testToUnocodeDecode2() {
         System.out.println("toUnocodeDecode2");
-        assertEquals("abcdef!\"#$%", TransUtil.toUnocodeDecode("abcdef$0021$0022$0023$0024$0025","$"));
-        assertEquals("あいうえお", TransUtil.toUnocodeDecode("$3042$3044$3046$3048$304a","$"));
+        assertEquals("abcdef!\"#$%", TransUtil.toUnocodeDecode("abcdef$0021$0022$0023$0024$0025", "$"));
+        assertEquals("あいうえお", TransUtil.toUnocodeDecode("$3042$3044$3046$3048$304a", "$"));
         int ch[] = new int[]{(int) 'j', (int) 'k', (int) 'f', 0x2000B, 0x2123D, (int) 'g', (int) 'h', (int) 'i', 0x2131B, 0x2146E, 0x218BD, 0x20B9F, 0x216B4, 0x21E34, 0x231C4, 0x235C4, (int) 'a', (int) 'b', (int) 'z', (int) '0', (int) '1', (int) '9'};
         String x = new String(ch, 0, ch.length);
-        assertEquals(x, TransUtil.toUnocodeDecode("jkf$d840$dc0b$d844$de3dghi$d844$df1b$d845$dc6e$d846$dcbd$d842$df9f$d845$deb4$d847$de34$d84c$ddc4$d84d$ddc4abz019","$"));
+        assertEquals(x, TransUtil.toUnocodeDecode("jkf$d840$dc0b$d844$de3dghi$d844$df1b$d845$dc6e$d846$dcbd$d842$df9f$d845$deb4$d847$de34$d84c$ddc4$d84d$ddc4abz019", "$"));
     }
 
     /**
@@ -680,7 +681,6 @@ public class TransUtilTest {
 //            assertTrue(false);
 //        }
 //    }
-
     /**
      * Test of decode/encode/StandardLangMeta method, of class TransUtil.
      */
@@ -906,7 +906,6 @@ public class TransUtilTest {
         System.out.println(sb.toString());
     }
 
-
     @Test
     public void testToRegexEscape() {
         System.out.println("testToRegexEscape");
@@ -949,7 +948,6 @@ public class TransUtilTest {
 //        }
 //
 //    }
-
     @Test
     public void testToConv() {
         System.out.println("testToConv");
@@ -986,7 +984,7 @@ public class TransUtilTest {
     public void testStringBuilder() {
         System.out.println("testStringBuilder");
         StringBuilder b = new StringBuilder();
-        b.append((String)null);
+        b.append((String) null);
         System.out.println("append:" + b.toString());
     }
 
@@ -1042,8 +1040,6 @@ public class TransUtilTest {
         System.out.println(id.getRules().toString());
     }
 
-
-
     @Test
     public void testCovertDate() {
         System.out.println("testCovertDate");
@@ -1068,13 +1064,13 @@ public class TransUtilTest {
         System.out.println("Calendar.get: " + cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH) + " " + cl.get(Calendar.HOUR) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND));
         cl.setTimeZone(TimeZone.getTimeZone("GMT"));
         System.out.println("Calendar.toDate: " + cl.getTime());
-        System.out.println("Calendar.get: "  + cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH) + " " + cl.get(Calendar.HOUR) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND));
+        System.out.println("Calendar.get: " + cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH) + " " + cl.get(Calendar.HOUR) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND));
         Calendar clz = Calendar.getInstance(TimeZone.getTimeZone(ZoneOffset.UTC));
         clz.setTime(dateZone);
         System.out.println("Calendar.get(z): " + cl.get(Calendar.YEAR) + "-" + clz.get(Calendar.MONTH) + "-" + clz.get(Calendar.DAY_OF_MONTH) + " " + clz.get(Calendar.HOUR) + ":" + clz.get(Calendar.MINUTE) + ":" + clz.get(Calendar.SECOND));
     }
 
-        @Test
+    @Test
     public void testToZoneWithDate() {
         System.out.println("testToZoneWithDate");
         long unix_time = 1665835871;
@@ -1088,4 +1084,3 @@ public class TransUtilTest {
     }
 
 }
-

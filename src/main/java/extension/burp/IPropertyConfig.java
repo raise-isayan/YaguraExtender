@@ -13,6 +13,5 @@ public interface IPropertyConfig {
     public String loadSetting();
 
     public String defaultSetting();
-    
-    
+
 }

@@ -27,7 +27,6 @@ import javax.swing.table.TableModel;
  * @author isayan
  */
 public class ExtensionHelper {
-
     private final static Logger logger = Logger.getLogger(ExtensionHelper.class.getName());
     private final MontoyaApi api;
 
@@ -94,16 +93,16 @@ public class ExtensionHelper {
         String msg = String.format("%s:%s", caption, text);
         switch (messageType) {
             case CRITICAL:
-                api.logging().raiseCriticalEvent(msg);
+                this.api.logging().raiseCriticalEvent(msg);
                 break;
             case ERROR:
-                api.logging().raiseErrorEvent(msg);
+                this.api.logging().raiseErrorEvent(msg);
                 break;
             case DEBUG:
-                api.logging().raiseDebugEvent(msg);
+                this.api.logging().raiseDebugEvent(msg);
                 break;
             case INFO:
-                api.logging().raiseInfoEvent(msg);
+                this.api.logging().raiseInfoEvent(msg);
                 break;
         }
     }
@@ -116,7 +115,7 @@ public class ExtensionHelper {
     public void sendToAddHostIncludeToScope(ContextMenuEvent contextMenuEvent) {
         final List<HttpRequestResponse> messageList = contextMenuEvent.selectedRequestResponses();
         for (HttpRequestResponse messageInfo : messageList) {
-            api.scope().includeInScope(HttpTarget.toURLString(messageInfo.request().httpService()));
+            this.api.scope().includeInScope(HttpTarget.toURLString(messageInfo.request().httpService()));
         }
     }
 
@@ -128,7 +127,7 @@ public class ExtensionHelper {
     public void sendToAddHostToExcludeScope(ContextMenuEvent contextMenuEvent) {
         final List<HttpRequestResponse> messageList = contextMenuEvent.selectedRequestResponses();
         for (HttpRequestResponse messageInfo : messageList) {
-            api.scope().excludeFromScope(HttpTarget.toURLString(messageInfo.request().httpService()));
+            this.api.scope().excludeFromScope(HttpTarget.toURLString(messageInfo.request().httpService()));
         }
     }
 
@@ -140,7 +139,7 @@ public class ExtensionHelper {
     public void sendToAddToExcludeScope(ContextMenuEvent contextMenuEvent) {
         final List<HttpRequestResponse> messageList = contextMenuEvent.selectedRequestResponses();
         for (HttpRequestResponse messageInfo : messageList) {
-            api.scope().excludeFromScope(messageInfo.request().url());
+            this.api.scope().excludeFromScope(messageInfo.request().url());
         }
     }
 
@@ -153,7 +152,7 @@ public class ExtensionHelper {
         final List<HttpRequestResponse> messageList = contextMenuEvent.selectedRequestResponses();
         StringBuilder buff = new StringBuilder();
         try {
-            buff.append("url\tquery\tmethod\tstatus\tlength\r\n");
+            buff.append("url\tquery\tmethod\tstatus\tlength").append(System.lineSeparator());
             for (HttpRequestResponse messageInfo : messageList) {
 //                IRequestInfo reqInfo = api.getHelpers().analyzeRequest(messageInfo);
                 URL url = new URL(messageInfo.request().url());
@@ -168,7 +167,7 @@ public class ExtensionHelper {
                     buff.append("\t");
                     buff.append(messageInfo.response().body().length());
                 }
-                buff.append("\r\n");
+                buff.append(System.lineSeparator());
             }
         } catch (MalformedURLException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -207,7 +206,7 @@ public class ExtensionHelper {
                 export.append("\t");
             }
         }
-        export.append("\r\n");
+        export.append(System.lineSeparator());
         int[] rows = table.getSelectedRows();
         for (int k = 0; k < rows.length; k++) {
             for (int i = 0; i < colcount; i++) {
@@ -218,7 +217,7 @@ public class ExtensionHelper {
                     export.append("\t");
                 }
             }
-            export.append("\r\n");
+            export.append(System.lineSeparator());
         }
         return export.toString();
     }

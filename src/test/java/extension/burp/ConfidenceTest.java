@@ -33,7 +33,6 @@ public class ConfidenceTest {
     public void tearDown() {
     }
 
-
     /**
      * Test of parseEnum method, of class Severity.
      */

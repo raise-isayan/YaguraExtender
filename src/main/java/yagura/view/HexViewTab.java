@@ -30,8 +30,8 @@ import javax.swing.table.TableColumnModel;
  * @author isayan
  */
 //public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
-
 public class HexViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
+
     private final static Logger logger = Logger.getLogger(HexViewTab.class.getName());
 
     /**

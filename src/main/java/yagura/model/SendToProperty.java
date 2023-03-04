@@ -14,7 +14,7 @@ import java.util.List;
 public class SendToProperty implements IPropertyConfig {
 
     public final static String SENDTO_PROPERTY = "sendToProperty";
-    
+
     @Expose
     private final List<SendToItem> sendToItemList = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class SendToProperty implements IPropertyConfig {
 
     @Expose
     private boolean forceSortOrder = false;
-    
+
     /**
      * @return the forceSortOrder
      */
@@ -60,7 +60,7 @@ public class SendToProperty implements IPropertyConfig {
     public void setForceSortOrder(boolean forceSortOrder) {
         this.forceSortOrder = forceSortOrder;
     }
-        
+
     public void setProperty(SendToProperty property) {
         this.setSendToItemList(property.getSendToItemList());
         this.setSubMenu(property.isSubMenu());

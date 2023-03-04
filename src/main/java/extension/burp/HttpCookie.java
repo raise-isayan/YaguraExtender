@@ -17,6 +17,7 @@ import java.util.Scanner;
  * @author isayan
  */
 public class HttpCookie implements Cookie {
+
     private String domain;
     private String path;
     private Optional<ZonedDateTime> expiration = Optional.empty();
@@ -73,10 +74,11 @@ public class HttpCookie implements Cookie {
     }
 
     public ZonedDateTime getExpiration() {
-        if (this.expiration.isPresent())
+        if (this.expiration.isPresent()) {
             return this.expiration.get();
-        else
+        } else {
             return null;
+        }
     }
 
     public Date getExpirationAsDate() {
@@ -160,7 +162,7 @@ public class HttpCookie implements Cookie {
                 cookieList.add(cookie);
             }
         }
-        return cookieList.toArray(new HttpCookie[]{});
+        return cookieList.toArray(HttpCookie[]::new);
     }
 
     @Override

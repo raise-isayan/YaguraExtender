@@ -46,7 +46,7 @@ public class StartEndPosionTest {
             assertEquals(e, instance.getEndPos());
         }
         {
-            try  {
+            try {
                 StartEndPosion instance = new StartEndPosion(e, s);
                 fail();
             } catch (IllegalArgumentException ex) {

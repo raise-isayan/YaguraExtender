@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
@@ -31,6 +30,7 @@ import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
+import extension.burp.BurpUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.HashUtil;
@@ -97,13 +97,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 //    private final SwingUtil.IntegerDocument UNIXTIME_DOC = new SwingUtil.IntegerDocument(10);
 //    private final SwingUtil.IntegerDocument JAVASERIAL_DOC = new SwingUtil.IntegerDocument(10);
 //    private final SwingUtil.IntegerDocument EXCELSERIAL_DOC = new SwingUtil.IntegerDocument(10);
-
 //    private org.fife.ui.rtextarea.RTextScrollPane scrollInputRaw;
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtInputRaw;
-
     private javax.swing.JScrollPane scrollInputRaw;
     private javax.swing.JTextArea txtInputRaw;
-
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
@@ -113,7 +110,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private final static DateTimeFormatter SYSTEM_ZONE_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss zzz");
 
-    private final static String [] SHORT_ZONEIDS = {
+    private final static String[] SHORT_ZONEIDS = {
         "GMT", "ACT", "AET", "AGT", "ART", "AST", "BET", "BST", "CAT", "CNT", "CST", "CTT", "EAT", "ECT", "IET", "IST", "JST", "MIT", "NET", "NST", "PLT", "PNT", "PRT", "PST", "SST", "VST", "EST", "MST", "HST"
     };
 
@@ -152,7 +149,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         /**
          * * UI design start **
          */
-        this.tabbetTranscoder.addTab(certificateTab.getTabCaption(), certificateTab);
+        if (BurpUtil.isLoadClass("org.bouncycastle.jce.provider.BouncyCastleProvider")) {
+            this.tabbetTranscoder.addTab(certificateTab.getTabCaption(), certificateTab);
+        }
 
         this.tabbetTranscoder.addTab(this.viewStateDecoderTab.getTabCaption(), this.viewStateDecoderTab);
         this.tabbetTranscoder.addTab(this.jwtTokenDecoderTab.getTabCaption(), this.jwtTokenDecoderTab);
@@ -185,7 +184,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
 //        scrollURaw.setViewportView(txtURaw);
 //        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
-
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 
         this.txtOutputRaw.setEditable(false);
@@ -216,7 +214,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         this.tabbetInput.addTab("Hex", this.hexInputViewTab);
         this.hexInputViewTab.setEnabled(false);
 
-        this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), "UTF-8");
+        this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), StandardCharsets.UTF_8.name());
 
         this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
 
@@ -240,7 +238,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         /**
          * * UI design end **
          */
-
         int tz_offset = 0;
         ZoneId systemZone = ZoneId.systemDefault();
         for (int i = 0; i < SHORT_ZONEIDS.length; i++) {
@@ -309,8 +306,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         int index = this.cmbTimezone.getSelectedIndex();
         if (0 <= index && index < SHORT_ZONEIDS.length) {
             return ZoneId.of(SHORT_ZONEIDS[index], ZoneId.SHORT_IDS);
-        }
-        else {
+        } else {
             return ZoneId.systemDefault();
         }
     }
@@ -323,7 +319,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         Date date = new Date();
         try {
             this.spnZoneDateTime.commitEdit();
-            date = (Date)this.spnZoneDateTime.getValue();
+            date = (Date) this.spnZoneDateTime.getValue();
         } catch (ParseException ex) {
             logger.log(Level.INFO, ex.getMessage(), ex);
         }
@@ -351,7 +347,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         Date date = new Date();
         try {
             this.spnDateStart.commitEdit();
-            date = (Date)this.spnDateStart.getValue();
+            date = (Date) this.spnDateStart.getValue();
         } catch (ParseException ex) {
             logger.log(Level.INFO, ex.getMessage(), ex);
         }
@@ -366,7 +362,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         Date date = new Date();
         try {
             this.spnDateEnd.commitEdit();
-            date = (Date)this.spnDateEnd.getValue();
+            date = (Date) this.spnDateEnd.getValue();
         } catch (ParseException ex) {
             logger.log(Level.INFO, ex.getMessage(), ex);
         }
@@ -374,8 +370,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }
 
     /**
-     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
-     * content of this method is always regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2696,7 +2693,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }//GEN-LAST:event_btnInputfileActionPerformed
 
     private void tabbetInputStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbetInputStateChanged
-        if (this.txtInputRaw == null) return;
+        if (this.txtInputRaw == null) {
+            return;
+        }
         if (this.chkRawMode.isSelected()) {
             this.setInputByte(StringUtil.getBytesRaw(this.txtInputRaw.getText()));
         } else {
@@ -2786,7 +2785,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         @Override
                         protected String doInBackground() throws Exception {
                             String[] list = TransUtil.generaterList(numFormat, startNum, endNum, stepNum);
-                            return TransUtil.join("\r\n", list);
+                            return TransUtil.join(System.lineSeparator(), list);
                         }
 
                         protected void process(List<Object> chunks) {
@@ -2824,7 +2823,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         protected String doInBackground() throws Exception {
                             DateUnit unit = Enum.valueOf(DateUnit.class, dateUnit);
                             String[] list = TransUtil.dateList(numFormat, localDateStart, localDateLocalEnd, stepNum, unit);
-                            return TransUtil.join("\r\n", list);
+                            return TransUtil.join(System.lineSeparator(), list);
                         }
 
                         protected void process(List<Object> chunks) {
@@ -2859,7 +2858,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     @Override
                     protected String doInBackground() throws Exception {
                         String[] list = TransUtil.randomList(rangeChars, length, count);
-                        return TransUtil.join("\r\n", list);
+                        return TransUtil.join(System.lineSeparator(), list);
                     }
 
                     protected void process(List<Object> chunks) {
@@ -2893,7 +2892,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         if (selected == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                try ( BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+                try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                     fstm.write(StringUtil.getBytesCharset(s, this.getSelectEncode()));
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -3129,14 +3128,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         int dec2 = ConvertUtil.parseIntDefault(this.txtDec2.getText(), -1);
         int dec3 = ConvertUtil.parseIntDefault(this.txtDec3.getText(), -1);
         int dec4 = ConvertUtil.parseIntDefault(this.txtDec4.getText(), -1);
-        if (dec1 < 0 || dec2 < 0 || dec3 < 0 || dec4 < 0 ) {
+        if (dec1 < 0 || dec2 < 0 || dec3 < 0 || dec4 < 0) {
             this.lblIPValid.setText("IP addres Invalid");
             return;
         }
-        if (!(0 <= dec1 && dec1 <= 255 &&
-            0 <= dec2 && dec2 <= 255 &&
-            0 <= dec3 && dec3 <= 255 &&
-            0 <= dec4 && dec4 <= 255)) {
+        if (!(0 <= dec1 && dec1 <= 255
+                && 0 <= dec2 && dec2 <= 255
+                && 0 <= dec3 && dec3 <= 255
+                && 0 <= dec4 && dec4 <= 255)) {
             this.lblIPValid.setText("IP addres renge Invalid");
             return;
         }
@@ -3151,7 +3150,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void txtUnixtimeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnixtimeFocusLost
         try {
             this.txtUnixtime.commitEdit();
-            long unix_value = (long)this.txtUnixtime.getValue();
+            long unix_value = (long) this.txtUnixtime.getValue();
             long java_value = unix_value * 1000L;
             BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
 
@@ -3171,7 +3170,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void txtJavaSerialFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtJavaSerialFocusLost
         try {
             this.txtJavaSerial.commitEdit();
-            long java_value = (long)this.txtJavaSerial.getValue();
+            long java_value = (long) this.txtJavaSerial.getValue();
             long unix_value = java_value / 1000L;
             BigDecimal excel_serial = TransUtil.toExcelSerial(unix_value);
 
@@ -3192,7 +3191,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void txtExcelSerialFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExcelSerialFocusLost
         try {
             this.txtExcelSerial.commitEdit();
-            Number excel_serial = (Number)this.txtExcelSerial.getValue();
+            Number excel_serial = (Number) this.txtExcelSerial.getValue();
             long unix_value = TransUtil.toEpochSecond(BigDecimal.valueOf(excel_serial.doubleValue()));
             long java_value = unix_value * 1000L;
 

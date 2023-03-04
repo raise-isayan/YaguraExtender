@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class FileUtil {
+
     private final static Logger logger = Logger.getLogger(FileUtil.class.getName());
 
     /**
@@ -55,7 +56,7 @@ public class FileUtil {
         }
         return file;
     }
-    
+
     public static File tempFile(byte[] buff, String prefix) {
         File file = null;
         FileOutputStream fostm = null;
@@ -115,7 +116,6 @@ public class FileUtil {
         return bostm.toByteArray();
     }
 
-
     public static String appendFirstSeparator(String path, String separator) {
         if (path.startsWith(separator)) {
             return path;
@@ -147,5 +147,5 @@ public class FileUtil {
             return path;
         }
     }
-    
+
 }

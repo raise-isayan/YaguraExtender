@@ -84,8 +84,7 @@ public enum MessageHighlightColor {
         if (value == null) {
             // no select color
             return MessageHighlightColor.WHITE;
-        }
-        else {
+        } else {
             value = value.toUpperCase();
             value = value.replace(' ', '_');
             return Enum.valueOf(MessageHighlightColor.class, value);
@@ -115,6 +114,5 @@ public enum MessageHighlightColor {
     public static MessageHighlightColor valueOf(burp.api.montoya.core.HighlightColor highlightColor) {
         return fromHighlightColor.get(highlightColor);
     }
-
 
 }

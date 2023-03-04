@@ -13,7 +13,8 @@ import java.awt.Component;
  *
  * @author isayan
  */
-public class RawViewTabEditor implements ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor  {
+public class RawViewTabEditor implements ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
+
     private final RawViewTab tabRaw;
 
     public RawViewTabEditor(EditorCreationContext editorCreationContext, boolean isResuest) {

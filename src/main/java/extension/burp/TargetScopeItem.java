@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class TargetScopeItem {
+
     private final static Logger logger = Logger.getLogger(TargetScopeItem.class.getName());
 
     private boolean enabled = false;
@@ -58,8 +59,7 @@ public class TargetScopeItem {
         this.protocol = protocol;
         if (HttpTarget.PROTOCOL_ANY.equals(protocol)) {
             this.regexProtocol = regexAnyProtocol;
-        }
-        else {
+        } else {
             this.regexProtocol = Pattern.compile(this.protocol);
         }
     }
@@ -113,19 +113,18 @@ public class TargetScopeItem {
         Matcher matchProtocol = this.regexProtocol.matcher(url.getProtocol());
         Matcher matchHost = this.regexHost.matcher(url.getHost());
         int urlPort = url.getPort();
-            if (urlPort == -1) {
+        if (urlPort == -1) {
             urlPort = HttpUtil.getDefaultPort(url.getProtocol());
         }
         Matcher matchPort = this.regexPort.matcher(String.valueOf(urlPort));
         Matcher matchFile = this.regexFile.matcher(url.getFile());
 
-        if ((HttpTarget.PROTOCOL_ANY.equals(this.getProtocol()) || matchProtocol.matches()) &&
-            ("".equals(this.getHost()) || matchHost.matches()) &&
-            ("".equals(this.getPort()) || matchPort.matches()) &&
-            ("".equals(this.getFile()) || matchFile.matches())) {
+        if ((HttpTarget.PROTOCOL_ANY.equals(this.getProtocol()) || matchProtocol.matches())
+                && ("".equals(this.getHost()) || matchHost.matches())
+                && ("".equals(this.getPort()) || matchPort.matches())
+                && ("".equals(this.getFile()) || matchFile.matches())) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -160,14 +159,13 @@ public class TargetScopeItem {
         item.setProtocol(protcol);
         item.setHost(String.format("^%s$", Pattern.quote(url.getHost())));
         int urlPort = url.getPort();
-            if (urlPort == -1) {
+        if (urlPort == -1) {
             urlPort = HttpUtil.getDefaultPort(url.getProtocol());
         }
         item.setPort(String.valueOf(urlPort));
         if ("".equals(url.getFile())) {
             item.setFile("^/.*");
-        }
-        else {
+        } else {
             item.setFile((String.format("^%s.*", Pattern.quote(url.getFile()))));
         }
         return item;

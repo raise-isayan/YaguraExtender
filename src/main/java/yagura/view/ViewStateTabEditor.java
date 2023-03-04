@@ -12,6 +12,7 @@ import java.awt.Component;
  * @author isayan
  */
 public class ViewStateTabEditor implements ExtensionProvidedHttpRequestEditor {
+
     private final ViewStateTab tabViewState;
 
     public ViewStateTabEditor(EditorCreationContext editorCreationContext) {

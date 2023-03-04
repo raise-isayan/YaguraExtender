@@ -66,7 +66,6 @@ public class UniversalViewPropertyTest {
         assertTrue(result.size() > 0);
     }
 
-
     /**
      * Test of parseEnum method, of class NotifyType.
      */

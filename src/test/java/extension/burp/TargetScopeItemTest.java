@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
  * @author isayan
  */
 public class TargetScopeItemTest {
+
     private final static Logger logger = Logger.getLogger(TargetScopeItemTest.class.getName());
 
     public TargetScopeItemTest() {
@@ -37,7 +38,6 @@ public class TargetScopeItemTest {
     @AfterEach
     public void tearDown() {
     }
-
 
     /**
      * Test of parseURL method, of class TargetScopeItem.

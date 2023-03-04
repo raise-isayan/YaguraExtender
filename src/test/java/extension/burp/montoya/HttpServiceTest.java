@@ -57,8 +57,6 @@ public class HttpServiceTest {
         }
     }
 
-
-
     /**
      * Test of getURLString method, of class HttpTarget.
      */
@@ -105,7 +103,6 @@ public class HttpServiceTest {
         assertEquals(443, result.getPort());
         assertTrue(result.isSecure());
     }
-
 
     /**
      * Test of getHttpService method, of class HttpTarget.

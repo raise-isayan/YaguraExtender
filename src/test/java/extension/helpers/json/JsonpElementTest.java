@@ -44,8 +44,7 @@ public class JsonpElementTest {
             try {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 fail();
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 assertTrue(true);
             }
         }
@@ -55,8 +54,7 @@ public class JsonpElementTest {
             try {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 fail();
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 assertTrue(true);
             }
         }
@@ -66,8 +64,7 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("callback", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
@@ -78,8 +75,7 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("_callback", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
@@ -90,20 +86,18 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("callback", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
 
-                {
+        {
             String json = "  callback  ({ \"abc\": 123, \"def\": \"test\" });";
             try {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("callback", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
@@ -114,8 +108,7 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("window.open", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
@@ -126,8 +119,7 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("$_", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
@@ -137,8 +129,7 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("callback", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
@@ -148,8 +139,7 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("callback", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }
@@ -159,8 +149,7 @@ public class JsonpElementTest {
                 JsonpElement jsonp = JsonpElement.parseJsonp(json);
                 assertEquals("callback", jsonp.getCallbackName());
                 assertEquals(json, jsonp.getRaw());
-            }
-            catch (JsonSyntaxException ex) {
+            } catch (JsonSyntaxException ex) {
                 fail(ex.getMessage());
             }
         }

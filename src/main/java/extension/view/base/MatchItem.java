@@ -81,5 +81,5 @@ public class MatchItem extends RegexItem {
         this.setReplace(matchItem.getReplace());
         this.recompileRegex();
     }
-     
+
 }

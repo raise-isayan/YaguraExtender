@@ -12,6 +12,7 @@ import java.awt.Component;
  * @author isayan
  */
 public class JWTViewTabEditor implements ExtensionProvidedHttpRequestEditor {
+
     private final JWTViewTab tabJWTView;
 
     public JWTViewTabEditor(EditorCreationContext editorCreationContext) {

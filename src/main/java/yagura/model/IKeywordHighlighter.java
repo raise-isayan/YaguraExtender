@@ -54,5 +54,5 @@ public interface IKeywordHighlighter extends Highlighter {
     public StartEndPosion getSelectPosition();
 
     public int getPositionCount();
-    
+
 }

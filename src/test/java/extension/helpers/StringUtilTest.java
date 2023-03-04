@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class StringUtilTest {
 
-
     public StringUtilTest() {
     }
 

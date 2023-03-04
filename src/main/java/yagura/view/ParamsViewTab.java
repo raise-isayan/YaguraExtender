@@ -10,7 +10,6 @@ import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.TransUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
@@ -44,7 +43,6 @@ import yagura.model.UniversalViewProperty;
  *
  * @author raise.isayan
  */
-
 public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
 
     private final static Logger logger = Logger.getLogger(ParamsViewTab.class.getName());

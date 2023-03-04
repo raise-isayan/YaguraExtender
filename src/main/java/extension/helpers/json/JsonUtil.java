@@ -1,4 +1,5 @@
 package extension.helpers.json;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -29,8 +30,7 @@ public class JsonUtil {
         try {
             JsonParser.parseString(jsonElementString);
             return true;
-        }
-        catch (JsonSyntaxException ex) {
+        } catch (JsonSyntaxException ex) {
             return false;
         }
     }
@@ -39,11 +39,11 @@ public class JsonUtil {
         return prettyJson(jsonElement, false);
     }
 
-    public static JsonElement parseJson(String jsonElementString)  throws JsonSyntaxException {
+    public static JsonElement parseJson(String jsonElementString) throws JsonSyntaxException {
         return JsonParser.parseString(jsonElementString);
     }
 
-    public static JsonObject parseJsonObject(String jsonElementString)  throws JsonSyntaxException {
+    public static JsonObject parseJsonObject(String jsonElementString) throws JsonSyntaxException {
         JsonElement json = JsonParser.parseString(jsonElementString);
         return json.getAsJsonObject();
     }
@@ -52,7 +52,7 @@ public class JsonUtil {
         return prettyJson(jsonString, true);
     }
 
-    public static String prettyJson(String jsonElementString, boolean pretty)  throws JsonSyntaxException {
+    public static String prettyJson(String jsonElementString, boolean pretty) throws JsonSyntaxException {
         return prettyJson(parseJson(jsonElementString), pretty);
     }
 
@@ -143,8 +143,7 @@ public class JsonUtil {
         try {
             JsonpElement.parseJsonp(jsonpString);
             return true;
-        }
-        catch (JsonSyntaxException ex) {
+        } catch (JsonSyntaxException ex) {
             return false;
         }
     }
@@ -208,7 +207,6 @@ public class JsonUtil {
         Gson gson = gsonBuilder.create();
         return gson.fromJson(gson.toJson(jsonElement), listType);
     }
-
 
     public static String jsonToString(Object bean, boolean exludeFields) {
         GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();

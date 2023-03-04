@@ -80,11 +80,7 @@ public class FormatUtil {
                     new StreamResult(sw));
         } catch (TransformerConfigurationException ex) {
             throw new IOException(ex);
-        } catch (ParserConfigurationException ex) {
-            throw new IOException(ex);
-        } catch (SAXException ex) {
-            throw new IOException(ex);
-        } catch (TransformerException ex) {
+        } catch (ParserConfigurationException | SAXException | TransformerException ex) {
             throw new IOException(ex);
         }
         return sw.toString();

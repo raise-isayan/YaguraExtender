@@ -19,9 +19,10 @@ import java.util.SortedMap;
 public class UniversalViewProperty implements IPropertyConfig {
 
     public final static String CJK_VIEW_PROPERTY = "universalViewProperty";
-    
+
     /**
-     * https://l0.cm/encodings/table/ http://userguide.icu-project.org/conversion/detection
+     * https://l0.cm/encodings/table/
+     * http://userguide.icu-project.org/conversion/detection
      * https://code.google.com/archive/p/juniversalchardet/
      */
     private static final String[] ENCODING_DEFAULT_JAPANESE_LIST = {
@@ -62,24 +63,33 @@ public class UniversalViewProperty implements IPropertyConfig {
         List<String> list = new ArrayList<>();
         if (lang == null) {
             for (String enc : ENCODING_DEFAULT_OTHER_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);
+                if (charSets.get(enc) != null) {
+                    list.add(enc);
+                }
             }
-        }
-        else if (lang.equals(Locale.JAPANESE)) {
+        } else if (lang.equals(Locale.JAPANESE)) {
             for (String enc : ENCODING_DEFAULT_JAPANESE_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);
+                if (charSets.get(enc) != null) {
+                    list.add(enc);
+                }
             }
         } else if (lang.equals(Locale.CHINESE)) {
             for (String enc : ENCODING_DEFAULT_CHINESE_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);
+                if (charSets.get(enc) != null) {
+                    list.add(enc);
+                }
             }
         } else if (lang.equals(Locale.KOREAN)) {
             for (String enc : ENCODING_DEFAULT_KOREAN_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);
+                if (charSets.get(enc) != null) {
+                    list.add(enc);
+                }
             }
         } else {
             for (String enc : ENCODING_DEFAULT_OTHER_LIST) {
-               if (charSets.get(enc) != null)  list.add(enc);
+                if (charSets.get(enc) != null) {
+                    list.add(enc);
+                }
             }
         }
         return Collections.unmodifiableList(list);
@@ -136,7 +146,6 @@ public class UniversalViewProperty implements IPropertyConfig {
         return this.encodingList;
     }
 
-
     public enum UniversalView {
         GENERATE_POC, HTML_COMMENT, JSON, JSONP, JWT, VIEW_STATE, JRAW, JPARAM;
 
@@ -187,7 +196,7 @@ public class UniversalViewProperty implements IPropertyConfig {
         this.setDispayMaxLength(property.getDispayMaxLength());
         this.setLineWrap(property.isLineWrap());
     }
-    
+
     @Override
     public String getSettingName() {
         return CJK_VIEW_PROPERTY;

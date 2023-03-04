@@ -16,6 +16,7 @@ public class AutoResponderItemDlg extends CustomDialog {
 
     /**
      * Creates new form AutoResponderItemDlg
+     *
      * @param parent
      * @param modal
      */
@@ -193,8 +194,8 @@ public class AutoResponderItemDlg extends CustomDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void customizeComponents() {
-      this.cmbContentType.setEnabled(this.chkBodyOnly.isSelected());
-      // Drag and Drop
+        this.cmbContentType.setEnabled(this.chkBodyOnly.isSelected());
+        // Drag and Drop
         this.txtRepReplace.setTransferHandler(new SwingUtil.FileDropAndClipbordTransferHandler() {
             @Override
             public void setData(File file, byte[] rawData) {

@@ -4,7 +4,6 @@ import burp.api.montoya.core.Annotations;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.core.Marker;
-import burp.api.montoya.core.Range;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -26,6 +25,7 @@ import javax.swing.RowFilter;
  * @author isayan
  */
 public class HttpMessageItem implements HttpRequestResponse {
+
     private final static Logger logger = Logger.getLogger(HttpMessageItem.class.getName());
 
     private final HttpRequestResponse httpRequestResponse;

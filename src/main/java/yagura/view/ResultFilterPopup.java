@@ -537,8 +537,8 @@ public class ResultFilterPopup extends javax.swing.JFrame {
         @Override
         public int compare(Object o1, Object o2) {
             try {
-                int parseIntA = Integer.valueOf(o1.toString());
-                int parseIntB = Integer.valueOf(o2.toString());
+                int parseIntA = Integer.parseInt(o1.toString());
+                int parseIntB = Integer.parseInt(o2.toString());
                 return parseIntA - parseIntB;
             } catch (NumberFormatException e) {
                 if (o1 instanceof Comparator) {

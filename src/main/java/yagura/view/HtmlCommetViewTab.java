@@ -8,7 +8,6 @@ import burp.api.montoya.http.message.responses.analysis.Attribute;
 import burp.api.montoya.http.message.responses.analysis.AttributeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import extend.util.external.ThemeUI;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
@@ -29,8 +28,8 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
+public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
 
-public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor  {
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
     final PropertyChangeListener listener = new PropertyChangeListener() {
@@ -55,8 +54,9 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
 
     private void customizeComponents() {
 
-        /*** UI design start ***/
-
+        /**
+         * * UI design start **
+         */
         this.txtHtmlComment = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollHtmlComment = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHtmlComment);
         this.txtHtmlComment.setWrapStyleWord(false);
@@ -70,8 +70,9 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
 
         add(this.scrollHtmlComment, java.awt.BorderLayout.CENTER);
 
-        /*** UI design end ***/
-
+        /**
+         * * UI design end **
+         */
         this.quickSearchTab.setSelectedTextArea(this.txtHtmlComment);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.getUniqCheckBox().setVisible(true);
@@ -79,7 +80,6 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
 
 //        this.txtHtmlComment.setEditorKitForContentType("text/html", this.htmlStyleEditorKit);
 //        this.txtHtmlComment.setContentType("text/html");
-
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.listener.propertyChange(null);
@@ -111,7 +111,6 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
     public void setMessageFont(Font font) {
         this.txtHtmlComment.setFont(font);
     }

@@ -7,6 +7,7 @@ import java.util.EventObject;
  * @author isayan
  */
 public class QuickSearchEvent extends EventObject {
+
     private String keyword = "";
     private boolean smartMatch = false;
     private boolean regexp = false;

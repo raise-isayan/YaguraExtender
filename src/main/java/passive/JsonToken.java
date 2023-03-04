@@ -38,7 +38,7 @@ public interface JsonToken {
     }
 
     public static String decompressZlibBase64(String content) {
-        byte [] decode = decodeBase64UrlSafeByte(content);
+        byte[] decode = decodeBase64UrlSafeByte(content);
         return StringUtil.getStringUTF8(ConvertUtil.decompressZlib(decode));
     }
 
@@ -46,7 +46,7 @@ public interface JsonToken {
         return Base64.getUrlDecoder().decode(value);
     }
 
-    static String decodeBase64UrlSafe(byte [] value) {
+    static String decodeBase64UrlSafe(byte[] value) {
         return StringUtil.getStringUTF8(Base64.getUrlDecoder().decode(value));
     }
 
@@ -54,7 +54,7 @@ public interface JsonToken {
         return StringUtil.getStringUTF8(decodeBase64UrlSafeByte(value));
     }
 
-    public static byte[] encodeBase64UrlSafeByte(byte [] value) {
+    public static byte[] encodeBase64UrlSafeByte(byte[] value) {
         return Base64.getUrlEncoder().withoutPadding().encode(value);
     }
 
@@ -62,7 +62,7 @@ public interface JsonToken {
         return JsonToken.encodeBase64UrlSafeByte(StringUtil.getBytesUTF8(value));
     }
 
-    public static String encodeBase64UrlSafe(byte [] value) {
+    public static String encodeBase64UrlSafe(byte[] value) {
         return StringUtil.getStringUTF8(JsonToken.encodeBase64UrlSafeByte(value));
     }
 

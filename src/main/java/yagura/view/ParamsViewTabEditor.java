@@ -12,6 +12,7 @@ import java.awt.Component;
  * @author isayan
  */
 public class ParamsViewTabEditor implements ExtensionProvidedHttpRequestEditor {
+
     private final ParamsViewTab tabParamsView;
 
     public ParamsViewTabEditor(EditorCreationContext editorCreationContext) {

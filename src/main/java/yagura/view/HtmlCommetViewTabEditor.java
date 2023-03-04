@@ -12,6 +12,7 @@ import java.awt.Component;
  * @author isayan
  */
 public class HtmlCommetViewTabEditor implements ExtensionProvidedHttpResponseEditor {
+
     private final HtmlCommetViewTab tabHtmlCommetView;
 
     public HtmlCommetViewTabEditor(EditorCreationContext editorCreationContext) {

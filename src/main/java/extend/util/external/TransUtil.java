@@ -181,7 +181,7 @@ public class TransUtil {
 
     public enum ConvertCase {
         UPPER, LOWLER
-   };
+    };
 
     public static String toEmpty(Object obj) {
         return (obj == null) ? "" : obj.toString();
@@ -218,7 +218,6 @@ public class TransUtil {
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
-
     private final static Pattern PTN_UUENCODE = Pattern.compile("begin\\s[0-6]{3}\\s\\w+");
     private final static Pattern PTN_QUOTEDPRINTABLE = Pattern.compile("=([0-9a-fA-F]{2})");
     private final static Pattern PTN_PUNYCODE = Pattern.compile("xn--[0-9a-zA-Z_\\.]+");
@@ -279,9 +278,9 @@ public class TransUtil {
         else if (mPunycode.lookingAt()) {
             return EncodePattern.PUNYCODE;
         } // uuencode encode match
-//        else if (mUUENCODE.lookingAt()) {
-//            return EncodePattern.UUENCODE;
-//        } // QuotedPrintable
+        //        else if (mUUENCODE.lookingAt()) {
+        //            return EncodePattern.UUENCODE;
+        //        } // QuotedPrintable
         else if (mQUOTEDPRINTABLE.find()) {
             return EncodePattern.QUOTEDPRINTABLE;
         } // Base64 encode match
@@ -330,24 +329,22 @@ public class TransUtil {
                     applyCharset = charset;
                 }
                 decode = StringUtil.getBytesCharsetString(value, applyCharset);
-            }
-            else {
+            } else {
                 // URL encode match
                 switch (encodePattern) {
                     case NONE:
                         decode = value;
                         break;
-                    case URL_STANDARD:
-                        {
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = TransUtil.decodeUrl(value, applyCharset);
-                            } else {
-                                decode = TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1);
-                            }
+                    case URL_STANDARD: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = TransUtil.decodeUrl(value, applyCharset);
+                        } else {
+                            decode = TransUtil.decodeUrl(value, StandardCharsets.ISO_8859_1);
                         }
-                        break;
+                    }
+                    break;
                     // URL Unicode
                     case URL_UNICODE:
                         decode = toUnocodeUrlDecode(value);
@@ -361,29 +358,27 @@ public class TransUtil {
                         decode = toUnocodeDecode(value, "$");
                         break;
                     // Byte Hex
-                    case BYTE_HEX:
-                        {
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = toByteDecode(value, applyCharset);
-                            } else {
-                                decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
-                            }
+                    case BYTE_HEX: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toByteDecode(value, applyCharset);
+                        } else {
+                            decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
-                        break;
+                    }
+                    break;
                     // Byte Hex2
-                    case BYTE_HEX2:
-                        {
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = toByteHexDecode(value, applyCharset);
-                            } else {
-                                decode = toByteHexDecode(value, StandardCharsets.ISO_8859_1.name());
-                            }
+                    case BYTE_HEX2: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toByteHexDecode(value, applyCharset);
+                        } else {
+                            decode = toByteHexDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
-                        break;
+                    }
+                    break;
 //                    // Byte Dec
 //                    case BYTE_DEC:
 //                        {
@@ -396,17 +391,16 @@ public class TransUtil {
 //                            }
 //                        }
 //                        break;
-                    case BYTE_OCT:
-                        {
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = toByteDecode(value, applyCharset);
-                            } else {
-                                decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
-                            }
+                    case BYTE_OCT: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toByteDecode(value, applyCharset);
+                        } else {
+                            decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
-                        break;
+                    }
+                    break;
                     // uuencode
 //                    case UUENCODE:
 //                        {
@@ -420,92 +414,86 @@ public class TransUtil {
 //                        }
 //                        break;
                     // QuotedPrintable
-                    case QUOTEDPRINTABLE:
-                        {
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = toUnQuotedPrintable(value, applyCharset);
-                            } else {
-                                decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1);
-                            }
+                    case QUOTEDPRINTABLE: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toUnQuotedPrintable(value, applyCharset);
+                        } else {
+                            decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1);
                         }
-                        break;
+                    }
+                    break;
                     // Punycode
                     case PUNYCODE:
                         decode = toPunycodeDecode(value);
                         break;
                     // Base64 encode match
-                    case BASE64:
-                        {
-                            value = value.replaceAll("[\r\n]", ""); // 改行削除
-                            byte[] bytes = TransUtil.toBase64Decode(value);
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = TransUtil.toBase64Decode(value, applyCharset);
-                            } else {
-                                decode = TransUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
-                            }
+                    case BASE64: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = TransUtil.toBase64Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = TransUtil.toBase64Decode(value, applyCharset);
+                        } else {
+                            decode = TransUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
                         }
-                        break;
+                    }
+                    break;
                     // Base64 URLSafe
-                    case BASE64_URLSAFE:
-                        {
-                            value = value.replaceAll("[\r\n]", ""); // 改行削除
-                            byte[] bytes = TransUtil.toBase64URLSafeDecode(value);
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = TransUtil.toBase64URLSafeDecode(value, applyCharset);
-                            } else {
-                                decode = TransUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
-                            }
+                    case BASE64_URLSAFE: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = TransUtil.toBase64URLSafeDecode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = TransUtil.toBase64URLSafeDecode(value, applyCharset);
+                        } else {
+                            decode = TransUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
                         }
-                        break;
+                    }
+                    break;
                     // Base32 encode
-                    case BASE32:
-                        {
-                            value = value.replaceAll("[\r\n]", ""); // 改行削除
-                            byte[] bytes = TransUtil.toBase32Decode(value);
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = TransUtil.toBase32Decode(value, applyCharset);
-                            } else {
-                                decode = TransUtil.toBase32Decode(value, StandardCharsets.ISO_8859_1);
-                            }
+                    case BASE32: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = TransUtil.toBase32Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = TransUtil.toBase32Decode(value, applyCharset);
+                        } else {
+                            decode = TransUtil.toBase32Decode(value, StandardCharsets.ISO_8859_1);
                         }
-                        break;
+                    }
+                    break;
                     // Base16 encode
-                    case BASE16:
-                        {
-                            value = value.replaceAll("[\r\n]", ""); // 改行削除
-                            byte[] bytes = TransUtil.toBase16Decode(value);
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = TransUtil.toBase16Decode(value, applyCharset);
-                            } else {
-                                decode = TransUtil.toBase16Decode(value, StandardCharsets.ISO_8859_1);
-                            }
+                    case BASE16: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = TransUtil.toBase16Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = TransUtil.toBase16Decode(value, applyCharset);
+                        } else {
+                            decode = TransUtil.toBase16Decode(value, StandardCharsets.ISO_8859_1);
                         }
-                        break;
+                    }
+                    break;
                     // Html decode
                     case HTML:
                         decode = toHtmlDecode(value);
                         break;
-                    case BYTE_HTML:
-                        {
-                            String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
-                            if (guessCode != null) {
-                                applyCharset = guessCode;
-                                decode = toHtmlDecode(value, applyCharset);
-                            } else {
-                                decode = toHtmlDecode(value, StandardCharsets.ISO_8859_1.name());
-                            }
+                    case BYTE_HTML: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toHtmlDecode(value, applyCharset);
+                        } else {
+                            decode = toHtmlDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
-                        break;
+                    }
+                    break;
                     // Gzip
                     case GZIP:
                         decode = StringUtil.getBytesRawString(ConvertUtil.decompressGzip(StringUtil.getBytesCharset(value, charset)));
@@ -575,7 +563,7 @@ public class TransUtil {
             return StringUtil.getBytesRawString(bytes);
         } else {
             byte bytes[] = removePadding(Base64.encodeBase64(StringUtil.getBytesCharset(src, charset)));
-           return StringUtil.getBytesRawString(bytes);
+            return StringUtil.getBytesRawString(bytes);
         }
     }
 
@@ -786,7 +774,7 @@ public class TransUtil {
 
     private static byte[] removePadding(byte[] vaule) {
         int len = vaule.length;
-        while (len > 0 && vaule[len - 1] == (byte)'=') {
+        while (len > 0 && vaule[len - 1] == (byte) '=') {
             len--;
         }
         return Arrays.copyOf(vaule, len);
@@ -1066,7 +1054,6 @@ public class TransUtil {
         return buff.toString();
     }
 
-
     public static String toByteHexEncode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
         return toByteHexEncode(input, charset, PTN_ENCODE_ALPHANUM, upperCase);
     }
@@ -1328,7 +1315,6 @@ public class TransUtil {
         return buff.toString();
     }
 
-
     public static String toUnocodeUrlEncode(String input, boolean upperCase) {
         return toUnocodeUrlEncode(input, PTN_ENCODE_ALPHANUM, upperCase);
     }
@@ -1347,8 +1333,7 @@ public class TransUtil {
                 } else {
                     buff.append(String.format("%%u%04x", (int) c));
                 }
-            }
-            else {
+            } else {
                 buff.appendCodePoint((int) c);
             }
         }
@@ -1515,13 +1500,11 @@ public class TransUtil {
 //    public static String toUudecode(String input, String encoding) throws UnsupportedEncodingException {
 //        return toMimeUtilDecode(input, encoding, "uuencode");
 //    }
-
     public static String toUnQuotedPrintable(String input, String charset) throws UnsupportedEncodingException {
         try {
             org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
             return codec.decode(input, charset);
-        }
-        catch (org.apache.commons.codec.DecoderException ex) {
+        } catch (org.apache.commons.codec.DecoderException ex) {
             return input;
         }
     }
@@ -1530,8 +1513,7 @@ public class TransUtil {
         try {
             org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
             return codec.decode(input, charset);
-        }
-        catch (org.apache.commons.codec.DecoderException ex) {
+        } catch (org.apache.commons.codec.DecoderException ex) {
             return input;
         }
     }
@@ -1551,7 +1533,6 @@ public class TransUtil {
 //        }
 //        return new String(bout.toByteArray(), encoding);
 //    }
-
 //    public static String toUuencode(String input, String encoding) throws UnsupportedEncodingException {
 //        return toMimeUtilEncode(input, encoding, "uuencode");
 //    }
@@ -1559,7 +1540,6 @@ public class TransUtil {
 //    public static String toQuotedPrintable(String input, String encoding) throws UnsupportedEncodingException {
 //        return toMimeUtilEncode(input, encoding, "quoted-printable");
 //    }
-
     public static String toQuotedPrintable(String input, String charset) throws UnsupportedEncodingException, org.apache.commons.codec.DecoderException {
         org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
         return codec.encode(input, charset);
@@ -1587,7 +1567,6 @@ public class TransUtil {
 //        }
 //        return new String(bout.toByteArray(), encoding);
 //    }
-
     public static String toBigBin(String value) {
         return "0b" + (new BigInteger(toRadixTrim(value), toPrefixRadix(value))).toString(2);
     }
@@ -1737,6 +1716,7 @@ public class TransUtil {
     }
 
     private final static Pattern PTN_STANDARD_ENCODE_META = Pattern.compile("([\r\n\t])");
+
     /**
      * 標準言語形式のメタ文字エンコード(エスケープする)
      *
@@ -1905,7 +1885,7 @@ public class TransUtil {
                 list.add(String.format(format, i));
             }
         }
-        return list.toArray(new String[0]);
+        return list.toArray(String[]::new);
     }
 
     public static String[] randomList(String range, int length, int count) {
@@ -1913,7 +1893,7 @@ public class TransUtil {
         for (int i = 0; i < count; i++) {
             list.add(StringUtil.randomCharRange(range, length));
         }
-        return list.toArray(new String[0]);
+        return list.toArray(String[]::new);
     }
 
     /**
@@ -1950,7 +1930,7 @@ public class TransUtil {
                 currentDate = currentDate.plus(stepDate, dateUnit);
             }
         }
-        return list.toArray(new String[0]);
+        return list.toArray(String[]::new);
     }
 
     private static final DecimalFormat FMT_HEX_POSITION = new DecimalFormat("000000"); // @jve:decl-index=0:
@@ -2011,8 +1991,8 @@ public class TransUtil {
 
     /**
      * HashUtil
-     **/
-
+     *
+     */
     /**
      * MD2値の取得
      *
@@ -2021,10 +2001,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toMd2Sum(byte[] body, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.md2Hex(body).toUpperCase();
-        else
+        } else {
             return DigestUtils.md2Hex(body);
+        }
     }
 
     /**
@@ -2035,10 +2016,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toMd2Sum(String str, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.md2Hex(str).toUpperCase();
-        else
+        } else {
             return DigestUtils.md2Hex(str);
+        }
     }
 
     /**
@@ -2052,10 +2034,11 @@ public class TransUtil {
      */
     public static String toMd2Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.md2Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
-        else
+        } else {
             return DigestUtils.md2Hex(StringUtil.getBytesCharset(str, charset));
+        }
     }
 
     /**
@@ -2066,10 +2049,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toMd5Sum(byte[] body, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.md5Hex(body).toUpperCase();
-        else
+        } else {
             return DigestUtils.md5Hex(body);
+        }
     }
 
     /**
@@ -2080,10 +2064,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toMd5Sum(String str, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.md5Hex(str).toUpperCase();
-        else
+        } else {
             return DigestUtils.md5Hex(str);
+        }
     }
 
     /**
@@ -2097,10 +2082,11 @@ public class TransUtil {
      */
     public static String toMd5Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.md5Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
-        else
+        } else {
             return DigestUtils.md5Hex(StringUtil.getBytesCharset(str, charset));
+        }
     }
 
     /**
@@ -2111,10 +2097,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA1Sum(byte[] body, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha1Hex(body).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha1Hex(body);
+        }
     }
 
     /**
@@ -2125,10 +2112,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA1Sum(String str, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha1Hex(str).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha1Hex(str);
+        }
     }
 
     /**
@@ -2142,10 +2130,11 @@ public class TransUtil {
      */
     public static String toSHA1Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha1Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha1Hex(StringUtil.getBytesCharset(str, charset));
+        }
     }
 
     /**
@@ -2156,10 +2145,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA256Sum(byte[] body, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha256Hex(body).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha256Hex(body);
+        }
     }
 
     /**
@@ -2170,10 +2160,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA256Sum(String str, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha256Hex(str).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha256Hex(str);
+        }
     }
 
     /**
@@ -2187,10 +2178,11 @@ public class TransUtil {
      */
     public static String toSHA256Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha256Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha256Hex(StringUtil.getBytesCharset(str, charset));
+        }
     }
 
     /**
@@ -2201,10 +2193,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA384Sum(byte[] body, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha384Hex(body).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha384Hex(body);
+        }
     }
 
     /**
@@ -2215,10 +2208,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA384Sum(String str, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha384Hex(str).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha384Hex(str);
+        }
     }
 
     /**
@@ -2232,10 +2226,11 @@ public class TransUtil {
      */
     public static String toSHA384Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha384Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha384Hex(StringUtil.getBytesCharset(str, charset));
+        }
     }
 
     /**
@@ -2246,10 +2241,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA512Sum(byte[] body, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha512Hex(body).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha512Hex(body);
+        }
     }
 
     /**
@@ -2260,10 +2256,11 @@ public class TransUtil {
      * @return ハッシュ値
      */
     public static String toSHA512Sum(String str, boolean upperCase) {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha512Hex(str).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha512Hex(str);
+        }
     }
 
     /**
@@ -2277,13 +2274,14 @@ public class TransUtil {
      */
     public static String toSHA512Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-        if (upperCase)
+        if (upperCase) {
             return DigestUtils.sha512Hex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
-        else
+        } else {
             return DigestUtils.sha512Hex(StringUtil.getBytesCharset(str, charset));
+        }
     }
 
-   /**
+    /**
      * MurmurHash値の取得
      *
      * @param body 対象バイト
@@ -2313,11 +2311,11 @@ public class TransUtil {
      */
     public static int toMurmurHash32(String str, String charset)
             throws UnsupportedEncodingException {
-        byte [] body = StringUtil.getBytesCharset(str, charset);
+        byte[] body = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash32(body, body.length);
     }
 
-   /**
+    /**
      * MurmurHash値の取得
      *
      * @param body 対象バイト
@@ -2347,7 +2345,7 @@ public class TransUtil {
      */
     public static long toMurmurHash64(String str, String charset)
             throws UnsupportedEncodingException {
-        byte [] body = StringUtil.getBytesCharset(str, charset);
+        byte[] body = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash64(body, body.length);
     }
 
@@ -2381,7 +2379,7 @@ public class TransUtil {
      * DateへはZoneがデフォルトのZoneになるため強制的に変更
      */
     public static Date toZoneWithDate(LocalDateTime ldtm, ZoneId zoneId) {
-        GregorianCalendar cal = new GregorianCalendar(ldtm.getYear(), ldtm.getMonthValue()-1, ldtm.getDayOfMonth(), ldtm.getHour(), ldtm.getMinute(), ldtm.getSecond());
+        GregorianCalendar cal = new GregorianCalendar(ldtm.getYear(), ldtm.getMonthValue() - 1, ldtm.getDayOfMonth(), ldtm.getHour(), ldtm.getMinute(), ldtm.getSecond());
         cal.setTimeZone(TimeZone.getTimeZone(zoneId));
         return cal.getTime();
     }
@@ -2404,7 +2402,7 @@ public class TransUtil {
         Calendar cal = GregorianCalendar.getInstance();
         //cal.setTimeZone(TimeZone.getTimeZone(zoneId));
         cal.setTime(date);
-        ZonedDateTime zdtm = ZonedDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND), 0, zoneId);
+        ZonedDateTime zdtm = ZonedDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND), 0, zoneId);
         return zdtm;
     }
 

@@ -1,5 +1,6 @@
 package extension.view.base;
 
+import extension.burp.BurpUtil;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -10,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.JComponent;
 import javax.swing.JTable;
@@ -21,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
 // https://docs.oracle.com/javase/tutorial/uiswing/dnd/dropmodedemo.html
 // @see https://docs.oracle.com/javase/tutorial/uiswing/examples/dnd/DropDemoProject/src/dnd/ListTransferHandler.java
 public class TableRowTransferHandler extends TransferHandler {
+
+    private final static Logger logger = Logger.getLogger(TableRowTransferHandler.class.getName());
 
     protected final DataFlavor localObjectFlavor;
     protected int[] indices;
@@ -114,7 +119,7 @@ public class TableRowTransferHandler extends TransferHandler {
             }
             return true;
         } catch (UnsupportedFlavorException | IOException ex) {
-            ex.printStackTrace();
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return false;
     }

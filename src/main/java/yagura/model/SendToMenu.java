@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JMenuItem;
 
 /**
  * burp new IF
@@ -24,6 +23,7 @@ import javax.swing.JMenuItem;
  * @author isayan
  */
 public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
+
     private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
 
     private final SendToProperty property;
@@ -49,24 +49,26 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
 
     private SendToMenuItem getMenuItemCaption(boolean forceSortOrder, int ord, SendToMenuItem menuItem) {
         if (forceSortOrder) {
-             String caption = TransUtil.getOrderdChar(ord) + ") " + menuItem.getCaption();
-             menuItem.setCaption(caption);
+            String caption = TransUtil.getOrderdChar(ord) + ") " + menuItem.getCaption();
+            menuItem.setCaption(caption);
         }
         return menuItem;
     }
 
     private String getMenuItemCaption(boolean forceSortOrder, int ord, String caption) {
-        if (forceSortOrder)
+        if (forceSortOrder) {
             return TransUtil.getOrderdChar(ord) + ") " + caption;
-        else
+        } else {
             return caption;
+        }
     }
 
     private int getMenuItemCount(boolean isSubmenu) {
-        if (isSubmenu)
+        if (isSubmenu) {
             return this.mnuSendTo.getItemCount();
-        else
+        } else {
             return this.menuList.size();
+        }
     }
 
     public void renewMenu(SendToProperty property) {
@@ -172,7 +174,6 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
 
     private final javax.swing.JPopupMenu popBurpMenu = new javax.swing.JPopupMenu();
 
-
     public void showBurpMenu(HttpRequestResponse httpRequestResponse, MouseEvent e) {
         showBurpMenu(this.getSendToMessage(httpRequestResponse), e);
     }
@@ -254,7 +255,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                 }
             }
         }
-        return popBurpMenu;
+        return this.popBurpMenu;
     }
 
     private int repeternum = 0;
@@ -355,12 +356,11 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
 //
 //        };
 //    }
-
     public void sendToRepeater(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
             HttpRequest httpRequest = messageItem.get(0).request();
-            api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
+            this.api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -370,7 +370,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
             HttpRequest httpRequest = messageItem.get(0).request();
-            api.intruder().sendToIntruder(httpRequest);
+            this.api.intruder().sendToIntruder(httpRequest);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -388,6 +388,5 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     public void error(SendToEvent evt) {
         this.api.logging().raiseErrorEvent(evt.getMessage());
     }
-
 
 }

@@ -23,6 +23,7 @@ import yagura.model.AutoResponderProperty;
  * @author isayan
  */
 public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, PropertyChangeListener, ExtensionUnloadingHandler {
+
     public final static String VERSION_PROPERTY = "versionProperty";
     public final static String LOAD_CONFIG_PROPERTY = "loadConfigProperty";
 
@@ -50,7 +51,6 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     private final JSearchTab tabJSearch = new JSearchTab();
 
     private final JTransCoderTab tabJTransCoder = new JTransCoderTab();
-
 
     private final VersionTab tabVersion = new VersionTab();
 
@@ -181,7 +181,6 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     public JSearchProperty getJSearchProperty() {
         return this.tabJSearch.getProperty();
     }
-
 
     public void setJSearchProperty(JSearchProperty jsearch) {
         this.tabJSearch.setProperty(jsearch);

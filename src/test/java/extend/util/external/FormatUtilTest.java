@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
  * @author isayan
  */
 public class FormatUtilTest {
+
     private final static Logger logger = Logger.getLogger(FormatUtilTest.class.getName());
 
     public FormatUtilTest() {
@@ -65,7 +66,6 @@ public class FormatUtilTest {
         }
 
     }
-
 
     /**
      * Test of isURL method, of class FormatUtil.

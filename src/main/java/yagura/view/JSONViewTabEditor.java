@@ -13,7 +13,8 @@ import java.awt.Component;
  *
  * @author isayan
  */
-public class JSONViewTabEditor implements ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor  {
+public class JSONViewTabEditor implements ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
+
     private final JSONViewTab tabJSONView;
 
     public JSONViewTabEditor(EditorCreationContext editorCreationContext, boolean isResuest) {

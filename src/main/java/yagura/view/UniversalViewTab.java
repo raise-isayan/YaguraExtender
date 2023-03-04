@@ -29,6 +29,7 @@ import extension.burp.IBurpTab;
  * @author isayan
  */
 public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
+
     private final static Logger logger = Logger.getLogger(UniversalViewTab.class.getName());
 
     /**
@@ -679,7 +680,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     }
 
     public int getDispayMaxLength() {
-        return (int)this.spnDispayMaxLength.getModel().getValue();
+        return (int) this.spnDispayMaxLength.getModel().getValue();
     }
 
 }

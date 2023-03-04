@@ -21,7 +21,8 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public abstract class SendToMenuItem
-        extends SendToItem implements java.awt.event.ActionListener  {
+        extends SendToItem implements java.awt.event.ActionListener {
+
     private final static Logger logger = Logger.getLogger(SendToMenuItem.class.getName());
 
     protected ContextMenuEvent contextMenu = null;

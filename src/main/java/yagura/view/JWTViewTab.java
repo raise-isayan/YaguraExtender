@@ -32,8 +32,8 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-
 public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
+
     private final static Logger logger = Logger.getLogger(JWTViewTab.class.getName());
     private JWTToken jwtinstance = new JWTToken();
 
@@ -383,6 +383,5 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedE
         this.txtPayloadJSON.setLineWrap(lineWrap);
         this.txtSignatureSign.setLineWrap(lineWrap);
     }
-
 
 }

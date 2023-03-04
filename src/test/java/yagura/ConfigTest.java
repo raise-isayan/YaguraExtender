@@ -46,6 +46,7 @@ import yagura.model.UniversalViewProperty.UniversalView;
  * @author isayan
  */
 public class ConfigTest {
+
     private final static Logger logger = Logger.getLogger(ConfigTest.class.getName());
 
     public ConfigTest() {
@@ -85,7 +86,7 @@ public class ConfigTest {
     public void testConfig() {
         try {
             URL url = this.getClass().getResource("/resources/default_project_burp.json");
-            byte [] test = FileUtil.bytesFromFile(new File(url.toURI()));
+            byte[] test = FileUtil.bytesFromFile(new File(url.toURI()));
             JsonElement json = JsonUtil.parseJson(StringUtil.getStringUTF8(test));
             String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
@@ -154,7 +155,6 @@ public class ConfigTest {
         String json = gson.toJson(item);
         System.out.println(json);
     }
-
 
     @Test
     public void testMatchReplaceItem() throws Exception {

@@ -43,19 +43,19 @@ public class IpUtilTest {
         try {
             {
                 // class A Private IP
-                assertArrayEquals(new byte[] {(byte)10,(byte)168,(byte)2,(byte)1}, IpUtil.parseIPv4AddressByte("10.168.2.1"));
+                assertArrayEquals(new byte[]{(byte) 10, (byte) 168, (byte) 2, (byte) 1}, IpUtil.parseIPv4AddressByte("10.168.2.1"));
                 // class B Private IP
-                assertArrayEquals(new byte[] {(byte)172,(byte)16,(byte)2,(byte)1}, IpUtil.parseIPv4AddressByte("172.16.2.1"));
+                assertArrayEquals(new byte[]{(byte) 172, (byte) 16, (byte) 2, (byte) 1}, IpUtil.parseIPv4AddressByte("172.16.2.1"));
                 // class C Private IP
-                assertArrayEquals(new byte[] {(byte)192,(byte)168,(byte)2,(byte)1}, IpUtil.parseIPv4AddressByte("192.168.2.1"));
+                assertArrayEquals(new byte[]{(byte) 192, (byte) 168, (byte) 2, (byte) 1}, IpUtil.parseIPv4AddressByte("192.168.2.1"));
 
-                assertArrayEquals(new byte[] {(byte)8,(byte)8,(byte)8,(byte)8}, IpUtil.parseIPv4AddressByte("8.8.8.8"));
+                assertArrayEquals(new byte[]{(byte) 8, (byte) 8, (byte) 8, (byte) 8}, IpUtil.parseIPv4AddressByte("8.8.8.8"));
 
-                assertArrayEquals(new byte[] {(byte)1,(byte)1,(byte)1,(byte)1}, IpUtil.parseIPv4AddressByte("1.1.1.1"));
+                assertArrayEquals(new byte[]{(byte) 1, (byte) 1, (byte) 1, (byte) 1}, IpUtil.parseIPv4AddressByte("1.1.1.1"));
 
-                assertArrayEquals(new byte[] {(byte)255,(byte)255,(byte)255,(byte)1}, IpUtil.parseIPv4AddressByte("255.255.255.1"));
+                assertArrayEquals(new byte[]{(byte) 255, (byte) 255, (byte) 255, (byte) 1}, IpUtil.parseIPv4AddressByte("255.255.255.1"));
 
-                assertArrayEquals(new byte[] {(byte)169,(byte)254,(byte)0,(byte)1}, IpUtil.parseIPv4AddressByte("169.254.0.1"));
+                assertArrayEquals(new byte[]{(byte) 169, (byte) 254, (byte) 0, (byte) 1}, IpUtil.parseIPv4AddressByte("169.254.0.1"));
             }
 
         } catch (ParseException ex) {
@@ -71,19 +71,19 @@ public class IpUtilTest {
         try {
             System.out.println("parseIPv6Adress");
             byte ip0[] = IpUtil.parseIPv6AddressByte("::");
-            assertArrayEquals(new byte[] {(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0}, ip0);
+            assertArrayEquals(new byte[]{(byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0}, ip0);
             byte ip1[] = IpUtil.parseIPv6AddressByte("::1");
-            assertArrayEquals(new byte[] {(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x1}, ip1);
+            assertArrayEquals(new byte[]{(byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x1}, ip1);
             byte ip2[] = IpUtil.parseIPv6AddressByte("2001:0db8:85a3:0000:0000:8a2e:0370:7334");
-            assertArrayEquals(new byte[] {(byte)0x20,(byte)0x01,(byte)0x0d,(byte)0xb8,(byte)0x85,(byte)0xa3,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x8a,(byte)0x2e,(byte)0x03,(byte)0x70,(byte)0x73,(byte)0x34}, ip2);
+            assertArrayEquals(new byte[]{(byte) 0x20, (byte) 0x01, (byte) 0x0d, (byte) 0xb8, (byte) 0x85, (byte) 0xa3, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x8a, (byte) 0x2e, (byte) 0x03, (byte) 0x70, (byte) 0x73, (byte) 0x34}, ip2);
             byte ip3[] = IpUtil.parseIPv6AddressByte("2001:db8:85a3:0:0:8a2e:370:7334");
-            assertArrayEquals(new byte[] {(byte)0x20,(byte)0x01,(byte)0x0d,(byte)0xb8,(byte)0x85,(byte)0xa3,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x8a,(byte)0x2e,(byte)0x03,(byte)0x70,(byte)0x73,(byte)0x34}, ip3);
+            assertArrayEquals(new byte[]{(byte) 0x20, (byte) 0x01, (byte) 0x0d, (byte) 0xb8, (byte) 0x85, (byte) 0xa3, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x8a, (byte) 0x2e, (byte) 0x03, (byte) 0x70, (byte) 0x73, (byte) 0x34}, ip3);
             byte ip4[] = IpUtil.parseIPv6AddressByte("2001:db8:85a3::8a2e:370:7334");
-            assertArrayEquals(new byte[] {(byte)0x20,(byte)0x01,(byte)0x0d,(byte)0xb8,(byte)0x85,(byte)0xa3,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x8a,(byte)0x2e,(byte)0x03,(byte)0x70,(byte)0x73,(byte)0x34}, ip4);
+            assertArrayEquals(new byte[]{(byte) 0x20, (byte) 0x01, (byte) 0x0d, (byte) 0xb8, (byte) 0x85, (byte) 0xa3, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x8a, (byte) 0x2e, (byte) 0x03, (byte) 0x70, (byte) 0x73, (byte) 0x34}, ip4);
             byte ip5[] = IpUtil.parseIPv6AddressByte("2001:db8::1:0:0:1");
-            assertArrayEquals(new byte[] {(byte)0x20,(byte)0x01,(byte)0x0d,(byte)0xb8,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x1,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x1}, ip5);
+            assertArrayEquals(new byte[]{(byte) 0x20, (byte) 0x01, (byte) 0x0d, (byte) 0xb8, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x1, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x1}, ip5);
             byte ip6[] = IpUtil.parseIPv6AddressByte("2001:0db8:0000:0000:3456::");
-            assertArrayEquals(new byte[] {(byte)0x20,(byte)0x01,(byte)0x0d,(byte)0xb8,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x34,(byte)0x56,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0,(byte)0x0}, ip6);
+            assertArrayEquals(new byte[]{(byte) 0x20, (byte) 0x01, (byte) 0x0d, (byte) 0xb8, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x34, (byte) 0x56, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0, (byte) 0x0}, ip6);
 
         } catch (ParseException ex) {
             fail(ex.getMessage());
@@ -310,23 +310,23 @@ public class IpUtilTest {
     public void testIpv4ToHex() {
         System.out.println("ipv4ToHex");
         // 192,0,2,11
-        assertEquals("0xc000020b", IpUtil.ipv4ToHex(192,0,2,11));
-        assertEquals("0xc0.0x00.0x02.0x0b", IpUtil.ipv4ToDotHex(192,0,2,11));
-        assertEquals("030000001013", IpUtil.ipv4ToOct(192,0,2,11));
-        assertEquals("0300.0000.0002.0013", IpUtil.ipv4ToDotOct(192,0,2,11));
-        assertEquals("3221225995", IpUtil.ipv4ToInt(192,0,2,11));
+        assertEquals("0xc000020b", IpUtil.ipv4ToHex(192, 0, 2, 11));
+        assertEquals("0xc0.0x00.0x02.0x0b", IpUtil.ipv4ToDotHex(192, 0, 2, 11));
+        assertEquals("030000001013", IpUtil.ipv4ToOct(192, 0, 2, 11));
+        assertEquals("0300.0000.0002.0013", IpUtil.ipv4ToDotOct(192, 0, 2, 11));
+        assertEquals("3221225995", IpUtil.ipv4ToInt(192, 0, 2, 11));
         // 127.0.0.1
-        assertEquals("0x7f000001", IpUtil.ipv4ToHex(127,0,0,1));
-        assertEquals("0x7f.0x00.0x00.0x01", IpUtil.ipv4ToDotHex(127,0,0,1));
-        assertEquals("017700000001", IpUtil.ipv4ToOct(127,0,0,1));
-        assertEquals("0177.0000.0000.0001", IpUtil.ipv4ToDotOct(127,0,0,1));
-        assertEquals("2130706433", IpUtil.ipv4ToInt(127,0,0,1));
+        assertEquals("0x7f000001", IpUtil.ipv4ToHex(127, 0, 0, 1));
+        assertEquals("0x7f.0x00.0x00.0x01", IpUtil.ipv4ToDotHex(127, 0, 0, 1));
+        assertEquals("017700000001", IpUtil.ipv4ToOct(127, 0, 0, 1));
+        assertEquals("0177.0000.0000.0001", IpUtil.ipv4ToDotOct(127, 0, 0, 1));
+        assertEquals("2130706433", IpUtil.ipv4ToInt(127, 0, 0, 1));
         // 127.10.172.192
-        assertEquals("0x7f0aacc0", IpUtil.ipv4ToHex(127,10,172,192));
-        assertEquals("0x7f.0x0a.0xac.0xc0", IpUtil.ipv4ToDotHex(127,10,172,192));
-        assertEquals("017702526300", IpUtil.ipv4ToOct(127,10,172,192));
-        assertEquals("0177.0012.0254.0300", IpUtil.ipv4ToDotOct(127,10,172,192));
-        assertEquals("2131406016", IpUtil.ipv4ToInt(127,10,172,192));
+        assertEquals("0x7f0aacc0", IpUtil.ipv4ToHex(127, 10, 172, 192));
+        assertEquals("0x7f.0x0a.0xac.0xc0", IpUtil.ipv4ToDotHex(127, 10, 172, 192));
+        assertEquals("017702526300", IpUtil.ipv4ToOct(127, 10, 172, 192));
+        assertEquals("0177.0012.0254.0300", IpUtil.ipv4ToDotOct(127, 10, 172, 192));
+        assertEquals("2131406016", IpUtil.ipv4ToInt(127, 10, 172, 192));
 
     }
 

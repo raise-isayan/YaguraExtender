@@ -18,8 +18,8 @@ import yagura.model.UniversalViewProperty.UniversalView;
  * @author isayan
  */
 // public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
-
 public class MessageViewTab extends javax.swing.JPanel implements SendToMessage {
+
     private final static Logger logger = Logger.getLogger(MessageViewTab.class.getName());
 
     /**

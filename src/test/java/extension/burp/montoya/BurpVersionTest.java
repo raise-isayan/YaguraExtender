@@ -22,19 +22,19 @@ public class BurpVersionTest {
     }
 
     private static final VersionAdapter BURP_VERSION_FREE = new VersionAdapter(
-        "Burp Suite Community Edition",
-        "2020",
-        "9.5",
-        "16933",
-        BurpSuiteEdition.COMMUNITY_EDITION
+            "Burp Suite Community Edition",
+            "2020",
+            "9.5",
+            "16933",
+            BurpSuiteEdition.COMMUNITY_EDITION
     );
 
     private static final VersionAdapter BURP_VERSION_PRO = new VersionAdapter(
-        "Burp Suite Professional Edition",
-        "2020",
-        "9.5",
-        "16933",
-        BurpSuiteEdition.PROFESSIONAL
+            "Burp Suite Professional Edition",
+            "2020",
+            "9.5",
+            "16933",
+            BurpSuiteEdition.PROFESSIONAL
     );
 
     @BeforeAll
@@ -85,7 +85,6 @@ public class BurpVersionTest {
         System.out.println(instance.getBurpConfigFile());
 
     }
-
 
     /**
      * Test of parseProVersion method, of class BurpVersion.

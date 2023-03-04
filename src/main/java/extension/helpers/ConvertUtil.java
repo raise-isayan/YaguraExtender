@@ -145,6 +145,7 @@ public class ConvertUtil {
     /**
      * 文字列を対応するEnum型に変換
      *
+     * @param <T>
      * @param enumType
      * @param name
      * @param defvalue 変換できなかった場合のデフォルト値
@@ -153,9 +154,7 @@ public class ConvertUtil {
     public static <T extends Enum<T>> T parseEnumDefault(Class<T> enumType, String name, T defvalue) {
         try {
             return Enum.valueOf(enumType, name);
-        } catch (IllegalArgumentException e) {
-            return defvalue;
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             return defvalue;
         }
     }
@@ -226,18 +225,19 @@ public class ConvertUtil {
     }
 
     public static String toHexString(byte input) {
-        return toHexString(new byte [] { input });
+        return toHexString(new byte[]{input});
     }
+
     public static String toHexString(int input) {
         BigInteger hex = BigInteger.valueOf(input);
         return hex.toString(16);
     }
 
-    public static String toHexString(byte [] data) {
+    public static String toHexString(byte[] data) {
         return String.valueOf(encodeHex(data));
     }
 
-    public static byte [] fromHexString(String data) {
+    public static byte[] fromHexString(String data) {
         return decodeHex(data.toCharArray());
     }
 
@@ -257,23 +257,25 @@ public class ConvertUtil {
         return value.replaceAll("([\"\\\\/])", "\\\\$1");
     }
 
-    private static final char[] HEX_UPPER = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    private static final char[] HEX_UPPER = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
-    private static char [] encodeHex(final byte [] data) {
-        char [] out = new char[data.length * 2];
+    private static char[] encodeHex(final byte[] data) {
+        char[] out = new char[data.length * 2];
         for (int i = 0; i < data.length; i++) {
-            out[i*2+0] = HEX_UPPER[(0xF0 & data[i]) >>> 4];
-            out[i*2+1] = HEX_UPPER[0x0F & data[i]];
+            out[i * 2 + 0] = HEX_UPPER[(0xF0 & data[i]) >>> 4];
+            out[i * 2 + 1] = HEX_UPPER[0x0F & data[i]];
         }
         return out;
     }
 
-    private static byte [] decodeHex(final char [] data) {
-        if (data.length % 2 != 0) new IllegalArgumentException();
-        byte [] out = new byte[data.length / 2];
+    private static byte[] decodeHex(final char[] data) {
+        if (data.length % 2 != 0) {
+            new IllegalArgumentException();
+        }
+        byte[] out = new byte[data.length / 2];
         for (int i = 0; i < out.length; i++) {
-            final int digitH = Character.digit(data[i*2+0], 16);
-            final int digitL = Character.digit(data[i*2+1], 16);
+            final int digitH = Character.digit(data[i * 2 + 0], 16);
+            final int digitL = Character.digit(data[i * 2 + 1], 16);
             int hex = digitH << 4;
             hex |= digitL;
             out[i] = (byte) (hex & 0xFF);
@@ -349,7 +351,6 @@ public class ConvertUtil {
         }
         return file;
     }
-
 
     public static String toBase64Encode(String src, Charset charset) {
         return toBase64Encode(src, charset, true);
@@ -529,7 +530,6 @@ public class ConvertUtil {
         return bout.toByteArray();
     }
 
-
     public static String decompressZlibBase64(String content, Charset charset) {
         return StringUtil.getStringCharset(decompressZlib(toBase64Decode(content)), charset);
     }
@@ -548,7 +548,7 @@ public class ConvertUtil {
         } else {
             ArrayList<String> list = new ArrayList<>(Arrays.asList(args));
             list.add(0, target);
-            process = Runtime.getRuntime().exec((String[]) list.toArray(new String[0]));
+            process = Runtime.getRuntime().exec((String[]) list.toArray(String[]::new));
         }
         //Runtime.getRuntime().exec(args);
         return process;
@@ -571,36 +571,34 @@ public class ConvertUtil {
                 result <<= Byte.SIZE;
                 result |= (bytes[i] & 0xFF);
             }
-        }
-        else {
+        } else {
             for (int i = bytes.length; i > 0; i--) {
                 result <<= Byte.SIZE;
-                result |= (bytes[i-1] & 0xFF);
+                result |= (bytes[i - 1] & 0xFF);
             }
         }
         return result;
     }
 
-    public static byte []intToBytes(final int value, ByteOrder byteOrder) {
+    public static byte[] intToBytes(final int value, ByteOrder byteOrder) {
         int mag = Integer.SIZE - Integer.numberOfLeadingZeros(value);
         int bsize = Math.max(((mag + (Byte.SIZE - 1)) / Byte.SIZE), 1);
-        byte [] bytes = new byte [bsize];
+        byte[] bytes = new byte[bsize];
         long val = value;
         if (byteOrder == ByteOrder.BIG_ENDIAN) {
             for (int i = bytes.length; i > 0; i--) {
-                bytes[i-1] = (byte)(val & 0xFF);
+                bytes[i - 1] = (byte) (val & 0xFF);
                 val >>= Byte.SIZE;
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < bytes.length; i++) {
-                bytes[i] = (byte)(val & 0xFF);
+                bytes[i] = (byte) (val & 0xFF);
                 val >>= Byte.SIZE;
             }
         }
         return bytes;
     }
-        
+
     public static long bytesToLong(final byte[] bytes, ByteOrder byteOrder) {
         long result = 0;
         if (byteOrder == ByteOrder.BIG_ENDIAN) {
@@ -608,30 +606,28 @@ public class ConvertUtil {
                 result <<= Byte.SIZE;
                 result |= (bytes[i] & 0xFF);
             }
-        }
-        else {
+        } else {
             for (int i = bytes.length; i > 0; i--) {
                 result <<= Byte.SIZE;
-                result |= (bytes[i-1] & 0xFF);
+                result |= (bytes[i - 1] & 0xFF);
             }
         }
         return result;
     }
 
-    public static byte []longToBytes(final long value, ByteOrder byteOrder) {
+    public static byte[] longToBytes(final long value, ByteOrder byteOrder) {
         int mag = Long.SIZE - Long.numberOfLeadingZeros(value);
         int bsize = Math.max(((mag + (Byte.SIZE - 1)) / Byte.SIZE), 1);
-        byte [] bytes = new byte [bsize];
+        byte[] bytes = new byte[bsize];
         long val = value;
         if (byteOrder == ByteOrder.BIG_ENDIAN) {
             for (int i = bytes.length; i > 0; i--) {
-                bytes[i-1] = (byte)(val & 0xFF);
+                bytes[i - 1] = (byte) (val & 0xFF);
                 val >>= Byte.SIZE;
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < bytes.length; i++) {
-                bytes[i] = (byte)(val & 0xFF);
+                bytes[i] = (byte) (val & 0xFF);
                 val >>= Byte.SIZE;
             }
         }
@@ -650,5 +646,5 @@ public class ConvertUtil {
         }
         return map.toArray().length;
     }
-    
+
 }

@@ -5,11 +5,11 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
 
-
 /**
  * base code https://sourceforge.net/projects/jutf7/
  */
 public class UTF7Encoder extends CharsetEncoder {
+
     private static final float AVG_BYTES_PER_CHAR = 1.5f;
     private static final float MAX_BYTES_PER_CHAR = 5.0f;
     private final UTF7Charset cs;
@@ -69,7 +69,7 @@ public class UTF7Encoder extends CharsetEncoder {
             if (bitsToOutput != 0) {
                 out.put(base64.getChar(sextet));
             }
-            out.put((byte)UTF7Charset.END_SHIFT);
+            out.put((byte) UTF7Charset.END_SHIFT);
         }
         return CoderResult.UNDERFLOW;
     }
@@ -111,14 +111,14 @@ public class UTF7Encoder extends CharsetEncoder {
                 unshift(out, ch);
                 out.put((byte) ch);
             } else if (!base64mode && ch == UTF7Charset.BEGIN_SHIFT) {
-                out.put((byte)UTF7Charset.BEGIN_SHIFT);
-                out.put((byte)UTF7Charset.END_SHIFT);
+                out.put((byte) UTF7Charset.BEGIN_SHIFT);
+                out.put((byte) UTF7Charset.END_SHIFT);
             } else {
                 encodeBase64(ch, out);
             }
         }
         /* <HACK type="ugly">
-		 These lines are required to trick JDK 1.5 and earlier into flushing when using 
+		 These lines are required to trick JDK 1.5 and earlier into flushing when using
 		 Charset.encode(String), Charset.encode(CharBuffer) or CharsetEncoder.encode(CharBuffer)
 		 Without them, the last few bytes may be missing.
          */
@@ -146,7 +146,7 @@ public class UTF7Encoder extends CharsetEncoder {
             out.put(base64.getChar(sextet));
         }
         if (base64.contains(ch) || ch == UTF7Charset.END_SHIFT || strict) {
-            out.put((byte)UTF7Charset.END_SHIFT);
+            out.put((byte) UTF7Charset.END_SHIFT);
         }
         base64mode = false;
         sextet = 0;
@@ -165,7 +165,7 @@ public class UTF7Encoder extends CharsetEncoder {
      */
     private void encodeBase64(char ch, ByteBuffer out) {
         if (!base64mode) {
-            out.put((byte)UTF7Charset.BEGIN_SHIFT);
+            out.put((byte) UTF7Charset.BEGIN_SHIFT);
         }
         base64mode = true;
         bitsToOutput += 16;

@@ -16,8 +16,8 @@ import yagura.Config;
  */
 public class LoggingProperty implements IPropertyConfig {
 
-   public final static String LOGGING_PROPERTY = "loggingProperty";
-     
+    public final static String LOGGING_PROPERTY = "loggingProperty";
+
     private final static String DEFAULT_LOG_TIMESTAMP_FORMAT = "yyyyMMdd HH:mm:ss";
     private final static String DEFAULT_LOG_DIR_FORMAT = "yyyyMMdd";
 
@@ -94,13 +94,13 @@ public class LoggingProperty implements IPropertyConfig {
         this.logDirFormat = logDirFormat;
     }
 
-    private DateTimeFormatter logDateTimeFormat = DateTimeFormatter.ofPattern(DEFAULT_LOG_TIMESTAMP_FORMAT).withLocale(Locale.ENGLISH).withResolverStyle(ResolverStyle.STRICT);    
-    
+    private DateTimeFormatter logDateTimeFormat = DateTimeFormatter.ofPattern(DEFAULT_LOG_TIMESTAMP_FORMAT).withLocale(Locale.ENGLISH).withResolverStyle(ResolverStyle.STRICT);
+
     private SimpleDateFormat logTimestampDateFormat = new SimpleDateFormat(DEFAULT_LOG_TIMESTAMP_FORMAT);
 
     @Expose
     private String logTimestampFormat = DEFAULT_LOG_TIMESTAMP_FORMAT;
-    
+
     public String getLogTimestampFormat() {
         return this.logTimestampFormat;
     }

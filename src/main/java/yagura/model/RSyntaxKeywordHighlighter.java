@@ -24,6 +24,7 @@ import javax.swing.text.View;
  * @author isayan
  */
 public class RSyntaxKeywordHighlighter extends org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaHighlighter implements IKeywordHighlighter {
+
     private final static Logger logger = Logger.getLogger(RSyntaxKeywordHighlighter.class.getName());
 
     public RSyntaxKeywordHighlighter() {
@@ -101,7 +102,7 @@ public class RSyntaxKeywordHighlighter extends org.fife.ui.rsyntaxtextarea.RSynt
             StartEndPosion pos = new StartEndPosion(h.getStartOffset(), h.getEndOffset());
             list.add(pos);
         }
-        return list.toArray(new StartEndPosion[0]);
+        return list.toArray(StartEndPosion[]::new);
     }
 
     /**

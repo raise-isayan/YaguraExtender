@@ -11,5 +11,5 @@ public interface QuickSearchListener extends EventListener {
     public void quickBackPerformed(QuickSearchEvent evt);
 
     public void quickForwardPerformed(QuickSearchEvent evt);
-    
+
 }

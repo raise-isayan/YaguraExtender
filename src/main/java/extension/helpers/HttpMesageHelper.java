@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class HttpMesageHelper {
+
     public final static String LINE_TERMINATE = "\r\n";
     public final static Pattern HTTP_LINESEP = Pattern.compile("\\r\\n\\r\\n");
     private final static Pattern CONTENT_TYPE_MIME = Pattern.compile("\\s*([^\\s;]+);?", Pattern.MULTILINE);
@@ -23,7 +24,6 @@ public class HttpMesageHelper {
     /**
      * httpBase
      */
-
     /**
      * @param headers
      * @param name
@@ -33,8 +33,7 @@ public class HttpMesageHelper {
         Optional<HttpHeader> header = headers.stream().filter(h -> h.name().equalsIgnoreCase(name)).findFirst();
         if (header.isPresent()) {
             return header.get();
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -42,7 +41,6 @@ public class HttpMesageHelper {
     /**
      * httpRequest
      */
-
     /**
      *
      * @param parameters
@@ -93,7 +91,6 @@ public class HttpMesageHelper {
     /**
      * httpResponse
      */
-
     private final static Pattern RESPONSE_META_SET = Pattern.compile("<meta (?:.*?)charset=[\"\']?([\\w_-]+)[\"\']?\\W+", Pattern.CASE_INSENSITIVE);
 
     public static HttpHeader getContentTypeHeader(HttpResponse httpResponse) {
@@ -111,7 +108,6 @@ public class HttpMesageHelper {
         }
         return mimeType;
     }
-
 
     public static String getGuessCharset(HttpResponse httpResponse) {
         String charset = null;

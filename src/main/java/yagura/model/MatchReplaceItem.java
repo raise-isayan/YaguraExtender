@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import extension.view.base.MatchItem;
 
-
 /**
  * @author isayan
  */
@@ -109,7 +108,7 @@ public class MatchReplaceItem extends MatchItem {
     }
 
     public void setProperty(MatchReplaceItem item) {
-        this.setProperty((MatchItem)item);
+        this.setProperty((MatchItem) item);
         this.setMetaChar(item.isMetaChar());
         this.setSmartMatch(item.isSmartMatch());
     }

@@ -1,30 +1,19 @@
 package extend.util.external;
 
-import extension.helpers.CertUtil;
-import extension.helpers.StringUtil;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.security.Key;
 import java.security.Security;
-import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  *
  * @author isayan
  */
 public class BoncyUtilTest {
+
     private final static BouncyCastleProvider BC_PROVIDER = new BouncyCastleProvider();
 
     public BoncyUtilTest() {
@@ -47,6 +36,10 @@ public class BoncyUtilTest {
 
     @AfterEach
     public void tearDown() {
+    }
+
+    @Test
+    public void testLoadFromPem() {
     }
 
 //    /**
@@ -83,5 +76,4 @@ public class BoncyUtilTest {
 //            Logger.getLogger(BoncyUtilTest.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
-
 }

@@ -9,6 +9,7 @@ import java.nio.charset.CoderResult;
  * base code https://sourceforge.net/projects/jutf7/
  */
 public class UTF7Decoder extends CharsetDecoder {
+
     private final Base64Util base64;
     private final boolean strict;
     private boolean base64mode;

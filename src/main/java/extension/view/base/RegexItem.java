@@ -72,7 +72,7 @@ public class RegexItem {
     public Pattern compileRegex(boolean quote) {
         int flags = Pattern.MULTILINE;
         Pattern newregex = null;
-        try  {
+        try {
             if (this.ignoreCase) {
                 flags |= Pattern.CASE_INSENSITIVE;
             }
@@ -87,11 +87,11 @@ public class RegexItem {
     }
 
     public void recompileRegex() {
-       this.regex = compileRegex(!isRegexp());
+        this.regex = compileRegex(!isRegexp());
     }
 
     public void recompileRegex(boolean quote) {
-       this.regex = compileRegex(quote);
+        this.regex = compileRegex(quote);
     }
 
     /**
@@ -101,9 +101,9 @@ public class RegexItem {
         return this.regex;
     }
 
-   public static Pattern compileRegex(String text, int flags, boolean quote) {
+    public static Pattern compileRegex(String text, int flags, boolean quote) {
         Pattern newregex = null;
-        try  {
+        try {
             if (quote) {
                 newregex = Pattern.compile(Pattern.quote(text), flags);
             } else {

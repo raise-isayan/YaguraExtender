@@ -13,21 +13,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.SortedMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author isayan
  */
 public class StringUtil {
+
     public static final String DEFAULT_ENCODING = System.getProperty("file.encoding");
     public static final String NEW_LINE = System.getProperty("line.separator");
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
     public static String repeat(String str, int n) {
-      return String.join("", Collections.nCopies(n, str));
+        return String.join("", Collections.nCopies(n, str));
     }
 
     /**
@@ -92,6 +91,7 @@ public class StringUtil {
      * @param message 対象文字列
      * @param charset
      * @return バイト列
+     * @throws java.io.UnsupportedEncodingException
      */
     public static byte[] getBytesCharset(String message, String charset) throws UnsupportedEncodingException {
         return message.getBytes(charset);
@@ -118,8 +118,7 @@ public class StringUtil {
     public static String toString(String value) {
         if (value == null) {
             return "";
-        }
-        else {
+        } else {
             return String.valueOf(value);
         }
     }
@@ -127,8 +126,7 @@ public class StringUtil {
     public static String toString(Boolean value) {
         if (value == null) {
             return "";
-        }
-        else {
+        } else {
             return String.valueOf(value);
         }
     }
@@ -136,8 +134,7 @@ public class StringUtil {
     public static String toString(Integer value) {
         if (value == null) {
             return "";
-        }
-        else {
+        } else {
             return String.valueOf(value);
         }
     }
@@ -145,8 +142,7 @@ public class StringUtil {
     public static String toString(Float value) {
         if (value == null) {
             return "";
-        }
-        else {
+        } else {
             return String.valueOf(value);
         }
     }
@@ -154,8 +150,7 @@ public class StringUtil {
     public static String toString(Object value) {
         if (value == null) {
             return "";
-        }
-        else {
+        } else {
             return String.valueOf(value);
         }
     }
@@ -239,7 +234,7 @@ public class StringUtil {
         if (ch.length > 0) {
             ch[0] = Character.toUpperCase(ch[0]);
         }
-        return  new String(ch);
+        return new String(ch);
     }
 
     public static String toCamelCase(String s) {
@@ -247,7 +242,7 @@ public class StringUtil {
         if (ch.length > 0) {
             ch[0] = Character.toLowerCase(ch[0]);
         }
-        return  new String(ch);
+        return new String(ch);
     }
 
     public static String getStackTraceMessage(Exception ex) {
@@ -273,7 +268,6 @@ public class StringUtil {
         ex.printStackTrace(printWriter);
         return result.toString();
     }
-
 
     public static String getStackTrace(String message, Throwable ex) {
         final Writer result = new StringWriter();
@@ -301,15 +295,14 @@ public class StringUtil {
      * @return エンコーディングリスト
      */
     public static String[] getAvailableEncodingList() {
-        java.util.List<String> list = new ArrayList<String>();
+        java.util.List<String> list = new ArrayList<>();
         SortedMap<String, Charset> map = Charset.availableCharsets();
-        Charset charsets[] = (Charset[]) map.values().toArray(
-                new Charset[]{});
+        Charset charsets[] = (Charset[]) map.values().toArray(Charset[]::new);
         for (int i = 0; i < charsets.length; i++) {
             String charname = charsets[i].displayName();
             list.add(charname);
         }
-        return list.toArray(new String[0]);
+        return list.toArray(String[]::new);
     }
 
 }

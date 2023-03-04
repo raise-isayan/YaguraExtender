@@ -30,9 +30,9 @@ public class CustomDialog extends javax.swing.JDialog {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                modalResult = JOptionPane.CANCEL_OPTION;                                
-            }            
-        });        
+                modalResult = JOptionPane.CANCEL_OPTION;
+            }
+        });
     }
 
     protected EventListenerList listenerList = new EventListenerList();

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
  * @author isayan
  */
 public class MatchUtilTest {
+
     private final static Logger logger = Logger.getLogger(MatchUtilTest.class.getName());
 
     public MatchUtilTest() {
@@ -161,7 +162,6 @@ public class MatchUtilTest {
             assertTrue(p.matcher("aXa\\").matches());
         }
 
-
     }
 
     /**
@@ -257,7 +257,7 @@ public class MatchUtilTest {
     @Test
     public void testContainsCreditCard() {
         System.out.println("containsCreditCard");
-        String [] words = new String[] {
+        String[] words = new String[]{
             // Visa
             "4111111111111111",
             "4242424242424242",
@@ -280,7 +280,7 @@ public class MatchUtilTest {
             "30569309025904",
             "38520000023237",
             // Discover Card
-//            "6111111111111116",
+            //            "6111111111111116",
             "6011111111111117",
             "6011000990139424",
             "6011601160116611"

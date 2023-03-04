@@ -71,7 +71,7 @@ public final class SwingUtil {
                 jframes.add((JFrame) frames[i]);
             }
         }
-        return jframes.toArray(new JFrame[0]);
+        return jframes.toArray(JFrame[]::new);
     }
 
     public static JMenuBar[] getJMenuBars() {
@@ -83,7 +83,7 @@ public final class SwingUtil {
                 menuBars.add(menuBar);
             }
         }
-        return menuBars.toArray(new JMenuBar[menuBars.size()]);
+        return menuBars.toArray(JMenuBar[]::new);
     }
 
     /**

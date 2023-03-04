@@ -12,6 +12,7 @@ import java.awt.Component;
  * @author isayan
  */
 public class GeneratePoCTabEditor implements ExtensionProvidedHttpRequestEditor {
+
     private final GeneratePoCTab tabGeneratePoC;
 
     public GeneratePoCTabEditor(EditorCreationContext editorCreationContext) {

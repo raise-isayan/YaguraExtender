@@ -87,8 +87,7 @@ public class CustomVersion {
     public String getVersion() {
         if (RELEASE_EXTENSION == null) {
             return String.format("%d.%d.%d.%d", MAJOR_VERSION, MINOR_VERSION, REVISION_VERSION, RELEASE_NUMBER);
-        }
-        else {
+        } else {
             return String.format("%d.%d.%d.%d%s", MAJOR_VERSION, MINOR_VERSION, REVISION_VERSION, RELEASE_NUMBER, RELEASE_EXTENSION);
         }
     }

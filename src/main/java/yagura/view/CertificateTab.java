@@ -1,7 +1,7 @@
 package yagura.view;
 
 import extension.helpers.CertUtil;
-import extend.util.external.BoncyUtil;
+import extend.util.external.BouncyUtil;
 import extension.burp.BurpConfig;
 import extension.burp.IBurpTab;
 import extension.helpers.StringUtil;
@@ -53,6 +53,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         btnGrpFormat = new javax.swing.ButtonGroup();
         btnGrpCA = new javax.swing.ButtonGroup();
+        btnGrpStore = new javax.swing.ButtonGroup();
         tabbetCertificate = new javax.swing.JTabbedPane();
         pnlCACertificate = new javax.swing.JPanel();
         pnlCertExport = new javax.swing.JPanel();
@@ -91,14 +92,14 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        btnGrpFormat.add(rdoConvertPairPEM);
+        btnGrpStore.add(rdoConvertPairPEM);
         rdoConvertPairPEM.setSelected(true);
         rdoConvertPairPEM.setText("Certificate and Private key in PEM format");
 
-        btnGrpFormat.add(rdoConvertCertificateDER);
+        btnGrpStore.add(rdoConvertCertificateDER);
         rdoConvertCertificateDER.setText("Certificate  in DER format");
 
-        btnGrpFormat.add(rdoConvertPrivateDER);
+        btnGrpStore.add(rdoConvertPrivateDER);
         rdoConvertPrivateDER.setText("Private key  in DER format");
 
         java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("yagura/view/Bundle"); // NOI18N
@@ -112,7 +113,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         lblListenPort.setText(bundle.getString("server.ocsp.tab.listen_port")); // NOI18N
         lblListenPort.setToolTipText("");
 
-        spnListenPort.setModel(new javax.swing.SpinnerNumberModel(6060, 1024, 65535, 1));
+        spnListenPort.setModel(new javax.swing.SpinnerNumberModel(5050, 1024, 65535, 1));
         spnListenPort.setEditor(new javax.swing.JSpinner.NumberEditor(spnListenPort, "#0"));
         spnListenPort.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -328,6 +329,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     }// </editor-fold>//GEN-END:initComponents
 
     private void customizeComponents() {
+        this.btnStoreTypePKCS12.setSelected(true);
         SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
         SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
         mockServer.setDispatcher(dispatcher);
@@ -337,47 +339,45 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         @Override
         public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
             try {
-                if (request.getPath().equals("/")){
+                if (request.getPath().equals("/")) {
                     return new MockResponse().addHeader("Content-Type", "text/html; " + "charset=utf-8")
-                        .setBody("<html><head><title>" + Version.getInstance().getProjectName() + "</title>\n" +
-                                "<style type=\"text/css\">\n" +
-                                "body { background: #dedede; font-family: Arial, sans-serif; color: #404042; -webkit-font-smoothing: antialiased; }\n" +
-                                "#container { padding: 0 15px; margin: 10px auto; background-color: #ffffff; }\n" +
-                                "a { word-wrap: break-word; }\n" +
-                                "a:link, a:visited { color: #2862e0; text-decoration: none; }\n" +
-                                "a:hover, a:active { color: #404042; text-decoration: underline; }\n" +
-                                "h1 { font-size: 1.6em; line-height: 1.2em; font-weight: normal; color: #404042; }\n" +
-                                "h2 { font-size: 1.3em; line-height: 1.2em; padding: 0; margin: 0.8em 0 0.3em 0; font-weight: normal; color: #404042;}\n" +
-                                ".title { color: #ffffff; background: #2862e0; padding: 10px 15px; margin: 0 -15px 10px -15px; overflow: hidden; }\n" +
-                                ".title h1 { color: #ffffff; padding: 0; margin: 0; font-size: 1.8em; }\n" +
-                                "</style>" +
-                                "</head>\n" +
-                                "<body>\n" +
-                                "<div id=\"container\">\n" +
-                                "<div class=\"title\"><h1>" + Version.getInstance().getProjectName() + "</h1></div>\n" +
-                                "</div>\n" +
-                                "<div><ul>\n" +
-                                "<li><a href=\"/burp-keycert.pem.der\">Certificate and Private key in PEM format</a></li>\n" +
-                                "<li><a href=\"/burp-cert.pem.der\">Certificate in PEM format</a></li>\n" +
-                                "</ul></div>\n" +
-                                "</body>\n" +
-                                "</html>").setResponseCode(200);
-                }
-                else if (request.getPath().equals("/burp-keycert.pem.der")){
+                            .setBody("<html><head><title>" + Version.getInstance().getProjectName() + "</title>\n"
+                                    + "<style type=\"text/css\">\n"
+                                    + "body { background: #dedede; font-family: Arial, sans-serif; color: #404042; -webkit-font-smoothing: antialiased; }\n"
+                                    + "#container { padding: 0 15px; margin: 10px auto; background-color: #ffffff; }\n"
+                                    + "a { word-wrap: break-word; }\n"
+                                    + "a:link, a:visited { color: #2862e0; text-decoration: none; }\n"
+                                    + "a:hover, a:active { color: #404042; text-decoration: underline; }\n"
+                                    + "h1 { font-size: 1.6em; line-height: 1.2em; font-weight: normal; color: #404042; }\n"
+                                    + "h2 { font-size: 1.3em; line-height: 1.2em; padding: 0; margin: 0.8em 0 0.3em 0; font-weight: normal; color: #404042;}\n"
+                                    + ".title { color: #ffffff; background: #2862e0; padding: 10px 15px; margin: 0 -15px 10px -15px; overflow: hidden; }\n"
+                                    + ".title h1 { color: #ffffff; padding: 0; margin: 0; font-size: 1.8em; }\n"
+                                    + "</style>"
+                                    + "</head>\n"
+                                    + "<body>\n"
+                                    + "<div id=\"container\">\n"
+                                    + "<div class=\"title\"><h1>" + Version.getInstance().getProjectName() + "</h1></div>\n"
+                                    + "</div>\n"
+                                    + "<div><ul>\n"
+                                    + "<li><a href=\"/burp-keycert.pem.der\">Certificate and Private key in PEM format</a></li>\n"
+                                    + "<li><a href=\"/burp-cert.pem.der\">Certificate in PEM format</a></li>\n"
+                                    + "</ul></div>\n"
+                                    + "</body>\n"
+                                    + "</html>").setResponseCode(200);
+                } else if (request.getPath().equals("/burp-keycert.pem.der")) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
-                    String exportCA = BoncyUtil.exportCertificatePem(cert.getKey(), cert.getValue());
+                    String exportCA = BouncyUtil.exportCertificatePem(cert.getKey(), cert.getValue());
                     return new MockResponse()
-                        .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
-                        .addHeader("Content-Disposition", "attachment; filename=\"burp-keycert.pem.der\"")
-                        .setBody(exportCA).setResponseCode(200);
-                }
-                else if (request.getPath().equals("/burp-cert.pem.der")){
+                            .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
+                            .addHeader("Content-Disposition", "attachment; filename=\"burp-keycert.pem.der\"")
+                            .setBody(exportCA).setResponseCode(200);
+                } else if (request.getPath().equals("/burp-cert.pem.der")) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
-                    String exportCA = BoncyUtil.exportCertificatePem(cert.getValue());
+                    String exportCA = BouncyUtil.exportCertificatePem(cert.getValue());
                     return new MockResponse()
-                        .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
-                        .addHeader("Content-Disposition", "attachment; filename=\"burp-cert.pem.der\"")
-                        .setBody(exportCA).setResponseCode(200);
+                            .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
+                            .addHeader("Content-Disposition", "attachment; filename=\"burp-cert.pem.der\"")
+                            .setBody(exportCA).setResponseCode(200);
                 }
             } catch (IOException ex) {
                 return new MockResponse().setResponseCode(500).setBody(StringUtil.getStackTrace(ex));
@@ -393,8 +393,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             if (this.rdoBurpCA.isSelected()) {
                 KeyStore ks = BurpConfig.loadCACeart();
                 mapCert = CertUtil.loadFromKeyStore(ks, BurpConfig.getCAPassword());
-            }
-            else {
+            } else {
                 File storeFile = new File(this.txtStoreFile.getText());
                 if (this.btnStoreTypeJKS.isSelected()) {
                     mapCert = CertUtil.loadFromJKS(storeFile, this.txtStorePassword.getText());
@@ -432,13 +431,11 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 if (selected == JFileChooser.APPROVE_OPTION) {
                     File saveFile = filechooser.getSelectedFile();
                     if (this.rdoConvertPairPEM.isSelected()) {
-                            BoncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), saveFile);
-                    }
-                    else if (this.rdoConvertCertificateDER.isSelected()) {
-                        BoncyUtil.storeCertificateDer(cert.getValue(), saveFile);
-                    }
-                    else if (this.rdoConvertPrivateDER.isSelected()) {
-                        BoncyUtil.storeCertificateDer(cert.getKey(), saveFile);
+                        BouncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), saveFile);
+                    } else if (this.rdoConvertCertificateDER.isSelected()) {
+                        BouncyUtil.storeCertificateDer(cert.getValue(), saveFile);
+                    } else if (this.rdoConvertPrivateDER.isSelected()) {
+                        BouncyUtil.storeCertificateDer(cert.getKey(), saveFile);
                     }
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
                     //FileUtil.bytesToFile(StringUtil.getBytesRaw(output), pemFile);
@@ -480,7 +477,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private void btnProvidedServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProvidedServerActionPerformed
         if (this.btnProvidedServer.isSelected()) {
             if (this.mockServer != null) {
-                startMockServer((int)this.spnListenPort.getValue());
+                startMockServer((int) this.spnListenPort.getValue());
             }
         } else {
             this.stopMockServer();
@@ -510,6 +507,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JButton btnExport;
     private javax.swing.ButtonGroup btnGrpCA;
     private javax.swing.ButtonGroup btnGrpFormat;
+    private javax.swing.ButtonGroup btnGrpStore;
     private javax.swing.JButton btnImport;
     private javax.swing.JToggleButton btnProvidedServer;
     private javax.swing.JToggleButton btnStoreTypeJKS;

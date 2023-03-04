@@ -2,16 +2,22 @@ package extension.helpers;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -105,6 +111,18 @@ public class CertUtilTest {
         X509Certificate x509Cert = CertUtil.loadCertificate(StringUtil.getStringRaw(FileUtil.bytesFromFile(new File(storeFileName))));
     }
 
+    @Test
+    public void testLoadCertificate() throws Exception {
+        System.out.println("testLoadCertificate");
+        String storeFileName = CertUtilTest.class.getResource("/resources/burpca.pem").getPath();
+        try {
+            KeyStore ks = KeyStore.getInstance(CertUtil.StoreType.PKCS12.name());
+            ks.load(new FileInputStream(new File(storeFileName)), "testca".toCharArray());
+        } catch (KeyStoreException | CertificateException | IOException ex) {
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CertUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Test of exportToPem method, of class CertUtil.
@@ -125,7 +143,6 @@ public class CertUtilTest {
         }
     }
 
-
     /**
      * Test of exportToDer method, of class CertUtil.
      */
@@ -136,7 +153,7 @@ public class CertUtilTest {
         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
             Map.Entry<Key, X509Certificate> x509cert = certMap.get(ailias);
-            byte [] result = CertUtil.exportToDer(x509cert.getKey());
+            byte[] result = CertUtil.exportToDer(x509cert.getKey());
             break;
         }
     }
@@ -151,7 +168,7 @@ public class CertUtilTest {
         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(new File(storeFileName), "testca");
         for (String ailias : certMap.keySet()) {
             Map.Entry<Key, X509Certificate> x509cert = certMap.get(ailias);
-            byte [] result = CertUtil.exportToDer(x509cert.getValue());
+            byte[] result = CertUtil.exportToDer(x509cert.getValue());
             break;
         }
     }

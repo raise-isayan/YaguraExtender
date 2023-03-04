@@ -83,7 +83,6 @@ public class JsonUtilTest {
         assertEquals(false, result.has("xyz"));
     }
 
-
     /**
      * Test of prettyJson method, of class JsonUtil.
      */
@@ -290,7 +289,7 @@ public class JsonUtilTest {
         JsonElement json = JsonUtil.jsonToJsonElement(item, true);
         if (json.isJsonObject()) {
             JsonObject jsonObject = json.getAsJsonObject();
-            assertEquals(jsonObject.get("selected").getAsBoolean(),true);
+            assertEquals(jsonObject.get("selected").getAsBoolean(), true);
             assertEquals(jsonObject.get("match").getAsString(), "matchItem");
             assertEquals(jsonObject.get("replace").getAsString(), "repaceItem");
         }
@@ -328,6 +327,5 @@ public class JsonUtilTest {
             Logger.getLogger(JsonUtilTest.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
 }

@@ -10,6 +10,7 @@ import extension.burp.IBurpTab;
  * @author isayan
  */
 public class ViewStateDecoderTab extends javax.swing.JPanel implements IBurpTab {
+
     private final static Logger logger = Logger.getLogger(ViewStateDecoderTab.class.getName());
 
     /**

@@ -11,12 +11,13 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class IpUtil {
+
     private final static String IPv4_PATTERN = "(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9]{1,2})";
     private final static String IPv6_PATTERN = "([0-9a-f]{1,4}(:[0-9a-f]{1,4}){7})|::"
-      + "|:(:[0-9a-f]{1,4}){1,7}|([0-9a-f]{1,4}:){1,7}:"
-      + "|([0-9a-f]{1,4}:){1}(:[0-9a-f]{1,4}){1,6}|([0-9a-f]{1,4}:){2}(:[0-9a-f]{1,4}){1,5}"
-      + "|([0-9a-f]{1,4}:){3}(:[0-9a-f]{1,4}){1,4}|([0-9a-f]{1,4}:){4}(:[0-9a-f]{1,4}){1,3}"
-      + "|([0-9a-f]{1,4}:){5}(:[0-9a-f]{1,4}){1,2}|([0-9a-f]{1,4}:){6}(:[0-9a-f]{1,4}){1}";
+            + "|:(:[0-9a-f]{1,4}){1,7}|([0-9a-f]{1,4}:){1,7}:"
+            + "|([0-9a-f]{1,4}:){1}(:[0-9a-f]{1,4}){1,6}|([0-9a-f]{1,4}:){2}(:[0-9a-f]{1,4}){1,5}"
+            + "|([0-9a-f]{1,4}:){3}(:[0-9a-f]{1,4}){1,4}|([0-9a-f]{1,4}:){4}(:[0-9a-f]{1,4}){1,3}"
+            + "|([0-9a-f]{1,4}:){5}(:[0-9a-f]{1,4}){1,2}|([0-9a-f]{1,4}:){6}(:[0-9a-f]{1,4}){1}";
 
     private final static Pattern IPv4_ADDR = Pattern.compile(IPv4_PATTERN);
     private final static Pattern IPv6_ADDR = Pattern.compile("(" + IPv6_PATTERN + ")" + "|" + "\\[(" + IPv6_PATTERN + ")\\]");
@@ -42,8 +43,7 @@ public class IpUtil {
             String port = m.group("port");
             if (port == null) {
                 return isIPv4Address(address);
-            }
-            else {
+            } else {
                 return isIPv4Valid(address, ConvertUtil.parseIntDefault(port, -1));
             }
         }
@@ -65,52 +65,54 @@ public class IpUtil {
     public static boolean isIPv6Address(String ip_addr) {
         return ip_addr != null && IPv6_ADDR.matcher(ip_addr).matches();
     }
+
     /**
      * IPv4アドレスのパース
-     * IPv4 address は厳密には以下の形式も解釈するがこの関数では考慮しない
-     * 192.168.1
-     * 192.11010049
-     * 3232235521
+     * IPv4 address は厳密には以下の形式も解釈するがこの関数では考慮しない 192.168.1
+     * 192.11010049 3232235521
+     * @param ipv4Addr
+     * @return
+     * @throws java.text.ParseException
      */
     public static byte[] parseIPv4AddressByte(String ipv4Addr) throws ParseException {
         Matcher m = IPv4_ADDR.matcher(ipv4Addr);
         if (m.matches()) {
-            return new byte [] { (byte)Integer.parseInt(m.group(1)), (byte)Integer.parseInt(m.group(2)), (byte)Integer.parseInt(m.group(3)), (byte)Integer.parseInt(m.group(4)) };
+            return new byte[]{(byte) Integer.parseInt(m.group(1)), (byte) Integer.parseInt(m.group(2)), (byte) Integer.parseInt(m.group(3)), (byte) Integer.parseInt(m.group(4))};
         }
         throw new ParseException("IPv4 format Error:", 0);
     }
 
     /**
      * IPv6アドレスのパース
+     * @param ipAddr
+     * @return
+     * @throws java.text.ParseException
      */
     public static byte[] parseIPv6AddressByte(String ipAddr) throws ParseException {
         Matcher m = IPv6_ADDR.matcher(ipAddr);
         if (m.matches()) {
             // 省略
             if (ipAddr.contains("::")) {
-                byte ip [] = new byte[16];
-                Arrays.fill(ip, (byte)0);
+                byte ip[] = new byte[16];
+                Arrays.fill(ip, (byte) 0);
                 String ipParts[] = ipAddr.split("::");
                 if (ipParts.length == 2) {
                     // 前半と後半
                     byte ipPart0[] = parseIPv6Part(ipParts[0]);
                     byte ipPart1[] = parseIPv6Part(ipParts[1]);
                     System.arraycopy(ipPart0, 0, ip, 0, ipPart0.length);
-                    System.arraycopy(ipPart1, 0, ip, ip.length-ipPart1.length, ipPart1.length);
+                    System.arraycopy(ipPart1, 0, ip, ip.length - ipPart1.length, ipPart1.length);
                     return ip;
-                }
-                else if(ipParts.length == 1) {
+                } else if (ipParts.length == 1) {
                     // 前半
                     byte ipPart0[] = parseIPv6Part(ipParts[0]);
                     System.arraycopy(ipPart0, 0, ip, 0, ipPart0.length);
                     return ip;
-                }
-                else if(ipParts.length == 0) {
+                } else if (ipParts.length == 0) {
                     // ::
                     return ip;
                 }
-            }
-            else {
+            } else {
                 String ipPart = m.group(1);
                 return parseIPv6Part(ipPart);
             }
@@ -118,19 +120,18 @@ public class IpUtil {
         throw new ParseException("IPv6 format Error:", 0);
     }
 
-    private static byte [] parseIPv6Part(String ipPart) {
+    private static byte[] parseIPv6Part(String ipPart) {
         if (!ipPart.isEmpty()) {
             String ipParts[] = ipPart.split(":");
-            byte [] ip = new byte [ipParts.length * 2];
+            byte[] ip = new byte[ipParts.length * 2];
             for (int i = 0; i < ipParts.length; i++) {
                 int part = Integer.parseInt(ipParts[i], 16);
-                ip[i*2+0] = (byte)(part >> 8 & 0xff);
-                ip[i*2+1] = (byte)(part & 0xff);
+                ip[i * 2 + 0] = (byte) (part >> 8 & 0xff);
+                ip[i * 2 + 1] = (byte) (part & 0xff);
             }
             return ip;
-        }
-        else {
-            return new byte [0];
+        } else {
+            return new byte[0];
         }
     }
 
@@ -142,8 +143,7 @@ public class IpUtil {
             return ((ip_decimal & CLASS_A_MASK) == CLASS_A_NET)
                     || ((ip_decimal & CLASS_B_MASK) == CLASS_B_NET)
                     || ((ip_decimal & CLASS_C_MASK) == CLASS_C_NET);
-        }
-        catch (ParseException ex) {
+        } catch (ParseException ex) {
             return false;
         }
     }
@@ -154,8 +154,7 @@ public class IpUtil {
             String ip[] = ipAddr.split(":", 2);
             long ip_decimal = IPv4ToDecimal(ip[0], ByteOrder.BIG_ENDIAN);
             return ((ip_decimal & LINK_LOCAL_MASK) == LINK_LOCAL_NET);
-        }
-        catch (ParseException ex) {
+        } catch (ParseException ex) {
             return false;
         }
     }
@@ -164,10 +163,10 @@ public class IpUtil {
         Matcher m = IPv4_ADDR.matcher(ipAddr);
         if (m.matches()) {
             if (order.equals(ByteOrder.BIG_ENDIAN)) {
-                String ip_hex = String.format("%02x%02x%02x%02x", Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4)));
+                String ip_hex = String.format("%02x%02x%02x%02x", Integer.valueOf(m.group(1)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(4)));
                 return Long.parseLong(ip_hex, 16);
             } else {
-                String ip_hex = String.format("%02x%02x%02x%02x", Integer.parseInt(m.group(4)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(1)));
+                String ip_hex = String.format("%02x%02x%02x%02x", Integer.valueOf(m.group(4)), Integer.parseInt(m.group(3)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(1)));
                 return Long.parseLong(ip_hex, 16);
             }
         }

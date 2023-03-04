@@ -121,7 +121,7 @@ public class MatchAlert extends SignatureItem<IssueItem> {
 
                     @Override
                     public AuditIssueSeverity typicalSeverity() {
-                         return AuditIssueSeverity.FALSE_POSITIVE;
+                        return AuditIssueSeverity.FALSE_POSITIVE;
                     }
 
                     /**

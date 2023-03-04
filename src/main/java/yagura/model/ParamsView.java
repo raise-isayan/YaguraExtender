@@ -13,6 +13,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class ParamsView implements ObjectTableMapping, ParsedHttpParameter {
+
     private final static Logger logger = Logger.getLogger(ParamsView.class.getName());
 
     final Parameter param;
@@ -56,7 +57,6 @@ public class ParamsView implements ObjectTableMapping, ParsedHttpParameter {
         }
         return result;
     }
-
 
     private final String[] columns = new String[]{
         "Data", "Type", "Name", "Value"

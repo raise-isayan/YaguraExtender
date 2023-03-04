@@ -29,10 +29,10 @@ import okio.Okio;
  * @author isayan
  */
 public class AutoMockServer {
+
     private final static Logger logger = Logger.getLogger(AutoMockServer.class.getName());
 
     private MockWebServer server = null;
-
 
     public AutoMockServer() {
     }
@@ -45,6 +45,7 @@ public class AutoMockServer {
             this.server = new MockWebServer();
             this.server.setDispatcher(dispacher);
             this.server.start(listenPort);
+            this.server.setProtocolNegotiationEnabled(true);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -72,6 +73,7 @@ public class AutoMockServer {
     }
 
     class AutoResponderDispatcher extends Dispatcher {
+
         private final AutoResponderProperty autoResponder;
 
         public AutoResponderDispatcher(AutoResponderProperty autoResponder) {
@@ -85,25 +87,24 @@ public class AutoMockServer {
 
         @Override
         public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
+            MockResponse mockResponse = new MockResponse();
             try {
-                if (request.getPath().startsWith("/")){
+                if (request.getPath().startsWith("/")) {
                     String reqestURL = getRequestURL(request);
                     // Content-Type
-                    AutoResponderItem item = autoResponder.findItem(reqestURL);
+                    AutoResponderItem item = this.autoResponder.findItem(reqestURL);
                     if (item != null) {
-                        MockResponse mockResponse = new MockResponse();
                         File replaceFile = new File(item.getReplace());
                         if (item.isBodyOnly()) {
                             Buffer buffer = new Buffer();
                             buffer.writeAll(Okio.source(replaceFile));
                             if (replaceFile.exists()) {
                                 return mockResponse
-                                    .addHeader("Content-Type", item.getContentType())
-                                    .setBody(buffer)
-                                    .setResponseCode(200);
+                                        .addHeader("Content-Type", item.getContentType())
+                                        .setBody(buffer)
+                                        .setResponseCode(200);
                             }
-                        }
-                        else {
+                        } else {
                             byte[] reqRaw = Files.readAllBytes(replaceFile.toPath());
                             HttpResponse httpResponse = HttpResponse.httpResponse(ByteArray.byteArray(reqRaw));
 
@@ -116,16 +117,16 @@ public class AutoMockServer {
                             Buffer buffer = new Buffer();
                             buffer.write(httpResponse.body().getBytes());
                             return mockResponse
-                                .setHeaders(headers.build())
-                                .setBody(buffer)
-                                .setResponseCode(httpResponse.statusCode());
+                                    .setHeaders(headers.build())
+                                    .setBody(buffer)
+                                    .setResponseCode(httpResponse.statusCode());
                         }
                     }
                 }
             } catch (IOException ex) {
-                return new MockResponse().setResponseCode(500).setBody(StringUtil.getStackTrace(ex));
+                return mockResponse.setResponseCode(500).setBody(StringUtil.getStackTrace(ex));
             }
-            return new MockResponse().setResponseCode(404);
+            return mockResponse.setResponseCode(404);
         }
     }
 }

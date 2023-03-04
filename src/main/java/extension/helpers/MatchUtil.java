@@ -1,6 +1,5 @@
 package extension.helpers;
 
-
 import extension.view.base.RegexItem;
 import java.io.UnsupportedEncodingException;
 import java.util.logging.Level;
@@ -13,6 +12,7 @@ import java.util.regex.Pattern;
  * @author isayan
  */
 public class MatchUtil {
+
     private final static Logger logger = Logger.getLogger(MatchUtil.class.getName());
 
     public static String toSmartMatch(String value) {
@@ -42,10 +42,11 @@ public class MatchUtil {
                     buff.append(HttpUtil.toHtmlEncode(ch));
                     break;
                 case '\\': // escape
-                    if (i == length - 1)
+                    if (i == length - 1) {
                         buff.append(toRegexEscape(ch));
-                    else
+                    } else {
                         escape = true;
+                    }
                     break;
                 case '.':
                 case '+':
@@ -64,26 +65,32 @@ public class MatchUtil {
                 case '|':
                 case ':':
                 case '-':
-                    if (escape) buff.append(toRegexEscape('\\'));
+                    if (escape) {
+                        buff.append(toRegexEscape('\\'));
+                    }
                     buff.append(toRegexEscape(ch));
                     escape = false;
                     break;
                 case '*': // wild card
-                    if (escape)
+                    if (escape) {
                         buff.append(toRegexEscape(ch));
-                    else
+                    } else {
                         buff.append("(?:.*?)");
+                    }
                     escape = false;
                     break;
                 case '?': // wild card
-                    if (escape)
+                    if (escape) {
                         buff.append(toRegexEscape(ch));
-                    else
+                    } else {
                         buff.append('.');
+                    }
                     escape = false;
                     break;
                 default:
-                    if (escape) buff.append(toRegexEscape('\\'));
+                    if (escape) {
+                        buff.append(toRegexEscape('\\'));
+                    }
                     buff.appendCodePoint(code);
                     escape = false;
                     break;
@@ -166,19 +173,17 @@ public class MatchUtil {
             char c = value.charAt(i);
             if (c == '%') {
                 if (i + 2 < value.length()) {
-                    char cl = value.charAt(i+1);
-                    char ch = value.charAt(i+2);
-                    if (!('0' <= cl && cl <= '9' || 'a' <= cl &&  cl <= 'z' || 'A' <= cl &&  cl <= 'Z' && '0' <= ch && ch <= '9' || 'a' <= ch &&  ch <= 'z' || 'A' <= ch &&  ch <= 'Z')) {
+                    char cl = value.charAt(i + 1);
+                    char ch = value.charAt(i + 2);
+                    if (!('0' <= cl && cl <= '9' || 'a' <= cl && cl <= 'z' || 'A' <= cl && cl <= 'Z' && '0' <= ch && ch <= '9' || 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z')) {
                         result = false;
                         break;
                     }
-                }
-                else {
+                } else {
                     result = false;
                     break;
                 }
-            }
-            else if (!('0' <= c && c <= '9' || 'a' <= c &&  c <= 'z' || 'A' <= c &&  c <= 'Z' || c == '*' || c == '_' || c == '+' || c == '.' || c == '-')) {
+            } else if (!('0' <= c && c <= '9' || 'a' <= c && c <= 'z' || 'A' <= c && c <= 'Z' || c == '*' || c == '_' || c == '+' || c == '.' || c == '-')) {
                 result = false;
                 break;
             }
@@ -188,7 +193,6 @@ public class MatchUtil {
 
     private final static Pattern PTN_B64 = Pattern.compile("([0-9a-zA-Z+/\r\n])+={0,2}");
     private final static Pattern PTN_B64_URLSAFE = Pattern.compile("([0-9a-zA-Z_\\-])");
-
 
     public static boolean isBase64(String value) {
         // base64

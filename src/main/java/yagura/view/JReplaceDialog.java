@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
  * @author isayan
  */
 public class JReplaceDialog extends CustomDialog {
+
     private final static Logger logger = Logger.getLogger(JReplaceDialog.class.getName());
 
     /**

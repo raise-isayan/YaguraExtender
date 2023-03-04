@@ -26,8 +26,6 @@ import burp.api.montoya.proxy.http.ProxyResponseHandler;
 import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
 import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
-import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
-import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
@@ -43,6 +41,7 @@ import extension.burp.MessageType;
 import extension.burp.NotifyType;
 import extension.burp.TargetTool;
 import extension.burp.BurpUtil;
+import extension.burp.BurpVersion;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.HttpUtil;
@@ -78,8 +77,6 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import passive.IssueItem;
@@ -113,7 +110,7 @@ import yagura.view.ViewStateTabEditor;
  * @author isayan
  */
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
-
+    private boolean DEBUG = false;
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
     private ProxyHander proxyHandler;
     private AutoResponderHandler autoResponderHandler;
@@ -282,7 +279,14 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     @Override
     public void initialize(MontoyaApi api) {
         super.initialize(api);
-        api.extension().setName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
+        BurpVersion version = this.getBurpVersion();
+        if (DEBUG) {
+            api.logging().logToOutput("name:" + version.getProductName());
+            api.logging().logToOutput("major:" + version.getMajor());
+            api.logging().logToOutput("minor:" + version.getMinor());
+            api.logging().logToOutput("build:" + version.getBuild());
+            api.extension().setName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
+        }
 
         // 設定ファイル読み込み
         Map<String, String> config = this.option.loadConfigSetting();
@@ -311,7 +315,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             this.registerView();
             api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
             setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
-
 
             this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
             api.extension().registerUnloadingHandler(this);
@@ -997,7 +1000,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     if (!HttpUtil.isInetAddressByName(interceptedRequest.httpService().host())) {
                         BurpExtension.helpers().issueAlert("MockServer", "resolv:" + interceptedRequest.httpService().host(), MessageType.INFO);
                         resolvHost.add(new HostnameResolution(true, interceptedRequest.httpService().host(), "127.0.0.1"));
-                        BurpConfig.configHostnameResolution(api, resolvHost);
+                        BurpConfig.configHostnameResolution(this.api, this.resolvHost);
                     }
                 }
             }
@@ -1011,7 +1014,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public void extensionUnloaded() {
-            BurpConfig.configHostnameResolution(api, resolvHost, true);
+            BurpConfig.configHostnameResolution(this.api, this.resolvHost, true);
         }
     }
 

@@ -8,6 +8,7 @@ import java.io.File;
  * @author isayan
  */
 public class Config extends BurpConfig {
+
     protected final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
 
     public static File getExtensionHomeDir() {
@@ -63,5 +64,4 @@ public class Config extends BurpConfig {
 //        String jsonString = gson.toJson(jsonMap);
 //        FileUtil.bytesToFile(StringUtil.getBytesUTF8(jsonString), fo);
 //    }
-
 }

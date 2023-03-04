@@ -21,6 +21,7 @@ import extension.burp.IBurpTab;
  * @author isayan
  */
 public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
+
     private final static Logger logger = Logger.getLogger(LoggingTab.class.getName());
 
     /**

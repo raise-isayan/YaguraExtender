@@ -24,6 +24,7 @@ import javax.swing.text.View;
  * @author isayan
  */
 public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHighlighter {
+
     private final static Logger logger = Logger.getLogger(KeywordHighlighter.class.getName());
 
     private String keyword = "";
@@ -92,12 +93,12 @@ public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHi
     @Override
     public StartEndPosion[] getHighlightPositions() {
         Highlighter.Highlight[] hs = this.getHighlights();
-        List<StartEndPosion> list = new ArrayList<StartEndPosion>();
+        List<StartEndPosion> list = new ArrayList<>();
         for (Highlighter.Highlight h : hs) {
             StartEndPosion pos = new StartEndPosion(h.getStartOffset(), h.getEndOffset());
             list.add(pos);
         }
-        return list.toArray(new StartEndPosion[0]);
+        return list.toArray(StartEndPosion[]::new);
     }
 
     /**
@@ -164,7 +165,8 @@ public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHi
                 int m0 = Math.max(sel0, p0);
                 int m1 = Math.min(sel1, p1);
                 try {
-                    Shape shape = view.modelToView(m0, Position.Bias.Forward,
+                    Shape shape = view.modelToView(
+                            m0, Position.Bias.Forward,
                             m1, Position.Bias.Backward,
                             viewBounds);
                     r = (shape instanceof Rectangle)

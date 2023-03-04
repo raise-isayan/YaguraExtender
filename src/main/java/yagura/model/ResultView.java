@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class ResultView extends HttpMessageItem implements ObjectTableMapping {
+
     private final static Logger logger = Logger.getLogger(ResultView.class.getName());
 
     public ResultView() {

@@ -63,7 +63,9 @@ jar {
     }
 
     from {
-        configurations.runtimeClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.filter{
+            it.exists()
+        }.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
     destinationDirectory = file('release')
@@ -108,14 +110,25 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.15'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.3.1'
+
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    // https://mvnrepository.com/artifact/io.github.rburgst/okhttp-digest
+    implementation 'io.github.rburgst:okhttp-digest:3.0'
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
     implementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
 
     // Unit Test
-    testImplementation 'net.portswigger.burp.extensions:montoya-api:1.0.0'
-//    testImplementation fileTree(dir: 'libs', include: ['*.jar'])
+
     // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+
+ //   testImplementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
+    testImplementation 'net.portswigger.burp.extensions:montoya-api:2023.2'
 
     // Use JUnit Jupiter for testing.
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp

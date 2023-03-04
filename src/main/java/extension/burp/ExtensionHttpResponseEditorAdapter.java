@@ -9,7 +9,6 @@ import java.awt.Component;
  *
  * @author isayan
  */
-
 public abstract class ExtensionHttpResponseEditorAdapter implements ExtensionProvidedHttpResponseEditor {
 
     private final ExtensionProvidedHttpResponseEditor editor;

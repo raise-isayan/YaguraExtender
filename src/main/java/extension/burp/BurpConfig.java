@@ -33,6 +33,7 @@ import javax.swing.UIManager;
  * @author isayan
  */
 public class BurpConfig {
+
     private static final String CA_PASSWORD = "/burp/media/ps.p12";
 
     public static String getCAPassword() {
@@ -47,11 +48,7 @@ public class BurpConfig {
             byte[] caCartByte = Base64.getDecoder().decode(prefs.get("caCert", ""));
             ks.load(new ByteArrayInputStream(caCartByte), CA_PASSWORD.toCharArray());
             return ks;
-        } catch (IOException ex) {
-            throw new KeyStoreException(ex);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new KeyStoreException(ex);
-        } catch (CertificateException ex) {
+        } catch (IOException | NoSuchAlgorithmException | CertificateException ex) {
             throw new KeyStoreException(ex);
         }
     }
@@ -74,14 +71,12 @@ public class BurpConfig {
         return userDir;
     }
 
-
     public static File getUserConfig() {
         final File userDir = new File(getUserDirPath());
         return userDir;
     }
 
     /* Burp built in PayloadStrings */
-
     private static final String BUILT_IN_PASSWORDS_SIGNATURE = "/resources/PayloadStrings/Passwords.pay";
     private static final String BUILT_IN_USERNAMES_SIGNATURE = "/resources/PayloadStrings/Usernames.pay";
     private static final String BUILT_IN_SHORT_WORDS_SIGNATURE = "/resources/PayloadStrings/Short words.pay";
@@ -97,8 +92,8 @@ public class BurpConfig {
     private static final String BUILT_IN_12_LETTER_WORDS_SIGNATURE = "/resources/PayloadStrings/12 letter words.pay";
 
     private static final String BUILT_IN_0_9_SIGNATURE = "/resources/PayloadStrings/0-9.pay";
-    private static final String BUILT_IN_A_Z_UPPERCASE_SIGNATURE  = "/resources/PayloadStrings/A-Z .pay";
-    private static final String BUILT_IN_A_Z_LOWERCASE_SIGNATURE  = "/resources/PayloadStrings/a-z.pay";
+    private static final String BUILT_IN_A_Z_UPPERCASE_SIGNATURE = "/resources/PayloadStrings/A-Z .pay";
+    private static final String BUILT_IN_A_Z_LOWERCASE_SIGNATURE = "/resources/PayloadStrings/a-z.pay";
     private static final String BUILT_IN_CGI_SCRIPTS_SIGNATURE = "/resources/PayloadStrings/CGI scripts.pay";
     private static final String BUILT_IN_DIRECTORIES_LONG_SIGNATURE = "/resources/PayloadStrings/Directories - long.pay";
     private static final String BUILT_IN_DIRECTORIES_SHORT_SIGNATURE = "/resources/PayloadStrings/Directories - short.pay";
@@ -325,7 +320,7 @@ public class BurpConfig {
             case BUILT_IN_LOCAL_FILES_LINUX:
                 signatures.addAll(loadFromResource(BUILT_IN_LOCAL_FILES_LINUX_SIGNATURE));
                 break;
-           case BUILT_IN_LOCAL_FILES_WINDOWS:
+            case BUILT_IN_LOCAL_FILES_WINDOWS:
                 signatures.addAll(loadFromResource(BUILT_IN_LOCAL_FILES_WINDOWS_SIGNATURE));
                 break;
             case BUILT_IN_SERVER_SIDE_VARIABLE_NAMES:
@@ -346,80 +341,67 @@ public class BurpConfig {
         return signatures;
     }
 
-   public static Color getTabFlashColor() {
-         try {
+    public static Color getTabFlashColor() {
+        try {
             return UIManager.getColor("Burp.tabFlashColour");
         } catch (NullPointerException ex) {
             return new Color(0xff, 0x66, 0x33);
         }
-   }
-
-/***
-config:
-{
-    "project_options":{
-        "connections":{
-            "hostname_resolution":[
-                {
-                    "enabled":true,
-                    "hostname":"test",
-                    "ip_address":"127.0.0.1"
-                },
-                {
-                    "enabled":true,
-                    "hostname":"hoge",
-                    "ip_address":"192.168.0.2"
-                }
-            ]
-        }
     }
-}
-**/
 
-   /**
-    *
-    * @param api
-    * @param hosts
-    */
-   public static synchronized void configHostnameResolution(MontoyaApi api, List<HostnameResolution> hosts) {
-       configHostnameResolution(api, hosts, false);
-   }
+    /**
+     * *
+     * config: { "project_options":{ "connections":{ "hostname_resolution":[ {
+     * "enabled":true, "hostname":"test", "ip_address":"127.0.0.1" }, {
+     * "enabled":true, "hostname":"hoge", "ip_address":"192.168.0.2" } ] } } }
+*
+     */
+    /**
+     *
+     * @param api
+     * @param hosts
+     */
+    public static synchronized void configHostnameResolution(MontoyaApi api, List<HostnameResolution> hosts) {
+        configHostnameResolution(api, hosts, false);
+    }
 
-   /***
-    *
-    * @param api
-    * @param hosts
-    * @param remove
-    */
-   public static void configHostnameResolution(MontoyaApi api, List<HostnameResolution> hosts, boolean remove) {
+    /**
+     * *
+     *
+     * @param api
+     * @param hosts
+     * @param remove
+     */
+    public static void configHostnameResolution(MontoyaApi api, List<HostnameResolution> hosts, boolean remove) {
         String config = api.burpSuite().exportProjectOptionsAsJson("project_options.connections.hostname_resolution");
-        BurpExtension.helpers().outPrintln("loadConfig:" + config);
         String updateConfig = updateHostnameResolution(config, hosts, remove);
-        BurpExtension.helpers().outPrintln("saveConfig:" + updateConfig);
         api.burpSuite().importProjectOptionsFromJson(updateConfig);
     }
 
-   /***
-    *
-    * @param config
-    * @param hosts
-    * @return
-    */
-   protected static String updateHostnameResolution(String config, List<HostnameResolution> hosts) {
-       return updateHostnameResolution(config, hosts, false);
-   }
+    /**
+     * *
+     *
+     * @param config
+     * @param hosts
+     * @return
+     */
+    protected static String updateHostnameResolution(String config, List<HostnameResolution> hosts) {
+        return updateHostnameResolution(config, hosts, false);
+    }
 
-   /***
-    *
-    * @param config
-    * @param hosts
-    * @param remove
-    * @return
-    */
-   protected static synchronized String updateHostnameResolution(String config, List<HostnameResolution> hosts, boolean remove) {
+    /**
+     * *
+     *
+     * @param config
+     * @param hosts
+     * @param remove
+     * @return
+     */
+    protected static synchronized String updateHostnameResolution(String config, List<HostnameResolution> hosts, boolean remove) {
         JsonObject root_json = JsonUtil.parseJsonObject(config);
         JsonObject connections = root_json.getAsJsonObject("project_options").getAsJsonObject("connections");
-        Type listType = new TypeToken<ArrayList<HostnameResolution>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<HostnameResolution>>() {
+        }.getType();
         JsonArray jsonArray = connections.getAsJsonArray("hostname_resolution");
         List<HostnameResolution> hostnameResolution = JsonUtil.jsonFromJsonElement(jsonArray, listType, true);
         List<HostnameResolution> resolvHost = new ArrayList<>();
@@ -427,8 +409,7 @@ config:
             for (HostnameResolution h : hosts) {
                 hostnameResolution = hostnameResolution.stream().filter(m -> !m.hostname.equalsIgnoreCase(h.hostname)).collect(Collectors.toList());
             }
-        }
-        else {
+        } else {
             for (HostnameResolution h : hosts) {
                 if (hostnameResolution.stream().noneMatch(m -> m.hostname.equalsIgnoreCase(h.hostname))) {
                     resolvHost.add(h);
@@ -442,25 +423,22 @@ config:
         JsonElement updateJsonElemet = JsonUtil.jsonToJsonElement(hostnameResolution, true);
         connections.add("hostname_resolution", updateJsonElemet);
         return JsonUtil.prettyJson(root_json, true);
-   }
+    }
 
-   public static class HostnameResolution {
-       public HostnameResolution() {
-           this(true, "", "");
-       }
+    public static class HostnameResolution {
 
-       public HostnameResolution(boolean enabled, String hostname, String ip_address) {
-           this.enabled = enabled;
-           this.hostname = hostname;
-           this.ip_address = ip_address;
-       }
+        public HostnameResolution(boolean enabled, String hostname, String ip_address) {
+            this.enabled = enabled;
+            this.hostname = hostname;
+            this.ip_address = ip_address;
+        }
 
-       @Expose
-       private boolean enabled = true;
-       @Expose
-       private String hostname = "";
-       @Expose
-       private String ip_address = "";
+        @Expose
+        private boolean enabled = true;
+        @Expose
+        private String hostname = "";
+        @Expose
+        private String ip_address = "";
 
         /**
          * @return the enabled
@@ -503,6 +481,6 @@ config:
         public void setIPAddress(String ip_address) {
             this.ip_address = ip_address;
         }
-   }
+    }
 
 }

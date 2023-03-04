@@ -1,5 +1,6 @@
 package yagura;
 
+import extend.util.external.BouncyUtil;
 import extension.view.base.CustomVersion;
 
 /**
@@ -39,17 +40,19 @@ public final class Version extends CustomVersion {
         return projname;
     }
 
-    private final static String VERSION_INFO_FMT =
-            "Product Version: %s v%s\n" +
-            "Log Dir: %s\n" +
-            "Config Dir: %s\n";
+    private final static String VERSION_INFO_FMT
+            = """
+            Product Version: %s v%s
+            Log Dir: %s
+            Config Dir: %s
+            """;
 
     public String getVersionInfo() {
         return String.format(VERSION_INFO_FMT,
-            getProjectName(),
-            Version.getInstance().getVersion(),
-            Config.getUserDirPath(),
-            Config.getExtensionHomeDir().getAbsoluteFile());
+                getProjectName(),
+                Version.getInstance().getVersion(),
+                Config.getUserDirPath(),
+                Config.getExtensionHomeDir().getAbsoluteFile());
     }
 
 }

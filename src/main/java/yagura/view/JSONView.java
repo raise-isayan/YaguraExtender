@@ -28,6 +28,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
  * @author isayan
  */
 public class JSONView extends javax.swing.JPanel {
+
     private final static Logger logger = Logger.getLogger(JSONView.class.getName());
 
     private final boolean isJsonp;
@@ -61,7 +62,6 @@ public class JSONView extends javax.swing.JPanel {
 //            return new JSONSyntaxDocument();
 //        }
 //    };
-
     private DefaultTreeModel modelJSON;
 
     /**
@@ -122,8 +122,9 @@ public class JSONView extends javax.swing.JPanel {
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
-        /*** UI design start ***/
-
+        /**
+         * * UI design start **
+         */
         this.txtJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.scrollJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtJSON);
         this.txtJSON.setWrapStyleWord(false);
@@ -140,15 +141,14 @@ public class JSONView extends javax.swing.JPanel {
 
 //        tabbetJSON.addTab("pretty", scrollJSON);
 //        add(tabbetJSON, java.awt.BorderLayout.CENTER);
-
-        /*** UI design end ***/
-
+        /**
+         * * UI design end **
+         */
         this.txtJSON.setEditable(false);
         this.txtJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 
 //        this.txtJSON.setEditorKitForContentType("application/json", this.jsonStyleEditorKit);
 //        this.txtJSON.setContentType("application/json");
-
         Icon emptyIcon = SwingUtil.createEmptyIcon();
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) this.treeJSON.getCellRenderer();
         renderer.setOpenIcon(emptyIcon);
@@ -188,8 +188,7 @@ public class JSONView extends javax.swing.JPanel {
         if (content != null) {
             if (this.isJsonp) {
                 setMessageJsonp(content);
-            }
-            else {
+            } else {
                 setMessageJson(content);
             }
         }
@@ -352,10 +351,10 @@ public class JSONView extends javax.swing.JPanel {
     }
 
     protected void quickSearch(DefaultMutableTreeNode node, String keyword) {
-       for (int i = 0; i < node.getChildCount(); i++) {
-           TreeNode child = node.getChildAt(i);
-           child.toString();
-       }
+        for (int i = 0; i < node.getChildCount(); i++) {
+            TreeNode child = node.getChildAt(i);
+            child.toString();
+        }
     }
 
     /**

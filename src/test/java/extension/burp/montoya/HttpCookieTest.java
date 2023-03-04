@@ -52,7 +52,6 @@ public class HttpCookieTest {
 
     private final String COOKIE_REQ = "SID=31d4d96e407aad42; lang=en-US;";
 
-
     /**
      * Test of parseResponse method, of class HttpCookie.
      */
@@ -149,12 +148,12 @@ public class HttpCookieTest {
         System.out.println("parseRequest");
         {
             String cookieString = COOKIE_EMPTY;
-            HttpCookie [] result = HttpCookie.parseResuest(cookieString);
+            HttpCookie[] result = HttpCookie.parseResuest(cookieString);
             assertEquals(0, result.length);
         }
         {
             String cookieString = COOKIE1;
-            HttpCookie [] result = HttpCookie.parseResuest(cookieString);
+            HttpCookie[] result = HttpCookie.parseResuest(cookieString);
             assertEquals(1, result.length);
             assertEquals("SID", result[0].getName());
             assertEquals("31d4d96e407aad42", result[0].getValue());
@@ -167,7 +166,7 @@ public class HttpCookieTest {
         }
         {
             String cookieString = COOKIE_REQ;
-            HttpCookie [] result = HttpCookie.parseResuest(cookieString);
+            HttpCookie[] result = HttpCookie.parseResuest(cookieString);
             assertEquals(2, result.length);
             assertEquals("SID", result[0].getName());
             assertEquals("31d4d96e407aad42", result[0].getValue());
@@ -175,7 +174,6 @@ public class HttpCookieTest {
             assertEquals("en-US", result[1].getValue());
         }
     }
-
 
     /**
      */
@@ -212,7 +210,7 @@ public class HttpCookieTest {
             assertEquals("", result.getValue());
             assertNull(result.getPath());
             assertNull(result.getDomain());
-            assertEquals(fmt.format(expirationDate) , fmt.format(result.getExpirationAsDate()));
+            assertEquals(fmt.format(expirationDate), fmt.format(result.getExpirationAsDate()));
             assertEquals(-1, result.getMaxage());
             assertFalse(result.isHttpOnly());
             assertFalse(result.isSecure());
@@ -258,7 +256,7 @@ public class HttpCookieTest {
                 assertEquals("", result.getValue());
                 assertNull(result.getPath());
                 assertNull(result.getDomain());
-                assertEquals(fmt.format(expirationDate) , fmt.format(result.getExpirationAsDate()));
+                assertEquals(fmt.format(expirationDate), fmt.format(result.getExpirationAsDate()));
                 assertEquals(-1, result.getMaxage());
                 assertFalse(result.isHttpOnly());
                 assertFalse(result.isSecure());
@@ -269,8 +267,7 @@ public class HttpCookieTest {
         }
     }
 
-
-   /**
+    /**
      * Test of toString method, of class HttpCookie.
      */
     @Test
@@ -292,7 +289,7 @@ public class HttpCookieTest {
                 assertEquals(-1, result.getMaxage());
                 assertFalse(result.isHttpOnly());
                 assertFalse(result.isSecure());
-                assertEquals(result.getSameSite(),"None");
+                assertEquals(result.getSameSite(), "None");
             } catch (ParseException ex) {
                 fail();
             }

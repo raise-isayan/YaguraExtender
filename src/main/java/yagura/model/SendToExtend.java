@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.*;
 import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
@@ -30,6 +29,7 @@ import yagura.Config;
  * @author isayan
  */
 public class SendToExtend extends SendToMenuItem {
+
     private final static Logger logger = Logger.getLogger(SendToExtend.class.getName());
     public final static String USE_CUSTOM_PROXY = "USE_CUSTOM_PROXY";
     public final static String USE_BURP_PROXY = "USE_BURP_PROXY";
@@ -123,7 +123,7 @@ public class SendToExtend extends SendToMenuItem {
                 try {
                     File file = filechooser.getSelectedFile();
                     if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                        try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+                        try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
                                 fstm.write(messageItem.request().toByteArray().getBytes());
                                 fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
@@ -156,7 +156,7 @@ public class SendToExtend extends SendToMenuItem {
                 try {
                     File file = filechooser.getSelectedFile();
                     if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                        try (BufferedOutputStream  fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+                        try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
                             if (messageType == SendToItem.MessageType.REQUEST || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
                                 HttpRequest httpRequest = messageItem.request();
                                 byte reqMessage[] = httpRequest.toByteArray().getBytes();
@@ -184,7 +184,7 @@ public class SendToExtend extends SendToMenuItem {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        javax.swing.JMenuItem item = (javax.swing.JMenuItem)e.getSource();
+        javax.swing.JMenuItem item = (javax.swing.JMenuItem) e.getSource();
         List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
         sendToEvent(item.getText(), messageInfo);
     }

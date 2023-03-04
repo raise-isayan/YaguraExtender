@@ -110,7 +110,7 @@ public class RegexItemTest {
             assertFalse(result.matcher("AGHJZ").matches());
         }
         {
-            Pattern result = RegexItem.compileRegex("a(.*)z",Pattern.CASE_INSENSITIVE,false);
+            Pattern result = RegexItem.compileRegex("a(.*)z", Pattern.CASE_INSENSITIVE, false);
             assertTrue(result.matcher("aghjz").matches());
             assertTrue(result.matcher("AGHJZ").matches());
         }

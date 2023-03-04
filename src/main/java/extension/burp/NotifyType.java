@@ -30,7 +30,7 @@ public enum NotifyType {
         }
         return notifyType;
     }
-        
+
     @Override
     public String toString() {
         String value = name().toLowerCase();

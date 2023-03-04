@@ -9,10 +9,11 @@ import java.net.URL;
  * @author isayan
  */
 public class HttpTarget implements burp.api.montoya.http.HttpService {
+
     public static final String PROTOCOL_ANY = "Any";
     public static final String PROTOCOL_HTTP = "http";
     public static final String PROTOCOL_HTTPS = "https";
-    public static final String [] PROTOCOLS = {PROTOCOL_HTTP, PROTOCOL_HTTPS};
+    public static final String[] PROTOCOLS = {PROTOCOL_HTTP, PROTOCOL_HTTPS};
 
     private String host;
     private int port;
@@ -31,8 +32,7 @@ public class HttpTarget implements burp.api.montoya.http.HttpService {
     public static String toURLString(burp.api.montoya.http.HttpService httpService) {
         if (HttpUtil.getDefaultPort(getProtocol(httpService.secure())) == httpService.port()) {
             return String.format("%s://%s/", getProtocol(httpService.secure()), httpService.host());
-        }
-        else {
+        } else {
             return String.format("%s://%s:%d/", getProtocol(httpService.secure()), httpService.host(), httpService.port());
         }
     }

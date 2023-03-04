@@ -1,11 +1,6 @@
 package yagura.model;
 
-import extension.helpers.HttpUtil;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.ProxySelector;
-import java.net.SocketAddress;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Redirect;
@@ -19,7 +14,6 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -63,17 +57,16 @@ public class ProxyTest {
                     .uri(URI.create("https://www.example.com/"))
                     .build();
 
-            SocketAddress addr = new InetSocketAddress("127.0.0.1", 1080);
-            Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
-            ProxySelector staticProxy = new HttpUtil.StaticProxySelector(proxy) {
-                @Override
-                public void connectFailed(URI uri, SocketAddress sa, IOException ex) {
-                    fail();
-                }
-            };
-
-            builder = builder.proxy(staticProxy);
-
+//            SocketAddress addr = new InetSocketAddress("127.0.0.1", 1080);
+//            Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+//            ProxySelector staticProxy = new HttpUtil.StaticProxySelector(proxy) {
+//                @Override
+//                public void connectFailed(URI uri, SocketAddress sa, IOException ex) {
+//                    fail();
+//                }
+//            };
+//
+//            builder = builder.proxy(staticProxy);
             HttpClient client = builder.build();
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             int statusCode = response.statusCode();

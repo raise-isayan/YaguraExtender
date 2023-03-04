@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
  * @author isayan
  */
 public class UtilTest {
+
     private final static Logger logger = Logger.getLogger(UtilTest.class.getName());
 
     public UtilTest() {

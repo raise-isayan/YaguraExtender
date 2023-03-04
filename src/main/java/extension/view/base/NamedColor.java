@@ -7,6 +7,7 @@ import java.awt.Color;
  * @author isayan
  */
 public class NamedColor extends Color implements Comparable<NamedColor> {
+
     private final Color color;
     private final String name;
 
@@ -14,7 +15,7 @@ public class NamedColor extends Color implements Comparable<NamedColor> {
         super(color.getRGB());
         this.color = color;
         if (name == null) {
-            new NullPointerException("name is null");
+            throw new NullPointerException("name is null");
         }
         this.name = name;
     }
@@ -46,8 +47,8 @@ public class NamedColor extends Color implements Comparable<NamedColor> {
     @Override
     public int compareTo(NamedColor o) {
         try {
-            int parseIntA = Integer.valueOf(name);
-            int parseIntB = Integer.valueOf(o.name);
+            int parseIntA = Integer.parseInt(name);
+            int parseIntB = Integer.parseInt(o.name);
             return parseIntA - parseIntB;
         } catch (NumberFormatException e) {
             return name.compareTo(o.name);

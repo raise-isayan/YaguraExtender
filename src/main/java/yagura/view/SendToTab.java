@@ -29,6 +29,7 @@ import extension.burp.IBurpTab;
  * @author isayan
  */
 public class SendToTab extends javax.swing.JPanel implements IBurpTab {
+
     private final static Logger logger = Logger.getLogger(SendToTab.class.getName());
 
     /**
@@ -264,7 +265,6 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         this.tableSendTo.setDragEnabled(true);
         this.tableSendTo.setFillsViewportHeight(true);
 
-
         // selected
         this.tableSendTo.getColumnModel().getColumn(0).setMinWidth(20);
         this.tableSendTo.getColumnModel().getColumn(0).setPreferredWidth(20);
@@ -422,7 +422,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             this.sendtoItemDlg.setItem(getEditItem());
         } else {
             SendToItem item = new SendToItem();
-            Properties prop = item.getExtendProperty();
+            Properties prop = item.getExtendProperties();
             prop.setProperty("ignoreValidateCertification", Boolean.FALSE.toString());
             this.sendtoItemDlg.setItem(item);
         }

@@ -75,27 +75,27 @@ public class DateUtilTest {
         moy.put(12L, "Dec");
         DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
         RFC_1123_DATE_TIME_HYPHEN = builder.parseCaseInsensitive()
-            .parseLenient()
-            .optionalStart()
-            .appendText(ChronoField.DAY_OF_WEEK, dow)
-            .appendLiteral(", ")
-            .optionalEnd()
-            .appendValue(ChronoField.DAY_OF_MONTH, 1, 2, SignStyle.NOT_NEGATIVE)
-            .appendLiteral('-')
-            .appendText(ChronoField.MONTH_OF_YEAR, moy)
-            .appendLiteral('-')
-            .appendValue(ChronoField.YEAR, 4)  // 2 digit year not handled
-            .appendLiteral(' ')
-            .appendValue(ChronoField.HOUR_OF_DAY, 2)
-            .appendLiteral(':')
-            .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
-            .optionalStart()
-            .appendLiteral(':')
-            .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
-            .optionalEnd()
-            .appendLiteral(' ')
-            .appendOffset("+HHMM", "GMT")  // should handle UT/Z/EST/EDT/CST/CDT/MST/MDT/PST/MDT
-            .toFormatter().withResolverStyle(ResolverStyle.SMART).withChronology(IsoChronology.INSTANCE);
+                .parseLenient()
+                .optionalStart()
+                .appendText(ChronoField.DAY_OF_WEEK, dow)
+                .appendLiteral(", ")
+                .optionalEnd()
+                .appendValue(ChronoField.DAY_OF_MONTH, 1, 2, SignStyle.NOT_NEGATIVE)
+                .appendLiteral('-')
+                .appendText(ChronoField.MONTH_OF_YEAR, moy)
+                .appendLiteral('-')
+                .appendValue(ChronoField.YEAR, 4) // 2 digit year not handled
+                .appendLiteral(' ')
+                .appendValue(ChronoField.HOUR_OF_DAY, 2)
+                .appendLiteral(':')
+                .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
+                .optionalStart()
+                .appendLiteral(':')
+                .appendValue(ChronoField.SECOND_OF_MINUTE, 2)
+                .optionalEnd()
+                .appendLiteral(' ')
+                .appendOffset("+HHMM", "GMT") // should handle UT/Z/EST/EDT/CST/CDT/MST/MDT/PST/MDT
+                .toFormatter().withResolverStyle(ResolverStyle.SMART).withChronology(IsoChronology.INSTANCE);
     }
 
     /**
@@ -119,7 +119,6 @@ public class DateUtilTest {
             assertEquals(DateTimeFormatter.RFC_1123_DATE_TIME.format(expResult), DateTimeFormatter.RFC_1123_DATE_TIME.format(result));
         }
     }
-
 
     /**
      * Test of parseHttpDate method, of class DateUtil.
@@ -177,8 +176,7 @@ public class DateUtilTest {
                 ZonedDateTime result = ZonedDateTime.from(tm);
                 System.out.println(result.toEpochSecond());
                 assertEquals(expResult.toEpochSecond(), result.minusHours(-9).toEpochSecond());
-            }
-            else {
+            } else {
                 fail();
             }
         }
@@ -187,8 +185,7 @@ public class DateUtilTest {
             TemporalAccessor tm = SMART_RFC_1123_FORMATTER.parse(dateStr.trim());
             if (tm.isSupported(ChronoField.OFFSET_SECONDS)) {
                 System.out.println("ZONE:");
-            }
-            else {
+            } else {
                 System.out.println("NOT ZONE:");
             }
         }

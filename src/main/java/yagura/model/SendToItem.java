@@ -15,6 +15,7 @@ import javax.swing.event.EventListenerList;
  * @author isayan
  */
 public class SendToItem {
+
     private final static Logger logger = Logger.getLogger(SendToItem.class.getName());
 
     public enum MessageType {
@@ -47,8 +48,8 @@ public class SendToItem {
 
     };
 
-   @Expose
-   private ExtendType sendExtend = null;
+    @Expose
+    private ExtendType sendExtend = null;
 
     public SendToItem() {
     }
@@ -67,7 +68,7 @@ public class SendToItem {
         this.extendProperties.putAll(item.extendProperties);
     }
 
-   @Expose
+    @Expose
     private boolean selected = false;
 
     /**
@@ -84,7 +85,7 @@ public class SendToItem {
         this.selected = selected;
     }
 
-   @Expose
+    @Expose
     private String caption;
 
     /**
@@ -101,7 +102,7 @@ public class SendToItem {
         this.caption = caption;
     }
 
-   @Expose
+    @Expose
     private boolean server;
 
     /**
@@ -118,7 +119,7 @@ public class SendToItem {
         this.server = server;
     }
 
-   @Expose
+    @Expose
     private String target;
 
     /**
@@ -142,7 +143,7 @@ public class SendToItem {
         return this.requestHeader && this.requestBody;
     }
 
-   @Expose
+    @Expose
     private boolean requestHeader = true;
 
     /**
@@ -159,7 +160,7 @@ public class SendToItem {
         this.requestHeader = requestHeader;
     }
 
-   @Expose
+    @Expose
     private boolean requestBody = true;
 
     /**
@@ -183,7 +184,7 @@ public class SendToItem {
         return this.responseHeader && this.responseBody;
     }
 
-   @Expose
+    @Expose
     private boolean responseHeader = true;
 
     /**
@@ -200,7 +201,7 @@ public class SendToItem {
         this.responseHeader = responseHeader;
     }
 
-   @Expose
+    @Expose
     private boolean responseBody = true;
 
     /**
@@ -217,7 +218,7 @@ public class SendToItem {
         this.responseBody = responseBody;
     }
 
-   @Expose
+    @Expose
     private boolean reverseOrder = false;
 
     /**
@@ -234,14 +235,14 @@ public class SendToItem {
         this.reverseOrder = reverseOrder;
     }
 
-   @Expose
+    @Expose
     private final Properties extendProperties = new Properties();
 
-    public Properties getExtendProperty() {
+    public Properties getExtendProperties() {
         return extendProperties;
     }
 
-    public String getExtendPropertyString() {
+    public String getExtendPropertiesString() {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             this.extendProperties.storeToXML(os, "");
@@ -251,7 +252,7 @@ public class SendToItem {
         return StringUtil.getStringUTF8(os.toByteArray());
     }
 
-    public void setExtendPropertyString(String propString) {
+    public void setExtendPropertiesString(String propString) {
         try {
             ByteArrayInputStream is = new ByteArrayInputStream(StringUtil.getBytesUTF8(propString));
             this.extendProperties.loadFromXML(is);
@@ -322,7 +323,7 @@ public class SendToItem {
         beans[6] = sendTo.isResponseHeader();
         beans[7] = sendTo.isResponseBody();
         beans[8] = sendTo.isReverseOrder();
-        beans[9] = sendTo.getExtendPropertyString();
+        beans[9] = sendTo.getExtendPropertiesString();
         beans[10] = sendTo.getExtend();
         return beans;
     }
@@ -338,7 +339,7 @@ public class SendToItem {
         sendTo.setResponseHeader((Boolean) rows[6]);
         sendTo.setResponseBody((Boolean) rows[7]);
         sendTo.setReverseOrder((Boolean) rows[8]);
-        sendTo.setExtendPropertyString((String) rows[9]);
+        sendTo.setExtendPropertiesString((String) rows[9]);
         sendTo.setExtend((ExtendType) rows[10]);
         return sendTo;
     }

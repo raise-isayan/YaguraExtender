@@ -13,13 +13,16 @@ import extension.view.base.CustomDialog;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import yagura.model.HttpExtendProperty;
 
 /**
  *
  * @author isayan
  */
 public class SendToItemDlg extends CustomDialog {
+
     private final static Logger logger = Logger.getLogger(SendToItemDlg.class.getName());
+
     /**
      * Creates new form SendToItemDlg
      *
@@ -466,15 +469,15 @@ public class SendToItemDlg extends CustomDialog {
             item.setResponseHeader(this.chkResponseHeader.isSelected());
             item.setResponseBody(this.chkResponseBody.isSelected());
             item.setReverseOrder(this.chkReverseOrder.isSelected());
-            item.getExtendProperty().clear();
-            item.getExtendProperty().putAll(this.extendProperty);
+            item.getExtendProperties().clear();
+            item.getExtendProperties().putAll(this.extendProperty);
         } else {
             SendToItem.ExtendType sendToExtend = (SendToItem.ExtendType) this.modelExtend.getSelectedItem();
             item.setCaption(sendToExtend.toString());
             item.setTarget(SendToItem.ExtendType.class.getSimpleName());
             item.setExtend(sendToExtend);
-            item.getExtendProperty().clear();
-            item.getExtendProperty().putAll(this.extendProperty);
+            item.getExtendProperties().clear();
+            item.getExtendProperties().putAll(this.extendProperty);
         }
         return item;
     }
@@ -494,13 +497,13 @@ public class SendToItemDlg extends CustomDialog {
             this.chkResponseBody.setSelected(item.isResponseBody());
             this.chkReverseOrder.setSelected(item.isReverseOrder());
             this.extendProperty.clear();
-            this.extendProperty.putAll(item.getExtendProperty());
+            this.extendProperty.putAll(item.getExtendProperties());
         } else {
             this.tabbetSendTo.setSelectedIndex(this.tabbetSendTo.indexOfTab("Extend"));
             SendToItem.ExtendType sendToExtend = item.getExtend();
             this.cmbExtend.setSelectedItem(sendToExtend);
             this.extendProperty.clear();
-            this.extendProperty.putAll(item.getExtendProperty());
+            this.extendProperty.putAll(item.getExtendProperties());
         }
     }
 
@@ -518,15 +521,18 @@ public class SendToItemDlg extends CustomDialog {
     private void showSendToServerExtendDlg(boolean editMode) {
         this.sendToServerExtendDlg.setLocationRelativeTo(this);
         if (editMode) {
-            this.sendToServerExtendDlg.setProperties(this.extendProperty);
+            HttpExtendProperty prop = new HttpExtendProperty();
+            prop.setProperties(this.extendProperty);
+            this.sendToServerExtendDlg.setProperty(prop);
         } else {
-            Properties prop  = new Properties();
-            prop.setProperty("ignoreValidateCertification", Boolean.FALSE.toString());
-            this.sendToServerExtendDlg.setProperties(prop);
+            HttpExtendProperty prop = new HttpExtendProperty();
+            this.sendToServerExtendDlg.setProperty(prop);
         }
         this.sendToServerExtendDlg.setVisible(true);
         if (this.sendToServerExtendDlg.getModalResult() == JOptionPane.OK_OPTION) {
-            this.sendToServerExtendDlg.getProperties(this.extendProperty);
+            HttpExtendProperty prop = this.sendToServerExtendDlg.getProperty();
+            this.extendProperty.clear();
+            this.extendProperty.putAll(prop.getProperties());
         }
     }
 

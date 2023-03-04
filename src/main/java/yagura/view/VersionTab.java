@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import yagura.Config;
 import yagura.model.OptionProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.json.JsonUtil;
@@ -22,6 +21,7 @@ import extension.helpers.json.JsonUtil;
  * @author isayan
  */
 public class VersionTab extends javax.swing.JPanel implements IBurpTab {
+
     private final static Logger logger = Logger.getLogger(VersionTab.class.getName());
 
     /**
@@ -126,8 +126,9 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
         filechooser.setFileFilter(BURP_CONFIG_FILTER);
-        if (file != null && file.exists())
+        if (file != null && file.exists()) {
             filechooser.setSelectedFile(file);
+        }
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
@@ -149,8 +150,9 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
         filechooser.setFileFilter(BURP_CONFIG_FILTER);
-        if (file != null && file.exists())
+        if (file != null && file.exists()) {
             filechooser.setSelectedFile(file);
+        }
         int selected = filechooser.showSaveDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {

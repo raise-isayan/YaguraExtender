@@ -142,7 +142,6 @@ public class MontoyaApiAdapter implements MontoyaApi {
 
     }
 
-
     public static class CollaboratorAdapter implements Collaborator {
 
         @Override
@@ -621,6 +620,7 @@ public class MontoyaApiAdapter implements MontoyaApi {
     }
 
     public static class VersionAdapter implements Version {
+
         final String name;
         final String major;
         final String minor;

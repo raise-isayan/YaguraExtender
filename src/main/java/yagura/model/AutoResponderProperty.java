@@ -17,7 +17,6 @@ public class AutoResponderProperty implements IPropertyConfig {
     public final static String AUTO_RESPONDER_PROPERTY = "autoResponderProperty";
     public final static String AUTO_RESPONDER_HEADER = "X-Yagura-AutoResponder";
 
-
     @Expose
     private int redirectPort = 0;
 

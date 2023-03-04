@@ -74,27 +74,53 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
         if (cls.equals(MatchAlertItem.class)) {
             final MatchAlertItem matchItem = new MatchAlertItem();
             matchItem.setProperty((MatchItem) item);
-            if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
-            if (jsonObject.has("issueName")) matchItem.setIssueName(jdc.deserialize(jsonObject.get("issueName"), String.class));
-            if (jsonObject.has("severity")) matchItem.setSeverity(jdc.deserialize(jsonObject.get("severity"), Severity.class));
-            if (jsonObject.has("captureGroup")) matchItem.setCaptureGroup(jdc.deserialize(jsonObject.get("captureGroup"), Boolean.TYPE));
-            if (jsonObject.has("confidence")) matchItem.setConfidence(jdc.deserialize(jsonObject.get("confidence"), Confidence.class));
-            if (jsonObject.has("notifyTypes")) matchItem.setNotifyTypes(NotifyType.parseEnumSet(jsonObject.get("notifyTypes").getAsJsonArray().toString()));
-            if (jsonObject.has("targetTools")) matchItem.setTargetTools(TargetTool.parseEnumSet(jsonObject.get("targetTools").getAsJsonArray().toString()));
-            if (jsonObject.has("highlightColor")) matchItem.setHighlightColor(jdc.deserialize(jsonObject.get("highlightColor"), MessageHighlightColor.class));
-            if (jsonObject.has("comment")) matchItem.setComment(jdc.deserialize(jsonObject.get("comment"), String.class));
+            if (jsonObject.has("smartMatch")) {
+                matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
+            }
+            if (jsonObject.has("issueName")) {
+                matchItem.setIssueName(jdc.deserialize(jsonObject.get("issueName"), String.class));
+            }
+            if (jsonObject.has("severity")) {
+                matchItem.setSeverity(jdc.deserialize(jsonObject.get("severity"), Severity.class));
+            }
+            if (jsonObject.has("captureGroup")) {
+                matchItem.setCaptureGroup(jdc.deserialize(jsonObject.get("captureGroup"), Boolean.TYPE));
+            }
+            if (jsonObject.has("confidence")) {
+                matchItem.setConfidence(jdc.deserialize(jsonObject.get("confidence"), Confidence.class));
+            }
+            if (jsonObject.has("notifyTypes")) {
+                matchItem.setNotifyTypes(NotifyType.parseEnumSet(jsonObject.get("notifyTypes").getAsJsonArray().toString()));
+            }
+            if (jsonObject.has("targetTools")) {
+                matchItem.setTargetTools(TargetTool.parseEnumSet(jsonObject.get("targetTools").getAsJsonArray().toString()));
+            }
+            if (jsonObject.has("highlightColor")) {
+                matchItem.setHighlightColor(jdc.deserialize(jsonObject.get("highlightColor"), MessageHighlightColor.class));
+            }
+            if (jsonObject.has("comment")) {
+                matchItem.setComment(jdc.deserialize(jsonObject.get("comment"), String.class));
+            }
             return matchItem;
         } else if (cls.equals(MatchReplaceItem.class)) {
             final MatchReplaceItem matchItem = new MatchReplaceItem();
             matchItem.setProperty((MatchItem) item);
-            if (jsonObject.has("smartMatch")) matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
-            if (jsonObject.has("metaChar")) matchItem.setMetaChar(jdc.deserialize(jsonObject.get("metaChar"), Boolean.TYPE));
+            if (jsonObject.has("smartMatch")) {
+                matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
+            }
+            if (jsonObject.has("metaChar")) {
+                matchItem.setMetaChar(jdc.deserialize(jsonObject.get("metaChar"), Boolean.TYPE));
+            }
             return matchItem;
         } else if (cls.equals(AutoResponderItem.class)) {
             final AutoResponderItem matchItem = new AutoResponderItem();
             matchItem.setProperty((MatchItem) item);
-            if (jsonObject.has("bodyOnly")) matchItem.setBodyOnly(jdc.deserialize(jsonObject.get("bodyOnly"), Boolean.TYPE));
-            if (jsonObject.has("contentType")) matchItem.setContentType(jdc.deserialize(jsonObject.get("contentType"), String.class));
+            if (jsonObject.has("bodyOnly")) {
+                matchItem.setBodyOnly(jdc.deserialize(jsonObject.get("bodyOnly"), Boolean.TYPE));
+            }
+            if (jsonObject.has("contentType")) {
+                matchItem.setContentType(jdc.deserialize(jsonObject.get("contentType"), String.class));
+            }
             return matchItem;
         }
         return item;

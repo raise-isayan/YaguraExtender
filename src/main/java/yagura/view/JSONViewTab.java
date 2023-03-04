@@ -8,7 +8,6 @@ import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
-import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
@@ -130,7 +129,7 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
                 this.jsonView.setMessage(null);
             }
             this.quickSearchTab.clearViewAndSearch();
-        } catch (Exception ex) {
+        } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }

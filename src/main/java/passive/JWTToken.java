@@ -22,6 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @author isayan
  */
 public class JWTToken implements JsonToken {
+
     private final static Logger logger = Logger.getLogger(JWTToken.class.getName());
 
     private final static JWTToken jwtInstance = new JWTToken();
@@ -137,7 +138,7 @@ public class JWTToken implements JsonToken {
                 tokens.add(item);
             }
         }
-        return tokens.toArray(new CaptureItem[0]);
+        return tokens.toArray(CaptureItem[]::new);
     }
 
     @Override
@@ -264,10 +265,10 @@ public class JWTToken implements JsonToken {
     }
 
     public static boolean signatureEqual(Algorithm algo, String encrypt, final byte[] signature, String secret) {
-        return signatureEqual(algo, StringUtil.getBytesRaw(encrypt), signature,  StringUtil.getBytesRaw(secret));
+        return signatureEqual(algo, StringUtil.getBytesRaw(encrypt), signature, StringUtil.getBytesRaw(secret));
     }
 
-    protected static boolean signatureEqual(Algorithm algo, byte [] encrypt, final byte[] signature, final byte [] secret) {
+    protected static boolean signatureEqual(Algorithm algo, byte[] encrypt, final byte[] signature, final byte[] secret) {
         try {
             switch (algo) {
                 case HS256:
@@ -282,9 +283,7 @@ public class JWTToken implements JsonToken {
                 default:
                     break;
             }
-        } catch (InvalidKeyException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (NoSuchAlgorithmException ex) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return false;
@@ -294,15 +293,15 @@ public class JWTToken implements JsonToken {
         return String.format("{\"alg\":\"%s\",\"typ\":\"JWT\"}", algo.toString());
     }
 
-    public static byte [] sign(Algorithm algo, String payload, String secret) throws NoSuchAlgorithmException {
+    public static byte[] sign(Algorithm algo, String payload, String secret) throws NoSuchAlgorithmException {
         return sign(algo, payload, StringUtil.getBytesRaw(secret));
     }
 
-    public static byte [] sign(Algorithm algo, final String payload, final byte [] secret) throws NoSuchAlgorithmException {
+    public static byte[] sign(Algorithm algo, final String payload, final byte[] secret) throws NoSuchAlgorithmException {
         try {
             switch (algo) {
                 case NONE:
-                    return new byte [] {};
+                    return new byte[]{};
                 case HS256:
                 case HS384:
                 case HS512: {
@@ -346,9 +345,9 @@ public class JWTToken implements JsonToken {
         throw new NoSuchAlgorithmException(algo.name());
     }
 
-    private final static String [] algNone = {"none", "NONE", "None"};
+    private final static String[] algNone = {"none", "NONE", "None"};
 
-    public static String [] generateNoneToken(String baseJWT) {
+    public static String[] generateNoneToken(String baseJWT) {
         final List<String> tokens = new ArrayList<>();
         JWTToken jwt = jwtInstance.parseToken(baseJWT, true);
         if (jwt != null) {
@@ -364,28 +363,28 @@ public class JWTToken implements JsonToken {
                 tokens.add(token);
             }
         }
-        return tokens.toArray(new String[0]);
+        return tokens.toArray(String[]::new);
     }
 
-    private final static Algorithm [] algHS = {Algorithm.HS256, Algorithm.HS384, Algorithm.HS512};
+    private final static Algorithm[] algHS = {Algorithm.HS256, Algorithm.HS384, Algorithm.HS512};
 
-    public static String [] generatePublicToHashToken(String baseToken, byte [] publicKey) {
+    public static String[] generatePublicToHashToken(String baseToken, byte[] publicKey) {
         final List<String> tokens = new ArrayList<>();
         JWTToken jwt = jwtInstance.parseToken(baseToken, true);
         if (jwt != null) {
             for (Algorithm alg : algHS) {
-                byte [] sign;
+                byte[] sign;
                 try {
                     sign = JWTToken.sign(alg, jwt.getPayload(), publicKey);
                     String signature = JsonToken.encodeBase64UrlSafe(sign);
-                    String result = JsonToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." +  signature;
+                    String result = JsonToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." + signature;
                     tokens.add(result);
                 } catch (NoSuchAlgorithmException ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
         }
-        return tokens.toArray(new String[0]);
+        return tokens.toArray(String[]::new);
     }
 
 }

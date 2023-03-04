@@ -20,6 +20,7 @@ public class AutoResponderItem extends MatchItem {
 
     /**
      * body only
+     *
      * @return
      */
     public boolean isBodyOnly() {
@@ -70,7 +71,7 @@ public class AutoResponderItem extends MatchItem {
     }
 
     public void setProperty(AutoResponderItem item) {
-        this.setProperty((MatchItem)item);
+        this.setProperty((MatchItem) item);
         this.setBodyOnly(item.isBodyOnly());
         this.setContentType(item.getContentType());
     }

@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
  * @author isayan
  */
 public class MatchReplaceItemDlg extends CustomDialog {
+
     private final static Logger logger = Logger.getLogger(MatchReplaceItemDlg.class.getName());
 
     /**

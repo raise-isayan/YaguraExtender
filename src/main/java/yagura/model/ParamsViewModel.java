@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
  * @author raise.isayan
  */
 public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
+
     private final static Logger logger = Logger.getLogger(ParamsViewModel.class.getName());
 
     public ParamsViewModel(TableModel model) {

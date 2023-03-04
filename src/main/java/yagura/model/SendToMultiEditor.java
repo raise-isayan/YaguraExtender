@@ -2,7 +2,6 @@ package yagura.model;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
-import burp.api.montoya.ui.contextmenu.InvocationSource;
 import extension.helpers.ConvertUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -16,12 +15,12 @@ import java.util.logging.Logger;
  * @author isayan
  */
 public class SendToMultiEditor extends SendToMenuItem {
+
     private final static Logger logger = Logger.getLogger(SendToMultiEditor.class.getName());
 
     public SendToMultiEditor(SendToItem item, ContextMenuEvent contextMenu) {
         super(item, contextMenu);
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {

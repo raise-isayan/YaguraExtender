@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
  * @author raise.isayan
  */
 public class Parameter implements ParsedHttpParameter {
+
     private final ParsedHttpParameter parameter;
 
     private HttpParameterType type = null;
@@ -106,7 +107,7 @@ public class Parameter implements ParsedHttpParameter {
     public String getUniversalValue() {
         if (this.encoding != null) {
             try {
-               return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.value()), this.encoding);
+                return StringUtil.getStringCharset(StringUtil.getBytesRaw(parameter.value()), this.encoding);
             } catch (UnsupportedEncodingException ex) {
                 return null;
             }

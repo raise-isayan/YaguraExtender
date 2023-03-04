@@ -6,6 +6,8 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="btnGrpCA">
     </Component>
+    <Component class="javax.swing.ButtonGroup" name="btnGrpStore">
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -114,7 +116,7 @@
                 <Component class="javax.swing.JRadioButton" name="rdoConvertPairPEM">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="btnGrpFormat"/>
+                      <ComponentRef name="btnGrpStore"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Certificate and Private key in PEM format"/>
@@ -123,7 +125,7 @@
                 <Component class="javax.swing.JRadioButton" name="rdoConvertCertificateDER">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="btnGrpFormat"/>
+                      <ComponentRef name="btnGrpStore"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Certificate  in DER format"/>
                   </Properties>
@@ -131,7 +133,7 @@
                 <Component class="javax.swing.JRadioButton" name="rdoConvertPrivateDER">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="btnGrpFormat"/>
+                      <ComponentRef name="btnGrpStore"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Private key  in DER format"/>
                   </Properties>
@@ -197,7 +199,7 @@
                     <Component class="javax.swing.JSpinner" name="spnListenPort">
                       <Properties>
                         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                          <SpinnerModel initial="6060" maximum="65535" minimum="1024" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                          <SpinnerModel initial="5050" maximum="65535" minimum="1024" numberType="java.lang.Integer" stepSize="1" type="number"/>
                         </Property>
                         <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
                           <SpinnerEditor format="#0" type="3"/>

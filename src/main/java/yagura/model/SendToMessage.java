@@ -1,4 +1,5 @@
 package yagura.model;
+
 import java.util.List;
 import burp.api.montoya.http.message.HttpRequestResponse;
 

@@ -442,9 +442,7 @@ public class ConvertUtilTest {
         System.out.println("calcStlength");
         System.out.println(ConvertUtil.calcStlength(16, 20));
 
-
     }
-
 
     /**
      *

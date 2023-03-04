@@ -22,6 +22,7 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Frame;
 import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,9 +34,34 @@ import javax.swing.JTabbedPane;
  * @author isayan
  */
 public class BurpUtil {
+
     private final static Logger logger = Logger.getLogger(BurpUtil.class.getName());
 
-    public EditorOptions [] EDITOR_READ_ONLY = new EditorOptions[] {EditorOptions.READ_ONLY};
+    public EditorOptions[] EDITOR_READ_ONLY = new EditorOptions[]{EditorOptions.READ_ONLY};
+
+    public static boolean isLoadClass(String className) {
+        try {
+            Class.forName(className);
+        } catch (ClassNotFoundException ex) {
+            return false;
+        }
+        return true;
+    }
+
+    public static Frame suiteFrame() {
+        Frame[] frames = Frame.getFrames();
+        for (Frame frame : frames) {
+            if (frame.isVisible() && frame.getTitle().startsWith("Burp Suite")) {
+                return frame;
+            }
+        }
+        return null;
+    }
+
+    public static BurpVersion suiteVersion() {
+        Frame frame = suiteFrame();
+        return new BurpVersion(frame.getTitle());
+    }
 
     public static String parseFilterPattern(String pattern) {
         String[] extentions = pattern.split(",");
@@ -106,7 +132,9 @@ public class BurpUtil {
 
     public static void sendToTextHighlight(IBurpTab tab) {
         final Color burpTextHighlightColor = BurpConfig.getTabFlashColor();
-        if (tab.getUiComponent() == null) return;
+        if (tab.getUiComponent() == null) {
+            return;
+        }
         Container container = tab.getUiComponent().getParent();
         if (container instanceof JTabbedPane) {
             final JTabbedPane tabbet = (JTabbedPane) container;
@@ -154,7 +182,6 @@ public class BurpUtil {
 
     }
 
-
     public static class ProxyHttpResponseHandlerAdapter implements ProxyResponseHandler {
 
         @Override
@@ -168,6 +195,5 @@ public class BurpUtil {
         }
 
     }
-
 
 }
