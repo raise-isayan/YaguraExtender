@@ -294,7 +294,7 @@ public class SendToItemDlg extends CustomDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private final SendToServerExtendDlg sendToServerExtendDlg = new SendToServerExtendDlg(null, true);
 

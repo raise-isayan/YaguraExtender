@@ -41,14 +41,14 @@ public class HttpExtendProperty {
      * @return the useClientCertificate
      */
     public boolean isUseClientCertificate() {
-        return this.clientCertificate.isUseClientCertificate();
+        return this.clientCertificate.isSelected();
     }
 
     /**
      * @param useClientCertificate the useClientCertificate to set
      */
     public void setUseClientCertificate(boolean useClientCertificate) {
-        this.clientCertificate.setUseClientCertificate(useClientCertificate);
+        this.clientCertificate.setSelected(useClientCertificate);
     }
 
     /**
@@ -236,8 +236,8 @@ public class HttpExtendProperty {
     public void setProperty(HttpExtendProperty property) {
         this.httpClientType = property.httpClientType;
 
-        this.clientCertificate.setUseClientCertificate(property.isUseClientCertificate());
-        if (this.clientCertificate.isUseClientCertificate()) {
+        this.clientCertificate.setSelected(property.isUseClientCertificate());
+        if (this.clientCertificate.isSelected()) {
             this.clientCertificate.setStoreType(property.getClientCertificateStoreType());
             this.clientCertificate.setClientCertificate(property.getClientCertificate());
             this.clientCertificate.setClientCertificatePasswd(property.getClientCertificatePasswd());
@@ -258,8 +258,8 @@ public class HttpExtendProperty {
     public void setProperties(Properties prop) {
         this.httpClientType = HttpClientType.valueOf(prop.getProperty("useHttpClient", HttpClientType.BURP.name()));
 
-        this.clientCertificate.setUseClientCertificate(Boolean.parseBoolean(prop.getProperty("useClientCertificate")));
-        if (this.clientCertificate.isUseClientCertificate()) {
+        this.clientCertificate.setSelected(Boolean.parseBoolean(prop.getProperty("useClientCertificate")));
+        if (this.clientCertificate.isSelected()) {
             this.clientCertificate.setStoreType(CertUtil.StoreType.valueOf(prop.getProperty("clientCertificateStoreType")));
             this.clientCertificate.setClientCertificate(ConvertUtil.toBase64Decode(prop.getProperty("clientCertificate")));
             this.clientCertificate.setClientCertificatePasswd(prop.getProperty("clientCertificatePasswd"));
@@ -281,8 +281,8 @@ public class HttpExtendProperty {
         Properties prop = new Properties();
         prop.setProperty("useHttpClient", this.httpClientType.name());
 
-        prop.setProperty("useClientCertificate", StringUtil.toString(this.clientCertificate.isUseClientCertificate()));
-        if (this.clientCertificate.isUseClientCertificate()) {
+        prop.setProperty("useClientCertificate", StringUtil.toString(this.clientCertificate.isSelected()));
+        if (this.clientCertificate.isSelected()) {
             prop.setProperty("clientCertificateStoreType", this.clientCertificate.getStoreType().name());
             prop.setProperty("clientCertificate", ConvertUtil.toBase64Encode(StringUtil.getStringRaw(this.clientCertificate.getClientCertificate()), StandardCharsets.ISO_8859_1));
             prop.setProperty("clientCertificatePasswd", this.clientCertificate.getClientCertificatePasswd());

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
@@ -130,10 +131,18 @@ public class CertUtil {
         return true;
     }
 
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromKeyStore(byte [] storeData, String keyPassword, StoreType storeType) throws CertificateEncodingException, IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
+        return loadFromKeyStore(new ByteArrayInputStream(storeData), keyPassword, storeType);
+    }
+
     protected static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromKeyStore(File storeFile, String keyPassword, StoreType storeType) throws CertificateEncodingException, IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
+        return loadFromKeyStore(new FileInputStream(storeFile), keyPassword, storeType);
+    }
+
+    protected static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromKeyStore(InputStream storeStream, String keyPassword, StoreType storeType) throws CertificateEncodingException, IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = new HashMap<>();
         KeyStore ks = KeyStore.getInstance(storeType.name());
-        ks.load(new FileInputStream(storeFile), keyPassword.toCharArray());
+        ks.load(storeStream, keyPassword.toCharArray());
         Enumeration e = ks.aliases();
         while (e.hasMoreElements()) {
             String alias = (String) e.nextElement();
@@ -142,6 +151,22 @@ public class CertUtil {
             certMap.put(alias, new AbstractMap.SimpleEntry<>(key, cert));
         }
         return certMap;
+    }
+
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromPKCS12(byte [] storeData, String password) {
+        try {
+            return loadFromKeyStore(storeData, password, CertUtil.StoreType.PKCS12);
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException ex) {
+        }
+        return null;
+    }
+
+    public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromJKS(byte [] storeDate, String password) {
+        try {
+            return loadFromKeyStore(storeDate, password, CertUtil.StoreType.JKS);
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException ex) {
+        }
+        return null;
     }
 
     public static HashMap<String, Map.Entry<Key, X509Certificate>> loadFromPKCS12(File storeFile, String password) {

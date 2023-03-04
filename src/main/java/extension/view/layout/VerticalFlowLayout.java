@@ -11,7 +11,6 @@ import java.awt.LayoutManager;
  * @author isayan
  */
 public class VerticalFlowLayout implements LayoutManager {
-
     private int vgap = 0;
 
     /**

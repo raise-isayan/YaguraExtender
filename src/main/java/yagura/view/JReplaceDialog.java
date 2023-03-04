@@ -337,7 +337,7 @@ public class JReplaceDialog extends CustomDialog {
 
 //        SwingUtil.setContainerKeyMap(this);
     }
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void btnRepEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepEditActionPerformed
         this.showMatchReplaceItemDlg(true);

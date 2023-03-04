@@ -125,7 +125,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         });
     }
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
 
     private static final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionName());
 

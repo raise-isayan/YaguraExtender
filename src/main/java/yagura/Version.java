@@ -1,6 +1,5 @@
 package yagura;
 
-import extend.util.external.BouncyUtil;
 import extension.view.base.CustomVersion;
 
 /**
@@ -9,7 +8,7 @@ import extension.view.base.CustomVersion;
  */
 public final class Version extends CustomVersion {
 
-    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
 
     private Version() {
         String ver = BUNDLE.getString("version");

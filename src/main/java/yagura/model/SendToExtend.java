@@ -34,7 +34,7 @@ public class SendToExtend extends SendToMenuItem {
     public final static String USE_CUSTOM_PROXY = "USE_CUSTOM_PROXY";
     public final static String USE_BURP_PROXY = "USE_BURP_PROXY";
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private File currentDirectory = new File(Config.getUserHomePath());
     private int repeternum = 0;
 

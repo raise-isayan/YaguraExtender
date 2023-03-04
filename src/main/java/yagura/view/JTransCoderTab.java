@@ -2345,7 +2345,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private static final MessageFormat STATUS_TEXT_FORMAT = new MessageFormat(
             "Length:{0,number} Position:{1,number} SelectLength:{2,number}"); // @jve:decl-index=0:
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void txtNumFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumFormatKeyPressed
         //this.lblExampleValue.setText(String.format(this.txtFormat.getText(), 123));

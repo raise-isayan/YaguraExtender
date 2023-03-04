@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import extension.helpers.CertUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -17,6 +18,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.Map;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -118,6 +120,15 @@ public class BouncyUtil {
         } catch (CertificateEncodingException ex) {
             throw new IOException(ex);
         }
+    }
+
+    public static String getSubjectCN(byte [] storeData, String storePassword) throws IOException {
+         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(storeData, storePassword);
+        for (String key : certMap.keySet()) {
+            Map.Entry<Key, X509Certificate> cert = certMap.get(key);
+            return cert.getValue().getSubjectX500Principal().getName();
+        }
+        return null;
     }
 
 }

@@ -198,7 +198,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
         return this;
     }
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final CustomListModel<String> modelReplace = new CustomListModel<>();
     private final ListDataListener listDataListener = new ListDataListener() {
 

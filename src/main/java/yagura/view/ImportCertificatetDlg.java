@@ -158,7 +158,7 @@ public class ImportCertificatetDlg extends CustomDialog {
         this.btnStoreTypePKCS12.setSelected(true);
     }
 
-    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
@@ -201,7 +201,7 @@ public class ImportCertificatetDlg extends CustomDialog {
     public CertificateProperty getProperty() {
         final CertificateProperty prop = new CertificateProperty();
         try {
-            prop.setUseClientCertificate(true);
+            prop.setSelected(true);
             prop.setClientCertificate(FileUtil.bytesFromFile(getStoreFile()));
             prop.setClientCertificatePasswd(this.txtStorePassword.getText());
             return prop;

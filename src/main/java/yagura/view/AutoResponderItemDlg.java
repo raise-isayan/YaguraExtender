@@ -204,7 +204,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         });
     }
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void txtRepReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepReplaceActionPerformed
 

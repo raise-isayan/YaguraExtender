@@ -226,7 +226,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     private CustomTableModel modelSendTo = null;
 
-    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
 
     private final TransferHandler handler = new TableRowTransferHandler();

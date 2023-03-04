@@ -666,7 +666,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
     private volatile boolean querying = false;
     private volatile boolean cancel = false;
 
-    protected final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    protected final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 

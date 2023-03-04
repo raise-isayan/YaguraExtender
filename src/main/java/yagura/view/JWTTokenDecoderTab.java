@@ -27,7 +27,7 @@ public class JWTTokenDecoderTab extends javax.swing.JPanel implements IBurpTab {
         this.txtJWTToken.setWrapStyleWord(false);
     }
 
-    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     /**
      * This method is called from within the constructor to initialize the form.

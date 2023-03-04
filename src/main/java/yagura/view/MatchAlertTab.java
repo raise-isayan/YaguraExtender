@@ -178,7 +178,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
     private CustomTableModel modelAlert = null;
     private final MatchAlertItemDlg matchAlertDlg = new MatchAlertItemDlg(null, true);
 
-    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
