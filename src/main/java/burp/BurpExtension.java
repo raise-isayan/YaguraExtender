@@ -157,6 +157,61 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
+    /*
+     * 古い Montoya API ではメソッド名が異なる
+     **/
+    public void initialise(MontoyaApi api) {
+        BurpExtender.showUnsupporttDlg();
+    }
+
+    @Override
+    public void initialize(MontoyaApi api) {
+        super.initialize(api);
+        BurpVersion version = this.getBurpVersion();
+        if (DEBUG) {
+            api.logging().logToOutput("name:" + version.getProductName());
+            api.logging().logToOutput("major:" + version.getMajor());
+            api.logging().logToOutput("minor:" + version.getMinor());
+            api.logging().logToOutput("build:" + version.getBuild());
+            api.extension().setName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
+        }
+
+        // 設定ファイル読み込み
+        Map<String, String> config = this.option.loadConfigSetting();
+        try {
+            if (CONFIG_FILE.exists()) {
+                JsonUtil.loadFromJson(CONFIG_FILE, config);
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        this.option.setProperty(config);
+
+        try {
+            // 自動ログ作成時のみディレクトリ作成
+            if (this.option.getLoggingProperty().isAutoLogging()) {
+                this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
+        //BurpConfig.configHostnameResolution(api);
+        SwingUtilities.invokeLater(() -> {
+            this.proxyHandler = new ProxyHander(api);
+            this.autoResponderHandler = new AutoResponderHandler(api);
+            this.registerView();
+            api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
+            setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
+
+            this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
+            api.extension().registerUnloadingHandler(this);
+        });
+        this.tabbetOption.setProperty(this.option);
+        this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
+
+    }
+
     @SuppressWarnings("unchecked")
     public static BurpExtension getInstance() {
         return BurpExtensionImpl.<BurpExtension>getInstance();
@@ -276,54 +331,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 getSendToMenu().showBurpMenu(httpRequestResponse, e);
             }
         };
-    }
-
-    @Override
-    public void initialize(MontoyaApi api) {
-        super.initialize(api);
-        BurpVersion version = this.getBurpVersion();
-        if (DEBUG) {
-            api.logging().logToOutput("name:" + version.getProductName());
-            api.logging().logToOutput("major:" + version.getMajor());
-            api.logging().logToOutput("minor:" + version.getMinor());
-            api.logging().logToOutput("build:" + version.getBuild());
-            api.extension().setName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
-        }
-
-        // 設定ファイル読み込み
-        Map<String, String> config = this.option.loadConfigSetting();
-        try {
-            if (CONFIG_FILE.exists()) {
-                JsonUtil.loadFromJson(CONFIG_FILE, config);
-            }
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        this.option.setProperty(config);
-
-        try {
-            // 自動ログ作成時のみディレクトリ作成
-            if (this.option.getLoggingProperty().isAutoLogging()) {
-                this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
-            }
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-
-        //BurpConfig.configHostnameResolution(api);
-        SwingUtilities.invokeLater(() -> {
-            this.proxyHandler = new ProxyHander(api);
-            this.autoResponderHandler = new AutoResponderHandler(api);
-            this.registerView();
-            api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
-            setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
-
-            this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
-            api.extension().registerUnloadingHandler(this);
-        });
-        this.tabbetOption.setProperty(this.option);
-        this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
-
     }
 
     public void registerView() {
