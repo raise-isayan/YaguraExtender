@@ -4,7 +4,6 @@ import extension.helpers.CertUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import java.net.Proxy;
-import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 /**
@@ -33,7 +32,7 @@ public class HttpExtendProperty {
     private String proxyUser = "";
     private String proxyPasswd = "";
 
-    private final CertificateProperty clientCertificate = new CertificateProperty();
+    private final CertificateItem clientCertificateItem = new CertificateItem();
 
     private boolean ignoreValidateCertification = true;
 
@@ -41,56 +40,56 @@ public class HttpExtendProperty {
      * @return the useClientCertificate
      */
     public boolean isUseClientCertificate() {
-        return this.clientCertificate.isSelected();
+        return this.clientCertificateItem.isSelected();
     }
 
     /**
      * @param useClientCertificate the useClientCertificate to set
      */
     public void setUseClientCertificate(boolean useClientCertificate) {
-        this.clientCertificate.setSelected(useClientCertificate);
+        this.clientCertificateItem.setSelected(useClientCertificate);
     }
 
     /**
      * @return the storeType
      */
     public CertUtil.StoreType getClientCertificateStoreType() {
-        return this.clientCertificate.getStoreType();
+        return this.clientCertificateItem.getStoreType();
     }
 
     /**
      * @param storeType the storeType to set
      */
     public void setClientCertificateStoreType(CertUtil.StoreType storeType) {
-        this.clientCertificate.setStoreType(storeType);
+        this.clientCertificateItem.setStoreType(storeType);
     }
 
     /**
      * @return the clientCertificate
      */
     public byte[] getClientCertificate() {
-        return this.clientCertificate.getClientCertificate();
+        return this.clientCertificateItem.getClientCertificate();
     }
 
     /**
      * @param clientCertificate the clientCertificate to set
      */
     public void setClientCertificate(byte[] clientCertificate) {
-        this.clientCertificate.setClientCertificate(clientCertificate);
+        this.clientCertificateItem.setClientCertificate(clientCertificate);
     }
 
     /**
      * @return the clientCertificatePasswd
      */
     public String getClientCertificatePasswd() {
-        return this.clientCertificate.getClientCertificatePasswd();
+        return this.clientCertificateItem.getClientCertificatePasswd();
     }
 
     /**
      * @param clientCertificatePasswd the clientCertificatePasswd to set
      */
     public void setClientCertificatePasswd(String clientCertificatePasswd) {
-        this.clientCertificate.setClientCertificatePasswd(clientCertificatePasswd);
+        this.clientCertificateItem.setClientCertificatePasswd(clientCertificatePasswd);
     }
 
     /**
@@ -236,11 +235,11 @@ public class HttpExtendProperty {
     public void setProperty(HttpExtendProperty property) {
         this.httpClientType = property.httpClientType;
 
-        this.clientCertificate.setSelected(property.isUseClientCertificate());
-        if (this.clientCertificate.isSelected()) {
-            this.clientCertificate.setStoreType(property.getClientCertificateStoreType());
-            this.clientCertificate.setClientCertificate(property.getClientCertificate());
-            this.clientCertificate.setClientCertificatePasswd(property.getClientCertificatePasswd());
+        this.clientCertificateItem.setSelected(property.isUseClientCertificate());
+        if (this.clientCertificateItem.isSelected()) {
+            this.clientCertificateItem.setStoreType(property.getClientCertificateStoreType());
+            this.clientCertificateItem.setClientCertificate(property.getClientCertificate());
+            this.clientCertificateItem.setClientCertificatePasswd(property.getClientCertificatePasswd());
         }
         this.ignoreValidateCertification = property.ignoreValidateCertification;
 
@@ -258,12 +257,7 @@ public class HttpExtendProperty {
     public void setProperties(Properties prop) {
         this.httpClientType = HttpClientType.valueOf(prop.getProperty("useHttpClient", HttpClientType.BURP.name()));
 
-        this.clientCertificate.setSelected(Boolean.parseBoolean(prop.getProperty("useClientCertificate")));
-        if (this.clientCertificate.isSelected()) {
-            this.clientCertificate.setStoreType(CertUtil.StoreType.valueOf(prop.getProperty("clientCertificateStoreType")));
-            this.clientCertificate.setClientCertificate(ConvertUtil.toBase64Decode(prop.getProperty("clientCertificate")));
-            this.clientCertificate.setClientCertificatePasswd(prop.getProperty("clientCertificatePasswd"));
-        }
+        this.clientCertificateItem.setProperties(prop);
         this.ignoreValidateCertification = Boolean.parseBoolean(prop.getProperty("ignoreValidateCertification", StringUtil.toString(Boolean.TRUE)));
 
         this.authorizationType = AuthorizationType.valueOf(prop.getProperty("authorizationType", AuthorizationType.NONE.name()));
@@ -281,12 +275,7 @@ public class HttpExtendProperty {
         Properties prop = new Properties();
         prop.setProperty("useHttpClient", this.httpClientType.name());
 
-        prop.setProperty("useClientCertificate", StringUtil.toString(this.clientCertificate.isSelected()));
-        if (this.clientCertificate.isSelected()) {
-            prop.setProperty("clientCertificateStoreType", this.clientCertificate.getStoreType().name());
-            prop.setProperty("clientCertificate", ConvertUtil.toBase64Encode(StringUtil.getStringRaw(this.clientCertificate.getClientCertificate()), StandardCharsets.ISO_8859_1));
-            prop.setProperty("clientCertificatePasswd", this.clientCertificate.getClientCertificatePasswd());
-        }
+        prop.putAll(this.clientCertificateItem.getProperties());
         prop.setProperty("ignoreValidateCertification", StringUtil.toString(this.ignoreValidateCertification));
 
         prop.setProperty("authorizationType", this.authorizationType.name());
@@ -299,6 +288,26 @@ public class HttpExtendProperty {
         prop.setProperty("proxyUser", this.proxyUser);
         prop.setProperty("proxyPasswd", this.proxyPasswd);
         return prop;
+    }
+
+    public CertificateItem getClientCertificateItem() {
+        final CertificateItem item = new CertificateItem();
+        item.setSelected(this.clientCertificateItem.isSelected());
+        if (item.isSelected()) {
+            item.setStoreType(this.clientCertificateItem.getStoreType());
+            item.setClientCertificate(this.clientCertificateItem.getClientCertificate());
+            item.setClientCertificatePasswd(this.clientCertificateItem.getClientCertificatePasswd());
+        }
+        return item;
+    }
+
+    public void setClientCertificateItem(CertificateItem item) {
+        this.clientCertificateItem.setSelected(item.isSelected());
+        if (item.isSelected()) {
+            this.clientCertificateItem.setStoreType(item.getStoreType());
+            this.clientCertificateItem.setClientCertificate(item.getClientCertificate());
+            this.clientCertificateItem.setClientCertificatePasswd(item.getClientCertificatePasswd());
+        }
     }
 
 }

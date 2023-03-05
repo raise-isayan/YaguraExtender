@@ -7,12 +7,17 @@ import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
+import java.util.logging.Logger;
 
 /**
  *
  * @author isayan
  */
 public class AutoResponderItemDlg extends CustomDialog {
+
+    private final static Logger logger = Logger.getLogger(AutoResponderItemDlg.class.getName());
+
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     /**
      * Creates new form AutoResponderItemDlg
@@ -204,8 +209,6 @@ public class AutoResponderItemDlg extends CustomDialog {
         });
     }
 
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-
     private void txtRepReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepReplaceActionPerformed
 
     }//GEN-LAST:event_txtRepReplaceActionPerformed
@@ -269,15 +272,11 @@ public class AutoResponderItemDlg extends CustomDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AutoResponderItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AutoResponderItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AutoResponderItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AutoResponderItemDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the dialog */

@@ -23,6 +23,8 @@ public class JReplaceDialog extends CustomDialog {
 
     private final static Logger logger = Logger.getLogger(JReplaceDialog.class.getName());
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     /**
      * Creates new form ReplaceDialog
      *
@@ -337,7 +339,6 @@ public class JReplaceDialog extends CustomDialog {
 
 //        SwingUtil.setContainerKeyMap(this);
     }
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void btnRepEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepEditActionPerformed
         this.showMatchReplaceItemDlg(true);

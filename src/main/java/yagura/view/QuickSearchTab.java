@@ -29,6 +29,8 @@ import yagura.model.IKeywordHighlighter;
  */
 public class QuickSearchTab extends javax.swing.JPanel {
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     /**
      * Creates new form QuickSearch
      */
@@ -206,8 +208,6 @@ public class QuickSearchTab extends javax.swing.JPanel {
         add(pnlSearch, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-
     private void btnQuckOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuckOptionActionPerformed
         Dimension sz = this.btnQuckOption.getSize();
         this.popQuick.show(this.btnQuckOption, 0, sz.height);
@@ -366,8 +366,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     private boolean ignoreCase = false;
 
     protected void quickSearch(javax.swing.text.JTextComponent ta, String keyword) {
-        if (ta.getHighlighter() instanceof IKeywordHighlighter) {
-            IKeywordHighlighter hc = (IKeywordHighlighter) ta.getHighlighter();
+        if (ta.getHighlighter() instanceof IKeywordHighlighter hc) {
             this.smartMatch = this.mnuSmartMatch.isSelected();
             this.regex = this.mnuRegex.isSelected();
             this.ignoreCase = this.mnuIgnoreCase.isSelected();

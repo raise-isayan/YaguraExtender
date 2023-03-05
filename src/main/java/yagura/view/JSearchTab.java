@@ -54,6 +54,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
     private final static Logger logger = Logger.getLogger(JSearchTab.class.getName());
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     /**
      * Creates new form JSerchTab
      */
@@ -665,8 +667,6 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
     }
     private volatile boolean querying = false;
     private volatile boolean cancel = false;
-
-    protected final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 

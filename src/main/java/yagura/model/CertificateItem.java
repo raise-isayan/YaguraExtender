@@ -1,6 +1,6 @@
 package yagura.model;
 
-import extension.burp.BurpConfig;
+import com.google.gson.annotations.Expose;
 import extension.helpers.CertUtil;
 import extension.helpers.CertUtil.StoreType;
 import extension.helpers.ConvertUtil;
@@ -15,6 +15,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,12 +23,12 @@ import java.util.logging.Logger;
  *
  * @author isayan
  */
-public class CertificateProperty {
+public class CertificateItem {
 
+    private final static Logger logger = Logger.getLogger(CertificateItem.class.getName());
+
+    @Expose
     private boolean selected = false;
-    private StoreType storeType = StoreType.PKCS12;
-    private byte[] clientCertificate = new byte[]{};
-    private String clientCertificatePasswd = "";
 
     /**
      * @return the selected
@@ -43,6 +44,9 @@ public class CertificateProperty {
         this.selected = selected;
     }
 
+    @Expose
+    private StoreType storeType = StoreType.PKCS12;
+
     /**
      * @return the storeType
      */
@@ -56,6 +60,9 @@ public class CertificateProperty {
     public void setStoreType(StoreType storeType) {
         this.storeType = storeType;
     }
+
+    @Expose
+    private byte[] clientCertificate = new byte[]{};
 
     /**
      * @return the clientCertificate
@@ -71,6 +78,9 @@ public class CertificateProperty {
         this.clientCertificate = clientCertificate;
     }
 
+    @Expose
+    private String clientCertificatePasswd = "";
+
     /**
      * @return the clientCertificatePasswd
      */
@@ -85,14 +95,34 @@ public class CertificateProperty {
         this.clientCertificatePasswd = clientCertificatePasswd;
     }
 
-    public void setProperty(CertificateProperty prop) {
+    public void setProperty(CertificateItem prop) {
         this.setSelected(prop.isSelected());
         this.setStoreType(prop.getStoreType());
         this.setClientCertificate(prop.getClientCertificate());
         this.setClientCertificatePasswd(prop.getClientCertificatePasswd());
     }
 
-    public static Object[] toObjects(CertificateProperty certProp) {
+    public Properties getProperties() {
+        Properties prop = new Properties();
+        prop.setProperty("useClientCertificate", StringUtil.toString(this.isSelected()));
+        if (this.isSelected()) {
+            prop.setProperty("clientCertificateStoreType", this.getStoreType().name());
+            prop.setProperty("clientCertificate", ConvertUtil.toBase64Encode(StringUtil.getStringRaw(this.getClientCertificate()), StandardCharsets.ISO_8859_1));
+            prop.setProperty("clientCertificatePasswd", this.getClientCertificatePasswd());
+        }
+        return prop;
+    }
+
+    public void setProperties(Properties prop) {
+        this.setSelected(Boolean.parseBoolean(prop.getProperty("useClientCertificate")));
+        if (this.isSelected()) {
+            this.setStoreType(CertUtil.StoreType.valueOf(prop.getProperty("clientCertificateStoreType")));
+            this.setClientCertificate(ConvertUtil.toBase64Decode(prop.getProperty("clientCertificate")));
+            this.setClientCertificatePasswd(prop.getProperty("clientCertificatePasswd"));
+        }
+    }
+
+    public static Object[] toObjects(CertificateItem certProp) {
         String certCN = "";
         try {
             HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = CertUtil.loadFromKeyStore(certProp.getClientCertificate(), certProp.getClientCertificatePasswd(), certProp.getStoreType());
@@ -101,7 +131,7 @@ public class CertificateProperty {
                 certCN = cert.getValue().getValue().getSubjectX500Principal().getName();
             }
         } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
-            Logger.getLogger(CertificateProperty.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
         Object[] beans = new Object[5];
@@ -113,14 +143,13 @@ public class CertificateProperty {
         return beans;
     }
 
-    public static CertificateProperty fromObjects(Object[] rows) {
-        CertificateProperty cert = new CertificateProperty();
+    public static CertificateItem fromObjects(Object[] rows) {
+        CertificateItem cert = new CertificateItem();
         cert.setSelected((Boolean) rows[0]);
         cert.setStoreType(CertUtil.StoreType.valueOf((String)rows[1]));
         cert.setClientCertificate(ConvertUtil.toBase64Decode((String)rows[2]));
         cert.setClientCertificatePasswd((String)rows[3]);
         return cert;
     }
-
 
 }

@@ -13,7 +13,6 @@ import yagura.model.SendToProperty;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 import javax.swing.DropMode;
 import javax.swing.JOptionPane;
@@ -31,6 +30,8 @@ import extension.burp.IBurpTab;
 public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     private final static Logger logger = Logger.getLogger(SendToTab.class.getName());
+
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     /**
      * Creates new form SendToTab
@@ -60,6 +61,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableSendTo = new javax.swing.JTable();
         chkForceSortOrder = new javax.swing.JCheckBox();
+        btnSendToDuplicate = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -158,6 +160,13 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        btnSendToDuplicate.setText("Duplicate");
+        btnSendToDuplicate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendToDuplicateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
@@ -167,7 +176,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGap(1, 1, 1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSendToEdit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,7 +187,8 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
                                     .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(btnSendToDownArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(btnSendToUpArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(btnSendToAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnSendToAdd, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSendToDuplicate, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(chkSubmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -204,7 +214,9 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSendToDownArraw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSendToAdd))
+                        .addComponent(btnSendToAdd)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSendToDuplicate))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -226,7 +238,6 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     private CustomTableModel modelSendTo = null;
 
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
 
     private final TransferHandler handler = new TableRowTransferHandler();
@@ -361,9 +372,21 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(SendToProperty.SENDTO_PROPERTY, null, this.getSendToProperty());
     }//GEN-LAST:event_chkForceSortOrderActionPerformed
 
+    private void btnSendToDuplicateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToDuplicateActionPerformed
+        this.sendtoItemDlg.setLocationRelativeTo(this);
+        this.sendtoItemDlg.setItemList(this.getSendToItemList());
+        this.sendtoItemDlg.setItem(getEditItem());
+        this.sendtoItemDlg.setVisible(true);
+        if (this.sendtoItemDlg.getModalResult() == JOptionPane.OK_OPTION) {
+            SendToItem item = this.sendtoItemDlg.getItem();
+            setEditItem(item, false);
+        }
+    }//GEN-LAST:event_btnSendToDuplicateActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSendToAdd;
     private javax.swing.JButton btnSendToDownArraw;
+    private javax.swing.JButton btnSendToDuplicate;
     private javax.swing.JButton btnSendToEdit;
     private javax.swing.JButton btnSendToRemove;
     private javax.swing.JButton btnSendToUpArraw;
@@ -380,10 +403,9 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         } else {
             this.modelSendTo.beginUpdate();
             this.modelSendTo.removeAll();
-            Object editRows[] = new Object[0];
             for (int i = 0; i < list.size(); i++) {
                 SendToItem sendToItem = list.get(i);
-                editRows = SendToItem.toObjects(sendToItem);
+                Object editRows[] = SendToItem.toObjects(sendToItem);
                 this.modelSendTo.addRow(editRows);
             }
             this.modelSendTo.endUpdate();
@@ -422,8 +444,6 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             this.sendtoItemDlg.setItem(getEditItem());
         } else {
             SendToItem item = new SendToItem();
-            Properties prop = item.getExtendProperties();
-            prop.setProperty("ignoreValidateCertification", Boolean.FALSE.toString());
             this.sendtoItemDlg.setItem(item);
         }
         this.sendtoItemDlg.setVisible(true);

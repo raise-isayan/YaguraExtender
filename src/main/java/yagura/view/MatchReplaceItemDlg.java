@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
  */
 public class MatchReplaceItemDlg extends CustomDialog {
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     private final static Logger logger = Logger.getLogger(MatchReplaceItemDlg.class.getName());
 
     /**
@@ -197,8 +199,6 @@ public class MatchReplaceItemDlg extends CustomDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {

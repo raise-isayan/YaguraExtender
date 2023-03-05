@@ -54,6 +54,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -368,6 +369,7 @@ public class SendToServer extends SendToMenuItem {
 
             @Override
             public void run() {
+                Authenticator saveProxyAuth = null;
                 try {
                     burp.api.montoya.http.message.requests.HttpRequest httpRequest = messageInfo.request();
                     burp.api.montoya.http.message.responses.HttpResponse httpResponse = messageInfo.response();
@@ -427,37 +429,38 @@ public class SendToServer extends SendToMenuItem {
                     }
                     String proxyUser = extendProp.getProxyUser();
                     String proxyPasswd = extendProp.getProxyPasswd();
+
                     Authenticator proxyAuthenticator = new Authenticator() {
                         @Override
                         protected PasswordAuthentication getPasswordAuthentication() {
                             return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
                         }
                     };
-                    //            if (!proxyUser.isEmpty()) {
-                    //                Authenticator.setDefault(authenticator);
-                    //            }
 
+                    KeyManager[] keyManagers = null;
+                    X509TrustManager trustKeyManager = null;
                     // クライアント証明書
-                    KeyStore keyStore = KeyStore.getInstance(extendProp.getClientCertificateStoreType().name());
-                    keyStore.load(new ByteArrayInputStream(extendProp.getClientCertificate()), extendProp.getClientCertificatePasswd().toCharArray());
+                    if (extendProp.isUseClientCertificate()) {
+                        KeyStore keyStore = KeyStore.getInstance(extendProp.getClientCertificateStoreType().name());
+                        keyStore.load(new ByteArrayInputStream(extendProp.getClientCertificate()), extendProp.getClientCertificatePasswd().toCharArray());
+                        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                        trustManagerFactory.init(keyStore);
+                        TrustManager[] trustKeyManagers = trustManagerFactory.getTrustManagers();
+                        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
+                        keyManagerFactory.init(keyStore, extendProp.getClientCertificatePasswd().toCharArray());
+                        keyManagers = keyManagerFactory.getKeyManagers();
+                        trustKeyManager = (X509TrustManager) trustKeyManagers[0];
+                    }
 
-                    TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-                    trustManagerFactory.init(keyStore);
-                    TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+                    TrustManager[] trustManagers = null;
                     if (extendProp.isIgnoreValidateCertification()) {
                         trustManagers = HttpUtil.trustAllCerts();
                     }
-
-                    X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
-
-                    KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
-                    keyManagerFactory.init(keyStore, extendProp.getClientCertificatePasswd().toCharArray());
-
                     SSLContext sslContext = SSLContext.getInstance("TLS");
-                    sslContext.init(keyManagerFactory.getKeyManagers(), null, null);
+                    sslContext.init(keyManagers, trustManagers, null);
 
                     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-                    clientBuilder = clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustManager);
+                    clientBuilder = clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustKeyManager);
 
                     if (extendProp.isIgnoreValidateCertification()) {
                         clientBuilder = clientBuilder.hostnameVerifier((hostname, session) -> true);
@@ -469,38 +472,47 @@ public class SendToServer extends SendToMenuItem {
                         clientBuilder = clientBuilder.addInterceptor(new AuthenticationCacheInterceptor(authCache));
                     }
 
-                    if (proxy != Proxy.NO_PROXY) {
-                        clientBuilder = clientBuilder.proxy(proxy);
-                    }
+                    synchronized(Authenticator.class) {
+                        if (proxy != Proxy.NO_PROXY) {
+                            saveProxyAuth = HttpUtil.putAuthenticator(proxyAuthenticator);
+                        }
 
-                    Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
-                    try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
-                        int statusCode = response.code();
-                        String bodyMessage = response.body().string();
-                        if (statusCode == HttpURLConnection.HTTP_OK) {
-                            if (bodyMessage.length() == 0) {
-                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                        Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
+                        try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
+                            int statusCode = response.code();
+                            String bodyMessage = response.body().string();
+                            if (statusCode == HttpURLConnection.HTTP_OK) {
+                                if (bodyMessage.length() == 0) {
+                                    fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                                } else {
+                                    fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
+                                    logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+                                }
                             } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
+                                // 200以外
+                                fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
                                 logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                             }
-                        } else {
-                            // 200以外
-                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
-                            logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+
+                        } catch (IOException ex) {
+                            fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                            logger.log(Level.SEVERE, ex.getMessage(), ex);
                         }
-                    } catch (IOException ex) {
-                        fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
+
                 } catch (NoSuchAlgorithmException | KeyStoreException | IOException | CertificateException | UnrecoverableKeyException | KeyManagementException ex) {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+                finally {
+                    if (saveProxyAuth != null) HttpUtil.putAuthenticator(saveProxyAuth);
                 }
             }
         };
         this.threadExecutor.submit(sendTo);
     }
+
+
 
     protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
         HttpTarget httpService = new HttpTarget(tagetURL);

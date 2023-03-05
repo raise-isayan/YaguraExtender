@@ -24,6 +24,8 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
 
     private final static Logger logger = Logger.getLogger(LoggingTab.class.getName());
 
+    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     /**
      * Creates new form LoggingTab
      */
@@ -308,7 +310,6 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private void txtExcludeExtensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExcludeExtensionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtExcludeExtensionActionPerformed
-    private final java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void customizeComponents() {
         this.txtFileLimitSize.setDocument(new SwingUtil.IntegerDocument());

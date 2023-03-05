@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.Authenticator;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -89,7 +90,7 @@ public final class HttpUtil {
 
     public static boolean isValidUrl(String url) {
         try {
-            new URL(url);
+            URL url1 = new URL(url);
             return true;
         } catch (MalformedURLException ex) {
             return false;
@@ -206,9 +207,7 @@ public final class HttpUtil {
         try {
             HttpsURLConnection.setDefaultSSLSocketFactory(ignoreSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(ignoreHostnameVerifier());
-        } catch (NoSuchAlgorithmException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (KeyManagementException ex) {
+        } catch (NoSuchAlgorithmException | KeyManagementException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
@@ -585,4 +584,9 @@ public final class HttpUtil {
         }
     }
 
+    public static Authenticator putAuthenticator(Authenticator authenticator) {
+        Authenticator current = Authenticator.getDefault();
+        Authenticator.setDefault(current);
+        return current;
+    }
 }

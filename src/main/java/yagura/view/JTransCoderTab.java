@@ -70,6 +70,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private final static Logger logger = Logger.getLogger(JTransCoderTab.class.getName());
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
@@ -2344,8 +2346,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
      */
     private static final MessageFormat STATUS_TEXT_FORMAT = new MessageFormat(
             "Length:{0,number} Position:{1,number} SelectLength:{2,number}"); // @jve:decl-index=0:
-
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void txtNumFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumFormatKeyPressed
         //this.lblExampleValue.setText(String.format(this.txtFormat.getText(), 123));

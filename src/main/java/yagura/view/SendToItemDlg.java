@@ -23,6 +23,8 @@ public class SendToItemDlg extends CustomDialog {
 
     private final static Logger logger = Logger.getLogger(SendToItemDlg.class.getName());
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     /**
      * Creates new form SendToItemDlg
      *
@@ -294,7 +296,6 @@ public class SendToItemDlg extends CustomDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private final SendToServerExtendDlg sendToServerExtendDlg = new SendToServerExtendDlg(null, true);
 

@@ -27,6 +27,8 @@ import extension.burp.IBurpTab;
  */
 public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     /**
      * Creates new form MatchAlertTab
      */
@@ -178,8 +180,6 @@ public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
     private CustomTableModel modelAlert = null;
     private final MatchAlertItemDlg matchAlertDlg = new MatchAlertItemDlg(null, true);
 
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         // MatchAlert Tab
@@ -317,10 +317,9 @@ public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
         } else {
             this.modelAlert.beginUpdate();
             this.modelAlert.removeAll();
-            Object editRows[] = new Object[0];
             for (int i = 0; i < list.size(); i++) {
                 MatchAlertItem alertItem = list.get(i);
-                editRows = MatchAlertItem.toObjects(alertItem);
+                Object editRows[] = MatchAlertItem.toObjects(alertItem);
                 this.modelAlert.addRow(editRows);
             }
             this.modelAlert.endUpdate();

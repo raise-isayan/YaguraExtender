@@ -51,6 +51,8 @@ import okhttp3.mockwebserver.RecordedRequest;
  */
 public class okHttpClientTest {
 
+    private final static Logger logger = Logger.getLogger(okHttpClientTest.class.getName());
+
     private final MockWebServer server = new MockWebServer();
 
     public okHttpClientTest() {
@@ -80,7 +82,7 @@ public class okHttpClientTest {
             };
             server.setDispatcher(dispatcher);
         } catch (IOException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -89,7 +91,7 @@ public class okHttpClientTest {
         try {
             server.shutdown();
         } catch (IOException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -108,10 +110,10 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -191,7 +193,7 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
             throw new IOException(ex);
@@ -220,12 +222,10 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (KeyManagementException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException | KeyManagementException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -253,7 +253,7 @@ public class okHttpClientTest {
             ResponseBody body = response.body();
             System.out.println(body.string());
         } catch (IOException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -269,7 +269,7 @@ public class okHttpClientTest {
             ResponseBody body = response.body();
             System.out.println(body.string());
         } catch (IOException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

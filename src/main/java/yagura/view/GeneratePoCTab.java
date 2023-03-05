@@ -51,6 +51,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
     private final static Logger logger = Logger.getLogger(GeneratePoCTab.class.getName());
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
@@ -322,8 +324,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
         add(splitGeneratorPoC, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;

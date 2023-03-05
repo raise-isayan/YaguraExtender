@@ -31,6 +31,8 @@ import extension.burp.IBurpTab;
  */
 public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     /**
      * Creates new form MatchReplace
      */
@@ -198,7 +200,6 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
         return this;
     }
 
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
     private final CustomListModel<String> modelReplace = new CustomListModel<>();
     private final ListDataListener listDataListener = new ListDataListener() {
 
@@ -362,7 +363,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
     private final Map<String, MatchReplaceGroup> replaceMap = Collections.synchronizedMap(new LinkedHashMap<String, MatchReplaceGroup>());
 
     private Map<String, MatchReplaceGroup> renewReplaceMap() {
-        Map<String, MatchReplaceGroup> newMap = new LinkedHashMap<String, MatchReplaceGroup>();
+        Map<String, MatchReplaceGroup> newMap = new LinkedHashMap<>();
         for (int i = 0; i < this.modelReplace.getSize(); i++) {
             String name = (String) this.modelReplace.get(i);
             MatchReplaceGroup group = this.replaceMap.get(name);

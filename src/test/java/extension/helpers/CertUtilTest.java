@@ -31,6 +31,8 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class CertUtilTest {
 
+    private final static Logger logger = Logger.getLogger(CertUtilTest.class.getName());
+
     public CertUtilTest() {
     }
 
@@ -120,7 +122,7 @@ public class CertUtilTest {
             ks.load(new FileInputStream(new File(storeFileName)), "testca".toCharArray());
         } catch (KeyStoreException | CertificateException | IOException ex) {
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CertUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

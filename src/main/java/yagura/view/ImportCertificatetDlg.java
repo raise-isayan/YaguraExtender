@@ -5,15 +5,22 @@ import extension.helpers.FileUtil;
 import extension.view.base.CustomDialog;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import yagura.model.CertificateProperty;
+import yagura.model.CertificateItem;
 
 /**
  *
  * @author isayan
  */
 public class ImportCertificatetDlg extends CustomDialog {
+
+    private final static Logger logger = Logger.getLogger(ImportCertificatetDlg.class.getName());
+
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
 
     /**
      * Creates new form ImportCertificate
@@ -158,8 +165,6 @@ public class ImportCertificatetDlg extends CustomDialog {
         this.btnStoreTypePKCS12.setSelected(true);
     }
 
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);
@@ -198,8 +203,8 @@ public class ImportCertificatetDlg extends CustomDialog {
         }
     }//GEN-LAST:event_btnImportActionPerformed
 
-    public CertificateProperty getProperty() {
-        final CertificateProperty prop = new CertificateProperty();
+    public CertificateItem getProperty() {
+        final CertificateItem prop = new CertificateItem();
         try {
             prop.setSelected(true);
             prop.setClientCertificate(FileUtil.bytesFromFile(getStoreFile()));
@@ -231,15 +236,14 @@ public class ImportCertificatetDlg extends CustomDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ImportCertificatetDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ImportCertificatetDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ImportCertificatetDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ImportCertificatetDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

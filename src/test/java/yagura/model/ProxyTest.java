@@ -23,6 +23,8 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public class ProxyTest {
 
+    private final static Logger logger = Logger.getLogger(ProxyTest.class.getName());
+
     public ProxyTest() {
     }
 
@@ -72,10 +74,8 @@ public class ProxyTest {
             int statusCode = response.statusCode();
             String bodyMessage = response.body();
             System.out.println(bodyMessage);
-        } catch (IOException ex) {
-            Logger.getLogger(ProxyTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ProxyTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | InterruptedException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
     }

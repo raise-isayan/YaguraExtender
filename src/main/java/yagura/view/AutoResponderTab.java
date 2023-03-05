@@ -30,6 +30,8 @@ import yagura.AutoMockServer;
  */
 public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, ExtensionUnloadingHandler, UncaughtExceptionHandler {
 
+    private final static Logger logger = Logger.getLogger(AutoResponderTab.class.getName());
+
     /**
      * Creates new form AutoResponder
      */
@@ -338,7 +340,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "AutoResponder", JOptionPane.ERROR_MESSAGE);
                 BurpExtension.helpers().issueAlert("AutoResponder", ex.getMessage(), MessageType.ERROR);
                 this.btnEnable.setSelected(false);
-                Logger.getLogger(AutoResponderTab.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         } else {
             this.stopMockServer();
@@ -374,7 +376,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
                 this.setEditItem(item, editMode);
             }
         } catch (Exception ex) {
-            Logger.getLogger(AutoResponderTab.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

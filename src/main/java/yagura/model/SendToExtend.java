@@ -31,10 +31,9 @@ import yagura.Config;
 public class SendToExtend extends SendToMenuItem {
 
     private final static Logger logger = Logger.getLogger(SendToExtend.class.getName());
-    public final static String USE_CUSTOM_PROXY = "USE_CUSTOM_PROXY";
-    public final static String USE_BURP_PROXY = "USE_BURP_PROXY";
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     private File currentDirectory = new File(Config.getUserHomePath());
     private int repeternum = 0;
 

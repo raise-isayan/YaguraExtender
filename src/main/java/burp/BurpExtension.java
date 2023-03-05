@@ -110,8 +110,19 @@ import yagura.view.ViewStateTabEditor;
  * @author isayan
  */
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
-    private boolean DEBUG = false;
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
+
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
+
+    private final static File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionName());
+
+    /**
+     * ログ設定プロパティファイルのファイル名
+     */
+    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
+
+    private boolean DEBUG = false;
+
     private ProxyHander proxyHandler;
     private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
@@ -124,15 +135,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         });
     }
-
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
-
-    private static final File CONFIG_FILE = new File(Config.getExtensionHomeDir(), Config.getExtensionName());
-
-    /**
-     * ログ設定プロパティファイルのファイル名
-     */
-    protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
     static {
         try (ByteArrayOutputStream bout = new ByteArrayOutputStream()) {
