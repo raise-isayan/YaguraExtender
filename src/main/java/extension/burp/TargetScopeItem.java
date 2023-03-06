@@ -119,14 +119,10 @@ public class TargetScopeItem {
         Matcher matchPort = this.regexPort.matcher(String.valueOf(urlPort));
         Matcher matchFile = this.regexFile.matcher(url.getFile());
 
-        if ((HttpTarget.PROTOCOL_ANY.equals(this.getProtocol()) || matchProtocol.matches())
+        return (HttpTarget.PROTOCOL_ANY.equals(this.getProtocol()) || matchProtocol.matches())
                 && ("".equals(this.getHost()) || matchHost.matches())
                 && ("".equals(this.getPort()) || matchPort.matches())
-                && ("".equals(this.getFile()) || matchFile.matches())) {
-            return true;
-        } else {
-            return false;
-        }
+                && ("".equals(this.getFile()) || matchFile.matches());
     }
 
     public void dump() {

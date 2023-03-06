@@ -417,7 +417,7 @@ public final class SwingUtil {
                 selection = (String) t.getTransferData(DataFlavor.stringFlavor);
             }
         } catch (UnsupportedFlavorException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            logger.log(Level.WARNING, ex.getMessage(), ex);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }

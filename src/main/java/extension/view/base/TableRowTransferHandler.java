@@ -1,6 +1,5 @@
 package extension.view.base;
 
-import extension.burp.BurpUtil;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

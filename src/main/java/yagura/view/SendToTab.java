@@ -249,6 +249,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         this.modelSendTo = new CustomTableModel(this.tableSendTo.getModel());
         this.tableSendTo.setModel(this.modelSendTo);
         this.btnSendToEdit.setEnabled(this.tableSendTo.getSelectedRowCount() > 0);
+        this.btnSendToDuplicate.setEnabled(this.tableSendTo.getSelectedRowCount() > 0);
         this.modelSendTo.addTableModelListener(new TableModelListener() {
 
             @Override
@@ -266,6 +267,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
                 }
                 int rowCount = tableSendTo.getSelectedRowCount();
                 btnSendToEdit.setEnabled((rowCount > 0));
+                btnSendToDuplicate.setEnabled((rowCount > 0));
             }
         });
 

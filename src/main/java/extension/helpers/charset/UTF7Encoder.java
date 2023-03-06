@@ -10,15 +10,15 @@ import java.nio.charset.CoderResult;
  */
 public class UTF7Encoder extends CharsetEncoder {
 
-    private static final float AVG_BYTES_PER_CHAR = 1.5f;
-    private static final float MAX_BYTES_PER_CHAR = 5.0f;
+    private final static float AVG_BYTES_PER_CHAR = 1.5f;
+    private final static float MAX_BYTES_PER_CHAR = 5.0f;
     private final UTF7Charset cs;
     private final Base64Util base64;
     private final boolean strict;
     private boolean base64mode;
     private int bitsToOutput;
     private int sextet;
-    static boolean useUglyHackToForceCallToFlushInJava5;
+    private static boolean useUglyHackToForceCallToFlushInJava5;
 
     static {
         String version = System.getProperty("java.specification.version");

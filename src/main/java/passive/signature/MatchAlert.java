@@ -108,9 +108,9 @@ public class MatchAlert extends SignatureItem<IssueItem> {
 
                     @Override
                     public String background() {
-                        final String ISSUE_BACKGROUND = "\r\n"
-                                + "<h4>Reference:</h4>"
-                                + "<p>MatchAlert for YaguraExtender</p>";
+                        final String ISSUE_BACKGROUND = """
+                                                        \r\n<h4>Reference:</h4><p>MatchAlert for YaguraExtender</p>
+                                                        """;
                         return ISSUE_BACKGROUND;
                     }
 

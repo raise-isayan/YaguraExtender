@@ -1,6 +1,5 @@
 package extension.burp;
 
-import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

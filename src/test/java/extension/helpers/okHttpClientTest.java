@@ -201,8 +201,44 @@ public class okHttpClientTest {
     }
 
     @Test
-    public void testPostSendto() {
-        System.out.println("testPostSendto");
+    public void testSendtoProxy() {
+        try {
+            System.out.println("testSendtoProxy");
+            String proxyHost = "127.0.0.1";
+            int proxyPort = 8888;
+            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
+            final OkHttpClient client = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
+                    .hostnameVerifier((hostname, session) -> true)
+                    .proxy(proxy)
+                    .build();
+            {
+                Request request = new Request.Builder().url("https://www.example.com/").build();
+                try (Response response = client.newCall(request).execute()) {
+                    ResponseBody body = response.body();
+                    System.out.println(body.string());
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+            {
+                Request request = new Request.Builder().url("http://www.example.com/").build();
+                try (Response response = client.newCall(request).execute()) {
+                    ResponseBody body = response.body();
+                    System.out.println(body.string());
+                } catch (IOException ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (KeyManagementException ex) {
+            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

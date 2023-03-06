@@ -109,7 +109,7 @@ import yagura.view.ViewStateTabEditor;
 /**
  * @author isayan
  */
-public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
+public class BurpExtension extends BurpExtensionImpl implements /**IBurpExtender,**/ ExtensionUnloadingHandler {
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
@@ -157,11 +157,19 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
+//    @Override
+//    public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
+//        BurpVersion burp_version = BurpUtil.suiteVersion();
+//        BurpExtensionImpl.showUnsupporttDlg(burp_version);
+//    }
+
     /*
-     * 古い Montoya API ではメソッド名が異なる
+     * 古い Montoya API ではメソッド名をあやまっており
+     * ここにくる場合は必ず古いバージョン
      **/
     public void initialise(MontoyaApi api) {
-        BurpExtender.showUnsupporttDlg();
+        BurpVersion burp_version = BurpUtil.suiteVersion();
+        showUnsupporttDlg(burp_version);
     }
 
     @Override
@@ -1008,7 +1016,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 if (item != null) {
                     if (!HttpUtil.isInetAddressByName(interceptedRequest.httpService().host())) {
                         BurpExtension.helpers().issueAlert("MockServer", "resolv:" + interceptedRequest.httpService().host(), MessageType.INFO);
-                        resolvHost.add(new HostnameResolution(true, interceptedRequest.httpService().host(), "127.0.0.1"));
+                        this.resolvHost.add(new HostnameResolution(true, interceptedRequest.httpService().host(), "127.0.0.1"));
                         BurpConfig.configHostnameResolution(this.api, this.resolvHost);
                     }
                 }

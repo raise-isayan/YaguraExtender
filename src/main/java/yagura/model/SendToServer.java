@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.BurpExtension;
 import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -101,13 +102,16 @@ public class SendToServer extends SendToMenuItem {
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     protected void sendToServer(HttpRequestResponse messageInfo) {
+        BurpExtension.helpers().outPrintln("sendToServer:");
+
         // 拡張オプションを取得
         HttpExtendProperty extendProp = new HttpExtendProperty();
         extendProp.setProperties(getExtendProperties());
         if (HttpExtendProperty.HttpClientType.CUSTOM.equals(extendProp.getHttpClientType())) {
-            sendToServerUseHttpClient(messageInfo, extendProp);
+            sendToServerUseOkHttpClient(messageInfo, extendProp);
         } else {
             sendToServerUseBurpClient(messageInfo);
+            //sendToServerUseHttpClient(messageInfo, extendProp);
         }
     }
 
@@ -191,16 +195,15 @@ public class SendToServer extends SendToMenuItem {
                         }
                     };
 //                    if (!proxyUser.isEmpty()) {
-                    Authenticator.setDefault(authenticator);
+//                    Authenticator.setDefault(authenticator);
 //                    }
 //                    else {
 //                        Authenticator.setDefault(null);
 //                    }
 
-//                    boolean ignoreValidateCertification = ConvertUtil.parseBooleanDefault(prop.getProperty("ignoreValidateCertification", Boolean.TRUE.toString()), false);
-//                    if (ignoreValidateCertification) {
-                    HttpUtil.ignoreSocketFactory();
-//                    }
+                    if (extendProp.isIgnoreValidateCertification()) {
+                        HttpUtil.ignoreSocketFactory();
+                    }
 
                     conn = (HttpURLConnection) url.openConnection(proxy);
                     conn.setFixedLengthStreamingMode(contentLength);
@@ -273,6 +276,21 @@ public class SendToServer extends SendToMenuItem {
             public void run() {
                 try {
                     // 拡張オプションを取得
+                    // Authorization
+                    HttpExtendProperty.AuthorizationType authorizationType = extendProp.getAuthorizationType();
+                    Authenticator authenticator = null;
+                    if (!HttpExtendProperty.AuthorizationType.NONE.equals(authorizationType)) {
+                        String authorizationUser = extendProp.getAuthorizationUser();
+                        String authorizationPasswd = extendProp.getAuthorizationPasswd();
+                        authenticator = new Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(authorizationUser, authorizationPasswd.toCharArray());
+                            }
+                        };
+                    }
+
+                    // Proxy
                     Proxy.Type proxyProtocol = extendProp.getProxyProtocol();
                     Proxy proxy = Proxy.NO_PROXY;
                     if (!Proxy.Type.DIRECT.equals(proxyProtocol)) {
@@ -288,16 +306,18 @@ public class SendToServer extends SendToMenuItem {
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
                     }
-                    Authenticator authenticator = null;
+                    Authenticator proxyAuthenticator = null;
                     if (!Proxy.Type.DIRECT.equals(proxyProtocol)) {
                         String proxyUser = extendProp.getProxyUser();
                         String proxyPasswd = extendProp.getProxyPasswd();
-                        authenticator = new Authenticator() {
-                            @Override
-                            protected PasswordAuthentication getPasswordAuthentication() {
-                                return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
-                            }
-                        };
+                        if (!proxyUser.isEmpty()) {
+                            proxyAuthenticator = new Authenticator() {
+                                @Override
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
+                                }
+                            };
+                        }
                     }
                     boolean ignoreValidateCertification = extendProp.isIgnoreValidateCertification();
                     HttpClient.Builder builder = HttpClient.newBuilder()
@@ -365,12 +385,13 @@ public class SendToServer extends SendToMenuItem {
     }
 
     protected void sendToServerUseOkHttpClient(HttpRequestResponse messageInfo, HttpExtendProperty extendProp) {
-        Runnable sendTo = new Runnable() {
+        Runnable sendTo;
+        sendTo = new Runnable() {
 
             @Override
             public void run() {
-                Authenticator saveProxyAuth = null;
                 try {
+                    BurpExtension.helpers().outPrintln("sendToServerUseOkHttpClient:");
                     burp.api.montoya.http.message.requests.HttpRequest httpRequest = messageInfo.request();
                     burp.api.montoya.http.message.responses.HttpResponse httpResponse = messageInfo.response();
                     HttpService httpService = httpRequest.httpService();
@@ -396,6 +417,8 @@ public class SendToServer extends SendToMenuItem {
                         multipartBuilder.addFormDataPart("response", null, RequestBody.create(httpResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
                     }
                     MultipartBody multipartBody = multipartBuilder.build();
+
+                    BurpExtension.helpers().outPrintln("extendProp:" + extendProp);
 
                     // 拡張オプションを取得
                     //
@@ -429,13 +452,15 @@ public class SendToServer extends SendToMenuItem {
                     }
                     String proxyUser = extendProp.getProxyUser();
                     String proxyPasswd = extendProp.getProxyPasswd();
-
-                    Authenticator proxyAuthenticator = new Authenticator() {
-                        @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
-                            return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
-                        }
-                    };
+                    Authenticator proxyAuthenticator = null;
+                    if (!proxyUser.isEmpty()) {
+                        proxyAuthenticator = new Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
+                            }
+                        };
+                    }
 
                     KeyManager[] keyManagers = null;
                     X509TrustManager trustKeyManager = null;
@@ -460,43 +485,62 @@ public class SendToServer extends SendToMenuItem {
                     sslContext.init(keyManagers, trustManagers, null);
 
                     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+//                    okhttp3.logging.HttpLoggingInterceptor.HttpLoggingInterceptor interceptor = new okhttp3.logging.HttpLoggingInterceptor.HttpLoggingInterceptor(new okhttp3.logging.HttpLoggingInterceptor.Logger() {
+//                        @Override
+//                        public void log(String message) {
+//                            logger.log(Level.WARNING, message);
+//                        }
+//                    });
+//                    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//                    clientBuilder = clientBuilder.addInterceptor(interceptor);
                     clientBuilder = clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustKeyManager);
 
                     if (extendProp.isIgnoreValidateCertification()) {
                         clientBuilder = clientBuilder.hostnameVerifier((hostname, session) -> true);
                     }
 
+                    // Authorization
                     if (authenticator != null) {
                         final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
                         clientBuilder = clientBuilder.authenticator(new CachingAuthenticatorDecorator(authenticator, authCache));
                         clientBuilder = clientBuilder.addInterceptor(new AuthenticationCacheInterceptor(authCache));
                     }
 
-                    synchronized(Authenticator.class) {
-                        if (proxy != Proxy.NO_PROXY) {
-                            saveProxyAuth = HttpUtil.putAuthenticator(proxyAuthenticator);
-                        }
-
-                        Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
-                        try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
-                            int statusCode = response.code();
-                            String bodyMessage = response.body().string();
-                            if (statusCode == HttpURLConnection.HTTP_OK) {
-                                if (bodyMessage.length() == 0) {
-                                    fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                    synchronized (Authenticator.class) {
+                        Authenticator saveProxyAuth = Authenticator.getDefault();
+                        try {
+                            if (proxy != Proxy.NO_PROXY) {
+                                BurpExtension.helpers().outPrintln("proxy:" + proxy);
+                                clientBuilder = clientBuilder.proxy(proxy);
+                                if (proxyAuthenticator != null) {
+                                    saveProxyAuth = HttpUtil.putAuthenticator(proxyAuthenticator);
+                                }
+                            }
+                            Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
+                            try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
+                                int statusCode = response.code();
+                                String bodyMessage = response.body().string();
+                                if (statusCode == HttpURLConnection.HTTP_OK) {
+                                    if (bodyMessage.length() == 0) {
+                                        fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                                    } else {
+                                        fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
+                                        logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+                                    }
                                 } else {
-                                    fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
+                                    // 200以外
+                                    fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
                                     logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                                 }
-                            } else {
-                                // 200以外
-                                fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
-                                logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
-                            }
 
-                        } catch (IOException ex) {
-                            fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
+                            } catch (IOException ex) {
+                                fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                                logger.log(Level.SEVERE, ex.getMessage(), ex);
+                            }
+                        } finally {
+                            if (proxyAuthenticator != null) {
+                                HttpUtil.putAuthenticator(saveProxyAuth);
+                            }
                         }
                     }
 
@@ -504,15 +548,10 @@ public class SendToServer extends SendToMenuItem {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
-                finally {
-                    if (saveProxyAuth != null) HttpUtil.putAuthenticator(saveProxyAuth);
-                }
             }
         };
         this.threadExecutor.submit(sendTo);
     }
-
-
 
     protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
         HttpTarget httpService = new HttpTarget(tagetURL);

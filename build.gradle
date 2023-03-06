@@ -104,8 +104,8 @@ dependencies {
         implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
     // standalone 利用のため
-    // https://mvnrepository.com/artifact/net.portswigger.burp.extender/burp-extender-api
-    implementation 'net.portswigger.burp.extender:burp-extender-api:2.3'
+//    // https://mvnrepository.com/artifact/net.portswigger.burp.extender/burp-extender-api
+//    implementation 'net.portswigger.burp.extender:burp-extender-api:2.3'
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
     implementation 'net.portswigger.burp.extensions:montoya-api:2023.2'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
@@ -117,6 +117,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     // https://mvnrepository.com/artifact/io.github.rburgst/okhttp-digest
     implementation 'io.github.rburgst:okhttp-digest:3.0'
+//    // https://mvnrepository.com/artifact/com.squareup.okhttp3/logging-interceptor
+//    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/mockwebserver
     implementation 'com.squareup.okhttp3:mockwebserver:4.10.0'
 

@@ -579,7 +579,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         HttpExtendProperty.HttpClientType httpClientType = prop.getHttpClientType();
         HttpExtendProperty.AuthorizationType authorizationType = prop.getAuthorizationType();
 
-        this.rdoCustomClient.setSelected(HttpExtendProperty.HttpClientType.CUSTOM.equals(httpClientType));
+        this.rdoBurpClient.setSelected(HttpExtendProperty.HttpClientType.BURP.equals(httpClientType));
 
         this.clearItem();
         this.chkClientCertififate.setSelected(prop.isUseClientCertificate());
@@ -602,7 +602,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         String proxyPasswd = prop.getProxyPasswd();
         boolean ignoreValidateCertification = prop.isIgnoreValidateCertification();
 
-        this.cmbProtocol.setSelectedItem(proxyProtocol);
+        this.cmbProtocol.setSelectedItem(proxyProtocol.name());
         this.txtProxyHost.setText(proxyHost);
         this.spnProxyPort.setValue(proxyPort);
         this.txtProxyUser.setText(proxyUser);

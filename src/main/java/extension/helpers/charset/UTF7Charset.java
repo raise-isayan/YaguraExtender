@@ -18,7 +18,7 @@ public class UTF7Charset extends Charset {
 
     private static final List CONTAINED = Arrays.asList(new String[]{"US-ASCII", "ISO-8859-1",
         "UTF-8", "UTF-16", "UTF-16LE", "UTF-16BE"});
-    final boolean strict;
+    private final boolean strict;
 
     public UTF7Charset(String name, String[] aliases) {
         this(name, aliases, false);

@@ -116,7 +116,7 @@ public class CustomTableModel extends DefaultTableModel {
     }
 
     public static String tableCopy(JTable table, boolean visible) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         int[] rowsSelected = table.getSelectedRows();
         int[] colsSelected = table.getSelectedColumns();
         for (int i = 0; i < rowsSelected.length; i++) {
