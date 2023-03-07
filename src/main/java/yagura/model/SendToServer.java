@@ -1,6 +1,7 @@
 package yagura.model;
 
 import burp.BurpExtension;
+import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -119,33 +120,34 @@ public class SendToServer extends SendToMenuItem {
         Runnable sendTo = new Runnable() {
             @Override
             public void run() {
-                try {
-                    try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
-                        URL tagetURL = new URL(getTarget());
-                        outPostHeader(ostm, tagetURL);
-                        String boundary = HttpUtil.generateBoundary();
-                        ostm.write(StringUtil.getBytesRaw(String.format("Content-Type: %s", "multipart/form-data;boundary=" + boundary) + StringUtil.NEW_LINE));
-                        try (ByteArrayOutputStream bodyStream = new ByteArrayOutputStream()) {
-                            outMultipart(boundary, bodyStream, messageInfo);
-                            ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
-                            ostm.write(StringUtil.getBytesRaw("Connection: close" + StringUtil.NEW_LINE));
-                            ostm.write(StringUtil.getBytesRaw(StringUtil.NEW_LINE));
-                            ostm.write(bodyStream.toByteArray());
-                        }
-                        burp.api.montoya.http.message.responses.HttpResponse response = messageInfo.response();
-                        int statusCode = response.statusCode();
-                        if (statusCode == HttpURLConnection.HTTP_OK) {
-                            if (response.body().length() == 0) {
-                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
-                            } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + response.bodyToString()));
-                                logger.log(Level.WARNING, "[" + statusCode + "]", response.body());
-                            }
+              BurpExtension.helpers().outPrintln("sendToServerUseBurpClient:");
+              try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
+                    URL tagetURL = new URL(getTarget());
+                    outPostHeader(ostm, tagetURL);
+                    String boundary = HttpUtil.generateBoundary();
+                    ostm.write(StringUtil.getBytesRaw(String.format("Content-Type: %s", "multipart/form-data;boundary=" + boundary) + StringUtil.NEW_LINE));
+                    try (ByteArrayOutputStream bodyStream = new ByteArrayOutputStream()) {
+                        outMultipart(boundary, bodyStream, messageInfo);
+                        ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
+                        ostm.write(StringUtil.getBytesRaw("Connection: close" + StringUtil.NEW_LINE));
+                        ostm.write(StringUtil.getBytesRaw(StringUtil.NEW_LINE));
+                        ostm.write(bodyStream.toByteArray());
+                    }
+                    burp.api.montoya.http.message.requests.HttpRequest request = burp.api.montoya.http.message.requests.HttpRequest.httpRequest(HttpTarget.getHttpTarget(getTarget()), ByteArray.byteArray(ostm.toByteArray()));                                                                             
+                    HttpRequestResponse http = BurpExtension.api().http().sendRequest(request);
+                    burp.api.montoya.http.message.responses.HttpResponse resnponse = http.response();
+                    int statusCode = http.response().statusCode();
+                    if (statusCode == HttpURLConnection.HTTP_OK) {
+                        if (resnponse.body().length() == 0) {
+                            fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
                         } else {
-                            // 200以外
-                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + response.bodyToString()));
-                            logger.log(Level.WARNING, "[" + statusCode + "]", response.body());
+                            fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + resnponse.bodyToString()));
+                            logger.log(Level.WARNING, "[" + statusCode + "]", resnponse.body());
                         }
+                    } else {
+                        // 200以外
+                        fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + resnponse.bodyToString()));
+                        logger.log(Level.WARNING, "[" + statusCode + "]", resnponse.body());
                     }
                 } catch (IOException ex) {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
@@ -224,8 +226,7 @@ public class SendToServer extends SendToMenuItem {
                     }
 
                     InputStream istm = conn.getInputStream();
-                    ByteArrayOutputStream bostm = new ByteArrayOutputStream();
-                    try {
+                    try (ByteArrayOutputStream bostm = new ByteArrayOutputStream()) {
                         BufferedInputStream bistm = new BufferedInputStream(istm);
                         String decodeMessage;
                         byte buf[] = new byte[4096];
@@ -251,9 +252,6 @@ public class SendToServer extends SendToMenuItem {
                     } finally {
                         if (istm != null) {
                             istm.close();
-                        }
-                        if (bostm != null) {
-                            bostm.close();
                         }
                     }
                 } catch (IOException ex) {
@@ -418,11 +416,13 @@ public class SendToServer extends SendToMenuItem {
                     }
                     MultipartBody multipartBody = multipartBuilder.build();
 
-                    BurpExtension.helpers().outPrintln("extendProp:" + extendProp);
 
                     // 拡張オプションを取得
                     //
                     // Authorization
+
+                    BurpExtension.helpers().outPrintln("Authorization:" + extendProp.getAuthorizationType());
+
                     HttpExtendProperty.AuthorizationType authorizationType = extendProp.getAuthorizationType();
                     String authorizationUser = extendProp.getAuthorizationUser();
                     String authorizationPasswd = extendProp.getAuthorizationPasswd();
@@ -435,6 +435,9 @@ public class SendToServer extends SendToMenuItem {
                             authenticator = new DigestAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
                             break;
                     }
+
+                    BurpExtension.helpers().outPrintln("Proxy:" + extendProp.getProxyProtocol());
+
                     // Proxy
                     Proxy proxy = Proxy.NO_PROXY;
                     Proxy.Type proxyProtocol = extendProp.getProxyProtocol();
@@ -465,7 +468,9 @@ public class SendToServer extends SendToMenuItem {
                     KeyManager[] keyManagers = null;
                     X509TrustManager trustKeyManager = null;
                     // クライアント証明書
+                    BurpExtension.helpers().outPrintln("isUseClientCertificate:" + extendProp.isUseClientCertificate());
                     if (extendProp.isUseClientCertificate()) {
+
                         KeyStore keyStore = KeyStore.getInstance(extendProp.getClientCertificateStoreType().name());
                         keyStore.load(new ByteArrayInputStream(extendProp.getClientCertificate()), extendProp.getClientCertificatePasswd().toCharArray());
                         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -476,7 +481,16 @@ public class SendToServer extends SendToMenuItem {
                         keyManagers = keyManagerFactory.getKeyManagers();
                         trustKeyManager = (X509TrustManager) trustKeyManagers[0];
                     }
+                    else {
+                        KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+                        keyStore.load(null, null);
+                        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                        trustManagerFactory.init(keyStore);
+                        TrustManager[] trustKeyManagers = trustManagerFactory.getTrustManagers();
+                        trustKeyManager = (X509TrustManager) trustKeyManagers[0];
+                    }
 
+                    BurpExtension.helpers().outPrintln("isIgnoreValidateCertification:" + extendProp.isIgnoreValidateCertification());
                     TrustManager[] trustManagers = null;
                     if (extendProp.isIgnoreValidateCertification()) {
                         trustManagers = HttpUtil.trustAllCerts();
@@ -484,6 +498,8 @@ public class SendToServer extends SendToMenuItem {
                     SSLContext sslContext = SSLContext.getInstance("TLS");
                     sslContext.init(keyManagers, trustManagers, null);
 
+                    BurpExtension.helpers().outPrintln("OkHttpClient.Builder:");
+                    
                     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
 //                    okhttp3.logging.HttpLoggingInterceptor.HttpLoggingInterceptor interceptor = new okhttp3.logging.HttpLoggingInterceptor.HttpLoggingInterceptor(new okhttp3.logging.HttpLoggingInterceptor.Logger() {
 //                        @Override
@@ -493,8 +509,10 @@ public class SendToServer extends SendToMenuItem {
 //                    });
 //                    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 //                    clientBuilder = clientBuilder.addInterceptor(interceptor);
+                    BurpExtension.helpers().outPrintln("sslSocketFactory:");
                     clientBuilder = clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustKeyManager);
 
+                    BurpExtension.helpers().outPrintln("isIgnoreValidateCertification2:" + extendProp.isIgnoreValidateCertification());
                     if (extendProp.isIgnoreValidateCertification()) {
                         clientBuilder = clientBuilder.hostnameVerifier((hostname, session) -> true);
                     }
@@ -506,6 +524,8 @@ public class SendToServer extends SendToMenuItem {
                         clientBuilder = clientBuilder.addInterceptor(new AuthenticationCacheInterceptor(authCache));
                     }
 
+                    BurpExtension.helpers().outPrintln("isIgnoreValidateCertification:" + extendProp.isIgnoreValidateCertification());
+                    
                     synchronized (Authenticator.class) {
                         Authenticator saveProxyAuth = Authenticator.getDefault();
                         try {
@@ -516,6 +536,9 @@ public class SendToServer extends SendToMenuItem {
                                     saveProxyAuth = HttpUtil.putAuthenticator(proxyAuthenticator);
                                 }
                             }
+
+                            BurpExtension.helpers().outPrintln("clientTarget:" + getTarget());
+
                             Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
                             try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
                                 int statusCode = response.code();

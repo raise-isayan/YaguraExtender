@@ -33,7 +33,7 @@ public class BurpExtensionImpl implements BurpExtension {
             burp_version = BurpUtil.suiteVersion();
         }
 
-        if (showUnsupporttDlg(burp_version)) {
+        if (!showUnsupporttDlg(burp_version)) {
             helper = new ExtensionHelper(api);
         }
     }
