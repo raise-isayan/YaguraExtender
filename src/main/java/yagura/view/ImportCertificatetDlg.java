@@ -171,7 +171,7 @@ public class ImportCertificatetDlg extends CustomDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        CertUtil.StoreType storeType = this.btnStoreTypePKCS12.isSelected() ? CertUtil.StoreType.PKCS12 : CertUtil.StoreType.JKS;
+        CertUtil.StoreType storeType = getStoreType();
         String storePassword = this.txtStorePassword.getText();
 
         File storeFile = getStoreFile();
@@ -207,6 +207,7 @@ public class ImportCertificatetDlg extends CustomDialog {
         final CertificateItem prop = new CertificateItem();
         try {
             prop.setSelected(true);
+            prop.setStoreType(getStoreType());
             prop.setClientCertificate(FileUtil.bytesFromFile(getStoreFile()));
             prop.setClientCertificatePasswd(this.txtStorePassword.getText());
             return prop;
@@ -219,6 +220,12 @@ public class ImportCertificatetDlg extends CustomDialog {
         String storeFile = this.txtStoreFile.getText().trim();
         return new File(storeFile);
     }
+
+    private CertUtil.StoreType getStoreType() {
+        CertUtil.StoreType storeType = this.btnStoreTypePKCS12.isSelected() ? CertUtil.StoreType.PKCS12 : CertUtil.StoreType.JKS;
+        return storeType;
+    }
+
 
     /**
      * @param args the command line arguments

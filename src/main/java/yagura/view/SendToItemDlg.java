@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtension;
 import yagura.model.SendToItem;
 import java.io.File;
 import java.util.List;
@@ -533,6 +534,7 @@ public class SendToItemDlg extends CustomDialog {
         if (this.sendToServerExtendDlg.getModalResult() == JOptionPane.OK_OPTION) {
             HttpExtendProperty prop = this.sendToServerExtendDlg.getProperty();
             this.extendProperty.clear();
+            BurpExtension.helpers().outPrintln("getprop:" + prop.toString());
             this.extendProperty.putAll(prop.getProperties());
         }
     }

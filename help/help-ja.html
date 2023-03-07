@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>YaguraExtender ヘルプ</title>
+<title>YaguraExtension ヘルプ</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -438,12 +438,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>YaguraExtender ヘルプ</h1>
+<h1>YaguraExtension ヘルプ</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_start_up">1. Start up</a></li>
-<li><a href="#_yaguraextenderタブ">2. YaguraExtenderタブ</a>
+<li><a href="#_yaguraタブ">2. Yaguraタブ</a>
 <ul class="sectlevel2">
 <li><a href="#_cjk_viewタブ">2.1. CJK Viewタブ</a>
 <ul class="sectlevel3">
@@ -464,41 +464,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_matchalert_item_編集ダイヤログ">2.3.2. MatchAlert Item 編集ダイヤログ</a></li>
 </ul>
 </li>
-<li><a href="#_sendtoタブ">2.4. SendToタブ</a>
+<li><a href="#_autoresponderタブ">2.4. AutoResponderタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_sendto">2.4.1. SendTo</a></li>
-<li><a href="#_sendtoitem_編集ダイヤログ">2.4.2. SendToItem 編集ダイヤログ</a></li>
-<li><a href="#_baseタブ">2.4.3. Baseタブ</a></li>
-<li><a href="#_extendタブ">2.4.4. Extendタブ</a></li>
+<li><a href="#_autoresponderitem_編集ダイヤログ">2.4.1. AutoResponderItem 編集ダイヤログ</a></li>
 </ul>
 </li>
-<li><a href="#_loggingタブ">2.5. Loggingタブ</a>
+<li><a href="#_sendtoタブ">2.5. SendToタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_logging">2.5.1. Logging</a></li>
+<li><a href="#_sendto">2.5.1. SendTo</a></li>
+<li><a href="#_sendtoitem_編集ダイヤログ">2.5.2. SendToItem 編集ダイヤログ</a></li>
+<li><a href="#_baseタブ">2.5.3. Baseタブ</a></li>
+<li><a href="#_extendタブ">2.5.4. Extendタブ</a></li>
 </ul>
 </li>
-<li><a href="#_jsearchタブ">2.6. JSearchタブ</a>
+<li><a href="#_loggingタブ">2.6. Loggingタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_jsearch">2.6.1. JSearch</a></li>
+<li><a href="#_logging">2.6.1. Logging</a></li>
 </ul>
 </li>
-<li><a href="#_jtranscoderタブ">2.7. JTransCoderタブ</a>
+<li><a href="#_jsearchタブ">2.7. JSearchタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_translator">2.7.1. Translator</a></li>
-<li><a href="#_generaterタブ">2.7.2. Generaterタブ</a></li>
-<li><a href="#_converter_tab">2.7.3. Converter tab</a></li>
-<li><a href="#_certificate_タブ">2.7.4. Certificate タブ</a></li>
-<li><a href="#_view_state_decoder_タブ">2.7.5. View State Decoder タブ</a></li>
-<li><a href="#_jwt_token_decoder_タブ">2.7.6. JWT Token Decoder タブ</a></li>
+<li><a href="#_jsearch">2.7.1. JSearch</a></li>
 </ul>
 </li>
-<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a>
+<li><a href="#_jtranscoderタブ">2.8. JTransCoderタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_viewstate_タブ">2.8.1. ViewState タブ</a></li>
-<li><a href="#_jwt_タブ">2.8.2. JWT タブ</a></li>
+<li><a href="#_translator">2.8.1. Translator</a></li>
+<li><a href="#_generaterタブ">2.8.2. Generaterタブ</a></li>
+<li><a href="#_converter_tab">2.8.3. Converter tab</a></li>
+<li><a href="#_certificate_タブ">2.8.4. Certificate タブ</a></li>
+<li><a href="#_view_state_decoder_タブ">2.8.5. View State Decoder タブ</a></li>
+<li><a href="#_jwt_token_decoder_タブ">2.8.6. JWT Token Decoder タブ</a></li>
 </ul>
 </li>
-<li><a href="#_version">2.9. Version</a></li>
+<li><a href="#_generate_csrf_poc">2.9. Generate CSRF PoC</a>
+<ul class="sectlevel3">
+<li><a href="#_viewstate_タブ">2.9.1. ViewState タブ</a></li>
+<li><a href="#_jwt_タブ">2.9.2. JWT タブ</a></li>
+</ul>
+</li>
+<li><a href="#_version">2.10. Version</a></li>
 </ul>
 </li>
 </ul>
@@ -516,17 +521,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_start_up">1. Start up</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Burp suiteの「Extender」タブから「Add」ボタンを押下後、YaguraExtender.jar を追加します。
+<p>Burp suiteの「Extensions」タブから「Add」ボタンを押下後、YaguraExtension.jar を追加します。
 「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
 各種設定はこちらから行えるようになっています。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/Extender_Yagura.png" alt="Extender"></span></p>
+<p><span class="image"><img src="images/Extender_Yagura.png" alt="Extension"></span></p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_yaguraextenderタブ">2. YaguraExtenderタブ</h2>
+<h2 id="_yaguraタブ">2. Yaguraタブ</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_cjk_viewタブ">2.1. CJK Viewタブ</h3>
@@ -900,7 +905,78 @@ proxyログにチェックした場合のみ有効です。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sendtoタブ">2.4. SendToタブ</h3>
+<h3 id="_autoresponderタブ">2.4. AutoResponderタブ</h3>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_autoresponder.png" alt="AutoResponderタブ"></span></p>
+</div>
+<div class="paragraph">
+<p>リクエストに対応した固定のレスポンスを定義することができます。</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Enable]ボタン</dt>
+<dd>
+<p>チェック時に、AutoResponderを有効にします。</p>
+</dd>
+<dt class="hdlist1">[Edit]ボタン</dt>
+<dd>
+<p>選択したAutoResponderItemを編集します。
+選択した内容のAutoResponderItemの編集ダイヤログが表示されます。</p>
+</dd>
+<dt class="hdlist1">[Remove]ボタン</dt>
+<dd>
+<p>選択したAutoResponderItemを削除します。</p>
+</dd>
+<dt class="hdlist1">[Up]、[Down]ボタン</dt>
+<dd>
+<p>選択したAutoResponderItemの順番を移動します。
+ここでの順番が、AutoResponderの適用される順番になります。</p>
+</dd>
+<dt class="hdlist1">[Add]ボタン</dt>
+<dd>
+<p>AutoResponderItemを追加します。
+空のAutoResponderItemの編集ダイヤログが表示されます。</p>
+</dd>
+</dl>
+</div>
+<div class="sect3">
+<h4 id="_autoresponderitem_編集ダイヤログ">2.4.1. AutoResponderItem 編集ダイヤログ</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_autoresponder_item.png" alt="AutoResponderItem編集 ダイヤログ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Match URL</dt>
+<dd>
+<p>マッチさせるURLを指定します。指定された値は前方一致されます。</p>
+</dd>
+<dt class="hdlist1">[Regexp]チェックボックス</dt>
+<dd>
+<p>チェック時正規表現を有効にします。</p>
+</dd>
+<dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
+<dd>
+<p>チェック時大文字小文字を無視します。</p>
+</dd>
+<dt class="hdlist1">Replace</dt>
+<dd>
+<p>レスポンスとして利用するファイルを指定します。</p>
+</dd>
+<dt class="hdlist1">[Body only]チェックボックス</dt>
+<dd>
+<p>レスポンスとして指定したファイルをレスポンスボディに出力します。
+チェックされていない場合は、ファイルにレスポンスヘッダの記載も必要です。</p>
+</dd>
+<dt class="hdlist1">[Conent-Type]コンボボックス</dt>
+<dd>
+<p>レスポンスのConent-Typeを指定します。[Body only]にチェックされている場合に有効です。</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sendtoタブ">2.5. SendToタブ</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto.png" alt="SendToタブ"></span></p>
 </div>
@@ -909,7 +985,7 @@ proxyログにチェックした場合のみ有効です。</p>
 BurpのHistory等から表示される右クリックのメニューを増やすことができ、 メニューから指定した機能を呼び出すことができます。送られる内容は、選択したHistoryのリクエストとレスポンスの内容になります。</p>
 </div>
 <div class="sect3">
-<h4 id="_sendto">2.4.1. SendTo</h4>
+<h4 id="_sendto">2.5.1. SendTo</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Send To Submenu]チェックボックス</dt>
@@ -939,7 +1015,7 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sendtoitem_編集ダイヤログ">2.4.2. SendToItem 編集ダイヤログ</h4>
+<h4 id="_sendtoitem_編集ダイヤログ">2.5.2. SendToItem 編集ダイヤログ</h4>
 <div class="paragraph">
 <p>SendToには、Baseタブと、Extendタブがあります。 Baseタブでは、バイナリエディタやファイル比較ツール等を登録すると便利です。 右クリックからエディタを呼び出すと、一時的に作られたファイルを引数にしてバイナリエディタが起動されます。 比較ツールの場合、2つHistoryを選択することで比較することができます。 これは BurpのHEX ダンプやCompare機能が使いにくいためにつくりました。</p>
 </div>
@@ -948,7 +1024,7 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 </div>
 </div>
 <div class="sect3">
-<h4 id="_baseタブ">2.4.3. Baseタブ</h4>
+<h4 id="_baseタブ">2.5.3. Baseタブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto_base.png" alt="SendToItem編集 Base ダイヤログ"></span></p>
 </div>
@@ -1152,7 +1228,7 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 </div>
 </div>
 <div class="sect3">
-<h4 id="_extendタブ">2.4.4. Extendタブ</h4>
+<h4 id="_extendタブ">2.5.4. Extendタブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto_extend.png" alt="SendToItem編集 Extend ダイヤログ"></span></p>
 </div>
@@ -1203,7 +1279,7 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 </div>
 </div>
 <div class="sect2">
-<h3 id="_loggingタブ">2.5. Loggingタブ</h3>
+<h3 id="_loggingタブ">2.6. Loggingタブ</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_logging.png" alt="Loggingタブ"></span></p>
 </div>
@@ -1212,7 +1288,7 @@ sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけ
 この機能では、毎回ログの選択を行わなくても自動でログを 保存してくれます。</p>
 </div>
 <div class="sect3">
-<h4 id="_logging">2.5.1. Logging</h4>
+<h4 id="_logging">2.6.1. Logging</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[auto logging]チェックボックス</dt>
@@ -1270,7 +1346,7 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearchタブ">2.6. JSearchタブ</h3>
+<h3 id="_jsearchタブ">2.7. JSearchタブ</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jsearch.png" alt="JSearchタブ"></span></p>
 </div>
@@ -1278,7 +1354,7 @@ proxy-message.log.2
 <p>JSearch タブはProxyのHistory一覧から文字を検索するための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_jsearch">2.6.1. JSearch</h4>
+<h4 id="_jsearch">2.7.1. JSearch</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Search]ボタン</dt>
@@ -1323,12 +1399,12 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoderタブ">2.7. JTransCoderタブ</h3>
+<h3 id="_jtranscoderタブ">2.8. JTransCoderタブ</h3>
 <div class="paragraph">
 <p>Transcoder タブは各種エンコード、デコードを行うための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_translator">2.7.1. Translator</h4>
+<h4 id="_translator">2.8.1. Translator</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder.png" alt="Translatorタブ"></span></p>
 </div>
@@ -1614,7 +1690,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generaterタブ">2.7.2. Generaterタブ</h4>
+<h4 id="_generaterタブ">2.8.2. Generaterタブ</h4>
 <div class="paragraph">
 <p>Generater には、sequenceタブとrandomタブがあります。</p>
 </div>
@@ -1720,7 +1796,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_converter_tab">2.7.3. Converter tab</h4>
+<h4 id="_converter_tab">2.8.3. Converter tab</h4>
 <div class="paragraph">
 <p>Baseタブは基数変換するための簡易的な機能です。</p>
 </div>
@@ -1840,7 +1916,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_certificate_タブ">2.7.4. Certificate タブ</h4>
+<h4 id="_certificate_タブ">2.8.4. Certificate タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_certificate.png" alt="Certificateタブ"></span></p>
 </div>
@@ -1866,7 +1942,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_view_state_decoder_タブ">2.7.5. View State Decoder タブ</h4>
+<h4 id="_view_state_decoder_タブ">2.8.5. View State Decoder タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="View State Decoderタブ"></span></p>
 </div>
@@ -1892,7 +1968,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_token_decoder_タブ">2.7.6. JWT Token Decoder タブ</h4>
+<h4 id="_jwt_token_decoder_タブ">2.8.6. JWT Token Decoder タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT_decoder.png" alt="JWT Token Decoderタブ"></span></p>
 </div>
@@ -1919,7 +1995,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generate_csrf_poc">2.8. Generate CSRF PoC</h3>
+<h3 id="_generate_csrf_poc">2.9. Generate CSRF PoC</h3>
 <div class="paragraph">
 <p>主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。</p>
 </div>
@@ -2000,7 +2076,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_viewstate_タブ">2.8.1. ViewState タブ</h4>
+<h4 id="_viewstate_タブ">2.9.1. ViewState タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_viewstate.png" alt="View Stateタブ"></span></p>
 </div>
@@ -2026,7 +2102,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_タブ">2.8.2. JWT タブ</h4>
+<h4 id="_jwt_タブ">2.9.2. JWT タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT.png" alt="JWTタブ"></span></p>
 </div>
@@ -2053,9 +2129,12 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version">2.9. Version</h3>
+<h3 id="_version">2.10. Version</h3>
 <div class="paragraph">
 <p>バージョン情報を表示します。</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_version.png" alt="Versionタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -2075,7 +2154,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-04 17:23:15 +0900
+Last updated 2023-03-07 23:05:50 +0900
 </div>
 </div>
 </body>

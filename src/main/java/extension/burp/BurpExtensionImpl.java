@@ -15,8 +15,6 @@ public class BurpExtensionImpl implements BurpExtension {
 
     private final static Logger logger = Logger.getLogger(BurpExtensionImpl.class.getName());
 
-    private final static BurpVersion SUPPORT_MIN_VERSION = new BurpVersion("Burp Suite Support v2023.1.2");
-
     private static BurpExtensionImpl extenderImpl;
     private static MontoyaApi montoyaApi;
     private static ExtensionHelper helper = null;
@@ -32,10 +30,7 @@ public class BurpExtensionImpl implements BurpExtension {
             // 取得できない場合Frameのタイトルから取得
             burp_version = BurpUtil.suiteVersion();
         }
-
-        if (!showUnsupporttDlg(burp_version)) {
-            helper = new ExtensionHelper(api);
-        }
+        helper = new ExtensionHelper(api);
     }
 
     @SuppressWarnings("unchecked")
@@ -53,22 +48,6 @@ public class BurpExtensionImpl implements BurpExtension {
 
     public static ExtensionHelper helpers() {
         return helper;
-    }
-
-    private static boolean showUnsupport = false;
-
-    /**
-     * バージョンが古い場合警告を表示
-     * @param version
-     * @return 警告が表示された場合はtrue
-     */
-    public static boolean showUnsupporttDlg(BurpVersion version) {
-        if (!showUnsupport && version.compareTo(SUPPORT_MIN_VERSION) < 0) {
-            JOptionPane.showMessageDialog(null, "Burp suite v2023.1.2 or higher version is required.", Version.getInstance().getProjectName(), JOptionPane.INFORMATION_MESSAGE);
-            showUnsupport = true;
-            return true;
-        }
-        return false;
     }
 
 

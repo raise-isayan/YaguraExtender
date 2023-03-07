@@ -235,12 +235,7 @@ public class HttpExtendProperty {
     public void setProperty(HttpExtendProperty property) {
         this.httpClientType = property.httpClientType;
 
-        this.clientCertificateItem.setSelected(property.isUseClientCertificate());
-        if (this.clientCertificateItem.isSelected()) {
-            this.clientCertificateItem.setStoreType(property.getClientCertificateStoreType());
-            this.clientCertificateItem.setClientCertificate(property.getClientCertificate());
-            this.clientCertificateItem.setClientCertificatePasswd(property.getClientCertificatePasswd());
-        }
+        this.clientCertificateItem.setProperty(property.getClientCertificateItem());
         this.ignoreValidateCertification = property.ignoreValidateCertification;
 
         this.authorizationType = property.authorizationType;
@@ -308,6 +303,12 @@ public class HttpExtendProperty {
             this.clientCertificateItem.setClientCertificate(item.getClientCertificate());
             this.clientCertificateItem.setClientCertificatePasswd(item.getClientCertificatePasswd());
         }
+    }
+
+    @Override
+    public String toString() {
+        Properties prop = getProperties();
+        return prop.toString();
     }
 
 }

@@ -1,4 +1,4 @@
-= YaguraExtender ヘルプ
+= YaguraExtension ヘルプ
 :toc2:
 :toclevels: 3
 :figure-caption: 図
@@ -8,13 +8,13 @@
 Language/link:help.html[English]
 
 == Start up 
-Burp suiteの「Extender」タブから「Add」ボタンを押下後、YaguraExtender.jar を追加します。
+Burp suiteの「Extensions」タブから「Add」ボタンを押下後、YaguraExtension.jar を追加します。
 「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
 各種設定はこちらから行えるようになっています。
 
-image:images/Extender_Yagura.png[Extender]
+image:images/Extender_Yagura.png[Extension]
 
-== YaguraExtenderタブ
+== Yaguraタブ
 
 === CJK Viewタブ
 
@@ -239,6 +239,53 @@ Target(アラート対象)::
 
 [scanner issue]チェックボックス:: 
     文字列がマッチした場合、該当のScannerのIssueを作成します。
+
+=== AutoResponderタブ
+
+image:images/custom_autoresponder.png[AutoResponderタブ]
+
+リクエストに対応した固定のレスポンスを定義することができます。
+
+[Enable]ボタン:: 
+    チェック時に、AutoResponderを有効にします。
+
+[Edit]ボタン:: 
+    選択したAutoResponderItemを編集します。
+    選択した内容のAutoResponderItemの編集ダイヤログが表示されます。
+
+[Remove]ボタン:: 
+    選択したAutoResponderItemを削除します。
+
+[Up]、[Down]ボタン:: 
+    選択したAutoResponderItemの順番を移動します。
+    ここでの順番が、AutoResponderの適用される順番になります。
+
+[Add]ボタン::
+    AutoResponderItemを追加します。
+    空のAutoResponderItemの編集ダイヤログが表示されます。
+
+==== AutoResponderItem 編集ダイヤログ
+
+image:images/custom_autoresponder_item.png[AutoResponderItem編集 ダイヤログ]
+
+Match URL:: 
+    マッチさせるURLを指定します。指定された値は前方一致されます。
+
+[Regexp]チェックボックス:: 
+    チェック時正規表現を有効にします。
+
+[IgnoreCase]チェックボックス:: 
+    チェック時大文字小文字を無視します。
+
+Replace:: 
+    レスポンスとして利用するファイルを指定します。
+
+[Body only]チェックボックス::
+    レスポンスとして指定したファイルをレスポンスボディに出力します。
+    チェックされていない場合は、ファイルにレスポンスヘッダの記載も必要です。
+
+[Conent-Type]コンボボックス::
+    レスポンスのConent-Typeを指定します。[Body only]にチェックされている場合に有効です。
 
 === SendToタブ
 
@@ -967,6 +1014,8 @@ image:images/custom_JWT.png[JWTタブ]
 
 === Version
 バージョン情報を表示します。
+
+image:images/custom_version.png[Versionタブ]
 
 [Import]ボタン:: 
     設定をJSON形式にてImportします。

@@ -109,7 +109,7 @@ import yagura.view.ViewStateTabEditor;
 /**
  * @author isayan
  */
-public class BurpExtension extends BurpExtensionImpl implements /**IBurpExtender,**/ ExtensionUnloadingHandler {
+public class BurpExtension extends BurpExtensionImpl implements IBurpExtender, ExtensionUnloadingHandler {
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
@@ -157,11 +157,15 @@ public class BurpExtension extends BurpExtensionImpl implements /**IBurpExtender
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
-//    @Override
-//    public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
-//        BurpVersion burp_version = BurpUtil.suiteVersion();
-//        BurpExtensionImpl.showUnsupporttDlg(burp_version);
-//    }
+    /**
+      MontoyaAPI に対応している場合にもこのルートは通る模様
+     * @param cb
+     */
+    @Override
+    public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
+        BurpVersion burp_version = BurpUtil.suiteVersion();
+        BurpVersion.showUnsupporttDlg(burp_version);
+    }
 
     /*
      * 古い Montoya API ではメソッド名をあやまっており
@@ -169,13 +173,18 @@ public class BurpExtension extends BurpExtensionImpl implements /**IBurpExtender
      **/
     public void initialise(MontoyaApi api) {
         BurpVersion burp_version = BurpUtil.suiteVersion();
-        showUnsupporttDlg(burp_version);
+        BurpVersion.showUnsupporttDlg(burp_version);
     }
 
     @Override
     public void initialize(MontoyaApi api) {
         super.initialize(api);
         BurpVersion version = this.getBurpVersion();
+        if (BurpVersion.isUnsupportVersion(version)) {
+            BurpVersion.showUnsupporttDlg(version);
+            throw new UnsupportedOperationException("Unsupported burp version");
+        }
+
         if (DEBUG) {
             api.logging().logToOutput("name:" + version.getProductName());
             api.logging().logToOutput("major:" + version.getMajor());

@@ -278,7 +278,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -452,8 +452,8 @@ public class SendToServerExtendDlg extends CustomDialog {
         this.importCertificatetDlg.setVisible(true);
         if (this.importCertificatetDlg.getModalResult() == JOptionPane.OK_OPTION) {
             CertificateItem prop = this.importCertificatetDlg.getProperty();
-            this.certProp.setProperty(prop);
             this.clearItem();
+            this.certProp.setProperty(prop);
             this.setEditItem(this.certProp, false);
             this.chkClientCertififate.setEnabled(this.modelCertificate.getRowCount() > 0);
         }
@@ -574,6 +574,9 @@ public class SendToServerExtendDlg extends CustomDialog {
         SwingUtil.addOrUpdateItem(this.tableCertificate, rows, update);
     }
 
+    public HttpExtendProperty.HttpClientType getHttpClientType() {
+        return this.rdoCustomClient.isSelected() ? HttpExtendProperty.HttpClientType.CUSTOM : HttpExtendProperty.HttpClientType.BURP;
+    }
 
     public void setProperty(HttpExtendProperty prop) {
         HttpExtendProperty.HttpClientType httpClientType = prop.getHttpClientType();
@@ -617,10 +620,9 @@ public class SendToServerExtendDlg extends CustomDialog {
 
     public HttpExtendProperty getProperty() {
         HttpExtendProperty prop = new HttpExtendProperty();
-        HttpExtendProperty.HttpClientType httpClientType = this.rdoCustomClient.isSelected() ? HttpExtendProperty.HttpClientType.CUSTOM : HttpExtendProperty.HttpClientType.BURP;
-        prop.setHttpClientType(httpClientType);
+        prop.setHttpClientType(this.getHttpClientType());
 
-        prop.setUseClientCertificate(this.chkClientCertififate.isSelected() && this.certProp.isSelected());
+        prop.setUseClientCertificate(this.chkClientCertififate.isSelected());
         if (prop.isUseClientCertificate()) {
             prop.setClientCertificateStoreType(this.certProp.getStoreType());
             prop.setClientCertificate(this.certProp.getClientCertificate());

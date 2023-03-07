@@ -6,8 +6,10 @@ import extension.helpers.ConvertUtil;
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 public final class BurpVersion implements Comparable<BurpVersion> {
+    private final static BurpVersion SUPPORT_MIN_VERSION = new BurpVersion("Burp Suite Support", "2023", "1.2", "");
 
     private String productName = "";
     private String majorVersion = "";
@@ -15,19 +17,22 @@ public final class BurpVersion implements Comparable<BurpVersion> {
     private String build = "";
 
     public BurpVersion(MontoyaApi api) {
-        parseVersion(api);
+        this(api.burpSuite().version());
+    }
+
+    public BurpVersion(burp.api.montoya.core.Version version) {
+        this(version.name(), version.major(), version.minor(), version.build());
     }
 
     public BurpVersion(String title) {
         parseVersion(title);
     }
 
-    private void parseVersion(MontoyaApi api) {
-        Version version = api.burpSuite().version();
-        this.productName = version.name();
-        this.majorVersion = version.major();
-        this.minorVersion = version.minor();
-        this.build = version.build();
+    protected BurpVersion(String name, String major, String minor, String build) {
+        this.productName = name;
+        this.majorVersion = major;
+        this.minorVersion = minor;
+        this.build = build;
     }
 
     private final static Pattern SUITE_VERSION = Pattern.compile("(Burp Suite \\w+(?: Edition)?) v(\\d+)\\.([\\d\\.]+)(-(\\d+))?");
@@ -71,6 +76,27 @@ public final class BurpVersion implements Comparable<BurpVersion> {
         return this.productName.contains("Professional");
     }
 
+    public static boolean isUnsupportVersion(BurpVersion version) {
+        return (version.compareTo(SUPPORT_MIN_VERSION) < 0);
+    }
+
+
+    private static boolean showUnsupport = false;
+
+    /**
+     * バージョンが古い場合警告を表示
+     * @param version
+     * @return 警告が表示された場合はtrue
+     */
+    public static boolean showUnsupporttDlg(BurpVersion version) {
+        if (!showUnsupport && isUnsupportVersion(version)) {
+            JOptionPane.showMessageDialog(null, "Burp suite v2023.1.2 or higher version is required.", yagura.Version.getInstance().getProjectName(), JOptionPane.INFORMATION_MESSAGE);
+            showUnsupport = true;
+            return true;
+        }
+        return false;
+    }
+
     /**
      * バージョン番号
      *
@@ -109,9 +135,6 @@ public final class BurpVersion implements Comparable<BurpVersion> {
         return 0;
     }
 
-//    public boolean isSupport() {
-//        return compareTo(SUPPORT_MIN_VERSION) >= 0;
-//    }
     public enum OSType {
         WINDOWS,
         LINUX,
