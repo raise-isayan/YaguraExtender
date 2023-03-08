@@ -272,10 +272,10 @@ Match URL::
     マッチさせるURLを指定します。指定された値は前方一致されます。
 
 [Regexp]チェックボックス:: 
-    チェック時正規表現を有効にします。
+    チェック時、マッチさせるURLに対しての正規表現を有効にします。
 
 [IgnoreCase]チェックボックス:: 
-    チェック時大文字小文字を無視します。
+    チェック時マッチさせるURLに対しての大文字小文字を無視します。
 
 Replace:: 
     レスポンスとして利用するファイルを指定します。
@@ -285,7 +285,7 @@ Replace::
     チェックされていない場合は、ファイルにレスポンスヘッダの記載も必要です。
 
 [Conent-Type]コンボボックス::
-    レスポンスのConent-Typeを指定します。[Body only]にチェックされている場合に有効です。
+    レスポンスのConent-Typeを指定します。[Body only]にチェックがされている場合にのみ有効です。
 
 === SendToタブ
 
@@ -314,6 +314,11 @@ BurpのHistory等から表示される右クリックのメニューを増やす
     SendToItemを追加します。
     空のSendToItemの編集ダイヤログが表示されます。
 
+[Duplicate]ボタン::
+    SendToItemを複製します。
+    選択したSendToItemの編集ダイヤログが表示されます。
+    各項目を任意に変更して追加することができます。
+
 ==== SendToItem 編集ダイヤログ
 
 SendToには、Baseタブと、Extendタブがあります。 Baseタブでは、バイナリエディタやファイル比較ツール等を登録すると便利です。 右クリックからエディタを呼び出すと、一時的に作られたファイルを引数にしてバイナリエディタが起動されます。 比較ツールの場合、2つHistoryを選択することで比較することができます。 これは BurpのHEX ダンプやCompare機能が使いにくいためにつくりました。
@@ -341,19 +346,32 @@ Target::
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
     リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。
 
-===== Proxy設定ダイヤログ
+===== HTTP設定ダイヤログ
 
-サーバに送信する場合にチェックされている場合プロキシの設定が可能となります。
+サーバに送信する場合にチェックされている場合、SendToの送信に利用されるHTTPクライアントの設定が可能となります。
 
-image:images/custom_sendto_server_proxy.png[SendToItem編集 Proxy設定 ダイヤログ]
+image:images/custom_sendto_server_setting.png[SendToItem編集 SendTo設定 ダイヤログ]
 
 サーバにチェックされている場合に設定可能となります。
 
 * Use Burp Proxy Settings
-** プロキシ設定にBurpの設定を利用します。
+** SendToの送信にBurpのHTTPクライアントを利用します。
 
 * Use Custom Proxy Settings
-** プロキシ設定に独自の設定を利用します。
+** SendToの送信に独自のHTTPクライアントを利用します。
+
+.Authorization
+
+Authorization Type::
+    認証の方式を指定します。BASICとDIGESTを選択可能です｡
+
+User:: 
+    認証ユーザ名を指定します。
+  
+Password:: 
+    認証パスワードを指定します。
+
+.Proxy
 
 Protocol:: 
     Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡
@@ -370,6 +388,11 @@ User::
 Password:: 
     Proxyの認証パスワードを指定します。
 
+.Client Certificate
+ use Client Certificateチェックボックス:: クライアント証明書を有効にします。
+
+.Server Certificate
+ ignore Validate Certificationチェックボックス:: チェックされている場合HTTPSサーバ証明書の検証を無視します。
 
 CAUTION: JDKのバグのためSOCKS Proxyは動作しません
 
@@ -444,9 +467,8 @@ UTF-8
 -----------------------------265001916915724--
 ----
 
-現時点ではこの形式をうけとることができる（公開されている）Webアプリはありません。
-sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけのCGIアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。
-
+現時点ではこの形式を解釈することができる（公開されている）Webアプリはありません。
+sample/sendto.php にはこの形式を受け取って表示するだけのPHPアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。
 
 ==== Extendタブ
 image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
@@ -637,19 +659,19 @@ HTML(<,>,",')::
 &#xhh;::
     16進数形式の実体参照形式のエンコード、デコードを行います。
 
-\xhh;(unicode):: 
+\xhh(unicode):: 
     unicodeコード単位で16進数形式によるエンコード、デコードを行います。
 
-\xhh;(byte):: 
+\xhh(byte):: 
     byteコード単位で16進数形式によるエンコード、デコードを行います。
 
-\ooo;:: 
+\ooo:: 
     8進数形式によるエンコード、デコードを行います。
 
-\uhhhh;:: 
+\uhhhh:: 
     Unicode形式によるエンコード、デコードを行います。
 
-$hhhh;:: 
+$hhhh:: 
     $形式によるエンコード、デコードを行います。
 
 Gzip::
@@ -836,7 +858,7 @@ Radix32 ::
 
 image:images/custom_converter_date.png[Dateタブ]
 
-Date:: 
+ZoneDate:: 
     日付を入力します。
 
 Unixtime:: 
@@ -884,6 +906,8 @@ Ineger IP ::
 
 ==== Certificate タブ
 
+証明書の各種変換およびエクスポートを行います｡
+
 image:images/custom_certificate.png[Certificateタブ]
 
 [JKS] [PKCS12]ボタン::
@@ -894,6 +918,15 @@ image:images/custom_certificate.png[Certificateタブ]
 
 [Certificate and Private key in PEM format]ボタン::
     秘密鍵と公開鍵を含めてPEM形式でエクスポートします。
+
+[Certificate in DER format]ボタン::
+    公開鍵を含めてDER形式でエクスポートします。
+
+[Certificate in DER format]ボタン::
+    秘密鍵を含めてDER形式でエクスポートします。
+
+[Provide certificate on the server]チェックボックス::
+    指定したポートで証明書をインポートするためのサーバを起動します。
   
 [Export]ボタン::
     証明書をエクスポートします。

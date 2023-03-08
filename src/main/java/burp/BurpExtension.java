@@ -109,7 +109,7 @@ import yagura.view.ViewStateTabEditor;
 /**
  * @author isayan
  */
-public class BurpExtension extends BurpExtensionImpl implements IBurpExtender, ExtensionUnloadingHandler {
+public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
@@ -155,16 +155,6 @@ public class BurpExtension extends BurpExtensionImpl implements IBurpExtender, E
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
-    }
-
-    /**
-      MontoyaAPI に対応している場合にもこのルートは通る模様
-     * @param cb
-     */
-    @Override
-    public void registerExtenderCallbacks(IBurpExtenderCallbacks cb) {
-        BurpVersion burp_version = BurpUtil.suiteVersion();
-        BurpVersion.showUnsupporttDlg(burp_version);
     }
 
     /*

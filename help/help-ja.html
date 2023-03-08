@@ -952,11 +952,11 @@ proxyログにチェックした場合のみ有効です。</p>
 </dd>
 <dt class="hdlist1">[Regexp]チェックボックス</dt>
 <dd>
-<p>チェック時正規表現を有効にします。</p>
+<p>チェック時、マッチさせるURLに対しての正規表現を有効にします。</p>
 </dd>
 <dt class="hdlist1">[IgnoreCase]チェックボックス</dt>
 <dd>
-<p>チェック時大文字小文字を無視します。</p>
+<p>チェック時マッチさせるURLに対しての大文字小文字を無視します。</p>
 </dd>
 <dt class="hdlist1">Replace</dt>
 <dd>
@@ -969,7 +969,7 @@ proxyログにチェックした場合のみ有効です。</p>
 </dd>
 <dt class="hdlist1">[Conent-Type]コンボボックス</dt>
 <dd>
-<p>レスポンスのConent-Typeを指定します。[Body only]にチェックされている場合に有効です。</p>
+<p>レスポンスのConent-Typeを指定します。[Body only]にチェックがされている場合にのみ有効です。</p>
 </dd>
 </dl>
 </div>
@@ -1010,6 +1010,12 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 <dd>
 <p>SendToItemを追加します。
 空のSendToItemの編集ダイヤログが表示されます。</p>
+</dd>
+<dt class="hdlist1">[Duplicate]ボタン</dt>
+<dd>
+<p>SendToItemを複製します。
+選択したSendToItemの編集ダイヤログが表示されます。
+各項目を任意に変更して追加することができます。</p>
 </dd>
 </dl>
 </div>
@@ -1056,12 +1062,12 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 </dl>
 </div>
 <div class="sect4">
-<h5 id="_proxy設定ダイヤログ">Proxy設定ダイヤログ</h5>
+<h5 id="_http設定ダイヤログ">HTTP設定ダイヤログ</h5>
 <div class="paragraph">
-<p>サーバに送信する場合にチェックされている場合プロキシの設定が可能となります。</p>
+<p>サーバに送信する場合にチェックされている場合、SendToの送信に利用されるHTTPクライアントの設定が可能となります。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_sendto_server_proxy.png" alt="SendToItem編集 Proxy設定 ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_sendto_server_setting.png" alt="SendToItem編集 SendTo設定 ダイヤログ"></span></p>
 </div>
 <div class="paragraph">
 <p>サーバにチェックされている場合に設定可能となります。</p>
@@ -1073,7 +1079,7 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 <div class="ulist">
 <ul>
 <li>
-<p>プロキシ設定にBurpの設定を利用します。</p>
+<p>SendToの送信にBurpのHTTPクライアントを利用します。</p>
 </li>
 </ul>
 </div>
@@ -1083,8 +1089,32 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 <div class="ulist">
 <ul>
 <li>
-<p>プロキシ設定に独自の設定を利用します。</p>
+<p>SendToの送信に独自のHTTPクライアントを利用します。</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 <div class="dlist">
+<div class="title">Authorization</div>
+<dl>
+<dt class="hdlist1">Authorization Type</dt>
+<dd>
+<p>認証の方式を指定します。BASICとDIGESTを選択可能です｡</p>
+</dd>
+<dt class="hdlist1">User</dt>
+<dd>
+<p>認証ユーザ名を指定します。</p>
+</dd>
+<dt class="hdlist1">Password</dt>
+<dd>
+<p>認証パスワードを指定します。</p>
+</dd>
+</dl>
+</div>
+<div class="dlist">
+<div class="title">Proxy</div>
 <dl>
 <dt class="hdlist1">Protocol</dt>
 <dd>
@@ -1108,11 +1138,23 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 </dd>
 </dl>
 </div>
-</li>
-</ul>
+<div class="dlist">
+<div class="title">Client Certificate</div>
+<dl>
+<dt class="hdlist1">use Client Certificateチェックボックス</dt>
+<dd>
+<p>クライアント証明書を有効にします。</p>
+</dd>
+</dl>
 </div>
-</li>
-</ul>
+<div class="dlist">
+<div class="title">Server Certificate</div>
+<dl>
+<dt class="hdlist1">ignore Validate Certificationチェックボックス</dt>
+<dd>
+<p>チェックされている場合HTTPSサーバ証明書の検証を無視します。</p>
+</dd>
+</dl>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -1222,8 +1264,8 @@ UTF-8
 </div>
 </div>
 <div class="paragraph">
-<p>現時点ではこの形式をうけとることができる（公開されている）Webアプリはありません。
-sample/cgi-bin/sendto.cgi にはこの形式を受け取って表示するだけのCGIアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。</p>
+<p>現時点ではこの形式を解釈することができる（公開されている）Webアプリはありません。
+sample/sendto.php にはこの形式を受け取って表示するだけのPHPアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。</p>
 </div>
 </div>
 </div>
@@ -1526,23 +1568,23 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>16進数形式の実体参照形式のエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">\xhh;(unicode)</dt>
+<dt class="hdlist1">\xhh(unicode)</dt>
 <dd>
 <p>unicodeコード単位で16進数形式によるエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">\xhh;(byte)</dt>
+<dt class="hdlist1">\xhh(byte)</dt>
 <dd>
 <p>byteコード単位で16進数形式によるエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">\ooo;</dt>
+<dt class="hdlist1">\ooo</dt>
 <dd>
 <p>8進数形式によるエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">\uhhhh;</dt>
+<dt class="hdlist1">\uhhhh</dt>
 <dd>
 <p>Unicode形式によるエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">$hhhh;</dt>
+<dt class="hdlist1">$hhhh</dt>
 <dd>
 <p>$形式によるエンコード、デコードを行います。</p>
 </dd>
@@ -1834,7 +1876,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Date</dt>
+<dt class="hdlist1">ZoneDate</dt>
 <dd>
 <p>日付を入力します。</p>
 </dd>
@@ -1918,6 +1960,9 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <div class="sect3">
 <h4 id="_certificate_タブ">2.8.4. Certificate タブ</h4>
 <div class="paragraph">
+<p>証明書の各種変換およびエクスポートを行います｡</p>
+</div>
+<div class="paragraph">
 <p><span class="image"><img src="images/custom_certificate.png" alt="Certificateタブ"></span></p>
 </div>
 <div class="dlist">
@@ -1933,6 +1978,18 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dt class="hdlist1">[Certificate and Private key in PEM format]ボタン</dt>
 <dd>
 <p>秘密鍵と公開鍵を含めてPEM形式でエクスポートします。</p>
+</dd>
+<dt class="hdlist1">[Certificate in DER format]ボタン</dt>
+<dd>
+<p>公開鍵を含めてDER形式でエクスポートします。</p>
+</dd>
+<dt class="hdlist1">[Certificate in DER format]ボタン</dt>
+<dd>
+<p>秘密鍵を含めてDER形式でエクスポートします。</p>
+</dd>
+<dt class="hdlist1">[Provide certificate on the server]チェックボックス</dt>
+<dd>
+<p>指定したポートで証明書をインポートするためのサーバを起動します。</p>
 </dd>
 <dt class="hdlist1">[Export]ボタン</dt>
 <dd>
@@ -2154,7 +2211,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-07 23:05:50 +0900
+Last updated 2023-03-08 22:57:44 +0900
 </div>
 </div>
 </body>

@@ -80,7 +80,7 @@ public class okHttpClientTest {
                     return new MockResponse().setResponseCode(404);
                 }
             };
-            server.setDispatcher(dispatcher);
+//            server.setDispatcher(dispatcher);
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -244,6 +244,12 @@ public class okHttpClientTest {
 
     public void testGetAuthRequest(Authenticator authenticator) {
         try {
+            String proxyHost = "127.0.0.1";
+            int proxyPort = 8888;
+            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+
+
             final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
@@ -251,9 +257,10 @@ public class okHttpClientTest {
                     .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
                     .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
                     .addInterceptor(new AuthenticationCacheInterceptor(authCache))
+                    .proxy(proxy)
                     .hostnameVerifier((hostname, session) -> true)
                     .build();
-            Request request = new Request.Builder().url("https://www.example.com/").build();
+            Request request = new Request.Builder().url("http://127.0.0.1:10000/digest/sendto.php?mode=sendto").build();
             try (Response response = client.newCall(request).execute()) {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
@@ -265,15 +272,62 @@ public class okHttpClientTest {
         }
     }
 
+
+    @Test
+    public void testGetDigestAuthRequest() {
+        final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("test", "testpass"));
+        testGetDigestAuthRequest(authenticator);
+    }
+
+    public void testGetDigestAuthRequest(Authenticator authenticator) {
+        try {
+            String proxyHost = "127.0.0.1";
+            int proxyPort = 8888;
+            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+
+            server.enqueue(new MockResponse().setResponseCode(401)
+                    .addHeader("WWW-Authenticate: Digest realm=\"Digest Auth\", nonce=\"3r1OIGP2BQA=f68b23ea2346ed4b7305eb812c7a1e6981d397ee\", algorithm=MD5, qop=\"auth\"")
+                    .addHeader("Content-Type: text/html; charset=iso-8859-1")
+            );
+            server.enqueue(new MockResponse().setResponseCode(200)
+                    .addHeader("Authentication-Info: rspauth=\"d3d522ba1474157e9b4321e54731fd52\", cnonce=\"85d8334b9ee29f75\", nc=00000001, qop=auth")
+                    .addHeader("Content-Type: text/html; charset=iso-8859-1")
+            );
+
+            final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
+            final OkHttpClient client = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
+                    .authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
+                    .addInterceptor(new AuthenticationCacheInterceptor(authCache))
+                    .proxy(proxy)
+                    .hostnameVerifier((hostname, session) -> true)
+                    .build();
+            Request request = new Request.Builder().url(server.url("/sendto/").url()).build();
+            try (Response response = client.newCall(request).execute()) {
+                ResponseBody body = response.body();
+                System.out.println(body.string());
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } catch (NoSuchAlgorithmException | KeyManagementException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+
+
     @Test
     public void testGetBasicRequest() {
-        final BasicAuthenticator authenticator = new BasicAuthenticator(new Credentials("username", "pass"));
+        final BasicAuthenticator authenticator = new BasicAuthenticator(new Credentials("test", "testpass"));
         testGetAuthRequest(authenticator);
     }
 
     @Test
     public void testGetDigestRequest() {
-        final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("username", "pass"));
+        final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("test", "testpass"));
         testGetAuthRequest(authenticator);
     }
 

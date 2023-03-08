@@ -423,10 +423,10 @@ public class SendToServer extends SendToMenuItem {
                         multipartBuilder.addFormDataPart("highlight", color.name());
                     }
                     if (httpRequest != null) {
-                        multipartBuilder.addFormDataPart("request", null, RequestBody.create(httpRequest.toByteArray().getBytes(), MediaType.parse("application/json")));
+                        multipartBuilder.addFormDataPart("request", "request", RequestBody.create(httpRequest.toByteArray().getBytes(), MediaType.parse("application/json")));
                     }
                     if (httpResponse != null) {
-                        multipartBuilder.addFormDataPart("response", null, RequestBody.create(httpResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
+                        multipartBuilder.addFormDataPart("response", "response", RequestBody.create(httpResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
                     }
                     MultipartBody multipartBody = multipartBuilder.build();
 

@@ -464,36 +464,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_matchalert_item_edit_dialog">2.3.2. MatchAlert Item Edit dialog</a></li>
 </ul>
 </li>
-<li><a href="#_sendto_tab">2.4. SendTo tab</a>
+<li><a href="#_autoresponder_tab">2.4. AutoResponder tab</a>
 <ul class="sectlevel3">
-<li><a href="#_sendto">2.4.1. SendTo</a></li>
-<li><a href="#_sendtoitem_edit_dialog">2.4.2. SendToItem Edit dialog</a></li>
-<li><a href="#_base_tab">2.4.3. Base tab</a>
+<li><a href="#_autoresponderitem_edit_dialog">2.4.1. AutoResponderItem Edit Dialog</a></li>
+</ul>
+</li>
+<li><a href="#_sendto_tab">2.5. SendTo tab</a>
+<ul class="sectlevel3">
+<li><a href="#_sendto">2.5.1. SendTo</a></li>
+<li><a href="#_sendtoitem_edit_dialog">2.5.2. SendToItem Edit dialog</a></li>
+<li><a href="#_base_tab">2.5.3. Base tab</a>
 <ul class="sectlevel4">
-<li><a href="#_proxy_configuration_dialog">Proxy Configuration Dialog</a></li>
+<li><a href="#_http_configuration_dialog">HTTP Configuration Dialog</a></li>
 <li><a href="#_the_format_sent_to_the_server_when_checking_the_server">The format sent to the server when checking the server</a></li>
 </ul>
 </li>
-<li><a href="#_extend_tab">2.4.4. Extend tab</a></li>
+<li><a href="#_extend_tab">2.5.4. Extend tab</a></li>
 </ul>
 </li>
-<li><a href="#_logging_tabs">2.5. Logging tabs</a>
+<li><a href="#_logging_tabs">2.6. Logging tabs</a>
 <ul class="sectlevel3">
-<li><a href="#_logging">2.5.1. Logging</a>
+<li><a href="#_logging">2.6.1. Logging</a>
 <ul class="sectlevel4">
 <li><a href="#_logging_target">Logging target</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_jsearch_tab">2.6. JSearch tab</a>
+<li><a href="#_jsearch_tab">2.7. JSearch tab</a>
 <ul class="sectlevel3">
-<li><a href="#_jsearch">2.6.1. JSearch</a></li>
+<li><a href="#_jsearch">2.7.1. JSearch</a></li>
 </ul>
 </li>
-<li><a href="#_jtranscoder_tab">2.7. JTransCoder tab</a>
+<li><a href="#_jtranscoder_tab">2.8. JTransCoder tab</a>
 <ul class="sectlevel3">
-<li><a href="#_translator">2.7.1. Translator</a>
+<li><a href="#_translator">2.8.1. Translator</a>
 <ul class="sectlevel4">
 <li><a href="#_encodedecode">Encode/Decode</a></li>
 <li><a href="#_format">Format</a></li>
@@ -501,20 +506,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_hashchecksum">Hash/Checksum</a></li>
 </ul>
 </li>
-<li><a href="#_generater_tab">2.7.2. Generater tab</a></li>
-<li><a href="#_converter_tab">2.7.3. Converter tab</a></li>
-<li><a href="#_certificate_tab">2.7.4. Certificate tab</a></li>
-<li><a href="#_view_state_decoder_tab">2.7.5. View State Decoder tab</a></li>
-<li><a href="#_jwt_token_decoder_tab">2.7.6. JWT token Decoder tab</a></li>
+<li><a href="#_generater_tab">2.8.2. Generater tab</a></li>
+<li><a href="#_converter_tab">2.8.3. Converter tab</a></li>
+<li><a href="#_certificate_tab">2.8.4. Certificate tab</a></li>
+<li><a href="#_view_state_decoder_tab">2.8.5. View State Decoder tab</a></li>
+<li><a href="#_jwt_token_decoder_tab">2.8.6. JWT token Decoder tab</a></li>
 </ul>
 </li>
-<li><a href="#_generate_csrf_poc">2.8. Generate CSRF PoC</a>
+<li><a href="#_generate_csrf_poc">2.9. Generate CSRF PoC</a>
 <ul class="sectlevel3">
-<li><a href="#_view_state_tab">2.8.1. View State tab</a></li>
-<li><a href="#_jwt_tab">2.8.2. JWT tab</a></li>
+<li><a href="#_view_state_tab">2.9.1. View State tab</a></li>
+<li><a href="#_jwt_tab">2.9.2. JWT tab</a></li>
 </ul>
 </li>
-<li><a href="#_version">2.9. Version</a></li>
+<li><a href="#_version">2.10. Version</a></li>
 </ul>
 </li>
 </ul>
@@ -917,7 +922,83 @@ By specifying a group reference such as "$1", "$2", etc. in the comment section,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_sendto_tab">2.4. SendTo tab</h3>
+<h3 id="_autoresponder_tab">2.4. AutoResponder tab</h3>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_autoresponder.png" alt="AutoResponder tab"></span></p>
+</div>
+<div class="paragraph">
+<p>You can define a fixed response for a request.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Enable] button</dt>
+<dd>
+<p>Enables AutoResponder when checked.</p>
+</dd>
+<dt class="hdlist1">[Edit button</dt>
+<dd>
+<p>Edits the selected AutoResponderItem:
+Edits the selected AutoResponderItem.
+The edit dialog of the selected AutoResponderItem is show.</p>
+</dd>
+<dt class="hdlist1">[Remove] button</dt>
+<dd>
+<p>Deletes the selected AutoResponderItem.</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Up] and [Down] buttons</dt>
+<dd>
+<p>Move the order of the selected AutoResponderItem.
+The order here is the order in which AutoResponder is applied.</p>
+</dd>
+</dl>
+</div>
+</dd>
+<dt class="hdlist1">[Add] button</dt>
+<dd>
+<p>Adds an AutoResponderItem.
+The edit dialog for an empty AutoResponderItem is show.</p>
+</dd>
+</dl>
+</div>
+<div class="sect3">
+<h4 id="_autoresponderitem_edit_dialog">2.4.1. AutoResponderItem Edit Dialog</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_autoresponder_item.png" alt="AutoResponderItem Edit Dialog"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Match URL</dt>
+<dd>
+<p>Specify the URL to be matched. The specified value will be matched forward.</p>
+</dd>
+<dt class="hdlist1">[Regexp] checkbox</dt>
+<dd>
+<p>When checking, enable regular expressions for URL to be matched.</p>
+</dd>
+<dt class="hdlist1">[IgnoreCase] checkbox</dt>
+<dd>
+<p>Ignore the case of the URL to be matched when checking.</p>
+</dd>
+<dt class="hdlist1">Replace</dt>
+<dd>
+<p>Specify the file to be used as the response.</p>
+</dd>
+<dt class="hdlist1">[Body only] checkbox</dt>
+<dd>
+<p>Specify the file to be used as a response.
+If unchecked, a response header must also be included in the file.</p>
+</dd>
+<dt class="hdlist1">[Conent-Type] checkbox</dt>
+<dd>
+<p>Specify the Conent-Type of the response. This is valid only when [Body only] is checked.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sendto_tab">2.5. SendTo tab</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto.png" alt="SendTo tab"></span></p>
 </div>
@@ -926,7 +1007,7 @@ By specifying a group reference such as "$1", "$2", etc. in the comment section,
 You can increase the number of right-click menus displayed from the Burp History, etc., and call up the specified function from the menu. The content sent is the content of the selected History request and response.</p>
 </div>
 <div class="sect3">
-<h4 id="_sendto">2.4.1. SendTo</h4>
+<h4 id="_sendto">2.5.1. SendTo</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Send To Submenu] check box</dt>
@@ -952,11 +1033,17 @@ The order here is the order displayed in the right-click menu.</p>
 <p>Add SendToItem.
 An empty SendToItem edit dialog appears.</p>
 </dd>
+<dt class="hdlist1">[Duplicate] button</dt>
+<dd>
+<p>Duplicate SendToItem.
+The edit dialog for the selected SendToItem will appear.
+Each item can be modified and added as desired.</p>
+</dd>
 </dl>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sendtoitem_edit_dialog">2.4.2. SendToItem Edit dialog</h4>
+<h4 id="_sendtoitem_edit_dialog">2.5.2. SendToItem Edit dialog</h4>
 <div class="paragraph">
 <p>SendTo has a Base tab and an Extend tab. In the Base tab, it is convenient to register a binary editor, file comparison tool, etc. When you call the editor from the right-click, the binary editor is started with the temporarily created file as an argument. In the case of the comparison tool, you can compare by selecting two histories. This was created because Burp&#8217;s HEX dump and Compare functions are difficult to use.</p>
 </div>
@@ -965,7 +1052,7 @@ An empty SendToItem edit dialog appears.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_base_tab">2.4.3. Base tab</h4>
+<h4 id="_base_tab">2.5.3. Base tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto_base.png" alt="SendToItem Edit Base Dialog"></span></p>
 </div>
@@ -997,15 +1084,15 @@ Request and response can choose to send either header or body.</p>
 </dl>
 </div>
 <div class="sect4">
-<h5 id="_proxy_configuration_dialog">Proxy Configuration Dialog</h5>
+<h5 id="_http_configuration_dialog">HTTP Configuration Dialog</h5>
 <div class="paragraph">
-<p>If it is checked when sending to the server, the proxy setting is enabled.</p>
+<p>If checked for sending to server, the HTTP client used to send SendTo can be configured.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_sendto_server_proxy.png" alt="SendToItem Edit Proxy Settings Dialog"></span></p>
+<p><span class="image"><img src="images/custom_sendto_server_setting.png" alt="Edit SendToItem SendTo Settings Dialog"></span></p>
 </div>
 <div class="paragraph">
-<p>This setting is only available if the server is checked.</p>
+<p>This can be set if the server is checked.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1014,7 +1101,7 @@ Request and response can choose to send either header or body.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Use Burp settings for proxy settings.</p>
+<p>Use Burp&#8217;s HTTP client for sending SendTo.</p>
 </li>
 </ul>
 </div>
@@ -1024,36 +1111,72 @@ Request and response can choose to send either header or body.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Use custom proxy settings.</p>
+<p>Use your own HTTP client for sending SendTo.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 <div class="dlist">
+<div class="title">Authorization</div>
 <dl>
-<dt class="hdlist1">Protocol</dt>
+<dt class="hdlist1">Authorization Type</dt>
 <dd>
-<p>protocol of the proxy, HTTP or SOCKS.</p>
-</dd>
-<dt class="hdlist1">Host</dt>
-<dd>
-<p>host of the Proxy.</p>
-</dd>
-<dt class="hdlist1">Port</dt>
-<dd>
-<p>port number of the Proxy.</p>
+<p>Specify the authentication method; BASIC and DIGEST are selectable.</p>
 </dd>
 <dt class="hdlist1">User</dt>
 <dd>
-<p>authenticated user name of the Proxy.</p>
+<p>Specify the authentication user name.</p>
 </dd>
 <dt class="hdlist1">Password</dt>
 <dd>
-<p>authentication password for the Proxy.</p>
+<p>Specify the authentication password.</p>
 </dd>
 </dl>
 </div>
-</li>
-</ul>
+<div class="dlist">
+<div class="title">Proxy</div>
+<dl>
+<dt class="hdlist1">Protocol</dt>
+<dd>
+<p>Specify the Proxy protocol: HTTP and SOCKS can be selected.</p>
+</dd>
+<dt class="hdlist1">Host</dt>
+<dd>
+<p>Specify the host of the Proxy.</p>
+</dd>
+<dt class="hdlist1">Port</dt>
+<dd>
+<p>Specify the port number of the Proxy.</p>
+</dd>
+<dt class="hdlist1">User</dt>
+<dd>
+<p>Specify the Proxy authenticated user name.</p>
+</dd>
+<dt class="hdlist1">Password</dt>
+<dd>
+<p>Specify the Proxy authenticated password.</p>
+</dd>
+</dl>
 </div>
-</li>
-</ul>
+<div class="dlist">
+<div class="title">Client Certificate</div>
+<dl>
+<dt class="hdlist1">[use Client Certificate] checkbox</dt>
+<dd>
+<p>Enable client certificates.</p>
+</dd>
+</dl>
+</div>
+<div class="dlist">
+<div class="title">Server Certificate</div>
+<dl>
+<dt class="hdlist1">[ignore Validate Certification] checkbox</dt>
+<dd>
+<p>Ignore HTTPS server certificate validation if checked</p>
+</dd>
+</dl>
 </div>
 </div>
 <div class="sect4">
@@ -1152,12 +1275,12 @@ UTF-8
 </div>
 <div class="paragraph">
 <p>At the moment, there is no (public) web application that can accept this format.
-sample/cgi-bin/sendto.cgi contains a sample CGI application that only receives and displays this format. Please refer here if you want to implement.</p>
+sample/sendto.php contains a sample PHP application that only receives and displays this format. Please refer here if you want to implement.</p>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_extend_tab">2.4.4. Extend tab</h4>
+<h4 id="_extend_tab">2.5.4. Extend tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto_extend.png" alt="SendToItem Edit Extend Dialog"></span></p>
 </div>
@@ -1220,7 +1343,7 @@ SOCKS Proxy does not work due to a JDK bug
 </div>
 </div>
 <div class="sect2">
-<h3 id="_logging_tabs">2.5. Logging tabs</h3>
+<h3 id="_logging_tabs">2.6. Logging tabs</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_logging.png" alt="Logging tab"></span></p>
 </div>
@@ -1229,7 +1352,7 @@ SOCKS Proxy does not work due to a JDK bug
 This function automatically saves the log without having to select the log every time.</p>
 </div>
 <div class="sect3">
-<h4 id="_logging">2.5.1. Logging</h4>
+<h4 id="_logging">2.6.1. Logging</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[auto logging] check box</dt>
@@ -1287,7 +1410,7 @@ If checked, all logs currently recorded in History are recorded in a file.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearch_tab">2.6. JSearch tab</h3>
+<h3 id="_jsearch_tab">2.7. JSearch tab</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jsearch.png" alt="JSearch tab"></span></p>
 </div>
@@ -1295,7 +1418,7 @@ If checked, all logs currently recorded in History are recorded in a file.</p>
 <p>JSearch tab is a function to search characters from the History list of Proxy.</p>
 </div>
 <div class="sect3">
-<h4 id="_jsearch">2.6.1. JSearch</h4>
+<h4 id="_jsearch">2.7.1. JSearch</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Search] button</dt>
@@ -1340,12 +1463,12 @@ Regular expressions cannot be enabled.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoder_tab">2.7. JTransCoder tab</h3>
+<h3 id="_jtranscoder_tab">2.8. JTransCoder tab</h3>
 <div class="paragraph">
 <p>Transcoder tab is a function to perform various encoding and decoding.</p>
 </div>
 <div class="sect3">
-<h4 id="_translator">2.7.1. Translator</h4>
+<h4 id="_translator">2.8.1. Translator</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder.png" alt="Translator tab"></span></p>
 </div>
@@ -1467,23 +1590,23 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 <dd>
 <p>Encodes and decodes the entity reference format in hexadecimal format.</p>
 </dd>
-<dt class="hdlist1">\xhh;(unicode)</dt>
+<dt class="hdlist1">\xhh(unicode)</dt>
 <dd>
 <p>Encodes and decodes in hexadecimal format in unicode code units.</p>
 </dd>
-<dt class="hdlist1">\xhh;(byte)</dt>
+<dt class="hdlist1">\xhh(byte)</dt>
 <dd>
 <p>Encodes and decodes in hexadecimal format in byte code units.</p>
 </dd>
-<dt class="hdlist1">\ooo;</dt>
+<dt class="hdlist1">\ooo</dt>
 <dd>
 <p>Encodes and decodes in octal format.</p>
 </dd>
-<dt class="hdlist1">\uhhhh;</dt>
+<dt class="hdlist1">\uhhhh</dt>
 <dd>
 <p>Encodes and decodes in Unicode format.</p>
 </dd>
-<dt class="hdlist1">$hhhh;</dt>
+<dt class="hdlist1">$hhhh</dt>
 <dd>
 <p>Encodes and decodes in $ format.</p>
 </dd>
@@ -1631,7 +1754,7 @@ The following meta characters are available.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generater_tab">2.7.2. Generater tab</h4>
+<h4 id="_generater_tab">2.8.2. Generater tab</h4>
 <div class="paragraph">
 <p>The Generater has a sequence tab and a random tab.</p>
 </div>
@@ -1737,7 +1860,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_converter_tab">2.7.3. Converter tab</h4>
+<h4 id="_converter_tab">2.8.3. Converter tab</h4>
 <div class="paragraph">
 <p>The Base tab is a simple function for converting radixes.</p>
 </div>
@@ -1775,7 +1898,7 @@ A format string can specify only one numeric format.</p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Date</dt>
+<dt class="hdlist1">ZoneDate</dt>
 <dd>
 <p>input the date.</p>
 </dd>
@@ -1857,7 +1980,10 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_certificate_tab">2.7.4. Certificate tab</h4>
+<h4 id="_certificate_tab">2.8.4. Certificate tab</h4>
+<div class="paragraph">
+<p>Performs various conversions and exports of certificates.</p>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_certificate.png" alt="Certificate tab"></span></p>
 </div>
@@ -1865,7 +1991,7 @@ A format string can specify only one numeric format.</p>
 <dl>
 <dt class="hdlist1">[JKS] [PKCS12] button</dt>
 <dd>
-<p>Select the certificate type.</p>
+<p>Choose the type of certificate.</p>
 </dd>
 <dt class="hdlist1">[Import] button</dt>
 <dd>
@@ -1873,17 +1999,29 @@ A format string can specify only one numeric format.</p>
 </dd>
 <dt class="hdlist1">[Certificate and Private key in PEM format] button</dt>
 <dd>
-<p>Export the file in PEM format, including the private and public keys.</p>
+<p>Export in PEM format, including private and public keys.</p>
+</dd>
+<dt class="hdlist1">[Certificate in DER format] button</dt>
+<dd>
+<p>Export in DER format, including public keys.</p>
+</dd>
+<dt class="hdlist1">[Certificate in DER format] button</dt>
+<dd>
+<p>Export in DER format including the private key.</p>
+</dd>
+<dt class="hdlist1">[Provide certificate on the server] checkbox</dt>
+<dd>
+<p>Starts a server to import certificates on the specified port.</p>
 </dd>
 <dt class="hdlist1">[Export] button</dt>
 <dd>
-<p>Export the certificate.</p>
+<p>Export certificates.</p>
 </dd>
 </dl>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_view_state_decoder_tab">2.7.5. View State Decoder tab</h4>
+<h4 id="_view_state_decoder_tab">2.8.5. View State Decoder tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="View State Decoder tab"></span></p>
 </div>
@@ -1913,7 +2051,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_token_decoder_tab">2.7.6. JWT token Decoder tab</h4>
+<h4 id="_jwt_token_decoder_tab">2.8.6. JWT token Decoder tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT_decoder.png" alt="JWT token Decoder tab"></span></p>
 </div>
@@ -1940,7 +2078,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generate_csrf_poc">2.8. Generate CSRF PoC</h3>
+<h3 id="_generate_csrf_poc">2.9. Generate CSRF PoC</h3>
 <div class="paragraph">
 <p>This function is mainly for creating PoC for CSRF (Cross Site Request Forgery).</p>
 </div>
@@ -2026,7 +2164,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_view_state_tab">2.8.1. View State tab</h4>
+<h4 id="_view_state_tab">2.9.1. View State tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_viewstate.png" alt="View State  tab"></span></p>
 </div>
@@ -2052,7 +2190,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_tab">2.8.2. JWT tab</h4>
+<h4 id="_jwt_tab">2.9.2. JWT tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT.png" alt="JWT tab"></span></p>
 </div>
@@ -2079,7 +2217,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version">2.9. Version</h3>
+<h3 id="_version">2.10. Version</h3>
 <div class="paragraph">
 <p>Displays version information.</p>
 </div>
@@ -2104,7 +2242,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-07 23:06:26 +0900
+Last updated 2023-03-08 22:58:00 +0900
 </div>
 </div>
 </body>

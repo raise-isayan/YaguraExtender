@@ -88,7 +88,7 @@ public final class BurpVersion implements Comparable<BurpVersion> {
      * @param version
      * @return 警告が表示された場合はtrue
      */
-    public static boolean showUnsupporttDlg(BurpVersion version) {
+    public synchronized static boolean showUnsupporttDlg(BurpVersion version) {
         if (!showUnsupport && isUnsupportVersion(version)) {
             JOptionPane.showMessageDialog(null, "Burp suite v2023.1.2 or higher version is required.", yagura.Version.getInstance().getProjectName(), JOptionPane.INFORMATION_MESSAGE);
             showUnsupport = true;
