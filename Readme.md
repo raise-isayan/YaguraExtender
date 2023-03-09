@@ -67,9 +67,13 @@ Building requires a [BurpExtensionCommons](https://github.com/raise-isayan/BurpE
   * Apache License 2.0
   * https://github.com/google/gson/blob/master/LICENSE
 
-* MockServer (https://github.com/square/okhttp/tree/master/mockwebserver)
+* okHttp/MockServer (https://github.com/square/okhttp)
   * Apache License 2.0
   * https://github.com/square/okhttp/blob/master/LICENSE.txt
+
+* okhttp-digest (https://github.com/rburgst/okhttp-digest)
+  * Apache License 2.0
+  * https://github.com/rburgst/okhttp-digest/blob/master/LICENSE.md
 
 * Universal Chardet for java (https://code.google.com/archive/p/juniversalchardet/)
   * MPL 1.1

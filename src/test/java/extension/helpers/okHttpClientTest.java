@@ -249,7 +249,6 @@ public class okHttpClientTest {
             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
 
-
             final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
@@ -271,7 +270,6 @@ public class okHttpClientTest {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-
 
     @Test
     public void testGetDigestAuthRequest() {
@@ -317,8 +315,6 @@ public class okHttpClientTest {
         }
     }
 
-
-
     @Test
     public void testGetBasicRequest() {
         final BasicAuthenticator authenticator = new BasicAuthenticator(new Credentials("test", "testpass"));
@@ -345,6 +341,43 @@ public class okHttpClientTest {
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+    }
+
+     @Test
+    public void testGetProxyDigestAuthRequest() {
+        final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("test", "testpass"));
+        authenticator.setProxy(true);
+        testGetProxyDigestAuthRequest(authenticator);
+    }
+
+    private void testGetProxyDigestAuthRequest(DigestAuthenticator authenticator) {
+        try {
+            String proxyHost = "127.0.0.1";
+            int proxyPort = 13129;
+            SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+
+            server.enqueue(new MockResponse().setResponseCode(200).setBody("test body"));
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
+            final OkHttpClient client = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
+                    .proxy(proxy).proxyAuthenticator(authenticator)
+                    .hostnameVerifier((hostname, session) -> true)
+                    .build();
+            Request request = new Request.Builder().url("https://www.example.com/").build();
+            try (Response response = client.newCall(request).execute()) {
+                ResponseBody body = response.body();
+                System.out.println(body.string());
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } catch (NoSuchAlgorithmException | KeyManagementException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+
+
     }
 
     @Test

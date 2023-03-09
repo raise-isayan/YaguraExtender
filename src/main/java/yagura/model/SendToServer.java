@@ -468,7 +468,8 @@ public class SendToServer extends SendToMenuItem {
                         if (!proxyUser.isEmpty()) {
                             com.burgstaller.okhttp.digest.Credentials credentials = new com.burgstaller.okhttp.digest.Credentials(proxyUser, proxyPasswd);
                             final BasicAuthenticator basicProxyAuthenticator = new BasicAuthenticator(credentials);
-                            final DigestAuthenticator digestProxyAuthenticator = new DigestAuthenticator(credentials);
+                            final FixDigestAuthenticator digestProxyAuthenticator = new FixDigestAuthenticator(credentials);
+                            digestProxyAuthenticator.setProxy(true);
                             proxyAuthenticator = new DispatchingAuthenticator.Builder()
                                     .with("digest", digestProxyAuthenticator)
                                     .with("basic", basicProxyAuthenticator)
