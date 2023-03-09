@@ -9,6 +9,7 @@ import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
 import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
+import com.burgstaller.okhttp.DispatchingAuthenticator;
 import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
@@ -62,6 +63,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import okhttp.digest.FixDigestAuthenticator;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -103,8 +105,6 @@ public class SendToServer extends SendToMenuItem {
     private final ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
 
     protected void sendToServer(HttpRequestResponse messageInfo) {
-        BurpExtension.helpers().outPrintln("sendToServer:");
-
         // 拡張オプションを取得
         HttpExtendProperty extendProp = new HttpExtendProperty();
         extendProp.setProperties(getExtendProperties());
@@ -120,7 +120,7 @@ public class SendToServer extends SendToMenuItem {
         Runnable sendTo = new Runnable() {
             @Override
             public void run() {
-              try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
+                try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
                     URL tagetURL = new URL(getTarget());
                     outPostHeader(ostm, tagetURL);
                     String boundary = HttpUtil.generateBoundary();
@@ -209,7 +209,6 @@ public class SendToServer extends SendToMenuItem {
 //                    else {
 //                        Authenticator.setDefault(null);
 //                    }
-
                     conn = (HttpURLConnection) url.openConnection(proxy);
                     conn.setFixedLengthStreamingMode(contentLength);
                     conn.setRequestMethod("POST");
@@ -307,12 +306,12 @@ public class SendToServer extends SendToMenuItem {
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
                     }
-                    Authenticator proxyAuthenticator = null;
-                    if (!Proxy.Type.DIRECT.equals(proxyProtocol)) {
+                    Authenticator socksAuthenticator = null;
+                    if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
                         String proxyUser = extendProp.getProxyUser();
                         String proxyPasswd = extendProp.getProxyPasswd();
                         if (!proxyUser.isEmpty()) {
-                            proxyAuthenticator = new Authenticator() {
+                            socksAuthenticator = new Authenticator() {
                                 @Override
                                 protected PasswordAuthentication getPasswordAuthentication() {
                                     return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
@@ -351,9 +350,9 @@ public class SendToServer extends SendToMenuItem {
                         synchronized (Authenticator.class) {
                             Authenticator saveProxyAuth = Authenticator.getDefault();
                             try {
-                                if (proxy != Proxy.NO_PROXY) {
-                                    if (proxyAuthenticator != null) {
-                                        saveProxyAuth = HttpUtil.putAuthenticator(proxyAuthenticator);
+                                if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
+                                    if (socksAuthenticator != null) {
+                                        saveProxyAuth = HttpUtil.putAuthenticator(socksAuthenticator);
                                     }
                                 }
                                 HttpRequest request = HttpRequest.newBuilder()
@@ -379,7 +378,7 @@ public class SendToServer extends SendToMenuItem {
                                     logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                                 }
                             } finally {
-                                if (proxyAuthenticator != null) {
+                                if (socksAuthenticator != null) {
                                     HttpUtil.putAuthenticator(saveProxyAuth);
                                 }
                             }
@@ -442,7 +441,7 @@ public class SendToServer extends SendToMenuItem {
                             authenticator = new BasicAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
                             break;
                         case DIGEST:
-                            authenticator = new DigestAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
+                            authenticator = new FixDigestAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
                             break;
                     }
 
@@ -461,16 +460,29 @@ public class SendToServer extends SendToMenuItem {
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
                     }
+                    DispatchingAuthenticator proxyAuthenticator = null;
+                    Authenticator socksAuthenticator = null;
                     String proxyUser = extendProp.getProxyUser();
                     String proxyPasswd = extendProp.getProxyPasswd();
-                    Authenticator proxyAuthenticator = null;
-                    if (!proxyUser.isEmpty()) {
-                        proxyAuthenticator = new Authenticator() {
-                            @Override
-                            protected PasswordAuthentication getPasswordAuthentication() {
-                                return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
-                            }
-                        };
+                    if (Proxy.Type.HTTP.equals(proxyProtocol)) {
+                        if (!proxyUser.isEmpty()) {
+                            com.burgstaller.okhttp.digest.Credentials credentials = new com.burgstaller.okhttp.digest.Credentials(proxyUser, proxyPasswd);
+                            final BasicAuthenticator basicProxyAuthenticator = new BasicAuthenticator(credentials);
+                            final DigestAuthenticator digestProxyAuthenticator = new DigestAuthenticator(credentials);
+                            proxyAuthenticator = new DispatchingAuthenticator.Builder()
+                                    .with("digest", digestProxyAuthenticator)
+                                    .with("basic", basicProxyAuthenticator)
+                                    .build();
+                        }
+                    } else if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
+                        if (!proxyUser.isEmpty()) {
+                            socksAuthenticator = new Authenticator() {
+                                @Override
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
+                                }
+                            };
+                        }
                     }
 
                     KeyManager[] keyManagers = null;
@@ -486,8 +498,7 @@ public class SendToServer extends SendToMenuItem {
                         keyManagerFactory.init(keyStore, extendProp.getClientCertificatePasswd().toCharArray());
                         keyManagers = keyManagerFactory.getKeyManagers();
                         trustKeyManager = (X509TrustManager) trustKeyManagers[0];
-                    }
-                    else {
+                    } else {
                         KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
                         keyStore.load(null, null);
                         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -518,12 +529,16 @@ public class SendToServer extends SendToMenuItem {
                     }
 
                     synchronized (Authenticator.class) {
-                        Authenticator saveProxyAuth = Authenticator.getDefault();
+                        Authenticator saveSocksAuth = Authenticator.getDefault();
                         try {
                             if (proxy != Proxy.NO_PROXY) {
                                 clientBuilder = clientBuilder.proxy(proxy);
                                 if (proxyAuthenticator != null) {
-                                    saveProxyAuth = HttpUtil.putAuthenticator(proxyAuthenticator);
+                                    clientBuilder = clientBuilder.proxyAuthenticator(proxyAuthenticator);
+                                }
+
+                                if (socksAuthenticator != null) {
+                                    saveSocksAuth = HttpUtil.putAuthenticator(socksAuthenticator);
                                 }
                             }
 
@@ -549,8 +564,8 @@ public class SendToServer extends SendToMenuItem {
                                 logger.log(Level.SEVERE, ex.getMessage(), ex);
                             }
                         } finally {
-                            if (proxyAuthenticator != null) {
-                                HttpUtil.putAuthenticator(saveProxyAuth);
+                            if (socksAuthenticator != null) {
+                                HttpUtil.putAuthenticator(saveSocksAuth);
                             }
                         }
                     }
