@@ -289,27 +289,33 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
         if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && httpRequestResponse.request() == null)) {
             return false;
         }
-        // "This message is too large to display"
-        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-        if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
-            return false;
-        }
-        HttpRequest httpRequest = httpRequestResponse.request();
-        HttpResponse httpResponse = httpRequestResponse.response();
+        try {
+            // "This message is too large to display"
+            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
+                return false;
+            }
+            HttpRequest httpRequest = httpRequestResponse.request();
+            HttpResponse httpResponse = httpRequestResponse.response();
 
-        if ((this.isRequest && httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength()) ||
-           (!this.isRequest && httpResponse.toByteArray().length() > viewProperty.getDispayMaxLength())
-            && viewProperty.getDispayMaxLength() != 0) {
+            if ((this.isRequest && httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength()) ||
+               (!this.isRequest && httpResponse.toByteArray().length() > viewProperty.getDispayMaxLength())
+                && viewProperty.getDispayMaxLength() != 0) {
+                return false;
+            }
+            this.setLineWrap(viewProperty.isLineWrap());
+            if (this.isRequest && httpRequest.toByteArray().length() > 0) {
+                return true;
+            } else if (!this.isRequest && httpResponse.toByteArray().length() > 0) {
+                return true;
+            }
             return false;
         }
-        this.setLineWrap(viewProperty.isLineWrap());
-        if (this.isRequest && httpRequest.toByteArray().length() > 0) {
-            return true;
-        } else if (!this.isRequest && httpResponse.toByteArray().length() > 0) {
-            return true;
+        catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            return false;
         }
-        return false;
     }
 
     @Override

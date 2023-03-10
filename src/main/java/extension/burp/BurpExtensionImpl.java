@@ -4,8 +4,6 @@ import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import extend.util.external.ExtensionHelper;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import yagura.Version;
 
 /**
  *

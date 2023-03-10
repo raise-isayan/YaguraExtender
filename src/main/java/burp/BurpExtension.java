@@ -169,19 +169,21 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     @Override
     public void initialize(MontoyaApi api) {
         super.initialize(api);
-        BurpVersion version = this.getBurpVersion();
-        if (BurpVersion.isUnsupportVersion(version)) {
-            BurpVersion.showUnsupporttDlg(version);
+        BurpVersion burpVersion = this.getBurpVersion();
+        if (BurpVersion.isUnsupportVersion(burpVersion)) {
+            BurpVersion.showUnsupporttDlg(burpVersion);
             throw new UnsupportedOperationException("Unsupported burp version");
         }
 
         if (DEBUG) {
-            api.logging().logToOutput("name:" + version.getProductName());
-            api.logging().logToOutput("major:" + version.getMajor());
-            api.logging().logToOutput("minor:" + version.getMinor());
-            api.logging().logToOutput("build:" + version.getBuild());
-            api.extension().setName(String.format("%s v%s", BUNDLE.getString("projname"), BUNDLE.getString("version")));
+            api.logging().logToOutput("name:" + burpVersion.getProductName());
+            api.logging().logToOutput("major:" + burpVersion.getMajor());
+            api.logging().logToOutput("minor:" + burpVersion.getMinor());
+            api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
+        Version version = Version.getInstance();
+        api.extension().setName(String.format("%s v%d.%d", version.getProjectName(), version.getMajorVersion(), version.getMinorVersion()));
+
 
         // 設定ファイル読み込み
         Map<String, String> config = this.option.loadConfigSetting();

@@ -294,11 +294,17 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
         if (httpRequestResponse == null) {
             return false;
         }
-        if (this.isJsonp()) {
-            return isEnabledJsonp(httpRequestResponse, this.isRequest);
+        try {
+            if (this.isJsonp()) {
+                return isEnabledJsonp(httpRequestResponse, this.isRequest);
+            }
+            else {
+                return isEnabledJson(httpRequestResponse, this.isRequest);
+            }
         }
-        else {
-            return isEnabledJson(httpRequestResponse, this.isRequest);
+        catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            return false;
         }
     }
 

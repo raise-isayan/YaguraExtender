@@ -4,6 +4,10 @@ import burp.BurpExtension;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
+import static burp.api.montoya.http.message.params.HttpParameterType.BODY;
+import static burp.api.montoya.http.message.params.HttpParameterType.COOKIE;
+import static burp.api.montoya.http.message.params.HttpParameterType.MULTIPART_ATTRIBUTE;
+import static burp.api.montoya.http.message.params.HttpParameterType.URL;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
@@ -475,35 +479,41 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         if (httpRequestResponse == null) {
             return false;
         }
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtension.getInstance().getProperty().getEncodingProperty().getMessageView();
-        if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
-            return false;
-        }
-        HttpRequest httpRequest = httpRequestResponse.request();
-        if (httpRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
-                && BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
-            return false;
-        }
-        List<ParsedHttpParameter> params = httpRequest.parameters();
-        boolean isQueryParam = false;
-        int count = 0;
-        for (ParsedHttpParameter p : params) {
-            switch (p.type()) {
-                case URL:
-                    isQueryParam = true;
-                    count++;
-                    break;
-                case COOKIE:
-                case BODY:
-                case MULTIPART_ATTRIBUTE:
-                    count++;
-                    break;
+        try {
+            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtension.getInstance().getProperty().getEncodingProperty().getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
+                return false;
             }
+            HttpRequest httpRequest = httpRequestResponse.request();
+            if (httpRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
+                    && BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+                return false;
+            }
+            List<ParsedHttpParameter> params = httpRequest.parameters();
+            boolean isQueryParam = false;
+            int count = 0;
+            for (ParsedHttpParameter p : params) {
+                switch (p.type()) {
+                    case URL:
+                        isQueryParam = true;
+                        count++;
+                        break;
+                    case COOKIE:
+                    case BODY:
+                    case MULTIPART_ATTRIBUTE:
+                        count++;
+                        break;
+                }
+            }
+            this.btnDecode.setSelected(false);
+            boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isQueryParam);
+            this.btnDecode.setEnabled(enabled);
+            return count > 0;
         }
-        this.btnDecode.setSelected(false);
-        boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isQueryParam);
-        this.btnDecode.setEnabled(enabled);
-        return count > 0;
+        catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            return false;
+        }
     }
 
     @Override

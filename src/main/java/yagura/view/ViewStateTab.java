@@ -342,25 +342,31 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
         if (requestResponse == null) {
             return false;
         }
-        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-        if (!view.contains(UniversalViewProperty.UniversalView.VIEW_STATE)) {
-            return false;
-        }
-        // パラメータ値のサイズではなく全体のサイズで判断する
-        HttpRequest httpRequest = requestResponse.request();
-        if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
-            return false;
-        }
-        List<ParsedHttpParameter> parameters = httpRequest.parameters();
-        for (ParsedHttpParameter p : parameters) {
-            if (p.type() == HttpParameterType.BODY) {
-                if ("__VIEWSTATE".equals(p.name()) && !"".equals(p.value())) {
-                    return true;
+        try {
+            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            if (!view.contains(UniversalViewProperty.UniversalView.VIEW_STATE)) {
+                return false;
+            }
+            // パラメータ値のサイズではなく全体のサイズで判断する
+            HttpRequest httpRequest = requestResponse.request();
+            if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
+                return false;
+            }
+            List<ParsedHttpParameter> parameters = httpRequest.parameters();
+            for (ParsedHttpParameter p : parameters) {
+                if (p.type() == HttpParameterType.BODY) {
+                    if ("__VIEWSTATE".equals(p.name()) && !"".equals(p.value())) {
+                        return true;
+                    }
                 }
             }
+            return false;
         }
-        return false;
+        catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            return false;
+        }
     }
 
     @Override

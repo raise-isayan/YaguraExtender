@@ -1189,21 +1189,27 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         if (httpRequestResponse == null) {
             return false;
         }
-        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-        this.setLineWrap(viewProperty.isLineWrap());
-        if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+        try {
+            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            this.setLineWrap(viewProperty.isLineWrap());
+            if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+                return false;
+            }
+            HttpRequest request = httpRequestResponse.request();
+            String host = request.httpService().host();
+            if (host == null) {
+                return false;
+            }
+            if (!("POST".equals(request.method()) || "GET".equals(request.method()))) {
+                return false;
+            }
+            return (request.body().length() > 0) || (HttpMesageHelper.hasQueryParameter(request.parameters()));
+        }
+        catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }
-        HttpRequest request = httpRequestResponse.request();
-        String host = request.httpService().host();
-        if (host == null) {
-            return false;
-        }
-        if (!("POST".equals(request.method()) || "GET".equals(request.method()))) {
-            return false;
-        }
-        return (request.body().length() > 0) || (HttpMesageHelper.hasQueryParameter(request.parameters()));
     }
 
     @Override

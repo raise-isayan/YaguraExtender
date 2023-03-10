@@ -214,24 +214,30 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
         if (httpRequestResponse == null) {
             return false;
         }
-        burp.api.montoya.http.message.responses.HttpResponse httpResponse = httpRequestResponse.response();
-        if (httpResponse == null) {
-            return false;
-        }
+        try {
+            burp.api.montoya.http.message.responses.HttpResponse httpResponse = httpRequestResponse.response();
+            if (httpResponse == null) {
+                return false;
+            }
 
-        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-        this.setLineWrap(viewProperty.isLineWrap());
-        if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
-            return false;
+            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            this.setLineWrap(viewProperty.isLineWrap());
+            if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
+                return false;
+            }
+            boolean mimeHTMLType = false;
+            MimeType mimeType = httpResponse.inferredMimeType();
+            mimeHTMLType = (mimeType == mimeType.HTML || mimeType == mimeType.XML || mimeType == mimeType.IMAGE_SVG_XML);
+            if (httpResponse.body().length() > 0 && mimeHTMLType) {
+                List<Attribute> comments = httpRequestResponse.response().attributes(AttributeType.COMMENTS);
+                return !comments.isEmpty();
+            } else {
+                return false;
+            }
         }
-        boolean mimeHTMLType = false;
-        MimeType mimeType = httpResponse.inferredMimeType();
-        mimeHTMLType = (mimeType == mimeType.HTML || mimeType == mimeType.XML || mimeType == mimeType.IMAGE_SVG_XML);
-        if (httpResponse.body().length() > 0 && mimeHTMLType) {
-            List<Attribute> comments = httpRequestResponse.response().attributes(AttributeType.COMMENTS);
-            return !comments.isEmpty();
-        } else {
+        catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }
     }
