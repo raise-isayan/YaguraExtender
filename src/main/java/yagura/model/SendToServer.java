@@ -64,6 +64,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 import okhttp.digest.FixDigestAuthenticator;
+import okhttp.socks.SocksProxyAuthInterceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -172,7 +173,23 @@ public class SendToServer extends SendToMenuItem {
                     int contentLength = dummy.getSize();
 
                     URL url = new URL(getTarget()); // 送信先
+
                     // 拡張オプションを取得
+                    // Authorization
+                    HttpExtendProperty.AuthorizationType authorizationType = extendProp.getAuthorizationType();
+                    Authenticator authenticator = null;
+                    String authorizationUser = extendProp.getAuthorizationUser();
+                    String authorizationPasswd = extendProp.getAuthorizationPasswd();
+                    if (!HttpExtendProperty.AuthorizationType.NONE.equals(authorizationType)) {
+                        authenticator = new Authenticator() {
+                            @Override
+                            protected PasswordAuthentication getPasswordAuthentication() {
+                                return new PasswordAuthentication(authorizationUser, authorizationPasswd.toCharArray());
+                            }
+                        };
+                    }
+
+                    // Proxy
                     Proxy.Type proxyProtocol = extendProp.getProxyProtocol();
                     Proxy proxy = Proxy.NO_PROXY;
                     if (!Proxy.Type.DIRECT.equals(proxyProtocol)) {
@@ -189,9 +206,9 @@ public class SendToServer extends SendToMenuItem {
                     }
                     String proxyUser = extendProp.getProxyUser();
                     String proxyPasswd = extendProp.getProxyPasswd();
-                    Authenticator authenticator = null;
+                    Authenticator proxyAuthenticator = null;
                     if (!proxyUser.isEmpty()) {
-                        authenticator = new Authenticator() {
+                        proxyAuthenticator = new Authenticator() {
                             @Override
                             protected PasswordAuthentication getPasswordAuthentication() {
                                 return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
@@ -214,7 +231,7 @@ public class SendToServer extends SendToMenuItem {
                     conn.setRequestMethod("POST");
                     conn.setDoOutput(true);
                     if (!proxyUser.isEmpty() && Proxy.Type.HTTP.equals(proxyProtocol)) {
-                        byte[] basicAuth = Base64.getEncoder().encode(StringUtil.getBytesRaw(String.format("%s:%s", new Object[]{proxyUser, proxyPasswd})));
+                        byte[] basicAuth = Base64.getEncoder().encode(StringUtil.getBytesRaw(String.format("%s:%s", new Object[]{authorizationUser, authorizationPasswd})));
                         conn.setRequestProperty("Authorization", "Basic " + StringUtil.getStringRaw(basicAuth));
                     }
                     conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
@@ -461,7 +478,7 @@ public class SendToServer extends SendToMenuItem {
                         }
                     }
                     DispatchingAuthenticator proxyAuthenticator = null;
-                    Authenticator socksAuthenticator = null;
+                    PasswordAuthentication socksAuthentication = null;
                     String proxyUser = extendProp.getProxyUser();
                     String proxyPasswd = extendProp.getProxyPasswd();
                     if (Proxy.Type.HTTP.equals(proxyProtocol)) {
@@ -477,12 +494,7 @@ public class SendToServer extends SendToMenuItem {
                         }
                     } else if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
                         if (!proxyUser.isEmpty()) {
-                            socksAuthenticator = new Authenticator() {
-                                @Override
-                                protected PasswordAuthentication getPasswordAuthentication() {
-                                    return new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
-                                }
-                            };
+                            socksAuthentication = new PasswordAuthentication(proxyUser, proxyPasswd.toCharArray());
                         }
                     }
 
@@ -529,46 +541,37 @@ public class SendToServer extends SendToMenuItem {
                         clientBuilder = clientBuilder.addInterceptor(new AuthenticationCacheInterceptor(authCache));
                     }
 
-                    synchronized (Authenticator.class) {
-                        Authenticator saveSocksAuth = Authenticator.getDefault();
-                        try {
-                            if (proxy != Proxy.NO_PROXY) {
-                                clientBuilder = clientBuilder.proxy(proxy);
-                                if (proxyAuthenticator != null) {
-                                    clientBuilder = clientBuilder.proxyAuthenticator(proxyAuthenticator);
-                                }
-
-                                if (socksAuthenticator != null) {
-                                    saveSocksAuth = HttpUtil.putAuthenticator(socksAuthenticator);
-                                }
-                            }
-
-                            Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
-                            try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
-                                int statusCode = response.code();
-                                String bodyMessage = response.body().string();
-                                if (statusCode == HttpURLConnection.HTTP_OK) {
-                                    if (bodyMessage.length() == 0) {
-                                        fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
-                                    } else {
-                                        fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
-                                        logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
-                                    }
-                                } else {
-                                    // 200以外
-                                    fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
-                                    logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
-                                }
-
-                            } catch (IOException ex) {
-                                fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                                logger.log(Level.SEVERE, ex.getMessage(), ex);
-                            }
-                        } finally {
-                            if (socksAuthenticator != null) {
-                                HttpUtil.putAuthenticator(saveSocksAuth);
-                            }
+                    if (proxy != Proxy.NO_PROXY) {
+                        clientBuilder = clientBuilder.proxy(proxy);
+                        if (proxyAuthenticator != null) {
+                            clientBuilder = clientBuilder.proxyAuthenticator(proxyAuthenticator);
                         }
+
+                        if (socksAuthentication != null) {
+                            clientBuilder = clientBuilder.addInterceptor(new SocksProxyAuthInterceptor(socksAuthentication));
+                        }
+                    }
+
+                    Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
+                    try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
+                        int statusCode = response.code();
+                        String bodyMessage = response.body().string();
+                        if (statusCode == HttpURLConnection.HTTP_OK) {
+                            if (bodyMessage.length() == 0) {
+                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                            } else {
+                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
+                                logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+                            }
+                        } else {
+                            // 200以外
+                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
+                            logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+                        }
+
+                    } catch (IOException ex) {
+                        fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
 
                 } catch (NoSuchAlgorithmException | KeyStoreException | IOException | CertificateException | UnrecoverableKeyException | KeyManagementException ex) {

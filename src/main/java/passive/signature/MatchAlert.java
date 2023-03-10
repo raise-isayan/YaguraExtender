@@ -85,12 +85,12 @@ public class MatchAlert extends SignatureItem<IssueItem> {
 
             @Override
             public AuditIssueSeverity severity() {
-                return AuditIssueSeverity.FALSE_POSITIVE;
+                return getItem().getServerity().toAuditIssueSeverity();
             }
 
             @Override
             public AuditIssueConfidence confidence() {
-                return AuditIssueConfidence.CERTAIN;
+                return getItem().getConfidence().toAuditIssueConfidence();
             }
 
             @Override

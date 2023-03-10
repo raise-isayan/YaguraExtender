@@ -12,6 +12,7 @@ import com.burgstaller.okhttp.digest.Credentials;
 import extension.burp.HttpTarget;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
 import java.security.KeyManagementException;
@@ -376,8 +377,43 @@ public class okHttpClientTest {
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+    }
 
+     @Test
+    public void testGetSocksProxyAuthRequest() {
+        java.net.Authenticator authenticator = new java.net.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("", "".toCharArray());
+            }
+        };
+        java.net.Authenticator.setDefault(authenticator);
+//        testGetSocksProxyAuthRequest(authenticator);
+    }
 
+    private void testGetSocksProxyAuthRequest(Authenticator authenticator) {
+        try {
+            Proxy proxy = SOCKS_PROXY;
+
+            server.enqueue(new MockResponse().setResponseCode(200).setBody("test body"));
+
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
+            final OkHttpClient client = new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
+                    .proxy(proxy).proxyAuthenticator(authenticator)
+                    .hostnameVerifier((hostname, session) -> true)
+                    .build();
+            Request request = new Request.Builder().url("https://www.example.com/").build();
+            try (Response response = client.newCall(request).execute()) {
+                ResponseBody body = response.body();
+                System.out.println(body.string());
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } catch (NoSuchAlgorithmException | KeyManagementException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
     }
 
     @Test
