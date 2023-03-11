@@ -414,8 +414,7 @@ public class SendToServer extends SendToMenuItem {
     }
 
     protected void sendToServerUseOkHttpClient(HttpRequestResponse messageInfo, HttpExtendProperty extendProp) {
-        Runnable sendTo;
-        sendTo = new Runnable() {
+        Runnable sendTo = new Runnable() {
 
             @Override
             public void run() {

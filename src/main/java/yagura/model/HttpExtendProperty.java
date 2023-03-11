@@ -34,7 +34,7 @@ public class HttpExtendProperty {
 
     private final CertificateItem clientCertificateItem = new CertificateItem();
 
-    private boolean ignoreValidateCertification = true;
+    private boolean ignoreValidateCertification = false;
 
     /**
      * @return the useClientCertificate
@@ -253,7 +253,7 @@ public class HttpExtendProperty {
         this.httpClientType = HttpClientType.valueOf(prop.getProperty("useHttpClient", HttpClientType.BURP.name()));
 
         this.clientCertificateItem.setProperties(prop);
-        this.ignoreValidateCertification = Boolean.parseBoolean(prop.getProperty("ignoreValidateCertification", StringUtil.toString(Boolean.TRUE)));
+        this.ignoreValidateCertification = Boolean.parseBoolean(prop.getProperty("ignoreValidateCertification", StringUtil.toString(Boolean.FALSE)));
 
         this.authorizationType = AuthorizationType.valueOf(prop.getProperty("authorizationType", AuthorizationType.NONE.name()));
         this.authorizationUser = prop.getProperty("authorizationUser", "");

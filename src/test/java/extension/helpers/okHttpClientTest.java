@@ -20,6 +20,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.SSLContext;
@@ -27,6 +30,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.Authenticator;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
@@ -203,8 +207,8 @@ public class okHttpClientTest {
 
     @Test
     public void testSendtoProxy() {
+        System.out.println("testSendtoProxy");
         try {
-            System.out.println("testSendtoProxy");
             String proxyHost = "127.0.0.1";
             int proxyPort = 8888;
             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
@@ -235,9 +239,7 @@ public class okHttpClientTest {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (KeyManagementException ex) {
+        } catch (NoSuchAlgorithmException | KeyManagementException ex) {
             Logger.getLogger(okHttpClientTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -274,6 +276,7 @@ public class okHttpClientTest {
 
     @Test
     public void testGetDigestAuthRequest() {
+        System.out.println("testGetDigestAuthRequest");
         final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("test", "testpass"));
         testGetDigestAuthRequest(authenticator);
     }
@@ -318,12 +321,14 @@ public class okHttpClientTest {
 
     @Test
     public void testGetBasicRequest() {
+        System.out.println("testGetBasicRequest");
         final BasicAuthenticator authenticator = new BasicAuthenticator(new Credentials("test", "testpass"));
         testGetAuthRequest(authenticator);
     }
 
     @Test
     public void testGetDigestRequest() {
+        System.out.println("testGetDigestRequest");
         final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("test", "testpass"));
         testGetAuthRequest(authenticator);
     }
@@ -335,7 +340,7 @@ public class okHttpClientTest {
         System.out.println("testGetSocksRequest");
         OkHttpClient client = new OkHttpClient();
         client.newBuilder().proxy(SOCKS_PROXY);
-        Request request = new Request.Builder().url("https://www.example.com/").build();
+        Request request = new Request.Builder().url("https://localhost.localdomain:10000/").build();
         try (Response response = client.newCall(request).execute()) {
             ResponseBody body = response.body();
             System.out.println(body.string());
@@ -344,19 +349,18 @@ public class okHttpClientTest {
         }
     }
 
-     @Test
-    public void testGetProxyDigestAuthRequest() {
-        final DigestAuthenticator authenticator = new DigestAuthenticator(new Credentials("test", "testpass"));
-        authenticator.setProxy(true);
-        testGetProxyDigestAuthRequest(authenticator);
+    @Test
+    public void testGetSocksProxyAuthInterceptor() {
+        System.out.println("testGetSocksProxyAuthInterceptor");
+        testGetSocksProxyAuthInterceptor(new okhttp.socks.SocksProxyAuthInterceptor(new PasswordAuthentication("test3", "testpass3".toCharArray())));
     }
 
-    private void testGetProxyDigestAuthRequest(DigestAuthenticator authenticator) {
+     private void testGetSocksProxyAuthInterceptor(Interceptor interceptor) {
         try {
             String proxyHost = "127.0.0.1";
-            int proxyPort = 13129;
+            int proxyPort = 11080;
             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, addr);
+            Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
 
             server.enqueue(new MockResponse().setResponseCode(200).setBody("test body"));
 
@@ -364,10 +368,10 @@ public class okHttpClientTest {
             sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
             final OkHttpClient client = new OkHttpClient.Builder()
                     .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
-                    .proxy(proxy).proxyAuthenticator(authenticator)
+                    .proxy(proxy).addInterceptor(interceptor)
                     .hostnameVerifier((hostname, session) -> true)
                     .build();
-            Request request = new Request.Builder().url("https://www.example.com/").build();
+            Request request = new Request.Builder().url("http://www.example.com/").build();
             try (Response response = client.newCall(request).execute()) {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
@@ -379,42 +383,6 @@ public class okHttpClientTest {
         }
     }
 
-     @Test
-    public void testGetSocksProxyAuthRequest() {
-        java.net.Authenticator authenticator = new java.net.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("", "".toCharArray());
-            }
-        };
-        java.net.Authenticator.setDefault(authenticator);
-//        testGetSocksProxyAuthRequest(authenticator);
-    }
-
-    private void testGetSocksProxyAuthRequest(Authenticator authenticator) {
-        try {
-            Proxy proxy = SOCKS_PROXY;
-
-            server.enqueue(new MockResponse().setResponseCode(200).setBody("test body"));
-
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
-            final OkHttpClient client = new OkHttpClient.Builder()
-                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
-                    .proxy(proxy).proxyAuthenticator(authenticator)
-                    .hostnameVerifier((hostname, session) -> true)
-                    .build();
-            Request request = new Request.Builder().url("https://www.example.com/").build();
-            try (Response response = client.newCall(request).execute()) {
-                ResponseBody body = response.body();
-                System.out.println(body.string());
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
 
     @Test
     public void testServer() {
@@ -447,5 +415,55 @@ public class okHttpClientTest {
             System.out.println(headers2.name(i) + ":" + headers2.value(i));
         }
     }
+
+    @Test
+    public void testThreadLocalAuthenticator() throws InterruptedException {
+        System.out.println("testThreadLocalAuthenticator");
+
+        System.out.println("Authenticator before:" + String.valueOf(java.net.Authenticator.getDefault()));
+
+        ExecutorService threadExecutor = Executors.newFixedThreadPool(10);
+        Runnable socksAuthThread = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    java.net.Authenticator currentAuthenticator = java.net.Authenticator.getDefault();
+                    System.out.println("thread before:" + String.valueOf(currentAuthenticator));
+                    PasswordAuthentication passAuth = new PasswordAuthentication("test", "pass".toCharArray());
+                    okhttp.socks.SocksProxyAuthenticator socksAuth = okhttp.socks.SocksProxyAuthenticator.getInstance();
+                    socksAuth.setCredentials(passAuth);
+                    Thread.sleep(5000);
+                    currentAuthenticator = java.net.Authenticator.getDefault();
+                    System.out.println("thread after:" + String.valueOf(currentAuthenticator));
+                } catch (InterruptedException ex) {
+
+                }
+            }
+
+        };
+        threadExecutor.submit(socksAuthThread);
+
+        System.out.println("socksGetAuthThread");
+
+        Runnable socksGetAuthThread = new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 30; i++) {
+                    try {
+                        java.net.Authenticator currentAuthenticator = java.net.Authenticator.getDefault();
+                        System.out.println("thread current:" + String.valueOf(currentAuthenticator));
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                    }
+                }
+            }
+
+        };
+        threadExecutor.submit(socksGetAuthThread);
+        threadExecutor.awaitTermination(20, TimeUnit.SECONDS);
+
+        System.out.println("Authenticator after:" + String.valueOf(java.net.Authenticator.getDefault()));
+    }
+
 
 }

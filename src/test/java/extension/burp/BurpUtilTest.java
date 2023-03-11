@@ -1,10 +1,6 @@
 package extension.burp;
 
-import burp.api.montoya.MontoyaApi;
-import burp.api.montoya.burpsuite.BurpSuite;
-import burp.api.montoya.core.BurpSuiteEdition;
-import burp.api.montoya.core.Version;
-import extension.burp.montoya.MontoyaApiAdapter;
+import extension.burp.montoya.BurpVersionTest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.AfterAll;
@@ -13,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 /**
  *
@@ -147,7 +141,53 @@ public class BurpUtilTest {
             BurpVersion suite = new BurpVersion("Burp Suite Community Edition v2023.2.1-19050 ");
             assertEquals(1, suite.compareTo(SUPPORT_MIN_VERSION));
         }
+        {
+            BurpVersion suite = new BurpVersion("Burp Suite Professional v2023.1.1- ");
+            assertEquals(-1, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion("Burp Suite Professional v2023.1.2- ");
+            assertEquals(0, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion("Burp Suite Professional v2023.1.3- ");
+            assertEquals(1, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
 
+    }
+
+    @Test
+    public void testCompareSuiteMontoyaVersion() {
+        System.out.println("testCompareSuiteMontoyaVersion");
+        final BurpVersion SUPPORT_MIN_VERSION = new BurpVersion("Burp Suite Support v2023.1.2");
+        {
+            BurpVersion suite = new BurpVersion(BurpVersionTest.BURP_2023_1_1_VERSION_COMMUNITY);
+            assertEquals(-1, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion(BurpVersionTest.BURP_2023_1_2_VERSION_COMMUNITY);
+            assertEquals(0, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion(BurpVersionTest.BURP_2023_1_3_VERSION_COMMUNITY);
+            assertEquals(1, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion(BurpVersionTest.BURP_2023_2_1_VERSION_COMMUNITY);
+            assertEquals(1, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion(BurpVersionTest.BURP_2023_1_1_VERSION_PRO);
+            assertEquals(-1, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion(BurpVersionTest.BURP_2023_1_2_VERSION_PRO);
+            assertEquals(0, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
+        {
+            BurpVersion suite = new BurpVersion(BurpVersionTest.BURP_2023_1_3_VERSION_PRO);
+            assertEquals(1, suite.compareTo(SUPPORT_MIN_VERSION));
+        }
     }
 
     @Test

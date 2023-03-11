@@ -585,8 +585,8 @@ public final class HttpUtil {
     }
 
     public static Authenticator putAuthenticator(Authenticator authenticator) {
-        Authenticator current = Authenticator.getDefault();
-        Authenticator.setDefault(current);
-        return current;
+        Authenticator saveAuthenticator = Authenticator.getDefault();
+        Authenticator.setDefault(authenticator);
+        return saveAuthenticator;
     }
 }
