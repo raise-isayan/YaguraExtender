@@ -1,5 +1,10 @@
 package extension.burp;
 
+import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.burpsuite.BurpSuite;
+import burp.api.montoya.core.BurpSuiteEdition;
+import burp.api.montoya.core.Version;
+import extension.burp.montoya.MontoyaApiAdapter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.junit.jupiter.api.AfterAll;
@@ -8,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 /**
  *
@@ -17,6 +24,7 @@ public class BurpUtilTest {
 
     public BurpUtilTest() {
     }
+
 
     @BeforeAll
     public static void setUpClass() {
@@ -28,7 +36,7 @@ public class BurpUtilTest {
 
     @BeforeEach
     public void setUp() {
-    }
+   }
 
     @AfterEach
     public void tearDown() {

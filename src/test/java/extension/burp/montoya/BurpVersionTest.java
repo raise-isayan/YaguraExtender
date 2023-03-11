@@ -1,16 +1,18 @@
 package extension.burp.montoya;
 
+import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.burpsuite.BurpSuite;
 import burp.api.montoya.core.BurpSuiteEdition;
 import burp.api.montoya.core.Version;
 import extension.burp.BurpVersion;
-import extension.burp.montoya.MontoyaApiAdapter.VersionAdapter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 /**
  *
@@ -21,7 +23,10 @@ public class BurpVersionTest {
     public BurpVersionTest() {
     }
 
-    private static final VersionAdapter BURP_VERSION_FREE = new VersionAdapter(
+    private MontoyaApi mockApi;
+    private BurpSuite burpSuteApi;
+
+    private static final Version BURP_2020_9_5_VERSION_FREE = new  MontoyaApiAdapter.VersionAdapter(
             "Burp Suite Community Edition",
             "2020",
             "9.5",
@@ -29,11 +34,27 @@ public class BurpVersionTest {
             BurpSuiteEdition.COMMUNITY_EDITION
     );
 
-    private static final VersionAdapter BURP_VERSION_PRO = new VersionAdapter(
+    private static final Version BURP_2020_9_5_VERSION_PRO = new  MontoyaApiAdapter.VersionAdapter(
             "Burp Suite Professional Edition",
             "2020",
             "9.5",
             "16933",
+            BurpSuiteEdition.PROFESSIONAL
+    );
+
+    private static final Version BURP_2023_2_1_VERSION_COMMUNITY = new MontoyaApiAdapter.VersionAdapter(
+            "Burp Suite Community Edition",
+            "2023",
+            "2.1",
+            "16933",
+            BurpSuiteEdition.COMMUNITY_EDITION
+    );
+
+    private static final Version BURP_2023_1_1_VERSION_PRO = new MontoyaApiAdapter.VersionAdapter(
+            "Burp Suite Professional",
+            "2023",
+            "1.1",
+            "18663",
             BurpSuiteEdition.PROFESSIONAL
     );
 
@@ -47,6 +68,10 @@ public class BurpVersionTest {
 
     @BeforeEach
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        this.mockApi = Mockito.mock(MontoyaApi.class);
+        this.burpSuteApi = Mockito.mock(BurpSuite.class);
+        Mockito.when(this.mockApi.burpSuite()).thenReturn(this.burpSuteApi);
     }
 
     @AfterEach
@@ -59,20 +84,8 @@ public class BurpVersionTest {
     @Test
     public void testParseFreeVersion() {
         System.out.println("parseFreeVersion");
-
-        MontoyaApiAdapter api = new MontoyaApiAdapter() {
-            @Override
-            public BurpSuite burpSuite() {
-                return new MontoyaApiAdapter.BurpSuiteAdapter() {
-                    @Override
-                    public Version version() {
-                        return BURP_VERSION_FREE;
-                    }
-                };
-            }
-        };
-
-        BurpVersion instance = new BurpVersion(api);
+        Mockito.when(this.mockApi.burpSuite().version()).thenReturn(BURP_2020_9_5_VERSION_FREE);
+        BurpVersion instance = new BurpVersion(this.mockApi);
         assertEquals("2020", instance.getMajor());
         assertEquals("9.5", instance.getMinor());
         assertEquals("16933", instance.getBuild());
@@ -92,19 +105,8 @@ public class BurpVersionTest {
     @Test
     public void testParseProersion() {
         System.out.println("parseProVersion");
-
-        MontoyaApiAdapter api = new MontoyaApiAdapter() {
-            @Override
-            public BurpSuite burpSuite() {
-                return new MontoyaApiAdapter.BurpSuiteAdapter() {
-                    @Override
-                    public Version version() {
-                        return BURP_VERSION_PRO;
-                    }
-                };
-            }
-        };
-        BurpVersion instance = new BurpVersion(api);
+        Mockito.when(this.mockApi.burpSuite().version()).thenReturn(BURP_2020_9_5_VERSION_PRO);
+        BurpVersion instance = new BurpVersion(this.mockApi);
         assertEquals("2020", instance.getMajor());
         assertEquals("9.5", instance.getMinor());
         assertEquals("16933", instance.getBuild());
@@ -114,6 +116,31 @@ public class BurpVersionTest {
         assertEquals("Burp Suite Professional Edition", instance.getProductName());
         assertEquals("Burp Suite Professional Edition 2020.9.5", instance.getVersion());
 
+    }
+
+    @Test
+    public void testSuiteMontoyaApiVersion() {
+        System.out.println("testSuiteMontoyaApiVersion");
+        {
+            Mockito.when(this.mockApi.burpSuite().version()).thenReturn(BURP_2023_2_1_VERSION_COMMUNITY);
+            BurpVersion suite = new BurpVersion(this.mockApi);
+            assertEquals("Burp Suite Community Edition", suite.getProductName());
+            assertEquals("2023", suite.getMajor());
+            assertEquals(2023, suite.getMajorVersion());
+            assertEquals("2.1", suite.getMinor());
+            assertFalse(suite.isProfessional());
+            assertEquals("16933", suite.getBuild());
+        }
+        {
+            Mockito.when(this.mockApi.burpSuite().version()).thenReturn(BURP_2023_1_1_VERSION_PRO);
+            BurpVersion suite = new BurpVersion(this.mockApi);
+            assertEquals("Burp Suite Professional", suite.getProductName());
+            assertEquals("2023", suite.getMajor());
+            assertEquals(2023, suite.getMajorVersion());
+            assertEquals("1.1", suite.getMinor());
+            assertTrue(suite.isProfessional());
+            assertEquals("18663", suite.getBuild());
+        }
     }
 
 }
