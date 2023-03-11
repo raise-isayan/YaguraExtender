@@ -134,6 +134,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
     testImplementation 'net.portswigger.burp.extensions:montoya-api:2023.2'
+        // https://mvnrepository.com/artifact/com.google.code.gson/gson
+        testImplementation 'com.google.code.gson:gson:2.10.1'
+        // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
+        testImplementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
     // Use JUnit Jupiter for testing.
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp

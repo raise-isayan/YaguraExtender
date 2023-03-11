@@ -52,7 +52,7 @@ gradlew release
 
 ## Required library
 Building requires a [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) library.
-* BurpExtensionCommons v3.x (Comming soon)
+* BurpExtensionCommons v3.0.x
 
 ## Use Library
 * Apache common codec (https://commons.apache.org/proper/commons-codec/)

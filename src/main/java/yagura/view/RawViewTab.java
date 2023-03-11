@@ -11,7 +11,7 @@ import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
-import extend.util.external.ExtensionHelper;
+import extension.burp.ExtensionHelper;
 import extend.util.external.ThemeUI;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;

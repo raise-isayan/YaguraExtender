@@ -11,7 +11,7 @@ import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
-import extend.util.external.ExtensionHelper;
+import extension.burp.ExtensionHelper;
 import extend.util.external.FormatUtil;
 import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;

@@ -163,7 +163,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
      **/
     public void initialise(MontoyaApi api) {
         BurpVersion burp_version = BurpUtil.suiteVersion();
-        BurpVersion.showUnsupporttDlg(burp_version);
+        BurpVersion.showUnsupporttDlg(burp_version, Version.getInstance().getProjectName());
     }
 
     @Override
@@ -171,7 +171,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         super.initialize(api);
         BurpVersion burpVersion = this.getBurpVersion();
         if (BurpVersion.isUnsupportVersion(burpVersion)) {
-            BurpVersion.showUnsupporttDlg(burpVersion);
+            BurpVersion.showUnsupporttDlg(burpVersion, Version.getInstance().getProjectName());
             throw new UnsupportedOperationException("Unsupported burp version");
         }
 
