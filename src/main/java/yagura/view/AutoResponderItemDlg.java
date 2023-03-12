@@ -5,6 +5,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
+import extension.helpers.HttpUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
 import java.util.logging.Logger;
@@ -114,7 +115,6 @@ public class AutoResponderItemDlg extends CustomDialog {
             }
         });
 
-        chkRegExp.setSelected(true);
         chkRegExp.setText("RegExp");
 
         btnSelectExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_image.png"))); // NOI18N
@@ -238,7 +238,9 @@ public class AutoResponderItemDlg extends CustomDialog {
         String mime = TransUtil.toEmpty(this.cmbContentType.getEditor().getItem());
         if (item.getMatch().isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
-        } else if (!item.isValidRegex()) {
+        } else if (!item.isRegexp() && item.isValidRegex() && !HttpUtil.isValidUrl(item.getMatch())) {
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.match.invalid.url"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
+        } else if (item.isRegexp() && !item.isValidRegex()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.regex"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else if (item.isBodyOnly() && mime.isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.mime.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);

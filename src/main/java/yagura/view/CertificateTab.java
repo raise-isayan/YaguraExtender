@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpPreferences;
 import extension.helpers.CertUtil;
 import extend.util.external.BouncyUtil;
 import extension.burp.BurpConfig;
@@ -446,8 +447,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
         try {
             if (this.rdoBurpCA.isSelected()) {
-                KeyStore ks = BurpConfig.loadCACeart();
-                mapCert = CertUtil.loadFromKeyStore(ks, BurpConfig.getCAPassword());
+                KeyStore ks = BurpPreferences.loadCACeart();
+                mapCert = CertUtil.loadFromKeyStore(ks, BurpPreferences.getCAPassword());
             } else {
                 CertificateItem item = getEditItem();
                 if (item == null) {
