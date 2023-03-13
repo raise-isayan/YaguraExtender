@@ -43,7 +43,6 @@ import extension.burp.TargetTool;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
 import extension.helpers.FileUtil;
-import extension.helpers.HttpMesageHelper;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -80,6 +79,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import passive.IssueItem;
+import passive.common.HttpMessageWapper;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
@@ -948,7 +948,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             // 追加
                             StringBuilder builder = new StringBuilder(header);
                             builder.append(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                            builder.append(HttpMesageHelper.LINE_TERMINATE);
+                            builder.append(HttpMessageWapper.LINE_TERMINATE);
                             header = builder.toString();
                             edited = true;
                         } else {
@@ -959,8 +959,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                                 edited = true;
                             }
                         }
-                        Matcher m = HttpMesageHelper.HTTP_LINESEP.matcher(header);
-                        header = m.replaceAll(HttpMesageHelper.LINE_TERMINATE);
+                        Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
+                        header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
                     }
                 }
             }
@@ -969,7 +969,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 // messageの再構築
                 StringBuilder message = new StringBuilder();
                 message.append(header);
-                message.append(HttpMesageHelper.LINE_TERMINATE);
+                message.append(HttpMessageWapper.LINE_TERMINATE);
                 message.append(body);
                 httpMessage = StringUtil.getBytesRaw(message.toString());
             }

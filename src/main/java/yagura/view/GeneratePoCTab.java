@@ -14,7 +14,6 @@ import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
 import extension.burp.HttpTarget;
-import extension.helpers.HttpMesageHelper;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
@@ -41,6 +40,8 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import passive.common.HttpRequestWapper;
+import passive.common.HttpResponseWapper;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -711,9 +712,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
             MontoyaApi api = BurpExtension.api();
-            final HttpRequest httpRequest = this.httpRequestResponse.request();
+            final HttpRequestWapper httpRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             // 自動判定
-            String contentType = HttpMesageHelper.getEncodeType(httpRequest);
+            String contentType = httpRequest.getEnctype();
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // select auto
             if (csrfParam.isCsrfAuto()) {
@@ -894,8 +895,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             boolean csrfHtml5WithXHeader = csrfParam.isCsrfHtml5WithXHeader();
 
-            final HttpRequest httpRequest = this.httpRequestResponse.request();
-            String contentType = HttpMesageHelper.getEncodeType(httpRequest);
+            final HttpRequestWapper httpRequest = new HttpRequestWapper(this.httpRequestResponse.request());
+            String contentType = httpRequest.getEnctype();
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // 自動判定
             if (csrfParam.isCsrfAuto()) {
@@ -1159,19 +1160,19 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = null;
         boolean useHttps = false;
-        HttpRequest httpRequest = httpRequestResponse.request();
-        HttpResponse httpResponse = httpRequestResponse.response();
+        HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
+        HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
         if (httpRequestResponse.response() != null) {
-            guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
+            guessCharset = httpResponse.getGuessCharset();
         }
         HttpService service = httpRequest.httpService();
         if (service != null) {
             useHttps = httpRequest.httpService().secure();
         } else {
-            useHttps = HttpMesageHelper.isHttps(httpRequest);
+            useHttps = httpRequest.isSecure();
         }
         if (guessCharset == null) {
-            guessCharset = HttpMesageHelper.getGuessCharset(httpRequest);
+            guessCharset = httpResponse.getGuessCharset();
         }
         if (guessCharset == null) {
             guessCharset = StandardCharsets.ISO_8859_1.name();
@@ -1196,7 +1197,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
                 return false;
             }
-            HttpRequest request = httpRequestResponse.request();
+            HttpRequestWapper request = new HttpRequestWapper(httpRequestResponse.request());
             String host = request.httpService().host();
             if (host == null) {
                 return false;
@@ -1204,7 +1205,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             if (!("POST".equals(request.method()) || "GET".equals(request.method()))) {
                 return false;
             }
-            return (request.body().length() > 0) || (HttpMesageHelper.hasQueryParameter(request.parameters()));
+            return (request.body().length() > 0) || (request.hasQueryParameter());
         }
         catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);

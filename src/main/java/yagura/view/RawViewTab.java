@@ -13,7 +13,6 @@ import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extension.burp.ExtensionHelper;
 import extend.util.external.ThemeUI;
-import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -33,6 +32,8 @@ import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import passive.common.HttpRequestWapper;
+import passive.common.HttpResponseWapper;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -262,11 +263,11 @@ public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedE
         } else {
             String guessCharset = null;
             if (this.isRequest) {
-                HttpRequest httpRequest = httpRequestResponse.request();
-                guessCharset = HttpMesageHelper.getGuessCharset(httpRequest);
+                HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
+                guessCharset = httpRequest.getGuessCharset();
             } else {
-                HttpResponse httpResponse = httpRequestResponse.response();
-                guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
+                HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
+                guessCharset = httpResponse.getGuessCharset();
                 MimeType contentType = httpResponse.statedMimeType();
                 this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
             }

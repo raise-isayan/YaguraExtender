@@ -13,7 +13,6 @@ import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
 import extension.burp.ExtensionHelper;
 import extend.util.external.FormatUtil;
-import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -23,6 +22,9 @@ import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.text.JTextComponent;
+import passive.common.HttpMessageWapper;
+import passive.common.HttpRequestWapper;
+import passive.common.HttpResponseWapper;
 import yagura.model.QuickSearchEvent;
 import yagura.model.QuickSearchListener;
 import yagura.model.UniversalViewProperty;
@@ -273,11 +275,11 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = null;
         if (this.isRequest) {
-            HttpRequest httpRequest = httpRequestResponse.request();
-            guessCharset = HttpMesageHelper.getGuessCharset(httpRequest);
+            HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
+            guessCharset = httpRequest.getGuessCharset();
         } else {
-            HttpResponse httpResponse = httpRequestResponse.response();
-            guessCharset = HttpMesageHelper.getGuessCharset(httpResponse);
+            HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
+            guessCharset = httpResponse.getGuessCharset();
         }
         if (guessCharset == null) {
             guessCharset = StandardCharsets.ISO_8859_1.name();

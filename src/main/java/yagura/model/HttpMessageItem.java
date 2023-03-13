@@ -11,7 +11,6 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import extension.burp.HttpTarget;
 import extension.burp.MessageHighlightColor;
-import extension.helpers.HttpMesageHelper;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -19,6 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.RowFilter;
+import passive.common.HttpResponseWapper;
 
 /**
  *
@@ -237,7 +237,8 @@ public class HttpMessageItem implements HttpRequestResponse {
         String charset = StandardCharsets.ISO_8859_1.name();
         try {
             if (this.response() != null) {
-                charset = HttpMesageHelper.getGuessCharset(this.response());
+                HttpResponseWapper wrap = new HttpResponseWapper(this.response());
+                charset = wrap.getGuessCharset();
                 if (charset == null) {
                     charset = StandardCharsets.ISO_8859_1.name();
                 }
@@ -264,7 +265,8 @@ public class HttpMessageItem implements HttpRequestResponse {
         String mimeType = null;
         try {
             if (this.response() != null) {
-                mimeType = HttpMesageHelper.getContentMimeType(this.response());
+                HttpResponseWapper wrap = new HttpResponseWapper(this.response());
+                mimeType = wrap.getContentMimeType();
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);

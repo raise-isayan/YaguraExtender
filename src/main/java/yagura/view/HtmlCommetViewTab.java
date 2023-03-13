@@ -9,7 +9,6 @@ import burp.api.montoya.http.message.responses.analysis.AttributeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.ThemeUI;
-import extension.helpers.HttpMesageHelper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -22,6 +21,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
+import passive.common.HttpMessageWapper;
+import passive.common.HttpResponseWapper;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -134,7 +135,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
                     StringBuilder buff = new StringBuilder();
                     for (Attribute c : comments) {
                         buff.append(c.value());
-                        buff.append(HttpMesageHelper.LINE_TERMINATE);
+                        buff.append(HttpMessageWapper.LINE_TERMINATE);
                     }
                     return buff.toString();
 //                    return TransUtil.join("\r\n", ConvertUtil.toUniqList(comments));
@@ -201,8 +202,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
-        HttpResponse response = httpRequestResponse.response();
-        String guessCharset = HttpMesageHelper.getGuessCharset(response);
+        HttpResponseWapper response = new HttpResponseWapper(httpRequestResponse.response());
+        String guessCharset = response.getGuessCharset();
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);
