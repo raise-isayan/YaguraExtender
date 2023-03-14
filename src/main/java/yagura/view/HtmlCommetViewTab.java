@@ -9,6 +9,8 @@ import burp.api.montoya.http.message.responses.analysis.AttributeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.ThemeUI;
+import extension.helpers.HttpMessageWapper;
+import extension.helpers.HttpResponseWapper;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -21,8 +23,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
-import passive.common.HttpMessageWapper;
-import passive.common.HttpResponseWapper;
 import yagura.model.UniversalViewProperty;
 
 /**

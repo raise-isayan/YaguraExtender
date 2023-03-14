@@ -11,6 +11,7 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import extension.burp.HttpTarget;
 import extension.burp.MessageHighlightColor;
+import extension.helpers.HttpResponseWapper;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.RowFilter;
-import passive.common.HttpResponseWapper;
 
 /**
  *

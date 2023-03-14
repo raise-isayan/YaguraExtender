@@ -8,12 +8,13 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
-import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
 import extension.burp.HttpTarget;
+import extension.helpers.HttpRequestWapper;
+import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
@@ -40,8 +41,6 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import passive.common.HttpRequestWapper;
-import passive.common.HttpResponseWapper;
 import yagura.model.UniversalViewProperty;
 
 /**
