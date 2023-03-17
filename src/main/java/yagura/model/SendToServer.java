@@ -63,7 +63,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
-import okhttp.digest.FixDigestAuthenticator;
 import okhttp.socks.SocksProxyAuthInterceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -457,7 +456,7 @@ public class SendToServer extends SendToMenuItem {
                             authenticator = new BasicAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
                             break;
                         case DIGEST:
-                            authenticator = new FixDigestAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
+                            authenticator = new DigestAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
                             break;
                     }
 
@@ -484,7 +483,7 @@ public class SendToServer extends SendToMenuItem {
                         if (!proxyUser.isEmpty()) {
                             com.burgstaller.okhttp.digest.Credentials credentials = new com.burgstaller.okhttp.digest.Credentials(proxyUser, proxyPasswd);
                             final BasicAuthenticator basicProxyAuthenticator = new BasicAuthenticator(credentials);
-                            final FixDigestAuthenticator digestProxyAuthenticator = new FixDigestAuthenticator(credentials);
+                            final DigestAuthenticator digestProxyAuthenticator = new DigestAuthenticator(credentials);
                             digestProxyAuthenticator.setProxy(true);
                             proxyAuthenticator = new DispatchingAuthenticator.Builder()
                                     .with("digest", digestProxyAuthenticator)

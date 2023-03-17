@@ -90,10 +90,7 @@ public class ConfigTest {
             JsonElement json = JsonUtil.parseJson(StringUtil.getStringUTF8(test));
             String value = JsonUtil.prettyJson(json, true);
             System.out.println(value);
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-            fail(ex.getMessage());
-        } catch (URISyntaxException ex) {
+        } catch (IOException | URISyntaxException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             fail(ex.getMessage());
         }
