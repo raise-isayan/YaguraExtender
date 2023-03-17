@@ -1018,8 +1018,8 @@ public class TransUtil {
 //        for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
 //            int c = input.codePointAt(i);
         for (int i = 0; i < length; i++) {
-            int c = input.charAt(i);
-            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
+            char c = input.charAt(i);
+            Matcher m = pattern.matcher(Character​.toString(c));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("\\U%04X", (int) c));
@@ -1039,8 +1039,8 @@ public class TransUtil {
 //        for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
 //            int c = input.codePointAt(i);
         for (int i = 0; i < length; i++) {
-            int c = input.charAt(i);
-            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
+            char c = input.charAt(i);
+            Matcher m = pattern.matcher(Character​.toString(c));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("%s%04X", prefix, (int) c));
@@ -1122,7 +1122,7 @@ public class TransUtil {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
-            Matcher m = pattern.matcher(new String(new char[]{(char) b}));
+            Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("\\X%02X", b));
@@ -1140,7 +1140,7 @@ public class TransUtil {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
-            Matcher m = pattern.matcher(new String(new char[]{(char) b}));
+            Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("\\%02X", b));
@@ -1158,7 +1158,7 @@ public class TransUtil {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
-            Matcher m = pattern.matcher(new String(new char[]{(char) b}));
+            Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 buff.append(String.format("\\%d", b));
             } else {
@@ -1172,7 +1172,7 @@ public class TransUtil {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
-            Matcher m = pattern.matcher(new String(new char[]{(char) b}));
+            Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 buff.append(String.format("\\%02o", b));
             } else {
@@ -1194,11 +1194,11 @@ public class TransUtil {
             if (unicode != null) {
                 int chHigh = Integer.parseInt(unicode.substring(2, 6), 16);
                 int chLow = Integer.parseInt(unicode.substring(8, 12), 16);
-                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) chHigh, (char) chLow})));
+                m.appendReplacement(buff, Matcher.quoteReplacement(String.valueOf(new char[]{(char) chHigh, (char) chLow})));
             } else {
                 unicode = m.group(2);
                 int ch = Integer.parseInt(unicode.substring(2), 16);
-                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) ch})));
+                m.appendReplacement(buff, Matcher.quoteReplacement(String.valueOf(new char[]{(char) ch})));
             }
         }
         m.appendTail(buff);
@@ -1218,11 +1218,11 @@ public class TransUtil {
                 String gpLow = m.group(3);
                 int chHigh = Integer.parseInt(gpHigh, 16);
                 int chLow = Integer.parseInt(gpLow, 16);
-                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) chHigh, (char) chLow})));
+                m.appendReplacement(buff, Matcher.quoteReplacement(String.valueOf(new char[]{(char) chHigh, (char) chLow})));
             } else {
                 unicode = m.group(4);
                 int ch = Integer.parseInt(unicode, 16);
-                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) ch})));
+                m.appendReplacement(buff, Matcher.quoteReplacement(String.valueOf(new char[]{(char) ch})));
             }
         }
         m.appendTail(buff);
@@ -1325,8 +1325,8 @@ public class TransUtil {
 //        for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
 //            int c = input.codePointAt(i);
         for (int i = 0; i < length; i++) {
-            int c = input.charAt(i);
-            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
+            char c = input.charAt(i);
+            Matcher m = pattern.matcher(Character.toString(c));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("%%U%04X", (int) c));
@@ -1352,11 +1352,11 @@ public class TransUtil {
             if (unicode != null) {
                 int chHigh = Integer.parseInt(unicode.substring(2, 6), 16);
                 int chLow = Integer.parseInt(unicode.substring(8, 12), 16);
-                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) chHigh, (char) chLow})));
+                m.appendReplacement(buff, Matcher.quoteReplacement(String.valueOf(new char [] {(char)chHigh, (char)chLow})));
             } else {
                 unicode = m.group(2);
                 int ch = Integer.parseInt(unicode.substring(2), 16);
-                m.appendReplacement(buff, Matcher.quoteReplacement(new String(new char[]{(char) ch})));
+                m.appendReplacement(buff, Matcher.quoteReplacement(String.valueOf(new char[]{(char) ch})));
             }
         }
         m.appendTail(buff);
@@ -1371,12 +1371,12 @@ public class TransUtil {
         StringBuilder buff = new StringBuilder();
         int length = input.length();
         for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
-            int c = input.codePointAt(i);
-            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
+            int codePoint = input.codePointAt(i);
+            Matcher m = pattern.matcher(Character.toString(codePoint));
             if (m.matches()) {
-                buff.append(String.format("&#%d;", c));
+                buff.append(String.format("&#%d;", codePoint));
             } else {
-                buff.appendCodePoint(c);
+                buff.appendCodePoint(codePoint);
             }
         }
         return buff.toString();
@@ -1390,16 +1390,16 @@ public class TransUtil {
         StringBuilder buff = new StringBuilder();
         int length = input.length();
         for (int i = 0; i < length; i = input.offsetByCodePoints(i, 1)) {
-            int c = input.codePointAt(i);
-            Matcher m = pattern.matcher(new String(new int[]{c}, 0, 1));
+            int codePoint = input.codePointAt(i);
+            Matcher m = pattern.matcher(Character.toString(codePoint));
             if (m.matches()) {
                 if (upperCase) {
-                    buff.append(String.format("&#X%X;", c));
+                    buff.append(String.format("&#X%X;", codePoint));
                 } else {
-                    buff.append(String.format("&#x%x;", c));
+                    buff.append(String.format("&#x%x;", codePoint));
                 }
             } else {
-                buff.appendCodePoint(c);
+                buff.appendCodePoint(codePoint);
             }
         }
         return buff.toString();
@@ -1413,7 +1413,7 @@ public class TransUtil {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
-            Matcher m = pattern.matcher(new String(new char[]{(char) b}));
+            Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 if (upperCase) {
                     buff.append(String.format("&#X%X;", b));
@@ -1436,12 +1436,12 @@ public class TransUtil {
             if (html != null) {
                 if (html.startsWith("&#x") || html.startsWith("&#X")) {
                     String htmlhex = m.group(3);
-                    int ch = Integer.parseInt(htmlhex.substring(2), 16);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(new String(new int[]{ch}, 0, 1)));
+                    int codePoint = Integer.parseInt(htmlhex.substring(2), 16);
+                    m.appendReplacement(buff, Matcher.quoteReplacement(Character.toString(codePoint)));
                 } else if (html.startsWith("&#")) {
                     String htmldec = m.group(2);
-                    int ch = Integer.parseInt(htmldec.substring(1), 10);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(new String(new int[]{ch}, 0, 1)));
+                    int codePoint = Integer.parseInt(htmldec.substring(1), 10);
+                    m.appendReplacement(buff, Matcher.quoteReplacement(Character.toString(codePoint)));
                 } else if (html.startsWith("&")) {
                     String htmlwd = m.group(4);
                     if (htmlwd == null) {

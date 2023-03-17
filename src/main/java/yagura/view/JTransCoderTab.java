@@ -61,6 +61,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
+import java.awt.Font;
 
 /**
  *
@@ -187,7 +188,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 //        scrollURaw.setViewportView(txtURaw);
 //        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-
+//        this.txtOutputRaw.setFont(new Font("ＭＳ ゴシック", Font.PLAIN, 24));
         this.txtOutputRaw.setEditable(false);
         this.txtOutputRaw.setHyperlinksEnabled(false);
         this.txtOutputRaw.setHighlightCurrentLine(false);

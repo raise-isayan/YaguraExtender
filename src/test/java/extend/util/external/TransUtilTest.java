@@ -115,6 +115,9 @@ public class TransUtilTest {
         assertEquals(EncodePattern.HTML, TransUtil.getSmartDecode("&#x21;&#x22;&#x23;&#x24;&#x25;&#x26;&#x27;&#x28;&#x29;&#x3d;&#x7e;&#x7c;&#x60;&#x7b;&#x7d;&#x2a;&#x2b;&#x3c;&#x3e;&#x3f;&#x5f;&#x5c;&#x61;&#x62;&#x63;&#x65;&#x64;&#x66;"));
         assertEquals(EncodePattern.HTML, TransUtil.getSmartDecode("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;&#X5F;&#X5C;&#X61;&#X62;&#X63;&#X65;&#X64;&#X66;"));
 
+        assertEquals(EncodePattern.HTML, TransUtil.getSmartDecode("<html><h4>&#12510;&#12523;&#12481;&#12496;&#12452;&#12488;&#12486;&#12473;&#12488;</h4></html>"));
+
+
         assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
         assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));
 
@@ -155,6 +158,8 @@ public class TransUtilTest {
 
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("&#x21;&#x22;&#x23;&#x24;&#x25;&#x26;&#x27;&#x28;&#x29;&#x3d;&#x7e;&#x7c;&#x60;&#x7b;&#x7d;&#x2a;&#x2b;&#x3c;&#x3e;&#x3f;&#x5f;&#x5c;&#x61;&#x62;&#x63;&#x65;&#x64;&#x66;"));
             assertEquals("!\"#$%&'()=~|`{}*+<>?_\\abcedf", TransUtil.toSmartDecode("&#X21;&#X22;&#X23;&#X24;&#X25;&#X26;&#X27;&#X28;&#X29;&#X3D;&#X7E;&#X7C;&#X60;&#X7B;&#X7D;&#X2A;&#X2B;&#X3C;&#X3E;&#X3F;&#X5F;&#X5C;&#X61;&#X62;&#X63;&#X65;&#X64;&#X66;"));
+
+            assertEquals("<html><h4>マルチバイトテスト</h4></html>", TransUtil.toSmartDecode("<html><h4>&#12510;&#12523;&#12481;&#12496;&#12452;&#12488;&#12486;&#12473;&#12488;</h4></html>"));
 
             StringBuffer charset = new StringBuffer("Shift_JIS");
             assertEquals("あいうえお", TransUtil.toSmartDecode("\\x82\\xa0\\x82\\xa2\\x82\\xa4\\x82\\xa6\\x82\\xa8", EncodePattern.BYTE_HEX, false, charset));
@@ -464,6 +469,12 @@ public class TransUtilTest {
 
         assertEquals("\\u006a\\u006b\\u0066\\ud840\\udc0b\\ud844\\ude3d\\u0067\\u0068\\u0069\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4\\u0061\\u0062\\u007a\\u0030\\u0031\\u0039", TransUtil.toUnocodeEncode(x, TransUtil.PTN_ENCODE_ALL, false));
         assertEquals("\\U006A\\U006B\\U0066\\UD840\\UDC0B\\UD844\\UDE3D\\U0067\\U0068\\U0069\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4\\U0061\\U0062\\U007A\\U0030\\U0031\\U0039", TransUtil.toUnocodeEncode(x, TransUtil.PTN_ENCODE_ALL, true));
+
+        //
+        String surrogatePairDecode = "𠀋𣜿𦹀𠈓𠠇";
+        String surrogatePairEncode = "\\ud840\\udc0b\\ud84d\\udf3f\\ud85b\\ude40\\ud840\\ude13\\ud842\\udc07"; // U+2000B
+        assertEquals(surrogatePairEncode, TransUtil.toUnocodeEncode(surrogatePairDecode, false));
+
     }
 
     /**
@@ -499,6 +510,12 @@ public class TransUtilTest {
         String x = new String(ch, 0, ch.length);
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\ud840\\udc0b\\ud844\\ude3dghi\\ud844\\udf1b\\ud845\\udc6e\\ud846\\udcbd\\ud842\\udf9f\\ud845\\udeb4\\ud847\\ude34\\ud84c\\uddc4\\ud84d\\uddc4abz019"));
         assertEquals(x, TransUtil.toUnocodeDecode("jkf\\UD840\\UDC0B\\UD844\\UDE3Dghi\\UD844\\UDF1B\\UD845\\UDC6E\\UD846\\UDCBD\\UD842\\UDF9F\\UD845\\UDEB4\\UD847\\UDE34\\UD84C\\UDDC4\\UD84D\\UDDC4abz019"));
+
+        //
+        String surrogatePairDecode = "𠀋𣜿𦹀𠈓𠠇";
+        String surrogatePairEncode = "\\ud840\\udc0b\\ud84d\\udf3f\\ud85b\\ude40\\ud840\\ude13\\ud842\\udc07"; // U+2000B
+        assertEquals(surrogatePairDecode, TransUtil.toUnocodeDecode(surrogatePairEncode));
+
     }
 
     /**
