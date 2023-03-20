@@ -10,26 +10,25 @@ import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import burp.api.montoya.scanner.audit.issues.AuditIssueConfidence;
 import burp.api.montoya.scanner.audit.issues.AuditIssueDefinition;
 import burp.api.montoya.scanner.audit.issues.AuditIssueSeverity;
-import extension.burp.ScannerCheckAdapter;
-import extension.burp.Severity;
 import extension.helpers.HttpUtil;
 import java.util.ArrayList;
 import java.util.List;
-import passive.IssueItem;
-import passive.SignatureItem;
+import extension.burp.scanner.IssueItem;
+import extension.burp.scanner.ScannerCheckAdapter;
+import extension.burp.scanner.SignatureScanBase;
 import yagura.model.MatchAlertProperty;
 
 /**
  *
  * @author isayan
  */
-public class MatchAlert extends SignatureItem<IssueItem> {
+public class MatchAlert extends SignatureScanBase<IssueItem> {
 
     private final String toolName;
     private final MatchAlertProperty option;
 
     public MatchAlert(final String toolName, final MatchAlertProperty option) {
-        super("MatchAlert", Severity.HIGH);
+        super("MatchAlert");
         this.toolName = toolName;
         this.option = option;
     }
@@ -53,6 +52,10 @@ public class MatchAlert extends SignatureItem<IssueItem> {
                     return issueItem.get(0);
                 }
             }
+
+            private final String ISSUE_BACKGROUND = """
+                                                    \r\n<h4>Reference:</h4><p>MatchAlert for YaguraExtender</p>
+                                                    """;
 
             @Override
             public String name() {
@@ -100,40 +103,7 @@ public class MatchAlert extends SignatureItem<IssueItem> {
 
             @Override
             public AuditIssueDefinition definition() {
-                return new AuditIssueDefinition() {
-                    @Override
-                    public String name() {
-                        return String.format("Match Alert(%s)", getItem().getType());
-                    }
-
-                    @Override
-                    public String background() {
-                        final String ISSUE_BACKGROUND = """
-                                                        \r\n<h4>Reference:</h4><p>MatchAlert for YaguraExtender</p>
-                                                        """;
-                        return ISSUE_BACKGROUND;
-                    }
-
-                    @Override
-                    public String remediation() {
-                        return null;
-                    }
-
-                    @Override
-                    public AuditIssueSeverity typicalSeverity() {
-                        return AuditIssueSeverity.FALSE_POSITIVE;
-                    }
-
-                    /**
-                     * https://portswigger.net/knowledgebase/issues/ Extension
-                     * generated issue
-                     */
-                    @Override
-                    public int typeIndex() {
-                        return 0x08000000;
-                    }
-
-                };
+                return AuditIssueDefinition.auditIssueDefinition(name(), ISSUE_BACKGROUND, remediation(), severity());
             }
 
         };

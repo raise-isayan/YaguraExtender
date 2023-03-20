@@ -79,7 +79,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import passive.IssueItem;
+import extension.burp.scanner.IssueItem;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
