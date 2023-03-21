@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
 import extend.util.external.TransUtil;
+import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import extension.view.base.DefaultObjectTableModel;
 import java.io.UnsupportedEncodingException;
@@ -59,7 +60,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 {
                     String raw = param.name();
                     if (this.urldecode) {
-                        value = TransUtil.decodeUrl(raw, encoding);
+                        value = SmartCodec.toUrlDecode(raw, encoding);
                     } else {
                         value = StringUtil.getStringCharset(StringUtil.getBytesRaw(raw), encoding);
                     }
@@ -69,7 +70,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 {
                     String raw = param.value();
                     if (this.urldecode) {
-                        value = TransUtil.decodeUrl(raw, encoding);
+                        value = SmartCodec.toUrlDecode(raw, encoding);
                     } else {
                         value = StringUtil.getStringCharset(StringUtil.getBytesRaw(raw), encoding);
                     }
@@ -97,7 +98,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 case 2: // Name
                     if (this.urldecode) {
                         String raw = StringUtil.getBytesCharsetString((String) value, encoding);
-                        raw = TransUtil.encodeUrl(raw, encoding, true);
+                        raw = SmartCodec.toUrlEncode(raw, encoding, true);
                         param.getParameter().setName(raw);
                     } else {
                         String rowMessage = StringUtil.getBytesCharsetString((String) value, encoding);
@@ -107,7 +108,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 case 3: // Value
                     if (this.urldecode) {
                         String raw = StringUtil.getBytesCharsetString((String) value, encoding);
-                        raw = TransUtil.encodeUrl(raw, encoding, true);
+                        raw = SmartCodec.toUrlEncode(raw, encoding, true);
                         param.getParameter().setValue(raw);
                     } else {
                         String raw = StringUtil.getBytesCharsetString((String) value, encoding);
@@ -116,7 +117,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     break;
             }
             super.setData(rowIndex, param);
-        } catch (Exception ex) {
+        } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }

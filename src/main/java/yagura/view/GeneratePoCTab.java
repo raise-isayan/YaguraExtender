@@ -17,6 +17,7 @@ import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
+import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import java.awt.Component;
@@ -800,10 +801,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
                         paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                         if (MatchUtil.isUrlencoded(paramName)) {
-                            paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
+                            paramName = SmartCodec.toUrlEncode(paramName, csrfEncoding, true);
                         }
                         if (MatchUtil.isUrlencoded(paramValue)) {
-                            paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
+                            paramValue = SmartCodec.toUrlEncode(paramValue, csrfEncoding, true);
                         }
                         String decodename = HttpUtil.toHtmlEncode(paramName);
                         String decodevalue = HttpUtil.toHtmlEncode(paramValue);
@@ -821,10 +822,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             }
                         } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
-                                paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
+                                paramName = SmartCodec.toUrlEncode(paramName, csrfEncoding, true);
                             }
                             if (MatchUtil.isUrlencoded(paramValue)) {
-                                paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
+                                paramValue = SmartCodec.toUrlEncode(paramValue, csrfEncoding, true);
                             }
                         }
                         String decodename = HttpUtil.toHtmlEncode(paramName);
@@ -993,10 +994,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             }
                         } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
-                                paramName = TransUtil.decodeUrl(paramName, csrfEncoding);
+                                paramName = SmartCodec.toUrlEncode(paramName, csrfEncoding, true);
                             }
                             if (MatchUtil.isUrlencoded(paramValue)) {
-                                paramValue = TransUtil.decodeUrl(paramValue, csrfEncoding);
+                                paramValue = SmartCodec.toUrlEncode(paramValue, csrfEncoding, true);
                             }
                         }
 
@@ -1006,7 +1007,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             }
                             parambuff.append("\treq += '--' + boundary + '\\r\\n' + ").append(HttpUtil.LINE_TERMINATE);
                             parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"\\r\\n\\r\\n' + " + HttpUtil.LINE_TERMINATE, new Object[]{paramName}));
-                            String encodeHex = TransUtil.toByteHexEncode(StringUtil.getBytesCharset(paramValue, csrfEncoding), TransUtil.PTN_ENCODE_JS, false);
+                            String encodeHex = TransUtil.toByteHexEncode(StringUtil.getBytesCharset(paramValue, csrfEncoding), SmartCodec.ENCODE_PATTERN_JS, false);
                             parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                         } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {
                             binaryParam = true;
@@ -1019,7 +1020,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\\r\\n' + " + HttpUtil.LINE_TERMINATE, new Object[]{paramName, filename}));
                             parambuff.append("\t'Content-Type: application/octet-stream\\r\\n\\r\\n'");
                             parambuff.append("+ ").append(System.lineSeparator());
-                            String encodeHex = TransUtil.toByteHexEncode(StringUtil.getBytesRaw(paramValue), TransUtil.PTN_ENCODE_JS, false);
+                            String encodeHex = TransUtil.toByteHexEncode(StringUtil.getBytesRaw(paramValue), SmartCodec.ENCODE_PATTERN_JS, false);
                             parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                             binaryParam = false;
                             filename = "";
@@ -1057,8 +1058,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             if (contentType != null && HttpUtil.isMaltiPart(contentType) && HttpUtil.isUrlEencoded(csrfEnctype)) {
                                 // urlencodeの必要がある場合
                                 buff.append(String.format("'%s' + '=' + '%s';" + HttpUtil.LINE_TERMINATE,
-                                        new Object[]{TransUtil.encodeUrl(paramName, csrfEncoding, true),
-                                            TransUtil.encodeUrl(paramValue, csrfEncoding, true)}));
+                                        new Object[]{SmartCodec.toUrlEncode(paramName, csrfEncoding, true),
+                                            SmartCodec.toUrlEncode(paramValue, csrfEncoding, true)}));
                             } else {
                                 // js escape
                                 buff.append(String.format("'%s' + '=' + '%s';" + HttpUtil.LINE_TERMINATE,
@@ -1079,7 +1080,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             else {
                 buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');" + HttpUtil.LINE_TERMINATE, csrfEnctype));
                 String paramValue = StringUtil.getStringRaw(httpRequest.body().getBytes());
-                buff.append(String.format("\treq += '%s';" + HttpUtil.LINE_TERMINATE, new Object[]{TransUtil.toByteHexEncode(StringUtil.getBytesRaw(paramValue), TransUtil.PTN_ENCODE_JS, false)}));
+                buff.append(String.format("\treq += '%s';" + HttpUtil.LINE_TERMINATE, new Object[]{TransUtil.toByteHexEncode(StringUtil.getBytesRaw(paramValue), SmartCodec.ENCODE_PATTERN_JS, false)}));
                 buff.append("\tvar blob = new Uint8Array(req.length);").append(HttpUtil.LINE_TERMINATE);
                 buff.append("\tfor (var i = 0; i < blob.length; i++)").append(HttpUtil.LINE_TERMINATE);
                 buff.append("\t\tblob[i] = req.charCodeAt(i);").append(HttpUtil.LINE_TERMINATE);

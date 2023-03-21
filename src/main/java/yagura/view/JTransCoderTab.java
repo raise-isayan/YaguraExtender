@@ -61,6 +61,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
+import extension.helpers.SmartCodec;
 import java.awt.Font;
 
 /**
@@ -2366,9 +2367,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             String encode = value;
             boolean metaChar = this.chkMetaChar.isSelected();
             if (this.rdoUrl.isSelected()) {
-                encode = TransUtil.encodeUrl(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toUrlEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUrlUnicode.isSelected()) {
-                encode = TransUtil.toUnocodeUrlEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toUnocodeUrlEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
                 if (this.rdoUpperCase.isSelected()) {
                     encode = encode.toUpperCase();
                 }
@@ -2403,13 +2404,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             } else if (this.rdoQuotedPrintable.isSelected()) {
                 encode = TransUtil.toQuotedPrintable(value, this.getSelectEncode());
             } else if (this.rdoPunycode.isSelected()) {
-                encode = TransUtil.toPunycodeEncode(value);
+                encode = ConvertUtil.toPunycodeEncode(value);
             } else if (this.rdoHtml.isSelected()) {
                 encode = HttpUtil.toHtmlEncode(value);
             } else if (this.rdoUnicodeHex.isSelected()) {
-                encode = TransUtil.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUnicodeHex2.isSelected()) {
-                encode = TransUtil.toUnocodeEncode(value, "$", TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toUnocodeEncode(value, "$", TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex.isSelected()) {
                 encode = TransUtil.toByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex2.isSelected()) {
@@ -2417,11 +2418,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             } else if (this.rdoByteOct.isSelected()) {
                 encode = TransUtil.toByteOctEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlDec.isSelected()) {
-                encode = TransUtil.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
+                encode = SmartCodec.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlHex.isSelected()) {
-                encode = TransUtil.toHtmlHexEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toHtmlHexEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoHtmlByteHex.isSelected()) {
-                encode = TransUtil.toHtmlByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toHtmlByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoGzip.isSelected()) {
                 encode = StringUtil.getBytesRawString(ConvertUtil.compressGzip(StringUtil.getBytesCharset(value, this.getSelectEncode())));
             } else if (this.rdoZLIB.isSelected()) {

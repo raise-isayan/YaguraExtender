@@ -5,6 +5,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
+import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
@@ -235,7 +236,7 @@ public class AutoResponderItemDlg extends CustomDialog {
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         AutoResponderItem item = this.getItem();
-        String mime = TransUtil.toEmpty(this.cmbContentType.getEditor().getItem());
+        String mime = ConvertUtil.toEmpty(this.cmbContentType.getEditor().getItem());
         if (item.getMatch().isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else if (!item.isRegexp() && item.isValidRegex() && !HttpUtil.isValidUrl(item.getMatch())) {
@@ -324,7 +325,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         item.setMatch(this.txtRepMatch.getText());
         item.setReplace(this.txtRepReplace.getText());
         item.setBodyOnly(this.chkBodyOnly.isSelected());
-        item.setContentType(TransUtil.toEmpty(this.cmbContentType.getEditor().getItem()));
+        item.setContentType(ConvertUtil.toEmpty(this.cmbContentType.getEditor().getItem()));
         return item;
     }
 

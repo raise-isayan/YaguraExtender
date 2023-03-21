@@ -16,6 +16,7 @@ import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.TransUtil;
 import extension.helpers.HttpUtil;
+import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -444,7 +445,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                         final HttpRequest httpRequest = get();
                         String guessCharset = null;
                         if (httpRequest.contentType() == ContentType.URL_ENCODED) {
-                            guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(httpRequest.url(), StandardCharsets.ISO_8859_1.name())));
+                            guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(SmartCodec.toUrlDecode(httpRequest.url(), StandardCharsets.ISO_8859_1.name())));
                         } else {
                             guessCharset = HttpUtil.getUniversalGuessCode(httpRequest.body().getBytes());
                         }

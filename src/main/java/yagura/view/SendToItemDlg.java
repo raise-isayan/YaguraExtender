@@ -7,6 +7,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import extend.util.external.TransUtil;
+import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
@@ -326,7 +327,7 @@ public class SendToItemDlg extends CustomDialog {
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         String caption = this.txtMenuCaption.getText().trim();
-        String target = TransUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim();
+        String target = ConvertUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim();
         boolean server = this.chkServer.isSelected();
         if (this.isSelectedBase() && caption.isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.sendto.add.empty"), "SendTo", JOptionPane.INFORMATION_MESSAGE);
@@ -359,7 +360,7 @@ public class SendToItemDlg extends CustomDialog {
     private void btnSelectExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectExecuteActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.setSelectedFile(new File(TransUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim()));
+        filechooser.setSelectedFile(new File(ConvertUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim()));
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
@@ -463,7 +464,7 @@ public class SendToItemDlg extends CustomDialog {
         item.setSelected(true);
         if (this.isSelectedBase()) {
             item.setCaption(this.txtMenuCaption.getText().trim());
-            item.setTarget(TransUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim());
+            item.setTarget(ConvertUtil.toEmpty(this.cmbTargetLocal.getEditor().getItem()).trim());
             item.setServer(this.chkServer.isSelected() || HttpUtil.startsWithHttp(item.getTarget()));
             item.setRequestHeader(this.chkRequestHeader.isSelected());
             item.setRequestBody(this.chkRequestBody.isSelected());
