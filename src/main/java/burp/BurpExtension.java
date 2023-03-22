@@ -968,6 +968,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             if (edited) {
                 // messageの再構築
                 StringBuilder message = new StringBuilder();
+                Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
+                header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
                 message.append(header);
                 message.append(HttpMessageWapper.LINE_TERMINATE);
                 message.append(body);
