@@ -120,6 +120,8 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
 
     private final static FileFilter BURP_CONFIG_FILTER = new FileNameExtensionFilter("burp config File(*.json)", "json");
 
+    private File currentConigDirectory = null;
+
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         File file = null;
         JFileChooser filechooser = new JFileChooser();
@@ -128,6 +130,8 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         filechooser.setFileFilter(BURP_CONFIG_FILTER);
         if (file != null && file.exists()) {
             filechooser.setSelectedFile(file);
+        } else {
+            filechooser.setCurrentDirectory(this.currentConigDirectory);
         }
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
@@ -137,6 +141,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
                 Map<String, String> config = option.loadConfigSetting();
                 JsonUtil.loadFromJson(file, config);
                 option.saveConfigSetting(config);
+                this.currentConigDirectory = file.getParentFile();
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
@@ -152,6 +157,8 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         filechooser.setFileFilter(BURP_CONFIG_FILTER);
         if (file != null && file.exists()) {
             filechooser.setSelectedFile(file);
+        } else {
+            filechooser.setCurrentDirectory(this.currentConigDirectory);
         }
         int selected = filechooser.showSaveDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
@@ -163,6 +170,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
                 OptionProperty option = BurpExtension.getInstance().getProperty();
                 Map<String, String> config = option.loadConfigSetting();
                 JsonUtil.saveToJson(file, config);
+                this.currentConigDirectory = file.getParentFile();
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }

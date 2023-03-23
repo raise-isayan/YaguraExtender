@@ -13,6 +13,8 @@ import burp.api.montoya.http.handler.HttpRequestToBeSent;
 import burp.api.montoya.http.handler.HttpResponseReceived;
 import burp.api.montoya.http.handler.RequestToBeSentAction;
 import burp.api.montoya.http.handler.ResponseReceivedAction;
+import burp.api.montoya.http.message.HttpHeader;
+import burp.api.montoya.http.message.HttpMessage;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
@@ -80,6 +82,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
+import extension.helpers.HttpRequestWapper;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
@@ -110,6 +113,7 @@ import yagura.view.ViewStateTabEditor;
  * @author isayan
  */
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
+
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
@@ -183,7 +187,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getProjectName(), version.getMajorVersion(), version.getMinorVersion()));
-
 
         // 設定ファイル読み込み
         Map<String, String> config = this.option.loadConfigSetting();
@@ -788,7 +791,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 }
             }
             if (requestBytes != resultBytes) {
-                HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
+                HttpRequest modifyRequest = HttpRequest.http2Request(interceptedHttpRequest.httpService(), interceptedHttpRequest.headers(), ByteArray.byteArray(resultBytes));
+//                  HttpRequest modifyRequest = interceptedHttpRequest.withBody(ByteArray.byteArray(resultBytes));
+//                HttpRequest modifyRequest = HttpRequest.httpRequest(ByteArray.byteArray(resultBytes));
                 return ProxyRequestReceivedAction.continueWith(modifyRequest, annotations);
             } else {
                 return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
@@ -977,6 +982,64 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
             return httpMessage;
         }
+
+        /**
+         * メッセージの置換
+         *
+         * @return 変換後メッセージ
+         */
+        protected HttpRequest replaceProxyMessage(HttpRequest httpRequest) {
+
+            // headerとbodyに分割
+            boolean edited = false;
+            HttpRequestWapper request = new HttpRequestWapper(httpRequest);
+            List<HttpHeader> headers = request.headers();
+            String body = StringUtil.getStringRaw(request.body().getBytes());
+
+            List<MatchReplaceItem> matchReplaceList = option.getMatchReplaceProperty().getMatchReplaceList();
+            for (int i = 0; i < matchReplaceList.size(); i++) {
+                MatchReplaceItem bean = matchReplaceList.get(i);
+                if (!bean.isSelected()) {
+                    continue;
+                }
+                if (bean.isRequest()) {
+                    // body
+                    Pattern p = bean.getRegexPattern();
+                    if (bean.isBody() && !body.isEmpty()) {
+                        Matcher m = p.matcher(body);
+                        if (m.find()) {
+                            body = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                            edited = true;
+                        }
+                    } else if (bean.isHeader()) {
+                        // header
+                        if ("".equals(bean.getMatch())) {
+                            // 追加
+                            headers.add(HttpHeader.httpHeader(bean.getReplace(!bean.isRegexp(), bean.isMetaChar())));
+                            edited = true;
+                        } else {
+                            // 置換
+                            for (int j = 0; j < headers.size(); j++) {
+                                HttpHeader h = headers.get(j);
+                                Matcher m = p.matcher(h.toString());
+                                if (m.find()) {
+                                    String updateHeader = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                                    headers.add(j, HttpHeader.httpHeader(updateHeader));
+                                    edited = true;
+                                }
+                            }       
+                        }
+                    }
+                }
+            }
+
+            if (edited) {
+                // messageの再構築
+                return HttpRequest.http2Request(httpRequest.httpService(), headers, ByteArray.byteArray(body));
+            }
+            return httpRequest;
+        }
+
     }
 
     protected class AutoResponderHandler implements HttpHandler, ProxyRequestHandler, ExtensionUnloadingHandler {

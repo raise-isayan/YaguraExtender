@@ -3,7 +3,6 @@ package yagura.view;
 import burp.BurpPreferences;
 import extension.helpers.CertUtil;
 import extend.util.external.BouncyUtil;
-import extension.burp.BurpConfig;
 import extension.burp.IBurpTab;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -395,7 +394,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         @Override
         public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
             try {
-                if (request.getPath().equals("/")) {
+                if ("/".equals(request.getPath())) {
                     return new MockResponse().addHeader("Content-Type", "text/html; " + "charset=utf-8")
                             .setBody("<html><head><title>" + Version.getInstance().getProjectName() + "</title>\n"
                                     + "<style type=\"text/css\">\n"
@@ -420,14 +419,14 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                                     + "</ul></div>\n"
                                     + "</body>\n"
                                     + "</html>").setResponseCode(200);
-                } else if (request.getPath().equals("/burp-keycert.pem.der")) {
+                } else if ("/burp-keycert.pem.der".equals(request.getPath())) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
                     String exportCA = BouncyUtil.exportCertificatePem(cert.getKey(), cert.getValue());
                     return new MockResponse()
                             .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
                             .addHeader("Content-Disposition", "attachment; filename=\"burp-keycert.pem.der\"")
                             .setBody(exportCA).setResponseCode(200);
-                } else if (request.getPath().equals("/burp-cert.pem.der")) {
+                } else if ("/burp-cert.pem.der".equals(request.getPath())) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
                     String exportCA = BouncyUtil.exportCertificatePem(cert.getValue());
                     return new MockResponse()
@@ -453,8 +452,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 CertificateItem item = getEditItem();
                 if (item == null) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.certificate.noselect"), "Certificate", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else {
+                } else {
                     mapCert = CertUtil.loadFromKeyStore(item.getClientCertificate(), item.getClientCertificatePasswd(), item.getStoreType());
                 }
             }
@@ -484,12 +482,15 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         }
     }
 
+    private File currentCertificateDirectory = null;
+
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         Map.Entry<Key, X509Certificate> cert = this.getExportCerticate();
         if (cert != null) {
             try {
                 JFileChooser filechooser = new JFileChooser();
                 filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                filechooser.setCurrentDirectory(this.currentCertificateDirectory);
                 int selected = filechooser.showSaveDialog(this);
                 if (selected == JFileChooser.APPROVE_OPTION) {
                     File saveFile = filechooser.getSelectedFile();
@@ -500,6 +501,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     } else if (this.rdoConvertPrivateDER.isSelected()) {
                         BouncyUtil.storeCertificateDer(cert.getKey(), saveFile);
                     }
+                    this.currentCertificateDirectory = saveFile.getParentFile();
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
                     //FileUtil.bytesToFile(StringUtil.getBytesRaw(output), pemFile);
                 }
@@ -513,13 +515,15 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_rdoBurpCAActionPerformed
 
     private void rdoBurpCAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoBurpCAStateChanged
-        //SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
-        SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
+//SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
+//this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
+//SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
     }//GEN-LAST:event_rdoBurpCAStateChanged
 
     private void rdoCustomCAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomCAStateChanged
-        //SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
-        SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
+//      SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
+//      this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
+//      SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
     }//GEN-LAST:event_rdoCustomCAStateChanged
 
     private void btnProvidedServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProvidedServerActionPerformed
@@ -598,7 +602,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     }
 
     private CertificateItem getEditItem() {
-        CertificateItem item = new CertificateItem();
+        CertificateItem item = null;
         Object editRows[] = SwingUtil.editItem(this.tableCertificate);
         if (editRows != null) {
             item = CertificateItem.fromObjects(editRows);

@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import extend.util.external.TransUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SwingUtil;

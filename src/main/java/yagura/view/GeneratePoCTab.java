@@ -326,21 +326,25 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         add(splitGeneratorPoC, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private File currentPoCDirectory = null;
+
     private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
         JTextComponent ta = this.txtGeneratorPoC;
         String encoding = this.quickSearchTab.getSelectedEncoding();
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.setCurrentDirectory(this.currentPoCDirectory);
         int selected = filechooser.showSaveDialog(null);
         if (selected == JFileChooser.APPROVE_OPTION) {
-            File file = filechooser.getSelectedFile();
-            if (SwingUtil.isFileOverwriteConfirmed(file, String.format(BUNDLE.getString("extend.exists.overwrite.message"), file.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
-                try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(file))) {
+            File saveFile = filechooser.getSelectedFile();
+            if (SwingUtil.isFileOverwriteConfirmed(saveFile, String.format(BUNDLE.getString("extend.exists.overwrite.message"), saveFile.getName()), BUNDLE.getString("extend.exists.overwrite.confirm"))) {
+                try (BufferedOutputStream fstm = new BufferedOutputStream(new FileOutputStream(saveFile))) {
                     fstm.write(StringUtil.getBytesCharset(ta.getText(), encoding));
                 } catch (IOException ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
+            this.currentPoCDirectory = saveFile.getParentFile();
         }
     }//GEN-LAST:event_btnSavetoFileActionPerformed
 
@@ -1206,8 +1210,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 return false;
             }
             return (request.body().length() > 0) || (request.hasQueryParameter());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }

@@ -21,7 +21,6 @@ public class ImportCertificatetDlg extends CustomDialog {
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
-
     /**
      * Creates new form ImportCertificate
      */
@@ -174,7 +173,7 @@ public class ImportCertificatetDlg extends CustomDialog {
         CertUtil.StoreType storeType = getStoreType();
         String storePassword = this.txtStorePassword.getText();
 
-        File storeFile = getStoreFile();
+        File storeFile = this.getStoreFile();
         if (!storeFile.exists()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.certificate.add.certfile.notfound"), "Certificate", JOptionPane.INFORMATION_MESSAGE);
         } else if (!CertUtil.validKeyStore(storeFile, storePassword, storeType)) {
@@ -193,13 +192,17 @@ public class ImportCertificatetDlg extends CustomDialog {
 
     }//GEN-LAST:event_txtStoreFileKeyPressed
 
+    private File currentCertificateDirectory = null;
+
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.setCurrentDirectory(this.currentCertificateDirectory);
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
-            File file = filechooser.getSelectedFile();
-            this.txtStoreFile.setText(file.getAbsolutePath());
+            File saveFile = filechooser.getSelectedFile();
+            this.txtStoreFile.setText(saveFile.getAbsolutePath());
+            this.currentCertificateDirectory = saveFile.getParentFile();
         }
     }//GEN-LAST:event_btnImportActionPerformed
 
@@ -225,7 +228,6 @@ public class ImportCertificatetDlg extends CustomDialog {
         CertUtil.StoreType storeType = this.btnStoreTypePKCS12.isSelected() ? CertUtil.StoreType.PKCS12 : CertUtil.StoreType.JKS;
         return storeType;
     }
-
 
     /**
      * @param args the command line arguments
