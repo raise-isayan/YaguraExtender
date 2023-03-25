@@ -43,7 +43,6 @@ public class FormatUtil {
     }
 
     public static boolean validXml(String xmlString) {
-        StringWriter sw = new StringWriter();
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();

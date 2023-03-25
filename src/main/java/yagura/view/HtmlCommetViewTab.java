@@ -152,9 +152,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
                         txtHtmlComment.setText(get());
                         txtHtmlComment.setCaretPosition(0);
                         quickSearchTab.clearViewAndSearch();
-                    } catch (InterruptedException ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    } catch (ExecutionException ex) {
+                    } catch (InterruptedException | ExecutionException ex) {
                         logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }

@@ -123,7 +123,7 @@ public class BouncyUtil {
     }
 
     public static String getSubjectCN(byte [] storeData, String storePassword) throws IOException {
-         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(storeData, storePassword);
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(storeData, storePassword);
         for (String key : certMap.keySet()) {
             Map.Entry<Key, X509Certificate> cert = certMap.get(key);
             return cert.getValue().getSubjectX500Principal().getName();

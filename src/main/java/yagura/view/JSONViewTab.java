@@ -21,18 +21,22 @@ import java.awt.Font;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 import yagura.model.QuickSearchEvent;
 import yagura.model.QuickSearchListener;
+import yagura.model.SendToMenu;
+import yagura.model.SendToMessage;
 import yagura.model.UniversalViewProperty;
 
 /**
  *
  * @author isayan
  */
-public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
+public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, ExtensionProvidedEditor {
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
     private final boolean isRequest;
@@ -60,11 +64,15 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
     private final JSONView jsonView = new JSONView(isJsonp());
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
+    private JPopupMenu popupMenu;
+
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.quickSearchTab.setSelectedTextArea((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea());
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.addQuickSearchListener(quickSerchStateChanged);
+
+        this.popupMenu = ((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea()).getPopupMenu();
 
         this.add(jsonView, java.awt.BorderLayout.CENTER);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
@@ -142,15 +150,6 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
 
     protected JTextComponent getSelectedTextArea() {
         return this.jsonView.getTextArea();
-    }
-
-    public String getSelectedText() {
-        JTextComponent area = this.getSelectedTextArea();
-        return area.getSelectedText();
-    }
-
-    public boolean isExtendVisible() {
-        return false;
     }
 
     public boolean isEnabledJson(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
@@ -284,6 +283,15 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
             guessCharset = StandardCharsets.ISO_8859_1.name();
         }
         BurpExtension extenderImpl = BurpExtension.getInstance();
+        JPopupMenu popupSendTo = new JPopupMenu();
+        for (int i = 0; i < this.popupMenu.getComponentCount(); i++) {
+            popupSendTo.add(this.popupMenu.getComponent(i));
+        }
+        popupSendTo.addSeparator();
+        SendToMenu sendToMenu = extenderImpl.getSendToMenu();
+        sendToMenu.appendSendToMenu(popupSendTo, this, sendToMenu.getContextMenu());
+        ((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea()).setPopupMenu(popupSendTo);
+
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);
@@ -327,6 +335,24 @@ public class JSONViewTab extends javax.swing.JPanel implements ExtensionProvided
     @Override
     public Selection selectedData() {
         return null;
+    }
+
+    /* impelements SendToMessage */
+
+    @Override
+    public String getSelectedText() {
+        JTextComponent area = this.getSelectedTextArea();
+        return area.getSelectedText();
+    }
+
+    @Override
+    public boolean isExtendVisible() {
+        return false;
+    }
+
+    @Override
+    public List<HttpRequestResponse> getSelectedMessages() {
+        return List.of(this.getHttpRequestResponse());
     }
 
 }

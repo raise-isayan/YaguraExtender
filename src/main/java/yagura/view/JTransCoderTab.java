@@ -2796,9 +2796,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         protected void done() {
                             try {
                                 txtGenarate.setText(get());
-                            } catch (InterruptedException ex) {
-                                logger.log(Level.SEVERE, ex.getMessage(), ex);
-                            } catch (ExecutionException ex) {
+                            } catch (InterruptedException | ExecutionException ex) {
                                 logger.log(Level.SEVERE, ex.getMessage(), ex);
                             }
                         }
@@ -2834,9 +2832,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         protected void done() {
                             try {
                                 txtGenarate.setText(get());
-                            } catch (InterruptedException ex) {
-                                logger.log(Level.SEVERE, ex.getMessage(), ex);
-                            } catch (ExecutionException ex) {
+                            } catch (InterruptedException | ExecutionException ex) {
                                 logger.log(Level.SEVERE, ex.getMessage(), ex);
                             }
                         }
@@ -2869,9 +2865,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     protected void done() {
                         try {
                             txtGenarate.setText(get());
-                        } catch (InterruptedException ex) {
-                            logger.log(Level.SEVERE, ex.getMessage(), ex);
-                        } catch (ExecutionException ex) {
+                        } catch (InterruptedException | ExecutionException ex) {
                             logger.log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }

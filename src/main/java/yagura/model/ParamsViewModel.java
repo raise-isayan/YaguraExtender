@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.TableModel;
-import extend.util.external.TransUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import extension.view.base.DefaultObjectTableModel;

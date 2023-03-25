@@ -5,12 +5,15 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 
 public class SocksProxyAuthenticator extends Authenticator {
+
     private final ThreadLocal<PasswordAuthentication> credentials = new ThreadLocal<>();
     private final ThreadLocal<Authenticator> saveAuthenticator = new ThreadLocal<>();
 
-    private SocksProxyAuthenticator(){}
+    private SocksProxyAuthenticator() {
+    }
 
     private static class SingletonHolder {
+
         private static final SocksProxyAuthenticator instance = new SocksProxyAuthenticator();
     }
 

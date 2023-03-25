@@ -2,12 +2,14 @@ package yagura.model;
 
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import extend.util.external.TransUtil;
 import extension.burp.MessageType;
+import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,6 +47,13 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         this.contextMenuEvent = contextMenuEvent;
         this.renewMenu(this.property);
         return this.menuList;
+    }
+
+    /**
+     * @return the contextMenu
+     */
+    public ContextMenuEvent getContextMenu() {
+        return this.contextMenuEvent;
     }
 
     private SendToMenuItem getMenuItemCaption(boolean forceSortOrder, int ord, SendToMenuItem menuItem) {
@@ -185,8 +194,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         }
     }
 
-    protected javax.swing.JPopupMenu getPopupMenu(final SendToMessage message) {
-        this.popBurpMenu.removeAll();
+    public javax.swing.JPopupMenu appendSendToMenu(javax.swing.JPopupMenu popSendToMenu, final SendToMessage message, ContextMenuEvent contextMenuEvent) {
         javax.swing.JMenuItem mnuRepeater = new javax.swing.JMenuItem();
         mnuRepeater.setText("Sendto Repeater");
         mnuRepeater.addActionListener(new java.awt.event.ActionListener() {
@@ -195,7 +203,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                 sendToRepeater(message);
             }
         });
-        this.popBurpMenu.add(mnuRepeater);
+        popSendToMenu.add(mnuRepeater);
         javax.swing.JMenuItem mnuIntruder = new javax.swing.JMenuItem();
         mnuIntruder.setText("Sndto Intruder");
         mnuIntruder.addActionListener(new java.awt.event.ActionListener() {
@@ -204,35 +212,47 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                 sendToIntruder(message);
             }
         });
-        this.popBurpMenu.add(mnuIntruder);
-//        javax.swing.JMenuItem mnuSpider = new javax.swing.JMenuItem();
-//        mnuSpider.setText("Sendto Spider");
-//        mnuSpider.addActionListener(new java.awt.event.ActionListener() {
-//            @Override
-//            public void actionPerformed(java.awt.event.ActionEvent evt) {
-//                sendToSpider(message);
-//            }
-//        });
-//        this.popBurpMenu.add(mnuSpider);
+        popSendToMenu.add(mnuIntruder);
+        String selectText = message.getSelectedText();
+        if (selectText != null) {
+            javax.swing.JMenuItem mnuDecoder = new javax.swing.JMenuItem();
+            mnuDecoder.setText("Sendto Decoder");
+            mnuDecoder.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    sendToDecoder(StringUtil.getBytesRaw(selectText));
+                }
+            });
+            popSendToMenu.add(mnuDecoder);
+            javax.swing.JMenuItem mnuComparer = new javax.swing.JMenuItem();
+            mnuComparer.setText("Sendto Comparer");
+            mnuComparer.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    sendToDecoder(StringUtil.getBytesRaw(selectText));
+                }
+            });
+            popSendToMenu.add(mnuComparer);
+        }
         if (message.isExtendVisible()) {
-            this.popBurpMenu.addSeparator();
+            popSendToMenu.addSeparator();
             List<SendToItem> sendToItemList = property.getSendToItemList();
             for (SendToItem item : sendToItemList) {
                 if (item.isSelected()) {
                     javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
                     mnuItem.setText(item.getCaption());
                     if (item.getExtend() != null) {
-                        final SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
+                        final SendToExtend sendToItem = new SendToExtend(item, contextMenuEvent);
                         mnuItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
                             }
                         });
-                        this.popBurpMenu.add(mnuItem);
+                        popSendToMenu.add(mnuItem);
                     } else {
                         if (item.isServer()) {
-                            final SendToMenuItem sendToItem = new SendToServer(item, this.contextMenuEvent);
+                            final SendToMenuItem sendToItem = new SendToServer(item, contextMenuEvent);
                             sendToItem.addSendToListener(this);
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
@@ -240,21 +260,27 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                                     sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
                                 }
                             });
-                            this.popBurpMenu.add(mnuItem);
+                            popSendToMenu.add(mnuItem);
                         } else {
-                            final SendToMenuItem sendToItem = new SendToMultiEditor(item, this.contextMenuEvent);
+                            final SendToMenuItem sendToItem = new SendToMultiEditor(item, contextMenuEvent);
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
                                 }
                             });
-                            this.popBurpMenu.add(mnuItem);
+                            popSendToMenu.add(mnuItem);
                         }
                     }
                 }
             }
         }
+        return popSendToMenu;
+    }
+
+    protected javax.swing.JPopupMenu getPopupMenu(final SendToMessage message) {
+        this.popBurpMenu.removeAll();
+        this.appendSendToMenu(this.popBurpMenu, message, this.contextMenuEvent);
         return this.popBurpMenu;
     }
 
@@ -282,80 +308,6 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         };
     }
 
-//    private ContextMenuEvent getContextMenuInvocation(KeyEvent evt, HttpRequestResponse messageInfo) {
-//        return new ContextMenuEvent() {
-//            @Override
-//            public InputEvent getInputEvent() {
-//                return evt;
-//            }
-//
-//            @Override
-//            public int getToolFlag() {
-//                return IBurpExtenderCallbacks.TOOL_PROXY;
-//            }
-//
-//            @Override
-//            public byte getInvocationContext() {
-//                return IContextMenuInvocation.CONTEXT_PROXY_HISTORY;
-//            }
-//
-//            @Override
-//            public int[] getSelectionBounds() {
-//                return null;
-//            }
-//
-//            @Override
-//            public IHttpRequestResponse[] getSelectedMessages() {
-//                return messageInfo;
-//            }
-//
-//            @Override
-//            public IScanIssue[] getSelectedIssues() {
-//                return null;
-//            }
-//
-//            @Override
-//            public Optional<MessageEditorHttpRequestResponse> messageEditorRequestResponse() {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//            @Override
-//            public List<HttpRequestResponse> selectedRequestResponses() {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//            @Override
-//            public List<AuditIssue> selectedIssues() {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//            @Override
-//            public InputEvent inputEvent() {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//            @Override
-//            public ToolType toolType() {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//            @Override
-//            public boolean isFromTool(ToolType... tts) {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//            @Override
-//            public InvocationType invocationType() {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//            @Override
-//            public boolean isFrom(InvocationType... its) {
-//                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//            }
-//
-//        };
-//    }
     public void sendToRepeater(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
@@ -376,17 +328,34 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         }
     }
 
+    public void sendToDecoder(byte[] message) {
+        try {
+            this.api.decoder().sendToDecoder(ByteArray.byteArray(message));
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public void sendToComparer(byte[] message) {
+        try {
+            this.api.comparer().sendToComparer(ByteArray.byteArray(message));
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
     @Override
     public void complete(SendToEvent evt) {
     }
 
     @Override
     public void warning(SendToEvent evt) {
+        this.api.logging().raiseErrorEvent(evt.getMessage());
     }
 
     @Override
     public void error(SendToEvent evt) {
-        this.api.logging().raiseErrorEvent(evt.getMessage());
+        this.api.logging().raiseCriticalEvent(evt.getMessage());
     }
 
 }

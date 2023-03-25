@@ -4,7 +4,6 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.SmartCodec;
-import static extension.helpers.SmartCodec.ENCODE_PATTERN_ALPHANUM;
 import extension.helpers.StringUtil;
 import extension.helpers.charset.UTF7Charset;
 import java.io.*;
@@ -47,7 +46,6 @@ import org.apache.commons.codec.digest.MurmurHash2;
 public class TransUtil {
 
     private final static Logger logger = Logger.getLogger(TransUtil.class.getName());
-
 
     public enum DateUnit {
         DAYS, WEEKS, MONTHS, YEARS;
@@ -166,8 +164,7 @@ public class TransUtil {
         } // pyny code
         else if (mPunycode.lookingAt()) {
             return EncodePattern.PUNYCODE;
-        }
-        // uuencode encode match
+        } // uuencode encode match
         //        else if (mUUENCODE.lookingAt()) {
         //            return EncodePattern.UUENCODE;
         //        } // QuotedPrintable
@@ -796,13 +793,12 @@ public class TransUtil {
         return byte_array.toByteArray();
     }
 
-
     public static String toByteHexEncode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(input, charset, ENCODE_PATTERN_ALPHANUM, upperCase);
+        return toByteHexEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
     }
 
     public static String toByteHexEncode(String input, Charset charset, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(input, charset, ENCODE_PATTERN_ALPHANUM, upperCase);
+        return toByteHexEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
     }
 
     public static String toByteHexEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
@@ -814,11 +810,11 @@ public class TransUtil {
     }
 
     public static String toByteHex2Encode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHex2Encode(input, charset, ENCODE_PATTERN_ALPHANUM, upperCase);
+        return toByteHex2Encode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
     }
 
     public static String toByteHex2Encode(String input, Charset charset, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHex2Encode(input, charset, ENCODE_PATTERN_ALPHANUM, upperCase);
+        return toByteHex2Encode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
     }
 
     public static String toByteHex2Encode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
@@ -830,11 +826,11 @@ public class TransUtil {
     }
 
     public static String toByteDecEncode(String input, String charset) throws UnsupportedEncodingException {
-        return toByteDecEncode(input, charset, ENCODE_PATTERN_ALPHANUM);
+        return toByteDecEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM);
     }
 
     public static String toByteDecEncode(String input, Charset charset) throws UnsupportedEncodingException {
-        return toByteDecEncode(input, charset, ENCODE_PATTERN_ALPHANUM);
+        return toByteDecEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM);
     }
 
     public static String toByteDecEncode(String input, String charset, Pattern pattern) throws UnsupportedEncodingException {
@@ -846,11 +842,11 @@ public class TransUtil {
     }
 
     public static String toByteOctEncode(String input, String charset) throws UnsupportedEncodingException {
-        return toByteOctEncode(input, charset, ENCODE_PATTERN_ALPHANUM);
+        return toByteOctEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM);
     }
 
     public static String toByteOctEncode(String input, Charset charset) throws UnsupportedEncodingException {
-        return toByteOctEncode(input, charset, ENCODE_PATTERN_ALPHANUM);
+        return toByteOctEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM);
     }
 
     public static String toByteOctEncode(String input, String charset, Pattern pattern) throws UnsupportedEncodingException {

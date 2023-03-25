@@ -10,12 +10,14 @@ import extension.burp.BurpUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -41,6 +43,7 @@ public class SendToExtend extends SendToMenuItem {
         super(item, contextMenu);
     }
 
+    @Override
     public void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
         sendToEvent(menuItemCaption, messageInfo);
     }
@@ -139,7 +142,7 @@ public class SendToExtend extends SendToMenuItem {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
-        } catch (Exception ex) {
+        } catch (HeadlessException | MalformedURLException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
@@ -176,7 +179,7 @@ public class SendToExtend extends SendToMenuItem {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
-        } catch (Exception ex) {
+        } catch (HeadlessException | MalformedURLException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }

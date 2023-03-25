@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtension;
 import burp.BurpPreferences;
 import extension.helpers.CertUtil;
 import extend.util.external.BouncyUtil;
@@ -93,11 +94,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnGrpCA.add(rdoBurpCA);
         rdoBurpCA.setSelected(true);
         rdoBurpCA.setText("Burp suite default CA");
-        rdoBurpCA.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rdoBurpCAStateChanged(evt);
-            }
-        });
         rdoBurpCA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoBurpCAActionPerformed(evt);
@@ -106,9 +102,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         btnGrpCA.add(rdoCustomCA);
         rdoCustomCA.setText("Custom CA File");
-        rdoCustomCA.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rdoCustomCAStateChanged(evt);
+        rdoCustomCA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoCustomCAActionPerformed(evt);
             }
         });
 
@@ -511,21 +507,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         }
     }//GEN-LAST:event_btnExportActionPerformed
 
-    private void rdoBurpCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpCAActionPerformed
-    }//GEN-LAST:event_rdoBurpCAActionPerformed
-
-    private void rdoBurpCAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoBurpCAStateChanged
-//SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
-//this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
-//SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
-    }//GEN-LAST:event_rdoBurpCAStateChanged
-
-    private void rdoCustomCAStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomCAStateChanged
-//      SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
-//      this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
-//      SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
-    }//GEN-LAST:event_rdoCustomCAStateChanged
-
     private void btnProvidedServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProvidedServerActionPerformed
         if (this.btnProvidedServer.isSelected()) {
             if (this.mockServer != null) {
@@ -561,6 +542,14 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private void chkProvidedServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkProvidedServerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chkProvidedServerActionPerformed
+
+    private void rdoCustomCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCustomCAActionPerformed
+        SwingUtil.setContainerEnable(this.pnlCertificateExports, this.rdoCustomCA.isSelected());
+    }//GEN-LAST:event_rdoCustomCAActionPerformed
+
+    private void rdoBurpCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpCAActionPerformed
+        rdoCustomCAActionPerformed(evt);
+    }//GEN-LAST:event_rdoBurpCAActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopy;
