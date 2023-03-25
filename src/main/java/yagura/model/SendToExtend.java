@@ -1,12 +1,16 @@
 package yagura.model;
 
 import burp.BurpExtension;
+import burp.api.montoya.core.ByteArray;
+import burp.api.montoya.core.Range;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
+import burp.api.montoya.ui.contextmenu.MessageEditorHttpRequestResponse;
 import extension.burp.BurpUtil;
+import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -75,7 +79,7 @@ public class SendToExtend extends SendToMenuItem {
             case PASTE_FROM_JTRANSCODER: {
                 byte[] text = BurpExtension.getInstance().receiveFromJTransCoder();
                 if (text != null) {
-                    BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), true);
+                    BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), false);
                 }
                 break;
             }
@@ -84,7 +88,7 @@ public class SendToExtend extends SendToMenuItem {
                     // menuItemCaption にエンコーディングが入ってくる
                     byte[] text = BurpExtension.getInstance().receiveFromClipbord(menuItemCaption);
                     if (text != null) {
-                        BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), true);
+                        BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), false);
                     }
                     break;
                 } catch (UnsupportedEncodingException ex) {
