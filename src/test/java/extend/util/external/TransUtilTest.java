@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import org.apache.commons.codec.digest.UnixCrypt;
 
 /**
  *
@@ -888,5 +889,14 @@ public class TransUtilTest {
         System.out.println("zdtm:" + zdtm);
 
     }
+
+
+    @Test
+    public void testCrypt() {
+        System.out.println("testCrypt");
+        System.out.println(UnixCrypt.crypt("aaa"));
+        System.out.println(UnixCrypt.crypt("aaa"));
+    }
+
 
 }

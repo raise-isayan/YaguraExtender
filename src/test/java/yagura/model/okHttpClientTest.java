@@ -18,6 +18,7 @@ import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.SocketAddress;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
@@ -77,11 +78,11 @@ public class okHttpClientTest {
     @BeforeEach
     public void setUp() {
         try {
-            server.start();
+            this.server.start();
             Dispatcher dispatcher = new Dispatcher() {
                 @Override
                 public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
-                    if (request.getPath().equals("/v1/test/")) {
+                    if (request.getPath().equals("/test/")) {
                         return new MockResponse().addHeader("Content-Type", "application/json; " + "charset=utf-8")
                                 .setBody("{ \"auth status\":\"OK\" }").setResponseCode(200);
                     }
@@ -97,7 +98,7 @@ public class okHttpClientTest {
     @AfterEach
     public void tearDown() {
         try {
-            server.shutdown();
+            this.server.shutdown();
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -107,13 +108,17 @@ public class okHttpClientTest {
     public void testGetRequest() {
         System.out.println("testGetRequest");
         try {
+            server.enqueue(new MockResponse().setResponseCode(200)
+                    .addHeader("Content-Type: text/html; charset=iso-8859-1")
+            );
+            URL url = this.server.url("/").url();
             SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, HttpUtil.trustAllCerts(), new java.security.SecureRandom());
             final OkHttpClient client = new OkHttpClient.Builder()
                     .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) HttpUtil.trustAllCerts()[0])
                     .hostnameVerifier((hostname, session) -> true)
                     .build();
-            Request request = new Request.Builder().url("https://www.example.com/").build();
+            Request request = new Request.Builder().url(url).build();
             try (Response response = client.newCall(request).execute()) {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
@@ -212,6 +217,9 @@ public class okHttpClientTest {
     public void testSendtoProxy() {
         System.out.println("testSendtoProxy");
         try {
+            server.enqueue(new MockResponse().setResponseCode(200)
+                    .addHeader("Content-Type: text/html; charset=iso-8859-1")
+            );
             String proxyHost = "127.0.0.1";
             int proxyPort = 8888;
             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);

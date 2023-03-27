@@ -452,13 +452,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashMd2 = new javax.swing.JButton();
         btnHashMd5 = new javax.swing.JButton();
         btnHashSha1 = new javax.swing.JButton();
+        btnHashSha224 = new javax.swing.JButton();
         btnHashSha256 = new javax.swing.JButton();
         btnHashSha384 = new javax.swing.JButton();
         btnHashSha512 = new javax.swing.JButton();
+        btnHashSha512_224 = new javax.swing.JButton();
+        btnHashSha512_256 = new javax.swing.JButton();
+        btnHashSha3_224 = new javax.swing.JButton();
+        btnHashSha3_256 = new javax.swing.JButton();
+        btnHashSha3_384 = new javax.swing.JButton();
+        btnHashSha3_512 = new javax.swing.JButton();
         btnCRC32 = new javax.swing.JButton();
+        btnCRC32C = new javax.swing.JButton();
         btnAdler32 = new javax.swing.JButton();
         btnMurmurHash32 = new javax.swing.JButton();
         btnMurmurHash64 = new javax.swing.JButton();
+        btnMurmurHash128 = new javax.swing.JButton();
         pnlTranslator = new javax.swing.JPanel();
         pnlConvert = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
@@ -950,7 +959,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlTransButton.add(pnlRegex);
 
         pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash/Checksum"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(5, 2));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(7, 3));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -976,6 +985,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlHashTrans.add(btnHashSha1);
 
+        btnHashSha224.setText("sha224");
+        btnHashSha224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha224);
+
         btnHashSha256.setText("sha256");
         btnHashSha256.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1000,6 +1017,54 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlHashTrans.add(btnHashSha512);
 
+        btnHashSha512_224.setText("sha512/224");
+        btnHashSha512_224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha512_224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha512_224);
+
+        btnHashSha512_256.setText("sha512/256");
+        btnHashSha512_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha512_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha512_256);
+
+        btnHashSha3_224.setText("sha3-224");
+        btnHashSha3_224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_224);
+
+        btnHashSha3_256.setText("sha3-256");
+        btnHashSha3_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_256);
+
+        btnHashSha3_384.setText("sha3-384");
+        btnHashSha3_384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_384);
+
+        btnHashSha3_512.setText("sha3-512");
+        btnHashSha3_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_512);
+
         btnCRC32.setText("CRC32");
         btnCRC32.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1007,6 +1072,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlHashTrans.add(btnCRC32);
+
+        btnCRC32C.setText("CRC32C");
+        btnCRC32C.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCRC32CActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnCRC32C);
 
         btnAdler32.setText("Adler32");
         btnAdler32.addActionListener(new java.awt.event.ActionListener() {
@@ -1031,6 +1104,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlHashTrans.add(btnMurmurHash64);
+
+        btnMurmurHash128.setText("MurmurHash128");
+        btnMurmurHash128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMurmurHash128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnMurmurHash128);
 
         pnlTransButton.add(pnlHashTrans);
 
@@ -1443,7 +1524,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                             .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1526, Short.MAX_VALUE))
+                .addContainerGap(1080, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1464,7 +1545,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumStep)
                     .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Numbers", pnlNumbers);
@@ -1537,7 +1618,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbDateUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(spnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1473, Short.MAX_VALUE))
+                .addContainerGap(1027, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1560,7 +1641,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDateStep)
                         .addComponent(spnDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Date", pnlDate);
@@ -1668,7 +1749,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(1473, Short.MAX_VALUE))
+                .addContainerGap(1027, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1728,7 +1809,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addComponent(txtListCopy)
                 .addGap(9, 9, 9)
                 .addComponent(btnSavetoFile)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
 
         pnlTop.add(pnlRight, java.awt.BorderLayout.EAST);
@@ -1846,7 +1927,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblBin, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1913, Short.MAX_VALUE))
+                                .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1467, Short.MAX_VALUE))
                             .addGroup(tabBaseConverterLayout.createSequentialGroup()
                                 .addComponent(lblHex, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1902,7 +1983,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(txtRadix32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRadix32)
                     .addComponent(btnRadix32Copy))
-                .addContainerGap(442, Short.MAX_VALUE))
+                .addContainerGap(426, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Base", tabBaseConverter);
@@ -2020,7 +2101,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(txtDec4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblIPValid, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1428, Short.MAX_VALUE))
+                .addContainerGap(982, Short.MAX_VALUE))
         );
         tabIPFormatConverterLayout.setVerticalGroup(
             tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2060,7 +2141,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(lblIntIP, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtIntIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnIntIP))
-                .addContainerGap(471, Short.MAX_VALUE))
+                .addContainerGap(400, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("IP Format", tabIPFormatConverter);
@@ -2177,11 +2258,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(lblUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spnZoneDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE))
+                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(spnZoneDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUnixtimeCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2220,7 +2301,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(lblExcelSerial)
                     .addComponent(txtExcelSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnExcelSerial))
-                .addContainerGap(493, Short.MAX_VALUE))
+                .addContainerGap(436, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Date", tabDateConverter);
@@ -2288,7 +2369,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 1101, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 558, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2318,7 +2399,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(384, Short.MAX_VALUE))
+                .addContainerGap(340, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -2576,16 +2657,16 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnHashSha1ActionPerformed
 
-    private void btnHashSha256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha256ActionPerformed
+    private void btnHashSha224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha224ActionPerformed
         try {
-            String inputText = TransUtil.toSHA256Sum(getInputText(),
+            String inputText = TransUtil.toSHA224Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnHashSha256ActionPerformed
+    }//GEN-LAST:event_btnHashSha224ActionPerformed
 
     private void btnHashSha384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha384ActionPerformed
         try {
@@ -3216,6 +3297,91 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_txtExcelSerialActionPerformed
 
+    private void btnHashSha256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha256ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHashSha256ActionPerformed
+
+    private void btnHashSha512_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512_224ActionPerformed
+        try {
+            String inputText = TransUtil.toSHA512_224Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashSha512_224ActionPerformed
+
+    private void btnHashSha512_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512_256ActionPerformed
+        try {
+            String inputText = TransUtil.toSHA512_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashSha512_256ActionPerformed
+
+    private void btnHashSha3_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_224ActionPerformed
+        try {
+            String inputText = TransUtil.toSHA3_224Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashSha3_224ActionPerformed
+
+    private void btnHashSha3_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_256ActionPerformed
+        try {
+            String inputText = TransUtil.toSHA3_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashSha3_256ActionPerformed
+
+    private void btnHashSha3_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_384ActionPerformed
+        try {
+            String inputText = TransUtil.toSHA3_384Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashSha3_384ActionPerformed
+
+    private void btnHashSha3_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_512ActionPerformed
+        try {
+            String inputText = TransUtil.toSHA3_512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashSha3_512ActionPerformed
+
+    private void btnCRC32CActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCRC32CActionPerformed
+        try {
+            String inputText = Long.toString(HashUtil.toCRC32CSum(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCRC32CActionPerformed
+
+    private void btnMurmurHash128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash128ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMurmurHash128ActionPerformed
+
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3232,6 +3398,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnAnalyze;
     private javax.swing.JButton btnBinCopy;
     private javax.swing.JButton btnCRC32;
+    private javax.swing.JButton btnCRC32C;
     private javax.swing.JButton btnCalc;
     private javax.swing.JButton btnClear;
     private javax.swing.ButtonGroup btnConvertCase;
@@ -3248,14 +3415,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashMd2;
     private javax.swing.JButton btnHashMd5;
     private javax.swing.JButton btnHashSha1;
+    private javax.swing.JButton btnHashSha224;
     private javax.swing.JButton btnHashSha256;
     private javax.swing.JButton btnHashSha384;
+    private javax.swing.JButton btnHashSha3_224;
+    private javax.swing.JButton btnHashSha3_256;
+    private javax.swing.JButton btnHashSha3_384;
+    private javax.swing.JButton btnHashSha3_512;
     private javax.swing.JButton btnHashSha512;
+    private javax.swing.JButton btnHashSha512_224;
+    private javax.swing.JButton btnHashSha512_256;
     private javax.swing.JButton btnHexCopy;
     private javax.swing.JButton btnHexIP;
     private javax.swing.JButton btnInputfile;
     private javax.swing.JButton btnIntIP;
     private javax.swing.JButton btnJavaSerialCopy;
+    private javax.swing.JButton btnMurmurHash128;
     private javax.swing.JButton btnMurmurHash32;
     private javax.swing.JButton btnMurmurHash64;
     private javax.swing.JButton btnOctCopy;
