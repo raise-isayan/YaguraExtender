@@ -666,6 +666,9 @@ HTML(<,>,",')::
 &#xhh;::
     Encodes and decodes the entity reference format in hexadecimal format.
 
+hh(byte):: 
+    Encodes and decodes in hexadecimal format in byte code units.
+
 \xhh(unicode):: 
     Encodes and decodes in hexadecimal format in unicode code units.
 
@@ -758,11 +761,38 @@ sha384::
 sha512:: 
     Calculate hash with sha512
 
+sha512/224:: 
+    Calculate hash with sha512/224
+
+sha512/256:: 
+    Calculate hash with sha512/256
+
+sha3-224:: 
+    Calculate hash with sha3-224
+
+sha3-256:: 
+    Calculate hash with sha3-256
+
+sha3-384:: 
+    Calculate hash with sha3-384
+
+sha3-512:: 
+    Calculate hash with sha3-512
+
 CRC32:: 
     Calculate checksum by crc32
 
+CRC32C:: 
+    Calculate checksum by crc32c
+
 Adler-32::
     Calculate checksum by Adler-32
+
+MurmurHash32::
+    Calculate checksum by MurmurHash 32bit
+
+MurmurHash64::
+    Calculate checksum by MurmurHash 64bit
 
 ==== Generater tab
 

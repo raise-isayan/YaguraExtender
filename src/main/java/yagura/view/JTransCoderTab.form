@@ -358,7 +358,18 @@
                         <Property name="rows" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JRadioButton" name="rdoByteHex">
+                        <Component class="javax.swing.JRadioButton" name="rdoByteNoneHex">
+                          <Properties>
+                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                              <ComponentRef name="rdoEncodeDecodeGrp"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="hh(hex)"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteNoneHexActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JRadioButton" name="rdoByteXHex">
                           <Properties>
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="rdoEncodeDecodeGrp"/>
@@ -366,7 +377,7 @@
                             <Property name="text" type="java.lang.String" value="\u005cxhh(hex)" containsInvalidXMLChars="true"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteHexActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteXHexActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="rdoByteHex2">
@@ -603,7 +614,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                     <Property name="columns" type="int" value="3"/>
-                    <Property name="rows" type="int" value="7"/>
+                    <Property name="rows" type="int" value="6"/>
                   </Layout>
                   <SubComponents>
                     <Component class="javax.swing.JButton" name="btnHashMd2">
@@ -748,14 +759,6 @@
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash64ActionPerformed"/>
-                      </Events>
-                    </Component>
-                    <Component class="javax.swing.JButton" name="btnMurmurHash128">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="MurmurHash128"/>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash128ActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>

@@ -62,7 +62,6 @@ import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.SmartCodec;
-import java.awt.Font;
 
 /**
  *
@@ -259,12 +258,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         this.lblDate.setText(String.format("Date(%s):", ZoneId.systemDefault().getId()));
 
         this.txtInputRaw.addCaretListener(new javax.swing.event.CaretListener() {
+            @Override
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 txtInputRawCaretUpdate(evt);
             }
         });
 
         this.txtOutputRaw.addCaretListener(new javax.swing.event.CaretListener() {
+            @Override
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 txtOutputRawCaretUpdate(evt);
             }
@@ -425,7 +426,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoUnicodeHex = new javax.swing.JRadioButton();
         rdoUnicodeHex2 = new javax.swing.JRadioButton();
         pnlJSHexEnc = new javax.swing.JPanel();
-        rdoByteHex = new javax.swing.JRadioButton();
+        rdoByteNoneHex = new javax.swing.JRadioButton();
+        rdoByteXHex = new javax.swing.JRadioButton();
         rdoByteHex2 = new javax.swing.JRadioButton();
         rdoByteOct = new javax.swing.JRadioButton();
         pnlCompress = new javax.swing.JPanel();
@@ -467,7 +469,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnAdler32 = new javax.swing.JButton();
         btnMurmurHash32 = new javax.swing.JButton();
         btnMurmurHash64 = new javax.swing.JButton();
-        btnMurmurHash128 = new javax.swing.JButton();
         pnlTranslator = new javax.swing.JPanel();
         pnlConvert = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
@@ -818,14 +819,23 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
 
-        rdoEncodeDecodeGrp.add(rdoByteHex);
-        rdoByteHex.setText("\\xhh(hex)");
-        rdoByteHex.addActionListener(new java.awt.event.ActionListener() {
+        rdoEncodeDecodeGrp.add(rdoByteNoneHex);
+        rdoByteNoneHex.setText("hh(hex)");
+        rdoByteNoneHex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoByteHexActionPerformed(evt);
+                rdoByteNoneHexActionPerformed(evt);
             }
         });
-        pnlJSHexEnc.add(rdoByteHex);
+        pnlJSHexEnc.add(rdoByteNoneHex);
+
+        rdoEncodeDecodeGrp.add(rdoByteXHex);
+        rdoByteXHex.setText("\\xhh(hex)");
+        rdoByteXHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteXHexActionPerformed(evt);
+            }
+        });
+        pnlJSHexEnc.add(rdoByteXHex);
 
         rdoEncodeDecodeGrp.add(rdoByteHex2);
         rdoByteHex2.setText("\\h(hex)");
@@ -959,7 +969,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlTransButton.add(pnlRegex);
 
         pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash/Checksum"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(7, 3));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(6, 3));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -1104,14 +1114,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlHashTrans.add(btnMurmurHash64);
-
-        btnMurmurHash128.setText("MurmurHash128");
-        btnMurmurHash128.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMurmurHash128ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnMurmurHash128);
 
         pnlTransButton.add(pnlHashTrans);
 
@@ -2492,8 +2494,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = SmartCodec.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUnicodeHex2.isSelected()) {
                 encode = SmartCodec.toUnocodeEncode(value, "$", TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
-            } else if (this.rdoByteHex.isSelected()) {
-                encode = TransUtil.toByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoByteNoneHex.isSelected()) {
+                encode = TransUtil.toByteHexEncode(value, this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            } else if (this.rdoByteXHex.isSelected()) {
+                encode = TransUtil.toByteHex1Encode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex2.isSelected()) {
                 encode = TransUtil.toByteHex2Encode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteOct.isSelected()) {
@@ -2564,8 +2568,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             encodePattern = TransUtil.EncodePattern.UNICODE;
         } else if (this.rdoUnicodeHex2.isSelected()) {
             encodePattern = TransUtil.EncodePattern.UNICODE2;
-        } else if (this.rdoByteHex.isSelected()) {
+        } else if (this.rdoByteNoneHex.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BYTE_HEX;
+        } else if (this.rdoByteXHex.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BYTE_HEX1;
         } else if (this.rdoByteHex2.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BYTE_HEX2;
         } else if (this.rdoByteOct.isSelected()) {
@@ -2982,9 +2988,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDateFormatActionPerformed
 
-    private void rdoByteHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteHexActionPerformed
+    private void rdoByteXHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteXHexActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rdoByteHexActionPerformed
+    }//GEN-LAST:event_rdoByteXHexActionPerformed
 
     private void rdoByteOctActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteOctActionPerformed
         // TODO add your handling code here:
@@ -3377,9 +3383,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnCRC32CActionPerformed
 
-    private void btnMurmurHash128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash128ActionPerformed
+    private void rdoByteNoneHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteNoneHexActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnMurmurHash128ActionPerformed
+    }//GEN-LAST:event_rdoByteNoneHexActionPerformed
 
 
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
@@ -3430,7 +3436,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnInputfile;
     private javax.swing.JButton btnIntIP;
     private javax.swing.JButton btnJavaSerialCopy;
-    private javax.swing.JButton btnMurmurHash128;
     private javax.swing.JButton btnMurmurHash32;
     private javax.swing.JButton btnMurmurHash64;
     private javax.swing.JButton btnOctCopy;
@@ -3548,9 +3553,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoBase64;
     private javax.swing.JRadioButton rdoBase64URLSafe;
     private javax.swing.JRadioButton rdoBeautifyFormat;
-    private javax.swing.JRadioButton rdoByteHex;
     private javax.swing.JRadioButton rdoByteHex2;
+    private javax.swing.JRadioButton rdoByteNoneHex;
     private javax.swing.JRadioButton rdoByteOct;
+    private javax.swing.JRadioButton rdoByteXHex;
     private javax.swing.JRadioButton rdoCLang;
     private javax.swing.JRadioButton rdoCR;
     private javax.swing.JRadioButton rdoCRLF;

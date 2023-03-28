@@ -103,7 +103,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
@@ -114,7 +114,8 @@ public class TransUtil {
     private final static Pattern PTN_HTML = Pattern.compile("(&#(\\d+);)|(&(lt|gt|amp|quot);)|(&#[xX]([0-9a-fA-F]+);)");
     private final static Pattern PTN_URL_UNICODE = Pattern.compile("%[uU]([0-9a-fA-F]{4})");
     private final static Pattern PTN_UNICODE = Pattern.compile("\\\\[uU]([0-9a-fA-F]{4})");
-    private final static Pattern PTN_BYTE_HEX = Pattern.compile("\\\\[xX]([0-9a-fA-F]{2})");
+    private final static Pattern PTN_BYTE_HEX_GROUP = Pattern.compile("\\A((?:[0-9a-fA-F]{2})+)\\z");
+    private final static Pattern PTN_BYTE_HEX1 = Pattern.compile("\\\\[xX]([0-9a-fA-F]{2})");
     private final static Pattern PTN_BYTE_HEX2 = Pattern.compile("\\\\([0-9a-fA-F]{2})");
     private final static Pattern PTN_BYTE_OCT_SMART = Pattern.compile("\\\\(0[0-9]{1,})");
     private final static Pattern PTN_BYTE_OCT = Pattern.compile("\\\\([0-9]{1,})");
@@ -137,9 +138,11 @@ public class TransUtil {
         // unicode
         Matcher mUNICODE = PTN_UNICODE.matcher(value);
         // byte hex
-        Matcher mBYTE_HEX = PTN_BYTE_HEX.matcher(value);
+        Matcher mBYTE_HEX1 = PTN_BYTE_HEX1.matcher(value);
         // byte hex2
         Matcher mBYTE_HEX2 = PTN_BYTE_HEX2.matcher(value);
+        // byte hex
+        Matcher mBYTE_HEX = PTN_BYTE_HEX_GROUP.matcher(value);
         // byte oct
         Matcher mBYTE_OCT = PTN_BYTE_OCT_SMART.matcher(value);
         // gzip
@@ -155,8 +158,8 @@ public class TransUtil {
         else if (mUNICODE.find()) {
             return EncodePattern.UNICODE;
         } // byte hex
-        else if (mBYTE_HEX.find()) {
-            return EncodePattern.BYTE_HEX;
+        else if (mBYTE_HEX1.find()) {
+            return EncodePattern.BYTE_HEX1;
         } // byte oct
         else if (mBYTE_OCT.find()) {
             return EncodePattern.BYTE_OCT;
@@ -178,6 +181,9 @@ public class TransUtil {
         } // Base64 URLSafe
         else if (MatchUtil.isBase64URLSafe(value)) {
             return EncodePattern.BASE64_URLSAFE;
+        } // byte hex
+        else if (mBYTE_HEX.find()) {
+            return EncodePattern.BYTE_HEX;
         } // Html decode
         else if (mHTML.find()) {
             return EncodePattern.HTML;
@@ -251,23 +257,34 @@ public class TransUtil {
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
+                            decode = toByteHexDecode(value, applyCharset);
+                        } else {
+                            decode = toByteHexDecode(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                        break;
+                    }
+                    // Byte Hex
+                    case BYTE_HEX1: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
                             decode = toByteDecode(value, applyCharset);
                         } else {
                             decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
+                        break;
                     }
-                    break;
                     // Byte Hex2
                     case BYTE_HEX2: {
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = toByteHexDecode(value, applyCharset);
+                            decode = toByteHex2Decode(value, applyCharset);
                         } else {
-                            decode = toByteHexDecode(value, StandardCharsets.ISO_8859_1.name());
+                            decode = toByteHex2Decode(value, StandardCharsets.ISO_8859_1.name());
                         }
+                        break;
                     }
-                    break;
 //                    // Byte Dec
 //                    case BYTE_DEC:
 //                        {
@@ -795,20 +812,28 @@ public class TransUtil {
         return byte_array.toByteArray();
     }
 
+    public static String toByteHexEncode(String input, Charset charset, boolean upperCase) {
+        return toByteHexEncode(StringUtil.getBytesCharset(input, charset), upperCase);
+    }
+
     public static String toByteHexEncode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
+        return toByteHexEncode(StringUtil.getBytesCharset(input, charset), upperCase);
     }
 
-    public static String toByteHexEncode(String input, Charset charset, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
+    public static String toByteHex1Encode(String input, Charset charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteHex1Encode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
     }
 
-    public static String toByteHexEncode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
+    public static String toByteHex1Encode(String input, String charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteHex1Encode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
     }
 
-    public static String toByteHexEncode(String input, Charset charset, Pattern pattern, boolean upperCase) throws UnsupportedEncodingException {
-        return toByteHexEncode(StringUtil.getBytesCharset(input, charset), pattern, upperCase);
+    public static String toByteHex1Encode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteHex1Encode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
+    }
+
+    public static String toByteHex1Encode(String input, Charset charset, boolean upperCase) throws UnsupportedEncodingException {
+        return toByteHex1Encode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM, upperCase);
     }
 
     public static String toByteHex2Encode(String input, String charset, boolean upperCase) throws UnsupportedEncodingException {
@@ -859,7 +884,16 @@ public class TransUtil {
         return toByteOctEncode(StringUtil.getBytesCharset(input, charset), pattern);
     }
 
-    public static String toByteHexEncode(byte[] bytes, Pattern pattern, boolean upperCase) {
+    public static String toByteHexEncode(byte[] bytes, boolean upperCase) {
+        if (upperCase) {
+            return ConvertUtil.toHexString(bytes);
+        }
+        else {
+            return ConvertUtil.toHexString(bytes).toLowerCase();
+        }
+    }
+
+    public static String toByteHex1Encode(byte[] bytes, Pattern pattern, boolean upperCase) {
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int b = bytes[i] & 0xff;
@@ -923,7 +957,7 @@ public class TransUtil {
         return buff.toString();
     }
 
-    private final static Pattern PTN_BYTE_GROUP = Pattern.compile("((\\\\[xX][0-9a-fA-F]{2})+)|((\\\\[0-9]{1,3})+)");
+    private final static Pattern PTN_BYTE_GROUP = Pattern.compile("((?:\\\\[xX][0-9a-fA-F]{2})+)|((?:\\\\[0-9]{1,3})+)");
 
     public static String toByteDecode(String input, String charset) {
         StringBuffer buff = new StringBuffer();
@@ -931,9 +965,9 @@ public class TransUtil {
         try {
             while (m.find()) {
                 String hex = m.group(1);
-                String oct = m.group(3);
+                String oct = m.group(2);
                 if (hex != null) {
-                    Matcher m2 = PTN_BYTE_HEX.matcher(hex);
+                    Matcher m2 = PTN_BYTE_HEX1.matcher(hex);
                     ByteBuffer buf = ByteBuffer.allocate(hex.length());
                     while (m2.find()) {
                         String hexcode = m2.group(1);
@@ -960,11 +994,11 @@ public class TransUtil {
             }
             m.appendTail(buff);
         } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return buff.toString();
     }
-
-    private final static Pattern PTN_BYTE_HEX_GROUP = Pattern.compile("((\\\\[xX][0-9a-fA-F]{2})+)|((\\\\[0-9a-fA-F]{2})+)");
+    private final static Pattern PTN_BYTE_HEX = Pattern.compile("((?:[0-9a-fA-F]{2}))");
 
     public static String toByteHexDecode(String input, String charset) {
         StringBuffer buff = new StringBuffer();
@@ -972,10 +1006,40 @@ public class TransUtil {
         try {
             while (m.find()) {
                 String hex = m.group(1);
-                String hex2 = m.group(3);
                 if (hex != null) {
-                    Matcher m2 = PTN_BYTE_HEX.matcher(hex);
+                    Matcher m0 = PTN_BYTE_HEX.matcher(hex);
                     ByteBuffer buf = ByteBuffer.allocate(hex.length());
+                    while (m0.find()) {
+                        String hexcode = m0.group(1);
+                        int u = Character.digit(hexcode.charAt(0), 16);
+                        int l = Character.digit(hexcode.charAt(1), 16);
+                        buf.put((byte) ((u << 4) + l));
+                    }
+                    buf.flip();
+                    byte[] value = new byte[buf.limit()];
+                    buf.get(value);
+                    m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
+                }
+            }
+            m.appendTail(buff);
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return buff.toString();
+    }
+
+    private final static Pattern PTN_BYTE_HEX2_GROUP = Pattern.compile("((?:\\\\[xX][0-9a-fA-F]{2})+)|((?:\\\\[0-9a-fA-F]{2})+)");
+
+    public static String toByteHex2Decode(String input, String charset) {
+        StringBuffer buff = new StringBuffer();
+        Matcher m = PTN_BYTE_HEX2_GROUP.matcher(input);
+        try {
+            while (m.find()) {
+                String hex1 = m.group(1);
+                String hex2 = m.group(2);
+                if (hex1 != null) {
+                    Matcher m2 = PTN_BYTE_HEX1.matcher(hex1);
+                    ByteBuffer buf = ByteBuffer.allocate(hex1.length());
                     while (m2.find()) {
                         String hexcode = m2.group(1);
                         int u = Character.digit(hexcode.charAt(0), 16);
@@ -1003,6 +1067,7 @@ public class TransUtil {
             }
             m.appendTail(buff);
         } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return buff.toString();
     }
