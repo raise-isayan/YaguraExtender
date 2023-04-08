@@ -47,6 +47,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
 
     private final static Logger logger = Logger.getLogger(ParamsViewTab.class.getName());
 
+    /* デコード状態の保持 */
+    private static boolean toggleDecode = false;
+
     private boolean textModified = false;
     private boolean editable;
     private HttpRequestResponse httpRequestResponse;
@@ -75,12 +78,14 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         lblLocation = new javax.swing.JLabel();
         scrollParams = new javax.swing.JScrollPane();
         tableParams = new javax.swing.JTable();
+        pnlAction = new javax.swing.JPanel();
+        pnlOperation = new javax.swing.JPanel();
+        btnDecode = new javax.swing.JToggleButton();
         pnlEdit = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
         btnUp = new javax.swing.JButton();
         btnDown = new javax.swing.JButton();
-        btnDecode = new javax.swing.JToggleButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -127,6 +132,39 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
 
         add(scrollParams, java.awt.BorderLayout.CENTER);
 
+        pnlAction.setLayout(new java.awt.BorderLayout());
+
+        btnDecode.setText("Decode");
+        btnDecode.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                btnDecodeStateChanged(evt);
+            }
+        });
+        btnDecode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDecodeActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlOperationLayout = new javax.swing.GroupLayout(pnlOperation);
+        pnlOperation.setLayout(pnlOperationLayout);
+        pnlOperationLayout.setHorizontalGroup(
+            pnlOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlOperationLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnDecode)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlOperationLayout.setVerticalGroup(
+            pnlOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlOperationLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnDecode)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlAction.add(pnlOperation, java.awt.BorderLayout.NORTH);
+
         btnAdd.setText("Add");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,18 +193,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             }
         });
 
-        btnDecode.setText("Decode");
-        btnDecode.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                btnDecodeStateChanged(evt);
-            }
-        });
-        btnDecode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDecodeActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlEditLayout = new javax.swing.GroupLayout(pnlEdit);
         pnlEdit.setLayout(pnlEditLayout);
         pnlEditLayout.setHorizontalGroup(
@@ -176,20 +202,14 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                 .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnUp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDown, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlEditLayout.createSequentialGroup()
-                        .addGroup(pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnRemove)
-                            .addComponent(btnAdd)
-                            .addComponent(btnDecode))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlEditLayout.setVerticalGroup(
             pnlEditLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlEditLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
-                .addComponent(btnDecode)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addComponent(btnAdd)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemove)
@@ -197,10 +217,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                 .addComponent(btnUp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDown)
-                .addContainerGap(301, Short.MAX_VALUE))
+                .addGap(310, 310, 310))
         );
 
-        add(pnlEdit, java.awt.BorderLayout.EAST);
+        pnlAction.add(pnlEdit, java.awt.BorderLayout.CENTER);
+
+        add(pnlAction, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
     private final JComboBox<String> cmbParamType = new JComboBox<>();
@@ -235,7 +257,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     }//GEN-LAST:event_tableParamsKeyTyped
 
     private void btnDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecodeActionPerformed
-        // TODO add your handling code here:
+        toggleDecode = this.btnDecode.isSelected();
     }//GEN-LAST:event_btnDecodeActionPerformed
 
     private ParamsViewModel modelParams = null;
@@ -248,10 +270,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     };
 
     private void customizeComponents() {
-        if (!this.editable) {
-            this.remove(this.pnlEdit);
-        }
-
+        this.pnlEdit.setVisible(this.editable);
         this.modelParams = new ParamsViewModel(this.tableParams.getModel());
         this.tableParams.setModel(this.modelParams);
         this.modelParams.setCellEditable(this.editable);
@@ -321,8 +340,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnUp;
     private javax.swing.JLabel lblLocation;
+    private javax.swing.JPanel pnlAction;
     private javax.swing.JPanel pnlEdit;
     private javax.swing.JPanel pnlLocation;
+    private javax.swing.JPanel pnlOperation;
     private javax.swing.JScrollPane scrollParams;
     private javax.swing.JTable tableParams;
     // End of variables declaration//GEN-END:variables
@@ -464,7 +485,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                 }
             };
             swParam.execute();
-
+            // Decode状態を戻す
+            BurpExtension.helpers().outPrintln("toggleDecode:" + toggleDecode);
+            this.btnDecode.setSelected(toggleDecode);
             this.textModified = false;
         }
     }
@@ -500,7 +523,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                         break;
                 }
             }
-            this.btnDecode.setSelected(false);
             boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isQueryParam);
             this.btnDecode.setEnabled(enabled);
             return count > 0;
