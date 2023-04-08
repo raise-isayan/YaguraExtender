@@ -87,18 +87,6 @@ public class SendToServer extends SendToMenuItem {
         super(item, contextMenu);
     }
 
-    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
-        if (this.isReverseOrder()) {
-            for (int i = messageInfo.size() - 1; i >= 0; i--) {
-                sendToServer(messageInfo.get(i));
-            }
-        } else {
-            for (int i = 0; i < messageInfo.size(); i++) {
-                sendToServer(messageInfo.get(i));
-            }
-        }
-    }
-
     /*
      * https://alvinalexander.com/java/jwarehouse/openjdk-8/jdk/src/share/classes/sun/net/www/protocol/http/HttpURLConnection.java.shtml
      */
@@ -621,9 +609,27 @@ public class SendToServer extends SendToMenuItem {
         sendToEvent(messageInfo);
     }
 
-    @Override
-    public void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
+    public void sendToEvent(SendToMessage sendToMessage) {
+        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
         sendToEvent(messageInfo);
+    }
+
+    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
+        menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, this.isEnabled()));
+    }
+
+    @Override
+    public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
+        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
+        if (this.isReverseOrder()) {
+            for (int i = messageInfo.size() - 1; i >= 0; i--) {
+                sendToServer(messageInfo.get(i));
+            }
+        } else {
+            for (int i = 0; i < messageInfo.size(); i++) {
+                sendToServer(messageInfo.get(i));
+            }
+        }
     }
 
     @Override

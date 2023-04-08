@@ -15,4 +15,23 @@ public interface SendToMessage {
 
     public boolean isExtendVisible();
 
+    public static SendToMessage newSendToMessage(List<HttpRequestResponse> messageInfo, boolean extendVisible) {
+        return new SendToMessage() {
+            @Override
+            public List<HttpRequestResponse> getSelectedMessages() {
+                return messageInfo;
+            }
+
+            @Override
+            public String getSelectedText() {
+                return null;
+            }
+
+            @Override
+            public boolean isExtendVisible() {
+                return extendVisible;
+            }
+        };
+    }
+
 }

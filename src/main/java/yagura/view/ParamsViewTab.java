@@ -4,17 +4,12 @@ import burp.BurpExtension;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
-import static burp.api.montoya.http.message.params.HttpParameterType.BODY;
-import static burp.api.montoya.http.message.params.HttpParameterType.COOKIE;
-import static burp.api.montoya.http.message.params.HttpParameterType.MULTIPART_ATTRIBUTE;
-import static burp.api.montoya.http.message.params.HttpParameterType.URL;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
-import extend.util.external.TransUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
@@ -59,11 +54,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     /**
      * Creates new form ParamsViewTab
      *
-     * @param httpRequestResponse
-     * @param editorMode
+     * @param editorCreationContext
      */
     public ParamsViewTab(EditorCreationContext editorCreationContext) {
-        this.editable = (EditorMode.READ_ONLY == editorCreationContext.editorMode());
+        this.editable = !(EditorMode.READ_ONLY == editorCreationContext.editorMode());
         initComponents();
         customizeComponents();
     }

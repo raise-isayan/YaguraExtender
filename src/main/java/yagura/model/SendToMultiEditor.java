@@ -23,12 +23,23 @@ public class SendToMultiEditor extends SendToMenuItem {
     }
 
     @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
         sendToEvent(messageInfo);
     }
 
     public void sendToEvent(List<HttpRequestResponse> messageInfo) {
+        menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, this.isEnabled()));
+    }
+
+    @Override
+    public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
+        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
         if (!messageInfo.isEmpty()) {
             File[] msgFiles = new File[messageInfo.size()];
             if (this.isReverseOrder()) {
@@ -51,16 +62,6 @@ public class SendToMultiEditor extends SendToMenuItem {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
-        sendToEvent(messageInfo);
     }
 
 }

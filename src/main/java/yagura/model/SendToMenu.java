@@ -37,8 +37,8 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     public SendToMenu(MontoyaApi api, SendToProperty property) {
         this.api = api;
         this.property = property;
-
     }
+
     private final List<Component> menuList = new ArrayList<>();
     private final List<SendToMenuItem> sendToList = new ArrayList<>();
 
@@ -246,7 +246,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                         mnuItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
+                                sendToItem.menuItemClicked(mnuItem.getText(), message);
                             }
                         });
                         popSendToMenu.add(mnuItem);
@@ -257,7 +257,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
+                                    sendToItem.menuItemClicked(mnuItem.getText(), message);
                                 }
                             });
                             popSendToMenu.add(mnuItem);
@@ -266,7 +266,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
-                                    sendToItem.menuItemClicked(mnuItem.getText(), message.getSelectedMessages());
+                                    sendToItem.menuItemClicked(mnuItem.getText(), message);
                                 }
                             });
                             popSendToMenu.add(mnuItem);

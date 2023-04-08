@@ -41,7 +41,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
 
     private final boolean isRequest;
     private boolean textModified = false;
-    private boolean editable =false;
+    private boolean editable = false;
     private final EditorCreationContext editorCreationContext;
     private HttpRequestResponse httpRequestResponse;
 
@@ -57,6 +57,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
     public JSONViewTab(EditorCreationContext editorCreationContext, boolean isResuest) {
         this.isRequest = isResuest;
         this.editorCreationContext = editorCreationContext;
+        this.editable = !(this.editorCreationContext.editorMode() == EditorMode.READ_ONLY);
         initComponents();
         customizeComponents();
     }

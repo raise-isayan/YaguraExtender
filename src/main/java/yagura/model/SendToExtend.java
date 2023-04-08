@@ -1,16 +1,12 @@
 package yagura.model;
 
 import burp.BurpExtension;
-import burp.api.montoya.core.ByteArray;
-import burp.api.montoya.core.Range;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
-import burp.api.montoya.ui.contextmenu.MessageEditorHttpRequestResponse;
 import extension.burp.BurpUtil;
-import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -29,6 +25,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import yagura.Config;
+import static yagura.model.SendToItem.ExtendType.ADD_HOST_TO_EXCLUDE_SCOPE;
+import static yagura.model.SendToItem.ExtendType.ADD_HOST_TO_INCLUDE_SCOPE;
+import static yagura.model.SendToItem.ExtendType.ADD_TO_EXCLUDE_SCOPE;
+import static yagura.model.SendToItem.ExtendType.MESSAGE_INFO_COPY;
+import static yagura.model.SendToItem.ExtendType.PASTE_FROM_CLIPBOARD;
+import static yagura.model.SendToItem.ExtendType.PASTE_FROM_JTRANSCODER;
+import static yagura.model.SendToItem.ExtendType.REQUEST_AND_RESPONSE_TO_FILE;
+import static yagura.model.SendToItem.ExtendType.REQUEST_BODY_TO_FILE;
+import static yagura.model.SendToItem.ExtendType.RESPONSE_BODY_TO_FILE;
+import static yagura.model.SendToItem.ExtendType.SEND_TO_JTRANSCODER;
 
 /**
  *
@@ -43,22 +49,30 @@ public class SendToExtend extends SendToMenuItem {
     private File currentDirectory = new File(Config.getUserHomePath());
     private int repeternum = 0;
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        javax.swing.JMenuItem item = (javax.swing.JMenuItem) e.getSource();
+        List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
+        sendToEvent(messageInfo);
+    }
+
     public SendToExtend(SendToItem item, ContextMenuEvent contextMenu) {
         super(item, contextMenu);
     }
 
-    @Override
-    public void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
-        sendToEvent(menuItemCaption, messageInfo);
+    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
+        menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, true));
     }
 
-    public void sendToEvent(String menuItemCaption, List<HttpRequestResponse> messageInfo) {
+    @Override
+    public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
+        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
         if (messageInfo.isEmpty()) {
             return;
         }
         switch (this.getExtend()) {
             case SEND_TO_JTRANSCODER: {
-                String text = BurpUtil.copySelectionData(this.contextMenu, true);
+                String text = BurpUtil.copySelectionData(this.contextMenu, this.isEnabled());
                 if (text != null) {
                     BurpExtension.getInstance().sendToJTransCoder(text);
                 }
@@ -186,13 +200,6 @@ public class SendToExtend extends SendToMenuItem {
         } catch (HeadlessException | MalformedURLException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        javax.swing.JMenuItem item = (javax.swing.JMenuItem) e.getSource();
-        List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
-        sendToEvent(item.getText(), messageInfo);
     }
 
     @Override

@@ -78,7 +78,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
     public RawViewTab(EditorCreationContext editorCreationContext, boolean isResuest) {
         this.isRequest = isResuest;
         this.editorCreationContext = editorCreationContext;
-        this.editable = (this.editorCreationContext.editorMode() == EditorMode.READ_ONLY);
+        this.editable = !(this.editorCreationContext.editorMode() == EditorMode.READ_ONLY);
         initComponents();
         customizeComponents();
     }
@@ -103,7 +103,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
         this.txtURaw.setClearWhitespaceLinesEnabled(true);
         this.txtURaw.setHighlightCurrentLine(true);
         this.txtURaw.setCurrentLineHighlightColor(SystemColor.textHighlight);
-        this.txtURaw.setEditable(false);
+        this.txtURaw.setEditable(this.editable);
         add(this.scrollURaw, java.awt.BorderLayout.CENTER);
 
         /**
@@ -128,8 +128,13 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             }
 
         });
-        this.txtURaw.setEditable(this.editable);
-        this.popupMenu = this.txtURaw.getPopupMenu();
+
+        BurpExtension extenderImpl = BurpExtension.getInstance();
+        JPopupMenu popupSendTo = this.txtURaw.getPopupMenu();
+        popupSendTo.addSeparator();
+        SendToMenu sendToMenu = extenderImpl.getSendToMenu();
+        sendToMenu.appendSendToMenu(popupSendTo, this, sendToMenu.getContextMenu());
+        this.txtURaw.setPopupMenu(popupSendTo);
 
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
@@ -274,14 +279,6 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
                 guessCharset = StandardCharsets.ISO_8859_1.name();
             }
             BurpExtension extenderImpl = BurpExtension.getInstance();
-            JPopupMenu popupSendTo = new JPopupMenu();
-            for (int i = 0; i < this.popupMenu.getComponentCount(); i++) {
-                popupSendTo.add(this.popupMenu.getComponent(i));
-            }
-            popupSendTo.addSeparator();
-            SendToMenu sendToMenu = extenderImpl.getSendToMenu();
-            sendToMenu.appendSendToMenu(popupSendTo, this, sendToMenu.getContextMenu());
-            this.txtURaw.setPopupMenu(popupSendTo);
 
             this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());

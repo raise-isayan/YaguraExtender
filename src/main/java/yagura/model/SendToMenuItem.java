@@ -12,7 +12,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,7 +90,7 @@ public abstract class SendToMenuItem
         return file;
     }
 
-    public abstract void menuItemClicked(String menuItemCaption, List<HttpRequestResponse> messageInfo);
+    public abstract void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage);
 
     public abstract boolean isEnabled();
 
