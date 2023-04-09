@@ -111,7 +111,7 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
-    implementation 'com.fifesoft:rsyntaxtextarea:3.3.1'
+    implementation 'com.fifesoft:rsyntaxtextarea:3.3.3'
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'

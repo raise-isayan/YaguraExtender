@@ -508,22 +508,24 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                 return false;
             }
             List<ParsedHttpParameter> params = httpRequest.parameters();
-            boolean isQueryParam = false;
+            boolean isDecodeParam = false;
             int count = 0;
             for (ParsedHttpParameter p : params) {
                 switch (p.type()) {
                     case URL:
-                        isQueryParam = true;
+                        isDecodeParam = true;
                         count++;
                         break;
                     case COOKIE:
                     case BODY:
-                    case MULTIPART_ATTRIBUTE:
+                        isDecodeParam = false;
                         count++;
+                        break;
+                    case MULTIPART_ATTRIBUTE:
                         break;
                 }
             }
-            boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isQueryParam);
+            boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isDecodeParam);
             this.btnDecode.setEnabled(enabled);
             return count > 0;
         }
