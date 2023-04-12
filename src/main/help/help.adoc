@@ -722,10 +722,10 @@ Metachar checkbox::
 
 ===== Format
 
-Minify:
+Minify::
     Compress XML and JSON.
 
-Beautify:
+Beautify::
     Format XML and JSON.
 
 [Smart Format] button:: 
@@ -897,6 +897,9 @@ image:images/custom_converter_date.png[Date tab]
 
 ZoneDate:: 
     input the date.
+
+Date(Default ZoneId):: 
+    Displays the date entered converted with the default zone ID.
 
 Unixtime:: 
     input the unixtime.

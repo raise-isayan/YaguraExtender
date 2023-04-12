@@ -1572,9 +1572,9 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>byteコード単位で16進数形式によるエンコード、デコードを行います。</p>
 </dd>
-<dt class="hdlist1">\xhh(unicode)</dt>
+<dt class="hdlist1">\xhh(byte)</dt>
 <dd>
-<p>unicodeコード単位で16進数形式によるエンコード、デコードを行います。</p>
+<p>byteコード単位で16進数形式によるエンコード、デコードを行います。</p>
 </dd>
 <dt class="hdlist1">\xhh(byte)</dt>
 <dd>
@@ -1660,16 +1660,16 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 <div class="sect4">
 <h5 id="_format">Format</h5>
-<div class="paragraph">
-<p>Minify:
-    XMLやJSONを圧縮します。</p>
-</div>
-<div class="paragraph">
-<p>Beautify:
-    XMLやJSONを整形します。</p>
-</div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1">Minify</dt>
+<dd>
+<p>XMLやJSONを圧縮します。</p>
+</dd>
+<dt class="hdlist1">Beautify</dt>
+<dd>
+<p>XMLやJSONを整形します。</p>
+</dd>
 <dt class="hdlist1">[Smart Format]ボタン</dt>
 <dd>
 <p>文字列を整形します。XMLおよびJSONの整形に対応しています。</p>
@@ -1919,6 +1919,10 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dt class="hdlist1">ZoneDate</dt>
 <dd>
 <p>日付を入力します。</p>
+</dd>
+<dt class="hdlist1">Date(デフォルトゾーンID)</dt>
+<dd>
+<p>入力された日付をデフォルトのゾーンIDで変換して表示します。</p>
 </dd>
 <dt class="hdlist1">Unixtime</dt>
 <dd>
@@ -2251,7 +2255,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-28 21:21:44 +0900
+Last updated 2023-04-13 05:35:11 +0900
 </div>
 </div>
 </body>

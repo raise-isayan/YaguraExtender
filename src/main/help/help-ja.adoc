@@ -662,8 +662,8 @@ HTML(<,>,",')::
 hh(unicode):: 
     byteコード単位で16進数形式によるエンコード、デコードを行います。
 
-\xhh(unicode):: 
-    unicodeコード単位で16進数形式によるエンコード、デコードを行います。
+\xhh(byte):: 
+    byteコード単位で16進数形式によるエンコード、デコードを行います。
 
 \xhh(byte):: 
     byteコード単位で16進数形式によるエンコード、デコードを行います。
@@ -715,10 +715,10 @@ Metachar チェックボックス::
 
 ===== Format
 
-Minify:
+Minify::
     XMLやJSONを圧縮します。
 
-Beautify:
+Beautify::
     XMLやJSONを整形します。
 
 [Smart Format]ボタン:: 
@@ -890,6 +890,9 @@ image:images/custom_converter_date.png[Dateタブ]
 
 ZoneDate:: 
     日付を入力します。
+
+Date(デフォルトゾーンID):: 
+    入力された日付をデフォルトのゾーンIDで変換して表示します。
 
 Unixtime:: 
     Unixtimeの値を入力します。
