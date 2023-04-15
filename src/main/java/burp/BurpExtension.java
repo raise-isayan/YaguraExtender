@@ -15,6 +15,8 @@ import burp.api.montoya.http.handler.RequestToBeSentAction;
 import burp.api.montoya.http.handler.ResponseReceivedAction;
 import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.params.HttpParameter;
+import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
@@ -64,6 +66,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Pattern;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -572,6 +575,24 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.proxy().registerResponseHandler(this);
         }
 
+        private final static Pattern HTTP2_VERSION_PATTERN = Pattern.compile("(\\S+) +(\\S+) +HTTP/2\r\n");
+
+        // HTTP/1.x HTTP/2 に対応したラッパー
+        public HttpRequest httpRequest(HttpService httpService,ByteArray request) {
+            HttpRequest warapRequest = HttpRequest.httpRequest(httpService, request);
+            BurpExtension.api().logging().logToOutput("rep:" + StringUtil.getStringRaw(request.getBytes()));
+            Matcher m = HTTP2_VERSION_PATTERN.matcher(StringUtil.getStringRaw(request.getBytes()));
+            if (m.lookingAt()) {
+                BurpExtension.api().logging().logToOutput("rep:lookAt");
+                HttpRequest warap2Request = HttpRequest.http2Request(warapRequest.httpService(), warapRequest.headers(), warapRequest.body());
+                List<HttpParameter> params = new ArrayList<>();
+                params.addAll(warapRequest.parameters());
+                warap2Request = warap2Request.withAddedParameters(params);
+                return warap2Request;
+            }
+            return warapRequest;
+        }
+
         /**
          * implements HttpHandler
          *
@@ -800,15 +821,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 }
             }
             if (requestBytes != resultBytes) {
-                HttpRequest modifyRequest = HttpRequest.http2Request(interceptedHttpRequest.httpService(), interceptedHttpRequest.headers(), ByteArray.byteArray(resultBytes));
-//                  HttpRequest modifyRequest = interceptedHttpRequest.withBody(ByteArray.byteArray(resultBytes));
-//                HttpRequest modifyRequest = HttpRequest.httpRequest(ByteArray.byteArray(resultBytes));
+                HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
+//                HttpRequest modifyRequest = httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
                 return ProxyRequestReceivedAction.continueWith(modifyRequest, annotations);
             } else {
                 return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
             }
         }
-
         /**
          * Response
          *
@@ -990,63 +1009,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 httpMessage = StringUtil.getBytesRaw(message.toString());
             }
             return httpMessage;
-        }
-
-        /**
-         * メッセージの置換
-         *
-         * @return 変換後メッセージ
-         */
-        protected HttpRequest replaceProxyMessage(HttpRequest httpRequest) {
-
-            // headerとbodyに分割
-            boolean edited = false;
-            HttpRequestWapper request = new HttpRequestWapper(httpRequest);
-            List<HttpHeader> headers = request.headers();
-            String body = StringUtil.getStringRaw(request.body().getBytes());
-
-            List<MatchReplaceItem> matchReplaceList = option.getMatchReplaceProperty().getMatchReplaceList();
-            for (int i = 0; i < matchReplaceList.size(); i++) {
-                MatchReplaceItem bean = matchReplaceList.get(i);
-                if (!bean.isSelected()) {
-                    continue;
-                }
-                if (bean.isRequest()) {
-                    // body
-                    Pattern p = bean.getRegexPattern();
-                    if (bean.isBody() && !body.isEmpty()) {
-                        Matcher m = p.matcher(body);
-                        if (m.find()) {
-                            body = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                            edited = true;
-                        }
-                    } else if (bean.isHeader()) {
-                        // header
-                        if ("".equals(bean.getMatch())) {
-                            // 追加
-                            headers.add(HttpHeader.httpHeader(bean.getReplace(!bean.isRegexp(), bean.isMetaChar())));
-                            edited = true;
-                        } else {
-                            // 置換
-                            for (int j = 0; j < headers.size(); j++) {
-                                HttpHeader h = headers.get(j);
-                                Matcher m = p.matcher(h.toString());
-                                if (m.find()) {
-                                    String updateHeader = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                                    headers.add(j, HttpHeader.httpHeader(updateHeader));
-                                    edited = true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (edited) {
-                // messageの再構築
-                return HttpRequest.http2Request(httpRequest.httpService(), headers, ByteArray.byteArray(body));
-            }
-            return httpRequest;
         }
 
     }
