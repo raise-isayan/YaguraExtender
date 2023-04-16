@@ -310,8 +310,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
             this.cmbQuckSearch.setVisible(true);
         }
 
-        if (ta.getHighlighter() instanceof IKeywordHighlighter) {
-            IKeywordHighlighter high = (IKeywordHighlighter) ta.getHighlighter();
+        if (ta.getHighlighter() instanceof IKeywordHighlighter high) {
             if (this.keyword != null
                     && this.smartMatch == this.mnuSmartMatch.isSelected()
                     && this.regex == this.mnuRegex.isSelected()

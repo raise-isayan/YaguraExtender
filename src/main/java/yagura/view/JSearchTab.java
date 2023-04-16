@@ -391,6 +391,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
             NamedColor namedColor = null;
             if (c instanceof NamedColor namedColorCast) {
                 namedColor = namedColorCast;
+
             }
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (isSelected) {
