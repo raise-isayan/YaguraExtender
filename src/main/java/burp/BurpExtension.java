@@ -13,10 +13,7 @@ import burp.api.montoya.http.handler.HttpRequestToBeSent;
 import burp.api.montoya.http.handler.HttpResponseReceived;
 import burp.api.montoya.http.handler.RequestToBeSentAction;
 import burp.api.montoya.http.handler.ResponseReceivedAction;
-import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.params.HttpParameter;
-import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
@@ -45,6 +42,7 @@ import extension.burp.NotifyType;
 import extension.burp.TargetTool;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
+import extension.burp.ExtensionHelper;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpMessageWapper;
 import extension.helpers.HttpUtil;
@@ -66,7 +64,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.regex.Pattern;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -84,7 +81,6 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
-import extension.helpers.HttpRequestWapper;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
@@ -164,9 +160,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
-    /*
+    /**
      * 古い Montoya API ではメソッド名をあやまっており
      * ここにくる場合は必ず古いバージョン
+     * @param api
      **/
     public void initialise(MontoyaApi api) {
         BurpVersion burp_version = BurpUtil.suiteVersion();
@@ -577,22 +574,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         private final static Pattern HTTP2_VERSION_PATTERN = Pattern.compile("(\\S+) +(\\S+) +HTTP/2\r\n");
 
-        // HTTP/1.x HTTP/2 に対応したラッパー
-        public HttpRequest httpRequest(HttpService httpService,ByteArray request) {
-            HttpRequest warapRequest = HttpRequest.httpRequest(httpService, request);
-            BurpExtension.api().logging().logToOutput("rep:" + StringUtil.getStringRaw(request.getBytes()));
-            Matcher m = HTTP2_VERSION_PATTERN.matcher(StringUtil.getStringRaw(request.getBytes()));
-            if (m.lookingAt()) {
-                BurpExtension.api().logging().logToOutput("rep:lookAt");
-                HttpRequest warap2Request = HttpRequest.http2Request(warapRequest.httpService(), warapRequest.headers(), warapRequest.body());
-                List<HttpParameter> params = new ArrayList<>();
-                params.addAll(warapRequest.parameters());
-                warap2Request = warap2Request.withAddedParameters(params);
-                return warap2Request;
-            }
-            return warapRequest;
-        }
-
         /**
          * implements HttpHandler
          *
@@ -707,7 +688,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         }
                     }
                 } catch (IOException ex) {
-                    helpers().issueAlert("logger", ex.getMessage(), MessageType.ERROR);
+                    helpers().issueAlert("logger", ex.getMessage(), extension.burp.MessageType.ERROR);
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -821,8 +802,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 }
             }
             if (requestBytes != resultBytes) {
-                HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
-//                HttpRequest modifyRequest = httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
+//                HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
+                HttpRequest modifyRequest = ExtensionHelper.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
                 return ProxyRequestReceivedAction.continueWith(modifyRequest, annotations);
             } else {
                 return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
@@ -911,7 +892,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     }
                     if (count > 0) {
                         if (bean.getNotifyTypes().contains(NotifyType.ALERTS_TAB)) {
-                            helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.request().url()), MessageType.INFO);
+                            helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.request().url()), extension.burp.MessageType.INFO);
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.TRAY_MESSAGE)) {
                             // trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
@@ -1052,7 +1033,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
                 if (item != null) {
                     if (!HttpUtil.isInetAddressByName(interceptedRequest.httpService().host())) {
-                        BurpExtension.helpers().issueAlert("MockServer", "resolv:" + interceptedRequest.httpService().host(), MessageType.INFO);
+                        BurpExtension.helpers().issueAlert("MockServer", "resolv:" + interceptedRequest.httpService().host(), extension.burp.MessageType.INFO);
                         this.resolvHost.add(new HostnameResolution(true, interceptedRequest.httpService().host(), "127.0.0.1"));
                         BurpConfig.configHostnameResolution(this.api, this.resolvHost);
                     }
