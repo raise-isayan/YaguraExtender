@@ -3304,7 +3304,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }//GEN-LAST:event_txtExcelSerialActionPerformed
 
     private void btnHashSha256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha256ActionPerformed
-        // TODO add your handling code here:
+        try {
+            String inputText = TransUtil.toSHA256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
     }//GEN-LAST:event_btnHashSha256ActionPerformed
 
     private void btnHashSha512_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512_224ActionPerformed
