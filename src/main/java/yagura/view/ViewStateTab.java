@@ -24,6 +24,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractAction;
@@ -168,6 +169,7 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
     }
 
     private final Action copyAction = new AbstractAction() {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             TreePath selectionPath = treeViewState.getSelectionPath();
             if (selectionPath != null) {
@@ -255,10 +257,12 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
                     }
                 }
 
+                @Override
                 protected void process(List<Object> chunks) {
                     treeViewState.setModel(JsonUtil.toTreeNodeModel("Heavy Processing" + StringUtil.repeat("...", chunks.size())));
                 }
 
+                @Override
                 protected void done() {
                     try {
                         final ViewStateModel vsm = get();
@@ -266,7 +270,7 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
                     } catch (IllegalArgumentException ex) {
                         logger.log(Level.INFO, ex.getMessage(), ex);
                         setViewStateModel(ILL_FORMAT_VIEW_STATE_MODEL);
-                    } catch (Exception ex) {
+                    } catch (InterruptedException | ExecutionException ex) {
                         logger.log(Level.WARNING, ex.getMessage(), ex);
                         setViewStateModel(EXCEPTION_VIEW_STATE_MODEL);
                     }

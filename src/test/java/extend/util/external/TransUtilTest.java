@@ -118,7 +118,6 @@ public class TransUtilTest {
 
         assertEquals(EncodePattern.HTML, TransUtil.getSmartDecode("<html><h4>&#12510;&#12523;&#12481;&#12496;&#12452;&#12488;&#12486;&#12473;&#12488;</h4></html>"));
 
-
         assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\u3042\\u3044\\u3046\\u3048\\u304a"));
         assertEquals(EncodePattern.UNICODE, TransUtil.getSmartDecode("\\U3042\\U3044\\U3046\\U3048\\U304A"));
 
@@ -926,7 +925,6 @@ public class TransUtilTest {
         System.out.println("zdtm:" + zdtm);
 
     }
-
 
     @Test
     public void testCrypt() {

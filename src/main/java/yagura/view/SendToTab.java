@@ -31,8 +31,6 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     private final static Logger logger = Logger.getLogger(SendToTab.class.getName());
 
-    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
-
     /**
      * Creates new form SendToTab
      */

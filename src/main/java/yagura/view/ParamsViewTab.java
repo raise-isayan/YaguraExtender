@@ -452,9 +452,11 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                     return httpRequest;
                 }
 
+                @Override
                 protected void process(List<Object> chunks) {
                 }
 
+                @Override
                 protected void done() {
                     try {
                         final HttpRequest httpRequest = get();
@@ -475,11 +477,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                         quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
                         textModified = false;
 
-                    } catch (InterruptedException ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    } catch (ExecutionException ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    } catch (UnsupportedEncodingException ex) {
+                    } catch (InterruptedException | ExecutionException | UnsupportedEncodingException ex) {
                         logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }

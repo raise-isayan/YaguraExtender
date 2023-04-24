@@ -283,6 +283,7 @@ public class AutoResponderItemDlg extends CustomDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 AutoResponderItemDlg dialog = new AutoResponderItemDlg(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {

@@ -395,15 +395,12 @@ public class SendToItemDlg extends CustomDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (InstantiationException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (IllegalAccessException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
 

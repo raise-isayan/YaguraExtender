@@ -39,7 +39,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;
-import org.apache.commons.codec.digest.MurmurHash3;
+import org.w3c.dom.Node;
 
 /**
  * @author isayan
@@ -125,8 +125,8 @@ public class TransUtil {
         // 判定の順番は検討の余地あり
         // % Encode
         Matcher mURL = PTN_URL.matcher(value);
-        // uuencode
-        Matcher mUUENCODE = PTN_UUENCODE.matcher(value);
+//        // uuencode
+//        Matcher mUUENCODE = PTN_UUENCODE.matcher(value);
         // QuotedPrintable
         Matcher mQUOTEDPRINTABLE = PTN_QUOTEDPRINTABLE.matcher(value);
         // Punycode

@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import burp.BurpPreferences;
 import extension.helpers.CertUtil;
 import extend.util.external.BouncyUtil;

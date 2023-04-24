@@ -3,14 +3,15 @@ package yagura.view;
 import burp.BurpExtension;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.http.message.responses.analysis.Attribute;
 import burp.api.montoya.http.message.responses.analysis.AttributeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.ThemeUI;
-import extension.helpers.HttpMessageWapper;
+import extend.util.external.TransUtil;
+import extension.helpers.ConvertUtil;
 import extension.helpers.HttpResponseWapper;
+import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -130,15 +131,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
                 @Override
                 protected String doInBackground() throws Exception {
                     publish("...");
-                    // String comments[] = TransUtil.extractHTMLComments(StringUtil.getStringCharset(httpRequestResponse.getBodyBytes(), encoding), uniq);
-                    List<Attribute> comments = httpRequestResponse.response().attributes(AttributeType.COMMENTS);
-                    StringBuilder buff = new StringBuilder();
-                    for (Attribute c : comments) {
-                        buff.append(c.value());
-                        buff.append(HttpMessageWapper.LINE_TERMINATE);
-                    }
-                    return buff.toString();
-//                    return TransUtil.join("\r\n", ConvertUtil.toUniqList(comments));
+                    String comments[] = HttpUtil.extractHTMLComments(StringUtil.getStringCharset(httpRequestResponse.response().body().getBytes(), encoding), uniq);
+                    return TransUtil.join("\r\n", ConvertUtil.toUniqList(List.of(comments)));
                 }
 
                 @Override
