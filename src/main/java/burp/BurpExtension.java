@@ -37,7 +37,6 @@ import extension.burp.BurpConfig;
 import extension.burp.BurpConfig.HostnameResolution;
 import extension.burp.BurpExtensionImpl;
 import extension.burp.HttpTarget;
-import extension.burp.MessageType;
 import extension.burp.NotifyType;
 import extension.burp.TargetTool;
 import extension.burp.BurpUtil;

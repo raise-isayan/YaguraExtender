@@ -2915,9 +2915,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                             return TransUtil.join(System.lineSeparator(), list);
                         }
 
+                        @Override
                         protected void process(List<Object> chunks) {
                         }
 
+                        @Override
                         protected void done() {
                             try {
                                 txtGenarate.setText(get());

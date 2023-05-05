@@ -128,9 +128,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
         filechooser.setFileFilter(BURP_CONFIG_FILTER);
-        if (file != null && file.exists()) {
-            filechooser.setSelectedFile(file);
-        } else {
+        if (this.currentConigDirectory != null) {
             filechooser.setCurrentDirectory(this.currentConigDirectory);
         }
         int selected = filechooser.showOpenDialog(this);
