@@ -53,6 +53,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             jsonObject.add("metaChar", jsc.serialize(matchItem.isMetaChar()));
         } else if (cls.equals(AutoResponderItem.class)) {
             AutoResponderItem matchItem = (AutoResponderItem) t;
+            jsonObject.add("method", jsc.serialize(matchItem.getMethod()));
             jsonObject.add("bodyOnly", jsc.serialize(matchItem.isBodyOnly()));
             jsonObject.add("contentType", jsc.serialize(matchItem.getContentType()));
         }
@@ -115,6 +116,9 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
         } else if (cls.equals(AutoResponderItem.class)) {
             final AutoResponderItem matchItem = new AutoResponderItem();
             matchItem.setProperty((MatchItem) item);
+            if (jsonObject.has("method")) {
+                matchItem.setMethod(jdc.deserialize(jsonObject.get("method"), String.class));
+            }
             if (jsonObject.has("bodyOnly")) {
                 matchItem.setBodyOnly(jdc.deserialize(jsonObject.get("bodyOnly"), Boolean.TYPE));
             }

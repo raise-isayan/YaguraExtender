@@ -5,7 +5,7 @@
 :table-caption: 表
 :numbered:
 
-Language/link:help.html[English]
+Language/xref:help.adoc[English]
 
 == Start up 
 Burp suiteの「Extensions」タブから「Add」ボタンを押下後、YaguraExtension.jar を追加します。
@@ -393,8 +393,6 @@ Password::
 
 .Server Certificate
  ignore Validate Certificationチェックボックス:: チェックされている場合HTTPSサーバ証明書の検証を無視します。
-
-CAUTION: JDKのバグのためSOCKS Proxyは動作しません
 
 ===== サーバチェック時にサーバに送信される形式
 

@@ -75,10 +75,17 @@ public class AutoResponderProperty implements IPropertyConfig {
     }
 
     public AutoResponderItem findItem(String url) {
+        return findItem(url, null);
+    }
+
+    public AutoResponderItem findItem(String url, String method) {
         AutoResponderItem matchItem = null;
         for (int i = 0; i < autoResponderList.size(); i++) {
             AutoResponderItem bean = autoResponderList.get(i);
             if (!bean.isSelected()) {
+                continue;
+            }
+            if (method != null && bean.getMethod() != null && !bean.getMethod().equals(method)) {
                 continue;
             }
             Pattern p = bean.getRegexPattern();
@@ -88,9 +95,9 @@ public class AutoResponderProperty implements IPropertyConfig {
                 break;
             }
         }
-        return matchItem;
+        return matchItem;        
     }
-
+    
     public void setProperty(AutoResponderProperty property) {
         this.setAutoResponderEnable(property.getAutoResponderEnable());
         this.setRedirectPort(property.getRedirectPort());

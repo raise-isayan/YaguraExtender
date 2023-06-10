@@ -5,7 +5,7 @@
 :table-caption: table
 :numbered:
 
-Language/link:help-ja.html[日本語]
+Language/xref:help-ja.adoc[日本語]
 
 == Start up 
 After pressing the "Add" button from the "Extensions" tab of Burp suite, add YaguraExtension.jar.
@@ -498,8 +498,6 @@ image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
         Add URL scheme and host to exclude in scope.
     add exclude scope:: 
         Add URL to exclude in scope.
-
-CAUTION: SOCKS Proxy does not work due to a JDK bug
 
 === Logging tabs
 

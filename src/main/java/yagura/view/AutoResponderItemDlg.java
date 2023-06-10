@@ -55,8 +55,12 @@ public class AutoResponderItemDlg extends CustomDialog {
         cmbContentType = new javax.swing.JComboBox<>();
         lblReplace1 = new javax.swing.JLabel();
         chkBodyOnly = new javax.swing.JCheckBox();
+        lblMethod = new javax.swing.JLabel();
+        txtMethod = new javax.swing.JTextField();
+        chkAnyMethod = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.BorderLayout());
 
         pnlApply.setPreferredSize(new java.awt.Dimension(550, 50));
 
@@ -92,7 +96,7 @@ public class AutoResponderItemDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
@@ -143,6 +147,22 @@ public class AutoResponderItemDlg extends CustomDialog {
             }
         });
 
+        lblMethod.setText("Method:");
+
+        txtMethod.setName(""); // NOI18N
+        txtMethod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMethodActionPerformed(evt);
+            }
+        });
+
+        chkAnyMethod.setText("Any");
+        chkAnyMethod.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkAnyMethodStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
@@ -152,28 +172,40 @@ public class AutoResponderItemDlg extends CustomDialog {
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblMatch)
                     .addComponent(lblReplace)
-                    .addComponent(lblReplace1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cmbContentType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtRepReplace)
-                    .addComponent(txtRepMatch, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
+                    .addComponent(lblReplace1)
+                    .addComponent(lblMethod))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(chkRegExp)
+                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbContentType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtRepReplace)
+                            .addComponent(txtRepMatch, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkIgnoreCase))
+                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlMainLayout.createSequentialGroup()
+                                .addComponent(chkRegExp)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chkIgnoreCase))
+                            .addGroup(pnlMainLayout.createSequentialGroup()
+                                .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(chkBodyOnly))))
                     .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkBodyOnly)))
+                        .addComponent(chkAnyMethod)))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMethod)
+                    .addComponent(txtMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkAnyMethod))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMatch)
                     .addComponent(txtRepMatch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -190,7 +222,7 @@ public class AutoResponderItemDlg extends CustomDialog {
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbContentType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblReplace1))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -258,6 +290,17 @@ public class AutoResponderItemDlg extends CustomDialog {
         this.cmbContentType.setEnabled(this.chkBodyOnly.isSelected());
     }//GEN-LAST:event_chkBodyOnlyStateChanged
 
+    private void txtMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMethodActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMethodActionPerformed
+
+    private void chkAnyMethodStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkAnyMethodStateChanged
+        this.txtMethod.setEnabled(!this.chkAnyMethod.isSelected());
+        if (this.chkAnyMethod.isSelected()) {
+            this.txtMethod.setText("");
+        }
+    }//GEN-LAST:event_chkAnyMethodStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -301,15 +344,18 @@ public class AutoResponderItemDlg extends CustomDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnSelectExecute;
+    private javax.swing.JCheckBox chkAnyMethod;
     private javax.swing.JCheckBox chkBodyOnly;
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkRegExp;
     private javax.swing.JComboBox<String> cmbContentType;
     private javax.swing.JLabel lblMatch;
+    private javax.swing.JLabel lblMethod;
     private javax.swing.JLabel lblReplace;
     private javax.swing.JLabel lblReplace1;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JTextField txtMethod;
     private javax.swing.JTextField txtRepMatch;
     private javax.swing.JTextField txtRepReplace;
     // End of variables declaration//GEN-END:variables
@@ -320,6 +366,12 @@ public class AutoResponderItemDlg extends CustomDialog {
     public AutoResponderItem getItem() {
         AutoResponderItem item = new AutoResponderItem();
         item.setSelected(true);
+        if (this.chkAnyMethod.isSelected()) {
+            item.setMethod(null);
+        }
+        else {
+            item.setMethod(this.txtMethod.getText());
+        }
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
         item.setMatch(this.txtRepMatch.getText());
@@ -332,7 +384,15 @@ public class AutoResponderItemDlg extends CustomDialog {
     /**
      * @param item the item to set
      */
-    public void setItem(AutoResponderItem item) {
+    public void setItem(AutoResponderItem item) {     
+        if (item.getMethod() == null) {
+            this.chkAnyMethod.setSelected(true);
+            this.txtMethod.setText("");
+        }
+        else {
+            this.chkAnyMethod.setSelected(false);
+            this.txtMethod.setText(item.getMethod());
+        }
         this.txtRepMatch.setText(item.getMatch());
         this.chkRegExp.setSelected(item.isRegexp());
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());

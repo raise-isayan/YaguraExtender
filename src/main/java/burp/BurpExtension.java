@@ -1010,7 +1010,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             if (option.getAutoResponderProperty().getAutoResponderEnable()) {
                 HttpService service = httpRequestToBeSent.httpService();
                 final String url = httpRequestToBeSent.url();
-                AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
+                AutoResponderItem item = option.getAutoResponderProperty().findItem(url, httpRequestToBeSent.method());
                 if (item != null) {
                     HttpTarget httpTarget = new HttpTarget(getMockServiceURL());
                     HttpRequest updatedHttpServiceRequest = httpRequestToBeSent.withService(httpTarget).withAddedHeader(AutoResponderProperty.AUTO_RESPONDER_HEADER, url);
@@ -1029,7 +1029,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
             if (option.getAutoResponderProperty().getAutoResponderEnable() && option.getAutoResponderProperty().isHostNameForceResolv()) {
                 final String url = interceptedRequest.url();
-                AutoResponderItem item = option.getAutoResponderProperty().findItem(url);
+                AutoResponderItem item = option.getAutoResponderProperty().findItem(url, interceptedRequest.method());
                 if (item != null) {
                     if (!HttpUtil.isInetAddressByName(interceptedRequest.httpService().host())) {
                         BurpExtension.helpers().issueAlert("MockServer", "resolv:" + interceptedRequest.httpService().host(), extension.burp.MessageType.INFO);

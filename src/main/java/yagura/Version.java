@@ -1,5 +1,6 @@
 package yagura;
 
+import extension.helpers.StringUtil;
 import extension.view.base.CustomVersion;
 
 /**
@@ -39,12 +40,10 @@ public final class Version extends CustomVersion {
         return projname;
     }
 
-    private final static String VERSION_INFO_FMT
-            = """
-            Product Version: %s v%s
-            Log Dir: %s
-            Config Dir: %s
-            """;
+    private final static String VERSION_INFO_FMT =
+            "Product Version: %s v%s" + StringUtil.NEW_LINE +
+            "Log Dir: %s" + StringUtil.NEW_LINE +
+            "Config Dir: %s";
 
     public String getVersionInfo() {
         return String.format(VERSION_INFO_FMT,

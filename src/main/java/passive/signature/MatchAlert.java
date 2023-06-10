@@ -53,9 +53,7 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
                 }
             }
 
-            private final String ISSUE_BACKGROUND = """
-                                                    \r\n<h4>Reference:</h4><p>MatchAlert for YaguraExtender</p>
-                                                    """;
+            private final String ISSUE_BACKGROUND = "\r\n<h4>Reference:</h4><p>MatchAlert for YaguraExtender</p>\r\n";
 
             @Override
             public String name() {

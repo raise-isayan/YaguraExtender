@@ -92,7 +92,7 @@ public class AutoMockServer {
                 if (request.getPath().startsWith("/")) {
                     String reqestURL = getRequestURL(request);
                     // Content-Type
-                    AutoResponderItem item = this.autoResponder.findItem(reqestURL);
+                    AutoResponderItem item = this.autoResponder.findItem(reqestURL, request.getMethod());
                     if (item != null) {
                         File replaceFile = new File(item.getReplace());
                         if (item.isBodyOnly()) {

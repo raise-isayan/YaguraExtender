@@ -42,6 +42,7 @@ public class AutoResponderTest {
         AutoResponderProperty property = new AutoResponderProperty();
         List<AutoResponderItem> autoResponderItemList = new ArrayList<>();
         AutoResponderItem autoResponderItem = new AutoResponderItem();
+        autoResponderItem.setMethod("GET");
         autoResponderItem.setMatch("http://www.example.com/");
         autoResponderItem.setSelected(true);
         autoResponderItem.setRegexp(false);
@@ -57,6 +58,14 @@ public class AutoResponderTest {
         {
             AutoResponderItem item = property.findItem("http://www.example.com/test");
             assertNotNull(item);
+        }
+        {
+            AutoResponderItem item = property.findItem("http://www.example.com/", "GET");
+            assertNotNull(item);
+        }
+        {
+            AutoResponderItem item = property.findItem("http://www.example.com/", "POST");
+            assertNull(item);
         }
     }
 

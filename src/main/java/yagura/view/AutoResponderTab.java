@@ -1,9 +1,10 @@
 package yagura.view;
 
-import yagura.model.AutoResponderProperty;
 import burp.BurpExtension;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
+import yagura.model.AutoResponderProperty;
 import yagura.model.AutoResponderItem;
+import yagura.AutoMockServer;
 import extension.burp.IBurpTab;
 import extension.burp.MessageType;
 import extension.helpers.SwingUtil;
@@ -22,7 +23,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import yagura.AutoMockServer;
 
 /**
  *
@@ -85,14 +85,14 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
 
             },
             new String [] {
-                "", "match", "regex", "icase", "body", "mime", "replace"
+                "", "method", "match", "regex", "icase", "body", "mime", "replace"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -234,33 +234,39 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         this.tableAutoResponder.getColumnModel().getColumn(0).setPreferredWidth(20);
         this.tableAutoResponder.getColumnModel().getColumn(0).setMaxWidth(30);
 
+        // method
+        this.tableAutoResponder.getColumnModel().getColumn(1).setMinWidth(40);
+        this.tableAutoResponder.getColumnModel().getColumn(1).setPreferredWidth(60);
+        this.tableAutoResponder.getColumnModel().getColumn(1).setMaxWidth(80);
+        
         // match
-//        this.tableAutoResponder.getColumnModel().getColumn(1).setMinWidth(40);
-//        this.tableAutoResponder.getColumnModel().getColumn(1).setPreferredWidth(100);
-//        this.tableAutoResponder.getColumnModel().getColumn(1).setMaxWidth(180);
-        // regex
-        this.tableAutoResponder.getColumnModel().getColumn(2).setMinWidth(20);
-        this.tableAutoResponder.getColumnModel().getColumn(2).setPreferredWidth(30);
-        this.tableAutoResponder.getColumnModel().getColumn(2).setMaxWidth(40);
+//        this.tableAutoResponder.getColumnModel().getColumn(2).setMinWidth(40);
+//        this.tableAutoResponder.getColumnModel().getColumn(2).setPreferredWidth(100);
+//        this.tableAutoResponder.getColumnModel().getColumn(2).setMaxWidth(180);
 
-        // icase
+        // regex
         this.tableAutoResponder.getColumnModel().getColumn(3).setMinWidth(20);
         this.tableAutoResponder.getColumnModel().getColumn(3).setPreferredWidth(30);
         this.tableAutoResponder.getColumnModel().getColumn(3).setMaxWidth(40);
 
-        // body
+        // icase
         this.tableAutoResponder.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableAutoResponder.getColumnModel().getColumn(4).setPreferredWidth(30);
         this.tableAutoResponder.getColumnModel().getColumn(4).setMaxWidth(40);
 
+        // body
+        this.tableAutoResponder.getColumnModel().getColumn(5).setMinWidth(20);
+        this.tableAutoResponder.getColumnModel().getColumn(5).setPreferredWidth(30);
+        this.tableAutoResponder.getColumnModel().getColumn(5).setMaxWidth(40);
+
         // mime
-//        this.tableAutoResponder.getColumnModel().getColumn(5).setMinWidth(40);
-//        this.tableAutoResponder.getColumnModel().getColumn(5).setPreferredWidth(100);
-//        this.tableAutoResponder.getColumnModel().getColumn(5).setMaxWidth(180);
-//        // replace
 //        this.tableAutoResponder.getColumnModel().getColumn(6).setMinWidth(40);
 //        this.tableAutoResponder.getColumnModel().getColumn(6).setPreferredWidth(100);
 //        this.tableAutoResponder.getColumnModel().getColumn(6).setMaxWidth(180);
+//        // replace
+//        this.tableAutoResponder.getColumnModel().getColumn(7).setMinWidth(40);
+//        this.tableAutoResponder.getColumnModel().getColumn(7).setPreferredWidth(100);
+//        this.tableAutoResponder.getColumnModel().getColumn(7).setMaxWidth(180);
     }
 
     public AutoResponderProperty getProperty() {
