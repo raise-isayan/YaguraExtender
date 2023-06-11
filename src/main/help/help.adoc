@@ -275,6 +275,9 @@ You can define a fixed response for a request.
 
 image:images/custom_autoresponder_item.png[AutoResponderItem Edit Dialog]
 
+Method:: 
+    Specifies the method to match; if Any is checked, it will match any method.
+
 Match URL:: 
     Specify the URL to be matched. The specified value will be matched forward.
 

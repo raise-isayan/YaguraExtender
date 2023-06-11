@@ -268,6 +268,9 @@ image:images/custom_autoresponder.png[AutoResponderタブ]
 
 image:images/custom_autoresponder_item.png[AutoResponderItem編集 ダイヤログ]
 
+Method:: 
+    マッチさせるメソッドを指定します。Anyにチェックした場合は任意のメソッドにマッチします。
+
 Match URL:: 
     マッチさせるURLを指定します。指定された値は前方一致されます。
 
