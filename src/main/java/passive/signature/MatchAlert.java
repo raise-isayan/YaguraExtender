@@ -1,6 +1,7 @@
 package passive.signature;
 
 import burp.BurpExtension;
+import burp.api.montoya.collaborator.Interaction;
 import burp.api.montoya.core.Marker;
 import burp.api.montoya.core.Range;
 import burp.api.montoya.http.HttpService;
@@ -102,6 +103,11 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
             @Override
             public AuditIssueDefinition definition() {
                 return AuditIssueDefinition.auditIssueDefinition(name(), ISSUE_BACKGROUND, remediation(), severity());
+            }
+
+            @Override
+            public List<Interaction> collaboratorInteractions() {
+                return new ArrayList<Interaction>();
             }
 
         };
