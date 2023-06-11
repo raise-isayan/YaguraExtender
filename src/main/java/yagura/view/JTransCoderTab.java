@@ -97,13 +97,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private final SwingUtil.IntegerDocument HEX_DOC = new SwingUtil.IntegerDocument(16);
     private final SwingUtil.IntegerDocument RDX32_DOC = new SwingUtil.IntegerDocument(32);
 
-//    private final SwingUtil.IntegerDocument UNIXTIME_DOC = new SwingUtil.IntegerDocument(10);
-//    private final SwingUtil.IntegerDocument JAVASERIAL_DOC = new SwingUtil.IntegerDocument(10);
-//    private final SwingUtil.IntegerDocument EXCELSERIAL_DOC = new SwingUtil.IntegerDocument(10);
-//    private org.fife.ui.rtextarea.RTextScrollPane scrollInputRaw;
-//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtInputRaw;
     private javax.swing.JScrollPane scrollInputRaw;
     private javax.swing.JTextArea txtInputRaw;
+
+    //private javax.swing.JScrollPane scrollOutputRaw;
+    //private javax.swing.JTextArea txtOutputRaw;
+
+    //private javax.swing.JScrollPane scrollOutputFormat;
+    //private javax.swing.JTextArea txtOutputFormat;
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
@@ -187,18 +188,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
 //        scrollURaw.setViewportView(txtURaw);
 //        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
+
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+//        this.txtOutputRaw = new javax.swing.JTextArea();
+
 //        this.txtOutputRaw.setFont(new Font("ＭＳ ゴシック", Font.PLAIN, 24));
         this.txtOutputRaw.setEditable(false);
         this.txtOutputRaw.setHyperlinksEnabled(false);
         this.txtOutputRaw.setHighlightCurrentLine(false);
         this.txtOutputRaw.setHyperlinksEnabled(false);
 //        this.txtOutputRaw.setBackground(SystemColor.text);
-
         this.scrollOutputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputRaw);
+//        this.scrollOutputRaw = new javax.swing.JScrollPane(this.txtOutputRaw);
         this.pnlOutputRaw.add(this.scrollOutputRaw, BorderLayout.CENTER);
 
         this.txtOutputFormat = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+//        this.txtOutputFormat = new javax.swing.JTextArea();
 
         this.txtOutputFormat.setEditable(false);
         this.txtOutputFormat.setCodeFoldingEnabled(true);
@@ -207,6 +212,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 //        this.txtOutputFormat.setBackground(SystemColor.text);
 //        this.txtOutputFormat.setCurrentLineHighlightColor(SystemColor.textHighlight);
 
+//        this.scrollOutputFormat = new javax.swing.JScrollPane(this.txtOutputFormat);
         this.scrollOutputFormat = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputFormat);
 
         this.pnlTransButton.setLayout(new VerticalFlowLayout());

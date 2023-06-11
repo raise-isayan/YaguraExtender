@@ -32,6 +32,7 @@ import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import extend.util.external.ThemeUI;
+import extend.util.external.TransUtil;
 import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.BurpConfig;
 import extension.burp.BurpConfig.HostnameResolution;
@@ -80,6 +81,21 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
+import extension.helpers.SmartCodec;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTextArea;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import passive.signature.MatchAlert;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
@@ -124,6 +140,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     private boolean DEBUG = false;
 
+    private MenuHander menuHandler;
     private ProxyHander proxyHandler;
     private EditorProvider editorProvider;
     private AutoResponderHandler autoResponderHandler;
@@ -160,10 +177,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     /**
-     * 古い Montoya API ではメソッド名をあやまっており
-     * ここにくる場合は必ず古いバージョン
+     * 古い Montoya API ではメソッド名をあやまっており ここにくる場合は必ず古いバージョン
+     *
      * @param api
-     **/
+     *
+     */
     public void initialise(MontoyaApi api) {
         BurpVersion burp_version = BurpUtil.suiteVersion();
         BurpVersion.showUnsupporttDlg(burp_version, Version.getInstance().getProjectName());
@@ -210,6 +228,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         //BurpConfig.configHostnameResolution(api);
         SwingUtilities.invokeLater(() -> {
             this.registerView();
+            this.menuHandler = new MenuHander(api);
             this.proxyHandler = new ProxyHander(api);
             this.autoResponderHandler = new AutoResponderHandler(api);
             api.extension().registerUnloadingHandler(this);
@@ -560,6 +579,460 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     }
 
+    protected final class MenuHander {
+
+        private final MontoyaApi api;
+        private final ButtonGroup menuBurpCharsetsGroup = new ButtonGroup();
+        private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
+        private String yaguraCharset = StandardCharsets.UTF_8.name();
+
+        public MenuHander(MontoyaApi api) {
+            this.api = api;
+
+            JMenu yaguraMenu = new JMenu();
+            yaguraMenu.setText("Yagura");
+            yaguraMenu.setMnemonic(KeyEvent.VK_Y);
+
+            /**
+             * Yagura Charsets
+             */
+            JMenu yaguraCharsetMenu = new JMenu();
+            yaguraCharsetMenu.setText("Yagura Charsets");
+            yaguraCharsetMenu.setMnemonic(KeyEvent.VK_Y);
+            final List<String> encodngList = getSelectEncodingList();
+            for (int i = 0; i < encodngList.size(); i++) {
+                JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
+                specificCharsetMenuCharSet.setText(encodngList.get(i));
+                specificCharsetMenuCharSet.addChangeListener(yaguraCharsetModeAction);
+                yaguraCharsetMenu.add(specificCharsetMenuCharSet);
+                menuYaguraCharsetsGroup.add(specificCharsetMenuCharSet);
+            }
+
+            /**
+             * Yagura Encoder
+             */
+            JMenu yaguraEncoderMenu = new JMenu();
+            yaguraEncoderMenu.setText("Encoder");
+            yaguraEncoderMenu.setMnemonic(KeyEvent.VK_E);
+
+            JMenuItem yaguraEncoderURLMenu = new JMenuItem();
+            yaguraEncoderURLMenu.setText("URL(%hh)");
+            yaguraEncoderURLMenu.setMnemonic(KeyEvent.VK_U);
+            yaguraEncoderURLMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = SmartCodec.toUrlEncode(text, yaguraCharset, SmartCodec.ENCODE_PATTERN_LIGHT, false);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+
+                        }
+                    }
+                }
+            });
+
+            yaguraEncoderMenu.add(yaguraEncoderURLMenu);
+
+            JMenuItem yaguraEncoderUnicodeMenu = new JMenuItem();
+            yaguraEncoderUnicodeMenu.setText("Unicode(\\uhhhh)");
+            yaguraEncoderUnicodeMenu.setMnemonic(KeyEvent.VK_U);
+            yaguraEncoderUnicodeMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        String encode = SmartCodec.toUnocodeEncode(text, SmartCodec.ENCODE_PATTERN_LIGHT, false);
+                        textArea.replaceSelection(encode);
+                    }
+                }
+            });
+
+            yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
+
+            JMenuItem yaguraEncoderBase64Menu = new JMenuItem();
+            yaguraEncoderBase64Menu.setText("Base64");
+            yaguraEncoderBase64Menu.setMnemonic(KeyEvent.VK_B);
+            yaguraEncoderBase64Menu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = TransUtil.toBase64Encode(text, yaguraCharset);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+
+                        }
+                    }
+                }
+            });
+
+            yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
+
+            JMenuItem yaguraEncoderBase64UrlSafeMenu = new JMenuItem();
+            yaguraEncoderBase64UrlSafeMenu.setText("Base64URLSafe");
+            yaguraEncoderBase64UrlSafeMenu.setMnemonic(KeyEvent.VK_S);
+            yaguraEncoderBase64UrlSafeMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = TransUtil.toBase64URLSafeEncode(text, yaguraCharset);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+
+                        }
+                    }
+                }
+            });
+
+            yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
+
+            /**
+             * Yagura Decoder
+             */
+            JMenu yaguraDecoderMenu = new JMenu();
+            yaguraDecoderMenu.setText("Decoder");
+            yaguraDecoderMenu.setMnemonic(KeyEvent.VK_D);
+
+            JMenuItem yaguraDecoderURLMenu = new JMenuItem();
+            yaguraDecoderURLMenu.setText("URL(%hh)");
+            yaguraDecoderURLMenu.setMnemonic(KeyEvent.VK_U);
+            yaguraDecoderURLMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = SmartCodec.toUrlDecode(text, yaguraCharset);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+
+                        }
+                    }
+                }
+            });
+
+            yaguraDecoderMenu.add(yaguraDecoderURLMenu);
+
+            JMenuItem yaguraDecoderUnicodeMenu = new JMenuItem();
+            yaguraDecoderUnicodeMenu.setText("Unicode(\\uhhhh)");
+            yaguraDecoderUnicodeMenu.setMnemonic(KeyEvent.VK_U);
+            yaguraDecoderUnicodeMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        String encode = SmartCodec.toUnocodeDecode(text);
+                        textArea.replaceSelection(encode);
+                    }
+                }
+            });
+
+            yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
+
+            JMenuItem yaguraDecoderBase64Menu = new JMenuItem();
+            yaguraDecoderBase64Menu.setText("Base64");
+            yaguraDecoderBase64Menu.setMnemonic(KeyEvent.VK_B);
+            yaguraDecoderBase64Menu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = TransUtil.toBase64Decode(text, yaguraCharset);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+
+                        }
+                    }
+                }
+            });
+
+            yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
+
+            JMenuItem yaguraDecoderBase64UrlSafeMenu = new JMenuItem();
+            yaguraDecoderBase64UrlSafeMenu.setText("Base64URLSafe");
+            yaguraDecoderBase64UrlSafeMenu.setMnemonic(KeyEvent.VK_S);
+            yaguraDecoderBase64UrlSafeMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = TransUtil.toBase64URLSafeEncode(text, yaguraCharset);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+
+                        }
+                    }
+                }
+            });
+
+            yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
+
+            /**
+             * Yagura Converter
+             */
+            JMenu yaguraConverterMenu = new JMenu();
+            yaguraConverterMenu.setText("Converter");
+            yaguraConverterMenu.setMnemonic(KeyEvent.VK_C);
+
+            JMenuItem yaguraDecoderUpperCaseItemMenu = new JMenuItem();
+            yaguraDecoderUpperCaseItemMenu.setText("Upper Case");
+            yaguraDecoderUpperCaseItemMenu.setMnemonic(KeyEvent.VK_P);
+            yaguraDecoderUpperCaseItemMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        textArea.replaceSelection(text.toUpperCase());
+                    }
+                }
+            });
+
+            yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
+
+            JMenuItem yaguraDecoderLowlerCaseItemMenu = new JMenuItem();
+            yaguraDecoderLowlerCaseItemMenu.setText("Lowler Case");
+            yaguraDecoderLowlerCaseItemMenu.setMnemonic(KeyEvent.VK_W);
+            yaguraDecoderLowlerCaseItemMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        textArea.replaceSelection(text.toLowerCase());
+                    }
+                }
+            });
+
+            yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
+
+            /**
+             * Yagura Hash
+             */
+            JMenu yaguraHashMenu = new JMenu();
+            yaguraHashMenu.setText("Hash");
+            yaguraHashMenu.setMnemonic(KeyEvent.VK_H);
+
+            JMenuItem yaguraHashMD5Menu = new JMenuItem();
+            yaguraHashMD5Menu.setText("md5 (0)");
+            yaguraHashMD5Menu.setMnemonic(KeyEvent.VK_0);
+            yaguraHashMD5Menu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String hash = TransUtil.toMd5Sum(text, yaguraCharset, false);
+                            textArea.replaceSelection(hash);
+                        } catch (UnsupportedEncodingException ex) {
+                        }
+                    }
+                }
+            });
+
+            yaguraHashMenu.add(yaguraHashMD5Menu);
+
+            JMenuItem yaguraHashSha1Menu = new JMenuItem();
+            yaguraHashSha1Menu.setText("sha1 (1)");
+            yaguraHashSha1Menu.setMnemonic(KeyEvent.VK_1);
+            yaguraHashSha1Menu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String hash = TransUtil.toSHA1Sum(text, yaguraCharset, false);
+                            textArea.replaceSelection(hash);
+                        } catch (UnsupportedEncodingException ex) {
+                        }
+                    }
+                }
+            });
+
+            yaguraHashMenu.add(yaguraHashSha1Menu);
+
+            JMenuItem yaguraHashSha256Menu = new JMenuItem();
+            yaguraHashSha256Menu.setText("sha256 (2)");
+            yaguraHashSha256Menu.setMnemonic(KeyEvent.VK_2);
+            yaguraHashSha256Menu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String hash = TransUtil.toSHA256Sum(text, yaguraCharset, false);
+                            textArea.replaceSelection(hash);
+                        } catch (UnsupportedEncodingException ex) {
+                        }
+                    }
+                }
+            });
+
+            yaguraHashMenu.add(yaguraHashSha256Menu);
+
+            JMenuItem yaguraHashSha512Menu = new JMenuItem();
+            yaguraHashSha512Menu.setText("sha512 (3)");
+            yaguraHashSha512Menu.setMnemonic(KeyEvent.VK_3);
+            yaguraHashSha512Menu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String hash = TransUtil.toSHA512Sum(text, yaguraCharset, false);
+                            textArea.replaceSelection(hash);
+                        } catch (UnsupportedEncodingException ex) {
+                        }
+                    }
+                }
+            });
+
+            yaguraHashMenu.add(yaguraHashSha512Menu);
+
+            JMenu burpCharsetMenu = new JMenu();
+            burpCharsetMenu.setText("Burp Charsets");
+            burpCharsetMenu.setMnemonic(KeyEvent.VK_B);
+
+            // Burp Charsets
+            JRadioButtonMenuItem burpCharsetItemMenuAuto = new JRadioButtonMenuItem();
+            burpCharsetItemMenuAuto.setText(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent());
+            burpCharsetItemMenuAuto.addActionListener(burpCharsetModeAction);
+            burpCharsetMenu.add(burpCharsetItemMenuAuto);
+            menuBurpCharsetsGroup.add(burpCharsetItemMenuAuto);
+
+            JRadioButtonMenuItem burpCharsetItemMenuDefault = new JRadioButtonMenuItem();
+            burpCharsetItemMenuDefault.setText(BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent());
+            burpCharsetItemMenuDefault.addActionListener(burpCharsetModeAction);
+            burpCharsetMenu.add(burpCharsetItemMenuDefault);
+            menuBurpCharsetsGroup.add(burpCharsetItemMenuDefault);
+
+            JRadioButtonMenuItem burpCharsetItemMenuRaw = new JRadioButtonMenuItem();
+            burpCharsetItemMenuRaw.setText(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent());
+            burpCharsetItemMenuRaw.addActionListener(burpCharsetModeAction);
+            burpCharsetMenu.add(burpCharsetItemMenuRaw);
+            menuBurpCharsetsGroup.add(burpCharsetItemMenuRaw);
+
+            burpCharsetMenu.addSeparator();
+
+            BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
+            if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
+                burpCharset = BurpConfig.getCharacterSets(api);
+            }
+
+            for (int i = 0; i < encodngList.size(); i++) {
+                JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
+                specificCharsetMenuCharSet.setText(encodngList.get(i));
+                specificCharsetMenuCharSet.addActionListener(burpCharsetModeAction);
+                burpCharsetMenu.add(specificCharsetMenuCharSet);
+                menuBurpCharsetsGroup.add(specificCharsetMenuCharSet);
+            }
+            burpCharsetMenu.add(burpCharsetMenu);
+
+            yaguraMenu.add(yaguraCharsetMenu);
+            yaguraMenu.add(yaguraEncoderMenu);
+            yaguraMenu.add(yaguraDecoderMenu);
+            yaguraMenu.add(yaguraConverterMenu);
+            yaguraMenu.add(yaguraHashMenu);
+            if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
+                yaguraMenu.addSeparator();
+                yaguraMenu.add(burpCharsetMenu);
+            }
+
+            Enumeration<AbstractButton> rdoYaguraCharsets = menuYaguraCharsetsGroup.getElements();
+            while (rdoYaguraCharsets.hasMoreElements()) {
+                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoYaguraCharsets.nextElement();
+                if (burpCharset.getCharacterSet().equals(item.getText())) {
+                    item.setSelected(true);
+                }
+            }
+
+            Enumeration<AbstractButton> rdoBurpCharsets = menuBurpCharsetsGroup.getElements();
+            while (rdoBurpCharsets.hasMoreElements()) {
+                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoBurpCharsets.nextElement();
+                if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
+                    if (burpCharset.getCharacterSet().equals(item.getText())) {
+                        item.setSelected(true);
+                    }
+                } else {
+                    if (burpCharset.getMode().equals(item.getText())) {
+                        item.setSelected(true);
+                        break;
+                    }
+                }
+            }
+
+            api.userInterface().menuBar().registerMenu(yaguraMenu);
+        }
+
+        private ActionListener burpCharsetModeAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Enumeration<AbstractButton> rdoCharsets = menuBurpCharsetsGroup.getElements();
+                BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
+                final List<String> encodngList = getSelectEncodingList();
+                while (rdoCharsets.hasMoreElements()) {
+                    JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoCharsets.nextElement();
+                    if (item.isSelected()) {
+                        if (encodngList.contains(item.getText())) {
+                            burpCharset.setMode(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent());
+                            burpCharset.setCharacterSet(item.getText());
+                        } else {
+                            burpCharset.setMode(item.getText());
+                        }
+                        break;
+                    }
+                }
+                BurpConfig.configCharacterSets(api, burpCharset);
+            }
+        };
+
+        private ChangeListener yaguraCharsetModeAction = new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if (e.getSource() instanceof JRadioButtonMenuItem item) {
+                    if (item.isSelected()) {
+                        yaguraCharset = item.getText();
+                    }
+                }
+            }
+        };
+
+    }
+
     protected final class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyResponseHandler {
 
         private final MontoyaApi api;
@@ -808,6 +1281,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
             }
         }
+
         /**
          * Response
          *
@@ -1052,4 +1526,4 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
     }
 
-}
+};

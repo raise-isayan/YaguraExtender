@@ -107,7 +107,7 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
 
             @Override
             public List<Interaction> collaboratorInteractions() {
-                return new ArrayList<Interaction>();
+                return new ArrayList<>();
             }
 
         };
