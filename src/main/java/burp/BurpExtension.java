@@ -589,7 +589,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         public MenuHander(MontoyaApi api) {
             this.api = api;
 
-            JMenu yaguraMenu = new JMenu();
+            final JMenu yaguraMenu = new JMenu();
             yaguraMenu.setText("Yagura");
             yaguraMenu.setMnemonic(KeyEvent.VK_Y);
 
@@ -950,6 +950,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
             if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
                 burpCharset = BurpConfig.getCharacterSets(api);
+                if (burpCharset.getCharacterSet() == null) {
+                    burpCharset.setCharacterSet(StandardCharsets.UTF_8.name());
+                }
             }
 
             for (int i = 0; i < encodngList.size(); i++) {
