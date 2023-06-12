@@ -699,6 +699,24 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
 
+            JMenuItem yaguraEncoderHtmlMenu = new JMenuItem();
+            yaguraEncoderHtmlMenu.setText("Html");
+            yaguraEncoderHtmlMenu.setMnemonic(KeyEvent.VK_H);
+            yaguraEncoderHtmlMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        String encode = SmartCodec.toHtmlDecEncode(text, SmartCodec.ENCODE_PATTERN_LIGHT);
+                        textArea.replaceSelection(encode);
+                    }
+                }
+            });
+
+            yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
+
             /**
              * Yagura Decoder
              */
@@ -789,6 +807,24 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             });
 
             yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
+
+            JMenuItem yaguraDecoderHtmlMenu = new JMenuItem();
+            yaguraDecoderHtmlMenu.setText("Html");
+            yaguraDecoderHtmlMenu.setMnemonic(KeyEvent.VK_H);
+            yaguraDecoderHtmlMenu.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        String encode = SmartCodec.toHtmlDecode(text, SmartCodec.ENCODE_PATTERN_LIGHT);
+                        textArea.replaceSelection(encode);
+                    }
+                }
+            });
+
+            yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
 
             /**
              * Yagura Converter
