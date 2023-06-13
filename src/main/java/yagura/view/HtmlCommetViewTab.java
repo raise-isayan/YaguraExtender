@@ -223,8 +223,13 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
             MimeType mimeType = httpResponse.inferredMimeType();
             mimeHTMLType = (mimeType == mimeType.HTML || mimeType == mimeType.XML || mimeType == mimeType.IMAGE_SVG_XML);
             if (httpResponse.body().length() > 0 && mimeHTMLType) {
-                List<Attribute> comments = httpRequestResponse.response().attributes(AttributeType.COMMENTS);
-                return !comments.isEmpty();
+                String encoding = quickSearchTab.getSelectedEncoding();
+                if (encoding != null) {
+                    final boolean uniq = this.quickSearchTab.getUniqCheckBox().isSelected();
+                    String comments[] = HttpUtil.extractHTMLComments(StringUtil.getStringCharset(httpRequestResponse.response().body().getBytes(), encoding), uniq);
+                    return comments.length > 0;
+                }
+                return false;
             } else {
                 return false;
             }

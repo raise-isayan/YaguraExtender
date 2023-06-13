@@ -88,8 +88,6 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
     private org.fife.ui.rtextarea.RTextScrollPane scrollURaw;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtURaw;
 
-    private JPopupMenu popupMenu;
-
     private void customizeComponents() {
 
         /**

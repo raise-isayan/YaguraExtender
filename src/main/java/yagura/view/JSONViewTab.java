@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
+import org.fife.ui.rtextarea.RTextArea;
 import yagura.model.QuickSearchEvent;
 import yagura.model.QuickSearchListener;
 import yagura.model.SendToMenu;
@@ -69,11 +70,17 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.quickSearchTab.setSelectedTextArea((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea());
+        RTextArea txtJSON = (org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea();
+        this.quickSearchTab.setSelectedTextArea(txtJSON);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.addQuickSearchListener(quickSerchStateChanged);
 
-        this.popupMenu = ((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea()).getPopupMenu();
+        BurpExtension extenderImpl = BurpExtension.getInstance();
+        this.popupMenu = (txtJSON).getPopupMenu();
+        this.popupMenu.addSeparator();
+        SendToMenu sendToMenu = extenderImpl.getSendToMenu();
+        sendToMenu.appendSendToMenu(this.popupMenu, this, sendToMenu.getContextMenu());
+        txtJSON.setPopupMenu(this.popupMenu);
 
         this.add(jsonView, java.awt.BorderLayout.CENTER);
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
