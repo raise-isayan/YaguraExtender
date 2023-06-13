@@ -14,6 +14,27 @@ Burp suiteの「Extensions」タブから「Add」ボタンを押下後、Yagura
 
 image:images/Extender_Yagura.png[Extension]
 
+== Yagura Menu
+
+IntercepterやRepeterにてYaguraのEncode/Decodeの各種変換機能を呼び出すことができます。
+
+Yagura Charsets::
+  各種変換機能で利用するデフォルトの文字コードを選択できます。指定した文字コードでEncode/Decodeできます。
+Encoder::
+  選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
+
+Decoder::
+  選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
+
+Converter::
+  選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
+
+Converter::
+  選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
+
+Burp Charsets::
+  BurpのUser設定の文字コードを変更します。
+
 == Yaguraタブ
 
 === CJK Viewタブ

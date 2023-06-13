@@ -14,6 +14,26 @@ Various settings can be done from here.
 
 image:images/Extender_Yagura.png[Extension]
 
+== Yagura Menu
+
+Various Yagura Encode/Decode conversion functions can be called in Intercepter and Repeter.
+
+Yagura Charsets::
+    You can select a default character set to be used in the various conversion functions.
+    You can Encode/Decode with the specified character set.
+
+Encoder::
+    Encode the selected string in the character code selected in "Yagura Charsets".
+
+Decoder::
+    Decode the selected string in the character code selected in "Yagura Charsets".
+
+Converter::
+    Converts the selected string in the character code selected in "Yagura Charsets".
+
+Burp Charsets::
+    Changes the character code in the User settings of Burp.
+
 == Yagura tab
 
 === CJK View tab
