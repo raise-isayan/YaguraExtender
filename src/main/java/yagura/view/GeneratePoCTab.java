@@ -29,6 +29,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -778,7 +779,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
             buff.append(String.format("<body%s>" + HttpUtil.LINE_TERMINATE, new Object[]{autoSubmit}));
-            buff.append("<!-- begen form -->" + HttpUtil.LINE_TERMINATE);
+            buff.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
             String targetLink = (csrfParam.isCsrfMultiForm()) ? "target=\"_blank\"" : "";
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
@@ -805,10 +806,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
                         paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
                         if (MatchUtil.isUrlencoded(paramName)) {
-                            paramName = SmartCodec.toUrlEncode(paramName, csrfEncoding, true);
+                            paramName = SmartCodec.toUrlDecode(paramName, csrfEncoding);
                         }
                         if (MatchUtil.isUrlencoded(paramValue)) {
-                            paramValue = SmartCodec.toUrlEncode(paramValue, csrfEncoding, true);
+                            paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
                         }
                         String decodename = HttpUtil.toHtmlEncode(paramName);
                         String decodevalue = HttpUtil.toHtmlEncode(paramValue);
@@ -826,10 +827,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             }
                         } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
-                                paramName = SmartCodec.toUrlEncode(paramName, csrfEncoding, true);
+                                paramName = SmartCodec.toUrlDecode(paramName, csrfEncoding);
                             }
                             if (MatchUtil.isUrlencoded(paramValue)) {
-                                paramValue = SmartCodec.toUrlEncode(paramValue, csrfEncoding, true);
+                                paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
                             }
                         }
                         String decodename = HttpUtil.toHtmlEncode(paramName);
@@ -842,7 +843,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     } else {
                         String file_encoding = csrfEncoding;
                         String decodevalue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), file_encoding);
-                        buff.append("<!-- Internet Explorer browser only technique -->" + HttpUtil.LINE_TERMINATE);
+                        buff.append("<!-- Internet Explorer browser only technique -->").append(HttpUtil.LINE_TERMINATE);
                         buff.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
                                 new Object[]{paramName, filename, file_encoding}));
                         buff.append(HttpUtil.toHtmlEncode(decodevalue));
@@ -881,7 +882,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             buff.append("</form>").append(HttpUtil.LINE_TERMINATE);
             buff.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
             buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);
-        } catch (Exception ex) {
+        } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return buff.toString();
@@ -998,10 +999,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             }
                         } else {
                             if (MatchUtil.isUrlencoded(paramName)) {
-                                paramName = SmartCodec.toUrlEncode(paramName, csrfEncoding, true);
+                                paramName = SmartCodec.toUrlDecode(paramName, csrfEncoding);
                             }
                             if (MatchUtil.isUrlencoded(paramValue)) {
-                                paramValue = SmartCodec.toUrlEncode(paramValue, csrfEncoding, true);
+                                paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
                             }
                         }
 
@@ -1121,7 +1122,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
             buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);
 
-        } catch (Exception ex) {
+        } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return buff.toString();
@@ -1202,6 +1203,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 return false;
             }
             HttpRequestWapper request = new HttpRequestWapper(httpRequestResponse.request());
+            if (request.httpService() == null) {
+                return false;
+            }
             String host = request.httpService().host();
             if (host == null) {
                 return false;

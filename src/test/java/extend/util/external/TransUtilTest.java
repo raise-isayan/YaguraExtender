@@ -425,13 +425,17 @@ public class TransUtilTest {
      */
     @Test
     public void testToByteDecode() {
-        System.out.println("toByteDecode");
-        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));
-        assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
-        assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\041\\042\\043\\044\\045", "8859_1"));
+        try {
+            System.out.println("toByteDecode");
+            assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));
+            assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteDecode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
+            assertEquals("abcdef!\"#$%", TransUtil.toByteDecode("abcdef\\041\\042\\043\\044\\045", "8859_1"));
 
-        byte o[] = new byte[]{(byte) 0202, (byte) 0240, (byte) 0202, (byte) 0242, (byte) 0202, (byte) 0244, (byte) 0202, (byte) 0246, (byte) 0202, (byte) 0250, (byte) 012};
-        assertEquals(new String(o, StandardCharsets.ISO_8859_1), TransUtil.toByteDecode("\\202\\240\\202\\242\\202\\244\\202\\246\\202\\250\\12", StandardCharsets.ISO_8859_1.name()));
+            byte o[] = new byte[]{(byte) 0202, (byte) 0240, (byte) 0202, (byte) 0242, (byte) 0202, (byte) 0244, (byte) 0202, (byte) 0246, (byte) 0202, (byte) 0250, (byte) 012};
+            assertEquals(new String(o, StandardCharsets.ISO_8859_1), TransUtil.toByteDecode("\\202\\240\\202\\242\\202\\244\\202\\246\\202\\250\\12", StandardCharsets.ISO_8859_1.name()));
+        } catch (UnsupportedEncodingException ex) {
+            fail();
+        }
     }
 
     /**
@@ -439,12 +443,16 @@ public class TransUtilTest {
      */
     @Test
     public void testToByteHexDecode() {
-        System.out.println("toByteHexDecode");
-        assertEquals("abcdef\r\n!\"ghi#$%jkf", TransUtil.toByteHexDecode("6162636465660d0a21226768692324256a6b66", "8859_1"));
-        assertEquals("abcdef\r\n!\"ghi#$%jkf", TransUtil.toByteHexDecode("6162636465660D0A21226768692324256A6B66", "8859_1"));
+        try {
+            System.out.println("toByteHexDecode");
+            assertEquals("abcdef\r\n!\"ghi#$%jkf", TransUtil.toByteHexDecode("6162636465660d0a21226768692324256a6b66", "8859_1"));
+            assertEquals("abcdef\r\n!\"ghi#$%jkf", TransUtil.toByteHexDecode("6162636465660D0A21226768692324256A6B66", "8859_1"));
 
-        assertEquals("あいうえお", TransUtil.toByteHexDecode("e38182e38184e38186e38188e3818a", StandardCharsets.UTF_8.name()));
-        assertEquals("あいうえお", TransUtil.toByteHexDecode("E38182E38184E38186E38188E3818A", StandardCharsets.UTF_8.name()));
+            assertEquals("あいうえお", TransUtil.toByteHexDecode("e38182e38184e38186e38188e3818a", StandardCharsets.UTF_8.name()));
+            assertEquals("あいうえお", TransUtil.toByteHexDecode("E38182E38184E38186E38188E3818A", StandardCharsets.UTF_8.name()));
+        } catch (UnsupportedEncodingException ex) {
+            fail();
+        }
     }
 
     /**
@@ -452,12 +460,16 @@ public class TransUtilTest {
      */
     @Test
     public void testToByteHex2Decode() {
-        System.out.println("toByteHex2Decode");
-        assertEquals("abcdef!\"#$%", TransUtil.toByteHex2Decode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));
-        assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHex2Decode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
+        try {
+            System.out.println("toByteHex2Decode");
+            assertEquals("abcdef!\"#$%", TransUtil.toByteHex2Decode("abcdef\\x21\\x22\\x23\\x24\\x25", "8859_1"));
+            assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHex2Decode("\\x61\\x62\\x63\\x64\\x65\\x66\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", "8859_1"));
 
-        assertEquals("abcdef!\"#$%", TransUtil.toByteHex2Decode("abcdef\\21\\22\\23\\24\\25", "8859_1"));
-        assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHex2Decode("\\61\\62\\63\\64\\65\\66\\21\\22\\67\\68\\69\\23\\24\\25\\6a\\6b\\66", "8859_1"));
+            assertEquals("abcdef!\"#$%", TransUtil.toByteHex2Decode("abcdef\\21\\22\\23\\24\\25", "8859_1"));
+            assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHex2Decode("\\61\\62\\63\\64\\65\\66\\21\\22\\67\\68\\69\\23\\24\\25\\6a\\6b\\66", "8859_1"));
+        } catch (UnsupportedEncodingException ex) {
+            fail();
+        }
     }
 
     /**

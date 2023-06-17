@@ -612,13 +612,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
              * Yagura Encoder
              */
             JMenu yaguraEncoderMenu = new JMenu();
-            yaguraEncoderMenu.setText("Encoder");
+            yaguraEncoderMenu.setText("Encoder (E)");
             yaguraEncoderMenu.setMnemonic(KeyEvent.VK_E);
 
-            JMenuItem yaguraEncoderURLMenu = new JMenuItem();
-            yaguraEncoderURLMenu.setText("URL(%hh)");
-            yaguraEncoderURLMenu.setMnemonic(KeyEvent.VK_U);
-            yaguraEncoderURLMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -629,7 +626,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String encode = SmartCodec.toUrlEncode(text, yaguraCharset, SmartCodec.ENCODE_PATTERN_LIGHT, false);
                             textArea.replaceSelection(encode);
                         } catch (UnsupportedEncodingException ex) {
-
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -637,10 +634,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraEncoderMenu.add(yaguraEncoderURLMenu);
 
-            JMenuItem yaguraEncoderUnicodeMenu = new JMenuItem();
-            yaguraEncoderUnicodeMenu.setText("Unicode(\\uhhhh)");
-            yaguraEncoderUnicodeMenu.setMnemonic(KeyEvent.VK_U);
-            yaguraEncoderUnicodeMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -655,10 +649,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
 
-            JMenuItem yaguraEncoderBase64Menu = new JMenuItem();
-            yaguraEncoderBase64Menu.setText("Base64");
-            yaguraEncoderBase64Menu.setMnemonic(KeyEvent.VK_B);
-            yaguraEncoderBase64Menu.addActionListener(new ActionListener() {
+            JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -669,7 +660,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String encode = TransUtil.toBase64Encode(text, yaguraCharset);
                             textArea.replaceSelection(encode);
                         } catch (UnsupportedEncodingException ex) {
-
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -677,10 +668,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
 
-            JMenuItem yaguraEncoderBase64UrlSafeMenu = new JMenuItem();
-            yaguraEncoderBase64UrlSafeMenu.setText("Base64URLSafe");
-            yaguraEncoderBase64UrlSafeMenu.setMnemonic(KeyEvent.VK_S);
-            yaguraEncoderBase64UrlSafeMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -691,7 +679,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String encode = TransUtil.toBase64URLSafeEncode(text, yaguraCharset);
                             textArea.replaceSelection(encode);
                         } catch (UnsupportedEncodingException ex) {
-
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -699,10 +687,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
 
-            JMenuItem yaguraEncoderHtmlMenu = new JMenuItem();
-            yaguraEncoderHtmlMenu.setText("Html");
-            yaguraEncoderHtmlMenu.setMnemonic(KeyEvent.VK_H);
-            yaguraEncoderHtmlMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -721,13 +706,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
              * Yagura Decoder
              */
             JMenu yaguraDecoderMenu = new JMenu();
-            yaguraDecoderMenu.setText("Decoder");
+            yaguraDecoderMenu.setText("Decoder (D)");
             yaguraDecoderMenu.setMnemonic(KeyEvent.VK_D);
 
-            JMenuItem yaguraDecoderURLMenu = new JMenuItem();
-            yaguraDecoderURLMenu.setText("URL(%hh)");
-            yaguraDecoderURLMenu.setMnemonic(KeyEvent.VK_U);
-            yaguraDecoderURLMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -738,7 +720,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String encode = SmartCodec.toUrlDecode(text, yaguraCharset);
                             textArea.replaceSelection(encode);
                         } catch (UnsupportedEncodingException ex) {
-
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -746,10 +728,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraDecoderMenu.add(yaguraDecoderURLMenu);
 
-            JMenuItem yaguraDecoderUnicodeMenu = new JMenuItem();
-            yaguraDecoderUnicodeMenu.setText("Unicode(\\uhhhh)");
-            yaguraDecoderUnicodeMenu.setMnemonic(KeyEvent.VK_U);
-            yaguraDecoderUnicodeMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -764,10 +743,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
 
-            JMenuItem yaguraDecoderBase64Menu = new JMenuItem();
-            yaguraDecoderBase64Menu.setText("Base64");
-            yaguraDecoderBase64Menu.setMnemonic(KeyEvent.VK_B);
-            yaguraDecoderBase64Menu.addActionListener(new ActionListener() {
+            JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -778,7 +754,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String encode = TransUtil.toBase64Decode(text, yaguraCharset);
                             textArea.replaceSelection(encode);
                         } catch (UnsupportedEncodingException ex) {
-
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -786,10 +762,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
 
-            JMenuItem yaguraDecoderBase64UrlSafeMenu = new JMenuItem();
-            yaguraDecoderBase64UrlSafeMenu.setText("Base64URLSafe");
-            yaguraDecoderBase64UrlSafeMenu.setMnemonic(KeyEvent.VK_S);
-            yaguraDecoderBase64UrlSafeMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -800,7 +773,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String encode = TransUtil.toBase64URLSafeEncode(text, yaguraCharset);
                             textArea.replaceSelection(encode);
                         } catch (UnsupportedEncodingException ex) {
-
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -808,10 +781,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
 
-            JMenuItem yaguraDecoderHtmlMenu = new JMenuItem();
-            yaguraDecoderHtmlMenu.setText("Html");
-            yaguraDecoderHtmlMenu.setMnemonic(KeyEvent.VK_H);
-            yaguraDecoderHtmlMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -830,13 +800,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
              * Yagura Converter
              */
             JMenu yaguraConverterMenu = new JMenu();
-            yaguraConverterMenu.setText("Converter");
+            yaguraConverterMenu.setText("Converter (C)");
             yaguraConverterMenu.setMnemonic(KeyEvent.VK_C);
 
-            JMenuItem yaguraDecoderUpperCaseItemMenu = new JMenuItem();
-            yaguraDecoderUpperCaseItemMenu.setText("Upper Case");
-            yaguraDecoderUpperCaseItemMenu.setMnemonic(KeyEvent.VK_P);
-            yaguraDecoderUpperCaseItemMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -850,10 +817,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
 
-            JMenuItem yaguraDecoderLowlerCaseItemMenu = new JMenuItem();
-            yaguraDecoderLowlerCaseItemMenu.setText("Lowler Case");
-            yaguraDecoderLowlerCaseItemMenu.setMnemonic(KeyEvent.VK_W);
-            yaguraDecoderLowlerCaseItemMenu.addActionListener(new ActionListener() {
+            JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -867,17 +831,52 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
 
+            JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = TransUtil.toByteHexEncode(text, yaguraCharset, false);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                        }
+                    }
+                }
+            });
+
+            yaguraConverterMenu.add(yaguraConverterBin2HexMenu);
+
+            JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        try {
+                            String text = textArea.getSelectedText();
+                            String encode = TransUtil.toByteHexDecode(text, yaguraCharset);
+                            textArea.replaceSelection(encode);
+                        } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                        }
+                    }
+                }
+            });
+
+            yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
+
             /**
              * Yagura Hash
              */
             JMenu yaguraHashMenu = new JMenu();
-            yaguraHashMenu.setText("Hash");
+            yaguraHashMenu.setText("Hash (H)");
             yaguraHashMenu.setMnemonic(KeyEvent.VK_H);
 
-            JMenuItem yaguraHashMD5Menu = new JMenuItem();
-            yaguraHashMD5Menu.setText("md5 (0)");
-            yaguraHashMD5Menu.setMnemonic(KeyEvent.VK_0);
-            yaguraHashMD5Menu.addActionListener(new ActionListener() {
+            JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_0, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -888,6 +887,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String hash = TransUtil.toMd5Sum(text, yaguraCharset, false);
                             textArea.replaceSelection(hash);
                         } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -895,10 +895,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraHashMenu.add(yaguraHashMD5Menu);
 
-            JMenuItem yaguraHashSha1Menu = new JMenuItem();
-            yaguraHashSha1Menu.setText("sha1 (1)");
-            yaguraHashSha1Menu.setMnemonic(KeyEvent.VK_1);
-            yaguraHashSha1Menu.addActionListener(new ActionListener() {
+            JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_1, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -909,6 +906,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String hash = TransUtil.toSHA1Sum(text, yaguraCharset, false);
                             textArea.replaceSelection(hash);
                         } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -916,10 +914,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraHashMenu.add(yaguraHashSha1Menu);
 
-            JMenuItem yaguraHashSha256Menu = new JMenuItem();
-            yaguraHashSha256Menu.setText("sha256 (2)");
-            yaguraHashSha256Menu.setMnemonic(KeyEvent.VK_2);
-            yaguraHashSha256Menu.addActionListener(new ActionListener() {
+            JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_2, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -930,6 +925,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String hash = TransUtil.toSHA256Sum(text, yaguraCharset, false);
                             textArea.replaceSelection(hash);
                         } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -937,10 +933,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraHashMenu.add(yaguraHashSha256Menu);
 
-            JMenuItem yaguraHashSha512Menu = new JMenuItem();
-            yaguraHashSha512Menu.setText("sha512 (3)");
-            yaguraHashSha512Menu.setMnemonic(KeyEvent.VK_3);
-            yaguraHashSha512Menu.addActionListener(new ActionListener() {
+            JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_3, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -951,6 +944,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             String hash = TransUtil.toSHA512Sum(text, yaguraCharset, false);
                             textArea.replaceSelection(hash);
                         } catch (UnsupportedEncodingException ex) {
+                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
                         }
                     }
                 }
@@ -1034,6 +1028,14 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
 
             api.userInterface().menuBar().registerMenu(yaguraMenu);
+        }
+
+        public static JMenuItem createMenuItem(String caption, int mnemonic, ActionListener action) {
+            final JMenuItem yaguraMenuItem = new JMenuItem();
+            yaguraMenuItem.setText(caption + " (" + (char)mnemonic + ")");
+            yaguraMenuItem.setMnemonic(mnemonic);
+            yaguraMenuItem.addActionListener(action);
+            return yaguraMenuItem;
         }
 
         private ActionListener burpCharsetModeAction = new ActionListener() {

@@ -1,10 +1,9 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.responses.analysis.Attribute;
-import burp.api.montoya.http.message.responses.analysis.AttributeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.ThemeUI;
@@ -12,6 +11,7 @@ import extend.util.external.TransUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
+import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -125,14 +125,18 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
                 return;
             }
             final boolean uniq = this.quickSearchTab.getUniqCheckBox().isSelected();
-
             this.txtHtmlComment.setText("");
             SwingWorker swText = new SwingWorker<String, Object>() {
                 @Override
                 protected String doInBackground() throws Exception {
                     publish("...");
-                    String comments[] = HttpUtil.extractHTMLComments(StringUtil.getStringCharset(httpRequestResponse.response().body().getBytes(), encoding), uniq);
-                    return TransUtil.join("\r\n", ConvertUtil.toUniqList(List.of(comments)));
+                    String body = StringUtil.getStringCharset(httpRequestResponse.response().body().getBytes(), encoding);
+                    String comments[] = HttpUtil.extractHTMLComments(body, uniq);
+                    // Htmlデコードする
+                    for (int i = 0; i < comments.length; i++) {
+                        comments[i] = SmartCodec.toHtmlDecode(comments[i]);
+                    }
+                    return TransUtil.join("\r\n", List.of(comments));
                 }
 
                 @Override

@@ -75,7 +75,7 @@ public class TransUtil {
     }
 
     public enum EncodeType {
-        ALL, ALPHANUM, STANDARD, LIGHT, URL_SAFE, JAVA_SCRIPT
+        ALL, ALPHANUM, STANDARD, LIGHT, BURP_LIKE, JAVA_SCRIPT
     };
 
     public enum ConvertCase {
@@ -92,8 +92,8 @@ public class TransUtil {
                 return SmartCodec.ENCODE_PATTERN_STANDARD;
             case LIGHT:
                 return SmartCodec.ENCODE_PATTERN_LIGHT;
-            case URL_SAFE:
-                return SmartCodec.ENCODE_PATTERN_URLSAFE;
+            case BURP_LIKE:
+                return SmartCodec.ENCODE_PATTERN_BURP;
             case JAVA_SCRIPT:
                 return SmartCodec.ENCODE_PATTERN_JS;
             default:
@@ -959,116 +959,104 @@ public class TransUtil {
 
     private final static Pattern PTN_BYTE_GROUP = Pattern.compile("((?:\\\\[xX][0-9a-fA-F]{2})+)|((?:\\\\[0-9]{1,3})+)");
 
-    public static String toByteDecode(String input, String charset) {
+    public static String toByteDecode(String input, String charset) throws UnsupportedEncodingException {
         StringBuffer buff = new StringBuffer();
         Matcher m = PTN_BYTE_GROUP.matcher(input);
-        try {
-            while (m.find()) {
-                String hex = m.group(1);
-                String oct = m.group(2);
-                if (hex != null) {
-                    Matcher m2 = PTN_BYTE_HEX1.matcher(hex);
-                    ByteBuffer buf = ByteBuffer.allocate(hex.length());
-                    while (m2.find()) {
-                        String hexcode = m2.group(1);
-                        int u = Character.digit(hexcode.charAt(0), 16);
-                        int l = Character.digit(hexcode.charAt(1), 16);
-                        buf.put((byte) ((u << 4) + l));
-                    }
-                    buf.flip();
-                    byte[] value = new byte[buf.limit()];
-                    buf.get(value);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
-                } else if (oct != null) {
-                    Matcher m3 = PTN_BYTE_OCT.matcher(oct);
-                    ByteBuffer buf = ByteBuffer.allocate(oct.length());
-                    while (m3.find()) {
-                        String octecode = m3.group(1);
-                        buf.put((byte) Integer.parseInt(octecode, 8));
-                    }
-                    buf.flip();
-                    byte[] value = new byte[buf.limit()];
-                    buf.get(value);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(new String(value, charset)));
+        while (m.find()) {
+            String hex = m.group(1);
+            String oct = m.group(2);
+            if (hex != null) {
+                Matcher m2 = PTN_BYTE_HEX1.matcher(hex);
+                ByteBuffer buf = ByteBuffer.allocate(hex.length());
+                while (m2.find()) {
+                    String hexcode = m2.group(1);
+                    int u = Character.digit(hexcode.charAt(0), 16);
+                    int l = Character.digit(hexcode.charAt(1), 16);
+                    buf.put((byte) ((u << 4) + l));
                 }
+                buf.flip();
+                byte[] value = new byte[buf.limit()];
+                buf.get(value);
+                m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
+            } else if (oct != null) {
+                Matcher m3 = PTN_BYTE_OCT.matcher(oct);
+                ByteBuffer buf = ByteBuffer.allocate(oct.length());
+                while (m3.find()) {
+                    String octecode = m3.group(1);
+                    buf.put((byte) Integer.parseInt(octecode, 8));
+                }
+                buf.flip();
+                byte[] value = new byte[buf.limit()];
+                buf.get(value);
+                m.appendReplacement(buff, Matcher.quoteReplacement(new String(value, charset)));
             }
-            m.appendTail(buff);
-        } catch (UnsupportedEncodingException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        m.appendTail(buff);
         return buff.toString();
     }
     private final static Pattern PTN_BYTE_HEX = Pattern.compile("((?:[0-9a-fA-F]{2}))");
 
-    public static String toByteHexDecode(String input, String charset) {
+    public static String toByteHexDecode(String input, String charset) throws UnsupportedEncodingException {
         StringBuffer buff = new StringBuffer();
         Matcher m = PTN_BYTE_HEX_GROUP.matcher(input);
-        try {
-            while (m.find()) {
-                String hex = m.group(1);
-                if (hex != null) {
-                    Matcher m0 = PTN_BYTE_HEX.matcher(hex);
-                    ByteBuffer buf = ByteBuffer.allocate(hex.length());
-                    while (m0.find()) {
-                        String hexcode = m0.group(1);
-                        int u = Character.digit(hexcode.charAt(0), 16);
-                        int l = Character.digit(hexcode.charAt(1), 16);
-                        buf.put((byte) ((u << 4) + l));
-                    }
-                    buf.flip();
-                    byte[] value = new byte[buf.limit()];
-                    buf.get(value);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
+        while (m.find()) {
+            String hex = m.group(1);
+            if (hex != null) {
+                Matcher m0 = PTN_BYTE_HEX.matcher(hex);
+                ByteBuffer buf = ByteBuffer.allocate(hex.length());
+                while (m0.find()) {
+                    String hexcode = m0.group(1);
+                    int u = Character.digit(hexcode.charAt(0), 16);
+                    int l = Character.digit(hexcode.charAt(1), 16);
+                    buf.put((byte) ((u << 4) + l));
                 }
+                buf.flip();
+                byte[] value = new byte[buf.limit()];
+                buf.get(value);
+                m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
             }
-            m.appendTail(buff);
-        } catch (UnsupportedEncodingException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        m.appendTail(buff);
         return buff.toString();
     }
 
     private final static Pattern PTN_BYTE_HEX2_GROUP = Pattern.compile("((?:\\\\[xX][0-9a-fA-F]{2})+)|((?:\\\\[0-9a-fA-F]{2})+)");
 
-    public static String toByteHex2Decode(String input, String charset) {
+    public static String toByteHex2Decode(String input, String charset) throws UnsupportedEncodingException {
         StringBuffer buff = new StringBuffer();
         Matcher m = PTN_BYTE_HEX2_GROUP.matcher(input);
-        try {
-            while (m.find()) {
-                String hex1 = m.group(1);
-                String hex2 = m.group(2);
-                if (hex1 != null) {
-                    Matcher m2 = PTN_BYTE_HEX1.matcher(hex1);
-                    ByteBuffer buf = ByteBuffer.allocate(hex1.length());
-                    while (m2.find()) {
-                        String hexcode = m2.group(1);
-                        int u = Character.digit(hexcode.charAt(0), 16);
-                        int l = Character.digit(hexcode.charAt(1), 16);
-                        buf.put((byte) ((u << 4) + l));
-                    }
-                    buf.flip();
-                    byte[] value = new byte[buf.limit()];
-                    buf.get(value);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
-                } else if (hex2 != null) {
-                    Matcher m3 = PTN_BYTE_HEX2.matcher(hex2);
-                    ByteBuffer buf = ByteBuffer.allocate(hex2.length());
-                    while (m3.find()) {
-                        String hexcode = m3.group(1);
-                        int u = Character.digit(hexcode.charAt(0), 16);
-                        int l = Character.digit(hexcode.charAt(1), 16);
-                        buf.put((byte) ((u << 4) + l));
-                    }
-                    buf.flip();
-                    byte[] value = new byte[buf.limit()];
-                    buf.get(value);
-                    m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
+        while (m.find()) {
+            String hex1 = m.group(1);
+            String hex2 = m.group(2);
+            if (hex1 != null) {
+                Matcher m2 = PTN_BYTE_HEX1.matcher(hex1);
+                ByteBuffer buf = ByteBuffer.allocate(hex1.length());
+                while (m2.find()) {
+                    String hexcode = m2.group(1);
+                    int u = Character.digit(hexcode.charAt(0), 16);
+                    int l = Character.digit(hexcode.charAt(1), 16);
+                    buf.put((byte) ((u << 4) + l));
                 }
+                buf.flip();
+                byte[] value = new byte[buf.limit()];
+                buf.get(value);
+                m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
+            } else if (hex2 != null) {
+                Matcher m3 = PTN_BYTE_HEX2.matcher(hex2);
+                ByteBuffer buf = ByteBuffer.allocate(hex2.length());
+                while (m3.find()) {
+                    String hexcode = m3.group(1);
+                    int u = Character.digit(hexcode.charAt(0), 16);
+                    int l = Character.digit(hexcode.charAt(1), 16);
+                    buf.put((byte) ((u << 4) + l));
+                }
+                buf.flip();
+                byte[] value = new byte[buf.limit()];
+                buf.get(value);
+                m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
             }
-            m.appendTail(buff);
-        } catch (UnsupportedEncodingException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        m.appendTail(buff);
         return buff.toString();
     }
 
