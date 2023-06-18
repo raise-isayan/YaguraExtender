@@ -238,7 +238,7 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         this.tableAutoResponder.getColumnModel().getColumn(1).setMinWidth(40);
         this.tableAutoResponder.getColumnModel().getColumn(1).setPreferredWidth(60);
         this.tableAutoResponder.getColumnModel().getColumn(1).setMaxWidth(80);
-        
+
         // match
 //        this.tableAutoResponder.getColumnModel().getColumn(2).setMinWidth(40);
 //        this.tableAutoResponder.getColumnModel().getColumn(2).setPreferredWidth(100);
@@ -391,7 +391,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         Object editRows[] = SwingUtil.editItem(this.tableAutoResponder);
         if (editRows != null) {
             item = AutoResponderItem.fromObjects(editRows);
-            item.recompileRegex();
         }
         return item;
     }

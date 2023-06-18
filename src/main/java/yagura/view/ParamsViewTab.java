@@ -484,7 +484,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             };
             swParam.execute();
             // Decode状態を戻す
-            BurpExtension.helpers().outPrintln("toggleDecode:" + toggleDecode);
             this.btnDecode.setSelected(toggleDecode);
             this.textModified = false;
         }

@@ -581,13 +581,12 @@ public class MatchAlertItemDlg extends CustomDialog {
      */
     public MatchAlertItem getItem() {
         MatchAlertItem item = new MatchAlertItem();
-        item.setType((String) this.cmbAlertType.getSelectedItem());
-        item.setMatch(this.txtAlertMatch.getText());
-
         item.setSmartMatch(this.chkSmartMatch.isSelected());
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
         item.setCaptureGroup(this.chkCaptureGroup.isSelected());
+        item.setType((String) this.cmbAlertType.getSelectedItem());
+        item.setMatch(this.txtAlertMatch.getText());
 
         //item.setNotifyType((MatchItem.NotifyType) this.cmbAlertNotify.getSelectedItem());
         EnumSet<NotifyType> notifys = EnumSet.noneOf(NotifyType.class);
@@ -645,6 +644,7 @@ public class MatchAlertItemDlg extends CustomDialog {
             String confidence = (String) this.cmbConfidence.getSelectedItem();
             item.setConfidence(Confidence.parseEnum(confidence));
         }
+        item.recompileRegex(!item.isRegexp());
         return item;
     }
 

@@ -1095,6 +1095,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
          */
         @Override
         public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
+
             return RequestToBeSentAction.continueWith(httpRequestToBeSent, httpRequestToBeSent.annotations());
         }
 
@@ -1269,25 +1270,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     this.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()));
                 }
             }
-        }
-
-        /**
-         * processToolMessage
-         *
-         * @param toolType
-         * @param messageIsRequest
-         * @param messageInfo
-         * @return
-         */
-        public HttpRequestResponse processToolMessage(
-                ToolType toolType,
-                boolean messageIsRequest,
-                HttpRequestResponse messageInfo) {
-            HttpRequestResponse httpRequestResponse = messageInfo;
-            if (getProperty().getMatchAlertProperty().isMatchAlertEnable() && getProperty().getMatchAlertProperty().isSelectedMatchAlert()) {
-                httpRequestResponse = this.matchAlertMessage(toolType, messageIsRequest, messageInfo);
-            }
-            return httpRequestResponse;
         }
 
         /**
@@ -1523,7 +1505,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
             // Autoresponder
             if (option.getAutoResponderProperty().getAutoResponderEnable()) {
-                HttpService service = httpRequestToBeSent.httpService();
                 final String url = httpRequestToBeSent.url();
                 AutoResponderItem item = option.getAutoResponderProperty().findItem(url, httpRequestToBeSent.method());
                 if (item != null) {

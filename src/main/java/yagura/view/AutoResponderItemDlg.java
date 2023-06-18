@@ -378,13 +378,14 @@ public class AutoResponderItemDlg extends CustomDialog {
         item.setReplace(this.txtRepReplace.getText());
         item.setBodyOnly(this.chkBodyOnly.isSelected());
         item.setContentType(ConvertUtil.toEmpty(this.cmbContentType.getEditor().getItem()));
+        item.recompileRegex(!item.isRegexp());
         return item;
     }
 
     /**
      * @param item the item to set
      */
-    public void setItem(AutoResponderItem item) {     
+    public void setItem(AutoResponderItem item) {
         if (item.getMethod() == null) {
             this.chkAnyMethod.setSelected(true);
             this.txtMethod.setText("");

@@ -224,6 +224,7 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setIssueName((String) rows[11]);
         matchAlert.setSeverity((Severity) rows[12]);
         matchAlert.setConfidence((Confidence) rows[13]);
+        matchAlert.recompileRegex(!matchAlert.isRegexp());
         return matchAlert;
     }
 

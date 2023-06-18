@@ -85,7 +85,7 @@ public class AutoResponderItem extends MatchItem {
         autoResponder.setBodyOnly(((Boolean) rows[5]));
         autoResponder.setContentType(((String) rows[6]));
         autoResponder.setReplace((String) rows[7]);
-        autoResponder.recompileRegex();
+        autoResponder.recompileRegex(!autoResponder.isRegexp());
         return autoResponder;
     }
 

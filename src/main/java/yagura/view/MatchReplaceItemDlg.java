@@ -313,13 +313,14 @@ public class MatchReplaceItemDlg extends CustomDialog {
     public MatchReplaceItem getItem() {
         MatchReplaceItem item = new MatchReplaceItem();
         item.setSelected(true);
-        item.setType((String) this.cmbRepType.getSelectedItem());
-        item.setMatch(this.txtRepMatch.getText());
         item.setSmartMatch(this.chkSmartMatch.isSelected());
         item.setRegexp(this.chkRegExp.isSelected());
         item.setIgnoreCase(this.chkIgnoreCase.isSelected());
+        item.setType((String) this.cmbRepType.getSelectedItem());
+        item.setMatch(this.txtRepMatch.getText());
         item.setReplace(this.txtRepReplace.getText());
         item.setMetaChar(this.chkMetaChar.isSelected());
+        item.recompileRegex(!item.isRegexp());
         return item;
     }
 
