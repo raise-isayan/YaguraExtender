@@ -869,6 +869,34 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
 
+            JMenuItem yaguraConverterFull2Half = createMenuItem("Full Height -> Half Height", KeyEvent.VK_F, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        String encode = TransUtil.translateFullHeight2HalfHeight(text);
+                        textArea.replaceSelection(encode);
+                    }
+                }
+            });
+            yaguraConverterMenu.add(yaguraConverterFull2Half);
+
+            JMenuItem yaguraConverterHalf2Full = createMenuItem("Half Height -> Full Height", KeyEvent.VK_K, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        String encode = TransUtil.translateHalfHeight2FullHeight(text);
+                        textArea.replaceSelection(encode);
+                    }
+                }
+            });
+            yaguraConverterMenu.add(yaguraConverterHalf2Full);
+
             /**
              * Yagura Hash
              */
@@ -1032,7 +1060,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         public static JMenuItem createMenuItem(String caption, int mnemonic, ActionListener action) {
             final JMenuItem yaguraMenuItem = new JMenuItem();
-            yaguraMenuItem.setText(caption + " (" + (char)mnemonic + ")");
+            yaguraMenuItem.setText(caption + " (" + (char) mnemonic + ")");
             yaguraMenuItem.setMnemonic(mnemonic);
             yaguraMenuItem.addActionListener(action);
             return yaguraMenuItem;

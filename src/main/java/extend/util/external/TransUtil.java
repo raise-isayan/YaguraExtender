@@ -887,8 +887,7 @@ public class TransUtil {
     public static String toByteHexEncode(byte[] bytes, boolean upperCase) {
         if (upperCase) {
             return ConvertUtil.toHexString(bytes);
-        }
-        else {
+        } else {
             return ConvertUtil.toHexString(bytes).toLowerCase();
         }
     }
@@ -2094,7 +2093,6 @@ public class TransUtil {
         }
     }
 
-
     private final static DigestUtils SHA3_512_HASH = new DigestUtils(MessageDigestAlgorithms.SHA3_512);
 
     /**
@@ -2301,23 +2299,32 @@ public class TransUtil {
     /*
      * DateへはZoneがデフォルトのZoneになるため強制的に変更
      */
-//    public static LocalDateTime toZoneWithLocalDate(Date date, ZoneId zoneId) {
-//        Calendar cal = GregorianCalendar.getInstance();
-//        cal.setTimeZone(TimeZone.getTimeZone(zoneId));
-//        cal.setTime(date);
-//        LocalDateTime ldtm = LocalDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH)+1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
-//        return ldtm;
-//    }
-
-    /*
-     * DateへはZoneがデフォルトのZoneになるため強制的に変更
-     */
     public static ZonedDateTime toZoneWithZoneDate(Date date, ZoneId zoneId) {
         Calendar cal = GregorianCalendar.getInstance();
         //cal.setTimeZone(TimeZone.getTimeZone(zoneId));
         cal.setTime(date);
         ZonedDateTime zdtm = ZonedDateTime.of(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND), 0, zoneId);
         return zdtm;
+    }
+
+    private final static char[] HALF_HEIGHT = {' ','!','"','#','$','%','&','\'','(',')','*','+',',','-','.','/','0','1','2','3','4','5','6','7','8','9',':',';','<','=','>','?','@','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','[','\\',']','^','_','`','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','{','|','}','~','｡','｢','｣','､','･','ｦ','ｧ','ｨ','ｩ','ｪ','ｫ','ｬ','ｭ','ｮ','ｯ','ｰ','ｱ','ｲ','ｳ','ｴ','ｵ','ｶ','ｷ','ｸ','ｹ','ｺ','ｻ','ｼ','ｽ','ｾ','ｿ','ﾀ','ﾁ','ﾂ','ﾃ','ﾄ','ﾅ','ﾆ','ﾇ','ﾈ','ﾉ','ﾊ','ﾋ','ﾌ','ﾍ','ﾎ','ﾏ','ﾐ','ﾑ','ﾒ','ﾓ','ﾔ','ﾕ','ﾖ','ﾗ','ﾘ','ﾙ','ﾚ','ﾛ','ﾜ','ﾝ','ﾞ','ﾟ',};
+    private final static char[] FULL_HEIGHT = {'　','！','”','＃','＄','％','＆','’','（','）','＊','＋','，','－','．','／','０','１','２','３','４','５','６','７','８','９','：','；','＜','＝','＞','？','＠','Ａ','Ｂ','Ｃ','Ｄ','Ｅ','Ｆ','Ｇ','Ｈ','Ｉ','Ｊ','Ｋ','Ｌ','Ｍ','Ｎ','Ｏ','Ｐ','Ｑ','Ｒ','Ｓ','Ｔ','Ｕ','Ｖ','Ｗ','Ｘ','Ｙ','Ｚ','［','￥','］','＾','＿','‘','ａ','ｂ','ｃ','ｄ','ｅ','ｆ','ｇ','ｈ','ｉ','ｊ','ｋ','ｌ','ｍ','ｎ','ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙ','ｚ','｛','｜','｝','￣','。','「','」','、','・','ヲ','ァ','ィ','ゥ','ェ','ォ','ャ','ュ','ョ','ッ','ー','ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ','タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ','マ','ミ','ム','メ','モ','ヤ','ユ','ヨ','ラ','リ','ル','レ','ロ','ワ','ン','゛','゜',};
+
+    private static String translate(String target, char [] search, char [] translate) {
+        String result = target;
+        int len = Math.min(search.length, translate.length);
+        for (int i = 0; i < len; i++) {
+            result = result.replace(search[i], translate[i]);
+        }
+        return result;
+    }
+
+    public static String translateFullHeight2HalfHeight(String target) {
+        return translate(target, FULL_HEIGHT, HALF_HEIGHT);
+    }
+
+    public static String translateHalfHeight2FullHeight(String target) {
+        return translate(target, HALF_HEIGHT, FULL_HEIGHT);
     }
 
 }
