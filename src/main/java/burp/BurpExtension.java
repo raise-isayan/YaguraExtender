@@ -104,6 +104,7 @@ import yagura.Config;
 import yagura.Version;
 import yagura.model.AutoResponderItem;
 import yagura.model.AutoResponderProperty;
+import yagura.model.ITranslateAction;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
 import yagura.model.LoggingProperty;
@@ -615,89 +616,69 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraEncoderMenu.setText("Encoder (E)");
             yaguraEncoderMenu.setMnemonic(KeyEvent.VK_E);
 
-            JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ActionListener() {
+            JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = SmartCodec.toUrlEncode(text, yaguraCharset, SmartCodec.ENCODE_PATTERN_LIGHT, false);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return SmartCodec.toUrlEncode(selectedText, yaguraCharset, SmartCodec.ENCODE_PATTERN_BURP, false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraEncoderMenu.add(yaguraEncoderURLMenu);
 
-            JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ActionListener() {
+            JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        String encode = SmartCodec.toUnocodeEncode(text, SmartCodec.ENCODE_PATTERN_LIGHT, false);
-                        textArea.replaceSelection(encode);
-                    }
+                public String translate(String selectedText) {
+                    return SmartCodec.toUnocodeEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP, false);
                 }
+
             });
 
             yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
 
-            JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ActionListener() {
+            JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = TransUtil.toBase64Encode(text, yaguraCharset);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toBase64Encode(selectedText, yaguraCharset);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
 
-            JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ActionListener() {
+            JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = TransUtil.toBase64URLSafeEncode(text, yaguraCharset);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toBase64URLSafeEncode(selectedText, yaguraCharset);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
 
-            JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ActionListener() {
+            JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        String encode = SmartCodec.toHtmlDecEncode(text, SmartCodec.ENCODE_PATTERN_LIGHT);
-                        textArea.replaceSelection(encode);
-                    }
+                public String translate(String selectedText) {
+                    return SmartCodec.toHtmlDecEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP);
                 }
+
             });
 
             yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
@@ -709,88 +690,66 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraDecoderMenu.setText("Decoder (D)");
             yaguraDecoderMenu.setMnemonic(KeyEvent.VK_D);
 
-            JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ActionListener() {
+            JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = SmartCodec.toUrlDecode(text, yaguraCharset);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return SmartCodec.toUrlDecode(selectedText, yaguraCharset);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraDecoderMenu.add(yaguraDecoderURLMenu);
 
-            JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ActionListener() {
+            JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        String encode = SmartCodec.toUnocodeDecode(text);
-                        textArea.replaceSelection(encode);
-                    }
+                public String translate(String selectedText) {
+                    return SmartCodec.toUnocodeDecode(selectedText);
                 }
+
             });
 
             yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
 
-            JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ActionListener() {
+            JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = TransUtil.toBase64Decode(text, yaguraCharset);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toBase64Decode(selectedText, yaguraCharset);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
             });
 
             yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
 
-            JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ActionListener() {
+            JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = TransUtil.toBase64URLSafeEncode(text, yaguraCharset);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toBase64URLSafeDecode(selectedText, yaguraCharset);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
 
-            JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ActionListener() {
+            JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        String encode = SmartCodec.toHtmlDecode(text, SmartCodec.ENCODE_PATTERN_LIGHT);
-                        textArea.replaceSelection(encode);
-                    }
+                public String translate(String selectedText) {
+                    return SmartCodec.toHtmlDecode(selectedText, SmartCodec.ENCODE_PATTERN_BURP);
                 }
             });
 
@@ -803,97 +762,75 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraConverterMenu.setText("Converter (C)");
             yaguraConverterMenu.setMnemonic(KeyEvent.VK_C);
 
-            JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, new ActionListener() {
+            JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        textArea.replaceSelection(text.toUpperCase());
-                    }
+                public String translate(String selectedText) {
+                    return selectedText.toUpperCase();
                 }
+
             });
 
             yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
 
-            JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, new ActionListener() {
+            JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        textArea.replaceSelection(text.toLowerCase());
-                    }
+                public String translate(String selectedText) {
+                    return selectedText.toLowerCase();
                 }
+
             });
 
             yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
 
-            JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, new ActionListener() {
+            JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = TransUtil.toByteHexEncode(text, yaguraCharset, false);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toByteHexEncode(selectedText, yaguraCharset, false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraConverterMenu.add(yaguraConverterBin2HexMenu);
 
-            JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, new ActionListener() {
+            JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String encode = TransUtil.toByteHexDecode(text, yaguraCharset);
-                            textArea.replaceSelection(encode);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toByteHexDecode(selectedText, yaguraCharset);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
 
-            JMenuItem yaguraConverterFull2Half = createMenuItem("Full Height -> Half Height", KeyEvent.VK_F, new ActionListener() {
+            JMenuItem yaguraConverterFull2Half = createMenuItem("Full Height -> Half Height", KeyEvent.VK_F, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        String encode = TransUtil.translateFullHeight2HalfHeight(text);
-                        textArea.replaceSelection(encode);
-                    }
+                public String translate(String selectedText) {
+                    return TransUtil.translateFullHeight2HalfHeight(selectedText);
                 }
+
             });
             yaguraConverterMenu.add(yaguraConverterFull2Half);
 
-            JMenuItem yaguraConverterHalf2Full = createMenuItem("Half Height -> Full Height", KeyEvent.VK_K, new ActionListener() {
+            JMenuItem yaguraConverterHalf2Full = createMenuItem("Half Height -> Full Height", KeyEvent.VK_K, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        String encode = TransUtil.translateHalfHeight2FullHeight(text);
-                        textArea.replaceSelection(encode);
-                    }
+                public String translate(String selectedText) {
+                    return TransUtil.translateHalfHeight2FullHeight(selectedText);
                 }
+
             });
             yaguraConverterMenu.add(yaguraConverterHalf2Full);
 
@@ -904,78 +841,77 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraHashMenu.setText("Hash (H)");
             yaguraHashMenu.setMnemonic(KeyEvent.VK_H);
 
-            JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_0, new ActionListener() {
+            JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String hash = TransUtil.toMd5Sum(text, yaguraCharset, false);
-                            textArea.replaceSelection(hash);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toMd2Sum(selectedText, yaguraCharset, false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
+            });
+
+            yaguraHashMenu.add(yaguraHashMD2Menu);
+
+            JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, new ITranslateAction() {
+
+                @Override
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toMd5Sum(selectedText, yaguraCharset, false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
+                    }
+                }
+
             });
 
             yaguraHashMenu.add(yaguraHashMD5Menu);
 
-            JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_1, new ActionListener() {
+            JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String hash = TransUtil.toSHA1Sum(text, yaguraCharset, false);
-                            textArea.replaceSelection(hash);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toSHA1Sum(selectedText, yaguraCharset, false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraHashMenu.add(yaguraHashSha1Menu);
 
-            JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_2, new ActionListener() {
+            JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_3, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String hash = TransUtil.toSHA256Sum(text, yaguraCharset, false);
-                            textArea.replaceSelection(hash);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toSHA256Sum(selectedText, yaguraCharset, false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraHashMenu.add(yaguraHashSha256Menu);
 
-            JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_3, new ActionListener() {
+            JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_4, new ITranslateAction() {
+
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                    Component owner = mgr.getPermanentFocusOwner();
-                    if (owner instanceof JTextArea textArea) {
-                        try {
-                            String text = textArea.getSelectedText();
-                            String hash = TransUtil.toSHA512Sum(text, yaguraCharset, false);
-                            textArea.replaceSelection(hash);
-                        } catch (UnsupportedEncodingException ex) {
-                            Logger.getLogger(BurpExtension.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                        }
+                public String translate(String selectedText) {
+                    try {
+                        return TransUtil.toSHA512Sum(selectedText, yaguraCharset, false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
                     }
                 }
+
             });
 
             yaguraHashMenu.add(yaguraHashSha512Menu);
@@ -1058,11 +994,23 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.userInterface().menuBar().registerMenu(yaguraMenu);
         }
 
-        public static JMenuItem createMenuItem(String caption, int mnemonic, ActionListener action) {
+        public static JMenuItem createMenuItem(String caption, int mnemonic, ITranslateAction action) {
             final JMenuItem yaguraMenuItem = new JMenuItem();
             yaguraMenuItem.setText(caption + " (" + (char) mnemonic + ")");
             yaguraMenuItem.setMnemonic(mnemonic);
-            yaguraMenuItem.addActionListener(action);
+            yaguraMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                    Component owner = mgr.getPermanentFocusOwner();
+                    if (owner instanceof JTextArea textArea) {
+                        String text = textArea.getSelectedText();
+                        String encode = action.translate(text);
+                        textArea.replaceSelection(encode);
+                    }
+                }
+
+            });
             return yaguraMenuItem;
         }
 

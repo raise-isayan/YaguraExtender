@@ -12,6 +12,7 @@ import burp.api.montoya.http.message.responses.HttpResponse;
 import extension.burp.HttpTarget;
 import extension.burp.MessageHighlightColor;
 import extension.helpers.HttpResponseWapper;
+import extension.helpers.StringUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -252,8 +253,8 @@ public class HttpMessageItem implements HttpRequestResponse {
     public void dump() {
         try {
             System.out.println(String.format("[%d].getUrl=%s", ordinal, this.getUrl()));
-            System.out.println(String.format("[%d].getRequest=%s", ordinal, this.getRequest()));
-            System.out.println(String.format("[%d].getResponse=%s", ordinal, this.getResponse()));
+            System.out.println(String.format("[%d].getRequest=%s", ordinal, StringUtil.getStringRaw(this.getRequest())));
+            System.out.println(String.format("[%d].getResponse=%s", ordinal, StringUtil.getStringRaw(this.getResponse())));
             System.out.println(String.format("[%d].getHighlight=%s", ordinal, this.getHighlight()));
             System.out.println(String.format("[%d].getStatusCode=%d", ordinal, this.getStatusCode()));
         } catch (Exception ex) {

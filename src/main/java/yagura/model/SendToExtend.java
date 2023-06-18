@@ -51,9 +51,10 @@ public class SendToExtend extends SendToMenuItem {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        javax.swing.JMenuItem item = (javax.swing.JMenuItem) e.getSource();
-        List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
-        sendToEvent(messageInfo);
+        if (e.getSource() instanceof javax.swing.JMenuItem) {
+            List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
+            sendToEvent(messageInfo);
+        }
     }
 
     public SendToExtend(SendToItem item, ContextMenuEvent contextMenu) {

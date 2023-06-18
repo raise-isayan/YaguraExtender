@@ -39,29 +39,4 @@ public class Config extends BurpConfig {
         return String.format("burp_tool_%s.log", toolName);
     }
 
-//    public static void loadFromJson(File fi, Map<String, String> option) throws IOException {
-//        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
-//        gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
-//        Gson gson = gsonBuilder.create();
-//        String jsonString = StringUtil.getStringUTF8(FileUtil.bytesFromFile(fi));
-//        JsonElement jsonRoot = JsonUtil.parseJson(jsonString);
-//        if (jsonRoot.isJsonObject()) {
-//            JsonObject jsonMap = jsonRoot.getAsJsonObject();
-//            for (String memberName : jsonMap.keySet()) {
-//                option.put(memberName, jsonMap.get(memberName).toString());
-//            }
-//        }
-//    }
-//
-//    public static void saveToJson(File fo, Map<String, String> option) throws IOException {
-//        GsonBuilder gsonBuilder = new GsonBuilder().serializeNulls();
-//        gsonBuilder = gsonBuilder.excludeFieldsWithoutExposeAnnotation();
-//        Gson gson = gsonBuilder.create();
-//        JsonObject jsonMap = new JsonObject();
-//        for (String memberName : option.keySet()) {
-//            jsonMap.add(memberName, JsonUtil.parseJson(option.get(memberName)));
-//        }
-//        String jsonString = gson.toJson(jsonMap);
-//        FileUtil.bytesToFile(StringUtil.getBytesUTF8(jsonString), fo);
-//    }
 }
