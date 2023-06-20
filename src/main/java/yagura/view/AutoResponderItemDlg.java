@@ -268,7 +268,9 @@ public class AutoResponderItemDlg extends CustomDialog {
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
         AutoResponderItem item = this.getItem();
         String mime = ConvertUtil.toEmpty(this.cmbContentType.getEditor().getItem());
-        if (item.getMatch().isEmpty()) {
+        if (item.getMethod() != null && item.getMethod().isEmpty()) {
+            JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.method.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
+        } else if (item.getMatch().isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.repmatch.empty"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
         } else if (!item.isRegexp() && item.isValidRegex() && !HttpUtil.isValidUrl(item.getMatch())) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.responder.match.invalid.url"), "AutoResponder", JOptionPane.INFORMATION_MESSAGE);
