@@ -342,8 +342,8 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
     }
 
     @Override
-    public boolean isEnabledFor(HttpRequestResponse requestResponse) {
-        if (requestResponse == null) {
+    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        if (httpRequestResponse == null) {
             return false;
         }
         try {
@@ -352,8 +352,12 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
             if (!view.contains(UniversalViewProperty.UniversalView.VIEW_STATE)) {
                 return false;
             }
+            // Burp v2023.4.1 以降の謎挙動に対応
+            if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+                return true;
+            }
             // パラメータ値のサイズではなく全体のサイズで判断する
-            HttpRequest httpRequest = requestResponse.request();
+            HttpRequest httpRequest = httpRequestResponse.request();
             if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
                 return false;
             }

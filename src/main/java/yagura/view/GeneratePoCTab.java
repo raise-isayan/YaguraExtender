@@ -1163,24 +1163,18 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
-        String guessCharset = null;
+        String guessCharset = StandardCharsets.ISO_8859_1.name();
         final boolean useHttps;
         HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
         HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
         if (httpRequestResponse.response() != null) {
-            guessCharset = httpResponse.getGuessCharset();
+            guessCharset = httpResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name());
         }
         HttpService service = httpRequest.httpService();
         if (service != null) {
             useHttps = httpRequest.httpService().secure();
         } else {
             useHttps = httpRequest.isSecure();
-        }
-        if (guessCharset == null) {
-            guessCharset = httpResponse.getGuessCharset();
-        }
-        if (guessCharset == null) {
-            guessCharset = StandardCharsets.ISO_8859_1.name();
         }
         final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.chkUseHttps.setSelected(useHttps);
@@ -1201,6 +1195,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             this.setLineWrap(viewProperty.isLineWrap());
             if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
                 return false;
+            }
+            // Burp v2023.4.1 以降の謎挙動に対応
+            if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+                return true;
             }
             HttpRequestWapper request = new HttpRequestWapper(httpRequestResponse.request());
             if (request.httpService() == null) {

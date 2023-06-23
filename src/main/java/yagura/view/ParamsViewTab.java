@@ -4,6 +4,7 @@ import burp.BurpExtension;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
+import static burp.api.montoya.http.message.params.HttpParameterType.COOKIE;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
@@ -499,6 +500,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
                 return false;
             }
+            // Burp v2023.4.1 以降の謎挙動に対応
+            if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+                return true;
+            }
             HttpRequest httpRequest = httpRequestResponse.request();
             if (httpRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
                     && BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
@@ -510,10 +515,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             for (ParsedHttpParameter p : params) {
                 switch (p.type()) {
                     case URL:
+                    case COOKIE:
                         isDecodeParam = true;
                         count++;
                         break;
-                    case COOKIE:
                     case BODY:
                         isDecodeParam = false;
                         count++;

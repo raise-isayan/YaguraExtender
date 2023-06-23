@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.ToolType;
@@ -102,7 +103,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
         this.txtURaw.setHighlightCurrentLine(true);
         this.txtURaw.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtURaw.setEditable(this.editable);
-        add(this.scrollURaw, java.awt.BorderLayout.CENTER);
+        this.add(this.scrollURaw, java.awt.BorderLayout.CENTER);
 
         /**
          * * UI design end **
@@ -174,6 +175,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             if (this.httpRequestResponse == null) {
                 return;
             }
+            BurpExtender.helpers().outPrintln("enter:setMessageEncoding:" + this.isRequest + ":" + encoding);
             this.txtURaw.setText("");
             SwingWorker swText = new SwingWorker<String, Object>() {
                 @Override
@@ -263,18 +265,15 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             this.clearView();
             this.txtURaw.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
         } else {
-            String guessCharset = null;
+            String guessCharset = StandardCharsets.ISO_8859_1.name();
             if (this.isRequest) {
                 HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-                guessCharset = httpRequest.getGuessCharset();
+                guessCharset = httpRequest.getGuessCharset(StandardCharsets.ISO_8859_1.name());
             } else {
                 HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
-                guessCharset = httpResponse.getGuessCharset();
+                guessCharset = httpResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name());
                 MimeType contentType = httpResponse.statedMimeType();
                 this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
-            }
-            if (guessCharset == null) {
-                guessCharset = StandardCharsets.ISO_8859_1.name();
             }
             BurpExtension extenderImpl = BurpExtension.getInstance();
 
@@ -284,14 +283,20 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             this.encodingItemStateChanged.itemStateChanged(null);
             this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
 
+//            this.setMessageEncoding(guessCharset);
+
             this.textModified = false;
         }
     }
 
     @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
-        if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && httpRequestResponse.request() == null)) {
+        if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && httpRequestResponse.response() == null)) {
             return false;
+        }
+        // Burp v2023.4.1 以降の謎挙動に対応
+        if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+            return true;
         }
         try {
             // "This message is too large to display"
@@ -338,7 +343,8 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
 
     @Override
     public boolean isModified() {
-        return this.textModified;
+//        return this.textModified;
+        return false;
     }
 
     public HttpRequestResponse getHttpRequestResponse() {
@@ -349,8 +355,9 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
                 if (encoding != null) {
                     try {
                         if (this.isRequest) {
-                            HttpRequest httpRequest = HttpRequest.httpRequest(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
+                            HttpRequest httpRequest = ExtensionHelper.httpRequest(this.httpRequestResponse.httpService(), ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
                             HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(httpRequest, this.httpRequestResponse.response(), this.httpRequestResponse.annotations());
+                            BurpExtender.helpers().outPrintln("request:getHttpRequestResponse:" + StringUtil.getStringRaw( httpRequestResponse.request().toByteArray().getBytes()));
                             return http;
                         } else {
                             HttpResponse httpResponse = HttpResponse.httpResponse(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));

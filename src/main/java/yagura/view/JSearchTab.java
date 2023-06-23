@@ -722,7 +722,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                 do {
                     String encoding = StandardCharsets.ISO_8859_1.name();
                     if (this.getAutoRecogniseEncoding()) {
-                        encoding = item.getGuessCharset();
+                        encoding = item.getGuessCharset(StandardCharsets.ISO_8859_1.name());
                     }
                     if (this.chkScopeOnly.isSelected()) {
                         if (!BurpExtension.helpers().isInScope(item.getUrl())) {

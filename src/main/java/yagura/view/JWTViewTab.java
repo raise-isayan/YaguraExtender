@@ -299,6 +299,10 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedE
             if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
                 return false;
             }
+            // Burp v2023.4.1 以降の謎挙動に対応
+            if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+                return true;
+            }
             this.setLineWrap(viewProperty.isLineWrap());
             List<HttpHeader> headers = httpRequest.headers();
             for (HttpHeader h : headers) {

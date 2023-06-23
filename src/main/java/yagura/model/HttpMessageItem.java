@@ -234,19 +234,12 @@ public class HttpMessageItem implements HttpRequestResponse {
         return new HttpMessageItem(item);
     }
 
-    public String getGuessCharset() {
-        String charset = StandardCharsets.ISO_8859_1.name();
-        try {
+    public String getGuessCharset(String defaultCharset) {
+        String charset = defaultCharset;
             if (this.response() != null) {
                 HttpResponseWapper wrap = new HttpResponseWapper(this.response());
-                charset = wrap.getGuessCharset();
-                if (charset == null) {
-                    charset = StandardCharsets.ISO_8859_1.name();
-                }
+                charset = wrap.getGuessCharset(defaultCharset);
             }
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
         return charset;
     }
 

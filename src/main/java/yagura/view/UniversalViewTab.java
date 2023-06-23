@@ -111,6 +111,11 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        listSelect.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                listSelectValueChanged(evt);
+            }
+        });
         scrollSelect.setViewportView(listSelect);
 
         pop.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
@@ -177,7 +182,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnEncRightArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnEncLerftArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnReset, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE))
+                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 64, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
@@ -513,6 +518,13 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private void chklineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chklineWrapActionPerformed
         this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chklineWrapActionPerformed
+
+    private void listSelectValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listSelectValueChanged
+        if (evt.getSource() instanceof javax.swing.JList list) {
+            String selectValue = String.valueOf(list.getSelectedValue());
+            btnEncLerftArraw.setEnabled(!UniversalViewProperty.isRequiredCharset(selectValue));
+        }
+    }//GEN-LAST:event_listSelectValueChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;

@@ -1,5 +1,6 @@
 package yagura.model;
 
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
@@ -89,5 +90,22 @@ public class UniversalViewPropertyTest {
         EnumSet<UniversalViewProperty.UniversalView> result = UniversalViewProperty.UniversalView.parseEnumSet(s);
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of parseEnumSet method, of class NotifyType.
+     */
+    @Test
+    public void testIsRequiredCharset() {
+        System.out.println("isRequiredCharset");
+        {
+            boolean result = UniversalViewProperty.isRequiredCharset(StandardCharsets.UTF_8.name());
+            assertTrue(result);
+        }
+        {
+            boolean result = UniversalViewProperty.isRequiredCharset("Shift_JIS");
+            assertFalse(result);
+        }
+    }
+
 
 }

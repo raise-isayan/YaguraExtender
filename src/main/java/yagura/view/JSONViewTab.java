@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
-import org.fife.ui.rtextarea.RTextArea;
 import yagura.model.QuickSearchEvent;
 import yagura.model.QuickSearchListener;
 import yagura.model.SendToMenu;
@@ -63,27 +62,28 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         customizeComponents();
     }
 
-    private final JSONView jsonView = new JSONView(isJsonp());
+    private JSONView jsonView;
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
-    private JPopupMenu popupMenu;
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        RTextArea txtJSON = (org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea();
+        this.jsonView = new JSONView(isJsonp());
+        this.add(jsonView, java.awt.BorderLayout.CENTER);
+
+        org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtJSON = (org.fife.ui.rsyntaxtextarea.RSyntaxTextArea )this.jsonView.getTextArea();
         this.quickSearchTab.setSelectedTextArea(txtJSON);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.addQuickSearchListener(quickSerchStateChanged);
 
         BurpExtension extenderImpl = BurpExtension.getInstance();
-        this.popupMenu = (txtJSON).getPopupMenu();
-        this.popupMenu.addSeparator();
+        JPopupMenu popupMenu = txtJSON.getPopupMenu();
+        popupMenu.addSeparator();
         SendToMenu sendToMenu = extenderImpl.getSendToMenu();
-        sendToMenu.appendSendToMenu(this.popupMenu, this, sendToMenu.getContextMenu());
-        txtJSON.setPopupMenu(this.popupMenu);
+        sendToMenu.appendSendToMenu(popupMenu, this, sendToMenu.getContextMenu());
+        txtJSON.setPopupMenu(popupMenu);
 
-        this.add(jsonView, java.awt.BorderLayout.CENTER);
-        add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
+        this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
     }
 
     public boolean isJsonp() {
@@ -166,6 +166,10 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
         }
+        // Burp v2023.4.1 以降の謎挙動に対応
+        if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+            return true;
+        }
         HttpRequest httpRequest = httpRequestResponse.request();
         HttpResponse httpResponse = httpRequestResponse.response();
 
@@ -200,6 +204,10 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         EnumSet<UniversalViewProperty.UniversalView> view = BurpExtension.getInstance().getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
             return false;
+        }
+        // Burp v2023.4.1 以降の謎挙動に対応
+        if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+            return true;
         }
         HttpRequest httpRequest = httpRequestResponse.request();
         HttpResponse httpResponse = httpRequestResponse.response();
@@ -279,31 +287,23 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
    @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
-        String guessCharset = null;
+        String guessCharset = StandardCharsets.UTF_8.name();
         if (this.isRequest) {
             HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-            guessCharset = httpRequest.getGuessCharset();
+            guessCharset = httpRequest.getGuessCharset(StandardCharsets.UTF_8.name());
         } else {
             HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
-            guessCharset = httpResponse.getGuessCharset();
-        }
-        if (guessCharset == null) {
-            guessCharset = StandardCharsets.ISO_8859_1.name();
+            guessCharset = httpResponse.getGuessCharset(StandardCharsets.UTF_8.name());
         }
         BurpExtension extenderImpl = BurpExtension.getInstance();
-        JPopupMenu popupSendTo = new JPopupMenu();
-        for (int i = 0; i < this.popupMenu.getComponentCount(); i++) {
-            popupSendTo.add(this.popupMenu.getComponent(i));
-        }
-        popupSendTo.addSeparator();
-        SendToMenu sendToMenu = extenderImpl.getSendToMenu();
-        sendToMenu.appendSendToMenu(popupSendTo, this, sendToMenu.getContextMenu());
-        ((org.fife.ui.rtextarea.RTextArea)this.jsonView.getTextArea()).setPopupMenu(popupSendTo);
 
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+
+//            this.setMessageEncoding(guessCharset);
+
     }
 
     @Override

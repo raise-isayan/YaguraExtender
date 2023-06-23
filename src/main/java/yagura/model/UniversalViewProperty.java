@@ -25,32 +25,46 @@ public class UniversalViewProperty implements IPropertyConfig {
      * http://userguide.icu-project.org/conversion/detection
      * https://code.google.com/archive/p/juniversalchardet/
      */
+    private static final String[] ENCODING_REQUIRED_LIST = {
+        StandardCharsets.UTF_8.name(),
+        StandardCharsets.ISO_8859_1.name()
+    };
+
     private static final String[] ENCODING_DEFAULT_JAPANESE_LIST = {
         StandardCharsets.UTF_8.name(),
+        StandardCharsets.ISO_8859_1.name(),
         "Shift_JIS",
         "EUC-JP",
-        "ISO-2022-JP",
-        StandardCharsets.ISO_8859_1.name(),};
+        "ISO-2022-JP"
+    };
 
     private static final String[] ENCODING_DEFAULT_KOREAN_LIST = {
         StandardCharsets.UTF_8.name(),
+        StandardCharsets.ISO_8859_1.name(),
         "EUC-KR",
-        "ISO-2022-KR",
-        StandardCharsets.ISO_8859_1.name(),};
+        "ISO-2022-KR"
+    };
 
     private static final String[] ENCODING_DEFAULT_CHINESE_LIST = {
         StandardCharsets.UTF_8.name(),
+        StandardCharsets.ISO_8859_1.name(),
         "BIG5",
         "x-EUC-TW",
         "GB18030",
         "GB2312", // HZ-GB-2312 (GBK/EUC-CN)
-        "ISO-2022-CN",
-        StandardCharsets.ISO_8859_1.name(),};
+        "ISO-2022-CN"
+    };
 
     private static final String[] ENCODING_DEFAULT_OTHER_LIST = {
         StandardCharsets.UTF_8.name(),
-        StandardCharsets.US_ASCII.name(),
-        StandardCharsets.ISO_8859_1.name(),};
+        StandardCharsets.ISO_8859_1.name(),
+        StandardCharsets.US_ASCII.name()
+    };
+
+    public static boolean isRequiredCharset(String charSet) {
+        final List<String> required_list = List.of(ENCODING_REQUIRED_LIST);
+        return required_list.contains(charSet);
+    }
 
     // Encoding tab
     public static List<String> getDefaultEncodingList() {
@@ -113,7 +127,7 @@ public class UniversalViewProperty implements IPropertyConfig {
     }
 
     @Expose
-    private int dispayMaxLength = 10000000;
+    private int dispayMaxLength = 100000;
 
     public int getDispayMaxLength() {
         return this.dispayMaxLength;

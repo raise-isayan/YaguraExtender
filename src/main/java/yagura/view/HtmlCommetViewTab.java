@@ -18,6 +18,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -199,7 +200,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
         HttpResponseWapper response = new HttpResponseWapper(httpRequestResponse.response());
-        String guessCharset = response.getGuessCharset();
+        String guessCharset = response.getGuessCharset(StandardCharsets.ISO_8859_1.name());
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);
