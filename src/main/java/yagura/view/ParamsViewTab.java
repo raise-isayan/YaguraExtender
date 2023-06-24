@@ -4,7 +4,6 @@ import burp.BurpExtension;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
-import static burp.api.montoya.http.message.params.HttpParameterType.COOKIE;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;

@@ -94,6 +94,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import passive.signature.MatchAlert;
@@ -631,7 +632,18 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraEncoderMenu.add(yaguraEncoderURLMenu);
 
-            JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ITranslateAction() {
+            JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
+
+                @Override
+                public String translate(String selectedText) {
+                    return SmartCodec.toUnocodeUrlEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP, false);
+                }
+
+            });
+
+            yaguraEncoderMenu.add(yaguraEncoderURLUnicodeMenu);
+
+            JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
 
                 @Override
                 public String translate(String selectedText) {
@@ -705,7 +717,18 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraDecoderMenu.add(yaguraDecoderURLMenu);
 
-            JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)", KeyEvent.VK_N, new ITranslateAction() {
+            JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
+
+                @Override
+                public String translate(String selectedText) {
+                    return SmartCodec.toUnicodeUrlDecode(selectedText);
+                }
+
+            });
+
+            yaguraDecoderMenu.add(yaguraDecoderURLUnicodeMenu);
+
+            JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
 
                 @Override
                 public String translate(String selectedText) {
@@ -814,21 +837,21 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
 
-            JMenuItem yaguraConverterFull2Half = createMenuItem("Full Height -> Half Height", KeyEvent.VK_F, new ITranslateAction() {
+            JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, new ITranslateAction() {
 
                 @Override
                 public String translate(String selectedText) {
-                    return TransUtil.translateFullHeight2HalfHeight(selectedText);
+                    return TransUtil.translateFullWidth2HalfWidth(selectedText);
                 }
 
             });
             yaguraConverterMenu.add(yaguraConverterFull2Half);
 
-            JMenuItem yaguraConverterHalf2Full = createMenuItem("Half Height -> Full Height", KeyEvent.VK_K, new ITranslateAction() {
+            JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, new ITranslateAction() {
 
                 @Override
                 public String translate(String selectedText) {
-                    return TransUtil.translateHalfHeight2FullHeight(selectedText);
+                    return TransUtil.translateHalfWidth2FullWidth(selectedText);
                 }
 
             });

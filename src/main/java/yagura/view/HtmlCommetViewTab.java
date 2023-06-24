@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -8,7 +7,6 @@ import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
-import extension.helpers.ConvertUtil;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.SmartCodec;

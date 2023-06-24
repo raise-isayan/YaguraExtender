@@ -175,7 +175,6 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             if (this.httpRequestResponse == null) {
                 return;
             }
-            BurpExtender.helpers().outPrintln("enter:setMessageEncoding:" + this.isRequest + ":" + encoding);
             this.txtURaw.setText("");
             SwingWorker swText = new SwingWorker<String, Object>() {
                 @Override
@@ -357,7 +356,6 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
                         if (this.isRequest) {
                             HttpRequest httpRequest = ExtensionHelper.httpRequest(this.httpRequestResponse.httpService(), ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
                             HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(httpRequest, this.httpRequestResponse.response(), this.httpRequestResponse.annotations());
-                            BurpExtender.helpers().outPrintln("request:getHttpRequestResponse:" + StringUtil.getStringRaw( httpRequestResponse.request().toByteArray().getBytes()));
                             return http;
                         } else {
                             HttpResponse httpResponse = HttpResponse.httpResponse(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));

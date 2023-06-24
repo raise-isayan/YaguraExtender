@@ -135,7 +135,6 @@ public class JSONView extends javax.swing.JPanel {
         this.txtJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtJSON.setBackground(SystemColor.text);
         this.txtJSON.setEditable(false);
-//        scrollURaw.setViewportView(txtURaw);
 
         add(this.scrollJSON, java.awt.BorderLayout.CENTER);
 
