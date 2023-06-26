@@ -1197,7 +1197,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 return false;
             }
             // Burp v2023.4.1 以降の謎挙動に対応
-            if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
+            if ((httpRequestResponse.request() != null && httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null)
+                    || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
                 return true;
             }
             HttpRequestWapper request = new HttpRequestWapper(httpRequestResponse.request());

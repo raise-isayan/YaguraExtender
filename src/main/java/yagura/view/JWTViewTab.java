@@ -288,7 +288,6 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedE
         if (httpRequestResponse == null) {
             return false;
         }
-        final HttpRequest httpRequest = httpRequestResponse.request();
         boolean find = false;
         try {
             UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
@@ -296,12 +295,14 @@ public class JWTViewTab extends javax.swing.JPanel implements ExtensionProvidedE
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
                 return false;
             }
+            // Burp v2023.4.1 以降の謎挙動に対応
+            if ((httpRequestResponse.request() != null && httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null)
+                    || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
+                return true;
+            }
+            final HttpRequest httpRequest = httpRequestResponse.request();
             if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
                 return false;
-            }
-            // Burp v2023.4.1 以降の謎挙動に対応
-            if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
-                return true;
             }
             this.setLineWrap(viewProperty.isLineWrap());
             List<HttpHeader> headers = httpRequest.headers();

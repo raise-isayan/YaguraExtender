@@ -283,7 +283,6 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
 
 //            this.setMessageEncoding(guessCharset);
-
             this.textModified = false;
         }
     }
@@ -293,10 +292,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
         if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && httpRequestResponse.response() == null)) {
             return false;
         }
-        // Burp v2023.4.1 以降の謎挙動に対応
-        if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
-            return true;
-        }
+
         try {
             // "This message is too large to display"
             UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
@@ -304,6 +300,13 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
                 return false;
             }
+
+            // Burp v2023.4.1 以降の謎挙動に対応
+            if ((httpRequestResponse.request() != null && httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null)
+                    || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
+                return true;
+            }
+
             HttpRequest httpRequest = httpRequestResponse.request();
             HttpResponse httpResponse = httpRequestResponse.response();
 
