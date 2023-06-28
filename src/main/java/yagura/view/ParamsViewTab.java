@@ -10,6 +10,7 @@ import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
+import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
@@ -459,25 +460,15 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                 @Override
                 protected void done() {
                     try {
-                        final HttpRequest httpRequest = get();
-                        String guessCharset = null;
-                        if (httpRequest.contentType() == ContentType.URL_ENCODED) {
-                            guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(SmartCodec.toUrlDecode(httpRequest.url(), StandardCharsets.ISO_8859_1.name())));
-                        } else {
-                            guessCharset = HttpUtil.getUniversalGuessCode(httpRequest.body().getBytes());
-                        }
-
-                        if (guessCharset == null) {
-                            guessCharset = StandardCharsets.ISO_8859_1.name();
-                        }
-
+                        final HttpRequestWapper httpRequest = new HttpRequestWapper(get());
+                        String guessCharset = httpRequest.getGuessCharset(StandardCharsets.ISO_8859_1.name());
                         quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
                         quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
                         encodingItemStateChanged.itemStateChanged(null);
                         quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
                         textModified = false;
 
-                    } catch (InterruptedException | ExecutionException | UnsupportedEncodingException ex) {
+                    } catch (InterruptedException | ExecutionException  ex) {
                         logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }

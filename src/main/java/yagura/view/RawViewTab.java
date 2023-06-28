@@ -4,6 +4,8 @@ import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.ToolType;
+import burp.api.montoya.http.message.ContentType;
+import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -14,8 +16,12 @@ import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extension.burp.ExtensionHelper;
 import extend.util.external.ThemeUI;
+import static extension.helpers.HttpMessageWapper.getContentTypeHeader;
 import extension.helpers.HttpRequestWapper;
+import static extension.helpers.HttpRequestWapper.hasQueryParameter;
 import extension.helpers.HttpResponseWapper;
+import extension.helpers.HttpUtil;
+import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
@@ -31,6 +37,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
@@ -267,7 +275,10 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             String guessCharset = StandardCharsets.ISO_8859_1.name();
             if (this.isRequest) {
                 HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-                guessCharset = httpRequest.getGuessCharset(StandardCharsets.ISO_8859_1.name());
+                guessCharset = httpRequest.getGuessCharset(httpRequestResponse.request());
+                if (guessCharset == null) {
+                    guessCharset = StandardCharsets.ISO_8859_1.name();
+                }
             } else {
                 HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
                 guessCharset = httpResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name());
@@ -345,8 +356,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
 
     @Override
     public boolean isModified() {
-//        return this.textModified;
-        return false;
+        return this.textModified;
     }
 
     public HttpRequestResponse getHttpRequestResponse() {
@@ -395,5 +405,9 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
     public boolean isExtendVisible() {
         return false;
     }
+
+    protected final static Pattern CONTENT_CHARSET = Pattern.compile("(\\s*charset=[\"\']?([\\w_-]+)[\"\']?)", Pattern.MULTILINE);
+
+
 
 }
