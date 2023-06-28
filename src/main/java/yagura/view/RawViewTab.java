@@ -275,10 +275,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             String guessCharset = StandardCharsets.ISO_8859_1.name();
             if (this.isRequest) {
                 HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-                guessCharset = httpRequest.getGuessCharset(httpRequestResponse.request());
-                if (guessCharset == null) {
-                    guessCharset = StandardCharsets.ISO_8859_1.name();
-                }
+                guessCharset = httpRequest.getGuessCharset(guessCharset = StandardCharsets.ISO_8859_1.name());
             } else {
                 HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
                 guessCharset = httpResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name());
