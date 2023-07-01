@@ -716,7 +716,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
-            MontoyaApi api = BurpExtension.api();
+            final MontoyaApi api = BurpExtension.api();
             final HttpRequestWapper httpRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             // 自動判定
             String contentType = httpRequest.getEnctype();
@@ -749,7 +749,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             }
 
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : httpRequest.method();
-            HttpTarget httpService = HttpTarget.getHttpTarget(httpRequest.httpService().host(), httpRequest.httpService().port(), csrfParam.isUseHttps());
+            final HttpTarget httpService = HttpTarget.getHttpTarget(httpRequest.httpService().host(), httpRequest.httpService().port(), csrfParam.isUseHttps());
             String csrfUrl = httpRequest.url();
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">" + HttpUtil.LINE_TERMINATE, new Object[]{csrfEncoding}));
@@ -929,7 +929,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : httpRequest.method();
-            HttpTarget httpService = HttpTarget.getHttpTarget(httpRequest.httpService().host(), httpRequest.httpService().port(), csrfParam.isUseHttps());
+            final HttpTarget httpService = HttpTarget.getHttpTarget(httpRequest.httpService().host(), httpRequest.httpService().port(), csrfParam.isUseHttps());
             String csrfUrl = httpRequest.url();
 
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);

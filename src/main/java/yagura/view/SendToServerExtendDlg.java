@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import yagura.model.CertificateItem;
 import yagura.model.HttpExtendProperty;
+import yagura.model.SendToExtendProperty;
+import yagura.model.SendToParameterProperty;
 
 /**
  *
@@ -41,7 +43,14 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         btnGrpHttpClientType = new javax.swing.ButtonGroup();
         btnGrpFormat = new javax.swing.ButtonGroup();
-        pnlMain = new javax.swing.JPanel();
+        btnGrpReqComment = new javax.swing.ButtonGroup();
+        btnGrpReqNumber = new javax.swing.ButtonGroup();
+        btnGrpReqName = new javax.swing.ButtonGroup();
+        pnlApply = new javax.swing.JPanel();
+        btnCancel = new javax.swing.JButton();
+        btnOK = new javax.swing.JButton();
+        tabbetSendToExtend = new javax.swing.JTabbedPane();
+        pnlConnections = new javax.swing.JPanel();
         pnlUseClient = new javax.swing.JPanel();
         rdoCustomClient = new javax.swing.JRadioButton();
         rdoBurpClient = new javax.swing.JRadioButton();
@@ -73,9 +82,15 @@ public class SendToServerExtendDlg extends CustomDialog {
         tableCertificate = new javax.swing.JTable();
         pnlServerCerficate = new javax.swing.JPanel();
         chkIgnoreValidateCertification = new javax.swing.JCheckBox();
-        pnlApply = new javax.swing.JPanel();
-        btnCancel = new javax.swing.JButton();
-        btnOK = new javax.swing.JButton();
+        pnlSendToParameter = new javax.swing.JPanel();
+        pnlSendToOverride = new javax.swing.JPanel();
+        chkUseReqComment = new javax.swing.JCheckBox();
+        chkUseReqName = new javax.swing.JCheckBox();
+        rdoReqNameResponseTitle = new javax.swing.JRadioButton();
+        rdoReqNameHistoryComment = new javax.swing.JRadioButton();
+        rdoReqCommentHistoryComment = new javax.swing.JRadioButton();
+        rdoReqCommentResponseTitle = new javax.swing.JRadioButton();
+        chkOverrideSendToParameter = new javax.swing.JCheckBox();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -83,7 +98,46 @@ public class SendToServerExtendDlg extends CustomDialog {
             }
         });
 
-        pnlMain.setLayout(new java.awt.BorderLayout());
+        pnlApply.setPreferredSize(new java.awt.Dimension(550, 50));
+
+        btnCancel.setText("Cancel");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
+
+        btnOK.setText("OK");
+        btnOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOKActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlApplyLayout = new javax.swing.GroupLayout(pnlApply);
+        pnlApply.setLayout(pnlApplyLayout);
+        pnlApplyLayout.setHorizontalGroup(
+            pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
+                .addContainerGap(375, Short.MAX_VALUE)
+                .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pnlApplyLayout.setVerticalGroup(
+            pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlApplyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCancel)
+                    .addComponent(btnOK))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
+
+        pnlConnections.setLayout(new java.awt.BorderLayout());
 
         btnGrpHttpClientType.add(rdoCustomClient);
         rdoCustomClient.setSelected(true);
@@ -123,7 +177,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlMain.add(pnlUseClient, java.awt.BorderLayout.NORTH);
+        pnlConnections.add(pnlUseClient, java.awt.BorderLayout.NORTH);
 
         pnlUseCustomClient.setLayout(new java.awt.BorderLayout());
 
@@ -247,7 +301,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyPasswd)
                     .addComponent(txtProxyPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pnlUseCustomClient.add(pnlCustomProxy, java.awt.BorderLayout.CENTER);
@@ -318,7 +372,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addContainerGap()
                 .addGroup(pnlUseCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkClientCertififate)
-                    .addComponent(btnSelectExecute))
+                    .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -354,48 +408,108 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         pnlUseCustomClient.add(pnlCertificate, java.awt.BorderLayout.SOUTH);
 
-        pnlMain.add(pnlUseCustomClient, java.awt.BorderLayout.CENTER);
+        pnlConnections.add(pnlUseCustomClient, java.awt.BorderLayout.CENTER);
 
-        getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
+        tabbetSendToExtend.addTab("Connections", pnlConnections);
 
-        pnlApply.setPreferredSize(new java.awt.Dimension(550, 50));
+        pnlSendToOverride.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        btnCancel.setText("Cancel");
-        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+        chkUseReqComment.setText("use request comment");
+
+        chkUseReqName.setText("use request name");
+        chkUseReqName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelActionPerformed(evt);
+                chkUseReqNameActionPerformed(evt);
             }
         });
 
-        btnOK.setText("OK");
-        btnOK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOKActionPerformed(evt);
+        btnGrpReqName.add(rdoReqNameResponseTitle);
+        rdoReqNameResponseTitle.setSelected(true);
+        rdoReqNameResponseTitle.setText("response title tag");
+
+        btnGrpReqName.add(rdoReqNameHistoryComment);
+        rdoReqNameHistoryComment.setText("history comment");
+
+        btnGrpReqComment.add(rdoReqCommentHistoryComment);
+        rdoReqCommentHistoryComment.setSelected(true);
+        rdoReqCommentHistoryComment.setText("history comment");
+
+        btnGrpReqComment.add(rdoReqCommentResponseTitle);
+        rdoReqCommentResponseTitle.setText("response title tag");
+
+        javax.swing.GroupLayout pnlSendToOverrideLayout = new javax.swing.GroupLayout(pnlSendToOverride);
+        pnlSendToOverride.setLayout(pnlSendToOverrideLayout);
+        pnlSendToOverrideLayout.setHorizontalGroup(
+            pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkUseReqComment)
+                    .addComponent(chkUseReqName)
+                    .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                .addComponent(rdoReqCommentHistoryComment)
+                                .addGap(30, 30, 30)
+                                .addComponent(rdoReqCommentResponseTitle))
+                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                .addComponent(rdoReqNameHistoryComment)
+                                .addGap(30, 30, 30)
+                                .addComponent(rdoReqNameResponseTitle)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlSendToOverrideLayout.setVerticalGroup(
+            pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkUseReqName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoReqNameHistoryComment)
+                    .addComponent(rdoReqNameResponseTitle))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkUseReqComment)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoReqCommentHistoryComment)
+                    .addComponent(rdoReqCommentResponseTitle))
+                .addContainerGap(78, Short.MAX_VALUE))
+        );
+
+        chkOverrideSendToParameter.setText("override sendto parameter");
+        chkOverrideSendToParameter.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkOverrideSendToParameterStateChanged(evt);
             }
         });
 
-        javax.swing.GroupLayout pnlApplyLayout = new javax.swing.GroupLayout(pnlApply);
-        pnlApply.setLayout(pnlApplyLayout);
-        pnlApplyLayout.setHorizontalGroup(
-            pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(375, Short.MAX_VALUE)
-                .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout pnlSendToParameterLayout = new javax.swing.GroupLayout(pnlSendToParameter);
+        pnlSendToParameter.setLayout(pnlSendToParameterLayout);
+        pnlSendToParameterLayout.setHorizontalGroup(
+            pnlSendToParameterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSendToParameterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkOverrideSendToParameter)
+                .addContainerGap(405, Short.MAX_VALUE))
+            .addGroup(pnlSendToParameterLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(pnlSendToOverride, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        pnlApplyLayout.setVerticalGroup(
-            pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlApplyLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancel)
-                    .addComponent(btnOK))
-                .addContainerGap(22, Short.MAX_VALUE))
+        pnlSendToParameterLayout.setVerticalGroup(
+            pnlSendToParameterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSendToParameterLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(chkOverrideSendToParameter)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlSendToOverride, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(249, Short.MAX_VALUE))
         );
 
-        getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
+        tabbetSendToExtend.addTab("SendToPamareter", pnlSendToParameter);
+
+        getContentPane().add(tabbetSendToExtend, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -443,6 +557,14 @@ public class SendToServerExtendDlg extends CustomDialog {
         this.showImportCertificatetDlg();
     }//GEN-LAST:event_btnSelectExecuteActionPerformed
 
+    private void chkOverrideSendToParameterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkOverrideSendToParameterStateChanged
+        SwingUtil.setContainerEnable(this.pnlSendToOverride, this.chkOverrideSendToParameter.isSelected());
+    }//GEN-LAST:event_chkOverrideSendToParameterStateChanged
+
+    private void chkUseReqNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUseReqNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkUseReqNameActionPerformed
+
     private final ImportCertificatetDlg importCertificatetDlg = new ImportCertificatetDlg(null, true);
 
     private final CertificateItem certProp = new CertificateItem();
@@ -478,15 +600,20 @@ public class SendToServerExtendDlg extends CustomDialog {
         });
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.ButtonGroup btnGrpFormat;
     private javax.swing.ButtonGroup btnGrpHttpClientType;
+    private javax.swing.ButtonGroup btnGrpReqComment;
+    private javax.swing.ButtonGroup btnGrpReqName;
+    private javax.swing.ButtonGroup btnGrpReqNumber;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnSelectExecute;
     private javax.swing.JCheckBox chkClientCertififate;
     private javax.swing.JCheckBox chkIgnoreValidateCertification;
+    private javax.swing.JCheckBox chkOverrideSendToParameter;
+    private javax.swing.JCheckBox chkUseReqComment;
+    private javax.swing.JCheckBox chkUseReqName;
     private javax.swing.JComboBox<String> cmbAuthorizationType;
     private javax.swing.JComboBox<String> cmbProtocol;
     private javax.swing.JScrollPane jScrollPane1;
@@ -501,16 +628,23 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlClientCertififate;
+    private javax.swing.JPanel pnlConnections;
     private javax.swing.JPanel pnlCustomAuthorization;
     private javax.swing.JPanel pnlCustomProxy;
-    private javax.swing.JPanel pnlMain;
+    private javax.swing.JPanel pnlSendToOverride;
+    private javax.swing.JPanel pnlSendToParameter;
     private javax.swing.JPanel pnlServerCerficate;
     private javax.swing.JPanel pnlUseCertificate;
     private javax.swing.JPanel pnlUseClient;
     private javax.swing.JPanel pnlUseCustomClient;
     private javax.swing.JRadioButton rdoBurpClient;
     private javax.swing.JRadioButton rdoCustomClient;
+    private javax.swing.JRadioButton rdoReqCommentHistoryComment;
+    private javax.swing.JRadioButton rdoReqCommentResponseTitle;
+    private javax.swing.JRadioButton rdoReqNameHistoryComment;
+    private javax.swing.JRadioButton rdoReqNameResponseTitle;
     private javax.swing.JSpinner spnProxyPort;
+    private javax.swing.JTabbedPane tabbetSendToExtend;
     private javax.swing.JTable tableCertificate;
     private javax.swing.JPasswordField txtAuthorizationPasswd;
     private javax.swing.JTextField txtAuthorizationUser;
@@ -580,6 +714,35 @@ public class SendToServerExtendDlg extends CustomDialog {
         return this.rdoCustomClient.isSelected() ? HttpExtendProperty.HttpClientType.CUSTOM : HttpExtendProperty.HttpClientType.BURP;
     }
 
+    public void setProperty(SendToExtendProperty prop) {
+        this.setProperty(prop.getSendToParameterProperty());
+        this.setProperty(prop.getHttpExtendProperty());
+    }
+
+    public void setProperty(SendToParameterProperty prop) {
+
+        this.chkOverrideSendToParameter.setSelected(prop.isUseOverride());
+        this.chkUseReqName.setSelected(prop.isUseReqName());
+        if (prop.getReqName() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
+            this.rdoReqNameHistoryComment.setSelected(true);
+        } else {
+            this.rdoReqNameResponseTitle.setSelected(true);
+        }
+
+        this.chkUseReqComment.setSelected(prop.isUseReqComment());
+        if (prop.getReqComment() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
+            this.rdoReqCommentHistoryComment.setSelected(true);
+        } else {
+            this.rdoReqCommentResponseTitle.setSelected(true);
+        }
+
+//        this.chkUseReqNum.setSelected(prop.isUseReqNum());
+//        if (prop.getReqNum() == SendToParameterProperty.SendToParameterType.HISTORY_NUMBER) {
+//            this.rdoReqNameHistoryNumber.setSelected(true);
+//        }
+
+    }
+
     public void setProperty(HttpExtendProperty prop) {
         HttpExtendProperty.HttpClientType httpClientType = prop.getHttpClientType();
         HttpExtendProperty.AuthorizationType authorizationType = prop.getAuthorizationType();
@@ -589,8 +752,8 @@ public class SendToServerExtendDlg extends CustomDialog {
         this.clearItem();
         this.chkClientCertififate.setSelected(prop.isUseClientCertificate());
         if (this.chkClientCertififate.isSelected()) {
-           CertificateItem item = prop.getClientCertificateItem();
-           setEditItem(item, false);
+            CertificateItem item = prop.getClientCertificateItem();
+            setEditItem(item, false);
         }
         this.chkClientCertififate.setEnabled(this.modelCertificate.getRowCount() > 0);
 
@@ -620,7 +783,23 @@ public class SendToServerExtendDlg extends CustomDialog {
         }
     }
 
-    public HttpExtendProperty getProperty() {
+    public SendToParameterProperty getSendToOverrideProperty() {
+        SendToParameterProperty prop = new SendToParameterProperty();
+
+        prop.setUseOverride(this.chkOverrideSendToParameter.isSelected());
+        prop.setUseReqName(this.chkUseReqName.isSelected());
+        prop.setReqName(this.rdoReqNameHistoryComment.isSelected() ? SendToParameterProperty.SendToParameterType.HISTORY_COMMENT : SendToParameterProperty.SendToParameterType.RESPONSE_TITLE);
+
+        prop.setUseReqComment(this.chkUseReqComment.isSelected());
+        prop.setReqComment(this.rdoReqCommentHistoryComment.isSelected() ? SendToParameterProperty.SendToParameterType.HISTORY_COMMENT : SendToParameterProperty.SendToParameterType.RESPONSE_TITLE);
+
+//        prop.setUseReqNum(this.chkUseReqNum.isSelected());
+//        prop.setReqNum(SendToParameterProperty.SendToParameterType.HISTORY_NUMBER);
+
+        return prop;
+    }
+
+    public HttpExtendProperty getHttpExtendProperty() {
         HttpExtendProperty prop = new HttpExtendProperty();
         prop.setHttpClientType(this.getHttpClientType());
 
@@ -642,6 +821,13 @@ public class SendToServerExtendDlg extends CustomDialog {
         prop.setProxyPort((int) this.spnProxyPort.getValue());
         prop.setProxyUser(this.txtProxyUser.getText());
         prop.setProxyPasswd(String.valueOf(this.txtProxyPasswd.getPassword()));
+        return prop;
+    }
+
+    public SendToExtendProperty getProperty() {
+        SendToExtendProperty prop = new SendToExtendProperty();
+        prop.setProperty(this.getHttpExtendProperty());
+        prop.setProperty(this.getSendToOverrideProperty());
         return prop;
     }
 

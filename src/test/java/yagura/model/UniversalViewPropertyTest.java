@@ -43,7 +43,7 @@ public class UniversalViewPropertyTest {
     public void testGetDefaultEncodingList_0args() {
         System.out.println("getDefaultEncodingList");
         List<String> result = UniversalViewProperty.getDefaultEncodingList();
-        assertTrue(result.size() > 0);
+        assertFalse(result.isEmpty());
     }
 
     /**
@@ -53,7 +53,7 @@ public class UniversalViewPropertyTest {
     public void testGetDefaultEncodingList_Locale() {
         System.out.println("getDefaultEncodingList");
         List<String> result = UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE);
-        assertTrue(result.size() > 0);
+        assertFalse(result.isEmpty());
     }
 
     /**
@@ -64,7 +64,7 @@ public class UniversalViewPropertyTest {
         System.out.println("getEncodingList");
         UniversalViewProperty instance = new UniversalViewProperty();
         List<String> result = instance.getEncodingList();
-        assertTrue(result.size() > 0);
+        assertFalse(result.isEmpty());
     }
 
     /**

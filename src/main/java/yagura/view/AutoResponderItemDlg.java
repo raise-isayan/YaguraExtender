@@ -293,7 +293,6 @@ public class AutoResponderItemDlg extends CustomDialog {
     }//GEN-LAST:event_chkBodyOnlyStateChanged
 
     private void txtMethodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMethodActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_txtMethodActionPerformed
 
     private void chkAnyMethodStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkAnyMethodStateChanged

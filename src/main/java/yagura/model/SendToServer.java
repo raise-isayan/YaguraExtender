@@ -14,6 +14,7 @@ import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import extension.burp.HttpTarget;
+import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.HttpUtil.DummyOutputStream;
 import extension.helpers.StringUtil;
@@ -24,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -70,6 +72,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import yagura.model.SendToParameterProperty.SendToParameterType;
 
 /**
  *
@@ -94,18 +97,18 @@ public class SendToServer extends SendToMenuItem {
 
     protected void sendToServer(HttpRequestResponse messageInfo) {
         // 拡張オプションを取得
-        HttpExtendProperty extendProp = new HttpExtendProperty();
+        SendToExtendProperty extendProp = new SendToExtendProperty();
         extendProp.setProperties(getExtendProperties());
-        if (HttpExtendProperty.HttpClientType.CUSTOM.equals(extendProp.getHttpClientType())) {
+        if (HttpExtendProperty.HttpClientType.CUSTOM.equals(extendProp.getHttpExtendProperty().getHttpClientType())) {
             sendToServerUseOkHttpClient(messageInfo, extendProp);
         } else {
-            sendToServerUseBurpClient(messageInfo);
+            sendToServerUseBurpClient(messageInfo, extendProp);
             //sendToServerUseHttpClient(messageInfo, extendProp);
         }
     }
 
-    protected void sendToServerUseBurpClient(HttpRequestResponse messageInfo) {
-        Runnable sendTo = new Runnable() {
+    protected void sendToServerUseBurpClient(HttpRequestResponse messageInfo, SendToExtendProperty extendProp) {
+        final Runnable sendTo = new Runnable() {
             @Override
             public void run() {
                 try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
@@ -114,7 +117,7 @@ public class SendToServer extends SendToMenuItem {
                     String boundary = HttpUtil.generateBoundary();
                     ostm.write(StringUtil.getBytesRaw(String.format("Content-Type: %s", "multipart/form-data;boundary=" + boundary) + StringUtil.NEW_LINE));
                     try (ByteArrayOutputStream bodyStream = new ByteArrayOutputStream()) {
-                        outMultipart(boundary, bodyStream, messageInfo);
+                        outMultipart(boundary, bodyStream, messageInfo, extendProp);
                         ostm.write(StringUtil.getBytesRaw(String.format("Content-Length: %d", bodyStream.size()) + StringUtil.NEW_LINE));
                         ostm.write(StringUtil.getBytesRaw("Connection: close" + StringUtil.NEW_LINE));
                         ostm.write(StringUtil.getBytesRaw(StringUtil.NEW_LINE));
@@ -148,25 +151,26 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
-    protected void sendToServerUseJDKClient(HttpRequestResponse messageInfo, HttpExtendProperty extendProp) {
-        Runnable sendTo = new Runnable() {
+    protected void sendToServerUseJDKClient(HttpRequestResponse messageInfo, SendToExtendProperty extendProp) {
+        final HttpExtendProperty extendConnectionProp = extendProp.getHttpExtendProperty();
+        final Runnable sendTo = new Runnable() {
             @Override
             public void run() {
                 String boundary = HttpUtil.generateBoundary();
                 HttpURLConnection conn = null;
                 try {
                     DummyOutputStream dummy = new DummyOutputStream();
-                    outMultipart(boundary, dummy, messageInfo);
+                    outMultipart(boundary, dummy, messageInfo, extendProp);
                     int contentLength = dummy.getSize();
 
                     URL url = new URL(getTarget()); // 送信先
 
                     // 拡張オプションを取得
                     // Authorization
-                    HttpExtendProperty.AuthorizationType authorizationType = extendProp.getAuthorizationType();
+                    HttpExtendProperty.AuthorizationType authorizationType = extendConnectionProp.getAuthorizationType();
                     Authenticator authenticator = null;
-                    String authorizationUser = extendProp.getAuthorizationUser();
-                    String authorizationPasswd = extendProp.getAuthorizationPasswd();
+                    String authorizationUser = extendConnectionProp.getAuthorizationUser();
+                    String authorizationPasswd = extendConnectionProp.getAuthorizationPasswd();
                     if (!HttpExtendProperty.AuthorizationType.NONE.equals(authorizationType)) {
                         authenticator = new Authenticator() {
                             @Override
@@ -177,22 +181,22 @@ public class SendToServer extends SendToMenuItem {
                     }
 
                     // Proxy
-                    Proxy.Type proxyProtocol = extendProp.getProxyProtocol();
+                    Proxy.Type proxyProtocol = extendConnectionProp.getProxyProtocol();
                     Proxy proxy = Proxy.NO_PROXY;
                     if (!Proxy.Type.DIRECT.equals(proxyProtocol)) {
-                        String proxyHost = extendProp.getProxyHost();
+                        String proxyHost = extendConnectionProp.getProxyHost();
                         if (Proxy.Type.HTTP.equals(proxyProtocol)) {
-                            int proxyPort = extendProp.getProxyPort();
+                            int proxyPort = extendConnectionProp.getProxyPort();
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.HTTP, addr);
                         } else if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
-                            int proxyPort = extendProp.getProxyPort();
+                            int proxyPort = extendConnectionProp.getProxyPort();
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
                     }
-                    String proxyUser = extendProp.getProxyUser();
-                    String proxyPasswd = extendProp.getProxyPasswd();
+                    String proxyUser = extendConnectionProp.getProxyUser();
+                    String proxyPasswd = extendConnectionProp.getProxyPasswd();
                     Authenticator proxyAuthenticator = null;
                     if (!proxyUser.isEmpty()) {
                         proxyAuthenticator = new Authenticator() {
@@ -203,16 +207,10 @@ public class SendToServer extends SendToMenuItem {
                         };
                     }
 
-                    if (extendProp.isIgnoreValidateCertification()) {
+                    if (extendConnectionProp.isIgnoreValidateCertification()) {
                         HttpUtil.ignoreSocketFactory();
                     }
 
-//                    if (!proxyUser.isEmpty()) {
-//                    Authenticator.setDefault(authenticator);
-//                    }
-//                    else {
-//                        Authenticator.setDefault(null);
-//                    }
                     conn = (HttpURLConnection) url.openConnection(proxy);
                     conn.setFixedLengthStreamingMode(contentLength);
                     conn.setRequestMethod("POST");
@@ -224,7 +222,7 @@ public class SendToServer extends SendToMenuItem {
                     conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
                     conn.connect();
                     try (OutputStream ostm = conn.getOutputStream()) {
-                        outMultipart(boundary, ostm, messageInfo);
+                        outMultipart(boundary, ostm, messageInfo, extendProp);
                     } catch (IOException e) {
                         fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
                     } catch (Exception e) {
@@ -274,18 +272,19 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
-    protected void sendToServerUseHttpClient(HttpRequestResponse messageInfo, HttpExtendProperty extendProp) {
-        Runnable sendTo = new Runnable() {
+    protected void sendToServerUseHttpClient(HttpRequestResponse messageInfo, SendToExtendProperty extendProp) {
+        final HttpExtendProperty extendConnectionProp = extendProp.getHttpExtendProperty();
+        final Runnable sendTo = new Runnable() {
             @Override
             public void run() {
                 try {
                     // 拡張オプションを取得
                     // Authorization
-                    HttpExtendProperty.AuthorizationType authorizationType = extendProp.getAuthorizationType();
+                    HttpExtendProperty.AuthorizationType authorizationType = extendConnectionProp.getAuthorizationType();
                     Authenticator authenticator = null;
                     if (!HttpExtendProperty.AuthorizationType.NONE.equals(authorizationType)) {
-                        String authorizationUser = extendProp.getAuthorizationUser();
-                        String authorizationPasswd = extendProp.getAuthorizationPasswd();
+                        String authorizationUser = extendConnectionProp.getAuthorizationUser();
+                        String authorizationPasswd = extendConnectionProp.getAuthorizationPasswd();
                         authenticator = new Authenticator() {
                             @Override
                             protected PasswordAuthentication getPasswordAuthentication() {
@@ -295,25 +294,25 @@ public class SendToServer extends SendToMenuItem {
                     }
 
                     // Proxy
-                    Proxy.Type proxyProtocol = extendProp.getProxyProtocol();
+                    Proxy.Type proxyProtocol = extendConnectionProp.getProxyProtocol();
                     Proxy proxy = Proxy.NO_PROXY;
                     if (!Proxy.Type.DIRECT.equals(proxyProtocol)) {
-                        String proxyHost = extendProp.getProxyHost();
+                        String proxyHost = extendConnectionProp.getProxyHost();
                         if (Proxy.Type.HTTP.equals(proxyProtocol)) {
-                            int proxyPort = extendProp.getProxyPort();
+                            int proxyPort = extendConnectionProp.getProxyPort();
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.HTTP, addr);
                         } else if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
                             // https://bugs.openjdk.java.net/browse/JDK-8214516
-                            int proxyPort = extendProp.getProxyPort();
+                            int proxyPort = extendConnectionProp.getProxyPort();
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
                     }
                     Authenticator socksAuthenticator = null;
                     if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
-                        String proxyUser = extendProp.getProxyUser();
-                        String proxyPasswd = extendProp.getProxyPasswd();
+                        String proxyUser = extendConnectionProp.getProxyUser();
+                        String proxyPasswd = extendConnectionProp.getProxyPasswd();
                         if (!proxyUser.isEmpty()) {
                             socksAuthenticator = new Authenticator() {
                                 @Override
@@ -323,7 +322,7 @@ public class SendToServer extends SendToMenuItem {
                             };
                         }
                     }
-                    boolean ignoreValidateCertification = extendProp.isIgnoreValidateCertification();
+                    boolean ignoreValidateCertification = extendConnectionProp.isIgnoreValidateCertification();
                     HttpClient.Builder builder = HttpClient.newBuilder()
                             .version(Version.HTTP_1_1)
                             .followRedirects(Redirect.NORMAL)
@@ -350,7 +349,7 @@ public class SendToServer extends SendToMenuItem {
                     }
                     try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
                         String boundary = HttpUtil.generateBoundary();
-                        outMultipart(boundary, ostm, messageInfo);
+                        outMultipart(boundary, ostm, messageInfo, extendProp);
                         synchronized (Authenticator.class) {
                             Authenticator saveProxyAuth = Authenticator.getDefault();
                             try {
@@ -400,8 +399,10 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
-    protected void sendToServerUseOkHttpClient(HttpRequestResponse messageInfo, HttpExtendProperty extendProp) {
-        Runnable sendTo = new Runnable() {
+    protected void sendToServerUseOkHttpClient(HttpRequestResponse messageInfo, SendToExtendProperty extendProp) {
+        SendToParameterProperty extendSendToParameterProp = extendProp.getSendToParameterProperty();
+        final HttpExtendProperty extendConnectionProp = extendProp.getHttpExtendProperty();
+        final Runnable sendTo = new Runnable() {
 
             @Override
             public void run() {
@@ -416,10 +417,24 @@ public class SendToServer extends SendToMenuItem {
                             .addFormDataPart("port", StringUtil.toString(httpService.port()))
                             .addFormDataPart("protocol", HttpTarget.getProtocol(httpService.secure()))
                             .addFormDataPart("url", httpRequest.url());
-                    String notes = messageInfo.annotations().notes();
-                    if (notes != null) {
-                        multipartBuilder.addFormDataPart("comment", notes);
+
+                    if (extendSendToParameterProp.isUseOverride()) {
+                        if (extendSendToParameterProp.isUseReqName()) {
+                            multipartBuilder.addFormDataPart("reqName", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo));
+                        }
+                        if (extendSendToParameterProp.isUseReqComment()) {
+                            multipartBuilder.addFormDataPart("reqComment", getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo));
+                        }
+                        if (extendSendToParameterProp.isUseReqNum()) {
+                            multipartBuilder.addFormDataPart("reqNum", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo));
+                        }
+                    } else {
+                        String notes = messageInfo.annotations().notes();
+                        if (notes != null) {
+                            multipartBuilder.addFormDataPart("comment", notes);
+                        }
                     }
+
                     HighlightColor color = messageInfo.annotations().highlightColor();
                     if (color != null) {
                         multipartBuilder.addFormDataPart("highlight", color.name());
@@ -428,16 +443,22 @@ public class SendToServer extends SendToMenuItem {
                         multipartBuilder.addFormDataPart("request", "request", RequestBody.create(httpRequest.toByteArray().getBytes(), MediaType.parse("application/json")));
                     }
                     if (httpResponse != null) {
-                        multipartBuilder.addFormDataPart("response", "response", RequestBody.create(httpResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
+                        HttpResponseWapper wrapResponse = new HttpResponseWapper(httpResponse);
+                        multipartBuilder.addFormDataPart("response", "response", RequestBody.create(wrapResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
+                        String guessCharset = wrapResponse.getGuessCharset();
+                        if (guessCharset != null) {
+                            multipartBuilder.addFormDataPart("encoding", guessCharset);
+                        }
                     }
+
                     MultipartBody multipartBody = multipartBuilder.build();
 
                     // 拡張オプションを取得
                     //
                     // Authorization
-                    HttpExtendProperty.AuthorizationType authorizationType = extendProp.getAuthorizationType();
-                    String authorizationUser = extendProp.getAuthorizationUser();
-                    String authorizationPasswd = extendProp.getAuthorizationPasswd();
+                    HttpExtendProperty.AuthorizationType authorizationType = extendConnectionProp.getAuthorizationType();
+                    String authorizationUser = extendConnectionProp.getAuthorizationUser();
+                    String authorizationPasswd = extendConnectionProp.getAuthorizationPasswd();
                     okhttp3.Authenticator authenticator = null;
                     switch (authorizationType) {
                         case BASIC:
@@ -450,23 +471,23 @@ public class SendToServer extends SendToMenuItem {
 
                     // Proxy
                     Proxy proxy = Proxy.NO_PROXY;
-                    Proxy.Type proxyProtocol = extendProp.getProxyProtocol();
+                    Proxy.Type proxyProtocol = extendConnectionProp.getProxyProtocol();
                     if (!Proxy.Type.DIRECT.equals(proxyProtocol)) {
-                        String proxyHost = extendProp.getProxyHost();
+                        String proxyHost = extendConnectionProp.getProxyHost();
                         if (Proxy.Type.HTTP.equals(proxyProtocol)) {
-                            int proxyPort = extendProp.getProxyPort();
+                            int proxyPort = extendConnectionProp.getProxyPort();
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.HTTP, addr);
                         } else if (Proxy.Type.SOCKS.equals(proxyProtocol)) {
-                            int proxyPort = extendProp.getProxyPort();
+                            int proxyPort = extendConnectionProp.getProxyPort();
                             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
                             proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         }
                     }
                     DispatchingAuthenticator proxyAuthenticator = null;
                     PasswordAuthentication socksAuthentication = null;
-                    String proxyUser = extendProp.getProxyUser();
-                    String proxyPasswd = extendProp.getProxyPasswd();
+                    String proxyUser = extendConnectionProp.getProxyUser();
+                    String proxyPasswd = extendConnectionProp.getProxyPasswd();
                     if (Proxy.Type.HTTP.equals(proxyProtocol)) {
                         if (!proxyUser.isEmpty()) {
                             com.burgstaller.okhttp.digest.Credentials credentials = new com.burgstaller.okhttp.digest.Credentials(proxyUser, proxyPasswd);
@@ -487,14 +508,14 @@ public class SendToServer extends SendToMenuItem {
                     KeyManager[] keyManagers = null;
                     X509TrustManager trustKeyManager = null;
                     // クライアント証明書
-                    if (extendProp.isUseClientCertificate()) {
-                        KeyStore keyStore = KeyStore.getInstance(extendProp.getClientCertificateStoreType().name());
-                        keyStore.load(new ByteArrayInputStream(extendProp.getClientCertificate()), extendProp.getClientCertificatePasswd().toCharArray());
+                    if (extendConnectionProp.isUseClientCertificate()) {
+                        KeyStore keyStore = KeyStore.getInstance(extendConnectionProp.getClientCertificateStoreType().name());
+                        keyStore.load(new ByteArrayInputStream(extendConnectionProp.getClientCertificate()), extendConnectionProp.getClientCertificatePasswd().toCharArray());
                         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
                         trustManagerFactory.init(keyStore);
                         TrustManager[] trustKeyManagers = trustManagerFactory.getTrustManagers();
                         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("X509");
-                        keyManagerFactory.init(keyStore, extendProp.getClientCertificatePasswd().toCharArray());
+                        keyManagerFactory.init(keyStore, extendConnectionProp.getClientCertificatePasswd().toCharArray());
                         keyManagers = keyManagerFactory.getKeyManagers();
                         trustKeyManager = (X509TrustManager) trustKeyManagers[0];
                     } else {
@@ -507,7 +528,7 @@ public class SendToServer extends SendToMenuItem {
                     }
 
                     TrustManager[] trustManagers = null;
-                    if (extendProp.isIgnoreValidateCertification()) {
+                    if (extendConnectionProp.isIgnoreValidateCertification()) {
                         trustManagers = HttpUtil.trustAllCerts();
                     }
                     SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -516,7 +537,7 @@ public class SendToServer extends SendToMenuItem {
                     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
                     clientBuilder = clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustKeyManager);
 
-                    if (extendProp.isIgnoreValidateCertification()) {
+                    if (extendConnectionProp.isIgnoreValidateCertification()) {
                         clientBuilder = clientBuilder.hostnameVerifier((hostname, session) -> true);
                     }
 
@@ -569,6 +590,29 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
+    public String getSendToParameter(SendToParameterType type, HttpRequestResponse messageInfo) {
+        String value = null;
+        switch (type) {
+            case HISTORY_COMMENT:
+                value = messageInfo.annotations().notes();
+                break;
+            case RESPONSE_TITLE:
+                if (messageInfo.response() != null) {
+                    try {
+                        HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
+                        String body = wrapResponse.getBodyString(true, wrapResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name()));
+                        value = HttpUtil.extractHTMLTitle(body);
+                    } catch (UnsupportedEncodingException ex) {
+                        Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+            case HISTORY_NUMBER:
+                break;
+        }
+        return value;
+    }
+
     protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
         HttpTarget httpService = new HttpTarget(tagetURL);
         String target = tagetURL.getFile().isEmpty() ? "/" : tagetURL.getFile();
@@ -577,29 +621,53 @@ public class SendToServer extends SendToMenuItem {
         out.write(StringUtil.getBytesRaw(String.format("User-Agent: %s", "Java-http-client/BurpSuite") + HttpUtil.LINE_TERMINATE));
     }
 
-    protected void outMultipart(String boundary, OutputStream out, HttpRequestResponse messageInfo) throws IOException, Exception {
+    protected void outMultipart(String boundary, OutputStream out, HttpRequestResponse messageInfo, SendToExtendProperty extendProp) throws IOException, Exception {
         burp.api.montoya.http.message.requests.HttpRequest httpRequest = messageInfo.request();
-        burp.api.montoya.http.message.responses.HttpResponse httpResponse = messageInfo.response();
-
         HttpService httpService = httpRequest.httpService();
         HttpUtil.outMultipartText(boundary, out, "host", httpService.host());
         HttpUtil.outMultipartText(boundary, out, "port", StringUtil.toString(httpService.port()));
         HttpUtil.outMultipartText(boundary, out, "protocol", HttpTarget.getProtocol(httpService.secure()));
         HttpUtil.outMultipartText(boundary, out, "url", httpRequest.url());
-        String notes = messageInfo.annotations().notes();
-        if (notes != null) {
-            HttpUtil.outMultipartText(boundary, out, "comment", notes, StandardCharsets.UTF_8);
+
+        SendToParameterProperty extendSendToParameterProp = extendProp.getSendToParameterProperty();
+        if (extendSendToParameterProp.isUseOverride()) {
+            if (extendSendToParameterProp.isUseReqName()) {
+                HttpUtil.outMultipartText(boundary, out, "reqName", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo), StandardCharsets.UTF_8);
+            }
+            if (extendSendToParameterProp.isUseReqComment()) {
+                if (extendSendToParameterProp.getReqName() == SendToParameterType.HISTORY_COMMENT) {
+                    HttpUtil.outMultipartText(boundary, out, "reqComment", getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo), StandardCharsets.UTF_8);
+                }
+            }
+            if (extendSendToParameterProp.isUseReqNum()) {
+                if (extendSendToParameterProp.getReqName() == SendToParameterType.HISTORY_NUMBER) {
+                    HttpUtil.outMultipartText(boundary, out, "reqNum", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo), StandardCharsets.UTF_8);
+                }
+            }
+        } else {
+            String notes = messageInfo.annotations().notes();
+            if (notes != null) {
+                HttpUtil.outMultipartText(boundary, out, "comment", notes, StandardCharsets.UTF_8);
+            }
         }
+
         HighlightColor color = messageInfo.annotations().highlightColor();
         if (color != null) {
             HttpUtil.outMultipartText(boundary, out, "highlight", color.name());
         }
+
         if (messageInfo.request() != null && this.isRequest()) {
             HttpUtil.outMultipartBinary(boundary, out, "request", httpRequest.toByteArray().getBytes());
         }
         if (messageInfo.response() != null && this.isResponse()) {
+            HttpResponseWapper httpResponse = new HttpResponseWapper(messageInfo.response());
             HttpUtil.outMultipartBinary(boundary, out, "response", httpResponse.toByteArray().getBytes());
+            String guessCharset = httpResponse.getGuessCharset();
+            if (guessCharset != null) {
+                HttpUtil.outMultipartText(boundary, out, "encoding", guessCharset);
+            }
         }
+
         HttpUtil.outMultipartFinish(boundary, out);
     }
 

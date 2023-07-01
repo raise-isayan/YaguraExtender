@@ -15,7 +15,6 @@ import extension.helpers.HttpResponseWapper;
 import extension.helpers.StringUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +37,7 @@ public class HttpMessageItem implements HttpRequestResponse {
     private byte[] request = new byte[0];
     private byte[] response = new byte[0];
     private String url;
-    private short statuscode = 0;
+    private short statusCode = 0;
     private String comment = "";
     MessageHighlightColor color = MessageHighlightColor.WHITE;
     private String memo = "";
@@ -164,7 +163,17 @@ public class HttpMessageItem implements HttpRequestResponse {
                 return 0;
             }
         } else {
-            return this.statuscode;
+            return this.statusCode;
+        }
+    }
+
+    public void setStatusCode(short statusCode) throws Exception {
+        if (this.httpRequestResponse != null) {
+            if (this.httpRequestResponse.response() != null) {
+                this.httpRequestResponse.response().withStatusCode(statusCode);
+            }
+        } else {
+            this.statusCode = statusCode;
         }
     }
 

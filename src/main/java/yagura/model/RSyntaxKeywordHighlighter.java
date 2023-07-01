@@ -97,7 +97,7 @@ public class RSyntaxKeywordHighlighter extends org.fife.ui.rsyntaxtextarea.RSynt
     @Override
     public StartEndPosion[] getHighlightPositions() {
         Highlighter.Highlight[] hs = this.getHighlights();
-        List<StartEndPosion> list = new ArrayList<StartEndPosion>();
+        List<StartEndPosion> list = new ArrayList<>();
         for (Highlighter.Highlight h : hs) {
             StartEndPosion pos = new StartEndPosion(h.getStartOffset(), h.getEndOffset());
             list.add(pos);

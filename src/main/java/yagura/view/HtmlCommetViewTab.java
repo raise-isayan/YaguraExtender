@@ -230,7 +230,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
 
             boolean mimeHTMLType = false;
             MimeType mimeType = httpResponse.inferredMimeType();
-            mimeHTMLType = (mimeType == mimeType.HTML || mimeType == mimeType.XML || mimeType == mimeType.IMAGE_SVG_XML);
+            mimeHTMLType = (mimeType == MimeType.HTML || mimeType == MimeType.XML || mimeType == MimeType.IMAGE_SVG_XML);
             if (httpResponse.body().length() > 0 && mimeHTMLType) {
                 String encoding = quickSearchTab.getSelectedEncoding();
                 if (encoding != null) {

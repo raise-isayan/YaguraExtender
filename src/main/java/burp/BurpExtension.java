@@ -94,7 +94,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import passive.signature.MatchAlert;
@@ -1142,8 +1141,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 HttpRequestResponse modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, true, HttpRequestResponse.httpRequestResponse(interceptedResponse.initiatingRequest(), responseResult.response(), responseResult.annotations()));
                 modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, false, modifyHttpRequestResponse);
                 return ProxyResponseReceivedAction.proxyResponseReceivedAction(modifyHttpRequestResponse.response(), modifyHttpRequestResponse.annotations(), responseResult.action());
-            }
-            else {
+            } else {
                 return ProxyResponseReceivedAction.continueWith(interceptedResponse, interceptedResponse.annotations());
             }
         }
@@ -1268,8 +1266,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
 
         protected void historyLogAppend() {
-            if (api != null) {
-                List<ProxyHttpRequestResponse> messageInfo = api.proxy().history();
+            if (this.api != null) {
+                List<ProxyHttpRequestResponse> messageInfo = this.api.proxy().history();
                 for (ProxyHttpRequestResponse info : messageInfo) {
                     this.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()));
                 }
@@ -1411,7 +1409,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             MatchAlert alert = new MatchAlert(toolType.name(), getProperty().getMatchAlertProperty());
                             List<AuditIssue> issues = alert.makeIssueList(messageIsRequest, httpRequestResponse, markList);
                             for (AuditIssue scanissue : issues) {
-                                api.siteMap().add(scanissue);
+                                this.api.siteMap().add(scanissue);
                             }
                         }
                     }

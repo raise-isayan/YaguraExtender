@@ -5,9 +5,6 @@ import extension.burp.IPropertyConfig;
 import extension.helpers.json.JsonUtil;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
-import java.util.Locale;
 import yagura.Config;
 
 /**

@@ -5,6 +5,7 @@
  */
 package yagura.view;
 
+import burp.BurpExtender;
 import extension.view.base.TableRowTransferHandler;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
