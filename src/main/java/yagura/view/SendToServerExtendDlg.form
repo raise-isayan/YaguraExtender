@@ -604,8 +604,8 @@
         <Container class="javax.swing.JPanel" name="pnlSendToParameter">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="SendToPamareter">
-                <Property name="tabTitle" type="java.lang.String" value="SendToPamareter"/>
+              <JTabbedPaneConstraints tabName="SendToParamareter">
+                <Property name="tabTitle" type="java.lang.String" value="SendToParamareter"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

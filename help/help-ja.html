@@ -523,7 +523,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>Burp suiteの「Extensions」タブから「Add」ボタンを押下後、YaguraExtension.jar を追加します。
-「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
+「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「Yagura」タブが追加されます。
 各種設定はこちらから行えるようになっています。</p>
 </div>
 <div class="paragraph">
@@ -898,7 +898,7 @@ proxyにチェックが入っている場合に有効です。</p>
 </dd>
 <dt class="hdlist1">Target(アラート対象)</dt>
 <dd>
-<p>proxy,repeater,spider,intruder,scanner,sequencer,extender
+<p>proxy, repeater, spider, intruder, scanner, sequencer, extender
 チェックした対象がMatchAlertの対象になります。</p>
 </dd>
 <dt class="hdlist1">[Regexp]チェックボックス</dt>
@@ -1103,12 +1103,12 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 </dl>
 </div>
 <div class="sect4">
-<h5 id="_http設定ダイヤログ">HTTP設定ダイヤログ</h5>
+<h5 id="_http_connection_設定ダイヤログ">HTTP Connection 設定ダイヤログ</h5>
 <div class="paragraph">
 <p>サーバに送信する場合にチェックされている場合、SendToの送信に利用されるHTTPクライアントの設定が可能となります。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_sendto_server_setting.png" alt="SendToItem編集 SendTo設定 ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_sendto_server_connection.png" alt="SendToItem編集 SendTo Connection 設定 ダイヤログ"></span></p>
 </div>
 <div class="paragraph">
 <p>サーバにチェックされている場合に設定可能となります。</p>
@@ -1194,6 +1194,47 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 <dt class="hdlist1">ignore Validate Certificationチェックボックス</dt>
 <dd>
 <p>チェックされている場合HTTPSサーバ証明書の検証を無視します。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_sendto_parameter_設定ダイヤログ">SendTo Parameter 設定ダイヤログ</h5>
+<div class="paragraph">
+<p>サーバにチェックされている場合に設定可能となります。</p>
+</div>
+<div class="paragraph">
+<p>SendToの送信に利用されるリクエストパラメータのカスタマイズをします。</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_sendto_server_sendtoparameter.png" alt="SendToItem編集 SendTo Connection 設定 ダイヤログ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">override SendTo parameter</dt>
+<dd>
+<p>SendToの送信にBurpのHTTPクライアントを利用します。</p>
+</dd>
+<dt class="hdlist1">use request name</dt>
+<dd>
+<p>reqNameパラメータに指定した内容で送信します。</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>history comment<br>
+proxyのヒストリのコメントを送信します。</p>
+</li>
+<li>
+<p>response title tag<br>
+レスポンスのタイトルタグの値を送信します。</p>
+</li>
+</ol>
+</div>
+</dd>
+<dt class="hdlist1">use request comment</dt>
+<dd>
+<p>reqCommentパラメータに指定した内容で送信します。
+送信可能な内容はreqNameと同じです。</p>
 </dd>
 </dl>
 </div>
@@ -2284,7 +2325,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-17 18:11:24 +0900
+Last updated 2023-07-01 16:55:37 +0900
 </div>
 </div>
 </body>

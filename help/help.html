@@ -476,7 +476,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_sendtoitem_edit_dialog">3.5.2. SendToItem Edit dialog</a></li>
 <li><a href="#_base_tab">3.5.3. Base tab</a>
 <ul class="sectlevel4">
-<li><a href="#_http_configuration_dialog">HTTP Configuration Dialog</a></li>
+<li><a href="#_http_connection_configuration_dialog">HTTP Connection Configuration Dialog</a></li>
+<li><a href="#_sendto_parameter_configuration_dialog">SendTo Parameter  Configuration Dialog</a></li>
 <li><a href="#_the_format_sent_to_the_server_when_checking_the_server">The format sent to the server when checking the server</a></li>
 </ul>
 </li>
@@ -539,7 +540,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>After pressing the "Add" button from the "Extensions" tab of Burp suite, add YaguraExtension.jar.
-Checking "Loaded" will load the extension, and a "YaguraExtender" tab will be added to the tab of the Burp sute body.
+Checking "Loaded" will load the extension, and a "Yagura" tab will be added to the tab of the Burp sute body.
 Various settings can be done from here.</p>
 </div>
 <div class="paragraph">
@@ -912,7 +913,7 @@ It is effective when proxy is checked.</p>
 </dd>
 <dt class="hdlist1">Target(Alert target)</dt>
 <dd>
-<p>proxy,repeater,spider,intruder,scanner,sequencer
+<p>proxy, repeater, spider, intruder, scanner, sequencer
 The checked target will be the target of MatchAlert.</p>
 </dd>
 <dt class="hdlist1">[Regexp] check box</dt>
@@ -1122,12 +1123,12 @@ Request and response can choose to send either header or body.</p>
 </dl>
 </div>
 <div class="sect4">
-<h5 id="_http_configuration_dialog">HTTP Configuration Dialog</h5>
+<h5 id="_http_connection_configuration_dialog">HTTP Connection Configuration Dialog</h5>
 <div class="paragraph">
 <p>If checked for sending to server, the HTTP client used to send SendTo can be configured.</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_sendto_server_setting.png" alt="Edit SendToItem SendTo Settings Dialog"></span></p>
+<p><span class="image"><img src="images/custom_sendto_server_connection.png" alt="Edit SendToItem SendTo Connection Setting Dialog"></span></p>
 </div>
 <div class="paragraph">
 <p>This can be set if the server is checked.</p>
@@ -1213,6 +1214,44 @@ Request and response can choose to send either header or body.</p>
 <dt class="hdlist1">[ignore Validate Certification] checkbox</dt>
 <dd>
 <p>Ignore HTTPS server certificate validation if checked</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_sendto_parameter_configuration_dialog">SendTo Parameter  Configuration Dialog</h5>
+<div class="paragraph">
+<p>If checked for sending to server, Customize the request parameters used to send SendTo.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_sendto_server_sendtoparameter.png" alt="SendToItem Edit SendTo Connection Setting Dialog"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">override SendTo parameter</dt>
+<dd>
+<p>Use Burp HTTP client for sending SendTo.</p>
+</dd>
+<dt class="hdlist1">use request name</dt>
+<dd>
+<p>Send with the contents specified in the reqName parameter.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>history comment<br>
+Send comment on the proxy history.</p>
+</li>
+<li>
+<p>response title tag<br>
+Send the value of the response title tag.</p>
+</li>
+</ol>
+</div>
+</dd>
+<dt class="hdlist1">use request comment</dt>
+<dd>
+<p>The content specified in the reqComment parameter is sent.
+The contents that can be sent are the same as for reqName.</p>
 </dd>
 </dl>
 </div>
@@ -2312,7 +2351,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-06-17 18:11:24 +0900
+Last updated 2023-07-01 16:58:38 +0900
 </div>
 </div>
 </body>

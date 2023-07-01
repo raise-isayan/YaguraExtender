@@ -9,7 +9,7 @@ Language/xref:help-ja.adoc[日本語]
 
 == Start up 
 After pressing the "Add" button from the "Extensions" tab of Burp suite, add YaguraExtension.jar.
-Checking "Loaded" will load the extension, and a "YaguraExtender" tab will be added to the tab of the Burp sute body.
+Checking "Loaded" will load the extension, and a "Yagura" tab will be added to the tab of the Burp sute body.
 Various settings can be done from here.
 
 image:images/Extender_Yagura.png[Extension]
@@ -236,7 +236,7 @@ Match(Match string)::
     string you want to match.
 
 Target(Alert target):: 
-    proxy,repeater,spider,intruder,scanner,sequencer
+    proxy, repeater, spider, intruder, scanner, sequencer
     The checked target will be the target of MatchAlert.
 
 [Regexp] check box:: 
@@ -376,11 +376,11 @@ Target::
     It is sent to the registered Target when requset or response of the request is checked. +
     Request and response can choose to send either header or body.
 
-===== HTTP Configuration Dialog
+===== HTTP Connection Configuration Dialog
 
 If checked for sending to server, the HTTP client used to send SendTo can be configured.
 
-image:images/custom_sendto_server_setting.png[Edit SendToItem SendTo Settings Dialog]
+image:images/custom_sendto_server_connection.png[Edit SendToItem SendTo Connection Setting Dialog]
 
 This can be set if the server is checked.
 
@@ -423,6 +423,28 @@ Password::
 
 .Server Certificate
  [ignore Validate Certification] checkbox:: Ignore HTTPS server certificate validation if checked
+
+===== SendTo Parameter  Configuration Dialog
+
+If checked for sending to server, Customize the request parameters used to send SendTo.
+
+image:images/custom_sendto_server_sendtoparameter.png[SendToItem Edit SendTo Connection Setting Dialog]
+
+override SendTo parameter::
+  Use Burp HTTP client for sending SendTo.
+
+use request name::
+ Send with the contents specified in the reqName parameter.
+ 
+. history comment +
+ Send comment on the proxy history.
+
+. response title tag +
+ Send the value of the response title tag.
+
+use request comment::
+  The content specified in the reqComment parameter is sent.
+  The contents that can be sent are the same as for reqName.
 
 ===== The format sent to the server when checking the server
 

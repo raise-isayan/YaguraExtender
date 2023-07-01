@@ -9,7 +9,7 @@ Language/xref:help.adoc[English]
 
 == Start up 
 Burp suiteの「Extensions」タブから「Add」ボタンを押下後、YaguraExtension.jar を追加します。
-「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「YaguraExtender」タブが追加されます。
+「Loaded」にチェックをいれることで拡張がロードされ、Burp sute本体のタブに「Yagura」タブが追加されます。
 各種設定はこちらから行えるようになっています。
 
 image:images/Extender_Yagura.png[Extension]
@@ -20,6 +20,7 @@ IntercepterやRepeterにてYaguraのEncode/Decodeの各種変換機能を呼び�
 
 Yagura Charsets::
   各種変換機能で利用するデフォルトの文字コードを選択できます。指定した文字コードでEncode/Decodeできます。
+
 Encoder::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
 
@@ -230,7 +231,7 @@ Match(マッチ文字列)::
     マッチさせたい文字列を入力します。
 
 Target(アラート対象):: 
-    proxy,repeater,spider,intruder,scanner,sequencer,extender
+    proxy, repeater, spider, intruder, scanner, sequencer, extender
     チェックした対象がMatchAlertの対象になります。
 
 [Regexp]チェックボックス:: 
@@ -370,11 +371,11 @@ Target::
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
     リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。
 
-===== HTTP設定ダイヤログ
+===== HTTP Connection 設定ダイヤログ
 
 サーバに送信する場合にチェックされている場合、SendToの送信に利用されるHTTPクライアントの設定が可能となります。
 
-image:images/custom_sendto_server_setting.png[SendToItem編集 SendTo設定 ダイヤログ]
+image:images/custom_sendto_server_connection.png[SendToItem編集 SendTo Connection 設定 ダイヤログ]
 
 サーバにチェックされている場合に設定可能となります。
 
@@ -417,6 +418,30 @@ Password::
 
 .Server Certificate
  ignore Validate Certificationチェックボックス:: チェックされている場合HTTPSサーバ証明書の検証を無視します。
+
+===== SendTo Parameter 設定ダイヤログ
+
+サーバにチェックされている場合に設定可能となります。
+
+SendToの送信に利用されるリクエストパラメータのカスタマイズをします。
+
+image:images/custom_sendto_server_sendtoparameter.png[SendToItem編集 SendTo Connection 設定 ダイヤログ]
+
+override SendTo parameter::
+  SendToの送信にBurpのHTTPクライアントを利用します。
+
+use request name::
+ reqNameパラメータに指定した内容で送信します。
+
+. history comment +
+ proxyのヒストリのコメントを送信します。
+
+. response title tag +
+ レスポンスのタイトルタグの値を送信します。
+
+use request comment::
+    reqCommentパラメータに指定した内容で送信します。
+    送信可能な内容はreqNameと同じです。
 
 ===== サーバチェック時にサーバに送信される形式
 

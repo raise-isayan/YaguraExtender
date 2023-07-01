@@ -507,7 +507,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addContainerGap(249, Short.MAX_VALUE))
         );
 
-        tabbetSendToExtend.addTab("SendToPamareter", pnlSendToParameter);
+        tabbetSendToExtend.addTab("SendToParamareter", pnlSendToParameter);
 
         getContentPane().add(tabbetSendToExtend, java.awt.BorderLayout.CENTER);
 
