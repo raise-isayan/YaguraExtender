@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.HttpService;
@@ -748,9 +749,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
 
-            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : httpRequest.method();
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : httpRequest.method();
             final HttpTarget httpService = HttpTarget.getHttpTarget(httpRequest.httpService().host(), httpRequest.httpService().port(), csrfParam.isUseHttps());
-            String csrfUrl = httpRequest.url();
+            String csrfUrl = (csrfParam.isCsrfGetMethod() || httpRequest.isGET()) ? HttpRequestWapper.getUrlPath(httpRequest.url()) : httpRequest.url();
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">" + HttpUtil.LINE_TERMINATE, new Object[]{csrfEncoding}));
 
