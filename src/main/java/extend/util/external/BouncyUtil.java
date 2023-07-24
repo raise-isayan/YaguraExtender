@@ -20,6 +20,8 @@ import java.security.cert.X509Certificate;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.io.pem.PemReader;
@@ -117,6 +119,18 @@ public class BouncyUtil {
             try (FileOutputStream fos = new FileOutputStream(to)) {
                 fos.write(certBytes);
             }
+        } catch (CertificateEncodingException ex) {
+            throw new IOException(ex);
+        }
+    }
+
+    public static byte [] exportPrivateKeyDer(Key key) throws IOException {
+        return key.getEncoded();
+    }
+
+    public static byte [] exportCertificateDer(Certificate cert) throws IOException {
+        try {
+            return cert.getEncoded();
         } catch (CertificateEncodingException ex) {
             throw new IOException(ex);
         }
