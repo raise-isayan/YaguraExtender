@@ -366,7 +366,7 @@ public class okHttpClientTest {
         testGetSocksProxyAuthInterceptor(new okhttp.socks.SocksProxyAuthInterceptor(new PasswordAuthentication("test3", "testpass3".toCharArray())));
     }
 
-     private void testGetSocksProxyAuthInterceptor(Interceptor interceptor) {
+    private void testGetSocksProxyAuthInterceptor(Interceptor interceptor) {
         try {
             String proxyHost = "127.0.0.1";
             int proxyPort = 11080;
@@ -393,7 +393,6 @@ public class okHttpClientTest {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-
 
     @Test
     public void testServer() {
@@ -475,6 +474,5 @@ public class okHttpClientTest {
 
         System.out.println("Authenticator after:" + String.valueOf(java.net.Authenticator.getDefault()));
     }
-
 
 }

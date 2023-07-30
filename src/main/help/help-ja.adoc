@@ -999,6 +999,9 @@ image:images/custom_certificate.png[Certificateタブ]
 [Certificate and Private key in PEM format]ボタン::
     秘密鍵と公開鍵を含めてPEM形式でエクスポートします。
 
+[Certificate in PEM format]ボタン::
+    公開鍵を含めてDER形式でエクスポートします。
+
 [Certificate in DER format]ボタン::
     公開鍵を含めてDER形式でエクスポートします。
 

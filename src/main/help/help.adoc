@@ -1002,6 +1002,9 @@ image:images/custom_certificate.png[Certificate tab]
 [Certificate and Private key in PEM format] button::
     Export in PEM format, including private and public keys.
 
+[Certificate in PEM format] button::
+    Export in PEM format, including public keys.
+
 [Certificate in DER format] button::
     Export in DER format, including public keys.
 

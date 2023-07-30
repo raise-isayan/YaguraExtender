@@ -154,10 +154,10 @@ public class OptionProperty implements IOptionProperty {
         this.debugMode = debugMode;
     }
 
-//    /**
-//     * IOptionProperty
-//     * @param property
-//     */
+    /**
+     *
+     * @return
+     */
     public Map<String, String> getProperty() {
         this.config.put(this.universalViewProperty.getSettingName(), this.universalViewProperty.loadSetting());
         this.config.put(this.matchReplaceProperty.getSettingName(), this.matchReplaceProperty.loadSetting());

@@ -6,6 +6,6 @@ package yagura.model;
  */
 public interface ITranslateAction {
 
-    public String translate(String selectedText);
+    public String translate(String allText, String selectedText);
 
 }

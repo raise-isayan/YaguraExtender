@@ -587,6 +587,36 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
         private String yaguraCharset = StandardCharsets.UTF_8.name();
 
+        /**
+         * @param selectedText
+         * @return the yaguraCharset
+         */
+        public String getYaguraCharset(String selectedText) {
+            if (yaguraCharset != null) {
+                return yaguraCharset;
+            }
+            else {
+                if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
+                    BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api);
+                    if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent())) {
+                        return StringUtil.DEFAULT_ENCODING;
+                    }
+                    else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent())) {
+                        return StandardCharsets.ISO_8859_1.name();
+                    }
+                    else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
+                        return burpCharset.getCharacterSet();
+                    }
+                    else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent())) {
+                        return HttpUtil.getGuessCode(StringUtil.getBytesRaw(selectedText));
+                    }
+                }
+            }
+            return StandardCharsets.ISO_8859_1.name();
+        }
+
+        private final static String USE_BURP_CHARSETS = "Use Burp Charsets";
+
         public MenuHander(MontoyaApi api) {
             this.api = api;
 
@@ -608,6 +638,12 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 yaguraCharsetMenu.add(specificCharsetMenuCharSet);
                 menuYaguraCharsetsGroup.add(specificCharsetMenuCharSet);
             }
+            yaguraCharsetMenu.addSeparator();
+            JRadioButtonMenuItem useBurpCharSet = new JRadioButtonMenuItem();
+            useBurpCharSet.setText(USE_BURP_CHARSETS);
+            useBurpCharSet.addChangeListener(yaguraCharsetModeAction);
+            yaguraCharsetMenu.add(useBurpCharSet);
+            menuYaguraCharsetsGroup.add(useBurpCharSet);
 
             /**
              * Yagura Encoder
@@ -619,9 +655,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return SmartCodec.toUrlEncode(selectedText, yaguraCharset, SmartCodec.ENCODE_PATTERN_BURP, false);
+                        return SmartCodec.toUrlEncode(selectedText, getYaguraCharset(selectedText), SmartCodec.ENCODE_PATTERN_BURP, false);
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -634,7 +670,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnocodeUrlEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP, false);
                 }
 
@@ -645,7 +681,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnocodeEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP, false);
                 }
 
@@ -656,9 +692,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toBase64Encode(selectedText, yaguraCharset);
+                        return TransUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText));
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -671,9 +707,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toBase64URLSafeEncode(selectedText, yaguraCharset);
+                        return TransUtil.toBase64URLSafeEncode(selectedText, getYaguraCharset(selectedText));
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -686,7 +722,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return SmartCodec.toHtmlDecEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP);
                 }
 
@@ -704,9 +740,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return SmartCodec.toUrlDecode(selectedText, yaguraCharset);
+                        return SmartCodec.toUrlDecode(selectedText, getYaguraCharset(selectedText));
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -719,7 +755,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnicodeUrlDecode(selectedText);
                 }
 
@@ -730,7 +766,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnocodeDecode(selectedText);
                 }
 
@@ -741,9 +777,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toBase64Decode(selectedText, yaguraCharset);
+                        return TransUtil.toBase64Decode(selectedText, getYaguraCharset(selectedText));
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -755,9 +791,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toBase64URLSafeDecode(selectedText, yaguraCharset);
+                        return TransUtil.toBase64URLSafeDecode(selectedText, getYaguraCharset(selectedText));
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -770,7 +806,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return SmartCodec.toHtmlDecode(selectedText, SmartCodec.ENCODE_PATTERN_BURP);
                 }
             });
@@ -787,7 +823,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return selectedText.toUpperCase();
                 }
 
@@ -798,7 +834,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return selectedText.toLowerCase();
                 }
 
@@ -809,9 +845,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toByteHexEncode(selectedText, yaguraCharset, false);
+                        return TransUtil.toByteHexEncode(selectedText, getYaguraCharset(selectedText), false);
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -824,9 +860,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toByteHexDecode(selectedText, yaguraCharset);
+                        return TransUtil.toByteHexDecode(selectedText, getYaguraCharset(selectedText));
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -839,7 +875,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return TransUtil.translateFullWidth2HalfWidth(selectedText);
                 }
 
@@ -849,7 +885,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     return TransUtil.translateHalfWidth2FullWidth(selectedText);
                 }
 
@@ -866,9 +902,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toMd2Sum(selectedText, yaguraCharset, false);
+                        return TransUtil.toMd2Sum(selectedText, getYaguraCharset(selectedText), false);
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -881,9 +917,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toMd5Sum(selectedText, yaguraCharset, false);
+                        return TransUtil.toMd5Sum(selectedText, getYaguraCharset(selectedText), false);
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -896,9 +932,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toSHA1Sum(selectedText, yaguraCharset, false);
+                        return TransUtil.toSHA1Sum(selectedText, getYaguraCharset(selectedText), false);
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -911,9 +947,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_3, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toSHA256Sum(selectedText, yaguraCharset, false);
+                        return TransUtil.toSHA256Sum(selectedText, getYaguraCharset(selectedText), false);
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -926,9 +962,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_4, new ITranslateAction() {
 
                 @Override
-                public String translate(String selectedText) {
+                public String translate(String allText, String selectedText) {
                     try {
-                        return TransUtil.toSHA512Sum(selectedText, yaguraCharset, false);
+                        return TransUtil.toSHA512Sum(selectedText, getYaguraCharset(selectedText), false);
                     } catch (UnsupportedEncodingException ex) {
                         return selectedText;
                     }
@@ -1026,8 +1062,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
                     Component owner = mgr.getPermanentFocusOwner();
                     if (owner instanceof JTextArea textArea) {
-                        String text = textArea.getSelectedText();
-                        String encode = action.translate(text);
+                        String allText = textArea.getText();
+                        String selectedText = textArea.getSelectedText();
+                        String encode = action.translate(allText, selectedText);
                         textArea.replaceSelection(encode);
                     }
                 }
@@ -1064,7 +1101,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             public void stateChanged(ChangeEvent e) {
                 if (e.getSource() instanceof JRadioButtonMenuItem item) {
                     if (item.isSelected()) {
-                        yaguraCharset = item.getText();
+                        String caption = item.getText();
+                        if (USE_BURP_CHARSETS.equals(caption)) {
+                            yaguraCharset = null;
+                        }
+                        else {
+                            yaguraCharset = caption;
+                        }
                     }
                 }
             }

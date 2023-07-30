@@ -72,13 +72,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         pnlCertificateExports = new javax.swing.JPanel();
         scrollCertificate = new javax.swing.JScrollPane();
         tableCertificate = new javax.swing.JTable();
-        pnlCertificate = new javax.swing.JPanel();
         pnlConvertFormat = new javax.swing.JPanel();
         rdoConvertPairPEM = new javax.swing.JRadioButton();
         rdoConvertPrivateDER = new javax.swing.JRadioButton();
         rdoConvertCertificateDER = new javax.swing.JRadioButton();
         rdoConvertCertificatePEM = new javax.swing.JRadioButton();
         btnExport = new javax.swing.JButton();
+        pnlCertificate = new javax.swing.JPanel();
         pnlServerCertificate = new javax.swing.JPanel();
         pnlServerEnable = new javax.swing.JPanel();
         chkProvidedServer = new javax.swing.JCheckBox();
@@ -179,27 +179,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             tableCertificate.getColumnModel().getColumn(4).setResizable(false);
         }
 
-        javax.swing.GroupLayout pnlCertificateExportsLayout = new javax.swing.GroupLayout(pnlCertificateExports);
-        pnlCertificateExports.setLayout(pnlCertificateExportsLayout);
-        pnlCertificateExportsLayout.setHorizontalGroup(
-            pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertificateExportsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollCertificate, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        pnlCertificateExportsLayout.setVerticalGroup(
-            pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCertificateExportsLayout.createSequentialGroup()
-                .addContainerGap(148, Short.MAX_VALUE)
-                .addComponent(scrollCertificate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        pnlCACertificate.add(pnlCertificateExports, java.awt.BorderLayout.CENTER);
-
-        pnlCertificate.setLayout(new java.awt.BorderLayout());
-
         btnGrpStore.add(rdoConvertPairPEM);
         rdoConvertPairPEM.setSelected(true);
         rdoConvertPairPEM.setText("Certificate and Private key in PEM format");
@@ -249,10 +228,35 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addComponent(rdoConvertCertificateDER)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoConvertPrivateDER)
-                .addContainerGap(92, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlCertificate.add(pnlConvertFormat, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout pnlCertificateExportsLayout = new javax.swing.GroupLayout(pnlCertificateExports);
+        pnlCertificateExports.setLayout(pnlCertificateExportsLayout);
+        pnlCertificateExportsLayout.setHorizontalGroup(
+            pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCertificateExportsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollCertificate)
+                    .addGroup(pnlCertificateExportsLayout.createSequentialGroup()
+                        .addComponent(pnlConvertFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        pnlCertificateExportsLayout.setVerticalGroup(
+            pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCertificateExportsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollCertificate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlConvertFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlCACertificate.add(pnlCertificateExports, java.awt.BorderLayout.CENTER);
+
+        pnlCertificate.setLayout(new java.awt.BorderLayout());
 
         pnlServerCertificate.setLayout(new java.awt.BorderLayout());
 
@@ -416,7 +420,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                                     + "<div><ul>\n"
                                     + "<li><a href=\"/burp-keycert.pem.cer\">Certificate and Private key in PEM format</a></li>\n"
                                     + "<li><a href=\"/burp-cert.pem.cer\">Certificate in PEM format</a></li>\n"
-                                    + "<li><a href=\"/burp-private-key.der\">Certificate and Private key in DER format</a></li>\n"
+                                    + "<li><a href=\"/burp-private-key.der\">Private key in DER format</a></li>\n"
                                     + "<li><a href=\"/burp-cert.der\">Certificate in DER format</a></li>\n"
                                     + "</ul></div>\n"
                                     + "</body>\n"
