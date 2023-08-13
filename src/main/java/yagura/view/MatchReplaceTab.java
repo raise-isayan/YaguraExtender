@@ -24,6 +24,8 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import yagura.model.MatchReplaceGroup;
 import extension.burp.IBurpTab;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -247,6 +249,23 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
                 return l;
             }
         });
+
+        this.btnRepEdit.setEnabled((listMatchReplace.getSelectedIndices().length > 0));
+        this.btnRepRemove.setEnabled((listMatchReplace.getSelectedIndices().length > 0));
+
+        this.listMatchReplace.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                int rowCount = listMatchReplace.getSelectedIndices().length;
+                btnRepEdit.setEnabled((rowCount > 0));
+                btnRepRemove.setEnabled((rowCount > 0));
+            }
+        });
+
 
     }
 

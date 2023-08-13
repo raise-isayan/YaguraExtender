@@ -13,7 +13,6 @@ import extension.view.base.CustomDialog;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import yagura.model.HttpExtendProperty;
 import yagura.model.SendToExtendProperty;
 
 /**

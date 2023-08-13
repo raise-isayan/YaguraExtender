@@ -186,6 +186,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
         this.modelAlert = new CustomTableModel(this.tableAlert.getModel());
         this.tableAlert.setModel(this.modelAlert);
         this.btnAlertEdit.setEnabled(this.tableAlert.getSelectedRowCount() > 0);
+        this.btnAlertRemove.setEnabled(this.tableAlert.getSelectedRowCount() > 0);
         this.modelAlert.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -202,6 +203,7 @@ public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
                 }
                 int rowCount = tableAlert.getSelectedRowCount();
                 btnAlertEdit.setEnabled((rowCount > 0));
+                btnAlertRemove.setEnabled((rowCount > 0));
             }
         });
 
