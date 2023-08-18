@@ -5,6 +5,7 @@ import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.core.Marker;
 import burp.api.montoya.http.HttpService;
+import burp.api.montoya.http.handler.TimingData;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
@@ -16,6 +17,7 @@ import extension.helpers.StringUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.RowFilter;
@@ -364,6 +366,11 @@ public class HttpMessageItem implements HttpRequestResponse {
     @Override
     public HttpRequestResponse withResponseMarkers(List<Marker> list) {
         return this.httpRequestResponse.withResponseMarkers(list);
+    }
+
+    @Override
+    public Optional<TimingData> timingData() {
+        return this.httpRequestResponse.timingData();
     }
 
 }
