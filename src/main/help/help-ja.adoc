@@ -30,8 +30,11 @@ Decoder::
 Converter::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
 
-Converter::
+Hash::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
+
+Extension::
+  選択した拡張機能を実行します。
 
 Burp Charsets::
   BurpのUser設定の文字コードを変更します。

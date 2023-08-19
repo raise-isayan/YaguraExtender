@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.HttpService;

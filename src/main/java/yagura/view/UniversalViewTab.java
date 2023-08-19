@@ -63,8 +63,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         pop = new javax.swing.JButton();
         btnEncDownArraw = new javax.swing.JButton();
         chkClipboardAutoDecode = new javax.swing.JCheckBox();
-        btnSelectDown = new javax.swing.JButton();
-        lblSelectEncode = new javax.swing.JLabel();
         cmbDefaultLangEncoding = new javax.swing.JComboBox<>();
         btnReset = new javax.swing.JButton();
         tabMessageView = new javax.swing.JPanel();
@@ -150,15 +148,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        btnSelectDown.setText("▼");
-        btnSelectDown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectDownActionPerformed(evt);
-            }
-        });
-
-        lblSelectEncode.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         cmbDefaultLangEncoding.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Default", "Japanese", "Chinese", "Korean", "Other" }));
         cmbDefaultLangEncoding.setSelectedItem("Japanese");
 
@@ -176,72 +165,62 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkClipboardAutoDecode))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnEncRightArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEncLerftArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 64, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(scrollSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(pop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnEncDownArraw)))
-                    .addComponent(lblSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(cmbDefaultLangEncoding, 0, 163, Short.MAX_VALUE)
-                            .addComponent(lblSelectEncode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelectDown)))
-                .addContainerGap(58, Short.MAX_VALUE))
-            .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlCenterLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(lblTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(526, Short.MAX_VALUE)))
+                            .addComponent(chkClipboardAutoDecode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                            .addComponent(scrollTarget, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnEncRightArraw, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                            .addComponent(btnEncLerftArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(scrollSelect, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(pop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnEncDownArraw))
+                            .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(lblSelect)
-                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlCenterLayout.createSequentialGroup()
+                                .addGap(8, 8, 8)
+                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblSelect)
+                                    .addComponent(lblTarget))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(scrollTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                                    .addComponent(scrollSelect)))
+                            .addGroup(pnlCenterLayout.createSequentialGroup()
+                                .addGap(109, 109, 109)
+                                .addComponent(pop)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnEncDownArraw)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(scrollTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
-                            .addComponent(scrollSelect)))
-                    .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(pop)
-                        .addGap(41, 41, 41)
-                        .addComponent(btnEncDownArraw))
-                    .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addGap(59, 59, 59)
+                        .addContainerGap()
                         .addComponent(btnEncRightArraw)
-                        .addGap(35, 35, 35)
-                        .addComponent(btnEncLerftArraw)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkClipboardAutoDecode)
-                    .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnReset)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSelectEncode, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSelectDown))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlCenterLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(lblTarget)
-                    .addContainerGap(478, Short.MAX_VALUE)))
+                        .addGap(62, 62, 62)
+                        .addComponent(btnEncLerftArraw)
+                        .addGap(96, 96, 96)))
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnReset)
+                    .addComponent(chkClipboardAutoDecode))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         tabEncoding.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -426,8 +405,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
 
         });
         this.listSelect.setModel(this.modelSelect);
-        this.lblSelectEncode.setVisible(false);
-        this.btnSelectDown.setVisible(false);
     }
 
     private void btnEncRightArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncRightArrawActionPerformed
@@ -458,10 +435,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private void chkClipboardAutoDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkClipboardAutoDecodeActionPerformed
         this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
     }//GEN-LAST:event_chkClipboardAutoDecodeActionPerformed
-
-    private void btnSelectDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectDownActionPerformed
-        this.popEncodeMenu.show(pnlCenter, lblSelectEncode.getX(), lblSelectEncode.getY() + lblSelectEncode.getHeight());
-    }//GEN-LAST:event_btnSelectDownActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         String encoding = (String) this.cmbDefaultLangEncoding.getSelectedItem();
@@ -531,7 +504,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JButton btnEncLerftArraw;
     private javax.swing.JButton btnEncRightArraw;
     private javax.swing.JButton btnReset;
-    private javax.swing.JButton btnSelectDown;
     private javax.swing.JCheckBox chkClipboardAutoDecode;
     private javax.swing.JCheckBox chkGeneratePoC;
     private javax.swing.JCheckBox chkHTMLComment;
@@ -546,7 +518,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblDispayMaxLength;
     private javax.swing.JLabel lblSelect;
-    private javax.swing.JLabel lblSelectEncode;
     private javax.swing.JLabel lblTarget;
     private javax.swing.JList listSelect;
     private javax.swing.JList listTarget;

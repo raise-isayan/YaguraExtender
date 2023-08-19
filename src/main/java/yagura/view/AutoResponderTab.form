@@ -18,30 +18,23 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="692" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="689" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="chkHostNameForceResolv" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnEnable" alignment="0" min="-2" pref="138" max="-2" attributes="0"/>
+                  <Component id="btnAutoResponderEdit" min="-2" pref="138" max="-2" attributes="3"/>
+                  <Component id="btnAutoResponderRemove" min="-2" pref="138" max="-2" attributes="3"/>
+                  <Component id="btnAutoResponderAdd" min="-2" pref="138" max="-2" attributes="3"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="btnUpArraw" alignment="0" min="-2" pref="83" max="-2" attributes="1"/>
-                          <Component id="btnDownArraw" alignment="0" min="-2" pref="83" max="-2" attributes="1"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="chkHostNameForceResolv" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnAutoResponderAdd" pref="114" max="32767" attributes="3"/>
-                          <Component id="btnAutoResponderEdit" max="32767" attributes="3"/>
-                          <Component id="btnEnable" max="32767" attributes="0"/>
-                          <Component id="btnAutoResponderRemove" max="32767" attributes="3"/>
+                          <Component id="btnUpArraw" min="-2" pref="109" max="-2" attributes="1"/>
+                          <Component id="btnDownArraw" min="-2" pref="109" max="-2" attributes="1"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -56,18 +49,18 @@
                       <Component id="btnAutoResponderEdit" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnAutoResponderRemove" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="btnAutoResponderAdd" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnAutoResponderAdd" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnUpArraw" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnDownArraw" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                       <Component id="chkHostNameForceResolv" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" min="-2" pref="226" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="12" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -199,6 +192,7 @@
           <Image iconType="3" name="/yagura/resources/arrow_down.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="down"/>
+        <Property name="horizontalAlignment" type="int" value="10"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDownArrawActionPerformed"/>
@@ -212,6 +206,9 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Hostname Resolution to allow invalid hostname redirection"/>
       </AccessibilityProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkHostNameForceResolvActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

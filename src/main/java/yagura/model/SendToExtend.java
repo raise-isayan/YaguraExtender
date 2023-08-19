@@ -116,15 +116,15 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case ADD_HOST_TO_INCLUDE_SCOPE: {
-                BurpExtension.helpers().sendToAddHostIncludeToScope(this.contextMenu);
+                BurpExtension.helpers().addHostIncludeScope(this.contextMenu);
                 break;
             }
             case ADD_HOST_TO_EXCLUDE_SCOPE: {
-                BurpExtension.helpers().sendToAddHostToExcludeScope(this.contextMenu);
+                BurpExtension.helpers().addHostExcludeScope(this.contextMenu);
                 break;
             }
             case ADD_TO_EXCLUDE_SCOPE: {
-                BurpExtension.helpers().sendToAddToExcludeScope(this.contextMenu);
+                BurpExtension.helpers().addExcludeScope(this.contextMenu);
                 break;
             }
             default:

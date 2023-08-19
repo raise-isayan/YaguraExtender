@@ -19,7 +19,7 @@ image:images/Extender_Yagura.png[Extension]
 Various Yagura Encode/Decode conversion functions can be called in Intercepter and Repeter.
 
 Yagura Charsets::
-    You can select a default character set to be used in the various conversion functions.
+s    You can select a default character set to be used in the various conversion functions.
     You can Encode/Decode with the specified character set.
 
 Encoder::
@@ -31,6 +31,12 @@ Decoder::
 Converter::
     Converts the selected string in the character code selected in "Yagura Charsets".
 
+Hash::
+    Hash calculation the selected string in the character code selected in "Yagura Charsets".
+
+Extension::
+    Run the selected extension.
+ 
 Burp Charsets::
     Changes the character code in the User settings of Burp.
 

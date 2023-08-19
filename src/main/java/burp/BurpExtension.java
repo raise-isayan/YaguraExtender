@@ -97,11 +97,11 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import passive.signature.MatchAlert;
+import yagura.Config;
+import yagura.Version;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
 import yagura.model.OptionProperty;
-import yagura.Config;
-import yagura.Version;
 import yagura.model.AutoResponderItem;
 import yagura.model.AutoResponderProperty;
 import yagura.model.ITranslateAction;
@@ -974,6 +974,49 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraHashMenu.add(yaguraHashSha512Menu);
 
+            /**
+             * Yagura Extension
+             */
+            JMenu yaguraExtensionMenu = new JMenu();
+            yaguraExtensionMenu.setText("Extension (X)");
+            yaguraExtensionMenu.setMnemonic(KeyEvent.VK_X);
+
+            JMenuItem yaguraPasteIncludeScopeMenu = createMenuItem("Paste include scope(multi-line)", KeyEvent.VK_I, new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        String paste = SwingUtil.systemClipboardPaste();
+                        BurpExtension.helpers().addIncludeScope(paste);
+                    } catch (Exception ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+
+            });
+
+            yaguraExtensionMenu.add(yaguraPasteIncludeScopeMenu);
+
+            JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        String paste = SwingUtil.systemClipboardPaste();
+                        BurpExtension.helpers().addExcludeScope(paste);
+                    } catch (Exception ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+
+            });
+
+            yaguraExtensionMenu.add(yaguraPasteExludeScopeMenu);
+
+            /**
+             * Burp Charsets
+             */
+
             JMenu burpCharsetMenu = new JMenu();
             burpCharsetMenu.setText("Burp Charsets");
             burpCharsetMenu.setMnemonic(KeyEvent.VK_B);
@@ -1016,11 +1059,17 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
             burpCharsetMenu.add(burpCharsetMenu);
 
+            /**
+             * Yagura Menu
+             */
+
             yaguraMenu.add(yaguraCharsetMenu);
             yaguraMenu.add(yaguraEncoderMenu);
             yaguraMenu.add(yaguraDecoderMenu);
             yaguraMenu.add(yaguraConverterMenu);
             yaguraMenu.add(yaguraHashMenu);
+            yaguraMenu.add(yaguraExtensionMenu);
+
             if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
                 yaguraMenu.addSeparator();
                 yaguraMenu.add(burpCharsetMenu);
@@ -1052,11 +1101,16 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.userInterface().menuBar().registerMenu(yaguraMenu);
         }
 
-        public static JMenuItem createMenuItem(String caption, int mnemonic, ITranslateAction action) {
+        public static JMenuItem createMenuItem(String caption, int mnemonic, ActionListener actionListener) {
             final JMenuItem yaguraMenuItem = new JMenuItem();
             yaguraMenuItem.setText(caption + " (" + (char) mnemonic + ")");
             yaguraMenuItem.setMnemonic(mnemonic);
-            yaguraMenuItem.addActionListener(new ActionListener() {
+            yaguraMenuItem.addActionListener(actionListener);
+            return yaguraMenuItem;
+        }
+
+        public static JMenuItem createMenuItem(String caption, int mnemonic, ITranslateAction action) {
+            return createMenuItem(caption, mnemonic, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -1065,12 +1119,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         String allText = textArea.getText();
                         String selectedText = textArea.getSelectedText();
                         String encode = action.translate(allText, selectedText);
-                        textArea.replaceSelection(encode);
+                        if (encode != null) {
+                            textArea.replaceSelection(encode);
+                        }
                     }
                 }
 
             });
-            return yaguraMenuItem;
         }
 
         private ActionListener burpCharsetModeAction = new ActionListener() {
