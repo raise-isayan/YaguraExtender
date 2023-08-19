@@ -36,6 +36,7 @@ import extend.util.external.TransUtil;
 import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.BurpConfig;
 import extension.burp.BurpConfig.HostnameResolution;
+import extension.burp.BurpConfig.SSLPassThroughRule;
 import extension.burp.BurpExtensionImpl;
 import extension.burp.HttpTarget;
 import extension.burp.NotifyType;
@@ -43,6 +44,7 @@ import extension.burp.TargetTool;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
 import extension.burp.ExtensionHelper;
+import extension.burp.TargetScopeItem;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpMessageWapper;
 import extension.helpers.HttpUtil;
@@ -86,8 +88,10 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
+import java.util.Scanner;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
@@ -1013,6 +1017,27 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraExtensionMenu.add(yaguraPasteExludeScopeMenu);
 
+            JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through(multi-line)", KeyEvent.VK_P, new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        String paste = SwingUtil.systemClipboardPaste();
+                        URL [] urls = TargetScopeItem.parseMultilineURL(paste);
+                        List<SSLPassThroughRule> rules = new ArrayList<>();
+                        for (URL u : urls) {
+                            rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ?  u.getPort() : u.getDefaultPort()));
+                        }
+                        BurpConfig.configSSLPassThroughRules(api, rules, false);
+                    } catch (Exception ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+
+            });
+
+            yaguraExtensionMenu.add(yaguraPasteSSLPassThroughMenu);
+
             /**
              * Burp Charsets
              */
@@ -1191,7 +1216,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
          */
         @Override
         public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
-
             return RequestToBeSentAction.continueWith(httpRequestToBeSent, httpRequestToBeSent.annotations());
         }
 
