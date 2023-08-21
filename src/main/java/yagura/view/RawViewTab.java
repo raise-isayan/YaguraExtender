@@ -397,6 +397,4 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
 
     protected final static Pattern CONTENT_CHARSET = Pattern.compile("(\\s*charset=[\"\']?([\\w_-]+)[\"\']?)", Pattern.MULTILINE);
 
-
-
 }

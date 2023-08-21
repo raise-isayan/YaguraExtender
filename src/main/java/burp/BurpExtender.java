@@ -13,7 +13,8 @@ public class BurpExtender extends BurpExtension implements IBurpExtender {
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
 
     /**
-      MontoyaAPI に対応している場合にもこのルートは通る模様
+     * MontoyaAPI に対応している場合にもこのルートは通る模様
+     *
      * @param cb
      */
     @Override

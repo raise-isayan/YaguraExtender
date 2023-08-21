@@ -11,9 +11,6 @@ import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extension.helpers.HttpRequestWapper;
-import extension.helpers.HttpUtil;
-import extension.helpers.SmartCodec;
-import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -30,7 +27,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -468,7 +464,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                         quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
                         textModified = false;
 
-                    } catch (InterruptedException | ExecutionException  ex) {
+                    } catch (InterruptedException | ExecutionException ex) {
                         logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 }
@@ -521,8 +517,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isDecodeParam);
             this.btnDecode.setEnabled(enabled);
             return count > 0;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }

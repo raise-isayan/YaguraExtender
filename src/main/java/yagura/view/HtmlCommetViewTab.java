@@ -242,8 +242,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
             } else {
                 return false;
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }

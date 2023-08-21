@@ -441,7 +441,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                             .setBody(exportCA).setResponseCode(200);
                 } else if ("/burp-private-key.der".equals(request.getPath())) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
-                    byte [] exportCA = BouncyUtil.exportPrivateKeyDer(cert.getKey());
+                    byte[] exportCA = BouncyUtil.exportPrivateKeyDer(cert.getKey());
                     Buffer buffer = new Buffer();
                     buffer.write(exportCA);
                     return new MockResponse()
@@ -450,7 +450,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                             .setBody(buffer).setResponseCode(200);
                 } else if ("/burp-cert.der".equals(request.getPath())) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
-                    byte [] exportCA = BouncyUtil.exportCertificateDer(cert.getValue());
+                    byte[] exportCA = BouncyUtil.exportCertificateDer(cert.getValue());
                     Buffer buffer = new Buffer();
                     buffer.write(exportCA);
                     return new MockResponse()

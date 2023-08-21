@@ -370,8 +370,7 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
                 }
             }
             return false;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }

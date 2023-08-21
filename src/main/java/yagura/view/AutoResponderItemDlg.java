@@ -369,8 +369,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         item.setSelected(true);
         if (this.chkAnyMethod.isSelected()) {
             item.setMethod(null);
-        }
-        else {
+        } else {
             item.setMethod(this.txtMethod.getText());
         }
         item.setRegexp(this.chkRegExp.isSelected());
@@ -390,8 +389,7 @@ public class AutoResponderItemDlg extends CustomDialog {
         if (item.getMethod() == null) {
             this.chkAnyMethod.setSelected(true);
             this.txtMethod.setText("");
-        }
-        else {
+        } else {
             this.chkAnyMethod.setSelected(false);
             this.txtMethod.setText(item.getMethod());
         }

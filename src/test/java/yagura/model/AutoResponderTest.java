@@ -38,7 +38,7 @@ public class AutoResponderTest {
     /**
      */
     @Test
-    public void testAutoResponderFindItem()  {
+    public void testAutoResponderFindItem() {
         AutoResponderProperty property = new AutoResponderProperty();
         List<AutoResponderItem> autoResponderItemList = new ArrayList<>();
         AutoResponderItem autoResponderItem = new AutoResponderItem();
@@ -72,7 +72,7 @@ public class AutoResponderTest {
     /**
      */
     @Test
-    public void testAutoResponderMultiFindItem()  {
+    public void testAutoResponderMultiFindItem() {
         AutoResponderProperty property = new AutoResponderProperty();
         List<AutoResponderItem> autoResponderItemList = new ArrayList<>();
         {
@@ -106,7 +106,7 @@ public class AutoResponderTest {
     /**
      */
     @Test
-    public void testAutoResponderItem()  {
+    public void testAutoResponderItem() {
         {
             AutoResponderItem autoResponderItem = new AutoResponderItem();
             autoResponderItem.setMatch("redirect");
@@ -152,6 +152,5 @@ public class AutoResponderTest {
             assertFalse(!autoResponderItem.isRegexp() && autoResponderItem.isValidRegex() && !HttpUtil.isValidUrl(autoResponderItem.getMatch()));
         }
     }
-
 
 }

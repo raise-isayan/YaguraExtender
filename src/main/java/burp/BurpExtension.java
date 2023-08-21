@@ -230,7 +230,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
-        //BurpConfig.configHostnameResolution(api);
         SwingUtilities.invokeLater(() -> {
             this.registerView();
             this.menuHandler = new MenuHander(api);
@@ -598,20 +597,16 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         public String getYaguraCharset(String selectedText) {
             if (yaguraCharset != null) {
                 return yaguraCharset;
-            }
-            else {
+            } else {
                 if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
                     BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api);
                     if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent())) {
                         return StringUtil.DEFAULT_ENCODING;
-                    }
-                    else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent())) {
+                    } else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent())) {
                         return StandardCharsets.ISO_8859_1.name();
-                    }
-                    else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
+                    } else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
                         return burpCharset.getCharacterSet();
-                    }
-                    else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent())) {
+                    } else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent())) {
                         return HttpUtil.getGuessCode(StringUtil.getBytesRaw(selectedText));
                     }
                 }
@@ -1023,10 +1018,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 public void actionPerformed(ActionEvent e) {
                     try {
                         String paste = SwingUtil.systemClipboardPaste();
-                        URL [] urls = TargetScopeItem.parseMultilineURL(paste);
+                        URL[] urls = TargetScopeItem.parseMultilineURL(paste);
                         List<SSLPassThroughRule> rules = new ArrayList<>();
                         for (URL u : urls) {
-                            rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ?  u.getPort() : u.getDefaultPort()));
+                            rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ? u.getPort() : u.getDefaultPort()));
                         }
                         BurpConfig.configSSLPassThroughRules(api, rules, false);
                     } catch (Exception ex) {
@@ -1041,7 +1036,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             /**
              * Burp Charsets
              */
-
             JMenu burpCharsetMenu = new JMenu();
             burpCharsetMenu.setText("Burp Charsets");
             burpCharsetMenu.setMnemonic(KeyEvent.VK_B);
@@ -1087,7 +1081,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             /**
              * Yagura Menu
              */
-
             yaguraMenu.add(yaguraCharsetMenu);
             yaguraMenu.add(yaguraEncoderMenu);
             yaguraMenu.add(yaguraDecoderMenu);
@@ -1184,8 +1177,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         String caption = item.getText();
                         if (USE_BURP_CHARSETS.equals(caption)) {
                             yaguraCharset = null;
-                        }
-                        else {
+                        } else {
                             yaguraCharset = caption;
                         }
                     }

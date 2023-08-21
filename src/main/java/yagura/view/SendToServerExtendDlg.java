@@ -740,7 +740,6 @@ public class SendToServerExtendDlg extends CustomDialog {
 //        if (prop.getReqNum() == SendToParameterProperty.SendToParameterType.HISTORY_NUMBER) {
 //            this.rdoReqNameHistoryNumber.setSelected(true);
 //        }
-
     }
 
     public void setProperty(HttpExtendProperty prop) {
@@ -795,7 +794,6 @@ public class SendToServerExtendDlg extends CustomDialog {
 
 //        prop.setUseReqNum(this.chkUseReqNum.isSelected());
 //        prop.setReqNum(SendToParameterProperty.SendToParameterType.HISTORY_NUMBER);
-
         return prop;
     }
 

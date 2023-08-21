@@ -21,6 +21,7 @@ import javax.swing.*;
  * @author isayan
  */
 public class MatchAlertItemDlg extends CustomDialog {
+
     private final static Logger logger = Logger.getLogger(MatchAlertItemDlg.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
@@ -541,10 +542,10 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
 
         this.cmbAlertColor.setModel(new DefaultComboBoxModel(
-                        new MessageHighlightColor[]{MessageHighlightColor.RED, MessageHighlightColor.ORANGE,
-                            MessageHighlightColor.YELLOW, MessageHighlightColor.GREEN, MessageHighlightColor.CYAN,
-                            MessageHighlightColor.BLUE, MessageHighlightColor.PINK, MessageHighlightColor.MAGENTA,
-                            MessageHighlightColor.GRAY}));
+                new MessageHighlightColor[]{MessageHighlightColor.RED, MessageHighlightColor.ORANGE,
+                    MessageHighlightColor.YELLOW, MessageHighlightColor.GREEN, MessageHighlightColor.CYAN,
+                    MessageHighlightColor.BLUE, MessageHighlightColor.PINK, MessageHighlightColor.MAGENTA,
+                    MessageHighlightColor.GRAY}));
 
         this.cmbAlertColor.setEnabled(false);
 

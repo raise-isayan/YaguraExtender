@@ -267,7 +267,6 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-
     }
 
     private void btnRepNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepNewActionPerformed

@@ -14,7 +14,7 @@ import java.util.List;
 public class MatchAlertProperty implements IPropertyConfig {
 
     public final static String MATCHALERT_PROPERTY = "matchAlertProperty";
-    
+
     @Expose
     private boolean selectedMatchAlert = false;
 
@@ -24,7 +24,7 @@ public class MatchAlertProperty implements IPropertyConfig {
 
     @Expose
     private boolean matchAlertEnable = false;
-    
+
     public boolean isMatchAlertEnable() {
         return this.matchAlertEnable;
     }

@@ -37,6 +37,7 @@ import yagura.model.UniversalViewProperty;
  * @author isayan
  */
 public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, ExtensionProvidedEditor {
+
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
     private final boolean isRequest;
@@ -51,6 +52,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
 
     /**
      * Creates new form JSONView
+     *
      * @param editorCreationContext
      * @param isResuest
      */
@@ -65,13 +67,12 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
     private JSONView jsonView;
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
-
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.jsonView = new JSONView(isJsonp());
         this.add(jsonView, java.awt.BorderLayout.CENTER);
 
-        org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtJSON = (org.fife.ui.rsyntaxtextarea.RSyntaxTextArea )this.jsonView.getTextArea();
+        org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtJSON = (org.fife.ui.rsyntaxtextarea.RSyntaxTextArea) this.jsonView.getTextArea();
         this.quickSearchTab.setSelectedTextArea(txtJSON);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
         this.quickSearchTab.addQuickSearchListener(quickSerchStateChanged);
@@ -129,15 +130,13 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-
     public void setMessageEncoding(String encoding) {
         try {
             if (this.httpRequestResponse != null) {
                 if (this.isRequest) {
                     String msg = StringUtil.getStringCharset(this.httpRequestResponse.request().body().getBytes(), encoding);
                     this.jsonView.setMessage(msg);
-                }
-                else {
+                } else {
                     String msg = StringUtil.getStringCharset(this.httpRequestResponse.response().body().getBytes(), encoding);
                     this.jsonView.setMessage(msg);
                 }
@@ -174,9 +173,9 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         HttpRequest httpRequest = httpRequestResponse.request();
         HttpResponse httpResponse = httpRequestResponse.response();
 
-        if ((isMessageRequest && httpRequest.body().length() > viewProperty.getDispayMaxLength() ||
-           (!isMessageRequest && httpResponse.body().length() > viewProperty.getDispayMaxLength()))
-           && viewProperty.getDispayMaxLength() != 0) {
+        if ((isMessageRequest && httpRequest.body().length() > viewProperty.getDispayMaxLength()
+                || (!isMessageRequest && httpResponse.body().length() > viewProperty.getDispayMaxLength()))
+                && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
 
@@ -214,9 +213,9 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         HttpRequest httpRequest = httpRequestResponse.request();
         HttpResponse httpResponse = httpRequestResponse.response();
 
-        if ((isMessageRequest && httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() ||
-           (!isMessageRequest && httpResponse.toByteArray().length() > viewProperty.getDispayMaxLength()))
-           && viewProperty.getDispayMaxLength() != 0) {
+        if ((isMessageRequest && httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength()
+                || (!isMessageRequest && httpResponse.toByteArray().length() > viewProperty.getDispayMaxLength()))
+                && viewProperty.getDispayMaxLength() != 0) {
             return false;
         }
 
@@ -252,7 +251,6 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         this.jsonView.setLineWrap(lineWrap);
     }
 
-
     public HttpRequestResponse getHttpRequestResponse() {
 //        if (this.httpRequestResponse != null) {
 //            if (this.textModified) {
@@ -286,7 +284,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         return this.httpRequestResponse;
     }
 
-   @Override
+    @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = StandardCharsets.UTF_8.name();
@@ -305,7 +303,6 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
 
 //            this.setMessageEncoding(guessCharset);
-
     }
 
     @Override
@@ -316,12 +313,10 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         try {
             if (this.isJsonp()) {
                 return isEnabledJsonp(httpRequestResponse, this.isRequest);
-            }
-            else {
+            } else {
                 return isEnabledJson(httpRequestResponse, this.isRequest);
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }
@@ -331,8 +326,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
     public String caption() {
         if (this.isJsonp()) {
             return "JSONP";
-        }
-        else {
+        } else {
             return "JSON";
         }
     }
@@ -348,7 +342,6 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
     }
 
     /* impelements SendToMessage */
-
     @Override
     public String getSelectedText() {
         JTextComponent area = this.getSelectedTextArea();

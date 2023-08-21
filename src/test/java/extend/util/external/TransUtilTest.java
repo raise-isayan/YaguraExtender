@@ -373,7 +373,6 @@ public class TransUtilTest {
         }
     }
 
-
     /**
      * Test of testToHex1Encode method, of class TransUtil.
      */
@@ -979,6 +978,5 @@ public class TransUtilTest {
             assertEquals(except, value);
         }
     }
-
 
 }

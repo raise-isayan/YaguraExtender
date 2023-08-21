@@ -247,10 +247,10 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public String getGuessCharset(String defaultCharset) {
         String charset = defaultCharset;
-            if (this.response() != null) {
-                HttpResponseWapper wrap = new HttpResponseWapper(this.response());
-                charset = wrap.getGuessCharset(defaultCharset);
-            }
+        if (this.response() != null) {
+            HttpResponseWapper wrap = new HttpResponseWapper(this.response());
+            charset = wrap.getGuessCharset(defaultCharset);
+        }
         return charset;
     }
 

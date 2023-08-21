@@ -95,9 +95,9 @@ public class AutoResponderProperty implements IPropertyConfig {
                 break;
             }
         }
-        return matchItem;        
+        return matchItem;
     }
-    
+
     public void setProperty(AutoResponderProperty property) {
         this.setAutoResponderEnable(property.getAutoResponderEnable());
         this.setRedirectPort(property.getRedirectPort());

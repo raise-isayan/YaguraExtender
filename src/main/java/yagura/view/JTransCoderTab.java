@@ -102,10 +102,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     //private javax.swing.JScrollPane scrollOutputRaw;
     //private javax.swing.JTextArea txtOutputRaw;
-
     //private javax.swing.JScrollPane scrollOutputFormat;
     //private javax.swing.JTextArea txtOutputFormat;
-
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
 
@@ -188,7 +186,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
 //        scrollURaw.setViewportView(txtURaw);
 //        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
-
         this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
 //        this.txtOutputRaw = new javax.swing.JTextArea();
 
@@ -3402,7 +3399,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void rdoByteNoneHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteNoneHexActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoByteNoneHexActionPerformed
-
 
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override

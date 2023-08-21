@@ -122,11 +122,11 @@ public class BouncyUtil {
         }
     }
 
-    public static byte [] exportPrivateKeyDer(Key key) throws IOException {
+    public static byte[] exportPrivateKeyDer(Key key) throws IOException {
         return key.getEncoded();
     }
 
-    public static byte [] exportCertificateDer(Certificate cert) throws IOException {
+    public static byte[] exportCertificateDer(Certificate cert) throws IOException {
         try {
             return cert.getEncoded();
         } catch (CertificateEncodingException ex) {
@@ -134,7 +134,7 @@ public class BouncyUtil {
         }
     }
 
-    public static String getSubjectCN(byte [] storeData, String storePassword) throws IOException {
+    public static String getSubjectCN(byte[] storeData, String storePassword) throws IOException {
         HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(storeData, storePassword);
         for (String key : certMap.keySet()) {
             Map.Entry<Key, X509Certificate> cert = certMap.get(key);

@@ -146,9 +146,9 @@ public class CertificateItem {
     public static CertificateItem fromObjects(Object[] rows) {
         CertificateItem cert = new CertificateItem();
         cert.setSelected((Boolean) rows[0]);
-        cert.setStoreType(CertUtil.StoreType.valueOf((String)rows[1]));
-        cert.setClientCertificate(ConvertUtil.toBase64Decode((String)rows[2]));
-        cert.setClientCertificatePasswd((String)rows[3]);
+        cert.setStoreType(CertUtil.StoreType.valueOf((String) rows[1]));
+        cert.setClientCertificate(ConvertUtil.toBase64Decode((String) rows[2]));
+        cert.setClientCertificatePasswd((String) rows[3]);
         return cert;
     }
 
