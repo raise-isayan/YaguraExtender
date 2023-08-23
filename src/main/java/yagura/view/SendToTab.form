@@ -46,33 +46,31 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                               <Component id="jScrollPane1" pref="389" max="32767" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="btnSendToEdit" alignment="1" max="32767" attributes="3"/>
-                                      <Component id="btnSendToRemove" alignment="1" max="32767" attributes="3"/>
-                                      <Component id="btnSendToDuplicate" alignment="0" pref="136" max="32767" attributes="3"/>
-                                      <Component id="btnSendToAdd" alignment="0" max="32767" attributes="3"/>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="btnSendToDownArraw" min="-2" pref="110" max="-2" attributes="1"/>
-                                          <Component id="btnSendToUpArraw" min="-2" pref="110" max="-2" attributes="1"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="chkSubmenu" min="-2" pref="133" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="chkForceSortOrder" min="-2" pref="190" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="209" max="32767" attributes="0"/>
+                              <Component id="chkSubmenu" min="-2" pref="190" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="chkForceSortOrder" pref="188" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnSendToEdit" alignment="1" max="32767" attributes="3"/>
+                              <Component id="btnSendToRemove" alignment="1" max="32767" attributes="3"/>
+                              <Component id="btnSendToDuplicate" alignment="0" pref="136" max="32767" attributes="3"/>
+                              <Component id="btnSendToAdd" alignment="0" max="32767" attributes="3"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnSendToDownArraw" min="-2" pref="110" max="-2" attributes="1"/>
+                                  <Component id="btnSendToUpArraw" min="-2" pref="110" max="-2" attributes="1"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
