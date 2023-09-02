@@ -131,7 +131,9 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
             messageInfoMark = baseRequestResponse.withResponseMarkers(requestResponseMarkers);
         }
         List<AuditIssue> issues = new ArrayList<>();
-        issues.add(makeScanIssue(messageInfoMark, markIssueList));
+        if (!markIssueList.isEmpty()) {
+            issues.add(makeScanIssue(messageInfoMark, markIssueList));
+        }
         return issues;
     }
 
