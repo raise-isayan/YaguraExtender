@@ -105,7 +105,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(431, Short.MAX_VALUE)
+                .addContainerGap(421, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,11 +176,11 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addGroup(pnlScannerIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtIssueName)
                     .addGroup(pnlScannerIssueLayout.createSequentialGroup()
-                        .addGroup(pnlScannerIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkScannerIssue, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbSeverity, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbConfidence, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 62, Short.MAX_VALUE)))
+                        .addGroup(pnlScannerIssueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(chkScannerIssue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbSeverity, 0, 200, Short.MAX_VALUE)
+                            .addComponent(cmbConfidence, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 89, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlScannerIssueLayout.setVerticalGroup(
@@ -193,7 +193,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbSeverity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbConfidence, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbConfidence, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -210,22 +210,19 @@ public class MatchAlertItemDlg extends CustomDialog {
             pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlNoticeLayout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtComment)
-                    .addComponent(cmbAlertColor, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnlNoticeLayout.createSequentialGroup()
-                        .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkTrayMessage)
-                            .addComponent(chkAlertsTab)
-                            .addComponent(chkItemHighlight)
-                            .addGroup(pnlNoticeLayout.createSequentialGroup()
-                                .addComponent(chkComment)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chkCaptureGroup)))
-                        .addGap(0, 113, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                        .addComponent(chkComment, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkCaptureGroup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(chkTrayMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                    .addComponent(chkAlertsTab, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbAlertColor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtComment)
+                    .addComponent(chkItemHighlight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(pnlScannerIssue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+                .addContainerGap())
         );
         pnlNoticeLayout.setVerticalGroup(
             pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,6 +266,11 @@ public class MatchAlertItemDlg extends CustomDialog {
         chkSequencer.setText("sequencer");
 
         chkExtension.setText("extension");
+        chkExtension.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkExtensionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlTargetLayout = new javax.swing.GroupLayout(pnlTarget);
         pnlTarget.setLayout(pnlTargetLayout);
@@ -278,19 +280,18 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addContainerGap()
                 .addGroup(pnlTargetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkSpider)
-                    .addComponent(chkProxy, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(chkProxy, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlTargetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkIntruder)
-                    .addComponent(chkScanner))
-                .addGap(18, 18, 18)
-                .addGroup(pnlTargetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkRepeater)
-                    .addGroup(pnlTargetLayout.createSequentialGroup()
-                        .addComponent(chkSequencer)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkExtension)))
-                .addContainerGap(279, Short.MAX_VALUE))
+                    .addComponent(chkScanner, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlTargetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(chkRepeater, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(chkSequencer, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkExtension, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlTargetLayout.setVerticalGroup(
             pnlTargetLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,13 +375,9 @@ public class MatchAlertItemDlg extends CustomDialog {
             .addGroup(pnlContanerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlContanerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlNotice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlMatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlContanerLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(pnlTarget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlContanerLayout.createSequentialGroup()
-                        .addComponent(pnlNotice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(pnlTarget, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlContanerLayout.setVerticalGroup(
@@ -446,6 +443,10 @@ public class MatchAlertItemDlg extends CustomDialog {
     private void chkSpiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSpiderActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chkSpiderActionPerformed
+
+    private void chkExtensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExtensionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkExtensionActionPerformed
 
     /**
      * @param args the command line arguments

@@ -18,7 +18,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-86,0,0,2,116"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-49,0,0,2,106"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -39,7 +39,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="431" max="32767" attributes="0"/>
+                  <EmptySpace pref="421" max="32767" attributes="0"/>
                   <Component id="btnOK" min="-2" pref="84" max="-2" attributes="1"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnCancel" min="-2" pref="95" max="-2" attributes="1"/>
@@ -98,18 +98,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="pnlNotice" max="32767" attributes="0"/>
                           <Component id="pnlMatch" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="pnlTarget" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="pnlNotice" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="pnlTarget" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -143,26 +137,21 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtComment" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cmbAlertColor" alignment="1" max="32767" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="chkTrayMessage" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="chkAlertsTab" min="-2" max="-2" attributes="0"/>
-                                      <Component id="chkItemHighlight" min="-2" max="-2" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="chkComment" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="chkCaptureGroup" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <EmptySpace min="0" pref="113" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="chkComment" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="chkCaptureGroup" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="chkTrayMessage" alignment="0" pref="260" max="32767" attributes="0"/>
+                              <Component id="chkAlertsTab" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cmbAlertColor" max="32767" attributes="0"/>
+                              <Component id="txtComment" alignment="0" max="32767" attributes="0"/>
+                              <Component id="chkItemHighlight" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="32767" attributes="0"/>
                           <Component id="pnlScannerIssue" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -254,12 +243,12 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="txtIssueName" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="chkScannerIssue" min="-2" pref="131" max="-2" attributes="0"/>
-                                          <Component id="cmbSeverity" min="-2" pref="201" max="-2" attributes="0"/>
-                                          <Component id="cmbConfidence" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="chkScannerIssue" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="cmbSeverity" alignment="0" pref="200" max="32767" attributes="0"/>
+                                          <Component id="cmbConfidence" alignment="0" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="0" pref="62" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="89" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -276,7 +265,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="cmbSeverity" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cmbConfidence" min="-2" max="-2" attributes="0"/>
+                              <Component id="cmbConfidence" min="-2" pref="22" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -349,24 +338,22 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="chkSpider" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chkProxy" alignment="0" min="-2" pref="63" max="-2" attributes="0"/>
+                              <Component id="chkSpider" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkProxy" min="-2" pref="100" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="chkIntruder" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="chkScanner" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkIntruder" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkScanner" min="-2" pref="100" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="chkRepeater" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="chkSequencer" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="chkExtension" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="chkRepeater" max="32767" attributes="0"/>
+                              <Component id="chkSequencer" pref="100" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="279" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="chkExtension" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -429,6 +416,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="extension"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkExtensionActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

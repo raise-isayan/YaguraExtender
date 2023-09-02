@@ -249,7 +249,7 @@ Target(Alert target)::
     Enable regular expression when checked.
 
 [IgnoreCase] check box:: 
-    Enable regular expression when checked.
+    When checked, ignore case.
 
 [alert tabs] check box:: 
     Alerts in the Burp suite will be notified.
