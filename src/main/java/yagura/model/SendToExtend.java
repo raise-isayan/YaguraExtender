@@ -25,16 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import yagura.Config;
-import static yagura.model.SendToItem.ExtendType.ADD_HOST_TO_EXCLUDE_SCOPE;
-import static yagura.model.SendToItem.ExtendType.ADD_HOST_TO_INCLUDE_SCOPE;
-import static yagura.model.SendToItem.ExtendType.ADD_TO_EXCLUDE_SCOPE;
-import static yagura.model.SendToItem.ExtendType.MESSAGE_INFO_COPY;
-import static yagura.model.SendToItem.ExtendType.PASTE_FROM_CLIPBOARD;
-import static yagura.model.SendToItem.ExtendType.PASTE_FROM_JTRANSCODER;
-import static yagura.model.SendToItem.ExtendType.REQUEST_AND_RESPONSE_TO_FILE;
-import static yagura.model.SendToItem.ExtendType.REQUEST_BODY_TO_FILE;
-import static yagura.model.SendToItem.ExtendType.RESPONSE_BODY_TO_FILE;
-import static yagura.model.SendToItem.ExtendType.SEND_TO_JTRANSCODER;
 
 /**
  *
@@ -234,7 +224,8 @@ public class SendToExtend extends SendToMenuItem {
             }
             case MESSAGE_INFO_COPY:
             case ADD_HOST_TO_INCLUDE_SCOPE:
-            case ADD_HOST_TO_EXCLUDE_SCOPE: {
+            case ADD_HOST_TO_EXCLUDE_SCOPE:
+            case ADD_TO_EXCLUDE_SCOPE: {
                 enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
                         || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
                         || (this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS)
