@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import org.apache.commons.codec.digest.Sha2Crypt;
 import org.apache.commons.codec.digest.UnixCrypt;
 
 /**
@@ -943,6 +944,15 @@ public class TransUtilTest {
         System.out.println(UnixCrypt.crypt("aaa"));
         System.out.println(UnixCrypt.crypt("aaa"));
     }
+
+
+    @Test
+    public void testSha2Crypt() {
+        System.out.println("testSha2Crypt");
+        System.out.println(Sha2Crypt.sha256Crypt("aaa".getBytes()));
+        System.out.println(Sha2Crypt.sha256Crypt("aaa".getBytes()));
+    }
+
 
     @Test
     public void testTranslate() {

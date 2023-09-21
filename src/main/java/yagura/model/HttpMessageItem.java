@@ -14,12 +14,14 @@ import extension.burp.HttpTarget;
 import extension.burp.MessageHighlightColor;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.StringUtil;
-import java.net.MalformedURLException;
+import java.lang.SuppressWarnings;
 import java.net.URL;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javax.swing.RowFilter;
 
 /**
@@ -309,8 +311,9 @@ public class HttpMessageItem implements HttpRequestResponse {
     }
 
     @Override
+    @SuppressWarnings("removal")
     public String url() {
-        return this.httpRequestResponse.url();
+        return this.httpRequestResponse.request().url();
     }
 
     @Override
@@ -319,13 +322,15 @@ public class HttpMessageItem implements HttpRequestResponse {
     }
 
     @Override
+    @SuppressWarnings("removal")
     public ContentType contentType() {
-        return this.httpRequestResponse.contentType();
+        return this.httpRequestResponse.request().contentType();
     }
 
     @Override
+    @SuppressWarnings("removal")
     public short statusCode() {
-        return this.httpRequestResponse.statusCode();
+        return this.httpRequestResponse.response().statusCode();
     }
 
     @Override
@@ -371,6 +376,21 @@ public class HttpMessageItem implements HttpRequestResponse {
     @Override
     public Optional<TimingData> timingData() {
         return this.httpRequestResponse.timingData();
+    }
+
+    @Override
+    public boolean hasResponse() {
+        return this.httpRequestResponse.hasResponse();
+    }
+
+    @Override
+    public boolean contains(String searchTerm, boolean caseSensitive) {
+        return this.httpRequestResponse.contains(searchTerm, caseSensitive);
+    }
+
+    @Override
+    public boolean contains(Pattern pattern) {
+        return this.httpRequestResponse.contains(pattern);
     }
 
 }

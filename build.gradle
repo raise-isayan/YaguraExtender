@@ -107,7 +107,7 @@ dependencies {
     // https://mvnrepository.com/artifact/net.portswigger.burp.extender/burp-extender-api
     implementation 'net.portswigger.burp.extender:burp-extender-api:2.3'
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
-    implementation 'net.portswigger.burp.extensions:montoya-api:2023.8'
+    implementation 'net.portswigger.burp.extensions:montoya-api:2023.10.3'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.15'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
@@ -131,7 +131,7 @@ dependencies {
  //   testImplementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
-    testImplementation 'net.portswigger.burp.extensions:montoya-api:2023.8'
+    testImplementation 'net.portswigger.burp.extensions:montoya-api:2023.10.3'
         // https://mvnrepository.com/artifact/com.google.code.gson/gson
         testImplementation 'com.google.code.gson:gson:2.10.1'
         // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
