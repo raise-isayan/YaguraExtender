@@ -42,8 +42,7 @@ public class SendToExtend extends SendToMenuItem {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof javax.swing.JMenuItem) {
-            List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
-            sendToEvent(messageInfo);
+            sendToEvent(this.contextMenu);
         }
     }
 
@@ -51,16 +50,20 @@ public class SendToExtend extends SendToMenuItem {
         super(item, contextMenu);
     }
 
-    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
-        menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, true));
+    public void sendToEvent(ContextMenuEvent contextMenu) {
+        List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
+        if (messageInfo.isEmpty()) {
+            if (contextMenu.messageEditorRequestResponse().isPresent()) {
+                menuItemClicked(getCaption(), SendToMessage.newSendToMessage(contextMenu.messageEditorRequestResponse().get(), true));
+            }
+        }
+        else {
+            menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, true));
+        }
     }
 
     @Override
     public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
-        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
-        if (messageInfo.isEmpty()) {
-            return;
-        }
         switch (this.getExtend()) {
             case SEND_TO_JTRANSCODER: {
                 String text = BurpUtil.copySelectionData(this.contextMenu, this.isEnabled());
@@ -70,15 +73,16 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case REQUEST_AND_RESPONSE_TO_FILE: {
-                saveAsMessage(SendToItem.MessageType.REQUEST_AND_RESPONSE, messageInfo);
+                this.contextMenu.messageEditorRequestResponse().get();
+                saveAsMessage(SendToItem.MessageType.REQUEST_AND_RESPONSE, sendToMessage);
                 break;
             }
             case REQUEST_BODY_TO_FILE: {
-                saveAsMessageBody(SendToItem.MessageType.REQUEST, messageInfo);
+                saveAsMessageBody(SendToItem.MessageType.REQUEST, sendToMessage);
                 break;
             }
             case RESPONSE_BODY_TO_FILE: {
-                saveAsMessageBody(SendToItem.MessageType.RESPONSE, messageInfo);
+                saveAsMessageBody(SendToItem.MessageType.RESPONSE, sendToMessage);
                 break;
             }
             case PASTE_FROM_JTRANSCODER: {
@@ -123,8 +127,8 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
-    private void saveAsMessage(SendToItem.MessageType messageType, List<HttpRequestResponse> messageInfo) {
-        HttpRequestResponse messageItem = messageInfo.get(0);
+    private void saveAsMessage(SendToItem.MessageType messageType, SendToMessage sendToMessage) {
+        final HttpRequestResponse messageItem = sendToMessage.getSelectedMessages().get(0);
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -156,8 +160,8 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
-    private void saveAsMessageBody(SendToItem.MessageType messageType, List<HttpRequestResponse> messageInfo) {
-        HttpRequestResponse messageItem = messageInfo.get(0);
+    private void saveAsMessageBody(SendToItem.MessageType messageType, SendToMessage sendToMessage) {
+        final HttpRequestResponse messageItem = sendToMessage.getSelectedMessages().get(0);
         try {
             JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -230,6 +234,7 @@ public class SendToExtend extends SendToMenuItem {
                         || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
                         || (this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);

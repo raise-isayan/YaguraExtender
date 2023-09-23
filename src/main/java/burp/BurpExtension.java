@@ -996,6 +996,23 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraExtensionMenu.add(yaguraPasteIncludeScopeMenu);
 
+            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        String paste = SwingUtil.systemClipboardPaste();
+                        URL url = new URL(paste);
+                        BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), url.getHost()));
+                    } catch (Exception ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+
+            });
+
+            yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
+
             JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, new ActionListener() {
 
                 @Override

@@ -257,9 +257,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
 
     @Override
     public List<HttpRequestResponse> getSelectedMessages() {
-        List<HttpRequestResponse> selectedMessages = new ArrayList<>();
-        selectedMessages.add(messageItem);
-        return selectedMessages;
+        return List.of(this.messageItem);
     }
 
     @Override
