@@ -1,11 +1,14 @@
 package yagura.view;
 
+import burp.BurpExtension;
+import extension.burp.BurpConfig;
 import extension.helpers.SwingUtil;
 import yagura.model.MatchReplaceItem;
 import extension.view.base.CustomDialog;
 import extension.view.base.CustomTableModel;
 import extension.view.base.TableRowTransferHandler;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,7 +93,6 @@ public class JReplaceDialog extends CustomDialog {
         tabMatchReplace.setLayout(new java.awt.BorderLayout());
 
         btnImportRule.setText("burp import match and replace rule");
-        btnImportRule.setEnabled(false);
         btnImportRule.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnImportRuleActionPerformed(evt);
@@ -195,27 +197,32 @@ public class JReplaceDialog extends CustomDialog {
                         .addComponent(lblName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtListName, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkScopeOnly)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
-                        .addComponent(btnImportRule, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnImportRule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnEncAllClear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRepEdit, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnEncRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
+                        .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlCenterLayout.createSequentialGroup()
+                                .addGap(0, 22, Short.MAX_VALUE)
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnRepDownArraw, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                                    .addComponent(btnRepUpArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE))
-                            .addComponent(btnRepAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRepAddAll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(2, 2, 2)))
-                .addContainerGap())
+                                    .addComponent(btnRepUpArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnRepDownArraw, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnEncRemove, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnRepEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnRepAddAll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnRepAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnEncAllClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())))))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -272,7 +279,7 @@ public class JReplaceDialog extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(534, Short.MAX_VALUE)
+                .addContainerGap(595, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -408,13 +415,22 @@ public class JReplaceDialog extends CustomDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void btnImportRuleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportRuleActionPerformed
-//        BurpPreferences pref = new BurpPreferences(BurpExtender.getCallbacks().saveConfig());
-//        if (JOptionPane.showConfirmDialog(this, BUNDLE.getString("view.replace.burpimport"), "Match and Replace", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-//            this.modelReplace.removeAll();
-//            for (MatchReplaceItem item : pref.getMatchReplaceList()) {
-//                SwingUtil.addOrUpdateItem(this.tableReplace, MatchReplaceItem.toObjects(item), false);
-//            }
-//        }
+        if (JOptionPane.showConfirmDialog(this, BUNDLE.getString("view.replace.burpimport"), "Match and Replace", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            this.modelReplace.removeAll();
+            List<BurpConfig.MatchReplaceRule> rules = BurpConfig.getMatchReplaceRules(BurpExtension.api());
+            BurpExtension.helpers().outPrintln("import:" + rules.size());
+            for (BurpConfig.MatchReplaceRule rule : rules) {
+                MatchReplaceItem item = new MatchReplaceItem();
+                if (Arrays.stream(MatchReplaceItem.getTypes()).anyMatch(s -> s.equalsIgnoreCase(rule.getRuleTypeName()))) {
+                    item.setSelected(rule.isEnabled());
+                    item.setType(rule.getRuleType().toLowerCase());
+                    item.setMatch(rule.getStringMatch());
+                    item.setReplace(rule.getStringReplace());
+                    item.setRegexp(!rule.isSimpleMatch());
+                    SwingUtil.addOrUpdateItem(this.tableReplace, MatchReplaceItem.toObjects(item), false);
+               }
+            }
+        }
     }//GEN-LAST:event_btnImportRuleActionPerformed
 
     private void btnRepAddAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepAddAllActionPerformed

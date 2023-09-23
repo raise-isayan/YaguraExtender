@@ -83,15 +83,14 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
+import extension.helpers.HttpRequestWapper;
 import extension.helpers.SmartCodec;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.Scanner;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
@@ -1578,12 +1577,27 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 }
                 if ((messageIsRequest && bean.isRequest()) || (!messageIsRequest && bean.isResponse())) {
                     // body
-                    Pattern p = bean.getRegexPattern();
+                    Pattern pattern = bean.getRegexPattern();
                     if (bean.isBody() && !body.isEmpty()) {
-                        Matcher m = p.matcher(body);
+                        Matcher m = pattern.matcher(body);
                         if (m.find()) {
                             body = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
                             edited = true;
+                        }
+                    } else if (messageIsRequest && bean.isRequestLine()) {
+                        // header
+                        if (!"".equals(bean.getMatch())) {
+                            // 置換
+                            Matcher m = HttpRequestWapper.FIRST_LINE.matcher(header);
+                            if (m.find()) {
+                                String firstline = m.group(0);
+                                Matcher m2 = pattern.matcher(firstline);
+                                if (m2.find()) {
+                                    firstline = m2.replaceFirst(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                                }
+                                header = m.replaceFirst(Pattern.quote(firstline));
+                                edited = true;
+                            }
                         }
                     } else if (bean.isHeader()) {
                         // header
@@ -1596,7 +1610,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             edited = true;
                         } else {
                             // 置換
-                            Matcher m = p.matcher(header);
+                            Matcher m = pattern.matcher(header);
                             if (m.find()) {
                                 header = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
                                 edited = true;

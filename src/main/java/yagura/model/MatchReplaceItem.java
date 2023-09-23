@@ -27,7 +27,7 @@ public class MatchReplaceItem extends MatchItem {
 
     public static final String TYPE_REQUEST_FIRST_LINE = "request first line";
 
-    private static final String types[] = {TYPE_REQUEST_HEADER, TYPE_REQUEST_BODY, TYPE_RESPONSE_HEADER, TYPE_RESPONSE_BODY};
+    private static final String types[] = {TYPE_REQUEST_HEADER, TYPE_REQUEST_BODY, TYPE_RESPONSE_HEADER, TYPE_RESPONSE_BODY, TYPE_REQUEST_FIRST_LINE};
 
     public static String[] getTypes() {
         return types;
