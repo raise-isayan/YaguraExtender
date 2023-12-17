@@ -29,13 +29,16 @@ public class OptionProperty implements IOptionProperty {
     @Expose
     private final UniversalViewProperty universalViewProperty = new UniversalViewProperty();
 
-    public UniversalViewProperty getEncodingProperty() {
+    public void defaultSettingProperty() {
         Map<String, String> map = loadConfigSetting();
         String value = map.get(UniversalViewProperty.CJK_VIEW_PROPERTY);
         if (value == null) {
             value = this.universalViewProperty.defaultSetting();
+            this.universalViewProperty.saveSetting(value);    
         }
-        this.universalViewProperty.saveSetting(value);
+    }
+    
+    public UniversalViewProperty getEncodingProperty() {
         return this.universalViewProperty;
     }
 
@@ -69,6 +72,20 @@ public class OptionProperty implements IOptionProperty {
 
     public void setMatchAlertProperty(MatchAlertProperty matchAlertProperty) {
         this.matchAlertProperty.setProperty(matchAlertProperty);
+    }
+
+    /**
+     * implements ResultFilterProperty
+     */
+    @Expose
+    private final ResultFilterProperty resultFilterProperty = new ResultFilterProperty();
+
+    public ResultFilterProperty getResultFilterProperty() {
+        return this.resultFilterProperty;
+    }
+
+    public void setResultFilterProperty(ResultFilterProperty filterProperty) {
+        this.resultFilterProperty.setProperty(filterProperty);
     }
 
     /**
@@ -163,6 +180,7 @@ public class OptionProperty implements IOptionProperty {
         this.config.put(this.matchReplaceProperty.getSettingName(), this.matchReplaceProperty.loadSetting());
         this.config.put(this.matchAlertProperty.getSettingName(), this.matchAlertProperty.loadSetting());
         this.config.put(this.autoResponderProperty.getSettingName(), this.autoResponderProperty.loadSetting());
+        this.config.put(this.resultFilterProperty.getSettingName(), this.resultFilterProperty.loadSetting());
         this.config.put(this.sendToProperty.getSettingName(), this.sendToProperty.loadSetting());
         this.config.put(this.logProperty.getSettingName(), this.logProperty.loadSetting());
         this.config.put(this.searchProperty.getSettingName(), this.searchProperty.loadSetting());
@@ -186,6 +204,10 @@ public class OptionProperty implements IOptionProperty {
         String configAutoResponderProperty = config.get(this.autoResponderProperty.getSettingName());
         if (configAutoResponderProperty != null) {
             this.autoResponderProperty.saveSetting(configAutoResponderProperty);
+        }
+        String configResultFilterProperty = config.get(this.resultFilterProperty.getSettingName());
+        if (configResultFilterProperty != null) {
+            this.resultFilterProperty.saveSetting(configResultFilterProperty);
         }
         String configSendToProperty = config.get(this.sendToProperty.getSettingName());
         if (configSendToProperty != null) {

@@ -5,7 +5,6 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.MessageEditorHttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.MessageEditorHttpRequestResponse.SelectionContext;
 import java.util.List;
-import java.util.Arrays;
 import extension.helpers.StringUtil;
 import java.nio.charset.StandardCharsets;
 

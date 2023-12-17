@@ -11,6 +11,8 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import okhttp3.Dns;
+import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +45,15 @@ public class ProxyTest {
     @AfterEach
     public void tearDown() {
     }
+
+    @Test
+    public void testDnsHttpClint() {
+        System.out.println("testDnsHttpClint");
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.dns(Dns.SYSTEM).build();
+
+    }
+
 
     @Test
     public void testHttpClint() {

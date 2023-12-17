@@ -1,6 +1,7 @@
 package yagura.model;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import extension.burp.HttpTarget;
 import extension.burp.MessageHighlightColor;
 import extension.helpers.StringUtil;
@@ -26,7 +27,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
         super(item);
     }
 
-    public ResultView(HttpRequestResponse item, int ordinal) {
+    public ResultView(ProxyHttpRequestResponse item, int ordinal) {
         super(item, ordinal);
     }
 
@@ -80,11 +81,11 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     value = new NamedColor(highlightColor, StringUtil.toString(ordinal + 1));
                     break;
                 case 2: // host
-                    String protocol = HttpTarget.getProtocol(msg.request().httpService().secure());
+                    String protocol = HttpTarget.getProtocol(msg.finalRequest().httpService().secure());
                     value = protocol + "://" + msg.getHost();
                     break;
                 case 3: // method
-                    value = msg.request().method();
+                    value = msg.finalRequest().method();
                     break;
                 case 4: // url
                     value = StringUtil.toString(msg.getUrl());

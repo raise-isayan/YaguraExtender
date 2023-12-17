@@ -36,6 +36,7 @@ import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import yagura.model.HttpMessageItem;
 import yagura.model.SendToMenu;
 import yagura.model.SendToMessage;
 import yagura.model.UniversalViewProperty;
@@ -184,7 +185,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
                     if (isRequest) {
                         return StringUtil.getStringCharset(httpRequestResponse.request().toByteArray().getBytes(), encoding);
                     } else {
-                        return StringUtil.getStringCharset(httpRequestResponse.response().toByteArray().getBytes(), encoding);
+                        return StringUtil.getStringCharset(httpRequestResponse.request().toByteArray().getBytes(), encoding);
                     }
                 }
 

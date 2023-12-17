@@ -5,6 +5,7 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
+import extension.burp.FilterProperty;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
@@ -38,12 +39,12 @@ import extension.view.base.DefaultObjectTableModel;
 import extension.view.base.NamedColor;
 import extension.view.base.RegexItem;
 import java.util.EnumSet;
-import yagura.model.FilterProperty;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
 import yagura.model.ResultView;
 import yagura.model.UniversalViewProperty.UniversalView;
 import extension.burp.IBurpTab;
+import extension.view.base.ResultFilterDialog;
 import java.util.List;
 
 /**
@@ -458,10 +459,11 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         }
     };
 
-    private final ResultFilterPopup filterPopup = new ResultFilterPopup();
+    private final ResultFilterDialog filterPopup = new ResultFilterDialog(null, true);
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
+        this.filterPopup.setEditMode(false);
 
         // group
         this.rdoEncodeingGrp.add(this.rdoRepEnc_8859_1);
@@ -666,7 +668,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         }
         int rowIndex = this.tableResult.convertRowIndexToModel(row);
         if (rowIndex > -1) {
-            HttpRequestResponse msgItem = this.modelSearch.getData(rowIndex);
+            ProxyHttpRequestResponse msgItem = this.modelSearch.getData(rowIndex);
             item = new HttpMessageItem(msgItem);
         }
         return item;
@@ -741,7 +743,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
             this.lblProgress.setText(String.format(SEARCH_PROGRESS, 0.0));
             for (int i = 0; i < proxyHistory.size(); i++) {
                 ProxyHttpRequestResponse info = proxyHistory.get(i);
-                HttpMessageItem item = new HttpMessageItem(HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()), i);
+                HttpMessageItem item = new HttpMessageItem(info, i);
                 Matcher m = null;
                 boolean find = false;
                 do {
@@ -755,8 +757,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         }
                     }
                     if ((searchProp.isRequestHeader() || searchProp.isRequestBody()) && item.getRequest() != null) {
-                        HttpRequest httpRequest = item.request();
-                        byte[] reqMessage = item.request().toByteArray().getBytes();
+                        HttpRequest httpRequest = item.finalRequest();
+                        byte[] reqMessage = item.finalRequest().toByteArray().getBytes();
                         if (!(searchProp.isRequestHeader() && searchProp.isRequestBody())) {
                             if (searchProp.isRequestHeader()) {
                                 reqMessage = Arrays.copyOfRange(reqMessage, 0, httpRequest.bodyOffset());
@@ -772,7 +774,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         }
                     }
                     if ((searchProp.isResponseHeader() || searchProp.isResponseBody()) && item.getResponse() != null) {
-                        HttpResponse httpResponse = item.response();
+                        HttpResponse httpResponse = item.originalResponse();
                         byte resMessage[] = httpResponse.toByteArray().getBytes();
                         if (!(searchProp.isResponseHeader() && searchProp.isResponseBody())) {
                             if (searchProp.isResponseHeader()) {
@@ -836,7 +838,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
     public void setVisibleFilter(boolean value) {
         if (value) {
-            this.filterPopup.setLocation(this.scrollResult.getLocationOnScreen());
+            this.filterPopup.setLocationRelativeTo(this);
             this.filterPopup.setVisible(true);
             this.filterPopup.toFront();
         } else {
@@ -852,8 +854,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         FilterProperty filterProp = this.getProperty().getFilterProperty();
         this.tableResult.getSelectionModel().clearSelection();
         TableModel model = this.tableResult.getModel();
-        TableRowSorter<TableModel> sorter = new ResultFilterPopup.PropertyRowSorter<>(model);
-        sorter.setRowFilter(new ResultFilterPopup.PropertyRowFilter(filterProp));
+        TableRowSorter<TableModel> sorter = new ResultFilterDialog.PropertyRowSorter<>(model);
+        sorter.setRowFilter(new ResultFilterDialog.PropertyRowFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }

@@ -44,6 +44,7 @@ import extension.burp.TargetTool;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
 import extension.burp.ExtensionHelper;
+import extension.burp.FilterProperty;
 import extension.burp.TargetScopeItem;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpMessageWapper;
@@ -116,6 +117,7 @@ import yagura.model.MatchAlertProperty;
 import yagura.model.MatchReplaceGroup;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
+import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
 import yagura.view.GeneratePoCTabEditor;
@@ -380,6 +382,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 if (UniversalViewProperty.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setEncodingProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
+                    menuHandler.updateUI();
                     applyOptionProperty();
                 } else if (MatchReplaceProperty.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());
@@ -398,6 +401,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     applyOptionProperty();
                 } else if (MatchAlertProperty.MATCHALERT_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
+                    applyOptionProperty();
+                } else if (ResultFilterProperty.RESULT_FILTER_PROPERTY.equals(evt.getPropertyName())) {
+                    option.setResultFilterProperty(tabbetOption.getResultFilterProperty());
+                    menuHandler.updateUI();
                     applyOptionProperty();
                 } else if (AutoResponderProperty.AUTO_RESPONDER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setAutoResponderProperty(tabbetOption.getAutoResponderProperty());
@@ -587,6 +594,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         private final MontoyaApi api;
         private final ButtonGroup menuBurpCharsetsGroup = new ButtonGroup();
         private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
+        private final ButtonGroup menuBurpResultFilterGroup = new ButtonGroup();
+        private final JMenu burpCharsetMenu = new JMenu();
+        private final JMenu yaguraCharsetMenu = new JMenu();
+        private final JMenu yaguraResultFilterMenu = new JMenu();
         private String yaguraCharset = StandardCharsets.UTF_8.name();
 
         /**
@@ -613,6 +624,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             return StandardCharsets.ISO_8859_1.name();
         }
 
+        public void setBamba(FilterProperty filter) {
+            BurpConfig.configBambda(api, filter);
+        }
+
         private final static String USE_BURP_CHARSETS = "Use Burp Charsets";
 
         public MenuHander(MontoyaApi api) {
@@ -625,23 +640,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             /**
              * Yagura Charsets
              */
-            JMenu yaguraCharsetMenu = new JMenu();
             yaguraCharsetMenu.setText("Yagura Charsets");
             yaguraCharsetMenu.setMnemonic(KeyEvent.VK_Y);
-            final List<String> encodngList = getSelectEncodingList();
-            for (int i = 0; i < encodngList.size(); i++) {
-                JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
-                specificCharsetMenuCharSet.setText(encodngList.get(i));
-                specificCharsetMenuCharSet.addChangeListener(yaguraCharsetModeAction);
-                yaguraCharsetMenu.add(specificCharsetMenuCharSet);
-                menuYaguraCharsetsGroup.add(specificCharsetMenuCharSet);
-            }
-            yaguraCharsetMenu.addSeparator();
-            JRadioButtonMenuItem useBurpCharSet = new JRadioButtonMenuItem();
-            useBurpCharSet.setText(USE_BURP_CHARSETS);
-            useBurpCharSet.addChangeListener(yaguraCharsetModeAction);
-            yaguraCharsetMenu.add(useBurpCharSet);
-            menuYaguraCharsetsGroup.add(useBurpCharSet);
+
+            updateYaguraCharsetUI(this.yaguraCharsetMenu);
+            yaguraMenu.add(this.yaguraCharsetMenu);
 
             /**
              * Yagura Encoder
@@ -651,7 +654,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraEncoderMenu.setMnemonic(KeyEvent.VK_E);
 
             JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -660,35 +662,29 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraEncoderMenu.add(yaguraEncoderURLMenu);
 
             JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnocodeUrlEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP, false);
                 }
-
             });
 
             yaguraEncoderMenu.add(yaguraEncoderURLUnicodeMenu);
 
             JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnocodeEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP, false);
                 }
-
             });
 
             yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
 
             JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -697,13 +693,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
 
             JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -712,21 +706,19 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
 
             JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return SmartCodec.toHtmlDecEncode(selectedText, SmartCodec.ENCODE_PATTERN_BURP);
                 }
-
             });
 
             yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
+            yaguraMenu.add(yaguraEncoderMenu);
 
             /**
              * Yagura Decoder
@@ -736,7 +728,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraDecoderMenu.setMnemonic(KeyEvent.VK_D);
 
             JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -745,29 +736,24 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraDecoderMenu.add(yaguraDecoderURLMenu);
 
             JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnicodeUrlDecode(selectedText);
                 }
-
             });
 
             yaguraDecoderMenu.add(yaguraDecoderURLUnicodeMenu);
 
             JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return SmartCodec.toUnocodeDecode(selectedText);
                 }
-
             });
 
             yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
@@ -787,7 +773,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
 
             JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -796,7 +781,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
@@ -810,6 +794,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             });
 
             yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
+            yaguraMenu.add(yaguraDecoderMenu);
 
             /**
              * Yagura Converter
@@ -819,29 +804,24 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraConverterMenu.setMnemonic(KeyEvent.VK_C);
 
             JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return selectedText.toUpperCase();
                 }
-
             });
 
             yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
 
             JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return selectedText.toLowerCase();
                 }
-
             });
 
             yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
 
             JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -850,13 +830,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraConverterMenu.add(yaguraConverterBin2HexMenu);
 
             JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -865,30 +843,26 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
 
             JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return TransUtil.translateFullWidth2HalfWidth(selectedText);
                 }
-
             });
             yaguraConverterMenu.add(yaguraConverterFull2Half);
 
             JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     return TransUtil.translateHalfWidth2FullWidth(selectedText);
                 }
-
             });
             yaguraConverterMenu.add(yaguraConverterHalf2Full);
+            yaguraMenu.add(yaguraConverterMenu);
 
             /**
              * Yagura Hash
@@ -898,7 +872,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraHashMenu.setMnemonic(KeyEvent.VK_H);
 
             JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -907,13 +880,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraHashMenu.add(yaguraHashMD2Menu);
 
             JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -922,13 +893,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraHashMenu.add(yaguraHashMD5Menu);
 
             JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, new ITranslateAction() {
-
                 @Override
                 public String translate(String allText, String selectedText) {
                     try {
@@ -937,7 +906,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraHashMenu.add(yaguraHashSha1Menu);
@@ -952,7 +920,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraHashMenu.add(yaguraHashSha256Menu);
@@ -967,10 +934,19 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         return selectedText;
                     }
                 }
-
             });
 
             yaguraHashMenu.add(yaguraHashSha512Menu);
+            yaguraMenu.add(yaguraHashMenu);
+
+            /**
+             * Yagura Result Filter
+             */
+            yaguraResultFilterMenu.setText("Result Filter (F)");
+            yaguraResultFilterMenu.setMnemonic(KeyEvent.VK_F);
+            yaguraResultFilterMenu.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_BAMBDA));
+            updateResultFilterUI(this.yaguraResultFilterMenu);
+            yaguraMenu.add(this.yaguraResultFilterMenu);
 
             /**
              * Yagura Extension
@@ -979,159 +955,32 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraExtensionMenu.setText("Extension (X)");
             yaguraExtensionMenu.setMnemonic(KeyEvent.VK_X);
 
-            JMenuItem yaguraPasteIncludeScopeMenu = createMenuItem("Paste include scope(multi-line)", KeyEvent.VK_I, new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        String paste = SwingUtil.systemClipboardPaste();
-                        BurpExtension.helpers().addIncludeScope(paste);
-                    } catch (Exception ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
-                }
-
-            });
+            JMenuItem yaguraPasteIncludeScopeMenu = createMenuItem("Paste include scope(multi-line)", KeyEvent.VK_I, includeScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteIncludeScopeMenu);
 
-            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        String paste = SwingUtil.systemClipboardPaste();
-                        URL url = new URL(paste);
-                        BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), url.getHost()));
-                    } catch (Exception ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
-                }
-
-            });
+            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, includeHostScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
 
-            JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        String paste = SwingUtil.systemClipboardPaste();
-                        BurpExtension.helpers().addExcludeScope(paste);
-                    } catch (Exception ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
-                }
-
-            });
+            JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, excludeScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteExludeScopeMenu);
 
-            JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through(multi-line)", KeyEvent.VK_P, new ActionListener() {
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        String paste = SwingUtil.systemClipboardPaste();
-                        URL[] urls = TargetScopeItem.parseMultilineURL(paste);
-                        List<SSLPassThroughRule> rules = new ArrayList<>();
-                        for (URL u : urls) {
-                            rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ? u.getPort() : u.getDefaultPort()));
-                        }
-                        BurpConfig.configSSLPassThroughRules(api, rules, false);
-                    } catch (Exception ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
-                }
-
-            });
+            JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through(multi-line)", KeyEvent.VK_P, sslPassThroughAction);
 
             yaguraExtensionMenu.add(yaguraPasteSSLPassThroughMenu);
+            yaguraMenu.add(yaguraExtensionMenu);
 
             /**
              * Burp Charsets
              */
-            JMenu burpCharsetMenu = new JMenu();
-            burpCharsetMenu.setText("Burp Charsets");
-            burpCharsetMenu.setMnemonic(KeyEvent.VK_B);
-
-            // Burp Charsets
-            JRadioButtonMenuItem burpCharsetItemMenuAuto = new JRadioButtonMenuItem();
-            burpCharsetItemMenuAuto.setText(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent());
-            burpCharsetItemMenuAuto.addActionListener(burpCharsetModeAction);
-            burpCharsetMenu.add(burpCharsetItemMenuAuto);
-            menuBurpCharsetsGroup.add(burpCharsetItemMenuAuto);
-
-            JRadioButtonMenuItem burpCharsetItemMenuDefault = new JRadioButtonMenuItem();
-            burpCharsetItemMenuDefault.setText(BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent());
-            burpCharsetItemMenuDefault.addActionListener(burpCharsetModeAction);
-            burpCharsetMenu.add(burpCharsetItemMenuDefault);
-            menuBurpCharsetsGroup.add(burpCharsetItemMenuDefault);
-
-            JRadioButtonMenuItem burpCharsetItemMenuRaw = new JRadioButtonMenuItem();
-            burpCharsetItemMenuRaw.setText(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent());
-            burpCharsetItemMenuRaw.addActionListener(burpCharsetModeAction);
-            burpCharsetMenu.add(burpCharsetItemMenuRaw);
-            menuBurpCharsetsGroup.add(burpCharsetItemMenuRaw);
-
-            burpCharsetMenu.addSeparator();
-
-            BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
-            if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
-                burpCharset = BurpConfig.getCharacterSets(api);
-                if (burpCharset.getCharacterSet() == null) {
-                    burpCharset.setCharacterSet(StandardCharsets.UTF_8.name());
-                }
-            }
-
-            for (int i = 0; i < encodngList.size(); i++) {
-                JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
-                specificCharsetMenuCharSet.setText(encodngList.get(i));
-                specificCharsetMenuCharSet.addActionListener(burpCharsetModeAction);
-                burpCharsetMenu.add(specificCharsetMenuCharSet);
-                menuBurpCharsetsGroup.add(specificCharsetMenuCharSet);
-            }
-            burpCharsetMenu.add(burpCharsetMenu);
-
-            /**
-             * Yagura Menu
-             */
-            yaguraMenu.add(yaguraCharsetMenu);
-            yaguraMenu.add(yaguraEncoderMenu);
-            yaguraMenu.add(yaguraDecoderMenu);
-            yaguraMenu.add(yaguraConverterMenu);
-            yaguraMenu.add(yaguraHashMenu);
-            yaguraMenu.add(yaguraExtensionMenu);
-
-            if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
-                yaguraMenu.addSeparator();
-                yaguraMenu.add(burpCharsetMenu);
-            }
-
-            Enumeration<AbstractButton> rdoYaguraCharsets = menuYaguraCharsetsGroup.getElements();
-            while (rdoYaguraCharsets.hasMoreElements()) {
-                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoYaguraCharsets.nextElement();
-                if (burpCharset.getCharacterSet().equals(item.getText())) {
-                    item.setSelected(true);
-                }
-            }
-
-            Enumeration<AbstractButton> rdoBurpCharsets = menuBurpCharsetsGroup.getElements();
-            while (rdoBurpCharsets.hasMoreElements()) {
-                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoBurpCharsets.nextElement();
-                if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
-                    if (burpCharset.getCharacterSet().equals(item.getText())) {
-                        item.setSelected(true);
-                    }
-                } else {
-                    if (burpCharset.getMode().equals(item.getText())) {
-                        item.setSelected(true);
-                        break;
-                    }
-                }
-            }
-
+            this.burpCharsetMenu.setText("Burp Charsets");
+            this.burpCharsetMenu.setMnemonic(KeyEvent.VK_B);
+            this.burpCharsetMenu.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION));
+            updateBurpCharsetUI(this.burpCharsetMenu);
+            yaguraMenu.addSeparator();
+            yaguraMenu.add(this.burpCharsetMenu);
             api.userInterface().menuBar().registerMenu(yaguraMenu);
         }
 
@@ -1158,7 +1007,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         }
                     }
                 }
-
             });
         }
 
@@ -1184,6 +1032,87 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
+        private ActionListener resultFilterModeAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Enumeration<AbstractButton> rdoCharsetsGroup = menuBurpResultFilterGroup.getElements();
+                ResultFilterProperty resultFilterProperty = option.getResultFilterProperty();
+                Map<String, FilterProperty> filterMap = resultFilterProperty.getFilterMap();
+                FilterProperty filterProperty = null;
+                String selectedName = null;
+                while (rdoCharsetsGroup.hasMoreElements()) {
+                    JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoCharsetsGroup.nextElement();
+                    if (item.isSelected()) {
+                        selectedName = item.getText();
+                        if (filterMap.containsKey(selectedName)) {
+                            filterProperty = filterMap.get(selectedName);
+                            resultFilterProperty.setSelectedName(selectedName);
+                        }
+                        break;
+                    }
+                }
+                if (filterProperty != null) {
+                    BurpConfig.configBambda(api, filterProperty);
+                }
+            }
+        };
+
+        private ActionListener includeScopeAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String paste = SwingUtil.systemClipboardPaste();
+                    BurpExtension.helpers().addIncludeScope(paste);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+
+        private ActionListener includeHostScopeAction = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String paste = SwingUtil.systemClipboardPaste();
+                    URL url = new URL(paste);
+                    BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), url.getHost()));
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+
+        private ActionListener excludeScopeAction = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String paste = SwingUtil.systemClipboardPaste();
+                    BurpExtension.helpers().addExcludeScope(paste);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+
+        private ActionListener sslPassThroughAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String paste = SwingUtil.systemClipboardPaste();
+                    URL[] urls = TargetScopeItem.parseMultilineURL(paste);
+                    List<SSLPassThroughRule> rules = new ArrayList<>();
+                    for (URL u : urls) {
+                        rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ? u.getPort() : u.getDefaultPort()));
+                    }
+                    BurpConfig.configSSLPassThroughRules(api, rules, false);
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+
         private ChangeListener yaguraCharsetModeAction = new ChangeListener() {
 
             @Override
@@ -1201,6 +1130,132 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
+        public void updateUI() {
+            updateYaguraCharsetUI(this.yaguraCharsetMenu);
+            updateBurpCharsetUI(this.burpCharsetMenu);
+            updateResultFilterUI(this.yaguraResultFilterMenu);
+        }
+
+        /**
+         * Yagura Charset Menu
+         */
+        private void updateYaguraCharsetUI(JMenu yaguraCharsetMenu) {
+            yaguraCharsetMenu.removeAll();
+            for (Enumeration<AbstractButton> e = this.menuYaguraCharsetsGroup.getElements(); e.hasMoreElements();) {
+                this.menuYaguraCharsetsGroup.remove(e.nextElement());
+            }
+            final List<String> encodngList = getSelectEncodingList();
+            for (int i = 0; i < encodngList.size(); i++) {
+                JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
+                specificCharsetMenuCharSet.setText(encodngList.get(i));
+                specificCharsetMenuCharSet.addChangeListener(this.yaguraCharsetModeAction);
+                yaguraCharsetMenu.add(specificCharsetMenuCharSet);
+                this.menuYaguraCharsetsGroup.add(specificCharsetMenuCharSet);
+            }
+
+            // Use Burp Charsets
+            yaguraCharsetMenu.addSeparator();
+            JRadioButtonMenuItem useBurpCharSet = new JRadioButtonMenuItem();
+            useBurpCharSet.setText(USE_BURP_CHARSETS);
+            useBurpCharSet.addChangeListener(this.yaguraCharsetModeAction);
+            useBurpCharSet.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION));
+            yaguraCharsetMenu.add(useBurpCharSet);
+            this.menuYaguraCharsetsGroup.add(useBurpCharSet);
+        }
+
+        /**
+         * Burp Charsets
+         */
+        private void updateBurpCharsetUI(JMenu burpCharsetMenu) {
+            burpCharsetMenu.removeAll();
+            for (Enumeration<AbstractButton> e = this.menuBurpCharsetsGroup.getElements(); e.hasMoreElements();) {
+                this.menuBurpCharsetsGroup.remove(e.nextElement());
+            }
+            if (!BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
+                return;
+            }
+            JRadioButtonMenuItem burpCharsetItemMenuAuto = new JRadioButtonMenuItem();
+            burpCharsetItemMenuAuto.setText(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent());
+            burpCharsetItemMenuAuto.addActionListener(this.burpCharsetModeAction);
+            burpCharsetMenu.add(burpCharsetItemMenuAuto);
+            this.menuBurpCharsetsGroup.add(burpCharsetItemMenuAuto);
+
+            JRadioButtonMenuItem burpCharsetItemMenuDefault = new JRadioButtonMenuItem();
+            burpCharsetItemMenuDefault.setText(BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent());
+            burpCharsetItemMenuDefault.addActionListener(this.burpCharsetModeAction);
+            burpCharsetMenu.add(burpCharsetItemMenuDefault);
+            this.menuBurpCharsetsGroup.add(burpCharsetItemMenuDefault);
+
+            JRadioButtonMenuItem burpCharsetItemMenuRaw = new JRadioButtonMenuItem();
+            burpCharsetItemMenuRaw.setText(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent());
+            burpCharsetItemMenuRaw.addActionListener(this.burpCharsetModeAction);
+            burpCharsetMenu.add(burpCharsetItemMenuRaw);
+            this.menuBurpCharsetsGroup.add(burpCharsetItemMenuRaw);
+
+            burpCharsetMenu.addSeparator();
+
+            final List<String> encodngList = getSelectEncodingList();
+            for (int i = 0; i < encodngList.size(); i++) {
+                JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
+                specificCharsetMenuCharSet.setText(encodngList.get(i));
+                specificCharsetMenuCharSet.addActionListener(this.burpCharsetModeAction);
+                burpCharsetMenu.add(specificCharsetMenuCharSet);
+                this.menuBurpCharsetsGroup.add(specificCharsetMenuCharSet);
+            }
+
+            BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api);
+            if (burpCharset.getCharacterSet() == null) {
+                burpCharset.setCharacterSet(StandardCharsets.UTF_8.name());
+            }
+            Enumeration<AbstractButton> rdoYaguraCharsets = this.menuYaguraCharsetsGroup.getElements();
+            while (rdoYaguraCharsets.hasMoreElements()) {
+                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoYaguraCharsets.nextElement();
+                if (burpCharset.getCharacterSet().equals(item.getText())) {
+                    item.setSelected(true);
+                }
+            }
+
+            Enumeration<AbstractButton> rdoBurpCharsets = this.menuBurpCharsetsGroup.getElements();
+            while (rdoBurpCharsets.hasMoreElements()) {
+                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoBurpCharsets.nextElement();
+                if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
+                    if (burpCharset.getCharacterSet().equals(item.getText())) {
+                        item.setSelected(true);
+                    }
+                } else {
+                    if (burpCharset.getMode().equals(item.getText())) {
+                        item.setSelected(true);
+                        break;
+                    }
+                }
+            }
+        }
+
+        /**
+         * Result Filter
+         */
+        private void updateResultFilterUI(JMenu yaguraResultFilterMenu) {
+            yaguraResultFilterMenu.removeAll();
+//            for (Enumeration<AbstractButton> e = this.menuBurpResultFilterGroup.getElements(); e.hasMoreElements();) {
+//                this.menuBurpResultFilterGroup.remove(e.nextElement());
+//            }
+            Map<String, FilterProperty> filterMap = option.getResultFilterProperty().getFilterMap();
+            for (String name : filterMap.keySet()) {
+                JRadioButtonMenuItem chkResultFilterItem = new JRadioButtonMenuItem();
+                chkResultFilterItem.setText(name);
+                chkResultFilterItem.addActionListener(this.resultFilterModeAction);
+                yaguraResultFilterMenu.add(chkResultFilterItem);
+                this.menuBurpResultFilterGroup.add(chkResultFilterItem);
+            }
+//            Enumeration<AbstractButton> rdoCheckGroup = this.menuBurpResultFilterGroup.getElements();
+//            while (rdoCheckGroup.hasMoreElements()) {
+//                AbstractButton rdoCheck = rdoCheckGroup.nextElement();
+//                String name = rdoCheck.getText();
+//                if (name.equals(option.getResultFilterProperty().getSelectedName())) {
+//                    rdoCheck.setSelected(true);
+//                }                
+//            }
+        }
     }
 
     protected final class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyResponseHandler {

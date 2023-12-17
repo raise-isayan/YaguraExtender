@@ -8,15 +8,17 @@ import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.handler.TimingData;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import extension.burp.HttpTarget;
 import extension.burp.MessageHighlightColor;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.StringUtil;
-import java.lang.SuppressWarnings;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -28,11 +30,11 @@ import javax.swing.RowFilter;
  *
  * @author isayan
  */
-public class HttpMessageItem implements HttpRequestResponse {
+public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     private final static Logger logger = Logger.getLogger(HttpMessageItem.class.getName());
 
-    private final HttpRequestResponse httpRequestResponse;
+    private final ProxyHttpRequestResponse httpRequestResponse;
     private int ordinal = -1;
 
     private String host = "";
@@ -50,11 +52,11 @@ public class HttpMessageItem implements HttpRequestResponse {
         this.httpRequestResponse = null;
     }
 
-    public HttpMessageItem(HttpRequestResponse httpRequestResponse) {
+    public HttpMessageItem(ProxyHttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
     }
 
-    public HttpMessageItem(HttpRequestResponse httpRequestResponse, int ordinal) {
+    public HttpMessageItem(ProxyHttpRequestResponse httpRequestResponse, int ordinal) {
         this.httpRequestResponse = httpRequestResponse;
         this.ordinal = ordinal;
     }
@@ -68,7 +70,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public String getHost() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.request().httpService().host();
+            return this.httpRequestResponse.finalRequest().httpService().host();
         } else {
             return this.host;
         }
@@ -76,7 +78,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public int getPort() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.request().httpService().port();
+            return this.httpRequestResponse.finalRequest().httpService().port();
         } else {
             return this.port;
         }
@@ -84,7 +86,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public boolean isSecure() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.request().httpService().secure();
+            return this.httpRequestResponse.finalRequest().httpService().secure();
         } else {
             return this.secure;
         }
@@ -92,8 +94,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setHost(String host) throws Exception {
         if (this.httpRequestResponse != null) {
-            HttpService service = this.httpRequestResponse.request().httpService();
-            this.httpRequestResponse.request().withService(HttpService.httpService(host, service.port(), service.secure()));
+            HttpService service = this.httpRequestResponse.finalRequest().httpService();
+            this.httpRequestResponse.finalRequest().withService(HttpService.httpService(host, service.port(), service.secure()));
         } else {
             this.host = host;
         }
@@ -101,8 +103,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setPort(int port) throws Exception {
         if (this.httpRequestResponse != null) {
-            HttpService service = this.httpRequestResponse.request().httpService();
-            this.httpRequestResponse.request().withService(HttpService.httpService(service.host(), port, service.secure()));
+            HttpService service = this.httpRequestResponse.finalRequest().httpService();
+            this.httpRequestResponse.finalRequest().withService(HttpService.httpService(service.host(), port, service.secure()));
         } else {
             this.port = port;
         }
@@ -110,8 +112,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setSecure(boolean secure) throws Exception {
         if (this.httpRequestResponse != null) {
-            HttpService service = this.httpRequestResponse.request().httpService();
-            this.httpRequestResponse.request().withService(HttpService.httpService(service.host(), service.port(), secure));
+            HttpService service = this.httpRequestResponse.finalRequest().httpService();
+            this.httpRequestResponse.finalRequest().withService(HttpService.httpService(service.host(), service.port(), secure));
         } else {
             this.secure = secure;
         }
@@ -119,7 +121,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public byte[] getRequest() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.request().toByteArray().getBytes();
+            return this.httpRequestResponse.finalRequest().toByteArray().getBytes();
         } else {
             return this.request;
         }
@@ -127,7 +129,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public String getUrl() throws Exception {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.request().url();
+            return this.httpRequestResponse.finalRequest().url();
         } else {
             return this.url;
         }
@@ -135,7 +137,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setRequest(byte[] request) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.request().withBody(ByteArray.byteArray(request));
+            this.httpRequestResponse.finalRequest().withBody(ByteArray.byteArray(request));
         } else {
             this.request = new byte[request.length];
             System.arraycopy(request, 0, this.request, 0, request.length);
@@ -144,7 +146,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public byte[] getResponse() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.response().toByteArray().getBytes();
+            return this.httpRequestResponse.originalResponse().toByteArray().getBytes();
         } else {
             return this.response;
         }
@@ -152,7 +154,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setResponse(byte[] response) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.response().withBody(ByteArray.byteArray(response));
+            this.httpRequestResponse.originalResponse().withBody(ByteArray.byteArray(response));
         } else {
             this.response = new byte[request.length];
             System.arraycopy(response, 0, this.response, 0, response.length);
@@ -161,8 +163,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public short getStatusCode() throws Exception {
         if (this.httpRequestResponse != null) {
-            if (this.httpRequestResponse.response() != null) {
-                return this.httpRequestResponse.response().statusCode();
+            if (this.httpRequestResponse.originalResponse() != null) {
+                return this.httpRequestResponse.originalResponse().statusCode();
             } else {
                 return 0;
             }
@@ -173,8 +175,8 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setStatusCode(short statusCode) throws Exception {
         if (this.httpRequestResponse != null) {
-            if (this.httpRequestResponse.response() != null) {
-                this.httpRequestResponse.response().withStatusCode(statusCode);
+            if (this.httpRequestResponse.originalResponse() != null) {
+                this.httpRequestResponse.originalResponse().withStatusCode(statusCode);
             }
         } else {
             this.statusCode = statusCode;
@@ -215,7 +217,7 @@ public class HttpMessageItem implements HttpRequestResponse {
 
     public void setHighlightColor(HighlightColor color) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.withAnnotations(this.httpRequestResponse.annotations().withHighlightColor(color));
+            this.httpRequestResponse.annotations().withHighlightColor(color);
         } else {
             this.color = MessageHighlightColor.valueOf(color);
         }
@@ -238,19 +240,19 @@ public class HttpMessageItem implements HttpRequestResponse {
     }
 
     public URL toURL() throws MalformedURLException {
-        return new URL(this.httpRequestResponse.request().url());
+        return new URL(this.httpRequestResponse.finalRequest().url());
     }
 
     public static HttpMessageItem toHttpMessageItem(RowFilter.Entry<? extends Object, ? extends Object> entry) {
         final RowFilter.Entry<? extends Object, ? extends Object> row = entry;
-        HttpRequestResponse item = (HttpRequestResponse) row.getValue(0);
+        ProxyHttpRequestResponse item = (ProxyHttpRequestResponse) row.getValue(0);
         return new HttpMessageItem(item);
     }
 
     public String getGuessCharset(String defaultCharset) {
         String charset = defaultCharset;
-        if (this.response() != null) {
-            HttpResponseWapper wrap = new HttpResponseWapper(this.response());
+        if (this.originalResponse() != null) {
+            HttpResponseWapper wrap = new HttpResponseWapper(this.originalResponse());
             charset = wrap.getGuessCharset(defaultCharset);
         }
         return charset;
@@ -271,8 +273,8 @@ public class HttpMessageItem implements HttpRequestResponse {
     public String getContentMimeType() {
         String mimeType = null;
         try {
-            if (this.response() != null) {
-                HttpResponseWapper wrap = new HttpResponseWapper(this.response());
+            if (this.originalResponse() != null) {
+                HttpResponseWapper wrap = new HttpResponseWapper(this.originalResponse());
                 mimeType = wrap.getContentMimeType();
             }
         } catch (Exception ex) {
@@ -296,16 +298,6 @@ public class HttpMessageItem implements HttpRequestResponse {
     }
 
     @Override
-    public HttpRequest request() {
-        return this.httpRequestResponse.request();
-    }
-
-    @Override
-    public HttpResponse response() {
-        return this.httpRequestResponse.response();
-    }
-
-    @Override
     public Annotations annotations() {
         return this.httpRequestResponse.annotations();
     }
@@ -313,74 +305,7 @@ public class HttpMessageItem implements HttpRequestResponse {
     @Override
     @SuppressWarnings("removal")
     public String url() {
-        return this.httpRequestResponse.request().url();
-    }
-
-    @Override
-    public HttpService httpService() {
-        return this.httpRequestResponse.httpService();
-    }
-
-    @Override
-    @SuppressWarnings("removal")
-    public ContentType contentType() {
-        return this.httpRequestResponse.request().contentType();
-    }
-
-    @Override
-    @SuppressWarnings("removal")
-    public short statusCode() {
-        return this.httpRequestResponse.response().statusCode();
-    }
-
-    @Override
-    public List<Marker> requestMarkers() {
-        return this.httpRequestResponse.requestMarkers();
-    }
-
-    @Override
-    public List<Marker> responseMarkers() {
-        return this.httpRequestResponse.responseMarkers();
-    }
-
-    @Override
-    public HttpRequestResponse copyToTempFile() {
-        return this.httpRequestResponse.copyToTempFile();
-    }
-
-    @Override
-    public HttpRequestResponse withAnnotations(Annotations antns) {
-        return this.httpRequestResponse.withAnnotations(antns);
-    }
-
-    @Override
-    public HttpRequestResponse withRequestMarkers(Marker... markers) {
-        return this.httpRequestResponse.withResponseMarkers(markers);
-    }
-
-    @Override
-    public HttpRequestResponse withResponseMarkers(Marker... markers) {
-        return this.httpRequestResponse.withResponseMarkers(markers);
-    }
-
-    @Override
-    public HttpRequestResponse withRequestMarkers(List<Marker> list) {
-        return this.httpRequestResponse.withRequestMarkers(list);
-    }
-
-    @Override
-    public HttpRequestResponse withResponseMarkers(List<Marker> list) {
-        return this.httpRequestResponse.withResponseMarkers(list);
-    }
-
-    @Override
-    public Optional<TimingData> timingData() {
-        return this.httpRequestResponse.timingData();
-    }
-
-    @Override
-    public boolean hasResponse() {
-        return this.httpRequestResponse.hasResponse();
+        return this.httpRequestResponse.finalRequest().url();
     }
 
     @Override
@@ -393,4 +318,209 @@ public class HttpMessageItem implements HttpRequestResponse {
         return this.httpRequestResponse.contains(pattern);
     }
 
+    @Override
+    public HttpRequest finalRequest() {
+        return this.httpRequestResponse.finalRequest();
+    }
+
+    @Override
+    public HttpResponse originalResponse() {
+        return this.httpRequestResponse.originalResponse();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public String method() {
+        return this.httpRequestResponse.method();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public String path() {
+        return this.httpRequestResponse.path();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public String host() {
+        return this.httpRequestResponse.host();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public int port() {
+        return this.httpRequestResponse.port();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public boolean secure() {
+        return this.httpRequestResponse.secure();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public String httpServiceString() {
+        return this.httpRequestResponse.httpServiceString();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public String requestHttpVersion() {
+        return this.httpRequestResponse.requestHttpVersion();
+    }
+
+    @Override
+    @SuppressWarnings("removal")
+    public String requestBody() {
+        return this.httpRequestResponse.requestBody();
+    }
+
+    @Override
+    public boolean edited() {
+        return this.httpRequestResponse.edited();
+    }
+
+    public HttpRequestResponse toHttpRequestResponse() {
+        return new HttpRequestResponse() {
+            @Override
+            public HttpRequest request() {
+                return httpRequestResponse.finalRequest();
+            }
+
+            @Override
+            public HttpResponse response() {
+                return httpRequestResponse.originalResponse();
+            }
+
+            @Override
+            public boolean hasResponse() {
+                return httpRequestResponse.originalResponse() != null;
+            }
+
+            @Override
+            public Annotations annotations() {
+                return httpRequestResponse.annotations();
+            }
+
+            @Override
+            public Optional<TimingData> timingData() {
+                return Optional.empty();
+            }
+
+            @Override
+            @SuppressWarnings("removal")
+            public String url() {
+                return httpRequestResponse.finalRequest().url();
+            }
+
+            @Override
+            public HttpService httpService() {
+                return httpRequestResponse.finalRequest().httpService();
+            }
+
+            @Override
+            @SuppressWarnings("removal")
+            public ContentType contentType() {
+                return httpRequestResponse.finalRequest().contentType();
+            }
+
+            @Override
+            @SuppressWarnings("removal")
+            public short statusCode() {
+                return httpRequestResponse.originalResponse().statusCode();
+            }
+
+            @Override
+            public List<Marker> requestMarkers() {
+                return httpRequestResponse.finalRequest().markers();
+            }
+
+            @Override
+            public List<Marker> responseMarkers() {
+                return httpRequestResponse.originalResponse().markers();
+            }
+
+            @Override
+            public boolean contains(String string, boolean bln) {
+                return httpRequestResponse.contains(string, bln);
+            }
+
+            @Override
+            public boolean contains(Pattern ptrn) {
+                return httpRequestResponse.contains(ptrn);
+            }
+
+            @Override
+            public HttpRequestResponse copyToTempFile() {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public HttpRequestResponse withAnnotations(Annotations antns) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public HttpRequestResponse withRequestMarkers(List<Marker> list) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public HttpRequestResponse withRequestMarkers(Marker... markers) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public HttpRequestResponse withResponseMarkers(List<Marker> list) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public HttpRequestResponse withResponseMarkers(Marker... markers) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+        };
+    }
+
+    @Override
+    public HttpRequest request() {
+        return httpRequestResponse.request();
+    }
+
+    @Override
+    public HttpResponse response() {
+        return httpRequestResponse.response();
+    }
+
+    @Override
+    public HttpService httpService() {
+        return httpRequestResponse.httpService();
+    }
+
+    @Override
+    public ZonedDateTime time() {
+        return httpRequestResponse.time();
+    }
+
+    @Override
+    public int listenerPort() {
+        return httpRequestResponse.listenerPort();
+    }
+
+    @Override
+    public MimeType mimeType() {
+        return httpRequestResponse.mimeType();
+    }
+
+    @Override
+    public boolean hasResponse() {
+        return httpRequestResponse.hasResponse();
+    }
+
+    @Override
+    public TimingData timingData() {
+        return httpRequestResponse.timingData();
+    }
 }

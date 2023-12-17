@@ -2,11 +2,11 @@ package yagura.view;
 
 import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import yagura.model.*;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
@@ -133,36 +133,36 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
      * @param messageInfo the messageItem to set
      */
     @SuppressWarnings("unchecked")
-    public void setMessageInfo(HttpRequestResponse messageInfo) {
+    public void setMessageInfo(HttpMessageItem messageInfo) {
         try {
-            this.messageItem = new HttpMessageItem(messageInfo);
+            this.messageItem = messageInfo;
             this.clearView();
 //            this.tabGeneratePoC.createNewInstance(messageItem.getController(), false);
             if (this.messageItem.getRequest() != null) {
-                this.isEnabledFor(messageItem, true);
+                this.isEnabledFor(messageItem.toHttpRequestResponse(), true);
                 if (this.tabbetRequestView.indexOfComponent(this.tabRequestRawView) > -1) {
-                    this.tabRequestRawView.setRequestResponse(messageInfo);
+                    this.tabRequestRawView.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabRequestJSONViewTab) > -1) {
-                    this.tabRequestJSONViewTab.setRequestResponse(messageInfo);
+                    this.tabRequestJSONViewTab.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabGeneratePoC) > -1) {
-                    this.tabGeneratePoC.setRequestResponse(messageInfo);
+                    this.tabGeneratePoC.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
                 if (this.tabbetRequestView.indexOfComponent(this.tabViewState) > -1) {
-                    this.tabViewState.setRequestResponse(messageInfo);
+                    this.tabViewState.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
             }
             if (this.messageItem.getResponse() != null) {
-                this.isEnabledFor(messageItem, false);
+                this.isEnabledFor(messageItem.toHttpRequestResponse(), false);
                 if (this.tabbetResponseView.indexOfComponent(this.tabResponseRawView) > -1) {
-                    this.tabResponseRawView.setRequestResponse(messageInfo);
+                    this.tabResponseRawView.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
                 if (this.tabbetResponseView.indexOfComponent(this.tabResponseJSONViewTab) > -1) {
-                    this.tabResponseJSONViewTab.setRequestResponse(messageInfo);
+                    this.tabResponseJSONViewTab.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
                 if (this.tabbetResponseView.indexOfComponent(this.tabHtmlComment) > -1) {
-                    this.tabHtmlComment.setRequestResponse(messageInfo);
+                    this.tabHtmlComment.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
             }
         } catch (Exception ex) {
@@ -257,7 +257,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
 
     @Override
     public List<HttpRequestResponse> getSelectedMessages() {
-        return List.of(this.messageItem);
+        return List.of(this.messageItem.toHttpRequestResponse());
     }
 
     @Override

@@ -20,8 +20,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import yagura.model.MatchReplaceGroup;
 import extension.burp.IBurpTab;
 import javax.swing.event.ListSelectionEvent;
@@ -204,23 +202,6 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
     }
 
     private final CustomListModel<String> modelReplace = new CustomListModel<>();
-    private final ListDataListener listDataListener = new ListDataListener() {
-
-        @Override
-        public void intervalAdded(ListDataEvent e) {
-            firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
-        }
-
-        @Override
-        public void intervalRemoved(ListDataEvent e) {
-            firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
-        }
-
-        @Override
-        public void contentsChanged(ListDataEvent e) {
-            firePropertyChange(MatchReplaceProperty.MATCHREPLACE_PROPERTY, null, getMatchReplaceProperty());
-        }
-    };
 
     private final javax.swing.ImageIcon image_check = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/tick.png"));
     private final javax.swing.ImageIcon image_uncheck = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/untick.png"));
@@ -429,8 +410,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
      */
     public void setReplaceMap(Map<String, MatchReplaceGroup> replaceMap) {
         this.modelReplace.removeAllElements();
-        List<String> list = ConvertUtil.toList(replaceMap.keySet().iterator());
-        for (String name : list) {
+        for (String name : replaceMap.keySet()) {
             this.modelReplace.addElement(name);
         }
         this.listMatchReplace.setSelectedIndex(0);

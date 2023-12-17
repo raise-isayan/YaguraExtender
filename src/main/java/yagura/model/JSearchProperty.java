@@ -1,6 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.burp.FilterProperty;
 import extension.burp.IPropertyConfig;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.RegexItem;
