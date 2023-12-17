@@ -1172,8 +1172,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             pnlInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlInputLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnInputfile, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addComponent(btnInputfile, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlInputLayout.setVerticalGroup(
             pnlInputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1208,8 +1208,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             btnOutputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(btnOutputLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnOutputfile, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addComponent(btnOutputfile, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                .addContainerGap())
         );
         btnOutputLayout.setVerticalGroup(
             btnOutputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

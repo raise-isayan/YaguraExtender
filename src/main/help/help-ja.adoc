@@ -23,15 +23,22 @@ Yagura Charsets::
 
 Encoder::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
-
+  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html に対応しています。
+  
 Decoder::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
+  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html に対応しています。
 
 Converter::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
+  Upper Case/Lower Case/bin2hex/hex2bin/Full width -> Half width/Half width/ -> Full width に対応しています。
 
 Hash::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
+  md2/md5/sha1/sha256/sha512 に対応しています。
+
+Result Filter::
+  Proxy HistoryのBambda mode のクエリを切り替えることが可能です。
 
 Extension::
   選択した拡張機能を実行します。
@@ -265,56 +272,6 @@ Target(アラート対象)::
 [scanner issue]チェックボックス:: 
     文字列がマッチした場合、該当のScannerのIssueを作成します。
 
-=== AutoResponderタブ
-
-image:images/custom_autoresponder.png[AutoResponderタブ]
-
-リクエストに対応した固定のレスポンスを定義することができます。
-
-[Enable]ボタン:: 
-    チェック時に、AutoResponderを有効にします。
-
-[Edit]ボタン:: 
-    選択したAutoResponderItemを編集します。
-    選択した内容のAutoResponderItemの編集ダイヤログが表示されます。
-
-[Remove]ボタン:: 
-    選択したAutoResponderItemを削除します。
-
-[Up]、[Down]ボタン:: 
-    選択したAutoResponderItemの順番を移動します。
-    ここでの順番が、AutoResponderの適用される順番になります。
-
-[Add]ボタン::
-    AutoResponderItemを追加します。
-    空のAutoResponderItemの編集ダイヤログが表示されます。
-
-==== AutoResponderItem 編集ダイヤログ
-
-image:images/custom_autoresponder_item.png[AutoResponderItem編集 ダイヤログ]
-
-Method:: 
-    マッチさせるメソッドを指定します。Anyにチェックした場合は任意のメソッドにマッチします。
-
-Match URL:: 
-    マッチさせるURLを指定します。指定された値は前方一致されます。
-
-[Regexp]チェックボックス:: 
-    チェック時、マッチさせるURLに対しての正規表現を有効にします。
-
-[IgnoreCase]チェックボックス:: 
-    チェック時マッチさせるURLに対しての大文字小文字を無視します。
-
-Replace:: 
-    レスポンスとして利用するファイルを指定します。
-
-[Body only]チェックボックス::
-    レスポンスとして指定したファイルをレスポンスボディに出力します。
-    チェックされていない場合は、ファイルにレスポンスヘッダの記載も必要です。
-
-[Conent-Type]コンボボックス::
-    レスポンスのConent-Typeを指定します。[Body only]にチェックがされている場合にのみ有効です。
-
 === SendToタブ
 
 image:images/custom_sendto.png[SendToタブ]
@@ -543,6 +500,81 @@ image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
           URLのスキームとホストをexclude in scopeに追加します。
      add exclude scope:: 
           URLをexclude in scopeに追加します。
+
+=== AutoResponderタブ
+
+image:images/custom_autoresponder.png[AutoResponderタブ]
+
+リクエストに対応した固定のレスポンスを定義することができます。
+
+[Enable]ボタン:: 
+    チェック時に、AutoResponderを有効にします。
+
+[Edit]ボタン:: 
+    選択したAutoResponderItemを編集します。
+    選択した内容のAutoResponderItemの編集ダイヤログが表示されます。
+
+[Remove]ボタン:: 
+    選択したAutoResponderItemを削除します。
+
+[Up]、[Down]ボタン:: 
+    選択したAutoResponderItemの順番を移動します。
+    ここでの順番が、AutoResponderの適用される順番になります。
+
+[Add]ボタン::
+    AutoResponderItemを追加します。
+    空のAutoResponderItemの編集ダイヤログが表示されます。
+
+==== AutoResponderItem 編集ダイヤログ
+
+image:images/custom_autoresponder_item.png[AutoResponderItem編集 ダイヤログ]
+
+Method:: 
+    マッチさせるメソッドを指定します。Anyにチェックした場合は任意のメソッドにマッチします。
+
+Match URL:: 
+    マッチさせるURLを指定します。指定された値は前方一致されます。
+
+[Regexp]チェックボックス:: 
+    チェック時、マッチさせるURLに対しての正規表現を有効にします。
+
+[IgnoreCase]チェックボックス:: 
+    チェック時マッチさせるURLに対しての大文字小文字を無視します。
+
+Replace:: 
+    レスポンスとして利用するファイルを指定します。
+
+[Body only]チェックボックス::
+    レスポンスとして指定したファイルをレスポンスボディに出力します。
+    チェックされていない場合は、ファイルにレスポンスヘッダの記載も必要です。
+
+[Conent-Type]コンボボックス::
+    レスポンスのConent-Typeを指定します。[Body only]にチェックがされている場合にのみ有効です。
+
+=== ResultFilterタブ
+
+image:images/custom_resultfilter.png[ResultFilterタブ]
+
+ProxyのBambda modeを切り替えるための設定を行います｡
+
+[New]ボタン::
+    ResultFilterItemを追加します。
+    空のResultFilterItemの編集ダイヤログが表示されます。
+
+[Edit]ボタン:: 
+    選択したResultFilterItemを編集します。
+    選択した内容のResultFilterItemの編集ダイヤログが表示されます。
+
+[Remove]ボタン:: 
+    選択したResultFilterItemを削除します。
+
+[Up]、[Down]ボタン:: 
+    選択したResultFilterItemの順番を移動します。
+
+
+==== ResultFilterItem 編集ダイヤログ
+
+image:images/custom_resultfilter_item.png[ResultFilterItem編集 ダイヤログ]
 
 === Loggingタブ
 
@@ -1019,7 +1051,7 @@ image:images/custom_certificate.png[Certificateタブ]
 
 ==== View State Decoder タブ
 
-image:images/custom_viewstate_decoder.png[View State Decoderタブ]
+image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
 
 [expand]ボタン::
     選択したツリーを展開します。
@@ -1035,7 +1067,7 @@ image:images/custom_viewstate_decoder.png[View State Decoderタブ]
 
 ==== JWT Token Decoder タブ
 
-image:images/custom_JWT_decoder.png[JWT Token Decoderタブ]
+image:images/custom_jtranscoder_JWT_decoder.png[JWT Token Decoderタブ]
 
 [JWT]テキストエリア::
   デコードするJWTを入力します。
@@ -1101,7 +1133,7 @@ plain:: text area を利用してPoCを作成します。 +
 
 ==== ViewState タブ
 
-image:images/custom_viewstate.png[View Stateタブ]
+image:images/custom_jtranscoder_ViewState_decoder.png[View Stateタブ]
 
 [expand]ボタン::
     選択したツリーを展開します。

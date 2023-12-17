@@ -273,56 +273,6 @@ Target(Alert target)::
 [scanner issue] check box:: 
     If the strings match, create an issue for that Scanner.
 
-=== AutoResponder tab
-
-image:images/custom_autoresponder.png[AutoResponder tab]
-
-You can define a fixed response for a request.
-
-[Enable] button:: 
-    Enables AutoResponder when checked.
-
-[Edit button:: Edits the selected AutoResponderItem: 
-    Edits the selected AutoResponderItem.
-    The edit dialog of the selected AutoResponderItem is show.
-
-[Remove] button:: 
-    Deletes the selected AutoResponderItem.
-
-[Up] and [Down] buttons::: 
-    Move the order of the selected AutoResponderItem.
-    The order here is the order in which AutoResponder is applied.
-
-[Add] button::
-    Adds an AutoResponderItem.
-    The edit dialog for an empty AutoResponderItem is show.
-
-==== AutoResponderItem Edit Dialog
-
-image:images/custom_autoresponder_item.png[AutoResponderItem Edit Dialog]
-
-Method:: 
-    Specifies the method to match; if Any is checked, it will match any method.
-
-Match URL:: 
-    Specify the URL to be matched. The specified value will be matched forward.
-
-[Regexp] checkbox:: 
-    When checking, enable regular expressions for URL to be matched.
-
-[IgnoreCase] checkbox:: 
-    Ignore the case of the URL to be matched when checking.
-
-Replace:: 
-    Specify the file to be used as the response.
-
-[Body only] checkbox::
-    Specify the file to be used as a response.
-    If unchecked, a response header must also be included in the file.
-
-[Conent-Type] checkbox::
-    Specify the Conent-Type of the response. This is valid only when [Body only] is checked.
-
 === SendTo tab
 
 image:images/custom_sendto.png[SendTo tab]
@@ -549,6 +499,56 @@ image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
         Add URL scheme and host to exclude in scope.
     add exclude scope:: 
         Add URL to exclude in scope.
+
+=== AutoResponder tab
+
+image:images/custom_autoresponder.png[AutoResponder tab]
+
+You can define a fixed response for a request.
+
+[Enable] button:: 
+    Enables AutoResponder when checked.
+
+[Edit button:: Edits the selected AutoResponderItem: 
+    Edits the selected AutoResponderItem.
+    The edit dialog of the selected AutoResponderItem is show.
+
+[Remove] button:: 
+    Deletes the selected AutoResponderItem.
+
+[Up] and [Down] buttons::: 
+    Move the order of the selected AutoResponderItem.
+    The order here is the order in which AutoResponder is applied.
+
+[Add] button::
+    Adds an AutoResponderItem.
+    The edit dialog for an empty AutoResponderItem is show.
+
+==== AutoResponderItem Edit Dialog
+
+image:images/custom_autoresponder_item.png[AutoResponderItem Edit Dialog]
+
+Method:: 
+    Specifies the method to match; if Any is checked, it will match any method.
+
+Match URL:: 
+    Specify the URL to be matched. The specified value will be matched forward.
+
+[Regexp] checkbox:: 
+    When checking, enable regular expressions for URL to be matched.
+
+[IgnoreCase] checkbox:: 
+    Ignore the case of the URL to be matched when checking.
+
+Replace:: 
+    Specify the file to be used as the response.
+
+[Body only] checkbox::
+    Specify the file to be used as a response.
+    If unchecked, a response header must also be included in the file.
+
+[Conent-Type] checkbox::
+    Specify the Conent-Type of the response. This is valid only when [Body only] is checked.
 
 === Logging tabs
 
@@ -1044,7 +1044,7 @@ image:images/custom_viewstate_decoder.png[View State Decoder tab]
 
 ==== JWT token Decoder tab
 
-image:images/custom_JWT_decoder.png[JWT token Decoder tab]
+image:images/custom_jtranscoder_JWT_decoder.png[JWT token Decoder tab]
 
 [JWT] text area::
   Input the JWT to decode.
@@ -1114,7 +1114,7 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
 
 ==== View State tab
 
-image:images/custom_viewstate.png[View State  tab]
+image:images/custom_jtranscoder_ViewState_decoder.pngg[View State  tab]
 
 [expand] button::
     Expand the selected tree.

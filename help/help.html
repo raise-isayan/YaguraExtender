@@ -465,23 +465,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_matchalert_item_edit_dialog">3.3.2. MatchAlert Item Edit dialog</a></li>
 </ul>
 </li>
-<li><a href="#_autoresponder_tab">3.4. AutoResponder tab</a>
+<li><a href="#_sendto_tab">3.4. SendTo tab</a>
 <ul class="sectlevel3">
-<li><a href="#_autoresponderitem_edit_dialog">3.4.1. AutoResponderItem Edit Dialog</a></li>
-</ul>
-</li>
-<li><a href="#_sendto_tab">3.5. SendTo tab</a>
-<ul class="sectlevel3">
-<li><a href="#_sendto">3.5.1. SendTo</a></li>
-<li><a href="#_sendtoitem_edit_dialog">3.5.2. SendToItem Edit dialog</a></li>
-<li><a href="#_base_tab">3.5.3. Base tab</a>
+<li><a href="#_sendto">3.4.1. SendTo</a></li>
+<li><a href="#_sendtoitem_edit_dialog">3.4.2. SendToItem Edit dialog</a></li>
+<li><a href="#_base_tab">3.4.3. Base tab</a>
 <ul class="sectlevel4">
 <li><a href="#_http_connection_configuration_dialog">HTTP Connection Configuration Dialog</a></li>
 <li><a href="#_sendto_parameter_configuration_dialog">SendTo Parameter  Configuration Dialog</a></li>
 <li><a href="#_the_format_sent_to_the_server_when_checking_the_server">The format sent to the server when checking the server</a></li>
 </ul>
 </li>
-<li><a href="#_extend_tab">3.5.4. Extend tab</a></li>
+<li><a href="#_extend_tab">3.4.4. Extend tab</a></li>
+</ul>
+</li>
+<li><a href="#_autoresponder_tab">3.5. AutoResponder tab</a>
+<ul class="sectlevel3">
+<li><a href="#_autoresponderitem_edit_dialog">3.5.1. AutoResponderItem Edit Dialog</a></li>
 </ul>
 </li>
 <li><a href="#_logging_tabs">3.6. Logging tabs</a>
@@ -965,87 +965,7 @@ By specifying a group reference such as "$1", "$2", etc. in the comment section,
 </div>
 </div>
 <div class="sect2">
-<h3 id="_autoresponder_tab">3.4. AutoResponder tab</h3>
-<div class="paragraph">
-<p><span class="image"><img src="images/custom_autoresponder.png" alt="AutoResponder tab"></span></p>
-</div>
-<div class="paragraph">
-<p>You can define a fixed response for a request.</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">[Enable] button</dt>
-<dd>
-<p>Enables AutoResponder when checked.</p>
-</dd>
-<dt class="hdlist1">[Edit button</dt>
-<dd>
-<p>Edits the selected AutoResponderItem:
-Edits the selected AutoResponderItem.
-The edit dialog of the selected AutoResponderItem is show.</p>
-</dd>
-<dt class="hdlist1">[Remove] button</dt>
-<dd>
-<p>Deletes the selected AutoResponderItem.</p>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">[Up] and [Down] buttons</dt>
-<dd>
-<p>Move the order of the selected AutoResponderItem.
-The order here is the order in which AutoResponder is applied.</p>
-</dd>
-</dl>
-</div>
-</dd>
-<dt class="hdlist1">[Add] button</dt>
-<dd>
-<p>Adds an AutoResponderItem.
-The edit dialog for an empty AutoResponderItem is show.</p>
-</dd>
-</dl>
-</div>
-<div class="sect3">
-<h4 id="_autoresponderitem_edit_dialog">3.4.1. AutoResponderItem Edit Dialog</h4>
-<div class="paragraph">
-<p><span class="image"><img src="images/custom_autoresponder_item.png" alt="AutoResponderItem Edit Dialog"></span></p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Method</dt>
-<dd>
-<p>Specifies the method to match; if Any is checked, it will match any method.</p>
-</dd>
-<dt class="hdlist1">Match URL</dt>
-<dd>
-<p>Specify the URL to be matched. The specified value will be matched forward.</p>
-</dd>
-<dt class="hdlist1">[Regexp] checkbox</dt>
-<dd>
-<p>When checking, enable regular expressions for URL to be matched.</p>
-</dd>
-<dt class="hdlist1">[IgnoreCase] checkbox</dt>
-<dd>
-<p>Ignore the case of the URL to be matched when checking.</p>
-</dd>
-<dt class="hdlist1">Replace</dt>
-<dd>
-<p>Specify the file to be used as the response.</p>
-</dd>
-<dt class="hdlist1">[Body only] checkbox</dt>
-<dd>
-<p>Specify the file to be used as a response.
-If unchecked, a response header must also be included in the file.</p>
-</dd>
-<dt class="hdlist1">[Conent-Type] checkbox</dt>
-<dd>
-<p>Specify the Conent-Type of the response. This is valid only when [Body only] is checked.</p>
-</dd>
-</dl>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_sendto_tab">3.5. SendTo tab</h3>
+<h3 id="_sendto_tab">3.4. SendTo tab</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto.png" alt="SendTo tab"></span></p>
 </div>
@@ -1054,7 +974,7 @@ If unchecked, a response header must also be included in the file.</p>
 You can increase the number of right-click menus displayed from the Burp History, etc., and call up the specified function from the menu. The content sent is the content of the selected History request and response.</p>
 </div>
 <div class="sect3">
-<h4 id="_sendto">3.5.1. SendTo</h4>
+<h4 id="_sendto">3.4.1. SendTo</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Send To Submenu] check box</dt>
@@ -1090,7 +1010,7 @@ Each item can be modified and added as desired.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sendtoitem_edit_dialog">3.5.2. SendToItem Edit dialog</h4>
+<h4 id="_sendtoitem_edit_dialog">3.4.2. SendToItem Edit dialog</h4>
 <div class="paragraph">
 <p>SendTo has a Base tab and an Extend tab. In the Base tab, it is convenient to register a binary editor, file comparison tool, etc. When you call the editor from the right-click, the binary editor is started with the temporarily created file as an argument. In the case of the comparison tool, you can compare by selecting two histories. This was created because Burp&#8217;s HEX dump and Compare functions are difficult to use.</p>
 </div>
@@ -1099,7 +1019,7 @@ Each item can be modified and added as desired.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_base_tab">3.5.3. Base tab</h4>
+<h4 id="_base_tab">3.4.3. Base tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto_base.png" alt="SendToItem Edit Base Dialog"></span></p>
 </div>
@@ -1365,7 +1285,7 @@ sample/sendto.php contains a sample PHP application that only receives and displ
 </div>
 </div>
 <div class="sect3">
-<h4 id="_extend_tab">3.5.4. Extend tab</h4>
+<h4 id="_extend_tab">3.4.4. Extend tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_sendto_extend.png" alt="SendToItem Edit Extend Dialog"></span></p>
 </div>
@@ -1410,6 +1330,86 @@ sample/sendto.php contains a sample PHP application that only receives and displ
 <dt class="hdlist1">add exclude scope</dt>
 <dd>
 <p>Add URL to exclude in scope.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_autoresponder_tab">3.5. AutoResponder tab</h3>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_autoresponder.png" alt="AutoResponder tab"></span></p>
+</div>
+<div class="paragraph">
+<p>You can define a fixed response for a request.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Enable] button</dt>
+<dd>
+<p>Enables AutoResponder when checked.</p>
+</dd>
+<dt class="hdlist1">[Edit button</dt>
+<dd>
+<p>Edits the selected AutoResponderItem:
+Edits the selected AutoResponderItem.
+The edit dialog of the selected AutoResponderItem is show.</p>
+</dd>
+<dt class="hdlist1">[Remove] button</dt>
+<dd>
+<p>Deletes the selected AutoResponderItem.</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Up] and [Down] buttons</dt>
+<dd>
+<p>Move the order of the selected AutoResponderItem.
+The order here is the order in which AutoResponder is applied.</p>
+</dd>
+</dl>
+</div>
+</dd>
+<dt class="hdlist1">[Add] button</dt>
+<dd>
+<p>Adds an AutoResponderItem.
+The edit dialog for an empty AutoResponderItem is show.</p>
+</dd>
+</dl>
+</div>
+<div class="sect3">
+<h4 id="_autoresponderitem_edit_dialog">3.5.1. AutoResponderItem Edit Dialog</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_autoresponder_item.png" alt="AutoResponderItem Edit Dialog"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Method</dt>
+<dd>
+<p>Specifies the method to match; if Any is checked, it will match any method.</p>
+</dd>
+<dt class="hdlist1">Match URL</dt>
+<dd>
+<p>Specify the URL to be matched. The specified value will be matched forward.</p>
+</dd>
+<dt class="hdlist1">[Regexp] checkbox</dt>
+<dd>
+<p>When checking, enable regular expressions for URL to be matched.</p>
+</dd>
+<dt class="hdlist1">[IgnoreCase] checkbox</dt>
+<dd>
+<p>Ignore the case of the URL to be matched when checking.</p>
+</dd>
+<dt class="hdlist1">Replace</dt>
+<dd>
+<p>Specify the file to be used as the response.</p>
+</dd>
+<dt class="hdlist1">[Body only] checkbox</dt>
+<dd>
+<p>Specify the file to be used as a response.
+If unchecked, a response header must also be included in the file.</p>
+</dd>
+<dt class="hdlist1">[Conent-Type] checkbox</dt>
+<dd>
+<p>Specify the Conent-Type of the response. This is valid only when [Body only] is checked.</p>
 </dd>
 </dl>
 </div>
@@ -2174,7 +2174,7 @@ A format string can specify only one numeric format.</p>
 <div class="sect3">
 <h4 id="_jwt_token_decoder_tab">3.8.6. JWT token Decoder tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_JWT_decoder.png" alt="JWT token Decoder tab"></span></p>
+<p><span class="image"><img src="images/custom_jtranscoder_JWT_decoder.png" alt="JWT token Decoder tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -2287,7 +2287,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 <div class="sect3">
 <h4 id="_view_state_tab">3.9.1. View State tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_viewstate.png" alt="View State  tab"></span></p>
+<p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.pngg" alt="View State  tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -2363,7 +2363,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-09-02 15:18:45 +0900
+Last updated 2023-12-17 21:05:18 +0900
 </div>
 </div>
 </body>
