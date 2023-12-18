@@ -153,7 +153,7 @@
                           <SubComponents>
                             <Component class="javax.swing.JCheckBox" name="chkWhite">
                               <Properties>
-                                <Property name="text" type="java.lang.String" value="white (unselect)"/>
+                                <Property name="text" type="java.lang.String" value="white (none)"/>
                               </Properties>
                             </Component>
                             <Component class="javax.swing.JCheckBox" name="chkRed">
@@ -354,6 +354,9 @@
                               <Properties>
                                 <Property name="text" type="java.lang.String" value="hide:"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkHideStateChanged"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JCheckBox" name="chkShowOnly">
                               <Properties>

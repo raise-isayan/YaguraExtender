@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import extension.burp.BurpExtensionImpl;
 import extension.burp.BurpUtil;
@@ -14,6 +15,8 @@ import extension.view.layout.VerticalFlowLayout;
 import java.net.HttpURLConnection;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -30,6 +33,7 @@ import javax.swing.text.StyledEditorKit;
  */
 public class ResultFilterDlg extends CustomDialog {
 
+    private final static Logger logger = Logger.getLogger(ResultFilterDlg.class.getName());
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     /**
@@ -158,7 +162,7 @@ public class ResultFilterDlg extends CustomDialog {
         pnlHighlightColor.setPreferredSize(new java.awt.Dimension(151, 500));
         pnlHighlightColor.setLayout(new javax.swing.BoxLayout(pnlHighlightColor, javax.swing.BoxLayout.Y_AXIS));
 
-        chkWhite.setText("white (unselect)");
+        chkWhite.setText("white (none)");
         pnlHighlightColor.add(chkWhite);
 
         chkRed.setText("red");
@@ -239,6 +243,11 @@ public class ResultFilterDlg extends CustomDialog {
         pnlExtension.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Filter by extension")));
 
         chkHide.setText("hide:");
+        chkHide.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkHideStateChanged(evt);
+            }
+        });
 
         chkShowOnly.setText("show only:");
         chkShowOnly.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -632,6 +641,10 @@ public class ResultFilterDlg extends CustomDialog {
         this.btnConvertBambda.setVisible(this.tabbetFilter.getSelectedIndex() == this.tabbetFilter.indexOfTab("Settings"));
     }//GEN-LAST:event_tabbetFilterStateChanged
 
+    private void chkHideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHideStateChanged
+        this.chkShowOnly.setEnabled(!this.chkHide.isSelected());
+    }//GEN-LAST:event_chkHideStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -763,16 +776,21 @@ public class ResultFilterDlg extends CustomDialog {
         this.chkStat4xx.getModel().setSelected(filterProp.getStat4xx());
         this.chkStat5xx.getModel().setSelected(filterProp.getStat5xx());
 
+        this.chkShowOnlyComment.setSelected(filterProp.getShowOnlyComment());
         this.chkShowOnlyHighlight.setSelected(filterProp.getShowOnlyHighlightColors());
         this.setHighlightColors(filterProp.getHighlightColors());
-        this.chkShowOnlyComment.setSelected(filterProp.getShowOnlyComment());
 
         this.txtMethod.setText(filterProp.getMethod());
         this.txtPath.setText(filterProp.getPath());
         this.txtRequest.setText(filterProp.getRequest());
+        this.chkReqRegExp.setSelected(filterProp.isRequestRegex());
+        this.chkReqIgnoreCase.setSelected(filterProp.isRequestIgnoreCase());
         this.txtResponse.setText(filterProp.getResponse());
+        this.chkResRegExp.setSelected(filterProp.isResponseRegex());
+        this.chkResIgnoreCase.setSelected(filterProp.isResponseIgnoreCase());
         this.txtBambda.setText(filterProp.getBambdaQuery());
 
+        this.chkShowOnlyHighlightActionPerformed(null);
     }
 
     public FilterProperty getProperty() {
@@ -798,14 +816,18 @@ public class ResultFilterDlg extends CustomDialog {
         filterProp.setStat4xx(this.chkStat4xx.getModel().isSelected());
         filterProp.setStat5xx(this.chkStat5xx.getModel().isSelected());
 
+        filterProp.setShowOnlyComment(this.chkShowOnlyComment.isSelected());
         filterProp.setShowOnlyHighlightColors(this.chkShowOnlyHighlight.isSelected());
         filterProp.setHighlightColors(this.getHighlightColors());
-        filterProp.setShowOnlyComment(this.chkShowOnlyComment.isSelected());
 
         filterProp.setMethod(this.txtMethod.getText());
         filterProp.setPath(this.txtPath.getText());
         filterProp.setRequest(this.txtRequest.getText());
+        filterProp.setRequestRegex(this.chkReqRegExp.isSelected());
+        filterProp.setRequestIgnoreCase(this.chkReqIgnoreCase.isSelected());
         filterProp.setResponse(this.txtResponse.getText());
+        filterProp.setResponseRegex(this.chkResRegExp.isSelected());
+        filterProp.setResponseIgnoreCase(this.chkResIgnoreCase.isSelected());
         filterProp.setBambda(this.txtBambda.getText());
         return filterProp;
     }
@@ -904,22 +926,33 @@ public class ResultFilterDlg extends CustomDialog {
             try {
                 ProxyHttpRequestResponse item = (ProxyHttpRequestResponse) entry.getValue(0);
                 boolean showOnlyScopFilter = true;
-                // Filter by request type
+                // Show only in-scope items
                 if (this.filterProp.isShowOnlyScopeItems()) {
                     showOnlyScopFilter = BurpExtensionImpl.helpers().isInScope(item.request().url());
                 }
+                // Hide items without responses
                 boolean hideItemsWithoutResponses = true;
                 if (this.filterProp.isHideItemsWithoutResponses()) {
                     hideItemsWithoutResponses = (item.response() != null);
                 }
-                // status filter
+                // chkShowOnlyParameterizedRequests
+                boolean parameterizedRequests = true;
+                if (this.filterProp.isShowOnlyParameterizedRequests()) {
+                    parameterizedRequests = item.request().hasParameters(HttpParameterType.URL) || item.request().hasParameters(HttpParameterType.BODY);
+                }
+                // Show only edited message
+                boolean editedMessage = true;
+                if (this.filterProp.isShowOnlyEditedMessage()) {
+                    editedMessage = item.edited();
+                }
+
+                // Status Filter
                 boolean statusFilter = false;
                 if (showOnlyScopFilter) {
                     // Response Status がない場合は無条件で含める
                     if (item.response().statusCode() == 0) {
                         statusFilter = true;
                     }
-
                     if (this.filterProp.getStat2xx() && (HttpURLConnection.HTTP_OK <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_MULT_CHOICE)) {
                         statusFilter = true;
                     }
@@ -932,19 +965,20 @@ public class ResultFilterDlg extends CustomDialog {
                     if (this.filterProp.getStat5xx() && (HttpURLConnection.HTTP_INTERNAL_ERROR <= item.response().statusCode() && item.response().statusCode() < 600)) {
                         statusFilter = true;
                     }
-
                 }
-                // color filter
+                // Highlight Color
                 boolean colorFilter = false;
                 if (statusFilter && showOnlyScopFilter) {
                     // cololr
-                    EnumSet<MessageHighlightColor> colors = this.filterProp.getHighlightColors();
-                    MessageHighlightColor hc = MessageHighlightColor.valueOf(item.annotations().highlightColor());
-                    if (colors.contains(hc)) {
-                        colorFilter = true;
+                    if (this.filterProp.getShowOnlyHighlightColors()) {
+                        EnumSet<MessageHighlightColor> colors = this.filterProp.getHighlightColors();
+                        MessageHighlightColor hc = MessageHighlightColor.valueOf(item.annotations().highlightColor());
+                        if (colors.contains(hc)) {
+                            colorFilter = true;
+                        }
                     }
                 }
-                // comment filter
+                // Comment Filter
                 boolean commentFilter = true;
                 if (statusFilter && showOnlyScopFilter) {
                     // comment
@@ -952,9 +986,9 @@ public class ResultFilterDlg extends CustomDialog {
                         commentFilter = (item.annotations().hasNotes());
                     }
                 }
-                // showOnly Filter
                 boolean matchFilter = true;
                 if (statusFilter && showOnlyScopFilter && colorFilter) {
+                    // showOnly Filter
                     if (this.filterProp.getShowOnly()) {
                         Pattern patternShowOnly = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getShowOnlyExtension()));
                         Matcher matchShowOnly = patternShowOnly.matcher(item.request().pathWithoutQuery());
@@ -962,6 +996,7 @@ public class ResultFilterDlg extends CustomDialog {
                             matchFilter = false;
                         }
                     } else {
+                        // Hide Filter
                         if (this.filterProp.getHide()) {
                             Pattern patternHide = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getHideExtension()));
                             Matcher matchHide = patternHide.matcher(item.request().pathWithoutQuery());
@@ -971,10 +1006,40 @@ public class ResultFilterDlg extends CustomDialog {
                         }
                     }
                 }
+                // request method
+                boolean requestMethod = true;
+                if (!this.filterProp.getMethod().isEmpty()) {
+                    requestMethod = item.request().method().equals(this.filterProp.getMethod().toUpperCase());
+                }
+                // request path
+                boolean requestURL = true;
+                if (!this.filterProp.getPath().isEmpty()) {
+                    requestURL = item.request().path().contains(this.filterProp.getPath());
+                }
+                // request
+                boolean request = true;
+                if (!this.filterProp.getRequest().isEmpty()) {
+                    if (this.filterProp.isRequestRegex()) {
+                        request = item.request().contains(Pattern.compile(this.filterProp.getRequest(), this.filterProp.isRequestIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
+                    }
+                    else {
+                        request = item.request().contains(this.filterProp.getRequest(), this.filterProp.isRequestIgnoreCase());
+                    }
+                }
+                // response
+                boolean response = true;
+                if (!this.filterProp.getResponse().isEmpty()) {
+                    if (this.filterProp.isResponseRegex()) {
+                        response = item.response().contains(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase());
+                    }
+                    else {
+                        response = item.response().contains(Pattern.compile(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
+                    }
+                }
                 // 条件のAND
-                allFilter = (statusFilter && colorFilter && commentFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses);
+                allFilter = (statusFilter && colorFilter && commentFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses && parameterizedRequests && editedMessage && requestMethod && requestURL && request && response);
             } catch (Exception ex) {
-//                logger.log(Level.SEVERE, ex.getMessage(), ex);
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
             return allFilter;
         }
