@@ -481,35 +481,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_resultfilterタブ">3.6. ResultFilterタブ</a>
 <ul class="sectlevel3">
 <li><a href="#_resultfilteritem_編集ダイヤログ">3.6.1. ResultFilterItem 編集ダイヤログ</a></li>
+<li><a href="#_logging">3.6.2. Logging</a></li>
 </ul>
 </li>
-<li><a href="#_loggingタブ">3.7. Loggingタブ</a>
+<li><a href="#_jsearchタブ">3.7. JSearchタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_logging">3.7.1. Logging</a></li>
+<li><a href="#_jsearch">3.7.1. JSearch</a></li>
 </ul>
 </li>
-<li><a href="#_jsearchタブ">3.8. JSearchタブ</a>
+<li><a href="#_jtranscoderタブ">3.8. JTransCoderタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_jsearch">3.8.1. JSearch</a></li>
+<li><a href="#_translator">3.8.1. Translator</a></li>
+<li><a href="#_generaterタブ">3.8.2. Generaterタブ</a></li>
+<li><a href="#_converter_tab">3.8.3. Converter tab</a></li>
+<li><a href="#_certificate_タブ">3.8.4. Certificate タブ</a></li>
+<li><a href="#_view_state_decoder_タブ">3.8.5. View State Decoder タブ</a></li>
+<li><a href="#_jwt_token_decoder_タブ">3.8.6. JWT Token Decoder タブ</a></li>
 </ul>
 </li>
-<li><a href="#_jtranscoderタブ">3.9. JTransCoderタブ</a>
+<li><a href="#_generate_csrf_poc">3.9. Generate CSRF PoC</a>
 <ul class="sectlevel3">
-<li><a href="#_translator">3.9.1. Translator</a></li>
-<li><a href="#_generaterタブ">3.9.2. Generaterタブ</a></li>
-<li><a href="#_converter_tab">3.9.3. Converter tab</a></li>
-<li><a href="#_certificate_タブ">3.9.4. Certificate タブ</a></li>
-<li><a href="#_view_state_decoder_タブ">3.9.5. View State Decoder タブ</a></li>
-<li><a href="#_jwt_token_decoder_タブ">3.9.6. JWT Token Decoder タブ</a></li>
+<li><a href="#_viewstate_タブ">3.9.1. ViewState タブ</a></li>
+<li><a href="#_jwt_タブ">3.9.2. JWT タブ</a></li>
 </ul>
 </li>
-<li><a href="#_generate_csrf_poc">3.10. Generate CSRF PoC</a>
-<ul class="sectlevel3">
-<li><a href="#_viewstate_タブ">3.10.1. ViewState タブ</a></li>
-<li><a href="#_jwt_タブ">3.10.2. JWT タブ</a></li>
-</ul>
-</li>
-<li><a href="#_version">3.11. Version</a></li>
+<li><a href="#_version">3.10. Version</a></li>
 </ul>
 </li>
 </ul>
@@ -1442,10 +1438,14 @@ sample/sendto.php にはこの形式を受け取って表示するだけのPHP�
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_resultfilter_item.png" alt="ResultFilterItem編集 ダイヤログ"></span></p>
 </div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Convert to Bambda]ボタン</dt>
+<dd>
+<p>=== Loggingタブ</p>
+</dd>
+</dl>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_loggingタブ">3.7. Loggingタブ</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_logging.png" alt="Loggingタブ"></span></p>
 </div>
@@ -1453,8 +1453,9 @@ sample/sendto.php にはこの形式を受け取って表示するだけのPHP�
 <p>ログの自動ロギング機能です。
 この機能では、毎回ログの選択を行わなくても自動でログを 保存してくれます。</p>
 </div>
+</div>
 <div class="sect3">
-<h4 id="_logging">3.7.1. Logging</h4>
+<h4 id="_logging">3.6.2. Logging</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[auto logging]チェックボックス</dt>
@@ -1512,7 +1513,7 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearchタブ">3.8. JSearchタブ</h3>
+<h3 id="_jsearchタブ">3.7. JSearchタブ</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jsearch.png" alt="JSearchタブ"></span></p>
 </div>
@@ -1520,7 +1521,7 @@ proxy-message.log.2
 <p>JSearch タブはProxyのHistory一覧から文字を検索するための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_jsearch">3.8.1. JSearch</h4>
+<h4 id="_jsearch">3.7.1. JSearch</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Search]ボタン</dt>
@@ -1565,12 +1566,12 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoderタブ">3.9. JTransCoderタブ</h3>
+<h3 id="_jtranscoderタブ">3.8. JTransCoderタブ</h3>
 <div class="paragraph">
 <p>Transcoder タブは各種エンコード、デコードを行うための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_translator">3.9.1. Translator</h4>
+<h4 id="_translator">3.8.1. Translator</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder.png" alt="Translatorタブ"></span></p>
 </div>
@@ -1896,7 +1897,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generaterタブ">3.9.2. Generaterタブ</h4>
+<h4 id="_generaterタブ">3.8.2. Generaterタブ</h4>
 <div class="paragraph">
 <p>Generater には、sequenceタブとrandomタブがあります。</p>
 </div>
@@ -2002,7 +2003,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_converter_tab">3.9.3. Converter tab</h4>
+<h4 id="_converter_tab">3.8.3. Converter tab</h4>
 <div class="paragraph">
 <p>Baseタブは基数変換するための簡易的な機能です。</p>
 </div>
@@ -2126,7 +2127,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_certificate_タブ">3.9.4. Certificate タブ</h4>
+<h4 id="_certificate_タブ">3.8.4. Certificate タブ</h4>
 <div class="paragraph">
 <p>証明書の各種変換およびエクスポートを行います｡</p>
 </div>
@@ -2171,7 +2172,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_view_state_decoder_タブ">3.9.5. View State Decoder タブ</h4>
+<h4 id="_view_state_decoder_タブ">3.8.5. View State Decoder タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.png" alt="View State Decoderタブ"></span></p>
 </div>
@@ -2197,7 +2198,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_token_decoder_タブ">3.9.6. JWT Token Decoder タブ</h4>
+<h4 id="_jwt_token_decoder_タブ">3.8.6. JWT Token Decoder タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder_JWT_decoder.png" alt="JWT Token Decoderタブ"></span></p>
 </div>
@@ -2224,7 +2225,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generate_csrf_poc">3.10. Generate CSRF PoC</h3>
+<h3 id="_generate_csrf_poc">3.9. Generate CSRF PoC</h3>
 <div class="paragraph">
 <p>主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。</p>
 </div>
@@ -2305,9 +2306,9 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_viewstate_タブ">3.10.1. ViewState タブ</h4>
+<h4 id="_viewstate_タブ">3.9.1. ViewState タブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.png" alt="View Stateタブ"></span></p>
+<p><span class="image"><img src="images/custom_viewstate.png" alt="View Stateタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -2331,7 +2332,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_タブ">3.10.2. JWT タブ</h4>
+<h4 id="_jwt_タブ">3.9.2. JWT タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT.png" alt="JWTタブ"></span></p>
 </div>
@@ -2358,7 +2359,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version">3.11. Version</h3>
+<h3 id="_version">3.10. Version</h3>
 <div class="paragraph">
 <p>バージョン情報を表示します。</p>
 </div>
@@ -2383,7 +2384,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-17 21:33:54 +0900
+Last updated 2023-12-18 18:00:05 +0900
 </div>
 </div>
 </body>

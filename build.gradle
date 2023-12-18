@@ -91,10 +91,10 @@ task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
-    compileOnly 'org.bouncycastle:bcpkix-jdk15on:1.67'
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
-    compileOnly 'org.bouncycastle:bcprov-jdk15on:1.67'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
+    compileOnly 'org.bouncycastle:bcpkix-jdk18on:1.74'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
+    compileOnly 'org.bouncycastle:bcprov-jdk18on:1.74'
 
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -147,10 +147,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation 'org.mockito:mockito-core:5.4.0'
 
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on
-    testImplementation 'org.bouncycastle:bcpkix-jdk15on:1.67'
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
-    testImplementation 'org.bouncycastle:bcprov-jdk15on:1.67'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on
+    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.74'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
+    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.74'
 }
 
 tasks.named('test') {

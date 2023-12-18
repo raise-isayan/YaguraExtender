@@ -484,23 +484,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_autoresponderitem_edit_dialog">3.5.1. AutoResponderItem Edit Dialog</a></li>
 </ul>
 </li>
-<li><a href="#_logging_tabs">3.6. Logging tabs</a>
+<li><a href="#_resultfilter_tab">3.6. ResultFilter tab</a>
 <ul class="sectlevel3">
-<li><a href="#_logging">3.6.1. Logging</a>
+<li><a href="#_resultfilteritem_edit_dialog">3.6.1. ResultFilterItem Edit Dialog</a></li>
+</ul>
+</li>
+<li><a href="#_logging_tab">3.7. Logging tab</a>
+<ul class="sectlevel3">
+<li><a href="#_logging">3.7.1. Logging</a>
 <ul class="sectlevel4">
 <li><a href="#_logging_target">Logging target</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_jsearch_tab">3.7. JSearch tab</a>
+<li><a href="#_jsearch_tab">3.8. JSearch tab</a>
 <ul class="sectlevel3">
-<li><a href="#_jsearch">3.7.1. JSearch</a></li>
+<li><a href="#_jsearch">3.8.1. JSearch</a></li>
 </ul>
 </li>
-<li><a href="#_jtranscoder_tab">3.8. JTransCoder tab</a>
+<li><a href="#_jtranscoder_tab">3.9. JTransCoder tab</a>
 <ul class="sectlevel3">
-<li><a href="#_translator">3.8.1. Translator</a>
+<li><a href="#_translator">3.9.1. Translator</a>
 <ul class="sectlevel4">
 <li><a href="#_encodedecode">Encode/Decode</a></li>
 <li><a href="#_format">Format</a></li>
@@ -508,20 +513,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_hashchecksum">Hash/Checksum</a></li>
 </ul>
 </li>
-<li><a href="#_generater_tab">3.8.2. Generater tab</a></li>
-<li><a href="#_converter_tab">3.8.3. Converter tab</a></li>
-<li><a href="#_certificate_tab">3.8.4. Certificate tab</a></li>
-<li><a href="#_view_state_decoder_tab">3.8.5. View State Decoder tab</a></li>
-<li><a href="#_jwt_token_decoder_tab">3.8.6. JWT token Decoder tab</a></li>
+<li><a href="#_generater_tab">3.9.2. Generater tab</a></li>
+<li><a href="#_converter_tab">3.9.3. Converter tab</a></li>
+<li><a href="#_certificate_tab">3.9.4. Certificate tab</a></li>
+<li><a href="#_view_state_decoder_tab">3.9.5. View State Decoder tab</a></li>
+<li><a href="#_jwt_token_decoder_tab">3.9.6. JWT token Decoder tab</a></li>
 </ul>
 </li>
-<li><a href="#_generate_csrf_poc">3.9. Generate CSRF PoC</a>
+<li><a href="#_generate_csrf_poc">3.10. Generate CSRF PoC</a>
 <ul class="sectlevel3">
-<li><a href="#_view_state_tab">3.9.1. View State tab</a></li>
-<li><a href="#_jwt_tab">3.9.2. JWT tab</a></li>
+<li><a href="#_view_state_tab">3.10.1. View State tab</a></li>
+<li><a href="#_jwt_tab">3.10.2. JWT tab</a></li>
 </ul>
 </li>
-<li><a href="#_version">3.10. Version</a></li>
+<li><a href="#_version">3.11. Version</a></li>
 </ul>
 </li>
 </ul>
@@ -558,24 +563,28 @@ Various settings can be done from here.</p>
 <dl>
 <dt class="hdlist1">Yagura Charsets</dt>
 <dd>
-<p>s    You can select a default character set to be used in the various conversion functions.
-    You can Encode/Decode with the specified character set.</p>
+<p>You can select a default character set to be used in the various conversion functions.
+You can Encode/Decode with the specified character set.</p>
 </dd>
 <dt class="hdlist1">Encoder</dt>
 <dd>
-<p>Encode the selected string in the character code selected in "Yagura Charsets".</p>
+<p>Encode the selected string in the character code selected in "Yagura Charsets".
+URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.</p>
 </dd>
 <dt class="hdlist1">Decoder</dt>
 <dd>
-<p>Decode the selected string in the character code selected in "Yagura Charsets".</p>
+<p>Decode the selected string in the character code selected in "Yagura Charsets".
+URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.</p>
 </dd>
 <dt class="hdlist1">Converter</dt>
 <dd>
-<p>Converts the selected string in the character code selected in "Yagura Charsets".</p>
+<p>Converts the selected string in the character code selected in "Yagura Charsets".
+Upper Case/Lower Case/bin2hex/hex2bin/Full width &#8594; Half width/Half width/ &#8594; Full width  are supported.</p>
 </dd>
 <dt class="hdlist1">Hash</dt>
 <dd>
-<p>Hash calculation the selected string in the character code selected in "Yagura Charsets".</p>
+<p>Hash calculation the selected string in the character code selected in "Yagura Charsets".
+md2/md5/sha1/sha256/sha512  are supported.</p>
 </dd>
 <dt class="hdlist1">Extension</dt>
 <dd>
@@ -1360,7 +1369,7 @@ The edit dialog of the selected AutoResponderItem is show.</p>
 <p>Deletes the selected AutoResponderItem.</p>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[Up] and [Down] buttons</dt>
+<dt class="hdlist1">[Up], [Down] buttons</dt>
 <dd>
 <p>Move the order of the selected AutoResponderItem.
 The order here is the order in which AutoResponder is applied.</p>
@@ -1416,7 +1425,53 @@ If unchecked, a response header must also be included in the file.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_logging_tabs">3.6. Logging tabs</h3>
+<h3 id="_resultfilter_tab">3.6. ResultFilter tab</h3>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_resultfilter.png" alt="ResultFilter tab"></span></p>
+</div>
+<div class="paragraph">
+<p>Configure the Proxy to switch Bambda mode.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[New] button</dt>
+<dd>
+<p>Adds an ResultFilterItem.
+The edit dialog for an empty ResultFilterItem is show.</p>
+</dd>
+<dt class="hdlist1">[Edit] button</dt>
+<dd>
+<p>Edits the selected ResultFilterItem.
+The edit dialog of the selected ResultFilterItem is show.</p>
+</dd>
+<dt class="hdlist1">[Remove] button</dt>
+<dd>
+<p>Deletes the selected ResultFilterItem.</p>
+</dd>
+<dt class="hdlist1">[Up], [Down] button</dt>
+<dd>
+<p>Move the order of the selected ResultFilterItem.
+The order here is the order in which ResultFilter is applied.</p>
+</dd>
+</dl>
+</div>
+<div class="sect3">
+<h4 id="_resultfilteritem_edit_dialog">3.6.1. ResultFilterItem Edit Dialog</h4>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_resultfilter_item.png" alt="ResultFilterItem  Edit Dialog"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Convert to Bambda] Button</dt>
+<dd>
+<p>Converts the given configuration into a Bambda query.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_logging_tab">3.7. Logging tab</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_logging.png" alt="Logging tab"></span></p>
 </div>
@@ -1425,7 +1480,7 @@ If unchecked, a response header must also be included in the file.</p>
 This function automatically saves the log without having to select the log every time.</p>
 </div>
 <div class="sect3">
-<h4 id="_logging">3.6.1. Logging</h4>
+<h4 id="_logging">3.7.1. Logging</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[auto logging] check box</dt>
@@ -1483,7 +1538,7 @@ If checked, all logs currently recorded in History are recorded in a file.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearch_tab">3.7. JSearch tab</h3>
+<h3 id="_jsearch_tab">3.8. JSearch tab</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jsearch.png" alt="JSearch tab"></span></p>
 </div>
@@ -1491,7 +1546,7 @@ If checked, all logs currently recorded in History are recorded in a file.</p>
 <p>JSearch tab is a function to search characters from the History list of Proxy.</p>
 </div>
 <div class="sect3">
-<h4 id="_jsearch">3.7.1. JSearch</h4>
+<h4 id="_jsearch">3.8.1. JSearch</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Search] button</dt>
@@ -1536,12 +1591,12 @@ Regular expressions cannot be enabled.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoder_tab">3.8. JTransCoder tab</h3>
+<h3 id="_jtranscoder_tab">3.9. JTransCoder tab</h3>
 <div class="paragraph">
 <p>Transcoder tab is a function to perform various encoding and decoding.</p>
 </div>
 <div class="sect3">
-<h4 id="_translator">3.8.1. Translator</h4>
+<h4 id="_translator">3.9.1. Translator</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder.png" alt="Translator tab"></span></p>
 </div>
@@ -1867,7 +1922,7 @@ The following meta characters are available.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generater_tab">3.8.2. Generater tab</h4>
+<h4 id="_generater_tab">3.9.2. Generater tab</h4>
 <div class="paragraph">
 <p>The Generater has a sequence tab and a random tab.</p>
 </div>
@@ -1973,7 +2028,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_converter_tab">3.8.3. Converter tab</h4>
+<h4 id="_converter_tab">3.9.3. Converter tab</h4>
 <div class="paragraph">
 <p>The Base tab is a simple function for converting radixes.</p>
 </div>
@@ -2097,7 +2152,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_certificate_tab">3.8.4. Certificate tab</h4>
+<h4 id="_certificate_tab">3.9.4. Certificate tab</h4>
 <div class="paragraph">
 <p>Performs various conversions and exports of certificates.</p>
 </div>
@@ -2142,9 +2197,9 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_view_state_decoder_tab">3.8.5. View State Decoder tab</h4>
+<h4 id="_view_state_decoder_tab">3.9.5. View State Decoder tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_viewstate_decoder.png" alt="View State Decoder tab"></span></p>
+<p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.png" alt="View State Decoderタブ"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -2172,7 +2227,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_token_decoder_tab">3.8.6. JWT token Decoder tab</h4>
+<h4 id="_jwt_token_decoder_tab">3.9.6. JWT token Decoder tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder_JWT_decoder.png" alt="JWT token Decoder tab"></span></p>
 </div>
@@ -2199,7 +2254,7 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generate_csrf_poc">3.9. Generate CSRF PoC</h3>
+<h3 id="_generate_csrf_poc">3.10. Generate CSRF PoC</h3>
 <div class="paragraph">
 <p>This function is mainly for creating PoC for CSRF (Cross Site Request Forgery).</p>
 </div>
@@ -2285,9 +2340,9 @@ This may not work for items that contain binaries. In that case, please use Bina
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_view_state_tab">3.9.1. View State tab</h4>
+<h4 id="_view_state_tab">3.10.1. View State tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.pngg" alt="View State  tab"></span></p>
+<p><span class="image"><img src="images/custom_viewstate.png" alt="View State  tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -2311,7 +2366,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_tab">3.9.2. JWT tab</h4>
+<h4 id="_jwt_tab">3.10.2. JWT tab</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT.png" alt="JWT tab"></span></p>
 </div>
@@ -2338,7 +2393,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version">3.10. Version</h3>
+<h3 id="_version">3.11. Version</h3>
 <div class="paragraph">
 <p>Displays version information.</p>
 </div>
@@ -2363,7 +2418,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-17 21:05:18 +0900
+Last updated 2023-12-18 18:03:30 +0900
 </div>
 </div>
 </body>

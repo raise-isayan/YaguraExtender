@@ -19,20 +19,24 @@ image:images/Extender_Yagura.png[Extension]
 Various Yagura Encode/Decode conversion functions can be called in Intercepter and Repeter.
 
 Yagura Charsets::
-s    You can select a default character set to be used in the various conversion functions.
+    You can select a default character set to be used in the various conversion functions.
     You can Encode/Decode with the specified character set.
 
 Encoder::
     Encode the selected string in the character code selected in "Yagura Charsets".
+    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.
 
 Decoder::
     Decode the selected string in the character code selected in "Yagura Charsets".
+    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.
 
 Converter::
     Converts the selected string in the character code selected in "Yagura Charsets".
+    Upper Case/Lower Case/bin2hex/hex2bin/Full width -> Half width/Half width/ -> Full width  are supported.
 
 Hash::
     Hash calculation the selected string in the character code selected in "Yagura Charsets".
+    md2/md5/sha1/sha256/sha512  are supported.
 
 Extension::
     Run the selected extension.
@@ -162,10 +166,10 @@ image:images/custom_matchreplace_edit.png[MatchReplaceItem Dialog]
 ==== MatchReplace Item Edit dialog
 image:images/custom_matchreplace_item.png[MatchReplaceItem Edit dialog]
 
-Type(Replacement target):: 
+Type(Replacement target)::
     Select from request heder, request body, response heder, response body.
 
-Match(Before replacement):: 
+Match(Before replacement)::
     character string before replacement to be replaced.
 
 Replace(After replacement)::
@@ -175,7 +179,7 @@ Replace(After replacement)::
     Non-ASCII characters cannot be specified here. If specified, the characters will be converted to?.
     To specify a character other than ASCII characters, use meta characters.
 
-[Regexp] check box:: 
+[Regexp] check box::
     When checked, enable regular expressions.
 
 [IgnoreCase] check box::
@@ -516,7 +520,7 @@ You can define a fixed response for a request.
 [Remove] button:: 
     Deletes the selected AutoResponderItem.
 
-[Up] and [Down] buttons::: 
+[Up], [Down] buttons::: 
     Move the order of the selected AutoResponderItem.
     The order here is the order in which AutoResponder is applied.
 
@@ -550,7 +554,35 @@ Replace::
 [Conent-Type] checkbox::
     Specify the Conent-Type of the response. This is valid only when [Body only] is checked.
 
-=== Logging tabs
+=== ResultFilter tab
+
+image:images/custom_resultfilter.png[ResultFilter tab]
+
+Configure the Proxy to switch Bambda mode.
+
+[New] button::
+    Adds an ResultFilterItem.
+    The edit dialog for an empty ResultFilterItem is show.
+
+[Edit] button:: 
+    Edits the selected ResultFilterItem.
+    The edit dialog of the selected ResultFilterItem is show.
+
+[Remove] button:: 
+    Deletes the selected ResultFilterItem.
+
+[Up], [Down] button:: 
+    Move the order of the selected ResultFilterItem.
+    The order here is the order in which ResultFilter is applied.
+
+==== ResultFilterItem Edit Dialog
+
+image:images/custom_resultfilter_item.png[ResultFilterItem  Edit Dialog]
+
+[Convert to Bambda] Button::
+    Converts the given configuration into a Bambda query.
+
+=== Logging tab
 
 image:images/custom_logging.png[Logging tab]
 
@@ -1025,7 +1057,7 @@ image:images/custom_certificate.png[Certificate tab]
 
 ==== View State Decoder tab
 
-image:images/custom_viewstate_decoder.png[View State Decoder tab]
+image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
 
 [ViewState] text area::
   Input the ViewState to decode.
@@ -1114,7 +1146,7 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
 
 ==== View State tab
 
-image:images/custom_jtranscoder_ViewState_decoder.pngg[View State  tab]
+image:images/custom_viewstate.png[View State  tab]
 
 [expand] button::
     Expand the selected tree.

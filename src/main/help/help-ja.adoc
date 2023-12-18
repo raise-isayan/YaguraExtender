@@ -571,10 +571,13 @@ ProxyのBambda modeを切り替えるための設定を行います｡
 [Up]、[Down]ボタン:: 
     選択したResultFilterItemの順番を移動します。
 
-
 ==== ResultFilterItem 編集ダイヤログ
 
 image:images/custom_resultfilter_item.png[ResultFilterItem編集 ダイヤログ]
+
+[Convert to Bambda]ボタン::
+
+
 
 === Loggingタブ
 
@@ -1133,7 +1136,7 @@ plain:: text area を利用してPoCを作成します。 +
 
 ==== ViewState タブ
 
-image:images/custom_jtranscoder_ViewState_decoder.png[View Stateタブ]
+image:images/custom_viewstate.png[View Stateタブ]
 
 [expand]ボタン::
     選択したツリーを展開します。

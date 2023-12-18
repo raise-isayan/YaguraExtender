@@ -44,7 +44,6 @@ import yagura.model.JSearchProperty;
 import yagura.model.ResultView;
 import yagura.model.UniversalViewProperty.UniversalView;
 import extension.burp.IBurpTab;
-import extension.view.base.ResultFilterDialog;
 import java.util.List;
 
 /**
@@ -459,24 +458,25 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         }
     };
 
-    private final ResultFilterDialog filterPopup = new ResultFilterDialog(null, true);
+    private final ResultFilterDlg resultFilterDlg = new ResultFilterDlg(null, true);
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        this.filterPopup.setEditMode(false);
+        this.resultFilterDlg.setEditMode(false);
+        this.resultFilterDlg.setBambaMode(false);;
 
         // group
         this.rdoEncodeingGrp.add(this.rdoRepEnc_8859_1);
         this.rdoEncodeingGrp.add(this.rdoRepEnc_AutoRecognise);
 
-        this.filterPopup.addWindowListener(new WindowAdapter() {
+        this.resultFilterDlg.addWindowListener(new WindowAdapter() {
 
             @Override
             public void windowDeactivated(WindowEvent e) {
                 setVisibleFilter(false);
             }
         });
-        this.filterPopup.addWindowListener(new WindowAdapter() {
+        this.resultFilterDlg.addWindowListener(new WindowAdapter() {
 
             @Override
             public void windowActivated(WindowEvent e) {
@@ -838,24 +838,24 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
     public void setVisibleFilter(boolean value) {
         if (value) {
-            this.filterPopup.setLocationRelativeTo(this);
-            this.filterPopup.setVisible(true);
-            this.filterPopup.toFront();
+            this.resultFilterDlg.setLocationRelativeTo(this);
+            this.resultFilterDlg.setVisible(true);
+            this.resultFilterDlg.toFront();
         } else {
-            this.filterPopup.setVisible(false);
+            this.resultFilterDlg.setVisible(false);
         }
     }
 
     protected void showFilter() {
-        this.filterPopup.setProperty(this.getProperty().getFilterProperty());
+        this.resultFilterDlg.setProperty(this.getProperty().getFilterProperty());
     }
 
     protected void hideFilter() {
         FilterProperty filterProp = this.getProperty().getFilterProperty();
         this.tableResult.getSelectionModel().clearSelection();
         TableModel model = this.tableResult.getModel();
-        TableRowSorter<TableModel> sorter = new ResultFilterDialog.PropertyRowSorter<>(model);
-        sorter.setRowFilter(new ResultFilterDialog.PropertyRowFilter(filterProp));
+        TableRowSorter<TableModel> sorter = new ResultFilterDlg.PropertyRowSorter<>(model);
+        sorter.setRowFilter(new ResultFilterDlg.PropertyRowFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }
@@ -877,7 +877,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
         this.chkComment.setSelected(searchProp.isComment());
 
-        this.filterPopup.setProperty(searchProp.getFilterProperty());
+        this.resultFilterDlg.setProperty(searchProp.getFilterProperty());
         this.hideFilter();
     }
 
@@ -896,7 +896,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
         searchProp.setComment(this.chkComment.isSelected());
 
-        searchProp.setFilterProperty(this.filterPopup.getProperty());
+        searchProp.setFilterProperty(this.resultFilterDlg.getProperty());
         return searchProp;
     }
 

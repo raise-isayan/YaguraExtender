@@ -2,17 +2,11 @@ package yagura.view;
 
 import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
-import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
-import extension.view.base.ResultFilterDialog;
 import java.awt.Component;
-import java.awt.event.KeyEvent;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -196,7 +190,7 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JScrollPane scrollMatchReplace;
     // End of variables declaration//GEN-END:variables
 
-    private final ResultFilterDialog filterDlg = new ResultFilterDialog(null, true);
+    private final ResultFilterDlg filterDlg = new ResultFilterDlg(null, true);
     private String selectedName = "";
 
     public String getSelectedName() {
@@ -279,7 +273,7 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
         for (String name : filterMap.keySet()) {
             this.modelResultFilter.addElement(name);
         }
-        this.listResultFilter.setSelectedValue(this.getSelectedName(), true);        
+        this.listResultFilter.setSelectedValue(this.getSelectedName(), true);
     }
 
     @Override
