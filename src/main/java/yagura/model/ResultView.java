@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import extension.burp.HttpTarget;
 import extension.burp.MessageHighlightColor;
@@ -32,7 +31,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
     }
 
     private final String[] columns = new String[]{
-        "Data", "#", "host", "method", "URL", "status", "length", "comment"
+        "Data", "#", "host", "method", "URL", "status", "length", "comment","listen port"
     };
 
     public ObjectTableColumn getColumn() {
@@ -57,7 +56,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
     }
 
     private final boolean[] canEdit = new boolean[]{
-        false, true, false, false, false, false, false, true
+        false, true, false, false, false, false, false, true, false
     };
 
     @Override
@@ -105,6 +104,9 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                 case 7: // comment
                     value = msg.getComment();
                     break;
+                case 8: // listener port
+                    value = msg.getListenerPort();
+                    break;
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -127,7 +129,6 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                         msg.setHighlight(null);
                     }
                     break;
-
                 case 2: // host
                     break;
                 case 3: // method
@@ -140,6 +141,8 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     break;
                 case 7: // commment
                     msg.setComment((String) value);
+                    break;
+                case 8: // listener port
                     break;
             }
         } catch (Exception ex) {

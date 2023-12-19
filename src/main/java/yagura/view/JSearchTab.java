@@ -1,7 +1,7 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
-import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
@@ -341,14 +341,14 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
             },
             new String [] {
-                "Data", "#", "host", "method", "URL", "status", "length", "comment"
+                "Data", "#", "host", "method", "URL", "status", "length", "comment", "listener port"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, false, false, false, true
+                false, true, false, false, false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -366,6 +366,9 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
         scrollResult.setViewportView(tableResult);
+        if (tableResult.getColumnModel().getColumnCount() > 0) {
+            tableResult.getColumnModel().getColumn(8).setResizable(false);
+        }
 
         splitResult.setLeftComponent(scrollResult);
 
@@ -562,6 +565,11 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
         // comment
         this.tableResult.getColumnModel().getColumn(7).setPreferredWidth(80);
+
+        // lister port
+        this.tableResult.getColumnModel().getColumn(8).setMinWidth(40);
+        this.tableResult.getColumnModel().getColumn(8).setPreferredWidth(60);
+        this.tableResult.getColumnModel().getColumn(8).setMaxWidth(80);
 
         this.tableResult.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -799,9 +807,14 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                             break;
                         }
                     }
+                    if (searchProp.getListenerPort() > -1 && searchProp.getListenerPort() == item.getListenerPort()) {
+                        find = true;
+                        break;
+                    }
                     this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double) i / proxyHistory.size() * 100.0));
                 } while (false);
                 if (m != null && find) {
+                    BurpExtender.helpers().outPrintln("row:" + item.getOrdinal());
                     this.modelSearch.addRow(new ResultView(item, item.getOrdinal()));
                 }
                 if (this.cancel) {
@@ -880,6 +893,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.chkComment.setSelected(searchProp.isComment());
 
         this.resultFilterDlg.setProperty(searchProp.getFilterProperty());
+
         this.hideFilter();
     }
 

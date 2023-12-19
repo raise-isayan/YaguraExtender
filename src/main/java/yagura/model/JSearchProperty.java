@@ -131,6 +131,23 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
         this.comment = comment;
     }
 
+    @Expose
+    private int listenerPort = -1;
+
+    /**
+     * @return the listenerPort
+     */
+    public int getListenerPort() {
+        return listenerPort;
+    }
+
+    /**
+     * @param listener port
+     */
+    public void setListenerPort(int listenerPort) {
+        this.listenerPort = listenerPort;
+    }
+
     public void setProperty(JSearchProperty property) {
         this.setAutoRecogniseEncoding(property.isAutoRecogniseEncoding());
         this.setFilterProperty(property.getFilterProperty());
@@ -142,6 +159,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
         this.setSmartMatch(property.isSmartMatch());
         this.setRegexp(property.isRegexp());
         this.setIgnoreCase(property.isIgnoreCase());
+        this.setListenerPort(property.getListenerPort());
     }
 
     @Override

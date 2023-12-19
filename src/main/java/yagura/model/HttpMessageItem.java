@@ -45,8 +45,9 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
     private String url;
     private short statusCode = 0;
     private String comment = "";
-    MessageHighlightColor color = MessageHighlightColor.WHITE;
+    private MessageHighlightColor color = MessageHighlightColor.WHITE;
     private String memo = "";
+    private int listenerPort = -1;
 
     public HttpMessageItem() {
         this.httpRequestResponse = null;
@@ -237,6 +238,15 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public int getListenerPort() {
+        if (this.httpRequestResponse != null) {
+            return this.httpRequestResponse.listenerPort();
+        }
+        else {
+            return this.listenerPort;
+        }
     }
 
     public URL toURL() throws MalformedURLException {

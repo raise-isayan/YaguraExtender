@@ -896,6 +896,7 @@ public class ResultFilterDlg extends CustomDialog {
         this.tabbetFilter.remove(this.pnlBambda);
         if (bamba) {
             this.tabbetFilter.addTab("Bambda", this.pnlBambda);
+            this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Settings"));
         }
         this.btnConvertBambda.setVisible(bamba);
     }
