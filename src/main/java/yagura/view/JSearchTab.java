@@ -814,7 +814,6 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                     this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double) i / proxyHistory.size() * 100.0));
                 } while (false);
                 if (m != null && find) {
-                    BurpExtender.helpers().outPrintln("row:" + item.getOrdinal());
                     this.modelSearch.addRow(new ResultView(item, item.getOrdinal()));
                 }
                 if (this.cancel) {

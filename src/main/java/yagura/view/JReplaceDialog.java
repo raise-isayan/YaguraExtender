@@ -418,7 +418,6 @@ public class JReplaceDialog extends CustomDialog {
         if (JOptionPane.showConfirmDialog(this, BUNDLE.getString("view.replace.burpimport"), "Match and Replace", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             this.modelReplace.removeAll();
             List<BurpConfig.MatchReplaceRule> rules = BurpConfig.getMatchReplaceRules(BurpExtension.api());
-            BurpExtension.helpers().outPrintln("import:" + rules.size());
             for (BurpConfig.MatchReplaceRule rule : rules) {
                 MatchReplaceItem item = new MatchReplaceItem();
                 if (Arrays.stream(MatchReplaceItem.getTypes()).anyMatch(s -> s.equalsIgnoreCase(rule.getRuleTypeName()))) {
