@@ -556,7 +556,9 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.tableResult.getColumnModel().getColumn(5).setMaxWidth(50);
 
         // length
-        this.tableResult.getColumnModel().getColumn(6).setPreferredWidth(40);
+        this.tableResult.getColumnModel().getColumn(6).setMinWidth(40);
+        this.tableResult.getColumnModel().getColumn(6).setPreferredWidth(60);
+        this.tableResult.getColumnModel().getColumn(6).setMaxWidth(80);
 
         // comment
         this.tableResult.getColumnModel().getColumn(7).setPreferredWidth(80);

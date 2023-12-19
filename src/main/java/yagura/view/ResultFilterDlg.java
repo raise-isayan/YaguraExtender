@@ -922,7 +922,6 @@ public class ResultFilterDlg extends CustomDialog {
         @Override
         public boolean include(RowFilter.Entry<? extends Object, ? extends Object> entry) {
             boolean allFilter = false;
-
             try {
                 ProxyHttpRequestResponse item = (ProxyHttpRequestResponse) entry.getValue(0);
                 boolean showOnlyScopFilter = true;
@@ -967,15 +966,13 @@ public class ResultFilterDlg extends CustomDialog {
                     }
                 }
                 // Highlight Color
-                boolean colorFilter = false;
+                boolean colorFilter = true;
                 if (statusFilter && showOnlyScopFilter) {
                     // cololr
                     if (this.filterProp.getShowOnlyHighlightColors()) {
                         EnumSet<MessageHighlightColor> colors = this.filterProp.getHighlightColors();
                         MessageHighlightColor hc = MessageHighlightColor.valueOf(item.annotations().highlightColor());
-                        if (colors.contains(hc)) {
-                            colorFilter = true;
-                        }
+                        colorFilter = colors.contains(hc);
                     }
                 }
                 // Comment Filter
@@ -1036,8 +1033,13 @@ public class ResultFilterDlg extends CustomDialog {
                         response = item.response().contains(Pattern.compile(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
                     }
                 }
+                // ListenerPort
+                boolean listenerPort = true;
+                if (this.filterProp.getListenerPort() > -1) {
+                    listenerPort = this.filterProp.getListenerPort() == item.listenerPort();
+                }
                 // 条件のAND
-                allFilter = (statusFilter && colorFilter && commentFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses && parameterizedRequests && editedMessage && requestMethod && requestURL && request && response);
+                allFilter = (statusFilter && colorFilter && commentFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses && parameterizedRequests && editedMessage && requestMethod && requestURL && request && response && listenerPort);
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
