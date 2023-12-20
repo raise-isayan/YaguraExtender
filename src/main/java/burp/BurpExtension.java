@@ -86,6 +86,8 @@ import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.SmartCodec;
+import java.awt.Container;
+import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,6 +99,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -1035,24 +1038,20 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         private ActionListener resultFilterModeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Enumeration<AbstractButton> rdoCharsetsGroup = menuBurpResultFilterGroup.getElements();
                 ResultFilterProperty resultFilterProperty = option.getResultFilterProperty();
                 Map<String, FilterProperty> filterMap = resultFilterProperty.getFilterMap();
                 FilterProperty filterProperty = null;
-                String selectedName = null;
-                while (rdoCharsetsGroup.hasMoreElements()) {
-                    JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoCharsetsGroup.nextElement();
-                    if (item.isSelected()) {
-                        selectedName = item.getText();
-                        if (filterMap.containsKey(selectedName)) {
-                            filterProperty = filterMap.get(selectedName);
-                            resultFilterProperty.setSelectedName(selectedName);
+                if (e.getSource() instanceof JMenuItem menuItem) {
+                    String selectedName = menuItem.getText();
+                    filterProperty = filterMap.get(selectedName);
+                    if (filterProperty != null) {
+                        resultFilterProperty.setSelectedName(selectedName);
+                        BurpConfig.configBambda(api, filterProperty);
+                        JTabbedPane tab = BurpUtil.suiteTabbedPane();
+                        if (tab != null) {
+                            BurpUtil.sendToTextHighlight(tab, "Proxy");
                         }
-                        break;
                     }
-                }
-                if (filterProperty != null) {
-                    BurpConfig.configBambda(api, filterProperty);
                 }
             }
         };
@@ -1107,6 +1106,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ? u.getPort() : u.getDefaultPort()));
                     }
                     BurpConfig.configSSLPassThroughRules(api, rules, false);
+                    JTabbedPane tab = BurpUtil.suiteTabbedPane();
+                    if (tab != null) {
+                        BurpUtil.sendToTextHighlight(tab, "Target");
+                    }
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -1241,11 +1244,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //            }
             Map<String, FilterProperty> filterMap = option.getResultFilterProperty().getFilterMap();
             for (String name : filterMap.keySet()) {
-                JRadioButtonMenuItem chkResultFilterItem = new JRadioButtonMenuItem();
+                JMenuItem chkResultFilterItem = new JMenuItem();
                 chkResultFilterItem.setText(name);
                 chkResultFilterItem.addActionListener(this.resultFilterModeAction);
                 yaguraResultFilterMenu.add(chkResultFilterItem);
-                this.menuBurpResultFilterGroup.add(chkResultFilterItem);
+ //               this.menuBurpResultFilterGroup.add(chkResultFilterItem);
             }
 //            Enumeration<AbstractButton> rdoCheckGroup = this.menuBurpResultFilterGroup.getElements();
 //            while (rdoCheckGroup.hasMoreElements()) {
@@ -1253,7 +1256,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //                String name = rdoCheck.getText();
 //                if (name.equals(option.getResultFilterProperty().getSelectedName())) {
 //                    rdoCheck.setSelected(true);
-//                }                
+//                }
 //            }
         }
     }
