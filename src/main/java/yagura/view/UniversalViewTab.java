@@ -76,7 +76,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         lblDispayMaxLength = new javax.swing.JLabel();
         chkJSONP = new javax.swing.JCheckBox();
         chkViewState = new javax.swing.JCheckBox();
-        jSeparator1 = new javax.swing.JSeparator();
         chklineWrap = new javax.swing.JCheckBox();
 
         setName("Encoding"); // NOI18N
@@ -165,7 +164,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTarget, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTarget)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(chkClipboardAutoDecode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
@@ -176,7 +175,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                             .addComponent(btnEncLerftArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSelect)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -186,8 +185,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(pop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnEncDownArraw))
-                            .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                            .addComponent(btnReset))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +220,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnReset)))
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
 
         tabEncoding.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -316,7 +315,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(chkHTMLComment)
                     .addComponent(chkJSON)
                     .addComponent(chkJWT)
-                    .addComponent(lblDispayMaxLength, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblDispayMaxLength))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkUniversalRaw)
@@ -324,12 +323,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(chkJSONP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chkViewState)
                     .addComponent(chklineWrap)
-                    .addComponent(spnDispayMaxLength))
-                .addGap(15, 15, 15))
-            .addGroup(tabMessageViewLayout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                    .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                .addContainerGap())
         );
         tabMessageViewLayout.setVerticalGroup(
             tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,15 +344,13 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkJWT)
                     .addComponent(chkViewState))
-                .addGap(5, 5, 5)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chklineWrap)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDispayMaxLength)
                     .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 350, Short.MAX_VALUE))
+                .addGap(0, 263, Short.MAX_VALUE))
         );
 
         tabEncoding.add(tabMessageView, java.awt.BorderLayout.EAST);
@@ -516,7 +509,6 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JCheckBox chkViewState;
     private javax.swing.JCheckBox chklineWrap;
     private javax.swing.JComboBox<String> cmbDefaultLangEncoding;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblDispayMaxLength;
     private javax.swing.JLabel lblSelect;
     private javax.swing.JLabel lblTarget;

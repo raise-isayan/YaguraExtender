@@ -102,7 +102,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         pnlCenter.add(pnlConfig, java.awt.BorderLayout.NORTH);
 
         add(pnlCenter);
-        pnlCenter.setBounds(0, 0, 559, 172);
+        pnlCenter.setBounds(0, 0, 559, 157);
 
         chkDebugMode.setText("DebugMode");
         chkDebugMode.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -111,7 +111,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
         add(chkDebugMode);
-        chkDebugMode.setBounds(0, 259, 559, 21);
+        chkDebugMode.setBounds(0, 259, 559, 20);
     }// </editor-fold>//GEN-END:initComponents
 
     private void chkDebugModeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkDebugModeStateChanged

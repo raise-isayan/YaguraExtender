@@ -128,7 +128,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                         .addComponent(rdoCustomCA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(668, Short.MAX_VALUE))
         );
         pnlSelectCertificateLayout.setVerticalGroup(
             pnlSelectCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,19 +206,19 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlConvertFormatLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rdoConvertCertificateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoConvertCertificatePEM, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rdoConvertPrivateDER, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rdoConvertCertificateDER)
+                    .addComponent(rdoConvertCertificatePEM)
+                    .addComponent(rdoConvertPrivateDER)
                     .addGroup(pnlConvertFormatLayout.createSequentialGroup()
-                        .addComponent(rdoConvertPairPEM, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(rdoConvertPairPEM)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExport)))
-                .addGap(437, 437, 437))
+                .addContainerGap())
         );
         pnlConvertFormatLayout.setVerticalGroup(
             pnlConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlConvertFormatLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addGroup(pnlConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExport)
                     .addComponent(rdoConvertPairPEM))
@@ -239,9 +239,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap()
                 .addGroup(pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrollCertificate)
-                    .addGroup(pnlCertificateExportsLayout.createSequentialGroup()
-                        .addComponent(pnlConvertFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(pnlConvertFormat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlCertificateExportsLayout.setVerticalGroup(
@@ -279,7 +277,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             pnlServerEnableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlServerEnableLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chkProvidedServer, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(chkProvidedServer)
                 .addContainerGap())
         );
         pnlServerEnableLayout.setVerticalGroup(
@@ -324,13 +322,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         pnlListenPortLayout.setHorizontalGroup(
             pnlListenPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlListenPortLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lblListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(lblListenPort)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnProvidedServer, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addComponent(btnProvidedServer)
+                .addGap(30, 30, 30)
                 .addComponent(btnCopy)
                 .addContainerGap())
         );
