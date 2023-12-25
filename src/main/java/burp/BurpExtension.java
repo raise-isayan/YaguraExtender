@@ -1584,13 +1584,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             // trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.ITEM_HIGHLIGHT)) {
-                            annotations = annotations.withHighlightColor(bean.getHighlightColor().toHighlightColor());
+                            annotations.setHighlightColor(bean.getHighlightColor().toHighlightColor());
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.COMMENT)) {
                             if (replacemeComment != null) {
-                                annotations = annotations.withNotes(replacemeComment);
+                                annotations.setNotes(replacemeComment);
                             } else {
-                                annotations = annotations.withNotes(bean.getComment());
+                                annotations.setNotes(bean.getComment());
                             }
                         }
                         if (bean.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {

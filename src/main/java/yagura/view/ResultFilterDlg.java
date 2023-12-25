@@ -950,20 +950,25 @@ public class ResultFilterDlg extends CustomDialog {
                 boolean statusFilter = false;
                 if (showOnlyScopFilter) {
                     // Response Status がない場合は無条件で含める
-                    if (item.response().statusCode() == 0) {
+                    if (!item.hasResponse()) {
                         statusFilter = true;
                     }
-                    if (this.filterProp.getStat2xx() && (HttpURLConnection.HTTP_OK <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_MULT_CHOICE)) {
-                        statusFilter = true;
-                    }
-                    if (this.filterProp.getStat3xx() && (HttpURLConnection.HTTP_MULT_CHOICE <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_BAD_REQUEST)) {
-                        statusFilter = true;
-                    }
-                    if (this.filterProp.getStat4xx() && (HttpURLConnection.HTTP_BAD_REQUEST <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_INTERNAL_ERROR)) {
-                        statusFilter = true;
-                    }
-                    if (this.filterProp.getStat5xx() && (HttpURLConnection.HTTP_INTERNAL_ERROR <= item.response().statusCode() && item.response().statusCode() < 600)) {
-                        statusFilter = true;
+                    else {
+                        if (item.response().statusCode() == 0) {
+                            statusFilter = true;
+                        }
+                        if (this.filterProp.getStat2xx() && (HttpURLConnection.HTTP_OK <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_MULT_CHOICE)) {
+                            statusFilter = true;
+                        }
+                        if (this.filterProp.getStat3xx() && (HttpURLConnection.HTTP_MULT_CHOICE <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_BAD_REQUEST)) {
+                            statusFilter = true;
+                        }
+                        if (this.filterProp.getStat4xx() && (HttpURLConnection.HTTP_BAD_REQUEST <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_INTERNAL_ERROR)) {
+                            statusFilter = true;
+                        }
+                        if (this.filterProp.getStat5xx() && (HttpURLConnection.HTTP_INTERNAL_ERROR <= item.response().statusCode() && item.response().statusCode() < 600)) {
+                            statusFilter = true;
+                        }
                     }
                 }
                 // Highlight Color
@@ -1027,11 +1032,13 @@ public class ResultFilterDlg extends CustomDialog {
                 // response
                 boolean response = true;
                 if (!this.filterProp.getResponse().isEmpty()) {
-                    if (this.filterProp.isResponseRegex()) {
-                        response = item.response().contains(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase());
-                    }
-                    else {
-                        response = item.response().contains(Pattern.compile(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
+                    if (item.hasResponse()) {
+                        if (this.filterProp.isResponseRegex()) {
+                            response = item.response().contains(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase());
+                        }
+                        else {
+                            response = item.response().contains(Pattern.compile(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
+                        }
                     }
                 }
                 // ListenerPort

@@ -185,7 +185,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
                     if (isRequest) {
                         return StringUtil.getStringCharset(httpRequestResponse.request().toByteArray().getBytes(), encoding);
                     } else {
-                        return StringUtil.getStringCharset(httpRequestResponse.request().toByteArray().getBytes(), encoding);
+                        return StringUtil.getStringCharset(httpRequestResponse.response().toByteArray().getBytes(), encoding);
                     }
                 }
 
@@ -290,7 +290,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
 
     @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
-        if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && httpRequestResponse.response() == null)) {
+        if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && !httpRequestResponse.hasResponse())) {
             return false;
         }
 

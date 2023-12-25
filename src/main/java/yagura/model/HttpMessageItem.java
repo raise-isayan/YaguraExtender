@@ -147,7 +147,10 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public byte[] getResponse() {
         if (this.httpRequestResponse != null) {
-            return this.httpRequestResponse.originalResponse().toByteArray().getBytes();
+            if (this.httpRequestResponse.hasResponse())
+                return this.httpRequestResponse.originalResponse().toByteArray().getBytes();
+            else
+                return new byte[0];
         } else {
             return this.response;
         }
@@ -155,7 +158,9 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public void setResponse(byte[] response) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.originalResponse().withBody(ByteArray.byteArray(response));
+            if (this.httpRequestResponse.hasResponse()) {
+                this.httpRequestResponse.originalResponse().withBody(ByteArray.byteArray(response));
+            }
         } else {
             this.response = new byte[request.length];
             System.arraycopy(response, 0, this.response, 0, response.length);
@@ -164,7 +169,7 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public short getStatusCode() throws Exception {
         if (this.httpRequestResponse != null) {
-            if (this.httpRequestResponse.originalResponse() != null) {
+            if (this.httpRequestResponse.hasResponse() && this.httpRequestResponse.originalResponse() != null) {
                 return this.httpRequestResponse.originalResponse().statusCode();
             } else {
                 return 0;
@@ -176,7 +181,7 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public void setStatusCode(short statusCode) throws Exception {
         if (this.httpRequestResponse != null) {
-            if (this.httpRequestResponse.originalResponse() != null) {
+            if (this.httpRequestResponse.hasResponse() && this.httpRequestResponse.originalResponse() != null) {
                 this.httpRequestResponse.originalResponse().withStatusCode(statusCode);
             }
         } else {
@@ -194,7 +199,8 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public void setComment(String comment) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.annotations().withNotes(comment);
+//            this.httpRequestResponse.annotations().withNotes(comment);
+            this.httpRequestResponse.annotations().setNotes(comment);
         } else {
             this.comment = comment;
         }
@@ -210,7 +216,8 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public void setHighlight(String color) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.annotations().withHighlightColor(MessageHighlightColor.parseEnum(color).toHighlightColor());
+//            this.httpRequestResponse.annotations().withHighlightColor(MessageHighlightColor.parseEnum(color).toHighlightColor());
+            this.httpRequestResponse.annotations().setHighlightColor(MessageHighlightColor.parseEnum(color).toHighlightColor());
         } else {
             this.color = MessageHighlightColor.parseEnum(color);
         }
@@ -218,7 +225,8 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public void setHighlightColor(HighlightColor color) {
         if (this.httpRequestResponse != null) {
-            this.httpRequestResponse.annotations().withHighlightColor(color);
+//            this.httpRequestResponse.annotations().withHighlightColor(color);
+            this.httpRequestResponse.annotations().setHighlightColor(color);
         } else {
             this.color = MessageHighlightColor.valueOf(color);
         }

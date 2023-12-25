@@ -546,9 +546,9 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.tableResult.getColumnModel().getColumn(2).setPreferredWidth(120);
 
         // method
-        this.tableResult.getColumnModel().getColumn(3).setMinWidth(30);
-        this.tableResult.getColumnModel().getColumn(3).setPreferredWidth(40);
-        this.tableResult.getColumnModel().getColumn(3).setMaxWidth(50);
+        this.tableResult.getColumnModel().getColumn(3).setMinWidth(40);
+        this.tableResult.getColumnModel().getColumn(3).setPreferredWidth(60);
+        this.tableResult.getColumnModel().getColumn(3).setMaxWidth(80);
 
         // url
         this.tableResult.getColumnModel().getColumn(4).setPreferredWidth(120);
@@ -784,20 +784,22 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         }
                     }
                     if ((searchProp.isResponseHeader() || searchProp.isResponseBody()) && item.getResponse() != null) {
-                        HttpResponse httpResponse = item.originalResponse();
-                        byte resMessage[] = httpResponse.toByteArray().getBytes();
-                        if (!(searchProp.isResponseHeader() && searchProp.isResponseBody())) {
-                            if (searchProp.isResponseHeader()) {
-                                resMessage = Arrays.copyOfRange(item.getResponse(), 0, httpResponse.bodyOffset());
-                            } else if (searchProp.isResponseBody()) {
-                                resMessage = Arrays.copyOfRange(item.getResponse(), httpResponse.bodyOffset(), resMessage.length);
+                        if (item.hasResponse() && item.originalResponse() != null) {
+                            HttpResponse httpResponse = item.originalResponse();
+                            byte resMessage[] = httpResponse.toByteArray().getBytes();
+                            if (!(searchProp.isResponseHeader() && searchProp.isResponseBody())) {
+                                if (searchProp.isResponseHeader()) {
+                                    resMessage = Arrays.copyOfRange(item.getResponse(), 0, httpResponse.bodyOffset());
+                                } else if (searchProp.isResponseBody()) {
+                                    resMessage = Arrays.copyOfRange(item.getResponse(), httpResponse.bodyOffset(), resMessage.length);
+                                }
                             }
-                        }
-                        String res = StringUtil.getStringCharset(resMessage, encoding);
-                        m = p.matcher(res);
-                        if (m.find()) {
-                            find = true;
-                            break;
+                            String res = StringUtil.getStringCharset(resMessage, encoding);
+                            m = p.matcher(res);
+                            if (m.find()) {
+                                find = true;
+                                break;
+                            }
                         }
                     }
                     if (searchProp.isComment() && item.getComment() != null) {

@@ -144,7 +144,9 @@ public class SendToExtend extends SendToMenuItem {
                                 fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                fstm.write(messageItem.response().toByteArray().getBytes());
+                                if (messageItem.hasResponse()) {
+                                    fstm.write(messageItem.response().toByteArray().getBytes());
+                                }
                                 fstm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             fstm.flush();
@@ -179,10 +181,12 @@ public class SendToExtend extends SendToMenuItem {
                                 fstm.write(reqMessage);
                             }
                             if (messageType == SendToItem.MessageType.RESPONSE || messageType == SendToItem.MessageType.REQUEST_AND_RESPONSE) {
-                                HttpResponse httpResponse = messageItem.response();
-                                byte resMessage[] = httpResponse.toByteArray().getBytes();
-                                resMessage = Arrays.copyOfRange(resMessage, httpResponse.bodyOffset(), resMessage.length);
-                                fstm.write(resMessage);
+                                if (messageItem.hasResponse()) {
+                                    HttpResponse httpResponse = messageItem.response();
+                                    byte resMessage[] = httpResponse.toByteArray().getBytes();
+                                    resMessage = Arrays.copyOfRange(resMessage, httpResponse.bodyOffset(), resMessage.length);
+                                    fstm.write(resMessage);
+                                }
                             }
                             fstm.flush();
                         }

@@ -18,7 +18,7 @@ public class OptoinPropertyTest {
 
     public OptoinPropertyTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
@@ -39,7 +39,7 @@ public class OptoinPropertyTest {
      */
     @Test
     public void testLinkedHashMap() {
-        Map<String,String> synclink = Collections.synchronizedMap(new LinkedHashMap<String,String>()); 
+        Map<String,String> synclink = Collections.synchronizedMap(new LinkedHashMap<String,String>());
         synclink.put("n5", "e");
         synclink.put("n4", "d");
         synclink.put("n3", "c");
@@ -50,14 +50,14 @@ public class OptoinPropertyTest {
         synclink.put("n4", "b");
         synclink.put("n2", "d");
         synclink.put("n5", "a");
-        Map<String,String> synclink2 = Collections.synchronizedMap(new LinkedHashMap<String,String>()); 
+        Map<String,String> synclink2 = Collections.synchronizedMap(new LinkedHashMap<String,String>());
         synclink2.put("n3", "c");
         synclink2.put("n1", "e");
         synclink2.put("n4", "b");
         synclink2.put("n2", "d");
         synclink2.put("n5", "a");
 
-        Map<String,String> link = new LinkedHashMap<String,String>(); 
+        Map<String,String> link = new LinkedHashMap<String,String>();
         link.put("5", "e");
         link.put("4", "d");
         link.put("3", "c");
@@ -71,13 +71,13 @@ public class OptoinPropertyTest {
         for (String k : link.keySet()) {
             System.out.println("origin:" + k);
         }
-        Map<String,String> newLink = new LinkedHashMap<String,String>(); 
+        Map<String,String> newLink = new LinkedHashMap<String,String>();
         newLink.putAll(link);
         for (String k : newLink.keySet()) {
             System.out.println("newLink:" + k);
         }
 
-        Map<String,String> newSyncLink = new LinkedHashMap<String,String>(); 
+        Map<String,String> newSyncLink = new LinkedHashMap<String,String>();
         newSyncLink.putAll(synclink);
         for (String k : newSyncLink.keySet()) {
             System.out.println("newSyncLink:" + k);
@@ -97,7 +97,7 @@ public class OptoinPropertyTest {
         for (String k : filterMap.keySet()) {
             System.out.println("newSyncLinkMap:" + k);
         }
-        
+
     }
-    
+
 }
