@@ -86,8 +86,6 @@ import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.SmartCodec;
-import java.awt.Container;
-import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,6 +101,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import passive.signature.MatchAlert;
 import yagura.Config;
 import yagura.Version;
@@ -298,9 +298,14 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         String defaultCharset = HttpUtil.normalizeCharset(StringUtil.DEFAULT_ENCODING);
         List<String> list = new ArrayList<>();
         list.addAll(this.option.getEncodingProperty().getEncodingList());
-        // リストにない場合追加
-        if (!this.option.getEncodingProperty().getEncodingList().contains(defaultCharset)) {
+        // リストにない場合追加(デフォルトエンコーディング)
+        if (!list.contains(defaultCharset)) {
             list.add(defaultCharset);
+        }
+        // リストにない場合追加
+        BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api());
+        if (BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent().equals(burpCharset.getMode()) && burpCharset.getCharacterSet() != null && !list.contains(burpCharset.getCharacterSet())) {
+            list.add(burpCharset.getCharacterSet());
         }
         return list;
     }
@@ -385,7 +390,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 if (UniversalViewProperty.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setEncodingProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
-                    menuHandler.updateUI();
+////                    menuHandler.updateUI();
                     applyOptionProperty();
                 } else if (MatchReplaceProperty.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());
@@ -407,7 +412,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     applyOptionProperty();
                 } else if (ResultFilterProperty.RESULT_FILTER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setResultFilterProperty(tabbetOption.getResultFilterProperty());
-                    menuHandler.updateUI();
+////                    menuHandler.updateUI();
                     applyOptionProperty();
                 } else if (AutoResponderProperty.AUTO_RESPONDER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setAutoResponderProperty(tabbetOption.getAutoResponderProperty());
@@ -593,7 +598,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     protected final class MenuHander {
-
         private final MontoyaApi api;
         private final ButtonGroup menuBurpCharsetsGroup = new ButtonGroup();
         private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
@@ -613,13 +617,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             } else {
                 if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
                     BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api);
-                    if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent())) {
+                    if (BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent().equals(burpCharset.getMode())) {
                         return StringUtil.DEFAULT_ENCODING;
-                    } else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent())) {
+                    } else if (BurpConfig.CharacterSetMode.RAW_BYTES.toIdent().equals(burpCharset.getMode())) {
                         return StandardCharsets.ISO_8859_1.name();
-                    } else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
+                    } else if (BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent().equals(burpCharset.getMode())) {
                         return burpCharset.getCharacterSet();
-                    } else if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent())) {
+                    } else if (BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent().equals(burpCharset.getMode())) {
                         return HttpUtil.getGuessCode(StringUtil.getBytesRaw(selectedText));
                     }
                 }
@@ -639,6 +643,25 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             final JMenu yaguraMenu = new JMenu();
             yaguraMenu.setText("Yagura");
             yaguraMenu.setMnemonic(KeyEvent.VK_Y);
+            yaguraMenu.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(MenuEvent e) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateUI();
+                        }
+                    });
+                }
+
+                @Override
+                public void menuDeselected(MenuEvent e) {
+                }
+
+                @Override
+                public void menuCanceled(MenuEvent e) {
+                }
+            });
 
             /**
              * Yagura Charsets
@@ -646,7 +669,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraCharsetMenu.setText("Yagura Charsets");
             yaguraCharsetMenu.setMnemonic(KeyEvent.VK_Y);
 
-            updateYaguraCharsetUI(this.yaguraCharsetMenu);
+//            updateYaguraCharsetUI(this.yaguraCharsetMenu);
             yaguraMenu.add(this.yaguraCharsetMenu);
 
             /**
@@ -948,7 +971,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraResultFilterMenu.setText("Result Filter (F)");
             yaguraResultFilterMenu.setMnemonic(KeyEvent.VK_F);
             yaguraResultFilterMenu.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_BAMBDA));
-            updateResultFilterUI(this.yaguraResultFilterMenu);
+//            updateResultFilterUI(this.yaguraResultFilterMenu);
             yaguraMenu.add(this.yaguraResultFilterMenu);
 
             /**
@@ -981,7 +1004,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             this.burpCharsetMenu.setText("Burp Charsets");
             this.burpCharsetMenu.setMnemonic(KeyEvent.VK_B);
             this.burpCharsetMenu.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION));
-            updateBurpCharsetUI(this.burpCharsetMenu);
+//            updateBurpCharsetUI(this.burpCharsetMenu);
             yaguraMenu.addSeparator();
             yaguraMenu.add(this.burpCharsetMenu);
             api.userInterface().menuBar().registerMenu(yaguraMenu);
@@ -1016,9 +1039,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         private ActionListener burpCharsetModeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Enumeration<AbstractButton> rdoCharsets = menuBurpCharsetsGroup.getElements();
-                BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
                 final List<String> encodngList = getSelectEncodingList();
+                BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
+                Enumeration<AbstractButton> rdoCharsets = menuBurpCharsetsGroup.getElements();
                 while (rdoCharsets.hasMoreElements()) {
                     JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoCharsets.nextElement();
                     if (item.isSelected()) {
@@ -1147,11 +1170,14 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             for (Enumeration<AbstractButton> e = this.menuYaguraCharsetsGroup.getElements(); e.hasMoreElements();) {
                 this.menuYaguraCharsetsGroup.remove(e.nextElement());
             }
+            JRadioButtonMenuItem selectedYaguraCharSet = null;
             final List<String> encodngList = getSelectEncodingList();
             for (int i = 0; i < encodngList.size(); i++) {
                 JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
                 specificCharsetMenuCharSet.setText(encodngList.get(i));
-                specificCharsetMenuCharSet.addChangeListener(this.yaguraCharsetModeAction);
+                if (this.yaguraCharset != null && this.yaguraCharset.equals(encodngList.get(i))) {
+                    selectedYaguraCharSet = specificCharsetMenuCharSet;
+                }
                 yaguraCharsetMenu.add(specificCharsetMenuCharSet);
                 this.menuYaguraCharsetsGroup.add(specificCharsetMenuCharSet);
             }
@@ -1160,10 +1186,26 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraCharsetMenu.addSeparator();
             JRadioButtonMenuItem useBurpCharSet = new JRadioButtonMenuItem();
             useBurpCharSet.setText(USE_BURP_CHARSETS);
-            useBurpCharSet.addChangeListener(this.yaguraCharsetModeAction);
+            if (this.yaguraCharset == null) {
+                selectedYaguraCharSet = useBurpCharSet;
+            }
             useBurpCharSet.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION));
             yaguraCharsetMenu.add(useBurpCharSet);
             this.menuYaguraCharsetsGroup.add(useBurpCharSet);
+
+            // Yagura Charset 選択状態
+            if (selectedYaguraCharSet != null) {
+                this.menuYaguraCharsetsGroup.setSelected(selectedYaguraCharSet.getModel(), true);
+            }
+            else {
+                this.menuYaguraCharsetsGroup.setSelected(useBurpCharSet.getModel(), true);
+            }
+            Enumeration<AbstractButton> emu = this.menuYaguraCharsetsGroup.getElements();
+            while (emu.hasMoreElements()) {
+                if (emu.nextElement() instanceof JRadioButtonMenuItem yaguraCharsetMenuItem) {
+                    yaguraCharsetMenuItem.addChangeListener(this.yaguraCharsetModeAction);
+                }
+            }
         }
 
         /**
@@ -1177,23 +1219,35 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             if (!BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
                 return;
             }
+            JRadioButtonMenuItem selectedBurpCharSet = null;
+            BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api);
+            if (burpCharset.getCharacterSet() == null) {
+                burpCharset.setCharacterSet(StandardCharsets.UTF_8.name());
+            }
+
             JRadioButtonMenuItem burpCharsetItemMenuAuto = new JRadioButtonMenuItem();
             burpCharsetItemMenuAuto.setText(BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent());
-            burpCharsetItemMenuAuto.addActionListener(this.burpCharsetModeAction);
             burpCharsetMenu.add(burpCharsetItemMenuAuto);
             this.menuBurpCharsetsGroup.add(burpCharsetItemMenuAuto);
+            if (BurpConfig.CharacterSetMode.RECOGNIZE_AUTO.toIdent().equals(burpCharset.getMode())) {
+                selectedBurpCharSet = burpCharsetItemMenuAuto;
+            }
 
             JRadioButtonMenuItem burpCharsetItemMenuDefault = new JRadioButtonMenuItem();
             burpCharsetItemMenuDefault.setText(BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent());
-            burpCharsetItemMenuDefault.addActionListener(this.burpCharsetModeAction);
             burpCharsetMenu.add(burpCharsetItemMenuDefault);
             this.menuBurpCharsetsGroup.add(burpCharsetItemMenuDefault);
+            if (BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent().equals(burpCharset.getMode())) {
+                selectedBurpCharSet = burpCharsetItemMenuDefault;
+            }
 
             JRadioButtonMenuItem burpCharsetItemMenuRaw = new JRadioButtonMenuItem();
             burpCharsetItemMenuRaw.setText(BurpConfig.CharacterSetMode.RAW_BYTES.toIdent());
-            burpCharsetItemMenuRaw.addActionListener(this.burpCharsetModeAction);
             burpCharsetMenu.add(burpCharsetItemMenuRaw);
             this.menuBurpCharsetsGroup.add(burpCharsetItemMenuRaw);
+            if (BurpConfig.CharacterSetMode.RAW_BYTES.toIdent().equals(burpCharset.getMode())) {
+                selectedBurpCharSet = burpCharsetItemMenuRaw;
+            }
 
             burpCharsetMenu.addSeparator();
 
@@ -1201,35 +1255,21 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             for (int i = 0; i < encodngList.size(); i++) {
                 JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
                 specificCharsetMenuCharSet.setText(encodngList.get(i));
-                specificCharsetMenuCharSet.addActionListener(this.burpCharsetModeAction);
+                if (BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent().equals(burpCharset.getMode()) && burpCharset.getCharacterSet().equals(encodngList.get(i))) {
+                    selectedBurpCharSet = specificCharsetMenuCharSet;
+                }
                 burpCharsetMenu.add(specificCharsetMenuCharSet);
                 this.menuBurpCharsetsGroup.add(specificCharsetMenuCharSet);
             }
 
-            BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api);
-            if (burpCharset.getCharacterSet() == null) {
-                burpCharset.setCharacterSet(StandardCharsets.UTF_8.name());
+            // Burp Charset 選択状態
+            if (selectedBurpCharSet != null) {
+                this.menuBurpCharsetsGroup.setSelected(selectedBurpCharSet.getModel(), true);
             }
-            Enumeration<AbstractButton> rdoYaguraCharsets = this.menuYaguraCharsetsGroup.getElements();
-            while (rdoYaguraCharsets.hasMoreElements()) {
-                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoYaguraCharsets.nextElement();
-                if (burpCharset.getCharacterSet().equals(item.getText())) {
-                    item.setSelected(true);
-                }
-            }
-
-            Enumeration<AbstractButton> rdoBurpCharsets = this.menuBurpCharsetsGroup.getElements();
-            while (rdoBurpCharsets.hasMoreElements()) {
-                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoBurpCharsets.nextElement();
-                if (burpCharset.getMode().equals(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent())) {
-                    if (burpCharset.getCharacterSet().equals(item.getText())) {
-                        item.setSelected(true);
-                    }
-                } else {
-                    if (burpCharset.getMode().equals(item.getText())) {
-                        item.setSelected(true);
-                        break;
-                    }
+            Enumeration<AbstractButton> emu = this.menuBurpCharsetsGroup.getElements();
+            while (emu.hasMoreElements()) {
+                if (emu.nextElement() instanceof JRadioButtonMenuItem burpCharsetMenuItem) {
+                    burpCharsetMenuItem.addActionListener(this.burpCharsetModeAction);
                 }
             }
         }
