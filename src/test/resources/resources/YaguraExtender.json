@@ -90,7 +90,7 @@
                 "regexp": false,
                 "match": "https://redirect/",
                 "type": "auto responder",
-                "replace": "C:\\Temp\\redirect.txt",
+                "replace": "C:\\Windows\\Temp\\redirect.txt",
                 "bodyOnly": false,
                 "contentType": "text/html"
             }]

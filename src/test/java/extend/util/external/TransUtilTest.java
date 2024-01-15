@@ -5,6 +5,10 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
@@ -30,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import org.apache.commons.codec.digest.Blake3;
 import org.apache.commons.codec.digest.Sha2Crypt;
 import org.apache.commons.codec.digest.UnixCrypt;
 
@@ -988,5 +993,36 @@ public class TransUtilTest {
             assertEquals(except, value);
         }
     }
+
+    @Test
+    public void testBlake3_x32() {
+        System.out.println("testBlake3");
+        Blake3 hasher = Blake3.initHash();
+        hasher.update("Hello, world!".getBytes(StandardCharsets.UTF_8));
+        byte[] hash = new byte[32];
+        hasher.doFinalize(hash);
+        System.out.println(ConvertUtil.toHexString(hash));
+    }
+
+    @Test
+    public void testBlake3_x64() {
+        System.out.println("testBlake3");
+        Blake3 hasher = Blake3.initHash();
+        hasher.update("Hello, world!".getBytes(StandardCharsets.UTF_8));
+        byte[] hash = new byte[64];
+        hasher.doFinalize(hash);
+        System.out.println(ConvertUtil.toHexString(hash));
+    }
+
+
+    @Test
+    public void testBinary() throws IOException {
+        System.out.println("testBinary");
+        FileOutputStream fstm = new FileOutputStream("C:\\Windows\\Temp\\output");
+        for (int i = 0; i < 256; i++) {
+            fstm.write((byte)i);
+        }
+    }
+
 
 }

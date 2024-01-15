@@ -298,14 +298,14 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         String defaultCharset = HttpUtil.normalizeCharset(StringUtil.DEFAULT_ENCODING);
         List<String> list = new ArrayList<>();
         list.addAll(this.option.getEncodingProperty().getEncodingList());
-        // リストにない場合追加(デフォルトエンコーディング)
-        if (!list.contains(defaultCharset)) {
-            list.add(defaultCharset);
-        }
         // リストにない場合追加
         BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api());
         if (BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent().equals(burpCharset.getMode()) && burpCharset.getCharacterSet() != null && !list.contains(burpCharset.getCharacterSet())) {
             list.add(burpCharset.getCharacterSet());
+        }
+        // リストにない場合追加(デフォルトエンコーディング)
+        if (!list.contains(defaultCharset)) {
+            list.add(defaultCharset);
         }
         return list;
     }

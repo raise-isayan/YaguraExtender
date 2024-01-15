@@ -1,6 +1,5 @@
 package yagura.model;
 
-import extension.burp.FilterProperty;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
