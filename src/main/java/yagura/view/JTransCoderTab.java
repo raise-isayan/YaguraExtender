@@ -443,6 +443,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         cmbIILUTF8 = new javax.swing.JComboBox();
         pnlLang = new javax.swing.JPanel();
         rdoCLang = new javax.swing.JRadioButton();
+        rdoJSON = new javax.swing.JRadioButton();
         rdoSQLLang = new javax.swing.JRadioButton();
         rdoRegex = new javax.swing.JRadioButton();
         chkMetaChar = new javax.swing.JCheckBox();
@@ -897,11 +898,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlILLUTF8);
 
-        pnlLang.setLayout(new java.awt.GridLayout(1, 3));
+        pnlLang.setLayout(new java.awt.GridLayout(1, 4));
 
         rdoEncodeDecodeGrp.add(rdoCLang);
         rdoCLang.setText("C Lang");
         pnlLang.add(rdoCLang);
+
+        rdoEncodeDecodeGrp.add(rdoJSON);
+        rdoJSON.setText("JSON");
+        pnlLang.add(rdoJSON);
 
         rdoEncodeDecodeGrp.add(rdoSQLLang);
         rdoSQLLang.setText("SQL");
@@ -2545,6 +2550,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = buff.toString();
             } else if (this.rdoCLang.isSelected()) {
                 encode = TransUtil.encodeCLangQuote(encode, metaChar);
+            } else if (this.rdoJSON.isSelected()) {
+                encode = TransUtil.encodeJsonLiteral(encode, metaChar);
             } else if (this.rdoSQLLang.isSelected()) {
                 encode = TransUtil.encodeSQLLangQuote(encode, metaChar);
             } else if (this.rdoRegex.isSelected()) {
@@ -2609,6 +2616,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             encodePattern = TransUtil.EncodePattern.UTF8_ILL;
         } else if (this.rdoCLang.isSelected()) {
             encodePattern = TransUtil.EncodePattern.C_LANG;
+        } else if (this.rdoJSON.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.JSON;
         } else if (this.rdoSQLLang.isSelected()) {
             encodePattern = TransUtil.EncodePattern.SQL_LANG;
         } else if (this.rdoRegex.isSelected()) {
@@ -3610,6 +3619,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoHtmlDec;
     private javax.swing.JRadioButton rdoHtmlHex;
     private javax.swing.JRadioButton rdoILLUTF8;
+    private javax.swing.JRadioButton rdoJSON;
     private javax.swing.JRadioButton rdoLF;
     private javax.swing.JRadioButton rdoLength16;
     private javax.swing.JRadioButton rdoLength4;

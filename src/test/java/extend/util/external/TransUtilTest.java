@@ -5,8 +5,6 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -551,6 +549,21 @@ public class TransUtilTest {
         assertEquals("a\\b\\c\\\\d", TransUtil.decodeStandardLangMeta("a\\b\\c\\\\d"));
         assertEquals("a\\tb\\rc\\nd", TransUtil.encodeStandardLangMeta("a\tb\rc\nd"));
         assertEquals("a\\\\d", TransUtil.encodeStandardLangMeta("a\\\\d"));
+    }
+
+    /**
+     * Test of decode/encode/StandardLangMeta method, of class TransUtil.
+     */
+    @Test
+    public void testJsonMeta() {
+        System.out.println("decode/encode/testJsonMeta");
+        assertEquals("a\tb\rc\nd", TransUtil.decodeJsonLiteral("a\\tb\\rc\\nd", true));
+        assertEquals("a\b\\c\\d", TransUtil.decodeJsonLiteral("a\\b\\c\\\\d", true));
+        assertEquals("a\\tb\\rc\\nd", TransUtil.encodeJsonLiteral("a\tb\rc\nd", true));
+        assertEquals("a\\\\\\\\d", TransUtil.encodeJsonLiteral("a\\\\d", true));
+
+        assertEquals("test\\/\\r\\n\\t\\b\\f\\\"\\\\u0027testu0027", TransUtil.encodeJsonLiteral("test/\r\n\t\b\f\"\\u0027testu0027", true));
+        assertEquals("test/\r\n\t\b\f\"\\u0027testu0027", TransUtil.decodeJsonLiteral("test\\/\\r\\n\\t\\b\\f\\\"\\\\u0027testu0027", true));
     }
 
     /**

@@ -23,11 +23,11 @@ Yagura Charsets::
 
 Encoder::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
-  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html に対応しています。
+  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Htm/JSON with Meta に対応しています。
   
 Decoder::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
-  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html に対応しています。
+  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta に対応しています。
 
 Converter::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
@@ -35,7 +35,7 @@ Converter::
 
 Hash::
   選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
-  md2/md5/sha1/sha256/sha512 に対応しています。
+  md2/md5/sha1/sha256/sha384/sha512 に対応しています。
 
 Result Filter::
   Proxy HistoryのBambda mode のクエリを切り替えることが可能です。
@@ -57,13 +57,13 @@ image:images/custom_encoding.png[CJK Viewタブ]
 
 ==== CJK View
 
-Target:: 
+Target::
     Javaで利用可能なすべてのエンコーディングリスト一覧が表示されます。
 
-Select:: 
+Select::
     選択したエンコーディング一覧されます。
 
-[<]、[>]ボタン:: 
+[<]、[>]ボタン::
     選択したエンコーディングをTargetに移動もしくは、Selectに移動します。
 
 [Up]、[Down]ボタン::
@@ -73,36 +73,36 @@ Select::
 [Reset]ボタン::
     選択された言語のエンコーディングをデフォルトに設定します。
 
-[clip bord auto decode]チェックボックス:: 
+[clip bord auto decode]チェックボックス::
     チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
     クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。 +
     現在のバージョンではサポートされていません。
 
 ==== CJK Message View
 
-[Cenerate PoC]チェックボックス:: 
+[Cenerate PoC]チェックボックス::
     メッセージタブにCenerate PoCタブを表示するようにします。
    
-[HTML Comment]チェックボックス:: 
+[HTML Comment]チェックボックス::
     メッセージタブにHTML Commentタブを表示するようにします。
 
-[JSON]チェックボックス:: 
+[JSON]チェックボックス::
     メッセージタブにJSONタブを表示するようにします。
 
-[JSONP]チェックボックス:: 
+[JSONP]チェックボックス::
     メッセージタブにJSONPタブを表示するようにします。
 
-[JWT]チェックボックス:: 
+[JWT]チェックボックス::
     メッセージタブにJWTタブを表示するようにします。
 
-[ViewState]チェックボックス:: 
+[ViewState]チェックボックス::
     メッセージタブにViewStateタブを表示するようにします。
 
-[Universal Raw]チェックボックス:: 
+[Universal Raw]チェックボックス::
     メッセージタブにCJKに対応したRawタブを表示するようにします。
     現時点ではリードオンリーです。
 
-[Universal Param]チェックボックス:: 
+[Universal Param]チェックボックス::
     メッセージタブにCJKに対応したParamタブを表示するようにします。
     現時点ではリードオンリーです。
 
@@ -121,22 +121,22 @@ Burp sute 本体の Proxy => Optionタブの ** Match and Replace ** の拡張�
 
 ==== MatchReplace
 
-[Select]ボタン:: 
+[Select]ボタン::
     選択したMatchReplaceを適用します。
     適用済みを再度選択した場合は、解除されます。
 
-[New]ボタン:: 
+[New]ボタン::
     MatchReplaceを新規作成します。
     空のMatchReplaceItemダイヤログが表示されます。
 
-[Edit]ボタン:: 
+[Edit]ボタン::
     選択したMatchReplaceを編集します。
     選択した内容のMatchReplaceItemダイヤログが表示されます。
 
-[Remove]ボタン:: 
+[Remove]ボタン::
     選択したMatchReplaceを削除します。
 
-[Up]、[Down]ボタン:: 
+[Up]、[Down]ボタン::
     選択したMatchReplaceの順番を移動します。
 
 ==== MatchReplace ダイヤログ
@@ -145,32 +145,32 @@ image:images/custom_matchreplace_edit.png[MatchReplaceItemダイヤログ]
 [in-scope only]チェックボックス::
     BurpのTarget Scopeの条件にマッチする場合のみ検索します。
 
-[burp import match and replace rule]ボタン:: 
+[burp import match and replace rule]ボタン::
     現在のBurpのmatch and replace設定をインポートします。 +
     現在のバージョンではサポートされていません。
 
-[Edit]ボタン:: 
+[Edit]ボタン::
     選択した MatchReplace を編集します。
 
-[Remove]ボタン:: 
+[Remove]ボタン::
     選択した MatchReplace を削除します。
 
-[Up]、[Down]ボタン:: 
+[Up]、[Down]ボタン::
     選択した MatchReplace Item の順番を移動します。
 
-[All Clear]ボタン:: 
+[All Clear]ボタン::
     リストをすべて削除します。
 
-[Add]、[Update]ボタン:: 
+[Add]、[Update]ボタン::
     MatchReplace を追加します。編集中の場合は更新します。
 
 ==== MatchReplace Item 編集ダイヤログ
 image:images/custom_matchreplace_item.png[MatchReplaceItem編集ダイヤログ]
 
-Type(置換対象):: 
+Type(置換対象)::
     request heder,request body,response heder,response bodyのいずれかから選択します。
 
-Match(置換前):: 
+Match(置換前)::
     置換対象の置換前の文字列を入力します。
 
 Replace(置換後)::
@@ -180,13 +180,13 @@ Replace(置換後)::
     いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
     アスキー文字以外を指定する場合は、メタ文字を利用します。
 
-[Regexp]チェックボックス:: 
+[Regexp]チェックボックス::
     チェック時、正規表現を有効にします。
 
 [IgnoreCase]チェックボックス::
     チェック時、大文字小文字を無視します。
 
-[Metachar]チェックボックス:: 
+[Metachar]チェックボックス::
     メタ文字を有効にします。
     以下のメタ文字が利用可能です。
 
@@ -221,39 +221,39 @@ image:images/custom_matchalert.png[MatchAlertタブ]
 
 ==== MatchAlert
 
-[Enable Alert]チェックボックス:: 
+[Enable Alert]チェックボックス::
     チェック時にMatchAlert機能を有効にします。
-[Edit]ボタン:: 
+[Edit]ボタン::
     選択した MatchAlert Item を編集します。
-[Remove]ボタン:: 
+[Remove]ボタン::
     選択した MatchAlert Item を削除します。
-[Add]、[Update]ボタン:: 
+[Add]、[Update]ボタン::
     MatchAlert Item を追加します。編集中時は更新します。
 
 ==== MatchAlert Item 編集ダイヤログ
 
 image:images/custom_matchalert_item.png[MatchAlertItem編集ダイヤログ]
 
-Type(検索対象):: 
+Type(検索対象)::
     request,responseのいずれかから選択
 
-Match(マッチ文字列):: 
+Match(マッチ文字列)::
     マッチさせたい文字列を入力します。
 
-Target(アラート対象):: 
+Target(アラート対象)::
     proxy, repeater, spider, intruder, scanner, sequencer, extender
     チェックした対象がMatchAlertの対象になります。
 
-[Regexp]チェックボックス:: 
+[Regexp]チェックボックス::
     チェック時正規表現を有効にします。
 
-[IgnoreCase]チェックボックス:: 
+[IgnoreCase]チェックボックス::
     チェック時大文字小文字を無視します。
 
-[alert tabs]チェックボックス:: 
+[alert tabs]チェックボックス::
     Burp suite のalertsが通知先になります。
 
-[tray message]チェックボックス:: 
+[tray message]チェックボックス::
     トレイのメッセージが通知先になります。
     現在のバージョンではサポートされていません。
 
@@ -261,15 +261,15 @@ Target(アラート対象)::
     文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
     proxyログにチェックした場合のみ有効です。
 
-[comment]チェックボックス:: 
+[comment]チェックボックス::
     文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
     proxyログにチェックした場合のみ有効です。
 
-[capture group]チェックボックス:: 
+[capture group]チェックボックス::
     文字列がマッチした場合、マッチしたキャプチャグループの文字列をコメントに設定することができます +
     コメントの箇所に「$1」、「$2」等のグループ参照を指定することで該当のグループの値がコメントになります。
 
-[scanner issue]チェックボックス:: 
+[scanner issue]チェックボックス::
     文字列がマッチした場合、該当のScannerのIssueを作成します。
 
 === SendToタブ
@@ -281,17 +281,17 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 
 ==== SendTo
 
-[Send To Submenu]チェックボックス:: 
+[Send To Submenu]チェックボックス::
     チェックした場合、Send To Menuをサブメニューで表示します。
 
-[Edit]ボタン:: 
+[Edit]ボタン::
     選択したSendToItemを編集します。
     選択した内容のSendToItemの編集ダイヤログが表示されます。
 
-[Remove]ボタン:: 
+[Remove]ボタン::
     選択したSendToItemを削除します。
 
-[Up]、[Down]ボタン:: 
+[Up]、[Down]ボタン::
     選択したSendToItemの順番を移動します。
     ここでの順番が、右クリックのメニューに表示される順番になります。
 
@@ -313,10 +313,10 @@ ExtendタブにはBaseタブでは対応ができない便利な機能をあつ�
 ==== Baseタブ
 image:images/custom_sendto_base.png[SendToItem編集 Base ダイヤログ]
 
-Menu Caption:: 
+Menu Caption::
     メニュー名
 
-Target:: 
+Target::
     任意のバイナリエディタやファイル比較ツール等の実行パスを記載します。
     serverにチェックが入ってる場合は、http:// または https:// で始まるURLを書きます。
 
@@ -327,7 +327,7 @@ Target::
 [reverse order]チェックボックス::
     選択したリストの逆順に送信をおこないます。
 
-[requset]、[response]チェックボックス:: 
+[requset]、[response]チェックボックス::
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
     リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。
 
@@ -350,27 +350,27 @@ image:images/custom_sendto_server_connection.png[SendToItem編集 SendTo Connect
 Authorization Type::
     認証の方式を指定します。BASICとDIGESTを選択可能です｡
 
-User:: 
+User::
     認証ユーザ名を指定します。
   
-Password:: 
+Password::
     認証パスワードを指定します。
 
 .Proxy
 
-Protocol:: 
+Protocol::
     Proxyのプロトコルを指定します。HTTPとSOCKSを選択可能です｡
 
-Host:: 
+Host::
     Proxyのホストを入力します。
 
-Port:: 
+Port::
     Proxyのポート番号を入力します。
 
-User:: 
+User::
     Proxyの認証ユーザ名を指定します。
   
-Password:: 
+Password::
     Proxyの認証パスワードを指定します。
 
 .Client Certificate
@@ -407,26 +407,26 @@ use request comment::
 
 multipart のデータ形式でサーバに送信されます。次の内容を含みます。
 
-    host :: 
+    host ::
         ホスト名
-    port:: 
+    port::
         ポート名
-    protocol:: 
+    protocol::
         protocol名(httpまたは、https)
     url::
         url文字列
-    requset:: 
+    requset::
         リクエスト
-    response:: 
+    response::
         レスポンス
-    comment:: 
+    comment::
         コメント
-    highlight:: 
+    highlight::
         選択した Highlight Color
         以下のいずれかの値になります。 +
         white, red, orange, yellow, green, cyan, blue, pink, magenta, gray +
         white は選択されていない状態と等価です。
-    encoding:: 
+    encoding::
         推測エンコーディング
 
 ----
@@ -480,25 +480,25 @@ sample/sendto.php にはこの形式を受け取って表示するだけのPHP�
 ==== Extendタブ
 image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]
 
-     send to jtranscoder:: 
+     send to jtranscoder::
           JTransCoder のInputに選択した文字列を送ります。
-     request and response to file:: 
+     request and response to file::
           リクエストとレスポンスをファイルに保存します。
-     request body to file:: 
+     request body to file::
           リクエストのボディの部分のみをファイルに保存します。
-     response body to file:: 
+     response body to file::
           レスポンスのボディの部分のみをファイルに保存します。
-     paste from jtranscoder:: 
+     paste from jtranscoder::
           JTransCoder のOutputから文字列を貼り付けます。
-     paste from clipboard:: 
+     paste from clipboard::
           クリップボードから指定したエンコーディングにて文字列を貼り付けます。
-     message info copy:: 
+     message info copy::
           message の情報をクリップボードにコピーします。
-     add host to include scope:: 
+     add host to include scope::
           URLのスキームとホストをinclude in scopeに追加します。
-     add host to exclude scope:: 
+     add host to exclude scope::
           URLのスキームとホストをexclude in scopeに追加します。
-     add exclude scope:: 
+     add exclude scope::
           URLをexclude in scopeに追加します。
 
 === AutoResponderタブ
@@ -507,17 +507,17 @@ image:images/custom_autoresponder.png[AutoResponderタブ]
 
 リクエストに対応した固定のレスポンスを定義することができます。
 
-[Enable]ボタン:: 
+[Enable]ボタン::
     チェック時に、AutoResponderを有効にします。
 
-[Edit]ボタン:: 
+[Edit]ボタン::
     選択したAutoResponderItemを編集します。
     選択した内容のAutoResponderItemの編集ダイヤログが表示されます。
 
-[Remove]ボタン:: 
+[Remove]ボタン::
     選択したAutoResponderItemを削除します。
 
-[Up]、[Down]ボタン:: 
+[Up]、[Down]ボタン::
     選択したAutoResponderItemの順番を移動します。
     ここでの順番が、AutoResponderの適用される順番になります。
 
@@ -529,19 +529,19 @@ image:images/custom_autoresponder.png[AutoResponderタブ]
 
 image:images/custom_autoresponder_item.png[AutoResponderItem編集 ダイヤログ]
 
-Method:: 
+Method::
     マッチさせるメソッドを指定します。Anyにチェックした場合は任意のメソッドにマッチします。
 
-Match URL:: 
+Match URL::
     マッチさせるURLを指定します。指定された値は前方一致されます。
 
-[Regexp]チェックボックス:: 
+[Regexp]チェックボックス::
     チェック時、マッチさせるURLに対しての正規表現を有効にします。
 
-[IgnoreCase]チェックボックス:: 
+[IgnoreCase]チェックボックス::
     チェック時マッチさせるURLに対しての大文字小文字を無視します。
 
-Replace:: 
+Replace::
     レスポンスとして利用するファイルを指定します。
 
 [Body only]チェックボックス::
@@ -561,14 +561,14 @@ ProxyのBambda modeを切り替えるための設定を行います｡
     ResultFilterItemを追加します。
     空のResultFilterItemの編集ダイヤログが表示されます。
 
-[Edit]ボタン:: 
+[Edit]ボタン::
     選択したResultFilterItemを編集します。
     選択した内容のResultFilterItemの編集ダイヤログが表示されます。
 
-[Remove]ボタン:: 
+[Remove]ボタン::
     選択したResultFilterItemを削除します。
 
-[Up]、[Down]ボタン:: 
+[Up]、[Down]ボタン::
     選択したResultFilterItemの順番を移動します。
 
 ==== ResultFilterItem 編集ダイヤログ
@@ -588,15 +588,15 @@ image:images/custom_logging.png[Loggingタブ]
 
 ==== Logging
 
-[auto logging]チェックボックス:: 
+[auto logging]チェックボックス::
     チェックすると自動でログを記録します。LogDirで指定したディレクトリに作成されます。
 
-Log Dir:: 
+Log Dir::
     ログを作成するディレクトリを指定します。
     日付形式(burp_yyyyMMdd)のディレクトリが作成されます。
     同じ日付が既に存在する場合は、その日付のディレクトリが使われます。出力するログファイル名が存在した場合は追記されます。
 
-Log size:: 
+Log size::
     ログファイルの上限サイズを指定します。ファイル上限に達した場合は新しい名前でログが作成されます。
     ログサイズの上限に達した場合は、.1,.2のように付加されていきます。
 ----
@@ -610,14 +610,14 @@ proxy-message.log.2
 
 ===== Logging target
 
-[ProxyLog]チェックボックス:: 
+[ProxyLog]チェックボックス::
      Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。
-[ToolLog]チェックボックス:: 
+[ToolLog]チェックボックス::
      各種Toolのログの値が記録されます。
-[history is included]チェックボックス:: 
+[history is included]チェックボックス::
      auto loggingがオフの状態でのみチェックできます。
      チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。
-[Exclude Extension]チェックボックス:: 
+[Exclude Extension]チェックボックス::
      設定された拡張子をロギングから除外します。
 
 === JSearchタブ
@@ -628,20 +628,20 @@ JSearch タブはProxyのHistory一覧から文字を検索するための機能
 
 ==== JSearch
 
-[Search]ボタン:: 
+[Search]ボタン::
      ProxyのHistory一覧からテキストボックスに入力した値で検索します。
 
-[Smart Match]チェックボックス:: 
+[Smart Match]チェックボックス::
     HTMLエスケープ、URLエンコードなど複数のエスケープ考慮した検索を実行します。
     正規表現は有効にできません。
 
-[Regexp]チェックボックス:: 
+[Regexp]チェックボックス::
     チェック時正規表現を有効にします。
 
-[IgnoreCase]チェックボックス:: 
+[IgnoreCase]チェックボックス::
     チェック時大文字小文字を無視します。
 
-[in-scope only]チェックボックス:: 
+[in-scope only]チェックボックス::
     検索対象をBurpのTargetタブのscopeに一致するパスにします。
 
 request::
@@ -662,41 +662,41 @@ Transcoder タブは各種エンコード、デコードを行うための機能
 ==== Translator
 image:images/custom_jtranscoder.png[Translatorタブ]
 
-Encode Type:: 
+Encode Type::
      Encode時の変換する対象の文字列を指定します。
 
-Convert Case:: 
+Convert Case::
      文字がエンコードされたときの16進表記を大文字にするか小文字するかを指定します。
 
-NewLineMode:: 
+NewLineMode::
      エディタの改行コードを指定します。
 
-View:: 
+View::
      lineWrap にチェックすると表示が折り返されます。
 
-Encodeing:: 
+Encodeing::
      変換する文字のエンコーディングを指定します。コンボボックスで選択可能なエンコーディングは、Encodingタブで設定したものが表示されます。 +
      Raw にチェックすると ISO-8859_1 にてエンコード、デコードします。 +
      Guess にチェックすると文字コードを自動で判定してエンコード、デコードします。
 
-[Clear]ボタン:: 
+[Clear]ボタン::
      InputおよびOutputの内容をクリアします。
 
-[Output => Input]ボタン:: 
+[Output => Input]ボタン::
      Outputの内容をInputに送ります。
 
-[Output Copy]ボタン:: 
+[Output Copy]ボタン::
      Outputの内容をクリップボードに送ります。
 
-Historyコンボボックス:: 
+Historyコンボボックス::
      変換した履歴が記録されており、選択すると以前の変換を取得できます。
 
 ===== Encode/Decode
 
-[Smart Decode]ボタン:: 
+[Smart Decode]ボタン::
      文字列の形式を自動判定しデコードします。
 
-[Encode]/[Decode]ボタン:: 
+[Encode]/[Decode]ボタン::
      選択した変換方式でエンコード、デコード変換を行います。
 
 チェックしたエンコード/デコードを行います。
@@ -704,28 +704,28 @@ Historyコンボボックス::
 URL(%hh)::
      URLエンコード、デコードを行います。
 
-URL(%uhhhh):: 
+URL(%uhhhh)::
      Unicode形式のURLエンコード、デコードを行います。
 
-Base64:: 
+Base64::
     Base64形式のエンコード、デコードを行います。
 
-64 newline:: 
+64 newline::
     Base64形式のエンコード時に64文字で改行を行う場合に指定します。
 
-76 newline:: 
+76 newline::
     Base64形式のエンコード時に76文字で改行を行う場合に指定します。
 
-Padding:: 
+Padding::
     Base64形式のエンコード時にパディングするかを指定します。
 
-Base64URLSafe:: 
+Base64URLSafe::
     Base64 URLSafe形式のエンコード、デコードを行います。
 
-Base32:: 
+Base32::
     Base32形式のエンコード、デコードを行います。
 
-Base16:: 
+Base16::
     Base16形式のエンコード、デコードを行います。
 
 QuotedPrintable::
@@ -738,28 +738,28 @@ HTML(<,>,",')::
     HTMLのエンコード、デコードを行います。
     エンコードは、「<,>,",'」のみ行われます。
 
-&#d;:: 
+&#d;::
     10進数形式の実体参照形式のエンコード、デコードを行います。
 
 &#xhh;::
     16進数形式の実体参照形式のエンコード、デコードを行います。
 
-hh(unicode):: 
+hh(unicode)::
     byteコード単位で16進数形式によるエンコード、デコードを行います。
 
-\xhh(byte):: 
+\xhh(byte)::
     byteコード単位で16進数形式によるエンコード、デコードを行います。
 
-\xhh(byte):: 
+\xhh(byte)::
     byteコード単位で16進数形式によるエンコード、デコードを行います。
 
-\ooo:: 
+\ooo::
     8進数形式によるエンコード、デコードを行います。
 
-\uhhhh:: 
+\uhhhh::
     Unicode形式によるエンコード、デコードを行います。
 
-$hhhh:: 
+$hhhh::
     $形式によるエンコード、デコードを行います。
 
 Gzip::
@@ -771,19 +771,22 @@ ZLIB::
 ZLIB(with Gzip)::
     ZLIB(GZIP 互換の圧縮をサポート)による圧縮、解凍を行います。
 
-UTF-7:: 
+UTF-7::
     UTF-7のエンコード、デコードを行います。
 
-UTF-8:: 
+UTF-8::
     UTF-8のエンコードを行います。2バイト表現、3バイト表現、4バイト表現をURLエンコードします。
 
-C Lang:: 
+C Lang::
     C言語形式のエスケープを行います。
 
-SQL:: 
+JSON::
+   JSON形式のエスケープを行います。
+
+SQL::
     SQL言語形式のエスケープを行います。
 
-Regex:: 
+Regex::
     正規表現のエスケープを行います。
 
 Metachar チェックボックス::
@@ -806,12 +809,12 @@ Minify::
 Beautify::
     XMLやJSONを整形します。
 
-[Smart Format]ボタン:: 
+[Smart Format]ボタン::
      文字列を整形します。XMLおよびJSONの整形に対応しています。
 
 ===== Regex
 
-Smart Math:: 
+Smart Math::
    Smart Mathは、各種エスケープを考慮したマッチを行うための正規表現を生成します。
 
 with Byte::
@@ -821,46 +824,46 @@ with Byte::
 
 テキストエリアに入力されている値でハッシュ値計算を行います。
 
-md2:: 
+md2::
     md2によるハッシュを計算します。
 
-md5:: 
+md5::
     md5によるハッシュを計算します。
 
-sha1:: 
+sha1::
     sha1によるハッシュを計算します。
 
-sha256:: 
+sha256::
     sha256によるハッシュを計算します。
 
-sha384:: 
+sha384::
     sha384によるハッシュを計算します。
 
-sha512:: 
+sha512::
     sha512によるハッシュを計算します。
 
-sha512/224:: 
+sha512/224::
     sha512/224によるハッシュを計算します。
 
-sha512/256:: 
+sha512/256::
     sha512/256によるハッシュを計算します。
 
-sha3-224:: 
+sha3-224::
     sha3-224によるハッシュを計算します。
 
-sha3-256:: 
+sha3-256::
     sha3-256によるハッシュを計算します。
 
-sha3-384:: 
+sha3-384::
     sha3-384によるハッシュを計算します。
 
-sha3-512:: 
+sha3-512::
     sha3-512によるハッシュを計算します。
 
-CRC32:: 
+CRC32::
     crc32によるチェックサムを計算します。
 
-CRC32C:: 
+CRC32C::
     crc32cによるチェックサムを計算します。
 
 Adler-32::
@@ -884,14 +887,14 @@ sequenceタブは連続する文字リストを生成するための簡易的な
 
 image:images/custom_gene_seq.png[Generaterタブ]
 
-生成書式文字列入力:: 
+生成書式文字列入力::
     C言語のprintf形式の書式文字列を入力します。
     書式文字列は数字関係の書式を一つしか指定できません。
 
-start:: 
+start::
     リストの開始の数字を入力します。
 
-end:: 
+end::
     リストの終了の数字を入力します。終了の数字まで生成されます。
 
 step::
@@ -901,13 +904,13 @@ step::
 
 image:images/custom_gene_date.png[Generaterタブ]
 
-生成書式文字列入力:: 
+生成書式文字列入力::
     Java言語のDateTimeFormatter形式の書式文字列を入力します。
 
-start:: 
+start::
     リストの開始の日付を入力します。
 
-end:: 
+end::
     リストの終了の日付を入力します。終了の日付まで生成されます。
 
 step::
@@ -928,10 +931,10 @@ randomタブはランダムな文字リストを生成するための簡易的�
 
 image:images/custom_gene_random.png[randomタブ]
 
-Character:: 
+Character::
     Characterは生成する文字の種類を指定します。
 
-Character length:: 
+Character length::
     生成する文字数の長さを指定します。
 
 generator count::
@@ -954,70 +957,70 @@ Baseタブは基数変換するための簡易的な機能です。
 
 image:images/custom_converter_base.png[Baseタブ]
 
-Bin:: 
+Bin::
     2進数を入力します。
 
-Oct:: 
+Oct::
     8進数を入力します。
 
-Dec:: 
+Dec::
     10進数を入力します。
 
-Hex:: 
+Hex::
     16進数を入力します。
 
-Radix32 :: 
+Radix32 ::
     32進数を入力します。
 
 .Dateタブ
 
 image:images/custom_converter_date.png[Dateタブ]
 
-ZoneDate:: 
+ZoneDate::
     日付を入力します。
 
-Date(デフォルトゾーンID):: 
+Date(デフォルトゾーンID)::
     入力された日付をデフォルトのゾーンIDで変換して表示します。
 
-Unixtime:: 
+Unixtime::
     Unixtimeの値を入力します。
 
-Java serial:: 
+Java serial::
     Javaのミリ秒で表される時間を入力します。
 
-Excel serial:: 
+Excel serial::
     Excelのシリアル値で表される時間を入力します。
 
 .IP Formatタブ
 
 IPアドレスを各形式に変換します。
 
-Dotted Decimal IP :: 
+Dotted Decimal IP ::
     変換元になるIPv4のアドレスを入力します。
 
     例:192.168.2.1
 
-Dotted Octal IP :: 
+Dotted Octal IP ::
     「.」で区切られた8進数のIPアドレスに変換します。
 
      例:0300.0000.0002.0001
 
-Octal IP :: 
+Octal IP ::
     8進数のIPアドレスに変換します。
 
     例:030000001001
 
-Dotted Hex IP :: 
+Dotted Hex IP ::
    「.」で区切られた16進数のIPアドレスに変換します。
 
     例:0xc0.0x00.0x02.0x01
 
-Hex IP :: 
+Hex IP ::
     16進数のIPアドレスに変換します。
 
     例:0xc0000201
 
-Ineger IP :: 
+Ineger IP ::
     10進数のIPアドレスに変換します。
 
     例:3221225985
@@ -1062,10 +1065,10 @@ image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
 [collapse]ボタン::
     選択したツリーを折りたたみます。
 
-[Decode]ボタン:: 
+[Decode]ボタン::
      ViewStateのデコードを行います。
 
-[Clear]ボタン:: 
+[Clear]ボタン::
      ViewStateをクリアします。
 
 ==== JWT Token Decoder タブ
@@ -1144,10 +1147,10 @@ image:images/custom_viewstate.png[View Stateタブ]
 [collapse]ボタン::
     選択したツリーを折りたたみます。
 
-[Decode]ボタン:: 
+[Decode]ボタン::
      ViewStateのデコードを行います。
 
-[Clear]ボタン:: 
+[Clear]ボタン::
      ViewStateをクリアします。
 
 ==== JWT タブ
@@ -1171,8 +1174,8 @@ image:images/custom_JWT.png[JWTタブ]
 
 image:images/custom_version.png[Versionタブ]
 
-[Import]ボタン:: 
+[Import]ボタン::
     設定をJSON形式にてImportします。
-[Export]ボタン:: 
+[Export]ボタン::
     JSON形式の設定をExportします。
 

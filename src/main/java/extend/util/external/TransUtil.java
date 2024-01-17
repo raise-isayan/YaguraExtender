@@ -103,7 +103,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX,
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
@@ -422,6 +422,9 @@ public class TransUtil {
                         break;
                     case C_LANG:
                         decode = TransUtil.decodeCLangQuote(value, metaChar);
+                        break;
+                    case JSON:
+                        decode = TransUtil.decodeJsonLiteral(value, metaChar);
                         break;
                     case SQL_LANG:
                         decode = TransUtil.decodeSQLangQuote(value, metaChar);
@@ -1309,6 +1312,83 @@ public class TransUtil {
         return buff.toString();
     }
 
+    private final static Pattern PTN_JSON_ENCODE_META = Pattern.compile("([\r\n\t\b\f])");
+
+    /**
+     * 標準言語形式のメタ文字エンコード(エスケープする)
+     *
+     * @param input
+     * @return エンコードされた値
+     */
+    public static String encodeJsonMeta(String input) {
+        StringBuffer buff = new StringBuffer();
+        Matcher m = PTN_JSON_ENCODE_META.matcher(input);
+        while (m.find()) {
+            String p1 = m.group(1);
+            int code = p1.codePointAt(0);
+            switch (code) {
+                case '\r':
+                    m.appendReplacement(buff, "\\\\r");
+                    break;
+                case '\n':
+                    m.appendReplacement(buff, "\\\\n");
+                    break;
+                case '\t':
+                    m.appendReplacement(buff, "\\\\t");
+                    break;
+                case '\b':
+                    m.appendReplacement(buff, "\\\\b");
+                    break;
+                case '\f':
+                    m.appendReplacement(buff, "\\\\f");
+                    break;
+                default:
+                    break;
+            }
+        }
+        m.appendTail(buff);
+        return buff.toString();
+    }
+
+    private final static Pattern PTN_JSON_DECODE_META = Pattern.compile("\\\\([rntbf])");
+
+    /**
+     * JSON形式のメタ文字デコード(エスケープされたものを戻す)
+     *
+     * @param input
+     * @return デコードされた値
+     */
+    public static String decodeJsonMeta(String input) {
+        StringBuffer buff = new StringBuffer();
+        Matcher m = PTN_JSON_DECODE_META.matcher(input);
+        while (m.find()) {
+            String p1 = m.group(1);
+            int code = p1.codePointAt(0);
+            switch (code) {
+                case 'r':
+                    m.appendReplacement(buff, "\r");
+                    break;
+                case 'n':
+                    m.appendReplacement(buff, "\n");
+                    break;
+                case 't':
+                    m.appendReplacement(buff, "\t");
+                    break;
+                case 'b':
+                    m.appendReplacement(buff, "\b");
+                    break;
+                case 'f':
+                    m.appendReplacement(buff, "\f");
+                    break;
+                default:
+                    break;
+            }
+        }
+        m.appendTail(buff);
+        return buff.toString();
+    }
+
+
     public static String toRegexEncode(String value, boolean metachar) {
         String encode = value;
         if (metachar) {
@@ -1389,6 +1469,36 @@ public class TransUtil {
             decode = decodeStandardLangMeta(decode);
         }
         return decode.replaceAll("\\\\([\\\\\"])", "$1");
+    }
+
+    /**
+     * JSON形式のリテラルエンコード(エスケープ)
+     *
+     * @param value
+     * @param metachar
+     * @return エンコードされた値
+     */
+    public static String encodeJsonLiteral(String value, boolean metachar) {
+        String encode = value.replaceAll("([\\\\\"/])", "\\\\$1");
+        if (metachar) {
+            encode = encodeJsonMeta(encode);
+        }
+        return encode;
+    }
+
+    /**
+     * JSON形式のリテラルデコード(エスケープされたものを戻す)
+     *
+     * @param value
+     * @param metachar
+     * @return デコードされた値
+     */
+    public static String decodeJsonLiteral(String value, boolean metachar) {
+        String decode = value;
+        if (metachar) {
+            decode = decodeJsonMeta(decode);
+        }
+        return decode.replaceAll("\\\\([\\\\\"/])", "$1");
     }
 
     /**

@@ -24,11 +24,11 @@ Yagura Charsets::
 
 Encoder::
     Encode the selected string in the character code selected in "Yagura Charsets".
-    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.
+    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.
 
 Decoder::
     Decode the selected string in the character code selected in "Yagura Charsets".
-    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.
+    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.
 
 Converter::
     Converts the selected string in the character code selected in "Yagura Charsets".
@@ -36,7 +36,7 @@ Converter::
 
 Hash::
     Hash calculation the selected string in the character code selected in "Yagura Charsets".
-    md2/md5/sha1/sha256/sha512  are supported.
+    md2/md5/sha1/sha256/sha384/sha512  are supported.
 
 Extension::
     Run the selected extension.
@@ -55,13 +55,13 @@ You can select the most frequently used encoding. The value selected here is the
 
 ==== CJK View
 
-Target:: 
+Target::
     A list of all encodings available in Java will be displayed.
 
-Select:: 
+Select::
     The selected encoding is listed.
 
-[<], [>] button:: 
+[<], [>] button::
     Move the selected encoding to Target or Select.
 
 [Up], [Down] button::
@@ -71,36 +71,36 @@ Select::
 [Reset] button::
     Set the encoding for the selected language to the default.
 
-[clip bord auto decode] check box:: 
+[clip bord auto decode] check box::
     When checked, the character string copied from the Burp suite to the clipboard is automatically decoded so that it can be pasted to other applications without garbled characters.
     Judgment may fail because the character code is inferred from the byte string in the clipboard. +
     Not supported in current version.
 
 ==== CJK Message View
 
-[Cenerate PoC] check box:: 
+[Cenerate PoC] check box::
     Display the "Cenerate PoC" tab in the message tab.
    
-[HTML Comment] check box:: 
+[HTML Comment] check box::
     Display HTML Comment tab in message tab.
 
-[JSON] check box:: 
+[JSON] check box::
     Display the JSON tab in the message tab.
 
-[JSONP] check box:: 
+[JSONP] check box::
     Display the JSONP tab in the message tab.
 
-[JWT] check box:: 
+[JWT] check box::
     Display the JWT tab in the message tab.
 
-[ViewState] check box:: 
+[ViewState] check box::
     Display the ViewState tab in the message tab.
 
-[Universal Raw] check box:: 
+[Universal Raw] check box::
     Display the Raw tab corresponding to CJK in the message tab.
     Currently read-only.
 
-[Universal Param] check box:: 
+[Universal Param] check box::
     Display the Param tab corresponding to CJK in the message tab.
     Currently read-only.
 
@@ -120,19 +120,19 @@ The ** Match and Replace ** of the Burp main unit is a unique implementation. Ma
 
 ==== MatchReplace
 
-[Select] button:: 
+[Select] button::
     Apply the selected MatchReplace.
     If you select Applied again, it will be canceled.
     
-[New] button:: 
+[New] button::
     Create a new MatchReplace.
     An empty MatchReplaceItem dialog appears.
 
-[Edit] button:: 
+[Edit] button::
     Edit the selected MatchReplace.
     The MatchReplaceItem dialog of the selected content is displayed.
 
-[Remove] button:: 
+[Remove] button::
     Delete the selected MatchReplace.
 
 [Up], [Down] button: 
@@ -144,23 +144,23 @@ image:images/custom_matchreplace_edit.png[MatchReplaceItem Dialog]
 [in-scope only] check box::
     Search only when it matches the conditions of Burp Target Scope.
 
-[burp import match and replace rule] button:: 
+[burp import match and replace rule] button::
     Imports current Burp match and replace settings. +
     Not supported in current version.
 
-[Edit] button:: 
+[Edit] button::
     Edit the selected MatchReplace.
 
-[Remove] button:: 
+[Remove] button::
     Delete the selected MatchReplace.
 
-[Up], [Down] button:: 
+[Up], [Down] button::
     Moves the order of the selected MatchReplace Item.
 
-[All Clear] button:: 
+[All Clear] button::
     Delete all lists.
 
-[Add], [Update] button:: 
+[Add], [Update] button::
     Add MatchReplace. Update if it is being edited.
 
 ==== MatchReplace Item Edit dialog
@@ -224,41 +224,41 @@ There are the following five notification methods, and you can select multiple m
 
 ==== MatchAlert
 
-[Enable Alert] check box:: 
+[Enable Alert] check box::
     Enable the MatchAlert function when checking.
-[Edit] button:: 
+[Edit] button::
     Edit the selected MatchAlert Item.
 
-[Remove] button:: 
+[Remove] button::
     Delete the selected MatchAlert Item.
 
-[Add], [Update] button:: 
+[Add], [Update] button::
     Add a MatchAlert Item. Updates while editing.
 
 ==== MatchAlert Item Edit dialog
 
 image:images/custom_matchalert_item.png[MatchAlertItem Edit dialog]
 
-Type(Search target):: 
+Type(Search target)::
     Select from request or response
 
-Match(Match string):: 
+Match(Match string)::
     string you want to match.
 
-Target(Alert target):: 
+Target(Alert target)::
     proxy, repeater, spider, intruder, scanner, sequencer
     The checked target will be the target of MatchAlert.
 
-[Regexp] check box:: 
+[Regexp] check box::
     Enable regular expression when checked.
 
-[IgnoreCase] check box:: 
+[IgnoreCase] check box::
     When checked, ignore case.
 
-[alert tabs] check box:: 
+[alert tabs] check box::
     Alerts in the Burp suite will be notified.
 
-[try message] check box:: 
+[try message] check box::
     The tray message will be the notification destination.
     Not supported in current version.
 
@@ -266,15 +266,15 @@ Target(Alert target)::
     If the string matches, the HighlightColor of the corresponding Burp History will be the specified color +
     Valid only when you check the proxy log.
 
-[comment] check box:: 
+[comment] check box::
     If the string matches, the comment of the history of the corresponding Burp will be the specified comment +
     Valid only when you check the proxy log.
 
-[capture group] check box:: 
+[capture group] check box::
     When a string is matched, the string of the matched capture group can be set as a comment 
     By specifying a group reference such as "$1", "$2", etc. in the comment section, the value of the corresponding group becomes the comment.
 
-[scanner issue] check box:: 
+[scanner issue] check box::
     If the strings match, create an issue for that Scanner.
 
 === SendTo tab
@@ -286,17 +286,17 @@ You can increase the number of right-click menus displayed from the Burp History
 
 ==== SendTo
 
-[Send To Submenu] check box:: 
+[Send To Submenu] check box::
     If checked, the Send To Menu will be displayed as a submenu.
 
-[Edit] button:: 
+[Edit] button::
     Edit the selected SendToItem.
     The Edit dialog of SendToItem of the selected content is displayed.
 
-[Remove] button:: 
+[Remove] button::
     Delete the selected SendToItem.
 
-[Up], [Down] button:: 
+[Up], [Down] button::
     Moves the order of the selected SendToItem.
     The order here is the order displayed in the right-click menu.
 
@@ -318,10 +318,10 @@ The Extend tab has useful functions that cannot be supported by the Base tab.
 ==== Base tab
 image:images/custom_sendto_base.png[SendToItem Edit Base Dialog]
 
-Menu Caption:: 
+Menu Caption::
     Menu name
 
-Target:: 
+Target::
     Describe the execution path of any binary editor or file comparison tool.
     If server is checked, write a URL starting with http:// or https:// .
 
@@ -332,7 +332,7 @@ Target::
 [reverse order] check box::
     Send in the reverse order of the selected list.
 
-[requset], [response] check box:: 
+[requset], [response] check box::
     It is sent to the registered Target when requset or response of the request is checked. +
     Request and response can choose to send either header or body.
 
@@ -355,27 +355,27 @@ This can be set if the server is checked.
 Authorization Type::
     Specify the authentication method; BASIC and DIGEST are selectable.
 
-User:: 
+User::
     Specify the authentication user name.
   
-Password:: 
+Password::
     Specify the authentication password.
 
 .Proxy
 
-Protocol:: 
+Protocol::
     Specify the Proxy protocol: HTTP and SOCKS can be selected.
 
-Host:: 
+Host::
     Specify the host of the Proxy.
 
-Port:: 
+Port::
     Specify the port number of the Proxy.
 
-User:: 
+User::
     Specify the Proxy authenticated user name.
   
-Password:: 
+Password::
     Specify the Proxy authenticated password.
 
 .Client Certificate
@@ -410,26 +410,26 @@ use request comment::
 
 It is sent to the server in the form of multipart data. It includes the following
 
-    host :: 
+    host ::
         hostname
-    port:: 
+    port::
         Port name
-    protocol:: 
+    protocol::
         protocol name(http or https)
     url::
         url string
-    requset:: 
+    requset::
         requset
-    response:: 
+    response::
         response
-    comment:: 
+    comment::
         comment
-    highlight:: 
+    highlight::
         Selected Highlight Color
         One of the following values +
         white, red, orange, yellow, green, cyan, blue, pink, magenta, gray +
         white is equivalent to not selected.
-    encoding:: 
+    encoding::
         guess encoding
 
 ----
@@ -483,25 +483,25 @@ sample/sendto.php contains a sample PHP application that only receives and displ
 ==== Extend tab
 image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
 
-    send to jtranscoder:: 
+    send to jtranscoder::
         Sends the selected string to the input of JTransCoder.
-    request and response to file:: 
+    request and response to file::
         Save request and response to a file.
-    request body to file:: 
+    request body to file::
         Save only the body part of the request to a file.
-    response body to file:: 
+    response body to file::
         Save only the body part of the response to a file.
-    paste from jtranscoder:: 
+    paste from jtranscoder::
         Paste the string from Output of JTransCoder.
-    paste from clipboard:: 
+    paste from clipboard::
         Paste the character string from the clipboard in the specified encoding.
-    message info copy:: 
+    message info copy::
         Copy the message information to the clipboard.
-    add host to include scope:: 
+    add host to include scope::
         Add URL scheme and host to include in scope.
-    add host to exclude scope:: 
+    add host to exclude scope::
         Add URL scheme and host to exclude in scope.
-    add exclude scope:: 
+    add exclude scope::
         Add URL to exclude in scope.
 
 === AutoResponder tab
@@ -510,17 +510,17 @@ image:images/custom_autoresponder.png[AutoResponder tab]
 
 You can define a fixed response for a request.
 
-[Enable] button:: 
+[Enable] button::
     Enables AutoResponder when checked.
 
 [Edit button:: Edits the selected AutoResponderItem: 
     Edits the selected AutoResponderItem.
     The edit dialog of the selected AutoResponderItem is show.
 
-[Remove] button:: 
+[Remove] button::
     Deletes the selected AutoResponderItem.
 
-[Up], [Down] buttons::: 
+[Up], [Down] buttons:::
     Move the order of the selected AutoResponderItem.
     The order here is the order in which AutoResponder is applied.
 
@@ -532,19 +532,19 @@ You can define a fixed response for a request.
 
 image:images/custom_autoresponder_item.png[AutoResponderItem Edit Dialog]
 
-Method:: 
+Method::
     Specifies the method to match; if Any is checked, it will match any method.
 
-Match URL:: 
+Match URL::
     Specify the URL to be matched. The specified value will be matched forward.
 
-[Regexp] checkbox:: 
+[Regexp] checkbox::
     When checking, enable regular expressions for URL to be matched.
 
-[IgnoreCase] checkbox:: 
+[IgnoreCase] checkbox::
     Ignore the case of the URL to be matched when checking.
 
-Replace:: 
+Replace::
     Specify the file to be used as the response.
 
 [Body only] checkbox::
@@ -564,14 +564,14 @@ Configure the Proxy to switch Bambda mode.
     Adds an ResultFilterItem.
     The edit dialog for an empty ResultFilterItem is show.
 
-[Edit] button:: 
+[Edit] button::
     Edits the selected ResultFilterItem.
     The edit dialog of the selected ResultFilterItem is show.
 
-[Remove] button:: 
+[Remove] button::
     Deletes the selected ResultFilterItem.
 
-[Up], [Down] button:: 
+[Up], [Down] button::
     Move the order of the selected ResultFilterItem.
     The order here is the order in which ResultFilter is applied.
 
@@ -591,15 +591,15 @@ This function automatically saves the log without having to select the log every
 
 ==== Logging
 
-[auto logging] check box:: 
+[auto logging] check box::
     If checked, log will be recorded automatically. It is created in the directory specified by LogDir.
 
-Log Dir:: 
+Log Dir::
 Specify the directory where logs are created.
     A directory in date format (burp_yyyyMMdd) is created.
     If the same date already exists, the directory for that date is used. If the log file name to be output exists, it will be added.
 
-Log size:: 
+Log size::
     Specify the maximum size of the log file. If the file limit is reached, a log is created with a new name.
     When the log size reaches the upper limit, it is added like .1, .2.
 ----
@@ -613,14 +613,14 @@ If you specify 0, there is no upper limit.
 
 ===== Logging target
 
-[ProxyLog] check box:: 
+[ProxyLog] check box::
      ProxyLog of the value after the change in Match and Replace or Inspecter is recorded.
-[ToolLog] check box:: 
+[ToolLog] check box::
      Log values ​​of various tools are recorded.
-[history is included] check box:: 
+[history is included] check box::
      This can be checked only when auto logging is off.
      If checked, all logs currently recorded in History are recorded in a file.
-[Exclude Extension] check box:: 
+[Exclude Extension] check box::
      Exclude the configured extension from logging.
 
 === JSearch tab
@@ -631,20 +631,20 @@ JSearch tab is a function to search characters from the History list of Proxy.
 
 ==== JSearch
 
-[Search] button:: 
+[Search] button::
     Search by the value entered in the text box from the history list of Proxy.
 
-[Smart Match] check box:: 
+[Smart Match] check box::
     Executes a search that considers multiple escapes such as HTML escape and URL encoding.
     Regular expressions cannot be enabled.
 
-[Regexp] check box:: 
+[Regexp] check box::
     Enable regular expression when checked.
 
-[IgnoreCase] check box:: 
+[IgnoreCase] check box::
     Ignore case when checked.
 
-[in-scope only] check box:: 
+[in-scope only] check box::
     Set the search target to a path that matches the scope on the Target tab of Burp.
 
 request::
@@ -665,41 +665,41 @@ Transcoder tab is a function to perform various encoding and decoding.
 ==== Translator
 image:images/custom_jtranscoder.png[Translator tab]
 
-Encode Type:: 
+Encode Type::
     Specify the character string to be converted when encoding.
 
-Convert Case:: 
+Convert Case::
     Specifies whether the hexadecimal representation of the character when it is encoded is uppercase or lowercase.
 
-NewLineMode:: 
+NewLineMode::
     Specify the line feed code of the editor.
 
-View:: 
+View::
     Checking lineWrap will wrap the display.
 
-Encodeing:: 
+Encodeing::
     Specify the encoding of the character to be converted. The encoding that can be selected in the combo box is the one set in the Encoding tab. +
     Check Raw to encode and decode with ISO-8859_1. +
     If you check Guess, the character code will be automatically determined and encoded and decoded.
 
-[Clear] button:: 
+[Clear] button::
     Clear the contents of Input and Output.
 
-[Output => Input] button:: 
+[Output => Input] button::
     Sends the contents of Output to Input.
 
-[Output Copy] button:: 
+[Output Copy] button::
     Sends the contents of Output to the clipboard.
 
-History combo box:: 
+History combo box::
     The conversion history is recorded, and you can get the previous conversion by selecting it.
 
 ===== Encode/Decode
 
-[Smart Decode] button:: 
+[Smart Decode] button::
     Automatically determine the character string format and decode.
 
-[Encode]/[Decode] button:: 
+[Encode]/[Decode] button::
     Performs encoding and decoding conversion using the selected conversion method.
 
 Performs the checked encoding / decoding.
@@ -707,28 +707,28 @@ Performs the checked encoding / decoding.
 URL(%hh)::
     Performs URL encoding and decoding.
 
-URL(%uhhhh):: 
+URL(%uhhhh)::
     Performs URL encoding and decoding in Unicode format.
 
-Base64:: 
+Base64::
     Encodes and decodes Base64 format.
 
-64 newline:: 
+64 newline::
     Specify this when performing line breaks with 64 characters when encoding in Base64 format.
 
-76 newline:: 
+76 newline::
     Specify this when performing line breaks with 76 characters when encoding in Base64 format.
 
-Padding:: 
+Padding::
     Specify whether to pad when encoding in Base64 format.
 
-Base64URLSafe:: 
+Base64URLSafe::
     Encodes and decodes Base64 URLSafe format.
 
-Base32:: 
+Base32::
     Encodes and decodes Base32 format.
 
-Base16:: 
+Base16::
     Encodes and decodes Base16 format.
 
 QuotedPrintable::
@@ -741,28 +741,28 @@ HTML(<,>,",')::
     Encode and decode HTML.
     Encoding is performed only for (<,>,',").
 
-&#d;:: 
+&#d;::
     Encodes and decodes the entity reference format in decimal format.
 
 &#xhh;::
     Encodes and decodes the entity reference format in hexadecimal format.
 
-hh(byte):: 
+hh(byte)::
     Encodes and decodes in hexadecimal format in byte code units.
 
-\xhh(unicode):: 
+\xhh(unicode)::
     Encodes and decodes in hexadecimal format in unicode code units.
 
-\xhh(byte):: 
+\xhh(byte)::
     Encodes and decodes in hexadecimal format in byte code units.
 
-\ooo:: 
+\ooo::
     Encodes and decodes in octal format.
 
-\uhhhh:: 
+\uhhhh::
     Encodes and decodes in Unicode format.
 
-$hhhh:: 
+$hhhh::
     Encodes and decodes in $ format.
 
 Gzip::
@@ -774,22 +774,25 @@ ZLIB::
 ZLIB(with Gzip)::
     Performs compression and decompression by ZLIB(Supports GZIP compatible compression).
 
-UTF-7:: 
+UTF-7::
     Encodes and decodes UTF-7.
 
-UTF-8:: 
+UTF-8::
     Performs UTF-8 encoding. URL-encodes 2-byte, 3-byte, and 4-byte expressions.
 
-C Lang:: 
+C Lang::
     Performs C-style escaping.
 
-SQL:: 
+JSON::
+    Performs JSON literal escaping.
+
+SQL::
     Performs escape in the SQL language format.
 
-Regex:: 
+Regex::
     Escapes a regular expression.
 
-Metachar checkbox:: 
+Metachar checkbox::
     Enables encoding and decoding of meta characters.
     The following meta characters are available.
 
@@ -809,12 +812,12 @@ Minify::
 Beautify::
     Format XML and JSON.
 
-[Smart Format] button:: 
+[Smart Format] button::
      Formats a string. Supports XML and JSON formatting.
 
 ===== Regex
 
-Smart Math:: 
+Smart Math::
    Smart Math generates regular expressions to match various escapes.
 
 with Byte::
@@ -824,46 +827,46 @@ with Byte::
 
 The hash value is calculated using the value entered in the text area.
 
-md2:: 
+md2::
     Calculate hash with md2
 
-md5:: 
+md5::
     Calculate hash with md5
 
-sha1:: 
+sha1::
     Calculate hash with sha1
 
-sha256:: 
+sha256::
     Calculate hash with sha256
 
-sha384:: 
+sha384::
     Calculate hash with sha384
 
-sha512:: 
+sha512::
     Calculate hash with sha512
 
-sha512/224:: 
+sha512/224::
     Calculate hash with sha512/224
 
-sha512/256:: 
+sha512/256::
     Calculate hash with sha512/256
 
-sha3-224:: 
+sha3-224::
     Calculate hash with sha3-224
 
-sha3-256:: 
+sha3-256::
     Calculate hash with sha3-256
 
-sha3-384:: 
+sha3-384::
     Calculate hash with sha3-384
 
-sha3-512:: 
+sha3-512::
     Calculate hash with sha3-512
 
-CRC32:: 
+CRC32::
     Calculate checksum by crc32
 
-CRC32C:: 
+CRC32C::
     Calculate checksum by crc32c
 
 Adler-32::
@@ -891,10 +894,10 @@ Generate format string input ::
     format string in C language printf format.
     A format string can specify only one numeric format.
 
-start:: 
+start::
     start number for the list.
 
-end:: 
+end::
     end number of the list. Generates up to the ending number.
 
 step::
@@ -907,10 +910,10 @@ image:images/custom_gene_date.png[Generater tab]
 Generate format string input ::
     format string in the DateTimeFormatter format of the Java language.
 
-start:: 
+start::
     start date of the list.
 
-end:: 
+end::
     end date of the list. Generated until the end date.
 
 step::
@@ -931,10 +934,10 @@ The andom tab is a simple function for generating a random character list.
 
 image:images/custom_gene_random.png[random tab]
 
-Character:: 
+Character::
     Character specifies the type of character to be generated.
 
-Character length:: 
+Character length::
     Specify the length of the number of characters to be generated.
 
 generator count::
@@ -957,70 +960,70 @@ The Base tab is a simple function for converting radixes.
 
 image:images/custom_converter_base.png[Base tab]
 
-Bin:: 
+Bin::
     input the binary number.
 
-Oct:: 
+Oct::
     input the octal number.
 
-Dec:: 
+Dec::
     input the decimal number.
 
-Hex:: 
+Hex::
     input the hexadecimal number.
 
-Radix32 :: 
+Radix32 ::
     input the 32-base number.
 
 .Date tab
 
 image:images/custom_converter_date.png[Date tab]
 
-ZoneDate:: 
+ZoneDate::
     input the date.
 
-Date(Default ZoneId):: 
+Date(Default ZoneId)::
     Displays the date entered converted with the default zone ID.
 
-Unixtime:: 
+Unixtime::
     input the unixtime.
 
-Java serial:: 
+Java serial::
     Input the time expressed in Java milliseconds.
 
-Excel serial:: 
+Excel serial::
     Input the time represented by the serial value of Excel
 
 .IP Format Tab
 
 Converts an IP address to each format.
 
-Dotted Decimal IP :: 
+Dotted Decimal IP ::
     Enter the IPv4 address to be converted from.
 
     Example: 192.168.2.1
 
-Dotted Octal IP :: 
+Dotted Octal IP ::
     Convert to an octal IP address separated by a "."
 
     Example: 0300.0000.0002.0001
 
-Octal IP :: 
+Octal IP ::
     Converts to an octal IP address.
 
     Example: 030000001001
 
-Dotted Hex IP :: 
+Dotted Hex IP ::
     Converts to a hexadecimal IP address separated by a "."
 
     Example: 0xc0.0x00.0x02.0x01
 
-Hex IP :: 
+Hex IP ::
     Converts to a hexadecimal IP address.
 
     Example: 0xc0000201
 
-Ineger IP :: 
+Ineger IP ::
     Converts to a decimal IP address.
 
     Example: 3221225985
@@ -1068,10 +1071,10 @@ image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
 [collapse] button::
     Collapse the selected tree.
 
-[Decode] button:: 
+[Decode] button::
     Decode ViewState.
 
-[Clear] button:: 
+[Clear] button::
     Clear ViewState.
 
 ==== JWT token Decoder tab
@@ -1154,10 +1157,10 @@ image:images/custom_viewstate.png[View State  tab]
 [collapse] button::
     Collapse the selected tree.
 
-[Decode] button:: 
+[Decode] button::
     Decode ViewState.
 
-[Clear] button:: 
+[Clear] button::
     Clear ViewState.
 
 ==== JWT tab
@@ -1181,9 +1184,9 @@ Displays version information.
 
 image:images/custom_version.png[Version tab]
 
-[Import] button:: 
+[Import] button::
     Import settings in JSON format.
 
-[Export] button:: 
+[Export] button::
     Export the settings in JSON format.
 

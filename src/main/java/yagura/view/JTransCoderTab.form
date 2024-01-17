@@ -480,7 +480,7 @@
                     <Container class="javax.swing.JPanel" name="pnlLang">
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                        <Property name="columns" type="int" value="3"/>
+                        <Property name="columns" type="int" value="4"/>
                         <Property name="rows" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
@@ -490,6 +490,14 @@
                               <ComponentRef name="rdoEncodeDecodeGrp"/>
                             </Property>
                             <Property name="text" type="java.lang.String" value="C Lang"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JRadioButton" name="rdoJSON">
+                          <Properties>
+                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                              <ComponentRef name="rdoEncodeDecodeGrp"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="JSON"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="rdoSQLLang">

@@ -744,6 +744,16 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             });
 
             yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
+
+            JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_J, new ITranslateAction() {
+                @Override
+                public String translate(String allText, String selectedText) {
+                    return TransUtil.encodeJsonLiteral(selectedText, true);
+                }
+            });
+
+            yaguraEncoderMenu.add(yaguraEncoderMetacharMenu);
+
             yaguraMenu.add(yaguraEncoderMenu);
 
             /**
@@ -820,6 +830,16 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             });
 
             yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
+
+            JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_J, new ITranslateAction() {
+                @Override
+                public String translate(String allText, String selectedText) {
+                    return TransUtil.encodeJsonLiteral(selectedText, true);
+                }
+            });
+
+            yaguraDecoderMenu.add(yaguraDecoderMetacharMenu);
+
             yaguraMenu.add(yaguraDecoderMenu);
 
             /**
@@ -950,7 +970,21 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraHashMenu.add(yaguraHashSha256Menu);
 
-            JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_4, new ITranslateAction() {
+            JMenuItem yaguraHashSha384Menu = createMenuItem("sha384", KeyEvent.VK_4, new ITranslateAction() {
+
+                @Override
+                public String translate(String allText, String selectedText) {
+                    try {
+                        return TransUtil.toSHA384Sum(selectedText, getYaguraCharset(selectedText), false);
+                    } catch (UnsupportedEncodingException ex) {
+                        return selectedText;
+                    }
+                }
+            });
+
+            yaguraHashMenu.add(yaguraHashSha384Menu);
+
+            JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_5, new ITranslateAction() {
 
                 @Override
                 public String translate(String allText, String selectedText) {
