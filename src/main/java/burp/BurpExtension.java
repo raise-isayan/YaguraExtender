@@ -632,7 +632,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
 
         public void setBamba(FilterProperty filter) {
-            BurpConfig.configBambda(api, filter);
+            BurpConfig.configBambda(api, filter, true);
         }
 
         private final static String USE_BURP_CHARSETS = "Use Burp Charsets";
@@ -1103,7 +1103,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     filterProperty = filterMap.get(selectedName);
                     if (filterProperty != null) {
                         resultFilterProperty.setSelectedName(selectedName);
-                        BurpConfig.configBambda(api, filterProperty);
+                        BurpConfig.configBambda(api, filterProperty, true);
                         JTabbedPane tab = BurpUtil.suiteTabbedPane();
                         if (tab != null) {
                             BurpUtil.sendToTextHighlight(tab, "Proxy");
