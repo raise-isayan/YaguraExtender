@@ -569,12 +569,12 @@ You can Encode/Decode with the specified character set.</p>
 <dt class="hdlist1">Encoder</dt>
 <dd>
 <p>Encode the selected string in the character code selected in "Yagura Charsets".
-URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.</p>
+URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.</p>
 </dd>
 <dt class="hdlist1">Decoder</dt>
 <dd>
 <p>Decode the selected string in the character code selected in "Yagura Charsets".
-URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html are supported.</p>
+URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.</p>
 </dd>
 <dt class="hdlist1">Converter</dt>
 <dd>
@@ -584,7 +584,7 @@ Upper Case/Lower Case/bin2hex/hex2bin/Full width &#8594; Half width/Half width/ 
 <dt class="hdlist1">Hash</dt>
 <dd>
 <p>Hash calculation the selected string in the character code selected in "Yagura Charsets".
-md2/md5/sha1/sha256/sha512  are supported.</p>
+md2/md5/sha1/sha256/sha384/sha512  are supported.</p>
 </dd>
 <dt class="hdlist1">Extension</dt>
 <dd>
@@ -1766,6 +1766,10 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 <dd>
 <p>Performs C-style escaping.</p>
 </dd>
+<dt class="hdlist1">JSON</dt>
+<dd>
+<p>Performs JSON literal escaping.</p>
+</dd>
 <dt class="hdlist1">SQL</dt>
 <dd>
 <p>Performs escape in the SQL language format.</p>
@@ -2418,7 +2422,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-12-18 18:03:30 +0900
+Last updated 2024-01-18 09:01:56 +0900
 </div>
 </div>
 </body>
