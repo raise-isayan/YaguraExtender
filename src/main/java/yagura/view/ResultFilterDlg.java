@@ -1,8 +1,12 @@
 package yagura.view;
 
+import burp.BurpExtension;
+import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
+import extension.burp.BurpConfig;
 import extension.burp.BurpExtensionImpl;
+import static extension.burp.BurpExtensionImpl.api;
 import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
 import extension.burp.MessageHighlightColor;
@@ -112,6 +116,7 @@ public class ResultFilterDlg extends CustomDialog {
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
         btnConvertBambda = new javax.swing.JButton();
+        btnImportBambda = new javax.swing.JButton();
         pnlName = new javax.swing.JPanel();
         lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
@@ -485,6 +490,13 @@ public class ResultFilterDlg extends CustomDialog {
             }
         });
 
+        btnImportBambda.setText("Import Bambda");
+        btnImportBambda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportBambdaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlApplyLayout = new javax.swing.GroupLayout(pnlApply);
         pnlApply.setLayout(pnlApplyLayout);
         pnlApplyLayout.setHorizontalGroup(
@@ -492,7 +504,9 @@ public class ResultFilterDlg extends CustomDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(btnConvertBambda)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 574, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnImportBambda)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 457, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -505,7 +519,8 @@ public class ResultFilterDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK)
-                    .addComponent(btnConvertBambda))
+                    .addComponent(btnConvertBambda)
+                    .addComponent(btnImportBambda))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -645,6 +660,12 @@ public class ResultFilterDlg extends CustomDialog {
         this.chkShowOnly.setEnabled(!this.chkHide.isSelected());
     }//GEN-LAST:event_chkHideStateChanged
 
+    private void btnImportBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportBambdaActionPerformed
+        String bambda = BurpConfig.getBambda(BurpExtension.api());
+        this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
+        this.txtBambda.setText(bambda);
+    }//GEN-LAST:event_btnImportBambdaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -693,6 +714,7 @@ public class ResultFilterDlg extends CustomDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnConvertBambda;
+    private javax.swing.JButton btnImportBambda;
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox chkBlue;
     private javax.swing.JCheckBox chkCyan;
@@ -899,6 +921,7 @@ public class ResultFilterDlg extends CustomDialog {
             this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Settings"));
         }
         this.btnConvertBambda.setVisible(bamba);
+        this.btnImportBambda.setVisible(bamba);
     }
 
     public boolean getEditMode() {

@@ -745,7 +745,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
 
-            JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_J, new ITranslateAction() {
+            JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, new ITranslateAction() {
                 @Override
                 public String translate(String allText, String selectedText) {
                     return TransUtil.encodeJsonLiteral(selectedText, true);
@@ -831,7 +831,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
 
-            JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_J, new ITranslateAction() {
+            JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, new ITranslateAction() {
                 @Override
                 public String translate(String allText, String selectedText) {
                     return TransUtil.encodeJsonLiteral(selectedText, true);
