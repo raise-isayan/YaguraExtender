@@ -2,6 +2,7 @@ package yagura.model;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.InvocationType;
 import extension.helpers.ConvertUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -24,13 +25,25 @@ public class SendToMultiEditor extends SendToMenuItem {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
-        sendToEvent(messageInfo);
+        if (contextMenu.messageEditorRequestResponse().isPresent()) {
+            List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
+            sendToEvent(messageInfo);
+        }
+        else {
+            List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
+            sendToEvent(messageInfo);
+        }
+
     }
 
     public void sendToEvent(List<HttpRequestResponse> messageInfo) {

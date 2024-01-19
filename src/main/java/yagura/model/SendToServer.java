@@ -673,8 +673,14 @@ public class SendToServer extends SendToMenuItem {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
-        sendToEvent(messageInfo);
+        if (contextMenu.messageEditorRequestResponse().isPresent()) {
+            List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
+            sendToEvent(messageInfo);
+        }
+        else {
+            List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
+            sendToEvent(messageInfo);
+        }
     }
 
     public void sendToEvent(SendToMessage sendToMessage) {
@@ -702,9 +708,12 @@ public class SendToServer extends SendToMenuItem {
 
     @Override
     public boolean isEnabled() {
-        boolean enabled = (this.contextMenu.invocationType() != InvocationType.INTRUDER_PAYLOAD_POSITIONS)
-                || (this.contextMenu.invocationType() != InvocationType.SITE_MAP_TREE);
-        return enabled;
+        return (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);
     }
 
 }
