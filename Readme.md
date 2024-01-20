@@ -46,7 +46,7 @@ gradlew release
 * v2023.1.2 or higher (http://www.portswigger.net/burp/)
 
 ### Development environment
-* NetBeans 18 (https://netbeans.apache.org/)
+* NetBeans 20 (https://netbeans.apache.org/)
 * Gradle 7.5 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
