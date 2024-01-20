@@ -1132,7 +1132,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 try {
                     String paste = SwingUtil.systemClipboardPaste();
                     URL url = new URL(paste);
-                    BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), url.getHost()));
+                    BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), HttpUtil.buildHost(url.getHost(), url.getPort(), url.getProtocol())));
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
