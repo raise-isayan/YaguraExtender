@@ -872,11 +872,11 @@ CRC32C::
 Adler-32::
     Calculate checksum by Adler-32
 
-MurmurHash32::
-    Calculate checksum by MurmurHash 32bit
+MurmurHash2/32::
+    Calculate checksum by MurmurHash2 32bit
 
-MurmurHash64::
-    Calculate checksum by MurmurHash 64bit
+MurmurHash2/64::
+    Calculate checksum by MurmurHash2 64bit
 
 ==== Generater tab
 

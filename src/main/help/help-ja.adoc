@@ -869,11 +869,11 @@ CRC32C::
 Adler-32::
     Adlerによるチェックサムを計算します。
 
-MurmurHash32::
-    MurmurHash 32bitによるチェックサムを計算します。
+MurmurHash2/32::
+    MurmurHash2 32bitによるチェックサムを計算します。
 
-MurmurHash64::
-    MurmurHash 64bitによるチェックサムを計算します。
+MurmurHash2/64::
+    MurmurHash2 64bitによるチェックサムを計算します。
 
 ==== Generaterタブ
 

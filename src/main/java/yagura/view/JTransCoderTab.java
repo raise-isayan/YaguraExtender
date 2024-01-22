@@ -1,6 +1,7 @@
 package yagura.view;
 
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
+import extend.util.external.BouncyUtil;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -468,11 +469,19 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashSha3_256 = new javax.swing.JButton();
         btnHashSha3_384 = new javax.swing.JButton();
         btnHashSha3_512 = new javax.swing.JButton();
+        btnHashRIPEMD128 = new javax.swing.JButton();
+        btnHashRIPEMD129 = new javax.swing.JButton();
+        btnHashRIPEMD256 = new javax.swing.JButton();
+        btnHashRIPEMD320 = new javax.swing.JButton();
+        btnHashTiger = new javax.swing.JButton();
+        btnHashGOST3411 = new javax.swing.JButton();
+        btnHashWHIRLPOOL = new javax.swing.JButton();
+        pnlCheckSumTrans = new javax.swing.JPanel();
         btnCRC32 = new javax.swing.JButton();
         btnCRC32C = new javax.swing.JButton();
         btnAdler32 = new javax.swing.JButton();
-        btnMurmurHash32 = new javax.swing.JButton();
-        btnMurmurHash64 = new javax.swing.JButton();
+        btnMurmurHash2_32 = new javax.swing.JButton();
+        btnMurmurHash2_64 = new javax.swing.JButton();
         pnlTranslator = new javax.swing.JPanel();
         pnlConvert = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
@@ -929,7 +938,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlTransButton.add(pnlEncodeDecode);
 
         pnlFormat.setBorder(javax.swing.BorderFactory.createTitledBorder("Format"));
-        pnlFormat.setLayout(new java.awt.GridLayout(1, 2));
+        pnlFormat.setLayout(new java.awt.GridLayout(1, 3));
 
         rdoFormatGrp.add(rdoMinifyFormat);
         rdoMinifyFormat.setText("Minify");
@@ -976,8 +985,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlTransButton.add(pnlRegex);
 
-        pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash/Checksum"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(6, 3));
+        pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(7, 3));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -1083,13 +1092,74 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlHashTrans.add(btnHashSha3_512);
 
+        btnHashRIPEMD128.setText("RIPEMD128");
+        btnHashRIPEMD128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD128);
+
+        btnHashRIPEMD129.setText("RIPEMD160");
+        btnHashRIPEMD129.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD160ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD129);
+
+        btnHashRIPEMD256.setText("RIPEMD256");
+        btnHashRIPEMD256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD256);
+
+        btnHashRIPEMD320.setText("RIPEMD320");
+        btnHashRIPEMD320.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD320ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD320);
+
+        btnHashTiger.setText("Tiger");
+        btnHashTiger.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashTigerActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashTiger);
+
+        btnHashGOST3411.setText("GOST3411");
+        btnHashGOST3411.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashGOST3411ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashGOST3411);
+
+        btnHashWHIRLPOOL.setText("WHIRLPOOL");
+        btnHashWHIRLPOOL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashWHIRLPOOLActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashWHIRLPOOL);
+
+        pnlTransButton.add(pnlHashTrans);
+
+        pnlCheckSumTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("CheckSum"));
+        pnlCheckSumTrans.setLayout(new java.awt.GridLayout(2, 3));
+
         btnCRC32.setText("CRC32");
         btnCRC32.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCRC32ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnCRC32);
+        pnlCheckSumTrans.add(btnCRC32);
 
         btnCRC32C.setText("CRC32C");
         btnCRC32C.addActionListener(new java.awt.event.ActionListener() {
@@ -1097,7 +1167,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCRC32CActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnCRC32C);
+        pnlCheckSumTrans.add(btnCRC32C);
 
         btnAdler32.setText("Adler32");
         btnAdler32.addActionListener(new java.awt.event.ActionListener() {
@@ -1105,25 +1175,25 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnAdler32ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnAdler32);
+        pnlCheckSumTrans.add(btnAdler32);
 
-        btnMurmurHash32.setText("MurmurHash32");
-        btnMurmurHash32.addActionListener(new java.awt.event.ActionListener() {
+        btnMurmurHash2_32.setText("MurmurHash2/32");
+        btnMurmurHash2_32.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMurmurHash32ActionPerformed(evt);
+                btnMurmurHash2_32ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnMurmurHash32);
+        pnlCheckSumTrans.add(btnMurmurHash2_32);
 
-        btnMurmurHash64.setText("MurmurHash64");
-        btnMurmurHash64.addActionListener(new java.awt.event.ActionListener() {
+        btnMurmurHash2_64.setText("MurmurHash2/64");
+        btnMurmurHash2_64.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMurmurHash64ActionPerformed(evt);
+                btnMurmurHash2_64ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnMurmurHash64);
+        pnlCheckSumTrans.add(btnMurmurHash2_64);
 
-        pnlTransButton.add(pnlHashTrans);
+        pnlTransButton.add(pnlCheckSumTrans);
 
         tabTransrator.add(pnlTransButton, java.awt.BorderLayout.EAST);
 
@@ -1650,7 +1720,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDateStep)
                         .addComponent(spnDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Date", pnlDate);
@@ -1764,7 +1834,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabRandomLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlCharacter, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                .addComponent(pnlCharacter, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1818,7 +1888,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addComponent(txtListCopy)
                 .addGap(9, 9, 9)
                 .addComponent(btnSavetoFile)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addContainerGap(201, Short.MAX_VALUE))
         );
 
         pnlTop.add(pnlRight, java.awt.BorderLayout.EAST);
@@ -1990,7 +2060,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(txtRadix32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRadix32)
                     .addComponent(btnRadix32Copy))
-                .addContainerGap(434, Short.MAX_VALUE))
+                .addContainerGap(560, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Base", tabBaseConverter);
@@ -2323,7 +2393,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblIntIP)
                             .addComponent(txtIntIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(400, Short.MAX_VALUE))
+                .addContainerGap(526, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("IP Format", tabIPFormatConverter);
@@ -2421,7 +2491,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(353, Short.MAX_VALUE))
+                .addContainerGap(479, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -3141,23 +3211,23 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_rdoBase16ActionPerformed
 
-    private void btnMurmurHash32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash32ActionPerformed
+    private void btnMurmurHash2_32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash2_32ActionPerformed
         try {
-            String inputText = Long.toString(TransUtil.toMurmurHash32(getInputText(), this.getSelectEncode()));
+            String inputText = Long.toString(TransUtil.toMurmurHash2_32(getInputText(), this.getSelectEncode()));
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnMurmurHash32ActionPerformed
+    }//GEN-LAST:event_btnMurmurHash2_32ActionPerformed
 
-    private void btnMurmurHash64ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash64ActionPerformed
+    private void btnMurmurHash2_64ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash2_64ActionPerformed
         try {
-            String inputText = Long.toString(TransUtil.toMurmurHash64(getInputText(), this.getSelectEncode()));
+            String inputText = Long.toString(TransUtil.toMurmurHash2_64(getInputText(), this.getSelectEncode()));
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnMurmurHash64ActionPerformed
+    }//GEN-LAST:event_btnMurmurHash2_64ActionPerformed
 
     private void txtRadix32KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRadix32KeyReleased
         BigInteger value = RDX32_DOC.getValue();
@@ -3434,6 +3504,83 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSystemZoneDateActionPerformed
 
+    private void btnHashRIPEMD128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashRIPEMD128ActionPerformed
+        try {
+            String inputText = BouncyUtil.toRIPEMD128Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashRIPEMD128ActionPerformed
+
+    private void btnHashRIPEMD160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashRIPEMD160ActionPerformed
+        try {
+            String inputText = BouncyUtil.toRIPEMD160Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashRIPEMD160ActionPerformed
+
+    private void btnHashRIPEMD256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashRIPEMD256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toRIPEMD256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashRIPEMD256ActionPerformed
+
+    private void btnHashRIPEMD320ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashRIPEMD320ActionPerformed
+        try {
+            String inputText = BouncyUtil.toRIPEMD320Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashRIPEMD320ActionPerformed
+
+    private void btnHashTigerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashTigerActionPerformed
+        try {
+            String inputText = BouncyUtil.toTigerSum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashTigerActionPerformed
+
+    private void btnHashGOST3411ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashGOST3411ActionPerformed
+        try {
+            String inputText = BouncyUtil.toGOST3411Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashGOST3411ActionPerformed
+
+    private void btnHashWHIRLPOOLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashWHIRLPOOLActionPerformed
+        try {
+            String inputText = BouncyUtil.toWHIRLPOOLSum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashWHIRLPOOLActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3464,8 +3611,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnGenerate;
     private javax.swing.ButtonGroup btnGrpEncodeType;
     private javax.swing.ButtonGroup btnGrpNewLine;
+    private javax.swing.JButton btnHashGOST3411;
     private javax.swing.JButton btnHashMd2;
     private javax.swing.JButton btnHashMd5;
+    private javax.swing.JButton btnHashRIPEMD128;
+    private javax.swing.JButton btnHashRIPEMD129;
+    private javax.swing.JButton btnHashRIPEMD256;
+    private javax.swing.JButton btnHashRIPEMD320;
     private javax.swing.JButton btnHashSha1;
     private javax.swing.JButton btnHashSha224;
     private javax.swing.JButton btnHashSha256;
@@ -3477,13 +3629,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashSha512;
     private javax.swing.JButton btnHashSha512_224;
     private javax.swing.JButton btnHashSha512_256;
+    private javax.swing.JButton btnHashTiger;
+    private javax.swing.JButton btnHashWHIRLPOOL;
     private javax.swing.JButton btnHexCopy;
     private javax.swing.JButton btnHexIP;
     private javax.swing.JButton btnInputfile;
     private javax.swing.JButton btnIntIP;
     private javax.swing.JButton btnJavaSerialCopy;
-    private javax.swing.JButton btnMurmurHash32;
-    private javax.swing.JButton btnMurmurHash64;
+    private javax.swing.JButton btnMurmurHash2_32;
+    private javax.swing.JButton btnMurmurHash2_64;
     private javax.swing.JButton btnOctCopy;
     private javax.swing.JButton btnOctIP;
     private javax.swing.JPanel btnOutput;
@@ -3553,6 +3707,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlBase64URLSafe;
     private javax.swing.JPanel pnlBaseN;
     private javax.swing.JPanel pnlCharacter;
+    private javax.swing.JPanel pnlCheckSumTrans;
     private javax.swing.JPanel pnlCompress;
     private javax.swing.JPanel pnlConvert;
     private javax.swing.JPanel pnlConvertCase;

@@ -39,6 +39,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;
+import org.apache.commons.codec.digest.MurmurHash3;
 import org.w3c.dom.Node;
 
 /**
@@ -2309,7 +2310,7 @@ public class TransUtil {
      * @param binary 対象バイト
      * @return ハッシュ値
      */
-    public static int toMurmurHash32(byte[] binary) {
+    public static int toMurmurHash2_32(byte[] binary) {
         return MurmurHash2.hash32(binary, binary.length);
     }
 
@@ -2319,7 +2320,7 @@ public class TransUtil {
      * @param str 対象文字列
      * @return ハッシュ値
      */
-    public static int toMurmurHash32(String str) {
+    public static int toMurmurHash2_32(String str) {
         return MurmurHash2.hash32(str);
     }
 
@@ -2331,7 +2332,7 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static int toMurmurHash32(String str, String charset)
+    public static int toMurmurHash2_32(String str, String charset)
             throws UnsupportedEncodingException {
         byte[] body = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash32(body, body.length);
@@ -2343,7 +2344,7 @@ public class TransUtil {
      * @param binary 対象バイト
      * @return ハッシュ値
      */
-    public static long toMurmurHash64(byte[] binary) {
+    public static long toMurmurHash2_64(byte[] binary) {
         return MurmurHash2.hash64(binary, binary.length);
     }
 
@@ -2353,7 +2354,7 @@ public class TransUtil {
      * @param str 対象文字列
      * @return ハッシュ値
      */
-    public static long toMurmurHash64(String str) {
+    public static long toMurmurHash2_64(String str) {
         return MurmurHash2.hash64(str);
     }
 
@@ -2365,11 +2366,12 @@ public class TransUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static long toMurmurHash64(String str, String charset)
+    public static long toMurmurHash2_64(String str, String charset)
             throws UnsupportedEncodingException {
         byte[] binary = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash64(binary, binary.length);
     }
+
 
     public static long toEpochSecond(BigDecimal excel_serial) {
         // Unixtime = (Excelserial - 25569) * (60 * 60 * 24) - (60 * 60 * 0)
