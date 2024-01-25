@@ -90,6 +90,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
@@ -1015,17 +1016,29 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraExtensionMenu.setText("Extension (X)");
             yaguraExtensionMenu.setMnemonic(KeyEvent.VK_X);
 
-            JMenuItem yaguraPasteIncludeScopeMenu = createMenuItem("Paste include scope(multi-line)", KeyEvent.VK_I, includeScopeAction);
+//            JMenuItem yaguraPasteIncludeScopeMenu = createMenuItem("Paste include scope(multi-line)", KeyEvent.VK_I, includeScopeAction);
+//
+//            yaguraExtensionMenu.add(yaguraPasteIncludeScopeMenu);
 
-            yaguraExtensionMenu.add(yaguraPasteIncludeScopeMenu);
+            JMenuItem yaguraPasteIncludeTargetScopeMenu = createMenuItem("Paste include Target scope(multi-line)", KeyEvent.VK_I, includeTargetScopeAction);
 
-            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, includeHostScopeAction);
+            yaguraExtensionMenu.add(yaguraPasteIncludeTargetScopeMenu);
+
+//            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, includeHostScopeAction);
+//
+//            yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
+
+            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host Target scope(multi-line)", KeyEvent.VK_H, includeHostTargetScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
 
-            JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, excludeScopeAction);
+//            JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, excludeScopeAction);
+//
+//            yaguraExtensionMenu.add(yaguraPasteExludeScopeMenu);
 
-            yaguraExtensionMenu.add(yaguraPasteExludeScopeMenu);
+            JMenuItem yaguraPasteExludeTargetScopeMenu = createMenuItem("Paste exclude Target scope(multi-line)", KeyEvent.VK_E, excludeTargetScopeAction);
+
+            yaguraExtensionMenu.add(yaguraPasteExludeTargetScopeMenu);
 
             JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through(multi-line)", KeyEvent.VK_P, sslPassThroughAction);
 
@@ -1104,10 +1117,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     if (filterProperty != null) {
                         resultFilterProperty.setSelectedName(selectedName);
                         BurpConfig.configBambda(api, filterProperty, true);
-                        JTabbedPane tab = BurpUtil.suiteTabbedPane();
-                        if (tab != null) {
-                            BurpUtil.sendToTextHighlight(tab, "Proxy");
-                        }
+                        BurpUtil.flashTab("Proxy");
                     }
                 }
             }
@@ -1152,6 +1162,47 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
+        private ActionListener includeTargetScopeAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String paste = SwingUtil.systemClipboardPaste();
+                    BurpExtension.helpers().addIncludeTargetScope(paste, false);
+                    BurpUtil.flashTab("Target");
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+
+        private ActionListener includeHostTargetScopeAction = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String paste = SwingUtil.systemClipboardPaste();
+                    URL url = new URL(paste);
+                    BurpExtension.helpers().addIncludeTargetScope(String.format("%s://%s/", url.getProtocol(), HttpUtil.buildHost(url.getHost(), url.getPort(), url.getProtocol())), false);
+                    BurpUtil.flashTab("Target");
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+
+        private ActionListener excludeTargetScopeAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String paste = SwingUtil.systemClipboardPaste();
+                    BurpExtension.helpers().addExcludeTargetScope(paste, false);
+                    BurpUtil.flashTab("Target");
+                } catch (Exception ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
+            }
+        };
+
         private ActionListener sslPassThroughAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1163,10 +1214,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ? u.getPort() : u.getDefaultPort()));
                     }
                     BurpConfig.configSSLPassThroughRules(api, rules, false);
-                    JTabbedPane tab = BurpUtil.suiteTabbedPane();
-                    if (tab != null) {
-                        BurpUtil.sendToTextHighlight(tab, "Target");
-                    }
+                    BurpUtil.flashTab("Target");
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }

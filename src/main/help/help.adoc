@@ -863,6 +863,28 @@ sha3-384::
 sha3-512::
     Calculate hash with sha3-512
 
+
+RIPEMD128::
+    Calculate hash with RIPEMD128
+
+RIPEMD160::
+    Calculate hash with RIPEMD160
+
+RIPEMD256::
+    Calculate hash with RIPEMD256
+
+RIPEMD320::
+    Calculate hash with RIPEMD320
+
+Tiger::
+    Calculate hash with Tiger
+
+GOST3411::
+    Calculate hash with GOST3411
+
+WHIRLPOOL::
+    Calculate hash with WHIRLPOOL
+
 CRC32::
     Calculate checksum by crc32
 

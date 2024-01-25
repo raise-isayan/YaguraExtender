@@ -231,7 +231,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     }
 
     public void sendToJTransCoder(String text) {
-        BurpUtil.sendToTextHighlight(this);
+        BurpUtil.flashTab(this);
         this.tabJTransCoder.sendToJTransCoder(text);
     }
 
