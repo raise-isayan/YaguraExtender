@@ -45,6 +45,7 @@ import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
 import extension.burp.ExtensionHelper;
 import extension.burp.FilterProperty;
+import extension.burp.IBurpTab;
 import extension.burp.TargetScopeItem;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpMessageWapper;
@@ -90,7 +91,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
@@ -98,7 +98,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -248,6 +247,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     @SuppressWarnings("unchecked")
     public static BurpExtension getInstance() {
         return BurpExtensionImpl.<BurpExtension>getInstance();
+    }
+
+    public IBurpTab getRootTabComponent() {
+        return this.tabbetOption;
     }
 
     public Component getUiComponent() {
@@ -1117,7 +1120,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     if (filterProperty != null) {
                         resultFilterProperty.setSelectedName(selectedName);
                         BurpConfig.configBambda(api, filterProperty, true);
-                        BurpUtil.flashTab("Proxy");
+                        IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+                        BurpUtil.flashTab(tab, "Proxy");
                     }
                 }
             }
@@ -1168,7 +1172,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 try {
                     String paste = SwingUtil.systemClipboardPaste();
                     BurpExtension.helpers().addIncludeTargetScope(paste, false);
-                    BurpUtil.flashTab("Target");
+                    IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+                    BurpUtil.flashTab(tab, "Target");
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -1183,7 +1188,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     String paste = SwingUtil.systemClipboardPaste();
                     URL url = new URL(paste);
                     BurpExtension.helpers().addIncludeTargetScope(String.format("%s://%s/", url.getProtocol(), HttpUtil.buildHost(url.getHost(), url.getPort(), url.getProtocol())), false);
-                    BurpUtil.flashTab("Target");
+                    IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+                    BurpUtil.flashTab(tab, "Target");
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -1196,7 +1202,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 try {
                     String paste = SwingUtil.systemClipboardPaste();
                     BurpExtension.helpers().addExcludeTargetScope(paste, false);
-                    BurpUtil.flashTab("Target");
+                    IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+                    BurpUtil.flashTab(tab, "Target");
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
@@ -1214,7 +1221,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ? u.getPort() : u.getDefaultPort()));
                     }
                     BurpConfig.configSSLPassThroughRules(api, rules, false);
-                    BurpUtil.flashTab("Target");
+                    IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+                    BurpUtil.flashTab(tab, "Target");
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }

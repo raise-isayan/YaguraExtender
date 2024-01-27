@@ -1,5 +1,8 @@
 package yagura.view;
 
+import burp.BurpExtension;
+import extension.burp.BurpConfig;
+import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
 import extension.view.base.CustomListModel;
@@ -39,51 +42,59 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
 
         scrollMatchReplace = new javax.swing.JScrollPane();
         listResultFilter = new javax.swing.JList();
-        btnRepDownArraw = new javax.swing.JButton();
-        btnRepUpArraw = new javax.swing.JButton();
-        btnRepRemove = new javax.swing.JButton();
-        btnRepEdit = new javax.swing.JButton();
-        btnRepNew = new javax.swing.JButton();
+        btnItemDownArraw = new javax.swing.JButton();
+        btnItemUpArraw = new javax.swing.JButton();
+        btnItemRemove = new javax.swing.JButton();
+        btnItemEdit = new javax.swing.JButton();
+        btnItemNew = new javax.swing.JButton();
+        btnItemApply = new javax.swing.JButton();
 
         scrollMatchReplace.setViewportView(listResultFilter);
 
-        btnRepDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
-        btnRepDownArraw.setText("down");
-        btnRepDownArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btnRepDownArraw.addActionListener(new java.awt.event.ActionListener() {
+        btnItemDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
+        btnItemDownArraw.setText("down");
+        btnItemDownArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        btnItemDownArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRepDownArrawActionPerformed(evt);
+                btnItemDownArrawActionPerformed(evt);
             }
         });
 
-        btnRepUpArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
-        btnRepUpArraw.setText("up");
-        btnRepUpArraw.setHideActionText(true);
-        btnRepUpArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
-        btnRepUpArraw.addActionListener(new java.awt.event.ActionListener() {
+        btnItemUpArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
+        btnItemUpArraw.setText("up");
+        btnItemUpArraw.setHideActionText(true);
+        btnItemUpArraw.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        btnItemUpArraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRepUpArrawActionPerformed(evt);
+                btnItemUpArrawActionPerformed(evt);
             }
         });
 
-        btnRepRemove.setText("Remove");
-        btnRepRemove.addActionListener(new java.awt.event.ActionListener() {
+        btnItemRemove.setText("Remove");
+        btnItemRemove.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRepRemoveActionPerformed(evt);
+                btnItemRemoveActionPerformed(evt);
             }
         });
 
-        btnRepEdit.setText("Edit");
-        btnRepEdit.addActionListener(new java.awt.event.ActionListener() {
+        btnItemEdit.setText("Edit");
+        btnItemEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRepEditActionPerformed(evt);
+                btnItemEditActionPerformed(evt);
             }
         });
 
-        btnRepNew.setText("New");
-        btnRepNew.addActionListener(new java.awt.event.ActionListener() {
+        btnItemNew.setText("New");
+        btnItemNew.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRepNewActionPerformed(evt);
+                btnItemNewActionPerformed(evt);
+            }
+        });
+
+        btnItemApply.setText("Apply");
+        btnItemApply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnItemApplyActionPerformed(evt);
             }
         });
 
@@ -97,14 +108,15 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(btnRepEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRepNew, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRepRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnItemEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnItemNew, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnItemRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnItemApply, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnRepUpArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRepDownArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnItemUpArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnItemDownArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(175, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -113,15 +125,17 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnRepNew)
+                        .addComponent(btnItemNew)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnRepEdit)
+                        .addComponent(btnItemEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnRepRemove)
+                        .addComponent(btnItemRemove)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnRepUpArraw)
+                        .addComponent(btnItemUpArraw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRepDownArraw))
+                        .addComponent(btnItemDownArraw)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnItemApply))
                     .addComponent(scrollMatchReplace, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -131,8 +145,9 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
     private void customizeComponents() {
         // ResultFilterTab Tab
         this.listResultFilter.setModel(this.modelResultFilter);
-        this.btnRepEdit.setEnabled((listResultFilter.getSelectedIndices().length > 0));
-        this.btnRepRemove.setEnabled((listResultFilter.getSelectedIndices().length > 0));
+        this.btnItemEdit.setEnabled((listResultFilter.getSelectedIndices().length > 0));
+        this.btnItemRemove.setEnabled((listResultFilter.getSelectedIndices().length > 0));
+        this.btnItemApply.setEnabled((listResultFilter.getSelectedIndices().length > 0));
 
         this.listResultFilter.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -142,8 +157,9 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
                     return;
                 }
                 int rowCount = listResultFilter.getSelectedIndices().length;
-                btnRepEdit.setEnabled((rowCount > 0));
-                btnRepRemove.setEnabled((rowCount > 0));
+                btnItemEdit.setEnabled((rowCount > 0));
+                btnItemRemove.setEnabled((rowCount > 0));
+                btnItemApply.setEnabled((rowCount > 0));
             }
         });
 
@@ -151,41 +167,53 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
 
     private final CustomListModel<String> modelResultFilter = new CustomListModel<>();
 
-    private void btnRepDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepDownArrawActionPerformed
+    private void btnItemDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemDownArrawActionPerformed
         int index = this.modelResultFilter.moveDown(this.listResultFilter.getSelectedIndex());
         this.listResultFilter.setSelectedIndex(index);
         firePropertyChange(ResultFilterProperty.RESULT_FILTER_PROPERTY, null, this.getResultFilter());
-    }//GEN-LAST:event_btnRepDownArrawActionPerformed
+    }//GEN-LAST:event_btnItemDownArrawActionPerformed
 
-    private void btnRepUpArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepUpArrawActionPerformed
+    private void btnItemUpArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemUpArrawActionPerformed
         int index = this.modelResultFilter.moveUp(this.listResultFilter.getSelectedIndex());
         this.listResultFilter.setSelectedIndex(index);
         firePropertyChange(ResultFilterProperty.RESULT_FILTER_PROPERTY, null, this.getResultFilter());
-    }//GEN-LAST:event_btnRepUpArrawActionPerformed
+    }//GEN-LAST:event_btnItemUpArrawActionPerformed
 
-    private void btnRepRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepRemoveActionPerformed
+    private void btnItemRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemRemoveActionPerformed
         if (JOptionPane.showConfirmDialog(this, BUNDLE.getString("view.matchreplace.remove"), "Match and Replace", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             String name = this.getFilterSelectedName();
             this.modelResultFilter.removeElement(name);
             this.filterMap.remove(name);
             firePropertyChange(ResultFilterProperty.RESULT_FILTER_PROPERTY, null, this.getResultFilter());
         }
-    }//GEN-LAST:event_btnRepRemoveActionPerformed
+    }//GEN-LAST:event_btnItemRemoveActionPerformed
 
-    private void btnRepEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepEditActionPerformed
+    private void btnItemEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemEditActionPerformed
         this.showResultFilterDlg(true);
-    }//GEN-LAST:event_btnRepEditActionPerformed
+    }//GEN-LAST:event_btnItemEditActionPerformed
 
-    private void btnRepNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRepNewActionPerformed
+    private void btnItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemNewActionPerformed
         this.showResultFilterDlg(false);
-    }//GEN-LAST:event_btnRepNewActionPerformed
+    }//GEN-LAST:event_btnItemNewActionPerformed
+
+    private void btnItemApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemApplyActionPerformed
+        String selectedFilterName = this.getFilterSelectedName();
+        if (selectedFilterName != null) {
+            BurpConfig.configBambda(BurpExtension.api(), this.filterMap.get(selectedFilterName), true);
+        }
+        IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+        if (tab != null) {
+            BurpUtil.flashTab(tab, "Proxy");
+        }
+    }//GEN-LAST:event_btnItemApplyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRepDownArraw;
-    private javax.swing.JButton btnRepEdit;
-    private javax.swing.JButton btnRepNew;
-    private javax.swing.JButton btnRepRemove;
-    private javax.swing.JButton btnRepUpArraw;
+    private javax.swing.JButton btnItemApply;
+    private javax.swing.JButton btnItemDownArraw;
+    private javax.swing.JButton btnItemEdit;
+    private javax.swing.JButton btnItemNew;
+    private javax.swing.JButton btnItemRemove;
+    private javax.swing.JButton btnItemUpArraw;
     private javax.swing.JList listResultFilter;
     private javax.swing.JScrollPane scrollMatchReplace;
     // End of variables declaration//GEN-END:variables

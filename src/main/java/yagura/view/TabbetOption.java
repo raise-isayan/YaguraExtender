@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtension;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
@@ -231,7 +232,8 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     }
 
     public void sendToJTransCoder(String text) {
-        BurpUtil.flashTab(this);
+        IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+        BurpUtil.flashTab(tab, tab.getTabCaption());
         this.tabJTransCoder.sendToJTransCoder(text);
     }
 
