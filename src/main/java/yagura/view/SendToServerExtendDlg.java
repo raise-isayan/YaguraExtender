@@ -299,7 +299,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyPasswd)
                     .addComponent(txtProxyPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pnlUseCustomClient.add(pnlCustomProxy, java.awt.BorderLayout.CENTER);
@@ -311,7 +311,10 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         chkClientCertififate.setText("use Client Certififate");
 
-        btnSelectExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_image.png"))); // NOI18N
+        btnSelectExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_page.png"))); // NOI18N
+        btnSelectExecute.setMaximumSize(new java.awt.Dimension(30, 30));
+        btnSelectExecute.setMinimumSize(new java.awt.Dimension(30, 30));
+        btnSelectExecute.setPreferredSize(new java.awt.Dimension(30, 30));
         btnSelectExecute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSelectExecuteActionPerformed(evt);
@@ -360,17 +363,17 @@ public class SendToServerExtendDlg extends CustomDialog {
                     .addGroup(pnlUseCertificateLayout.createSequentialGroup()
                         .addComponent(chkClientCertififate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 382, Short.MAX_VALUE)))
+                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 386, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlUseCertificateLayout.setVerticalGroup(
             pnlUseCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUseCertificateLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlUseCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlUseCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(chkClientCertififate)
-                    .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                 .addContainerGap())
@@ -502,7 +505,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addComponent(chkOverrideSendToParameter)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlSendToOverride, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(249, Short.MAX_VALUE))
+                .addContainerGap(319, Short.MAX_VALUE))
         );
 
         tabbetSendToExtend.addTab("SendToParameter", pnlSendToParameter);

@@ -135,7 +135,6 @@ import yagura.view.ViewStateTabEditor;
  * @author isayan
  */
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
-
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
@@ -1563,8 +1562,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(messageInfo.request().httpService()) + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                            if (messageInfo.response() != null) {
-                                fostm.write(messageInfo.response().toByteArray().getBytes());
+                            if (messageInfo.request() != null) {
+                                fostm.write(messageInfo.request().toByteArray().getBytes());
                                 fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             }
                             if (messageInfo.response() != null) {

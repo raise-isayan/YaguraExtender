@@ -118,7 +118,7 @@ public class SendToItemDlg extends CustomDialog {
             }
         });
 
-        btnSelectExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_image.png"))); // NOI18N
+        btnSelectExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_page.png"))); // NOI18N
         btnSelectExecute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSelectExecuteActionPerformed(evt);

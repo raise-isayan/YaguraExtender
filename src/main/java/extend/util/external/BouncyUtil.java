@@ -2,7 +2,6 @@ package extend.util.external;
 
 import extension.helpers.CertUtil;
 import extension.helpers.ConvertUtil;
-import static extension.helpers.HashUtil.toMessageDigest;
 import extension.helpers.StringUtil;
 import java.io.ByteArrayInputStream;
 import java.io.File;
