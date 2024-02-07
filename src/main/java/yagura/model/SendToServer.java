@@ -17,6 +17,7 @@ import extension.burp.HttpTarget;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.HttpUtil.DummyOutputStream;
+import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import java.awt.event.ActionEvent;
 import java.io.BufferedInputStream;
@@ -420,13 +421,22 @@ public class SendToServer extends SendToMenuItem {
 
                     if (extendSendToParameterProp.isUseOverride()) {
                         if (extendSendToParameterProp.isUseReqName()) {
-                            multipartBuilder.addFormDataPart("reqName", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo));
+                            String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                            if (value != null) {
+                                multipartBuilder.addFormDataPart("reqName", value);
+                            }
                         }
                         if (extendSendToParameterProp.isUseReqComment()) {
-                            multipartBuilder.addFormDataPart("reqComment", getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo));
+                            String value = getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo);
+                            if (value != null) {
+                                multipartBuilder.addFormDataPart("reqComment", value);
+                            }
                         }
                         if (extendSendToParameterProp.isUseReqNum()) {
-                            multipartBuilder.addFormDataPart("reqNum", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo));
+                            String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                            if (value != null) {
+                                multipartBuilder.addFormDataPart("reqNum", value);
+                            }
                         }
                     } else {
                         String notes = messageInfo.annotations().notes();
@@ -602,6 +612,9 @@ public class SendToServer extends SendToMenuItem {
                         HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
                         String body = wrapResponse.getBodyString(true, wrapResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name()));
                         value = HttpUtil.extractHTMLTitle(body);
+                        if (value != null) {
+                            value = SmartCodec.toHtmlDecode(value, wrapResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name()));
+                        }
                     } catch (UnsupportedEncodingException ex) {
                         Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -632,16 +645,25 @@ public class SendToServer extends SendToMenuItem {
         SendToParameterProperty extendSendToParameterProp = extendProp.getSendToParameterProperty();
         if (extendSendToParameterProp.isUseOverride()) {
             if (extendSendToParameterProp.isUseReqName()) {
-                HttpUtil.outMultipartText(boundary, out, "reqName", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo), StandardCharsets.UTF_8);
+                String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                if (value != null) {
+                    HttpUtil.outMultipartText(boundary, out, "reqName", value, StandardCharsets.UTF_8);
+                }
             }
             if (extendSendToParameterProp.isUseReqComment()) {
                 if (extendSendToParameterProp.getReqName() == SendToParameterType.HISTORY_COMMENT) {
-                    HttpUtil.outMultipartText(boundary, out, "reqComment", getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo), StandardCharsets.UTF_8);
+                    String value = getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo);
+                    if (value != null) {
+                        HttpUtil.outMultipartText(boundary, out, "reqComment", value, StandardCharsets.UTF_8);
+                    }
                 }
             }
             if (extendSendToParameterProp.isUseReqNum()) {
                 if (extendSendToParameterProp.getReqName() == SendToParameterType.HISTORY_NUMBER) {
-                    HttpUtil.outMultipartText(boundary, out, "reqNum", getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo), StandardCharsets.UTF_8);
+                    String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                    if (value != null) {
+                        HttpUtil.outMultipartText(boundary, out, "reqNum", value, StandardCharsets.UTF_8);
+                    }
                 }
             }
         } else {
