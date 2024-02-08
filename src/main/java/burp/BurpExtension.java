@@ -135,6 +135,7 @@ import yagura.view.ViewStateTabEditor;
  * @author isayan
  */
 public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadingHandler {
+
     private final static Logger logger = Logger.getLogger(BurpExtension.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("burp/resources/release");
@@ -1021,7 +1022,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //            JMenuItem yaguraPasteIncludeScopeMenu = createMenuItem("Paste include scope(multi-line)", KeyEvent.VK_I, includeScopeAction);
 //
 //            yaguraExtensionMenu.add(yaguraPasteIncludeScopeMenu);
-
             JMenuItem yaguraPasteIncludeTargetScopeMenu = createMenuItem("Paste include Target scope(multi-line)", KeyEvent.VK_I, includeTargetScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteIncludeTargetScopeMenu);
@@ -1029,7 +1029,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, includeHostScopeAction);
 //
 //            yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
-
             JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host Target scope(multi-line)", KeyEvent.VK_H, includeHostTargetScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
@@ -1037,7 +1036,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //            JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, excludeScopeAction);
 //
 //            yaguraExtensionMenu.add(yaguraPasteExludeScopeMenu);
-
             JMenuItem yaguraPasteExludeTargetScopeMenu = createMenuItem("Paste exclude Target scope(multi-line)", KeyEvent.VK_E, excludeTargetScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteExludeTargetScopeMenu);
@@ -1285,8 +1283,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             // Yagura Charset 選択状態
             if (selectedYaguraCharSet != null) {
                 this.menuYaguraCharsetsGroup.setSelected(selectedYaguraCharSet.getModel(), true);
-            }
-            else {
+            } else {
                 this.menuYaguraCharsetsGroup.setSelected(useBurpCharSet.getModel(), true);
             }
             Enumeration<AbstractButton> emu = this.menuYaguraCharsetsGroup.getElements();
@@ -1377,7 +1374,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 chkResultFilterItem.setText(name);
                 chkResultFilterItem.addActionListener(this.resultFilterModeAction);
                 yaguraResultFilterMenu.add(chkResultFilterItem);
- //               this.menuBurpResultFilterGroup.add(chkResultFilterItem);
+                //               this.menuBurpResultFilterGroup.add(chkResultFilterItem);
             }
 //            Enumeration<AbstractButton> rdoCheckGroup = this.menuBurpResultFilterGroup.getElements();
 //            while (rdoCheckGroup.hasMoreElements()) {

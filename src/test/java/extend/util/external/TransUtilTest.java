@@ -535,7 +535,7 @@ public class TransUtilTest {
 //            assertEquals("UTF-16", HttpUtil.getGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16LE"))); // UTF-16LE になるのがベスト
 //            assertEquals("UTF-16", HttpUtil.getGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16")));
 //        } catch (UnsupportedEncodingException ex) {
-//            Logger.getLogger(TransUtilTest.class.getName()).log(Level.SEVERE, null, ex);
+//            logger.log(Level.SEVERE, null, ex);
 //            assertTrue(false);
 //        }
 //    }

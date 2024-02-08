@@ -38,8 +38,7 @@ public class SendToMultiEditor extends SendToMenuItem {
         if (contextMenu.messageEditorRequestResponse().isPresent()) {
             List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
             sendToEvent(messageInfo);
-        }
-        else {
+        } else {
             List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
             sendToEvent(messageInfo);
         }

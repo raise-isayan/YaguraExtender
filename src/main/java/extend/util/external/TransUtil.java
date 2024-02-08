@@ -39,8 +39,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;
-import org.apache.commons.codec.digest.MurmurHash3;
-import org.w3c.dom.Node;
 
 /**
  * @author isayan
@@ -1389,7 +1387,6 @@ public class TransUtil {
         return buff.toString();
     }
 
-
     public static String toRegexEncode(String value, boolean metachar) {
         String encode = value;
         if (metachar) {
@@ -2371,7 +2368,6 @@ public class TransUtil {
         byte[] binary = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash64(binary, binary.length);
     }
-
 
     public static long toEpochSecond(BigDecimal excel_serial) {
         // Unixtime = (Excelserial - 25569) * (60 * 60 * 24) - (60 * 60 * 0)

@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.HighlightColor;
@@ -610,13 +611,13 @@ public class SendToServer extends SendToMenuItem {
                 if (messageInfo.response() != null) {
                     try {
                         HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
-                        String body = wrapResponse.getBodyString(true, wrapResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name()));
+                        String body = wrapResponse.getBodyString(true, StandardCharsets.ISO_8859_1.name());
                         value = HttpUtil.extractHTMLTitle(body);
                         if (value != null) {
                             value = SmartCodec.toHtmlDecode(value, wrapResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name()));
                         }
                     } catch (UnsupportedEncodingException ex) {
-                        Logger.getLogger(SendToServer.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.log(Level.SEVERE, null, ex);
                     }
                 }
                 break;
@@ -698,8 +699,7 @@ public class SendToServer extends SendToMenuItem {
         if (contextMenu.messageEditorRequestResponse().isPresent()) {
             List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
             sendToEvent(messageInfo);
-        }
-        else {
+        } else {
             List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
             sendToEvent(messageInfo);
         }

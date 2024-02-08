@@ -20,12 +20,15 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import extension.burp.IBurpTab;
+import java.util.logging.Logger;
 
 /**
  *
  * @author isayan
  */
 public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
+
+    private final static Logger logger = Logger.getLogger(MatchAlertTab.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 

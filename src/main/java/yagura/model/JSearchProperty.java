@@ -142,7 +142,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
     }
 
     /**
-     * @param listener port
+     * @param listenerPort
      */
     public void setListenerPort(int listenerPort) {
         this.listenerPort = listenerPort;

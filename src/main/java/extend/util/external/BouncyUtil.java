@@ -27,6 +27,8 @@ import java.security.cert.X509Certificate;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.io.pem.PemReader;
@@ -39,6 +41,7 @@ import org.bouncycastle.util.io.pem.PemObject;
  * @author isayan
  */
 public class BouncyUtil {
+    private final static Logger logger = Logger.getLogger(BouncyUtil.class.getName());
 
     private final static BouncyCastleProvider BC_PROVIDER = new BouncyCastleProvider();
 
@@ -71,6 +74,7 @@ public class BouncyUtil {
             }
             return new AbstractMap.SimpleEntry(privateKey, x509Certificate);
         } catch (IOException | CertificateException | NoSuchProviderException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
     }
@@ -151,7 +155,6 @@ public class BouncyUtil {
     }
 
     // https://github.com/rtyley/test-bc-java-cvsimport/blob/master/crypto/test/src/org/bouncycastle/jce/provider/test/DigestTest.java
-
     /**
      * ハッシュ値の取得
      *
@@ -207,7 +210,8 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD128", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+        logger.log(Level.SEVERE, ex.getMessage(), ex);
+         return null;
         }
     }
 
@@ -222,6 +226,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD128", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -237,7 +242,7 @@ public class BouncyUtil {
      */
     public static String toRIPEMD128Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-            return toRIPEMD128Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toRIPEMD128Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -251,6 +256,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD160", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -266,6 +272,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD160", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -281,7 +288,7 @@ public class BouncyUtil {
      */
     public static String toRIPEMD160Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-            return toRIPEMD160Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toRIPEMD160Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -295,6 +302,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD256", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -310,6 +318,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD256", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -325,7 +334,7 @@ public class BouncyUtil {
      */
     public static String toRIPEMD256Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-            return toRIPEMD256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toRIPEMD256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -339,6 +348,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD320", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -354,6 +364,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD320", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -369,7 +380,7 @@ public class BouncyUtil {
      */
     public static String toRIPEMD320Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-            return toRIPEMD320Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toRIPEMD320Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -383,6 +394,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("Tiger", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -398,6 +410,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("Tiger", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -413,7 +426,7 @@ public class BouncyUtil {
      */
     public static String toTigerSum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-            return toTigerSum(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toTigerSum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -427,6 +440,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("GOST3411", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -442,6 +456,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("GOST3411", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -457,7 +472,7 @@ public class BouncyUtil {
      */
     public static String toGOST3411Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-            return toGOST3411Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toGOST3411Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -471,6 +486,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("WHIRLPOOL", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -486,6 +502,7 @@ public class BouncyUtil {
         try {
             return toMessageDigest("WHIRLPOOL", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }
@@ -501,7 +518,7 @@ public class BouncyUtil {
      */
     public static String toWHIRLPOOLSum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-            return toWHIRLPOOLSum(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toWHIRLPOOLSum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
 }

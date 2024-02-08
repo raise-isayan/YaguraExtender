@@ -1,11 +1,17 @@
 package extend.util.external;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.awt.Window;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
@@ -15,6 +21,7 @@ import org.fife.ui.rtextarea.Gutter;
  * @author isayan
  */
 public class ThemeUI {
+    private final static Logger logger = Logger.getLogger(ThemeUI.class.getName());
 
     private final static List<PropertyChangeListener> listeners = new ArrayList<>();
 
@@ -61,6 +68,17 @@ public class ThemeUI {
         table.setGridColor(UIManager.getColor("Table.gridColor"));
         table.setForeground(UIManager.getColor("Button.default.foreground"));
         table.setBackground(UIManager.getColor("Burp.actionPanelBackground"));
+    }
+
+    public static void changeCaptionColor(Component c, Color color) {
+        UIManager.put("activeCaption", new ColorUIResource(color));
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Window w = SwingUtilities.getWindowAncestor(c);
+                SwingUtilities.updateComponentTreeUI(w);
+            }
+        });
     }
 
 }

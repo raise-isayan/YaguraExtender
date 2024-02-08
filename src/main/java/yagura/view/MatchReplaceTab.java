@@ -5,7 +5,6 @@
  */
 package yagura.view;
 
-import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
 import yagura.model.MatchReplaceItem;
@@ -22,6 +21,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import yagura.model.MatchReplaceGroup;
 import extension.burp.IBurpTab;
+import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -32,6 +32,8 @@ import javax.swing.event.ListSelectionListener;
 public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
+    private final static Logger logger = Logger.getLogger(MatchReplaceTab.class.getName());
 
     /**
      * Creates new form MatchReplace
