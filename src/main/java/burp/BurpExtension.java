@@ -212,7 +212,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
         Version version = Version.getInstance();
-        api.extension().setName(String.format("%s v%d.%d", version.getProjectName(), version.getMajorVersion(), version.getMinorVersion()));
+        api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));
 
         // 設定ファイル読み込み
         Map<String, String> config = this.option.loadConfigSetting();
@@ -403,9 +403,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     option.setSendToProperty(tabbetOption.getSendToProperty());
                     MontoyaApi api = api();
                     if (api != null) {
-                        registerContextMenu.deregister();
+                        //登録を解除すると遅いのとそもそも処理として不要っぽいのでコメント
+                        //registerContextMenu.deregister();
                         setSendToMenu(new SendToMenu(api, option.getSendToProperty()));
-                        registerContextMenu = api.userInterface().registerContextMenuItemsProvider(getSendToMenu());
+                        //registerContextMenu = api.userInterface().registerContextMenuItemsProvider(getSendToMenu());
                     }
                     applyOptionProperty();
                 } else if (LoggingProperty.LOGGING_PROPERTY.equals(evt.getPropertyName())) {

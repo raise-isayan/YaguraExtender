@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JMenuItem;
 
 /**
  * burp new IF
@@ -40,7 +41,6 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     }
 
     private final List<Component> menuList = new ArrayList<>();
-    private final List<SendToMenuItem> sendToList = new ArrayList<>();
 
     @Override
     public List<Component> provideMenuItems(ContextMenuEvent contextMenuEvent) {
@@ -82,13 +82,10 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
 
     public void renewMenu(SendToProperty property) {
         this.mnuSendTo.setText("Send To");
-        this.sendToList.clear();
         this.menuList.clear();
-        if (property.isSubMenu()) {
-            this.mnuSendTo.removeAll();
-            this.menuList.add(this.mnuSendTo);
-        }
+        this.mnuSendTo.removeAll();
         List<SendToItem> sendToItemList = property.getSendToItemList();
+        List<javax.swing.JMenuItem> sendToList = new ArrayList<>();
         for (SendToItem item : sendToItemList) {
             if (item.isSelected()) {
                 if (item.getExtend() != null) {
@@ -103,28 +100,15 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                             mnuItemEncoding.addActionListener(sendToItem);
                             mnuItem.add(mnuItemEncoding);
                         }
-                        if (property.isSubMenu()) {
-                            if (sendToItem.isEnabled()) {
-                                this.mnuSendTo.add(mnuItem);
-                            }
-                        } else {
-                            if (sendToItem.isEnabled()) {
-                                this.menuList.add(mnuItem);
-                            }
+                        if (sendToItem.isEnabled()) {
+                            sendToList.add(mnuItem);
                         }
                     } else {
                         javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
                         mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
-                        sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
-                        if (property.isSubMenu()) {
-                            if (sendToItem.isEnabled()) {
-                                this.mnuSendTo.add(mnuItem);
-                            }
-                        } else {
-                            if (sendToItem.isEnabled()) {
-                                this.menuList.add(mnuItem);
-                            }
+                        if (sendToItem.isEnabled()) {
+                            sendToList.add(mnuItem);
                         }
                     }
                 } else {
@@ -150,33 +134,29 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                             }
 
                         });
-                        sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
-                        if (property.isSubMenu()) {
-                            if (sendToItem.isEnabled()) {
-                                this.mnuSendTo.add(mnuItem);
-                            }
-                        } else {
-                            if (sendToItem.isEnabled()) {
-                                this.menuList.add(mnuItem);
-                            }
+                        if (sendToItem.isEnabled()) {
+                            sendToList.add(mnuItem);
                         }
                     } else {
                         SendToMenuItem sendToItem = new SendToMultiEditor(item, this.contextMenuEvent);
-                        sendToList.add(sendToItem);
                         mnuItem.addActionListener(sendToItem);
-                        if (property.isSubMenu()) {
-                            if (sendToItem.isEnabled()) {
-                                this.mnuSendTo.add(mnuItem);
-                            }
-                        } else {
-                            if (sendToItem.isEnabled()) {
-                                this.menuList.add(mnuItem);
-                            }
+                        if (sendToItem.isEnabled()) {
+                            sendToList.add(mnuItem);
                         }
                     }
                 }
             }
+        }
+
+        if (property.isSubMenu()) {
+            for (JMenuItem sendToItem : sendToList) {
+                this.mnuSendTo.add(sendToItem);
+            }
+            this.menuList.add(this.mnuSendTo);
+        }
+        else {
+            this.menuList.addAll(sendToList);
         }
 
     }

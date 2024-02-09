@@ -36,8 +36,8 @@ public final class Version extends CustomVersion {
     }
 
     public String getTabCaption() {
-        String projname = BUNDLE.getString("tabcaption");
-        return projname;
+        String tabcaption = BUNDLE.getString("tabcaption");
+        return tabcaption;
     }
 
     private final static String VERSION_INFO_FMT

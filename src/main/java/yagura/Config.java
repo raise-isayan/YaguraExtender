@@ -16,7 +16,8 @@ public class Config extends BurpConfig {
     }
 
     public static String getTabCaption() {
-        return BUNDLE.getString("projname");
+        String tabcaption = BUNDLE.getString("tabcaption");
+        return tabcaption;
     }
 
     public static String getExtensionDir() {
