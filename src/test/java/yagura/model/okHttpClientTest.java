@@ -251,7 +251,7 @@ public class okHttpClientTest {
                 }
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
     }

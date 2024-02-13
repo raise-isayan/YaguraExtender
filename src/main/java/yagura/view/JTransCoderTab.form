@@ -299,7 +299,7 @@
                         <Property name="rows" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JRadioButton" name="rdoHtmlHex">
+                        <Component class="javax.swing.JRadioButton" name="rdoHtmlUnicode">
                           <Properties>
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="rdoEncodeDecodeGrp"/>
@@ -307,7 +307,7 @@
                             <Property name="text" type="java.lang.String" value="&amp;#xhh;(unicode)"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoHtmlHexActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoHtmlUnicodeActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="rdoHtmlByteHex">

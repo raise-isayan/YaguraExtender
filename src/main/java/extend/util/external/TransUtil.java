@@ -102,7 +102,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, BYTE_HTML, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX,
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
@@ -389,7 +389,10 @@ public class TransUtil {
                     case HTML:
                         decode = SmartCodec.toHtmlDecode(value, SmartCodec.ENCODE_PATTERN_ALL);
                         break;
-                    case BYTE_HTML: {
+                    case HTML_UNICODE:
+                        decode = SmartCodec.toHtmlUnicodeDecode(value, SmartCodec.ENCODE_PATTERN_ALL);
+                        break;
+                    case HTML_BYTE: {
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(SmartCodec.toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;

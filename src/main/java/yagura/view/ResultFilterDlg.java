@@ -683,13 +683,13 @@ public class ResultFilterDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
         } catch (InstantiationException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
         } catch (IllegalAccessException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
         }
         //</editor-fold>
         //</editor-fold>

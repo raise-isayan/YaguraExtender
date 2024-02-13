@@ -424,7 +424,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoHtml = new javax.swing.JRadioButton();
         rdoHtmlDec = new javax.swing.JRadioButton();
         pnlHtmlHex = new javax.swing.JPanel();
-        rdoHtmlHex = new javax.swing.JRadioButton();
+        rdoHtmlUnicode = new javax.swing.JRadioButton();
         rdoHtmlByteHex = new javax.swing.JRadioButton();
         pnlJSUnicodeEnc = new javax.swing.JPanel();
         rdoUnicodeHex = new javax.swing.JRadioButton();
@@ -794,14 +794,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlHtmlHex.setLayout(new java.awt.GridLayout(1, 2));
 
-        rdoEncodeDecodeGrp.add(rdoHtmlHex);
-        rdoHtmlHex.setText("&#xhh;(unicode)");
-        rdoHtmlHex.addActionListener(new java.awt.event.ActionListener() {
+        rdoEncodeDecodeGrp.add(rdoHtmlUnicode);
+        rdoHtmlUnicode.setText("&#xhh;(unicode)");
+        rdoHtmlUnicode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoHtmlHexActionPerformed(evt);
+                rdoHtmlUnicodeActionPerformed(evt);
             }
         });
-        pnlHtmlHex.add(rdoHtmlHex);
+        pnlHtmlHex.add(rdoHtmlUnicode);
 
         rdoEncodeDecodeGrp.add(rdoHtmlByteHex);
         rdoHtmlByteHex.setText("&#xhh;(byte)");
@@ -2601,8 +2601,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = TransUtil.toByteOctEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlDec.isSelected()) {
                 encode = SmartCodec.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
-            } else if (this.rdoHtmlHex.isSelected()) {
-                encode = SmartCodec.toHtmlHexEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoHtmlUnicode.isSelected()) {
+                encode = SmartCodec.toHtmlUnicodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoHtmlByteHex.isSelected()) {
                 encode = SmartCodec.toHtmlByteHexEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoGzip.isSelected()) {
@@ -2678,9 +2678,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         } else if (this.rdoHtmlDec.isSelected()) {
             encodePattern = TransUtil.EncodePattern.HTML;
         } else if (this.rdoHtmlByteHex.isSelected()) {
-            encodePattern = TransUtil.EncodePattern.BYTE_HTML;
-        } else if (this.rdoHtmlHex.isSelected()) {
-            encodePattern = TransUtil.EncodePattern.HTML;
+            encodePattern = TransUtil.EncodePattern.HTML_BYTE;
+        } else if (this.rdoHtmlUnicode.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.HTML_UNICODE;
         } else if (this.rdoGzip.isSelected()) {
             encodePattern = TransUtil.EncodePattern.GZIP;
         } else if (this.rdoZLIB.isSelected()) {
@@ -3115,9 +3115,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         SwingUtil.systemClipboardCopy(this.txtOutputRaw.getText());
     }//GEN-LAST:event_btnOutputCopyActionPerformed
 
-    private void rdoHtmlHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHtmlHexActionPerformed
+    private void rdoHtmlUnicodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHtmlUnicodeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rdoHtmlHexActionPerformed
+    }//GEN-LAST:event_rdoHtmlUnicodeActionPerformed
 
     private void rdoHtmlByteHexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoHtmlByteHexActionPerformed
         // TODO add your handling code here:
@@ -3788,7 +3788,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoHtml;
     private javax.swing.JRadioButton rdoHtmlByteHex;
     private javax.swing.JRadioButton rdoHtmlDec;
-    private javax.swing.JRadioButton rdoHtmlHex;
+    private javax.swing.JRadioButton rdoHtmlUnicode;
     private javax.swing.JRadioButton rdoILLUTF8;
     private javax.swing.JRadioButton rdoJSON;
     private javax.swing.JRadioButton rdoLF;
