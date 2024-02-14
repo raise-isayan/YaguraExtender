@@ -13,6 +13,8 @@ import com.burgstaller.okhttp.DispatchingAuthenticator;
 import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
+import extend.util.external.TransUtil;
+import extend.util.external.TransUtil.EncodePattern;
 import extension.burp.HttpTarget;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
@@ -613,7 +615,13 @@ public class SendToServer extends SendToMenuItem {
                         String body = wrapResponse.getBodyString(true, StandardCharsets.ISO_8859_1.name());
                         value = HttpUtil.extractHTMLTitle(body);
                         if (value != null) {
-                            value = SmartCodec.toHtmlUnicodeDecode(value);
+                            EncodePattern patern = TransUtil.getSmartDecode(value);
+                            if (patern == EncodePattern.HTML) {
+                                value = SmartCodec.toHtmlUnicodeDecode(value);
+                            }
+                            else {
+                                value = StringUtil.getBytesCharsetString(value, wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name()));
+                            }
                         }
                     } catch (UnsupportedEncodingException ex) {
                         logger.log(Level.SEVERE, ex.getMessage(), ex);

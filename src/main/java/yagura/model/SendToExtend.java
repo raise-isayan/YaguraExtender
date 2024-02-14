@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
@@ -36,8 +37,8 @@ public class SendToExtend extends SendToMenuItem {
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
-    private File currentDirectory = new File(Config.getUserHomePath());
-    private int repeternum = 0;
+    private static File currentDirectory = new File(Config.getUserHomePath());
+    private static int repeternum = 0;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -130,9 +131,10 @@ public class SendToExtend extends SendToMenuItem {
     private void saveAsMessage(SendToItem.MessageType messageType, SendToMessage sendToMessage) {
         final HttpRequestResponse messageItem = sendToMessage.getSelectedMessages().get(0);
         try {
-            JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
+            JFileChooser filechooser = new JFileChooser();
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.request().url()))));
+            File chooseFile = new File(this.currentDirectory.getParentFile(), HttpUtil.getBaseName(new URL(messageItem.request().url())));
+            filechooser.setSelectedFile(chooseFile);
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -162,12 +164,14 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
+
     private void saveAsMessageBody(SendToItem.MessageType messageType, SendToMessage sendToMessage) {
         final HttpRequestResponse messageItem = sendToMessage.getSelectedMessages().get(0);
         try {
-            JFileChooser filechooser = new JFileChooser(this.currentDirectory.getParentFile());
+            JFileChooser filechooser = new JFileChooser();
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            filechooser.setSelectedFile(new File(HttpUtil.getBaseName(new URL(messageItem.request().url()))));
+            File chooseFile = new File(this.currentDirectory.getParentFile(), HttpUtil.getBaseName(new URL(messageItem.request().url())));
+            filechooser.setSelectedFile(chooseFile);
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
                 try {

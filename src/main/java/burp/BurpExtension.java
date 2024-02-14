@@ -1498,7 +1498,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     boolean includeLog = true;
                     if (getProperty().getLoggingProperty().isExclude()) {
                         Pattern patternExclude = Pattern.compile(BurpUtil.parseFilterPattern(getProperty().getLoggingProperty().getExcludeExtension()));
-                        Matcher matchExclude = patternExclude.matcher((new URL(httpResuest.url())).getFile());
+                        Matcher matchExclude = patternExclude.matcher(httpResuest.pathWithoutQuery());
                         if (matchExclude.find()) {
                             includeLog = false;
                         }

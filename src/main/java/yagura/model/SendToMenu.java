@@ -89,7 +89,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         for (SendToItem item : sendToItemList) {
             if (item.isSelected()) {
                 if (item.getExtend() != null) {
-                    SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
+                    final SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
                         mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
@@ -154,8 +154,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                 this.mnuSendTo.add(sendToItem);
             }
             this.menuList.add(this.mnuSendTo);
-        }
-        else {
+        } else {
             this.menuList.addAll(sendToList);
         }
 
