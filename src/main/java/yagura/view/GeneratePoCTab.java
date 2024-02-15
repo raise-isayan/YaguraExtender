@@ -1168,7 +1168,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
         HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
         if (httpRequestResponse.response() != null) {
-            guessCharset = httpResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name());
+            guessCharset = httpResponse.getGuessCharset(StandardCharsets.UTF_8.name());
         }
         HttpService service = httpRequest.httpService();
         if (service != null) {

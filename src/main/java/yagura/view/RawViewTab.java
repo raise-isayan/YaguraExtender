@@ -265,13 +265,13 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
             this.clearView();
             this.txtURaw.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
         } else {
-            String guessCharset = StandardCharsets.ISO_8859_1.name();
+            String guessCharset = StandardCharsets.UTF_8.name();
             if (this.isRequest) {
                 HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-                guessCharset = httpRequest.getGuessCharset(guessCharset = StandardCharsets.ISO_8859_1.name());
+                guessCharset = httpRequest.getGuessCharset(StandardCharsets.UTF_8.name());
             } else {
                 HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
-                guessCharset = httpResponse.getGuessCharset(StandardCharsets.ISO_8859_1.name());
+                guessCharset = httpResponse.getGuessCharset(StandardCharsets.UTF_8.name());
                 MimeType contentType = httpResponse.statedMimeType();
                 this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
             }

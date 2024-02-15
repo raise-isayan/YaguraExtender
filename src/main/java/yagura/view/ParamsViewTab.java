@@ -463,7 +463,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                         encodingItemStateChanged.itemStateChanged(null);
                         quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
                         textModified = false;
-
                     } catch (InterruptedException | ExecutionException ex) {
                         logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }

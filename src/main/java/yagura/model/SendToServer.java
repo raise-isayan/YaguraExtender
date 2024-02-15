@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.HighlightColor;
@@ -612,15 +613,12 @@ public class SendToServer extends SendToMenuItem {
                 if (messageInfo.response() != null) {
                     try {
                         HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
-                        String body = wrapResponse.getBodyString(true, StandardCharsets.ISO_8859_1.name());
+                        String body = wrapResponse.getBodyString(false, wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name()));
                         value = HttpUtil.extractHTMLTitle(body);
                         if (value != null) {
                             EncodePattern patern = TransUtil.getSmartDecode(value);
                             if (patern == EncodePattern.HTML) {
                                 value = SmartCodec.toHtmlUnicodeDecode(value);
-                            }
-                            else {
-                                value = StringUtil.getBytesCharsetString(value, wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name()));
                             }
                         }
                     } catch (UnsupportedEncodingException ex) {
