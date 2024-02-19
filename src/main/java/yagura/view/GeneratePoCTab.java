@@ -8,6 +8,7 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.requests.MalformedRequestException;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.ThemeUI;
@@ -1207,6 +1208,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             }
             String host = request.httpService().host();
             if (host == null) {
+                return false;
+            }
+            // MalformedRequestExceptionが発生する場合は無視
+            try {
+                request.method();
+            } catch (MalformedRequestException ex) {
                 return false;
             }
             if (!("POST".equals(request.method()) || "GET".equals(request.method()))) {

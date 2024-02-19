@@ -1,5 +1,7 @@
 package yagura.model;
 
+import burp.BurpExtension;
+import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
@@ -57,21 +59,22 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 }
                 case 2: // Name
                 {
-                    String raw = param.name();
-                    if (this.urldecode) {
-                        value = SmartCodec.toUrlDecode(raw, encoding);
+                    String rawValue = param.name();
+                    if (this.getContentType() != ContentType.NONE) {
+                        value = paramDecode((String) rawValue, encoding, this.getContentType());
+
                     } else {
-                        value = StringUtil.getStringCharset(StringUtil.getBytesRaw(raw), encoding);
+                        value = StringUtil.getStringCharset(StringUtil.getBytesRaw(rawValue), encoding);
                     }
                     break;
                 }
                 case 3: // Value
                 {
-                    String raw = param.value();
-                    if (this.urldecode) {
-                        value = SmartCodec.toUrlDecode(raw, encoding);
+                    String rawValue = param.value();
+                    if (this.getContentType() != ContentType.NONE) {
+                        value = paramDecode((String) rawValue, encoding, this.getContentType());
                     } else {
-                        value = StringUtil.getStringCharset(StringUtil.getBytesRaw(raw), encoding);
+                        value = StringUtil.getStringCharset(StringUtil.getBytesRaw(rawValue), encoding);
                     }
                     break;
                 }
@@ -95,23 +98,21 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                     param.getParameter().setType((HttpParameterType.valueOf((String) value)));
                     break;
                 case 2: // Name
-                    if (this.urldecode) {
-                        String raw = StringUtil.getBytesCharsetString((String) value, encoding);
-                        raw = SmartCodec.toUrlEncode(raw, encoding, true);
-                        param.getParameter().setName(raw);
+                    if (this.getContentType() != ContentType.NONE) {
+                        String encodeValue = paramEncode((String) value, encoding, this.getContentType());
+                        param.getParameter().setName(encodeValue);
                     } else {
-                        String rowMessage = StringUtil.getBytesCharsetString((String) value, encoding);
-                        param.getParameter().setName(rowMessage);
+                        String rawValue = StringUtil.getBytesCharsetString((String) value, encoding);
+                        param.getParameter().setName(rawValue);
                     }
                     break;
                 case 3: // Value
-                    if (this.urldecode) {
-                        String raw = StringUtil.getBytesCharsetString((String) value, encoding);
-                        raw = SmartCodec.toUrlEncode(raw, encoding, true);
-                        param.getParameter().setValue(raw);
+                    if (this.getContentType() != ContentType.NONE) {
+                        String encodeValue = paramEncode((String) value, encoding, this.getContentType());
+                        param.getParameter().setValue(encodeValue);
                     } else {
-                        String raw = StringUtil.getBytesCharsetString((String) value, encoding);
-                        param.getParameter().setValue(raw);
+                        String rawValue = StringUtil.getBytesCharsetString((String) value, encoding);
+                        param.getParameter().setValue(rawValue);
                     }
                     break;
             }
@@ -131,14 +132,53 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
         this.encoding = encoding;
     }
 
-    private boolean urldecode = false;
+    private ContentType contentType = ContentType.NONE;
 
-    public boolean getUrlDecode() {
-        return this.urldecode;
+    public ContentType getContentType() {
+        return this.contentType;
     }
 
-    public void setUrlDeocde(boolean urldecode) {
-        this.urldecode = urldecode;
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
+    }
+
+    public static String paramDecode(String value, String encoding, ContentType contentType) throws UnsupportedEncodingException {
+        String decodeValue = value;
+        switch (contentType) {
+            case URL_ENCODED:
+                decodeValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(value), encoding);
+                decodeValue = SmartCodec.toUrlDecode(decodeValue, encoding);
+                break;
+            case JSON:
+                decodeValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(value), encoding);
+                decodeValue = SmartCodec.toUnicodeDecode(decodeValue);
+                break;
+            case XML:
+                decodeValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(value), encoding);
+                decodeValue = SmartCodec.toHtmlUnicodeDecode(decodeValue);
+                break;
+            default:
+                break;
+        }
+        return decodeValue;
+    }
+
+    public static String paramEncode(String value, String encoding, ContentType contentType) throws UnsupportedEncodingException {
+        String encodeValue = value;
+        switch (contentType) {
+            case URL_ENCODED:
+                encodeValue = SmartCodec.toUrlEncode(value, encoding, SmartCodec.ENCODE_PATTERN_BURP, false);
+                break;
+            case JSON:
+                encodeValue = SmartCodec.toUnocodeEncode(value, SmartCodec.ENCODE_PATTERN_BURP, false);
+                break;
+            case XML:
+                encodeValue = SmartCodec.toHtmlUnicodeEncode(value, SmartCodec.ENCODE_PATTERN_BURP, false);
+                break;
+            default:
+                break;
+        }
+        return encodeValue;
     }
 
 }

@@ -1,16 +1,23 @@
 package yagura.view;
 
+import burp.BurpExtender;
 import burp.BurpExtension;
-import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
+import burp.api.montoya.http.message.ContentType;
+import burp.api.montoya.http.message.MimeType;
+import static burp.api.montoya.http.message.requests.HttpRequest.httpRequest;
 import extension.helpers.HttpRequestWapper;
+import extension.helpers.HttpResponseWapper;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -27,14 +34,17 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.swing.SwingWorker;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.Parameter;
 import yagura.model.ParamsView;
 import yagura.model.ParamsViewModel;
 import yagura.model.UniversalViewProperty;
+import static yagura.view.RawViewTab.getSyntaxEditingStyle;
 
 /**
  *
@@ -48,9 +58,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     private static boolean toggleDecode = false;
 
     private boolean textModified = false;
-    private boolean editable;
+    private boolean editable = false;
     private HttpRequestResponse httpRequestResponse;
-
     /**
      * Creates new form ParamsViewTab
      *
@@ -149,8 +158,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             pnlOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlOperationLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnDecode)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(btnDecode, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlOperationLayout.setVerticalGroup(
             pnlOperationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,13 +185,16 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             }
         });
 
+        btnUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_up.png"))); // NOI18N
         btnUp.setText("up");
+        btnUp.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpActionPerformed(evt);
             }
         });
 
+        btnDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N
         btnDown.setText("down");
         btnDown.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -225,7 +237,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     private final JComboBox<String> cmbParamType = new JComboBox<>();
 
     private void btnDecodeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnDecodeStateChanged
-        this.modelParams.setUrlDeocde(this.btnDecode.isSelected());
+        if (this.btnDecode.isSelected()) {
+            this.modelParams.setContentType(this.httpRequestResponse.request().contentType());
+        }
+        else {
+            this.modelParams.setContentType(ContentType.NONE);
+        }
         this.tableParams.updateUI();
     }//GEN-LAST:event_btnDecodeStateChanged
 
@@ -267,16 +284,15 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     };
 
     private void customizeComponents() {
-        this.pnlEdit.setVisible(this.editable);
         this.modelParams = new ParamsViewModel(this.tableParams.getModel());
         this.tableParams.setModel(this.modelParams);
-        this.modelParams.setCellEditable(this.editable);
         this.modelParams.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 textModified = true;
             }
         });
+        this.setEditable(false);
         this.tableParams.getActionMap().put("copy", copyAction);
         this.tableParams.setColumnSelectionAllowed(false);
         this.tableParams.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -289,12 +305,15 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.cmbParamType.setMaximumRowCount(10);
-        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.URL));
-        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.COOKIE));
-        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.BODY));
+        this.cmbParamType.addItem(HttpParameterType.URL.name());
+        this.cmbParamType.addItem(HttpParameterType.COOKIE.name());
+        this.cmbParamType.addItem(HttpParameterType.BODY.name());
+//        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.URL));
+//        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.COOKIE));
+//        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.BODY));
 
-        TableColumn colorColumn = this.tableParams.getColumnModel().getColumn(1);
-        colorColumn.setCellEditor(new DefaultCellEditor(this.cmbParamType));
+        TableColumn paramTypeColumn = this.tableParams.getColumnModel().getColumn(1);
+        paramTypeColumn.setCellEditor(new DefaultCellEditor(this.cmbParamType));
 
         // Data
         this.tableParams.getColumnModel().getColumn(0).setMinWidth(0);
@@ -323,12 +342,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             String encoding = quickSearchTab.getSelectedEncoding();
             if (encoding != null) {
-                modelParams.setEncoding(encoding);
-                tableParams.repaint();
+                setMessageEncoding(encoding);
             }
         }
     };
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -345,54 +362,54 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     private javax.swing.JTable tableParams;
     // End of variables declaration//GEN-END:variables
 
+    private void setEditable(boolean editable) {
+        this.editable = editable;
+        this.modelParams.setCellEditable(editable);
+        this.pnlEdit.setVisible(editable);
+    }
+
     public void setMessageFont(Font font) {
         this.tableParams.setFont(font);
     }
 
-//    public void setMessageEncoding(String encoding) {
-//        if (this.httpRequestResponse == null) {
-//            return;
-//        }
-//
-//        SwingWorker swParam = new SwingWorker<HttpRequest, Object>() {
-//            @Override
-//            protected HttpRequest doInBackground() throws Exception {
-//                final HttpRequest httpRequest = httpRequestResponse.httpRequest();
-//                setLocation(httpRequest);
-//                setParams(httpRequest.parameters());
-//                return httpRequest;
-//            }
-//
-//            protected void process(List<Object> chunks) {
-//            }
-//
-//            protected void done() {
-//                try {
-//                    final HttpRequest httpRequest = get();
-//                    String guessCharset = null;
-//                    if (httpRequest.contentType() == ContentType.URL_ENCODED) {
-//                        guessCharset = HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(TransUtil.decodeUrl(httpRequest.url(), StandardCharsets.ISO_8859_1.name())));
-//                    } else {
-//                        guessCharset = HttpUtil.getUniversalGuessCode(httpRequest.body().getBytes());
-//                    }
-//
-//                    if (guessCharset == null) {
-//                        guessCharset = StandardCharsets.ISO_8859_1.name();
-//                    }
-//
-//                    textModified = false;
-//
-//                } catch (InterruptedException ex) {
-//                    logger.log(Level.SEVERE, ex.getMessage(), ex);
-//                } catch (ExecutionException ex) {
-//                    logger.log(Level.SEVERE, ex.getMessage(), ex);
-//                } catch (UnsupportedEncodingException ex) {
-//                    logger.log(Level.SEVERE, ex.getMessage(), ex);
-//                }
-//            }
-//        };
-//        swParam.execute();
-//    }
+    public void setMessageEncoding(String encoding) {
+        try {
+            if (this.httpRequestResponse == null) {
+                return;
+            }
+            this.modelParams.removeAll();
+            this.modelParams.setEncoding(encoding);
+            SwingWorker swText = new SwingWorker<HttpRequest, Object>() {
+                @Override
+                protected HttpRequest doInBackground() throws Exception {
+                    final HttpRequest httpRequest = httpRequestResponse.request();
+                    return httpRequest;
+                }
+
+                @Override
+                protected void process(List<Object> chunks) {
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        HttpRequest httpRequest = get();
+                        setLocation(httpRequest);
+                        setParams(httpRequest.parameters());
+                        quickSearchTab.clearViewAndSearch();
+                        // quickSearchTab.clearView();
+                    } catch (InterruptedException | ExecutionException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+            };
+            swText.execute();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+
     public void setLocation(HttpRequest httpRequest) {
         this.lblLocation.setText(String.format("%s %s", httpRequest.method(), httpRequest.url()));
     }
@@ -431,7 +448,10 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
     }
 
     public HttpRequestResponse getHttpRequestResponse() {
-        return this.httpRequestResponse;
+        HttpRequest httpRequest = this.httpRequestResponse.request();
+        httpRequest = httpRequest.withUpdatedParameters(this.getParams());
+        HttpResponse httpResponse = this.httpRequestResponse.response();
+        return HttpRequestResponse.httpRequestResponse(httpRequest, httpResponse, this.httpRequestResponse.annotations());
     }
 
     @Override
@@ -440,39 +460,21 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         if (this.httpRequestResponse == null) {
             this.clearView();
         } else {
-            SwingWorker swParam = new SwingWorker<HttpRequest, Object>() {
-                @Override
-                protected HttpRequest doInBackground() throws Exception {
-                    final HttpRequest httpRequest = httpRequestResponse.request();
-                    setLocation(httpRequest);
-                    setParams(httpRequest.parameters());
-                    return httpRequest;
-                }
+            String guessCharset = StandardCharsets.UTF_8.name();
+            HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
+            guessCharset = httpRequest.getGuessCharset(StandardCharsets.UTF_8.name());
+            BurpExtension extenderImpl = BurpExtension.getInstance();
 
-                @Override
-                protected void process(List<Object> chunks) {
-                }
+            this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
+            this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
 
-                @Override
-                protected void done() {
-                    try {
-                        final HttpRequestWapper httpRequest = new HttpRequestWapper(get());
-                        String guessCharset = httpRequest.getGuessCharset(StandardCharsets.ISO_8859_1.name());
-                        quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-                        quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
-                        encodingItemStateChanged.itemStateChanged(null);
-                        quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
-                        textModified = false;
-                    } catch (InterruptedException | ExecutionException ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
-                    }
-                }
-            };
-            swParam.execute();
-            // Decode状態を戻す
-            this.btnDecode.setSelected(toggleDecode);
+            this.encodingItemStateChanged.itemStateChanged(null);
+            this.quickSearchTab.getEncodingComboBox().addItemListener(this.encodingItemStateChanged);
+
+//            this.setMessageEncoding(guessCharset);
             this.textModified = false;
         }
+
     }
 
     @Override
@@ -490,32 +492,14 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                     || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
                 return true;
             }
-            HttpRequest httpRequest = httpRequestResponse.request();
+            HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
             if (httpRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
                     && BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
                 return false;
             }
-            List<ParsedHttpParameter> params = httpRequest.parameters();
-            boolean isDecodeParam = false;
-            int count = 0;
-            for (ParsedHttpParameter p : params) {
-                switch (p.type()) {
-                    case URL:
-                    case COOKIE:
-                        isDecodeParam = true;
-                        count++;
-                        break;
-                    case BODY:
-                        isDecodeParam = false;
-                        count++;
-                        break;
-                    case MULTIPART_ATTRIBUTE:
-                        break;
-                }
-            }
-            boolean enabled = (httpRequest.contentType() == ContentType.URL_ENCODED) || (httpRequest.contentType() == ContentType.NONE && isDecodeParam);
+            boolean enabled = httpRequest.hasParameters();
             this.btnDecode.setEnabled(enabled);
-            return count > 0;
+            return httpRequest.hasParameters();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
