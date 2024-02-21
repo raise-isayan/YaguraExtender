@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.params.HttpParameterType;
@@ -12,12 +11,7 @@ import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.http.message.ContentType;
-import burp.api.montoya.http.message.MimeType;
-import static burp.api.montoya.http.message.requests.HttpRequest.httpRequest;
 import extension.helpers.HttpRequestWapper;
-import extension.helpers.HttpResponseWapper;
-import extension.helpers.HttpUtil;
-import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -34,17 +28,17 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
-import java.io.UnsupportedEncodingException;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
+import javax.swing.JTable;
 import javax.swing.SwingWorker;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.Parameter;
 import yagura.model.ParamsView;
 import yagura.model.ParamsViewModel;
 import yagura.model.UniversalViewProperty;
-import static yagura.view.RawViewTab.getSyntaxEditingStyle;
 
 /**
  *
@@ -308,9 +302,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         this.cmbParamType.addItem(HttpParameterType.URL.name());
         this.cmbParamType.addItem(HttpParameterType.COOKIE.name());
         this.cmbParamType.addItem(HttpParameterType.BODY.name());
-//        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.URL));
-//        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.COOKIE));
-//        this.cmbParamType.addItem(ParamsView.getType(HttpParameterType.BODY));
 
         TableColumn paramTypeColumn = this.tableParams.getColumnModel().getColumn(1);
         paramTypeColumn.setCellEditor(new DefaultCellEditor(this.cmbParamType));
@@ -409,7 +400,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         }
     }
 
-
     public void setLocation(HttpRequest httpRequest) {
         this.lblLocation.setText(String.format("%s %s", httpRequest.method(), httpRequest.url()));
     }
@@ -449,7 +439,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
 
     public HttpRequestResponse getHttpRequestResponse() {
         HttpRequest httpRequest = this.httpRequestResponse.request();
-        httpRequest = httpRequest.withUpdatedParameters(this.getParams());
+        if (httpRequest.contentType() == ContentType.URL_ENCODED) {
+            httpRequest = httpRequest.withRemovedParameters(httpRequest.parameters()).withAddedParameters(this.getParams());
+        }
         HttpResponse httpResponse = this.httpRequestResponse.response();
         return HttpRequestResponse.httpRequestResponse(httpRequest, httpResponse, this.httpRequestResponse.annotations());
     }
@@ -460,9 +452,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
         if (this.httpRequestResponse == null) {
             this.clearView();
         } else {
-            String guessCharset = StandardCharsets.UTF_8.name();
+
             HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-            guessCharset = httpRequest.getGuessCharset(StandardCharsets.UTF_8.name());
+            if (httpRequest.contentType() == ContentType.URL_ENCODED) {
+                this.setEditable(BurpExtension.getInstance().option.getDebugMode());
+            }
+            String guessCharset = httpRequest.getGuessCharset(StandardCharsets.UTF_8.name());
             BurpExtension extenderImpl = BurpExtension.getInstance();
 
             this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
