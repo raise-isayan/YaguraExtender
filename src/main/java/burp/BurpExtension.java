@@ -839,7 +839,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, new ITranslateAction() {
                 @Override
                 public String translate(String allText, String selectedText) {
-                    return TransUtil.encodeJsonLiteral(selectedText, true);
+                    return TransUtil.decodeJsonLiteral(selectedText, true);
                 }
             });
 

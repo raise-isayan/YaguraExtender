@@ -611,19 +611,19 @@ public class SendToServer extends SendToMenuItem {
                 break;
             case RESPONSE_TITLE:
                 if (messageInfo.response() != null) {
-                    try {
-                        HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
-                        String body = wrapResponse.getBodyString(false, wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name()));
-                        value = HttpUtil.extractHTMLTitle(body);
-                        if (value != null) {
-                            EncodePattern patern = TransUtil.getSmartDecode(value);
-                            if (patern == EncodePattern.HTML) {
-                                value = SmartCodec.toHtmlUnicodeDecode(value);
-                            }
-                        }
-                    } catch (UnsupportedEncodingException ex) {
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+            try {
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
+                String body = wrapResponse.getBodyString(wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name()),  false);
+                value = HttpUtil.extractHTMLTitle(body);
+                if (value != null) {
+                    EncodePattern patern = TransUtil.getSmartDecode(value);
+                    if (patern == EncodePattern.HTML) {
+                        value = SmartCodec.toHtmlUnicodeDecode(value);
                     }
+                }
+                } catch (UnsupportedEncodingException ex) {
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                }
                 }
                 break;
             case HISTORY_NUMBER:
