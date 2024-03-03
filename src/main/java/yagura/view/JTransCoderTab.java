@@ -469,6 +469,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashSha3_256 = new javax.swing.JButton();
         btnHashSha3_384 = new javax.swing.JButton();
         btnHashSha3_512 = new javax.swing.JButton();
+        btnSHAKE128 = new javax.swing.JButton();
+        btnSHAKE256 = new javax.swing.JButton();
         btnHashRIPEMD128 = new javax.swing.JButton();
         btnHashRIPEMD129 = new javax.swing.JButton();
         btnHashRIPEMD256 = new javax.swing.JButton();
@@ -987,7 +989,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlTransButton.add(pnlRegex);
 
         pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(7, 3));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(8, 3));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -1092,6 +1094,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlHashTrans.add(btnHashSha3_512);
+
+        btnSHAKE128.setText("SHAKE128");
+        btnSHAKE128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSHAKE128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSHAKE128);
+
+        btnSHAKE256.setText("SHAKE256");
+        btnSHAKE256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSHAKE256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSHAKE256);
 
         btnHashRIPEMD128.setText("RIPEMD128");
         btnHashRIPEMD128.addActionListener(new java.awt.event.ActionListener() {
@@ -1991,7 +2009,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(413, Short.MAX_VALUE))
+                .addContainerGap(429, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -2153,7 +2171,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(txtRadix32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRadix32)
                     .addComponent(btnRadix32Copy))
-                .addContainerGap(494, Short.MAX_VALUE))
+                .addContainerGap(510, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Base", tabBaseConverter);
@@ -3596,6 +3614,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIntIPActionPerformed
 
+    private void btnSHAKE128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSHAKE128ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSHAKE128Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSHAKE128ActionPerformed
+
+    private void btnSHAKE256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSHAKE256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSHAKE256um(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSHAKE256ActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3660,6 +3700,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnOutputToInput;
     private javax.swing.JButton btnOutputfile;
     private javax.swing.JButton btnRadix32Copy;
+    private javax.swing.JButton btnSHAKE128;
+    private javax.swing.JButton btnSHAKE256;
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JButton btnSmartDecode;
     private javax.swing.JButton btnSmartFormat;

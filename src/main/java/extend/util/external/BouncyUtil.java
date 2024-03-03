@@ -41,6 +41,7 @@ import org.bouncycastle.util.io.pem.PemObject;
  * @author isayan
  */
 public class BouncyUtil {
+
     private final static Logger logger = Logger.getLogger(BouncyUtil.class.getName());
 
     private final static BouncyCastleProvider BC_PROVIDER = new BouncyCastleProvider();
@@ -200,6 +201,98 @@ public class BouncyUtil {
     }
 
     /**
+     * SHAKE128値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHAKE128um(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHAKE128", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SHAKE128値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHAKE128Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHAKE128", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SHAKE128値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHAKE128Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHAKE128um(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHAKE256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHAKE256um(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHAKE256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SHAKE256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHAKE256um(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHAKE256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SHAKE256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHAKE256um(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHAKE256um(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
      * RIPEMD128値の取得
      *
      * @param binary 対象バイト
@@ -210,9 +303,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("RIPEMD128", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-        logger.log(Level.SEVERE, ex.getMessage(), ex);
-         return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -227,8 +320,8 @@ public class BouncyUtil {
             return toMessageDigest("RIPEMD128", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -257,8 +350,8 @@ public class BouncyUtil {
             return toMessageDigest("RIPEMD160", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -273,8 +366,8 @@ public class BouncyUtil {
             return toMessageDigest("RIPEMD160", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -303,8 +396,8 @@ public class BouncyUtil {
             return toMessageDigest("RIPEMD256", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -319,8 +412,8 @@ public class BouncyUtil {
             return toMessageDigest("RIPEMD256", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -349,8 +442,8 @@ public class BouncyUtil {
             return toMessageDigest("RIPEMD320", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -365,8 +458,8 @@ public class BouncyUtil {
             return toMessageDigest("RIPEMD320", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -395,8 +488,8 @@ public class BouncyUtil {
             return toMessageDigest("Tiger", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -411,8 +504,8 @@ public class BouncyUtil {
             return toMessageDigest("Tiger", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -441,8 +534,8 @@ public class BouncyUtil {
             return toMessageDigest("GOST3411", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -457,8 +550,8 @@ public class BouncyUtil {
             return toMessageDigest("GOST3411", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -487,8 +580,8 @@ public class BouncyUtil {
             return toMessageDigest("WHIRLPOOL", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**
@@ -503,8 +596,8 @@ public class BouncyUtil {
             return toMessageDigest("WHIRLPOOL", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return null;
         }
+        return null;
     }
 
     /**

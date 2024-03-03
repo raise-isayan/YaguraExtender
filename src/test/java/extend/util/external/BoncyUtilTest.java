@@ -2,11 +2,15 @@ package extend.util.external;
 
 import extension.helpers.CertUtil;
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,6 +91,14 @@ public class BoncyUtilTest {
         {
             String hash = BouncyUtil.toWHIRLPOOLSum("hello world", true);
             assertEquals("8D8309CA6AF848095BCABAF9A53B1B6CE7F594C1434FD6E5177E7E5C20E76CD30936D8606E7F36ACBEF8978FEA008E6400A975D51ABE6BA4923178C7CF90C802", hash);
+        }
+        {
+            String hash = BouncyUtil.toSHAKE128Sum("hello world", true);
+            System.out.println("SHAKE128:" + hash);
+        }
+        {
+            String hash = BouncyUtil.toSHAKE256um("hello world", true);
+            System.out.println("SHAKE256:" + hash);
         }
     }
 

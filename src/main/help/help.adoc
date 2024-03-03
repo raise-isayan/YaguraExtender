@@ -871,6 +871,11 @@ sha3-384::
 sha3-512::
     Calculate hash with sha3-512
 
+SHAKE128::
+    Calculate hash with SHAKE128
+
+SHAK256::
+    Calculate hash with SHAKE256
 
 RIPEMD128::
     Calculate hash with RIPEMD128
