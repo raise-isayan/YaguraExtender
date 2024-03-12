@@ -47,7 +47,7 @@ gradlew release
 
 ### 開発環境
 * NetBeans 20 (https://netbeans.apache.org/)
-* Gradle 7.5 (https://gradle.org/)
+* Gradle 7.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
 ## 必須ライブラリ
