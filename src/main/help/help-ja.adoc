@@ -18,33 +18,93 @@ image:images/Extender_Yagura.png[Extension]
 
 IntercepterやRepeterにてYaguraのEncode/Decodeの各種変換機能を呼び出すことができます。
 
-Yagura Charsets::
-  各種変換機能で利用するデフォルトの文字コードを選択できます。指定した文字コードでEncode/Decodeできます。
+=== Yagura Charsets
 
-Encoder::
-  選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
-  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Htm/JSON with Meta に対応しています。
+各種変換機能で利用するデフォルトの文字コードを選択できます。指定した文字コードでEncode/Decodeできます。
+ 
+   ISO-8859-1/UTF-8/US-ASCII/... ::
+     文字コードを指定します。
+     選択可能な文字コードは、[CJK View]で指定することができます。
+
+   Use Burp Charsets::
+      BurpのCharsetの設定を利用します。
+      ただし、「recognize_automatically」が選択されている場合の文字コードはBurpが解釈している文字コードと一致しない可能性があります。
+
+=== Encoder
+
+選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
+次の変換に対応しています。
   
-Decoder::
-  選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
-  URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta に対応しています。
+  * URL
+  * Unicode(URL)
+  * Unicode(JSON)
+  * Base64
+  * Base64URLSafe
+  * Html
+  * JSON with Meta
+  
+=== Decoder
 
-Converter::
-  選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
-  Upper Case/Lower Case/bin2hex/hex2bin/Full width -> Half width/Half width/ -> Full width に対応しています。
+選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
+次の変換に対応しています。
 
-Hash::
-  選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
-  md2/md5/sha1/sha256/sha384/sha512 に対応しています。
+  * URL
+  * Unicode(URL)
+  * Unicode(JSON)
+  * Base64
+  * Base64URLSafe
+  * Html
+  * JSON with Meta
 
-Result Filter::
-  Proxy HistoryのBambda mode のクエリを切り替えることが可能です。
+=== Converter
 
-Extension::
-  選択した拡張機能を実行します。
+選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
+次の変換に対応しています。
 
-Burp Charsets::
-  BurpのUser設定の文字コードを変更します。
+  * Upper Case
+  * Lower Case
+  * bin2hex
+  * hex2bin
+  * Full width -> Half width
+  * Half width -> Full width
+
+=== Hash
+
+選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
+次の変換に対応しています。
+
+  * md2
+  * md5
+  * sha1
+  * sha256
+  * sha384
+  * sha512
+
+=== Result Filter
+
+Proxy HistoryのBambda mode のクエリを切り替えることが可能です。
+Result FilterタブでBambda modeを切り換えるためのタブを作成することができます。
+
+=== Extension
+
+選択した拡張機能を実行します。
+
+  Paste include Target scope(multi-line)::
+    クリップボードに設定された、複数行のURLをTarget Scopeの Include in scope に追加します。
+
+  Paste include Top URL Target scope(multi-line)::
+    クリップボードに設定された、複数行のTop URLをTarget Scopeの Include in scope に追加します。
+
+  Paste exclude Target scope(multi-line)::
+    クリップボードに設定された、複数行のURLをTarget Scopeの Exclude from scope に追加します。
+
+  Paste SSL pass through(multi-line)::
+    クリップボードに設定された、複数行のURLをTarget Scopeの SSL pass through に追加します。
+
+=== Burp Charsets
+
+BurpのUser設定の文字コードを変更します。
+Burpの [User Interface] -> [Inspector and Message Editor] の Charsetsの切り替えと同等です。
 
 == Yaguraタブ
 
@@ -584,8 +644,10 @@ ProxyのBambda modeを切り替えるための設定を行います｡
 image:images/custom_resultfilter_item.png[ResultFilterItem編集 ダイヤログ]
 
 [Convert to Bambda]ボタン::
+  指定された設定をBambda クエリーに変換します。
 
-
+[Import Bambda]ボタン::
+  BurpのBambda設定をインポートします。
 
 === Loggingタブ
 

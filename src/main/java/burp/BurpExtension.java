@@ -1030,7 +1030,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, includeHostScopeAction);
 //
 //            yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
-            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host Target scope(multi-line)", KeyEvent.VK_H, includeHostTargetScopeAction);
+            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Top URL Target scope(multi-line)", KeyEvent.VK_H, includeTopURLTargetScopeAction);
 
             yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
 
@@ -1178,14 +1178,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener includeHostTargetScopeAction = new ActionListener() {
+        private ActionListener includeTopURLTargetScopeAction = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     String paste = SwingUtil.systemClipboardPaste();
-                    URL url = new URL(paste);
-                    BurpExtension.helpers().addIncludeTargetScope(String.format("%s://%s/", url.getProtocol(), HttpUtil.buildHost(url.getHost(), url.getPort(), url.getProtocol())), false);
+                    BurpExtension.helpers().addIncludeTopURLTargetScope(paste, false);
                     IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
                     BurpUtil.flashTab(tab, "Target");
                 } catch (Exception ex) {

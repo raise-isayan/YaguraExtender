@@ -18,31 +18,94 @@ image:images/Extender_Yagura.png[Extension]
 
 Various Yagura Encode/Decode conversion functions can be called in Intercepter and Repeter.
 
-Yagura Charsets::
-    You can select a default character set to be used in the various conversion functions.
-    You can Encode/Decode with the specified character set.
+=== Yagura Charsets
 
-Encoder::
-    Encode the selected string in the character code selected in "Yagura Charsets".
-    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.
-
-Decoder::
-    Decode the selected string in the character code selected in "Yagura Charsets".
-    URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.
-
-Converter::
-    Converts the selected string in the character code selected in "Yagura Charsets".
-    Upper Case/Lower Case/bin2hex/hex2bin/Full width -> Half width/Half width/ -> Full width  are supported.
-
-Hash::
-    Hash calculation the selected string in the character code selected in "Yagura Charsets".
-    md2/md5/sha1/sha256/sha384/sha512  are supported.
-
-Extension::
-    Run the selected extension.
+You can select a default character set to be used in the various conversion functions.
+You can Encode/Decode with the specified character set.
  
-Burp Charsets::
-    Changes the character code in the User settings of Burp.
+   ISO-8859-1/UTF-8/US-ASCII/... ::
+     Specify the character code.
+     Selectable character codes can be specified in [CJK View].
+
+   Use Burp Charsets::
+      Use Burp'sCharset setting.
+      However, if "recognize_automatically" is selected, the charset may not match the charset interpreted by Burp.
+
+=== Encoder
+
+Encode the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported
+  
+  * URL
+  * Unicode(URL)
+  * Unicode(JSON)
+  * Base64
+  * Base64URLSafe
+  * Html
+  * JSON with Meta
+  
+=== Decoder
+
+Decode the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported
+
+  * URL
+  * Unicode(URL)
+  * Unicode(JSON)
+  * Base64
+  * Base64URLSafe
+  * Html
+  * JSON with Meta
+
+=== Converter
+
+Converts the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported
+
+  * Upper Case
+  * Lower Case
+  * bin2hex
+  * hex2bin
+  * Full width -> Half width
+  * Half width -> Full width
+
+=== Hash
+
+Hash calculation the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported
+
+  * md2
+  * md5
+  * sha1
+  * sha256
+  * sha384
+  * sha512
+
+=== Result Filter
+
+It is possible to switch Bambda mode queries in Proxy History.
+You can create a tab to switch Bambda mode in the Result Filter tab.
+
+=== Extension
+
+Run the selected extension.
+
+  Paste include Target scope(multi-line)::
+    Add a multi-line URL set on the clipboard to the Target Scope Include in scope.
+
+  Paste include Top URL Target scope(multi-line)::
+    Add a multi-line Top URL set on the clipboard to the Target Scope Include in scope.
+
+  Paste exclude Target scope(multi-line)::
+    Add a multi-line URL set on the clipboard to the Target Scope Exclude in scope.
+
+  Paste SSL pass through(multi-line)::
+    Add a multi-line URL set on the clipboard to the SSL pass through.
+
+=== Burp Charsets
+
+Changes the character code in the User settings of Burp.
+It is equivalent to switching Charsets in Burp's [User Interface] -> [Inspector and Message Editor].
 
 == Yagura tab
 
@@ -589,6 +652,9 @@ image:images/custom_resultfilter_item.png[ResultFilterItem  Edit Dialog]
 
 [Convert to Bambda] Button::
     Converts the given configuration into a Bambda query.
+
+[Import Bambda] Button::
+    Import Burp Bambda configuration.
 
 === Logging tab
 

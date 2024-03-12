@@ -443,7 +443,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_start_up">1. Start up</a></li>
-<li><a href="#_yagura_menu">2. Yagura Menu</a></li>
+<li><a href="#_yagura_menu">2. Yagura Menu</a>
+<ul class="sectlevel2">
+<li><a href="#_yagura_charsets">2.1. Yagura Charsets</a></li>
+<li><a href="#_encoder">2.2. Encoder</a></li>
+<li><a href="#_decoder">2.3. Decoder</a></li>
+<li><a href="#_converter">2.4. Converter</a></li>
+<li><a href="#_hash">2.5. Hash</a></li>
+<li><a href="#_result_filter">2.6. Result Filter</a></li>
+<li><a href="#_extension">2.7. Extension</a></li>
+<li><a href="#_burp_charsets">2.8. Burp Charsets</a></li>
+</ul>
+</li>
 <li><a href="#_yaguraタブ">3. Yaguraタブ</a>
 <ul class="sectlevel2">
 <li><a href="#_cjk_viewタブ">3.1. CJK Viewタブ</a>
@@ -481,31 +492,35 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_resultfilterタブ">3.6. ResultFilterタブ</a>
 <ul class="sectlevel3">
 <li><a href="#_resultfilteritem_編集ダイヤログ">3.6.1. ResultFilterItem 編集ダイヤログ</a></li>
-<li><a href="#_logging">3.6.2. Logging</a></li>
 </ul>
 </li>
-<li><a href="#_jsearchタブ">3.7. JSearchタブ</a>
+<li><a href="#_loggingタブ">3.7. Loggingタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_jsearch">3.7.1. JSearch</a></li>
+<li><a href="#_logging">3.7.1. Logging</a></li>
 </ul>
 </li>
-<li><a href="#_jtranscoderタブ">3.8. JTransCoderタブ</a>
+<li><a href="#_jsearchタブ">3.8. JSearchタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_translator">3.8.1. Translator</a></li>
-<li><a href="#_generaterタブ">3.8.2. Generaterタブ</a></li>
-<li><a href="#_converter_tab">3.8.3. Converter tab</a></li>
-<li><a href="#_certificate_タブ">3.8.4. Certificate タブ</a></li>
-<li><a href="#_view_state_decoder_タブ">3.8.5. View State Decoder タブ</a></li>
-<li><a href="#_jwt_token_decoder_タブ">3.8.6. JWT Token Decoder タブ</a></li>
+<li><a href="#_jsearch">3.8.1. JSearch</a></li>
 </ul>
 </li>
-<li><a href="#_generate_csrf_poc">3.9. Generate CSRF PoC</a>
+<li><a href="#_jtranscoderタブ">3.9. JTransCoderタブ</a>
 <ul class="sectlevel3">
-<li><a href="#_viewstate_タブ">3.9.1. ViewState タブ</a></li>
-<li><a href="#_jwt_タブ">3.9.2. JWT タブ</a></li>
+<li><a href="#_translator">3.9.1. Translator</a></li>
+<li><a href="#_generaterタブ">3.9.2. Generaterタブ</a></li>
+<li><a href="#_converter_tab">3.9.3. Converter tab</a></li>
+<li><a href="#_certificate_タブ">3.9.4. Certificate タブ</a></li>
+<li><a href="#_view_state_decoder_タブ">3.9.5. View State Decoder タブ</a></li>
+<li><a href="#_jwt_token_decoder_タブ">3.9.6. JWT Token Decoder タブ</a></li>
 </ul>
 </li>
-<li><a href="#_version">3.10. Version</a></li>
+<li><a href="#_generate_csrf_poc">3.10. Generate CSRF PoC</a>
+<ul class="sectlevel3">
+<li><a href="#_viewstate_タブ">3.10.1. ViewState タブ</a></li>
+<li><a href="#_jwt_タブ">3.10.2. JWT タブ</a></li>
+</ul>
+</li>
+<li><a href="#_version">3.11. Version</a></li>
 </ul>
 </li>
 </ul>
@@ -538,45 +553,187 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>IntercepterやRepeterにてYaguraのEncode/Decodeの各種変換機能を呼び出すことができます。</p>
 </div>
+<div class="sect2">
+<h3 id="_yagura_charsets">2.1. Yagura Charsets</h3>
+<div class="paragraph">
+<p>各種変換機能で利用するデフォルトの文字コードを選択できます。指定した文字コードでEncode/Decodeできます。</p>
+</div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Yagura Charsets</dt>
+<dt class="hdlist1">ISO-8859-1/UTF-8/US-ASCII/&#8230;&#8203; </dt>
 <dd>
-<p>各種変換機能で利用するデフォルトの文字コードを選択できます。指定した文字コードでEncode/Decodeできます。</p>
+<p>文字コードを指定します。
+選択可能な文字コードは、[CJK View]で指定することができます。</p>
 </dd>
-<dt class="hdlist1">Encoder</dt>
+<dt class="hdlist1">Use Burp Charsets</dt>
 <dd>
-<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
-URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Htm/JSON with Meta に対応しています。</p>
-</dd>
-<dt class="hdlist1">Decoder</dt>
-<dd>
-<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
-URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta に対応しています。</p>
-</dd>
-<dt class="hdlist1">Converter</dt>
-<dd>
-<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
-Upper Case/Lower Case/bin2hex/hex2bin/Full width &#8594; Half width/Half width/ &#8594; Full width に対応しています。</p>
-</dd>
-<dt class="hdlist1">Hash</dt>
-<dd>
-<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
-md2/md5/sha1/sha256/sha384/sha512 に対応しています。</p>
-</dd>
-<dt class="hdlist1">Result Filter</dt>
-<dd>
-<p>Proxy HistoryのBambda mode のクエリを切り替えることが可能です。</p>
-</dd>
-<dt class="hdlist1">Extension</dt>
-<dd>
-<p>選択した拡張機能を実行します。</p>
-</dd>
-<dt class="hdlist1">Burp Charsets</dt>
-<dd>
-<p>BurpのUser設定の文字コードを変更します。</p>
+<p>BurpのCharsetの設定を利用します。
+ただし、「recognize_automatically」が選択されている場合の文字コードはBurpが解釈している文字コードと一致しない可能性があります。</p>
 </dd>
 </dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_encoder">2.2. Encoder</h3>
+<div class="paragraph">
+<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
+次の変換に対応しています。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>URL</p>
+</li>
+<li>
+<p>Unicode(URL)</p>
+</li>
+<li>
+<p>Unicode(JSON)</p>
+</li>
+<li>
+<p>Base64</p>
+</li>
+<li>
+<p>Base64URLSafe</p>
+</li>
+<li>
+<p>Html</p>
+</li>
+<li>
+<p>JSON with Meta</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_decoder">2.3. Decoder</h3>
+<div class="paragraph">
+<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
+次の変換に対応しています。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>URL</p>
+</li>
+<li>
+<p>Unicode(URL)</p>
+</li>
+<li>
+<p>Unicode(JSON)</p>
+</li>
+<li>
+<p>Base64</p>
+</li>
+<li>
+<p>Base64URLSafe</p>
+</li>
+<li>
+<p>Html</p>
+</li>
+<li>
+<p>JSON with Meta</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_converter">2.4. Converter</h3>
+<div class="paragraph">
+<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
+次の変換に対応しています。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upper Case</p>
+</li>
+<li>
+<p>Lower Case</p>
+</li>
+<li>
+<p>bin2hex</p>
+</li>
+<li>
+<p>hex2bin</p>
+</li>
+<li>
+<p>Full width &#8594; Half width</p>
+</li>
+<li>
+<p>Half width &#8594; Full width</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hash">2.5. Hash</h3>
+<div class="paragraph">
+<p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
+次の変換に対応しています。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>md2</p>
+</li>
+<li>
+<p>md5</p>
+</li>
+<li>
+<p>sha1</p>
+</li>
+<li>
+<p>sha256</p>
+</li>
+<li>
+<p>sha384</p>
+</li>
+<li>
+<p>sha512</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_result_filter">2.6. Result Filter</h3>
+<div class="paragraph">
+<p>Proxy HistoryのBambda mode のクエリを切り替えることが可能です。
+Result FilterタブでBambda modeを切り換えるためのタブを作成することができます。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extension">2.7. Extension</h3>
+<div class="paragraph">
+<p>選択した拡張機能を実行します。</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Paste include Target scope(multi-line)</dt>
+<dd>
+<p>クリップボードに設定された、複数行のURLをTarget Scopeの Include in scope に追加します。</p>
+</dd>
+<dt class="hdlist1">Paste include Top URL Target scope(multi-line)</dt>
+<dd>
+<p>クリップボードに設定された、複数行のTop URLをTarget Scopeの Include in scope に追加します。</p>
+</dd>
+<dt class="hdlist1">Paste exclude Target scope(multi-line)</dt>
+<dd>
+<p>クリップボードに設定された、複数行のURLをTarget Scopeの Exclude from scope に追加します。</p>
+</dd>
+<dt class="hdlist1">Paste SSL pass through(multi-line)</dt>
+<dd>
+<p>クリップボードに設定された、複数行のURLをTarget Scopeの SSL pass through に追加します。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_burp_charsets">2.8. Burp Charsets</h3>
+<div class="paragraph">
+<p>BurpのUser設定の文字コードを変更します。
+Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの切り替えと同等です。</p>
+</div>
 </div>
 </div>
 </div>
@@ -1450,10 +1607,18 @@ sample/sendto.php にはこの形式を受け取って表示するだけのPHP�
 <dl>
 <dt class="hdlist1">[Convert to Bambda]ボタン</dt>
 <dd>
-<p>=== Loggingタブ</p>
+<p>指定された設定をBambda クエリーに変換します。</p>
+</dd>
+<dt class="hdlist1">[Import Bambda]ボタン</dt>
+<dd>
+<p>BurpのBambda設定をインポートします。</p>
 </dd>
 </dl>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_loggingタブ">3.7. Loggingタブ</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_logging.png" alt="Loggingタブ"></span></p>
 </div>
@@ -1461,9 +1626,8 @@ sample/sendto.php にはこの形式を受け取って表示するだけのPHP�
 <p>ログの自動ロギング機能です。
 この機能では、毎回ログの選択を行わなくても自動でログを 保存してくれます。</p>
 </div>
-</div>
 <div class="sect3">
-<h4 id="_logging">3.6.2. Logging</h4>
+<h4 id="_logging">3.7.1. Logging</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[auto logging]チェックボックス</dt>
@@ -1521,7 +1685,7 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jsearchタブ">3.7. JSearchタブ</h3>
+<h3 id="_jsearchタブ">3.8. JSearchタブ</h3>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jsearch.png" alt="JSearchタブ"></span></p>
 </div>
@@ -1529,7 +1693,7 @@ proxy-message.log.2
 <p>JSearch タブはProxyのHistory一覧から文字を検索するための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_jsearch">3.7.1. JSearch</h4>
+<h4 id="_jsearch">3.8.1. JSearch</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">[Search]ボタン</dt>
@@ -1574,12 +1738,12 @@ proxy-message.log.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_jtranscoderタブ">3.8. JTransCoderタブ</h3>
+<h3 id="_jtranscoderタブ">3.9. JTransCoderタブ</h3>
 <div class="paragraph">
 <p>Transcoder タブは各種エンコード、デコードを行うための機能です。</p>
 </div>
 <div class="sect3">
-<h4 id="_translator">3.8.1. Translator</h4>
+<h4 id="_translator">3.9.1. Translator</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder.png" alt="Translatorタブ"></span></p>
 </div>
@@ -1945,7 +2109,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generaterタブ">3.8.2. Generaterタブ</h4>
+<h4 id="_generaterタブ">3.9.2. Generaterタブ</h4>
 <div class="paragraph">
 <p>Generater には、sequenceタブとrandomタブがあります。</p>
 </div>
@@ -2051,7 +2215,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_converter_tab">3.8.3. Converter tab</h4>
+<h4 id="_converter_tab">3.9.3. Converter tab</h4>
 <div class="paragraph">
 <p>Baseタブは基数変換するための簡易的な機能です。</p>
 </div>
@@ -2175,7 +2339,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_certificate_タブ">3.8.4. Certificate タブ</h4>
+<h4 id="_certificate_タブ">3.9.4. Certificate タブ</h4>
 <div class="paragraph">
 <p>証明書の各種変換およびエクスポートを行います｡</p>
 </div>
@@ -2220,7 +2384,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_view_state_decoder_タブ">3.8.5. View State Decoder タブ</h4>
+<h4 id="_view_state_decoder_タブ">3.9.5. View State Decoder タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.png" alt="View State Decoderタブ"></span></p>
 </div>
@@ -2246,7 +2410,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_token_decoder_タブ">3.8.6. JWT Token Decoder タブ</h4>
+<h4 id="_jwt_token_decoder_タブ">3.9.6. JWT Token Decoder タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder_JWT_decoder.png" alt="JWT Token Decoderタブ"></span></p>
 </div>
@@ -2273,7 +2437,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_generate_csrf_poc">3.9. Generate CSRF PoC</h3>
+<h3 id="_generate_csrf_poc">3.10. Generate CSRF PoC</h3>
 <div class="paragraph">
 <p>主にCSRF(クロスサイトリクエストフォージェリ)のPoCを作成するための機能です。</p>
 </div>
@@ -2354,7 +2518,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </dl>
 </div>
 <div class="sect3">
-<h4 id="_viewstate_タブ">3.9.1. ViewState タブ</h4>
+<h4 id="_viewstate_タブ">3.10.1. ViewState タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_viewstate.png" alt="View Stateタブ"></span></p>
 </div>
@@ -2380,7 +2544,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_タブ">3.9.2. JWT タブ</h4>
+<h4 id="_jwt_タブ">3.10.2. JWT タブ</h4>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_JWT.png" alt="JWTタブ"></span></p>
 </div>
@@ -2407,7 +2571,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_version">3.10. Version</h3>
+<h3 id="_version">3.11. Version</h3>
 <div class="paragraph">
 <p>バージョン情報を表示します。</p>
 </div>
@@ -2432,7 +2596,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-03 22:52:09 +0900
+Last updated 2024-03-12 14:57:37 +0900
 </div>
 </div>
 </body>

@@ -443,7 +443,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_start_up">1. Start up</a></li>
-<li><a href="#_yagura_menu">2. Yagura Menu</a></li>
+<li><a href="#_yagura_menu">2. Yagura Menu</a>
+<ul class="sectlevel2">
+<li><a href="#_yagura_charsets">2.1. Yagura Charsets</a></li>
+<li><a href="#_encoder">2.2. Encoder</a></li>
+<li><a href="#_decoder">2.3. Decoder</a></li>
+<li><a href="#_converter">2.4. Converter</a></li>
+<li><a href="#_hash">2.5. Hash</a></li>
+<li><a href="#_result_filter">2.6. Result Filter</a></li>
+<li><a href="#_extension">2.7. Extension</a></li>
+<li><a href="#_burp_charsets">2.8. Burp Charsets</a></li>
+</ul>
+</li>
 <li><a href="#_yagura_tab">3. Yagura tab</a>
 <ul class="sectlevel2">
 <li><a href="#_cjk_view_tab">3.1. CJK View tab</a>
@@ -559,42 +570,188 @@ Various settings can be done from here.</p>
 <div class="paragraph">
 <p>Various Yagura Encode/Decode conversion functions can be called in Intercepter and Repeter.</p>
 </div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Yagura Charsets</dt>
-<dd>
+<div class="sect2">
+<h3 id="_yagura_charsets">2.1. Yagura Charsets</h3>
+<div class="paragraph">
 <p>You can select a default character set to be used in the various conversion functions.
 You can Encode/Decode with the specified character set.</p>
-</dd>
-<dt class="hdlist1">Encoder</dt>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">ISO-8859-1/UTF-8/US-ASCII/&#8230;&#8203; </dt>
 <dd>
-<p>Encode the selected string in the character code selected in "Yagura Charsets".
-URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.</p>
+<p>Specify the character code.
+Selectable character codes can be specified in [CJK View].</p>
 </dd>
-<dt class="hdlist1">Decoder</dt>
+<dt class="hdlist1">Use Burp Charsets</dt>
 <dd>
-<p>Decode the selected string in the character code selected in "Yagura Charsets".
-URL/Unicode(URL)/Unicode(JSON)/Base64/Base64URLSafe/Html/JSON with Meta are supported.</p>
-</dd>
-<dt class="hdlist1">Converter</dt>
-<dd>
-<p>Converts the selected string in the character code selected in "Yagura Charsets".
-Upper Case/Lower Case/bin2hex/hex2bin/Full width &#8594; Half width/Half width/ &#8594; Full width  are supported.</p>
-</dd>
-<dt class="hdlist1">Hash</dt>
-<dd>
-<p>Hash calculation the selected string in the character code selected in "Yagura Charsets".
-md2/md5/sha1/sha256/sha384/sha512  are supported.</p>
-</dd>
-<dt class="hdlist1">Extension</dt>
-<dd>
-<p>Run the selected extension.</p>
-</dd>
-<dt class="hdlist1">Burp Charsets</dt>
-<dd>
-<p>Changes the character code in the User settings of Burp.</p>
+<p>Use Burp&#8217;sCharset setting.
+However, if "recognize_automatically" is selected, the charset may not match the charset interpreted by Burp.</p>
 </dd>
 </dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_encoder">2.2. Encoder</h3>
+<div class="paragraph">
+<p>Encode the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>URL</p>
+</li>
+<li>
+<p>Unicode(URL)</p>
+</li>
+<li>
+<p>Unicode(JSON)</p>
+</li>
+<li>
+<p>Base64</p>
+</li>
+<li>
+<p>Base64URLSafe</p>
+</li>
+<li>
+<p>Html</p>
+</li>
+<li>
+<p>JSON with Meta</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_decoder">2.3. Decoder</h3>
+<div class="paragraph">
+<p>Decode the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>URL</p>
+</li>
+<li>
+<p>Unicode(URL)</p>
+</li>
+<li>
+<p>Unicode(JSON)</p>
+</li>
+<li>
+<p>Base64</p>
+</li>
+<li>
+<p>Base64URLSafe</p>
+</li>
+<li>
+<p>Html</p>
+</li>
+<li>
+<p>JSON with Meta</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_converter">2.4. Converter</h3>
+<div class="paragraph">
+<p>Converts the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upper Case</p>
+</li>
+<li>
+<p>Lower Case</p>
+</li>
+<li>
+<p>bin2hex</p>
+</li>
+<li>
+<p>hex2bin</p>
+</li>
+<li>
+<p>Full width &#8594; Half width</p>
+</li>
+<li>
+<p>Half width &#8594; Full width</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hash">2.5. Hash</h3>
+<div class="paragraph">
+<p>Hash calculation the selected string in the character code selected in "Yagura Charsets".
+The following conversions are supported</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>md2</p>
+</li>
+<li>
+<p>md5</p>
+</li>
+<li>
+<p>sha1</p>
+</li>
+<li>
+<p>sha256</p>
+</li>
+<li>
+<p>sha384</p>
+</li>
+<li>
+<p>sha512</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_result_filter">2.6. Result Filter</h3>
+<div class="paragraph">
+<p>It is possible to switch Bambda mode queries in Proxy History.
+You can create a tab to switch Bambda mode in the Result Filter tab.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extension">2.7. Extension</h3>
+<div class="paragraph">
+<p>Run the selected extension.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Paste include Target scope(multi-line)</dt>
+<dd>
+<p>Add a multi-line URL set on the clipboard to the Target Scope Include in scope.</p>
+</dd>
+<dt class="hdlist1">Paste include Top URL Target scope(multi-line)</dt>
+<dd>
+<p>Add a multi-line Top URL set on the clipboard to the Target Scope Include in scope.</p>
+</dd>
+<dt class="hdlist1">Paste exclude Target scope(multi-line)</dt>
+<dd>
+<p>Add a multi-line URL set on the clipboard to the Target Scope Exclude in scope.</p>
+</dd>
+<dt class="hdlist1">Paste SSL pass through(multi-line)</dt>
+<dd>
+<p>Add a multi-line URL set on the clipboard to the SSL pass through.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_burp_charsets">2.8. Burp Charsets</h3>
+<div class="paragraph">
+<p>Changes the character code in the User settings of Burp.
+It is equivalent to switching Charsets in Burp&#8217;s [User Interface] &#8594; [Inspector and Message Editor].</p>
+</div>
 </div>
 </div>
 </div>
@@ -1473,6 +1630,10 @@ The order here is the order in which ResultFilter is applied.</p>
 <dt class="hdlist1">[Convert to Bambda] Button</dt>
 <dd>
 <p>Converts the given configuration into a Bambda query.</p>
+</dd>
+<dt class="hdlist1">[Import Bambda] Button</dt>
+<dd>
+<p>Import Burp Bambda configuration.</p>
 </dd>
 </dl>
 </div>
@@ -2466,7 +2627,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2024-03-03 22:51:14 +0900
+Last updated 2024-03-12 14:58:05 +0900
 </div>
 </div>
 </body>
