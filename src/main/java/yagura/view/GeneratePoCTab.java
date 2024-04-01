@@ -21,6 +21,7 @@ import extension.helpers.MatchUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
+import extension.helpers.json.JsonUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
@@ -718,9 +719,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
             final MontoyaApi api = BurpExtension.api();
-            final HttpRequestWapper httpRequest = new HttpRequestWapper(this.httpRequestResponse.request());
+            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             // 自動判定
-            String contentType = httpRequest.getEnctype();
+            String contentType = wrapRequest.getEnctype();
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // select auto
             if (csrfParam.isCsrfAuto()) {
@@ -749,9 +750,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
 
-            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : httpRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(httpRequest.httpService().host(), httpRequest.httpService().port(), csrfParam.isUseHttps());
-            String csrfUrl = (csrfParam.isCsrfGetMethod() || httpRequest.isGET()) ? HttpRequestWapper.getUrlPath(httpRequest.url()) : httpRequest.url();
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseHttps());
+            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(wrapRequest.url()) : wrapRequest.url();
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">" + HttpUtil.LINE_TERMINATE, new Object[]{csrfEncoding}));
 
@@ -791,7 +792,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>" + HttpUtil.LINE_TERMINATE,
                             new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
                 }
-                List<ParsedHttpParameter> parameters = httpRequest.parameters();
+                List<ParsedHttpParameter> parameters = wrapRequest.parameters();
                 logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
                 boolean binaryParam = false;
                 String filename = "";
@@ -856,7 +857,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 // csrf textplain
                 buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>" + HttpUtil.LINE_TERMINATE,
                         new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
-                Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(httpRequest.body().getBytes(), csrfEncoding));
+                Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(wrapRequest.body().getBytes(), csrfEncoding));
                 String key = pair.getKey();
                 String val = pair.getValue();
                 if ("".equals(val)) {
@@ -901,8 +902,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             int timeOutValue = (int) csrfParam.getTimeOutValue();
             boolean csrfHtml5WithXHeader = csrfParam.isCsrfHtml5WithXHeader();
 
-            final HttpRequestWapper httpRequest = new HttpRequestWapper(this.httpRequestResponse.request());
-            String contentType = httpRequest.getEnctype();
+            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
+            String contentType = wrapRequest.getEnctype();
             String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
             // 自動判定
             if (csrfParam.isCsrfAuto()) {
@@ -929,9 +930,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     csrfEnctype = "text/plain"; // 固定
                 }
             }
-            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : httpRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(httpRequest.httpService().host(), httpRequest.httpService().port(), csrfParam.isUseHttps());
-            String csrfUrl = httpRequest.url();
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : wrapRequest.method();
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseHttps());
+            String csrfUrl = wrapRequest.url();
 
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">" + HttpUtil.LINE_TERMINATE, new Object[]{csrfEncoding}));
@@ -959,7 +960,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             buff.append(String.format("\txhr.open('%s', '%s', true);" + HttpUtil.LINE_TERMINATE, new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl, false)}));
             buff.append("\txhr.withCredentials = true;").append(HttpUtil.LINE_TERMINATE);       // Cookieを付与
             if (csrfHtml5WithXHeader) {
-                List<HttpHeader> headers = httpRequest.headers();
+                List<HttpHeader> headers = wrapRequest.headers();
                 for (HttpHeader header : headers) {
                     if (header.name().startsWith("X-")) {
                         String name = header.name();
@@ -975,7 +976,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 if (csrfMultiPart) {
                     buff.append(String.format("\tvar boundary = '--%s';" + HttpUtil.LINE_TERMINATE, new Object[]{boundary}));
                     buff.append("\txhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);").append(HttpUtil.LINE_TERMINATE);
-                    List<ParsedHttpParameter> parameters = httpRequest.parameters();
+                    List<ParsedHttpParameter> parameters = wrapRequest.parameters();
                     logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
                     boolean binaryParam = false;
                     String filename = "";
@@ -1040,7 +1041,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     buff.append("\txhr.send(new Blob([blob]));").append(HttpUtil.LINE_TERMINATE);
                 } else {
                     buff.append("\txhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');").append(HttpUtil.LINE_TERMINATE);
-                    List<ParsedHttpParameter> parameters = httpRequest.parameters();
+                    List<ParsedHttpParameter> parameters = wrapRequest.parameters();
                     logger.log(Level.FINE, "parameters.size:{0}", parameters.size());
                     boolean binaryParam = false;
                     boolean first = true;
@@ -1085,8 +1086,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             } // csrf textplain
             else {
                 buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');" + HttpUtil.LINE_TERMINATE, csrfEnctype));
-                String paramValue = StringUtil.getStringRaw(httpRequest.body().getBytes());
-                buff.append(String.format("\treq += '%s';" + HttpUtil.LINE_TERMINATE, new Object[]{TransUtil.toByteHex1Encode(StringUtil.getBytesRaw(paramValue), SmartCodec.ENCODE_PATTERN_JS, false)}));
+                byte[] bodyByte = wrapRequest.body().getBytes();
+                String escapeJS = TransUtil.toByteHex1Encode(bodyByte, SmartCodec.ENCODE_PATTERN_JS, false);
+                String jsonComment = JsonUtil.isJson(StringUtil.getStringUTF8(bodyByte)) ? "//" : "";
+                buff.append(String.format("\treq += '%s%s';" + HttpUtil.LINE_TERMINATE, new Object[]{escapeJS, jsonComment}));
                 buff.append("\tvar blob = new Uint8Array(req.length);").append(HttpUtil.LINE_TERMINATE);
                 buff.append("\tfor (var i = 0; i < blob.length; i++)").append(HttpUtil.LINE_TERMINATE);
                 buff.append("\t\tblob[i] = req.charCodeAt(i);").append(HttpUtil.LINE_TERMINATE);
@@ -1166,16 +1169,16 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = StandardCharsets.ISO_8859_1.name();
         final boolean useHttps;
-        HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-        HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
+        HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
         if (httpRequestResponse.response() != null) {
-            guessCharset = httpResponse.getGuessCharset(StandardCharsets.UTF_8.name());
+            HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
+            guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
         }
-        HttpService service = httpRequest.httpService();
+        HttpService service = wrapRequest.httpService();
         if (service != null) {
-            useHttps = httpRequest.httpService().secure();
+            useHttps = wrapRequest.httpService().secure();
         } else {
-            useHttps = httpRequest.isSecure();
+            useHttps = wrapRequest.isSecure();
         }
         final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.chkUseHttps.setSelected(useHttps);
@@ -1202,24 +1205,24 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
                 return true;
             }
-            HttpRequestWapper request = new HttpRequestWapper(httpRequestResponse.request());
-            if (request.httpService() == null) {
+            HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
+            if (wrapRequest.httpService() == null) {
                 return false;
             }
-            String host = request.httpService().host();
+            String host = wrapRequest.httpService().host();
             if (host == null) {
                 return false;
             }
             // MalformedRequestExceptionが発生する場合は無視
             try {
-                request.method();
+                wrapRequest.method();
             } catch (MalformedRequestException ex) {
                 return false;
             }
-            if (!("POST".equals(request.method()) || "GET".equals(request.method()))) {
+            if (!("POST".equals(wrapRequest.method()) || "GET".equals(wrapRequest.method()))) {
                 return false;
             }
-            return (request.body().length() > 0) || (request.hasQueryParameter());
+            return (wrapRequest.body().length() > 0) || (wrapRequest.hasQueryParameter());
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;

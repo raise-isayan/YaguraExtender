@@ -270,8 +270,8 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
     public String getGuessCharset(String defaultCharset) {
         String charset = defaultCharset;
         if (this.originalResponse() != null) {
-            HttpResponseWapper wrap = new HttpResponseWapper(this.originalResponse());
-            charset = wrap.getGuessCharset(defaultCharset);
+            HttpResponseWapper wrapResponse = new HttpResponseWapper(this.originalResponse());
+            charset = wrapResponse.getGuessCharset(defaultCharset);
         }
         return charset;
     }
@@ -292,8 +292,8 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
         String mimeType = null;
         try {
             if (this.originalResponse() != null) {
-                HttpResponseWapper wrap = new HttpResponseWapper(this.originalResponse());
-                mimeType = wrap.getContentMimeType();
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(this.originalResponse());
+                mimeType = wrapResponse.getContentMimeType();
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);

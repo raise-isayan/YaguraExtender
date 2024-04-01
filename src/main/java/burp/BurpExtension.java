@@ -86,6 +86,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
 import extension.helpers.HttpRequestWapper;
+import extension.helpers.HttpResponseWapper;
 import extension.helpers.SmartCodec;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
@@ -1488,6 +1489,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 HttpResponse httpResponse) {
             if (httpResponse != null) {
                 try {
+                    HttpRequestWapper wrapRequest = new HttpRequestWapper(httpResuest);
+                    HttpResponseWapper wrapResponse = new HttpResponseWapper(httpResponse);
                     File fname = new File(getLogDir(), Config.getProxyLogMessageName());
                     if (fname.length() > getProperty().getLoggingProperty().getLogFileByteLimitSize()
                             && getProperty().getLoggingProperty().getLogFileByteLimitSize() > 0) {
@@ -1509,10 +1512,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(httpService) + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            fostm.write(httpResuest.toByteArray().getBytes());
+                            fostm.write(wrapRequest.getMessageByte());
                             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
-                            fostm.write(httpResponse.toByteArray().getBytes());
+                            fostm.write(wrapResponse.getMessageByte());
                             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                             fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
                         }
@@ -1633,7 +1636,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
 
         private ProxyResponseReceivedAction processProxyMessage(InterceptedResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
-            byte[] responseByte = interceptedHttpResponse.toByteArray().getBytes();
+            HttpResponseWapper wrapResponse = new HttpResponseWapper(interceptedHttpResponse);
+            byte[] responseByte = wrapResponse.getMessageByte();
             byte[] resultBytes = responseByte;
 
             // Match and Replace

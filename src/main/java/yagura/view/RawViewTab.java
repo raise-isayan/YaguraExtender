@@ -267,12 +267,12 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, Ext
         } else {
             String guessCharset = StandardCharsets.UTF_8.name();
             if (this.isRequest) {
-                HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-                guessCharset = httpRequest.getGuessCharset(StandardCharsets.UTF_8.name());
+                HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
+                guessCharset = wrapRequest.getGuessCharset(StandardCharsets.UTF_8.name());
             } else {
-                HttpResponseWapper httpResponse = new HttpResponseWapper(httpRequestResponse.response());
-                guessCharset = httpResponse.getGuessCharset(StandardCharsets.UTF_8.name());
-                MimeType contentType = httpResponse.statedMimeType();
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
+                guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
+                MimeType contentType = wrapResponse.statedMimeType();
                 this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
             }
             BurpExtension extenderImpl = BurpExtension.getInstance();

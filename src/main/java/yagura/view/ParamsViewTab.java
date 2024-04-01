@@ -453,11 +453,11 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
             this.clearView();
         } else {
 
-            HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-            if (httpRequest.contentType() == ContentType.URL_ENCODED) {
+            HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
+            if (wrapRequest.contentType() == ContentType.URL_ENCODED) {
                 this.setEditable(BurpExtension.getInstance().option.getDebugMode());
             }
-            String guessCharset = httpRequest.getGuessCharset(StandardCharsets.UTF_8.name());
+            String guessCharset = wrapRequest.getGuessCharset(StandardCharsets.UTF_8.name());
             BurpExtension extenderImpl = BurpExtension.getInstance();
 
             this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
@@ -487,14 +487,14 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
                     || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
                 return true;
             }
-            HttpRequestWapper httpRequest = new HttpRequestWapper(httpRequestResponse.request());
-            if (httpRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
+            HttpRequestWapper warapRequest = new HttpRequestWapper(httpRequestResponse.request());
+            if (warapRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
                     && BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
                 return false;
             }
-            boolean enabled = httpRequest.hasParameters();
+            boolean enabled = warapRequest.hasParameters();
             this.btnDecode.setEnabled(enabled);
-            return httpRequest.hasParameters();
+            return warapRequest.hasParameters();
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;

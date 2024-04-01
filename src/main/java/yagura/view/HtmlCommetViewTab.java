@@ -197,8 +197,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         this.httpRequestResponse = httpRequestResponse;
-        HttpResponseWapper response = new HttpResponseWapper(httpRequestResponse.response());
-        String guessCharset = response.getGuessCharset(StandardCharsets.UTF_8.name());
+        HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
+        String guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);

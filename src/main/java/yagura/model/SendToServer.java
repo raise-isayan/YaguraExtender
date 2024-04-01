@@ -17,6 +17,7 @@ import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import extend.util.external.TransUtil;
 import extend.util.external.TransUtil.EncodePattern;
 import extension.burp.HttpTarget;
+import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.HttpUtil.DummyOutputStream;
@@ -413,7 +414,7 @@ public class SendToServer extends SendToMenuItem {
                 try {
                     burp.api.montoya.http.message.requests.HttpRequest httpRequest = messageInfo.request();
                     burp.api.montoya.http.message.responses.HttpResponse httpResponse = messageInfo.response();
-                    HttpService httpService = httpRequest.httpService();
+                    HttpService httpService = messageInfo.httpService();
 
                     MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
                             .setType(MultipartBody.FORM) //multipart/form-data
@@ -453,11 +454,12 @@ public class SendToServer extends SendToMenuItem {
                         multipartBuilder.addFormDataPart("highlight", color.name());
                     }
                     if (httpRequest != null) {
-                        multipartBuilder.addFormDataPart("request", "request", RequestBody.create(httpRequest.toByteArray().getBytes(), MediaType.parse("application/json")));
+                        HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequest);
+                        multipartBuilder.addFormDataPart("request", "request", RequestBody.create(wrapRequest.getMessageByte(), MediaType.parse("application/json")));
                     }
                     if (httpResponse != null) {
                         HttpResponseWapper wrapResponse = new HttpResponseWapper(httpResponse);
-                        multipartBuilder.addFormDataPart("response", "response", RequestBody.create(wrapResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
+                        multipartBuilder.addFormDataPart("response", "response", RequestBody.create(wrapResponse.getMessageByte(), MediaType.parse("application/json")));
                         String guessCharset = wrapResponse.getGuessCharset();
                         if (guessCharset != null) {
                             multipartBuilder.addFormDataPart("encoding", guessCharset);
@@ -685,12 +687,13 @@ public class SendToServer extends SendToMenuItem {
         }
 
         if (messageInfo.request() != null && this.isRequest()) {
-            HttpUtil.outMultipartBinary(boundary, out, "request", httpRequest.toByteArray().getBytes());
+            HttpRequestWapper wrapRequest = new HttpRequestWapper(messageInfo.request());
+            HttpUtil.outMultipartBinary(boundary, out, "request", wrapRequest.getMessageByte());
         }
         if (messageInfo.response() != null && this.isResponse()) {
-            HttpResponseWapper httpResponse = new HttpResponseWapper(messageInfo.response());
-            HttpUtil.outMultipartBinary(boundary, out, "response", httpResponse.toByteArray().getBytes());
-            String guessCharset = httpResponse.getGuessCharset();
+            HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
+            HttpUtil.outMultipartBinary(boundary, out, "response", wrapResponse.getMessageByte());
+            String guessCharset = wrapResponse.getGuessCharset();
             if (guessCharset != null) {
                 HttpUtil.outMultipartText(boundary, out, "encoding", guessCharset);
             }

@@ -43,6 +43,8 @@ import yagura.model.JSearchProperty;
 import yagura.model.ResultView;
 import yagura.model.UniversalViewProperty.UniversalView;
 import extension.burp.IBurpTab;
+import extension.helpers.HttpRequestWapper;
+import extension.helpers.HttpResponseWapper;
 import java.util.List;
 
 /**
@@ -766,13 +768,13 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         }
                     }
                     if ((searchProp.isRequestHeader() || searchProp.isRequestBody()) && item.getRequest() != null) {
-                        HttpRequest httpRequest = item.finalRequest();
-                        byte[] reqMessage = item.finalRequest().toByteArray().getBytes();
+                        HttpRequestWapper wrapRequest = new HttpRequestWapper(item.finalRequest());
+                        byte[] reqMessage = wrapRequest.getMessageByte();
                         if (!(searchProp.isRequestHeader() && searchProp.isRequestBody())) {
                             if (searchProp.isRequestHeader()) {
-                                reqMessage = Arrays.copyOfRange(reqMessage, 0, httpRequest.bodyOffset());
+                                reqMessage = Arrays.copyOfRange(reqMessage, 0, wrapRequest.bodyOffset());
                             } else if (searchProp.isRequestBody()) {
-                                reqMessage = Arrays.copyOfRange(reqMessage, httpRequest.bodyOffset(), reqMessage.length);
+                                reqMessage = Arrays.copyOfRange(reqMessage, wrapRequest.bodyOffset(), reqMessage.length);
                             }
                         }
                         String req = StringUtil.getStringCharset(reqMessage, encoding);
@@ -784,13 +786,13 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                     }
                     if ((searchProp.isResponseHeader() || searchProp.isResponseBody()) && item.getResponse() != null) {
                         if (item.hasResponse() && item.originalResponse() != null) {
-                            HttpResponse httpResponse = item.originalResponse();
-                            byte resMessage[] = httpResponse.toByteArray().getBytes();
+                            HttpResponseWapper wrapResponse = new HttpResponseWapper(item.originalResponse());
+                            byte resMessage[] = wrapResponse.getMessageByte();
                             if (!(searchProp.isResponseHeader() && searchProp.isResponseBody())) {
                                 if (searchProp.isResponseHeader()) {
-                                    resMessage = Arrays.copyOfRange(item.getResponse(), 0, httpResponse.bodyOffset());
+                                    resMessage = Arrays.copyOfRange(item.getResponse(), 0, wrapResponse.bodyOffset());
                                 } else if (searchProp.isResponseBody()) {
-                                    resMessage = Arrays.copyOfRange(item.getResponse(), httpResponse.bodyOffset(), resMessage.length);
+                                    resMessage = Arrays.copyOfRange(item.getResponse(), wrapResponse.bodyOffset(), resMessage.length);
                                 }
                             }
                             String res = StringUtil.getStringCharset(resMessage, encoding);
