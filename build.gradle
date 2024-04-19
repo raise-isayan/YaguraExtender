@@ -9,6 +9,7 @@ buildscript {
 plugins {
     id 'java-library'
     id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'  
     id 'org.asciidoctor.jvm.base' version '3.3.2'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'org.asciidoctor.jvm.pdf' version '3.3.2'
@@ -16,8 +17,6 @@ plugins {
 
 sourceCompatibility = '17' // -source
 targetCompatibility = '17' // -target
-
-mainClassName = 'yagura.view.MainFrame'
 
 repositories {
     mavenCentral()
@@ -36,6 +35,10 @@ asciidoctor {
     outputDir = file('help')
 }
 
+application {
+    mainClassName = 'yagura.view.MainFrame'
+}
+
 processResources {
     filteringCharset = 'UTF-8'
     filesMatching ('**/*.properties') {
@@ -51,25 +54,36 @@ clean.doFirst {
     }
 }
 
-jar {
-    // Keep jar clean:
-    exclude 'META-INF/**', 'about.html', 'module-info.class'
-    exclude 'junit/**'
+//jar {
+//    // Keep jar clean:
+//    exclude 'META-INF/**', 'about.html', 'module-info.class'
+//    exclude 'junit/**'
+//
+//    manifest {
+//        attributes 'Main-Class': mainClassName
+//    }
+//
+//    from {
+//        configurations.runtimeClasspath.filter{
+//            it.exists()
+//        }.collect {
+//            it.isDirectory() ? it : zipTree(it)
+//        }
+//    }
+//
+//    destinationDirectory = file('release')
+//    archiveVersion =  "v${release_version_major}"
+//}
 
-    manifest {
-        attributes 'Main-Class': mainClassName
-    }
+shadowJar {
+   exclude 'META-INF/*.SF'
+   exclude 'META-INF/*.DSA'
+   exclude 'META-INF/*.RSA'
+   exclude 'junit/**'
 
-    from {
-        configurations.runtimeClasspath.filter{
-            it.exists()
-        }.collect {
-            it.isDirectory() ? it : zipTree(it)
-        }
-    }
-
-    destinationDirectory = file('release')
-    archiveVersion =  "v${release_version_major}"
+   classifier = null
+   destinationDirectory = file('release')
+   archiveVersion = "v${release_version_major}"
 }
 
 task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
@@ -98,10 +112,6 @@ dependencies {
 
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-        // https://mvnrepository.com/artifact/com.google.code.gson/gson
-        implementation 'com.google.code.gson:gson:2.10.1'
-        // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet
-        implementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
     // standalone 利用のため
     // https://mvnrepository.com/artifact/net.portswigger.burp.extender/burp-extender-api

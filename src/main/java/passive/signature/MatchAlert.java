@@ -41,7 +41,6 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
         return toolName;
     }
 
-    @Override
     public AuditIssue makeScanIssue(HttpRequestResponse messageInfo, List<IssueItem> issueItem) {
 
         return new AuditIssue() {

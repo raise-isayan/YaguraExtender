@@ -211,8 +211,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
             return false;
         }
         try {
-            burp.api.montoya.http.message.responses.HttpResponse httpResponse = httpRequestResponse.response();
-            if (httpResponse == null) {
+            HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
+            if (wrapResponse.hasHttpResponse()) {
                 return false;
             }
             UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
@@ -229,9 +229,9 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
             }
 
             boolean mimeHTMLType = false;
-            MimeType mimeType = httpResponse.inferredMimeType();
+            MimeType mimeType = wrapResponse.inferredMimeType();
             mimeHTMLType = (mimeType == MimeType.HTML || mimeType == MimeType.XML || mimeType == MimeType.IMAGE_SVG_XML);
-            if (httpResponse.body().length() > 0 && mimeHTMLType) {
+            if (wrapResponse.body().length() > 0 && mimeHTMLType) {
                 String encoding = quickSearchTab.getSelectedEncoding();
                 if (encoding != null) {
                     final boolean uniq = this.quickSearchTab.getUniqCheckBox().isSelected();

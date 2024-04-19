@@ -54,11 +54,11 @@ public abstract class SendToMenuItem
     protected File tempMessageFile(HttpRequestResponse messageInfo, int index) {
         File file = null;
         try {
-            file = File.createTempFile(HttpUtil.getBaseName(new URL(messageInfo.request().url())) + "." + index + ".", ".tmp");
+            HttpRequestWapper wrapRequest = new HttpRequestWapper(messageInfo.request());
+            file = File.createTempFile(HttpUtil.getBaseName(new URL(wrapRequest.url())) + "." + index + ".", ".tmp");
             file.deleteOnExit();
             try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(file, true))) {
-                if ((this.isRequestHeader() || this.isRequestBody()) && messageInfo.request() != null) {
-                    HttpRequestWapper wrapRequest = new HttpRequestWapper(messageInfo.request());
+                if ((this.isRequestHeader() || this.isRequestBody()) && wrapRequest.hasHttpRequest()) {
                     byte[] reqMessage = wrapRequest.getMessageByte();
                     if (!(this.isRequestHeader() && this.isRequestBody())) {
                         if (this.isRequestHeader()) {
@@ -70,8 +70,8 @@ public abstract class SendToMenuItem
                     fostm.write(reqMessage);
                     fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
                 }
-                if ((this.isResponseHeader() || this.isResponseBody()) && messageInfo.response() != null) {
-                    HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
+                if ((this.isResponseHeader() || this.isResponseBody()) && wrapResponse.hasHttpResponse()) {
                     byte resMessage[] = wrapResponse.getHeaderBytes();
                     if (!(this.isResponseHeader() && this.isResponseBody())) {
                         if (this.isResponseHeader()) {
