@@ -62,6 +62,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.net.ssl.KeyManager;
@@ -136,8 +137,8 @@ public class SendToServer extends SendToMenuItem {
                         if (resnponse.body().length() == 0) {
                             fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
                         } else {
-                            fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + resnponse.bodyToString()));
-                            logger.log(Level.WARNING, "[" + statusCode + "]", resnponse.body());
+                            fireSendToWarningEvent(new SendToEvent(this, "Information[" + statusCode + "]:" + resnponse.bodyToString()));
+                            logger.log(Level.INFO, "[" + statusCode + "]", resnponse.body());
                         }
                     } else {
                         // 200以外
@@ -550,8 +551,13 @@ public class SendToServer extends SendToMenuItem {
                     sslContext.init(keyManagers, trustManagers, null);
 
                     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+                    // timeout
+                    int timeout = extendConnectionProp.getTimeout();
+                    clientBuilder = clientBuilder.connectTimeout(timeout, TimeUnit.SECONDS).readTimeout(timeout, TimeUnit.SECONDS).writeTimeout(timeout, TimeUnit.SECONDS);
+
                     clientBuilder = clientBuilder.sslSocketFactory(sslContext.getSocketFactory(), trustKeyManager);
 
+                    // IgnoreValidateCertification
                     if (extendConnectionProp.isIgnoreValidateCertification()) {
                         clientBuilder = clientBuilder.hostnameVerifier((hostname, session) -> true);
                     }
@@ -575,28 +581,25 @@ public class SendToServer extends SendToMenuItem {
                     }
 
                     Request.Builder requestBuilder = new Request.Builder().url(getTarget()).post(multipartBody);
-                    try (Response response = clientBuilder.build().newCall(requestBuilder.build()).execute()) {
-                        int statusCode = response.code();
-                        String bodyMessage = response.body().string();
-                        if (statusCode == HttpURLConnection.HTTP_OK) {
-                            if (bodyMessage.length() == 0) {
-                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
-                            } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
-                                logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
-                            }
+                    Response response = clientBuilder.build().newCall(requestBuilder.build()).execute();
+                    int statusCode = response.code();
+                    String bodyMessage = response.body().string();
+                    if (statusCode == HttpURLConnection.HTTP_OK) {
+                        if (bodyMessage.length() == 0) {
+                            fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
                         } else {
-                            // 200以外
-                            fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
-                            logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
+                            fireSendToWarningEvent(new SendToEvent(this, "Information[" + statusCode + "]:" + bodyMessage));
+                            logger.log(Level.INFO, "[" + statusCode + "]", bodyMessage);
                         }
-
-                    } catch (IOException ex) {
-                        fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
-                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    } else {
+                        // 200以外
+                        fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
+                        logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                     }
-
-                } catch (NoSuchAlgorithmException | KeyStoreException | IOException | CertificateException | UnrecoverableKeyException | KeyManagementException ex) {
+                } catch (IOException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableKeyException | KeyManagementException ex) {
+                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    logger.log(Level.SEVERE, ex.getMessage(), ex);
+                } catch (Exception ex) {
                     fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }

@@ -55,6 +55,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         rdoCustomClient = new javax.swing.JRadioButton();
         rdoBurpClient = new javax.swing.JRadioButton();
         pnlUseCustomClient = new javax.swing.JPanel();
+        pnlTimeout = new javax.swing.JPanel();
+        spnTimeout = new javax.swing.JSpinner();
+        lblAuthorizationType1 = new javax.swing.JLabel();
+        pnlCustom = new javax.swing.JPanel();
         pnlCustomAuthorization = new javax.swing.JPanel();
         lblAuthorizationType = new javax.swing.JLabel();
         cmbAuthorizationType = new javax.swing.JComboBox<>();
@@ -181,6 +185,37 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         pnlUseCustomClient.setLayout(new java.awt.BorderLayout());
 
+        pnlTimeout.setBorder(javax.swing.BorderFactory.createTitledBorder("Timeout"));
+
+        spnTimeout.setModel(new javax.swing.SpinnerNumberModel(120, 0, 9999, 1));
+
+        lblAuthorizationType1.setText("Connection/Read/Write:");
+
+        javax.swing.GroupLayout pnlTimeoutLayout = new javax.swing.GroupLayout(pnlTimeout);
+        pnlTimeout.setLayout(pnlTimeoutLayout);
+        pnlTimeoutLayout.setHorizontalGroup(
+            pnlTimeoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTimeoutLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAuthorizationType1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spnTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(311, Short.MAX_VALUE))
+        );
+        pnlTimeoutLayout.setVerticalGroup(
+            pnlTimeoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTimeoutLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlTimeoutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spnTimeout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAuthorizationType1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pnlUseCustomClient.add(pnlTimeout, java.awt.BorderLayout.NORTH);
+
+        pnlCustom.setLayout(new java.awt.BorderLayout());
+
         pnlCustomAuthorization.setBorder(javax.swing.BorderFactory.createTitledBorder("Authorization"));
 
         lblAuthorizationType.setText("Authorization Type:");
@@ -207,7 +242,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                     .addComponent(lblAuthorizationType))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlCustomAuthorizationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbAuthorizationType, 0, 228, Short.MAX_VALUE)
+                    .addComponent(cmbAuthorizationType, 0, 1, Short.MAX_VALUE)
                     .addComponent(txtAuthorizationUser)
                     .addComponent(txtAuthorizationPasswd))
                 .addGap(213, 213, 213))
@@ -229,7 +264,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addContainerGap())
         );
 
-        pnlUseCustomClient.add(pnlCustomAuthorization, java.awt.BorderLayout.NORTH);
+        pnlCustom.add(pnlCustomAuthorization, java.awt.BorderLayout.NORTH);
         pnlCustomAuthorization.getAccessibleContext().setAccessibleDescription("");
 
         pnlCustomProxy.setBorder(javax.swing.BorderFactory.createTitledBorder("Proxy"));
@@ -299,10 +334,12 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addGroup(pnlCustomProxyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblProxyPasswd)
                     .addComponent(txtProxyPasswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlUseCustomClient.add(pnlCustomProxy, java.awt.BorderLayout.CENTER);
+        pnlCustom.add(pnlCustomProxy, java.awt.BorderLayout.CENTER);
+
+        pnlUseCustomClient.add(pnlCustom, java.awt.BorderLayout.CENTER);
 
         pnlCertificate.setLayout(new java.awt.BorderLayout());
 
@@ -620,6 +657,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAuthorizationPasswd;
     private javax.swing.JLabel lblAuthorizationType;
+    private javax.swing.JLabel lblAuthorizationType1;
     private javax.swing.JLabel lblAuthorizationUser;
     private javax.swing.JLabel lblProtocol;
     private javax.swing.JLabel lblProxyHost;
@@ -630,11 +668,13 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlClientCertififate;
     private javax.swing.JPanel pnlConnections;
+    private javax.swing.JPanel pnlCustom;
     private javax.swing.JPanel pnlCustomAuthorization;
     private javax.swing.JPanel pnlCustomProxy;
     private javax.swing.JPanel pnlSendToOverride;
     private javax.swing.JPanel pnlSendToParameter;
     private javax.swing.JPanel pnlServerCerficate;
+    private javax.swing.JPanel pnlTimeout;
     private javax.swing.JPanel pnlUseCertificate;
     private javax.swing.JPanel pnlUseClient;
     private javax.swing.JPanel pnlUseCustomClient;
@@ -645,6 +685,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JRadioButton rdoReqNameHistoryComment;
     private javax.swing.JRadioButton rdoReqNameResponseTitle;
     private javax.swing.JSpinner spnProxyPort;
+    private javax.swing.JSpinner spnTimeout;
     private javax.swing.JTabbedPane tabbetSendToExtend;
     private javax.swing.JTable tableCertificate;
     private javax.swing.JPasswordField txtAuthorizationPasswd;
@@ -749,13 +790,7 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         this.rdoBurpClient.setSelected(HttpExtendProperty.HttpClientType.BURP.equals(httpClientType));
 
-        this.clearItem();
-        this.chkClientCertififate.setSelected(prop.isUseClientCertificate());
-        if (this.chkClientCertififate.isSelected()) {
-            CertificateItem item = prop.getClientCertificateItem();
-            setEditItem(item, false);
-        }
-        this.chkClientCertififate.setEnabled(this.modelCertificate.getRowCount() > 0);
+        this.spnTimeout.setValue(prop.getTimeout());
 
         String authorizationUser = prop.getAuthorizationUser();
         String authorizationPasswd = prop.getAuthorizationPasswd();
@@ -781,6 +816,14 @@ public class SendToServerExtendDlg extends CustomDialog {
         } else {
             this.rdoBurpClient.setSelected(true);
         }
+
+        this.clearItem();
+        this.chkClientCertififate.setSelected(prop.isUseClientCertificate());
+        if (this.chkClientCertififate.isSelected()) {
+            CertificateItem item = prop.getClientCertificateItem();
+            setEditItem(item, false);
+        }
+        this.chkClientCertififate.setEnabled(this.modelCertificate.getRowCount() > 0);
     }
 
     public SendToParameterProperty getSendToOverrideProperty() {
@@ -802,14 +845,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         HttpExtendProperty prop = new HttpExtendProperty();
         prop.setHttpClientType(this.getHttpClientType());
 
-        prop.setUseClientCertificate(this.chkClientCertififate.isSelected());
-        if (prop.isUseClientCertificate()) {
-            prop.setClientCertificateStoreType(this.certProp.getStoreType());
-            prop.setClientCertificate(this.certProp.getClientCertificate());
-            prop.setClientCertificatePasswd(this.certProp.getClientCertificatePasswd());
-        }
-
-        prop.setIgnoreValidateCertification(this.chkIgnoreValidateCertification.isSelected());
+        prop.setTimeout((int) this.spnTimeout.getValue());
 
         prop.setAuthorizationType(HttpExtendProperty.AuthorizationType.valueOf((String) this.cmbAuthorizationType.getSelectedItem()));
         prop.setAuthorizationUser(this.txtAuthorizationUser.getText());
@@ -820,6 +856,14 @@ public class SendToServerExtendDlg extends CustomDialog {
         prop.setProxyPort((int) this.spnProxyPort.getValue());
         prop.setProxyUser(this.txtProxyUser.getText());
         prop.setProxyPasswd(String.valueOf(this.txtProxyPasswd.getPassword()));
+
+        prop.setUseClientCertificate(this.chkClientCertififate.isSelected());
+        if (prop.isUseClientCertificate()) {
+            prop.setClientCertificateStoreType(this.certProp.getStoreType());
+            prop.setClientCertificate(this.certProp.getClientCertificate());
+            prop.setClientCertificatePasswd(this.certProp.getClientCertificatePasswd());
+        }
+        prop.setIgnoreValidateCertification(this.chkIgnoreValidateCertification.isSelected());
         return prop;
     }
 

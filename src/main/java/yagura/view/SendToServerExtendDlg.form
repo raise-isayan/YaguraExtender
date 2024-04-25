@@ -178,17 +178,14 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
               <SubComponents>
-                <Container class="javax.swing.JPanel" name="pnlCustomAuthorization">
+                <Container class="javax.swing.JPanel" name="pnlTimeout">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Authorization"/>
+                        <TitledBorder title="Timeout"/>
                       </Border>
                     </Property>
                   </Properties>
-                  <AccessibilityProperties>
-                    <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
-                  </AccessibilityProperties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="North"/>
@@ -198,209 +195,277 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblAuthorizationPasswd" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblAuthorizationUser" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblAuthorizationType" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="cmbAuthorizationType" pref="228" max="32767" attributes="0"/>
-                                  <Component id="txtAuthorizationUser" max="32767" attributes="0"/>
-                                  <Component id="txtAuthorizationPasswd" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="213" max="-2" attributes="0"/>
+                              <Component id="lblAuthorizationType1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="spnTimeout" min="-2" pref="111" max="-2" attributes="0"/>
+                              <EmptySpace pref="311" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblAuthorizationType" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cmbAuthorizationType" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="spnTimeout" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblAuthorizationType1" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblAuthorizationUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtAuthorizationUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblAuthorizationPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtAuthorizationPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="lblAuthorizationType">
+                    <Component class="javax.swing.JSpinner" name="spnTimeout">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Authorization Type:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="cmbAuthorizationType">
-                      <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="0"/>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="120" maximum="9999" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
                         </Property>
                       </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                      </AuxValues>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="lblAuthorizationUser">
+                    <Component class="javax.swing.JLabel" name="lblAuthorizationType1">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="User:"/>
+                        <Property name="text" type="java.lang.String" value="Connection/Read/Write:"/>
                       </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtAuthorizationUser">
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblAuthorizationPasswd">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Password:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JPasswordField" name="txtAuthorizationPasswd">
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtAuthorizationPasswdActionPerformed"/>
-                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
-                <Container class="javax.swing.JPanel" name="pnlCustomProxy">
-                  <Properties>
-                    <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                        <TitledBorder title="Proxy"/>
-                      </Border>
-                    </Property>
-                  </Properties>
+                <Container class="javax.swing.JPanel" name="pnlCustom">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="Center"/>
                     </Constraint>
                   </Constraints>
 
-                  <Layout>
-                    <DimensionLayout dim="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lblProtocol" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblProxyHost" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblProxyPasswd" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblProxyUser" min="-2" max="-2" attributes="0"/>
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="pnlCustomAuthorization">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                            <TitledBorder title="Authorization"/>
+                          </Border>
+                        </Property>
+                      </Properties>
+                      <AccessibilityProperties>
+                        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
+                      </AccessibilityProperties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="North"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout>
+                        <DimensionLayout dim="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblAuthorizationPasswd" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblAuthorizationUser" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblAuthorizationType" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="cmbAuthorizationType" pref="0" max="32767" attributes="0"/>
+                                      <Component id="txtAuthorizationUser" max="32767" attributes="0"/>
+                                      <Component id="txtAuthorizationPasswd" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="213" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                        <DimensionLayout dim="1">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblAuthorizationType" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cmbAuthorizationType" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblAuthorizationUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtAuthorizationUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblAuthorizationPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtAuthorizationPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JLabel" name="lblAuthorizationType">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Authorization Type:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="cmbAuthorizationType">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="0"/>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblAuthorizationUser">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="User:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JTextField" name="txtAuthorizationUser">
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblAuthorizationPasswd">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Password:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JPasswordField" name="txtAuthorizationPasswd">
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtAuthorizationPasswdActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="pnlCustomProxy">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                            <TitledBorder title="Proxy"/>
+                          </Border>
+                        </Property>
+                      </Properties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="Center"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout>
+                        <DimensionLayout dim="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblProtocol" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblProxyHost" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="lblProxyPasswd" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lblProxyUser" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
+                                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="txtProxyHost" max="32767" attributes="0"/>
+                                      <Component id="txtProxyPasswd" alignment="0" pref="291" max="32767" attributes="0"/>
+                                      <Component id="txtProxyUser" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="cmbProtocol" max="32767" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lblProxyPort" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="spnProxyPort" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="txtProxyHost" max="32767" attributes="0"/>
-                                  <Component id="txtProxyPasswd" alignment="0" pref="291" max="32767" attributes="0"/>
-                                  <Component id="txtProxyUser" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="cmbProtocol" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblProxyPort" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="spnProxyPort" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
-                      </Group>
-                    </DimensionLayout>
-                    <DimensionLayout dim="1">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblProtocol" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cmbProtocol" alignment="3" min="-2" max="-2" attributes="0"/>
+                        </DimensionLayout>
+                        <DimensionLayout dim="1">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblProtocol" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cmbProtocol" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblProxyHost" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtProxyHost" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblProxyPort" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="spnProxyPort" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblProxyUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtProxyUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="3" attributes="0">
+                                      <Component id="lblProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblProxyHost" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtProxyHost" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblProxyPort" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="spnProxyPort" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblProxyUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtProxyUser" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtProxyPasswd" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace pref="40" max="32767" attributes="0"/>
                           </Group>
-                      </Group>
-                    </DimensionLayout>
-                  </Layout>
-                  <SubComponents>
-                    <Component class="javax.swing.JLabel" name="lblProtocol">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Protocol:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblProxyHost">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Host:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblProxyUser">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="User:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblProxyPasswd">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Password:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JPasswordField" name="txtProxyPasswd">
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProxyPasswdActionPerformed"/>
-                      </Events>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtProxyUser">
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="txtProxyHost">
-                    </Component>
-                    <Component class="javax.swing.JComboBox" name="cmbProtocol">
-                      <Properties>
-                        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="0"/>
-                        </Property>
-                      </Properties>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                      </AuxValues>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblProxyPort">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="port:"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JSpinner" name="spnProxyPort">
-                      <Properties>
-                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                          <SpinnerModel initial="8080" maximum="65535" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
-                        </Property>
-                        <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
-                          <SpinnerEditor format="#" type="3"/>
-                        </Property>
-                      </Properties>
-                    </Component>
+                        </DimensionLayout>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JLabel" name="lblProtocol">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Protocol:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblProxyHost">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Host:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblProxyUser">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="User:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblProxyPasswd">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Password:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JPasswordField" name="txtProxyPasswd">
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProxyPasswdActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JTextField" name="txtProxyUser">
+                        </Component>
+                        <Component class="javax.swing.JTextField" name="txtProxyHost">
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="cmbProtocol">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="0"/>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="lblProxyPort">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="port:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JSpinner" name="spnProxyPort">
+                          <Properties>
+                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                              <SpinnerModel initial="8080" maximum="65535" minimum="0" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                            </Property>
+                            <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
+                              <SpinnerEditor format="#" type="3"/>
+                            </Property>
+                          </Properties>
+                        </Component>
+                      </SubComponents>
+                    </Container>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="pnlCertificate">

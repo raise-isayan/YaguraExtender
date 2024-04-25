@@ -15,9 +15,6 @@ plugins {
     id 'org.asciidoctor.jvm.pdf' version '3.3.2'
 }
 
-sourceCompatibility = '17' // -source
-targetCompatibility = '17' // -target
-
 repositories {
     mavenCentral()
 }
@@ -48,11 +45,19 @@ processResources {
     }
 }
 
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 clean.doFirst {
     delete fileTree('release') {
       include '*.jar'
     }
 }
+
 
 //jar {
 //    // Keep jar clean:

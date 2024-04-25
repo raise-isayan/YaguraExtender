@@ -23,6 +23,9 @@ public class HttpExtendProperty {
     private HttpClientType httpClientType = HttpClientType.BURP;
 
     private AuthorizationType authorizationType = AuthorizationType.NONE;
+
+    private int timeout = 120;
+
     private String authorizationUser = "";
     private String authorizationPasswd = "";
 
@@ -37,62 +40,6 @@ public class HttpExtendProperty {
     private boolean ignoreValidateCertification = false;
 
     /**
-     * @return the useClientCertificate
-     */
-    public boolean isUseClientCertificate() {
-        return this.clientCertificateItem.isSelected();
-    }
-
-    /**
-     * @param useClientCertificate the useClientCertificate to set
-     */
-    public void setUseClientCertificate(boolean useClientCertificate) {
-        this.clientCertificateItem.setSelected(useClientCertificate);
-    }
-
-    /**
-     * @return the storeType
-     */
-    public CertUtil.StoreType getClientCertificateStoreType() {
-        return this.clientCertificateItem.getStoreType();
-    }
-
-    /**
-     * @param storeType the storeType to set
-     */
-    public void setClientCertificateStoreType(CertUtil.StoreType storeType) {
-        this.clientCertificateItem.setStoreType(storeType);
-    }
-
-    /**
-     * @return the clientCertificate
-     */
-    public byte[] getClientCertificate() {
-        return this.clientCertificateItem.getClientCertificate();
-    }
-
-    /**
-     * @param clientCertificate the clientCertificate to set
-     */
-    public void setClientCertificate(byte[] clientCertificate) {
-        this.clientCertificateItem.setClientCertificate(clientCertificate);
-    }
-
-    /**
-     * @return the clientCertificatePasswd
-     */
-    public String getClientCertificatePasswd() {
-        return this.clientCertificateItem.getClientCertificatePasswd();
-    }
-
-    /**
-     * @param clientCertificatePasswd the clientCertificatePasswd to set
-     */
-    public void setClientCertificatePasswd(String clientCertificatePasswd) {
-        this.clientCertificateItem.setClientCertificatePasswd(clientCertificatePasswd);
-    }
-
-    /**
      * @return the httpClientType
      */
     public HttpClientType getHttpClientType() {
@@ -104,6 +51,14 @@ public class HttpExtendProperty {
      */
     public void setHttpClientType(HttpClientType httpClientType) {
         this.httpClientType = httpClientType;
+    }
+
+    public int getTimeout() {
+        return this.timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
     /**
@@ -226,6 +181,62 @@ public class HttpExtendProperty {
     }
 
     /**
+     * @return the useClientCertificate
+     */
+    public boolean isUseClientCertificate() {
+        return this.clientCertificateItem.isSelected();
+    }
+
+    /**
+     * @param useClientCertificate the useClientCertificate to set
+     */
+    public void setUseClientCertificate(boolean useClientCertificate) {
+        this.clientCertificateItem.setSelected(useClientCertificate);
+    }
+
+    /**
+     * @return the storeType
+     */
+    public CertUtil.StoreType getClientCertificateStoreType() {
+        return this.clientCertificateItem.getStoreType();
+    }
+
+    /**
+     * @param storeType the storeType to set
+     */
+    public void setClientCertificateStoreType(CertUtil.StoreType storeType) {
+        this.clientCertificateItem.setStoreType(storeType);
+    }
+
+    /**
+     * @return the clientCertificate
+     */
+    public byte[] getClientCertificate() {
+        return this.clientCertificateItem.getClientCertificate();
+    }
+
+    /**
+     * @param clientCertificate the clientCertificate to set
+     */
+    public void setClientCertificate(byte[] clientCertificate) {
+        this.clientCertificateItem.setClientCertificate(clientCertificate);
+    }
+
+    /**
+     * @return the clientCertificatePasswd
+     */
+    public String getClientCertificatePasswd() {
+        return this.clientCertificateItem.getClientCertificatePasswd();
+    }
+
+    /**
+     * @param clientCertificatePasswd the clientCertificatePasswd to set
+     */
+    public void setClientCertificatePasswd(String clientCertificatePasswd) {
+        this.clientCertificateItem.setClientCertificatePasswd(clientCertificatePasswd);
+    }
+
+    /**
      * @param ignoreValidateCertification the ignoreValidateCertification to set
      */
     public void setIgnoreValidateCertification(boolean ignoreValidateCertification) {
@@ -235,9 +246,7 @@ public class HttpExtendProperty {
     public void setProperty(HttpExtendProperty property) {
         this.httpClientType = property.httpClientType;
 
-        this.clientCertificateItem.setProperty(property.getClientCertificateItem());
-        this.ignoreValidateCertification = property.ignoreValidateCertification;
-
+        this.timeout = property.timeout;
         this.authorizationType = property.authorizationType;
         this.authorizationUser = property.authorizationUser;
         this.authorizationPasswd = property.authorizationPasswd;
@@ -247,13 +256,15 @@ public class HttpExtendProperty {
         this.proxyPort = property.proxyPort;
         this.proxyUser = property.proxyUser;
         this.proxyPasswd = property.proxyPasswd;
+
+        this.clientCertificateItem.setProperty(property.getClientCertificateItem());
+        this.ignoreValidateCertification = property.ignoreValidateCertification;
     }
 
     public void setProperties(Properties prop) {
         this.httpClientType = HttpClientType.valueOf(prop.getProperty("useHttpClient", HttpClientType.BURP.name()));
 
-        this.clientCertificateItem.setProperties(prop);
-        this.ignoreValidateCertification = Boolean.parseBoolean(prop.getProperty("ignoreValidateCertification", StringUtil.toString(Boolean.FALSE)));
+        this.timeout = ConvertUtil.parseIntDefault(prop.getProperty("timeout"), 120);
 
         this.authorizationType = AuthorizationType.valueOf(prop.getProperty("authorizationType", AuthorizationType.NONE.name()));
         this.authorizationUser = prop.getProperty("authorizationUser", "");
@@ -264,14 +275,16 @@ public class HttpExtendProperty {
         this.proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort"), 8080);
         this.proxyUser = prop.getProperty("proxyUser", "");
         this.proxyPasswd = prop.getProperty("proxyPasswd", "");
+
+        this.clientCertificateItem.setProperties(prop);
+        this.ignoreValidateCertification = Boolean.parseBoolean(prop.getProperty("ignoreValidateCertification", StringUtil.toString(Boolean.FALSE)));
     }
 
     public Properties getProperties() {
         Properties prop = new Properties();
         prop.setProperty("useHttpClient", this.httpClientType.name());
 
-        prop.putAll(this.clientCertificateItem.getProperties());
-        prop.setProperty("ignoreValidateCertification", StringUtil.toString(this.ignoreValidateCertification));
+        prop.setProperty("timeout", StringUtil.toString(this.timeout));
 
         prop.setProperty("authorizationType", this.authorizationType.name());
         prop.setProperty("authorizationUser", this.authorizationUser);
@@ -282,6 +295,9 @@ public class HttpExtendProperty {
         prop.setProperty("proxyPort", StringUtil.toString(this.proxyPort));
         prop.setProperty("proxyUser", this.proxyUser);
         prop.setProperty("proxyPasswd", this.proxyPasswd);
+
+        prop.putAll(this.clientCertificateItem.getProperties());
+        prop.setProperty("ignoreValidateCertification", StringUtil.toString(this.ignoreValidateCertification));
         return prop;
     }
 
