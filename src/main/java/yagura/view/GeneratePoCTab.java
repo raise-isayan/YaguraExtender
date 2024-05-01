@@ -14,6 +14,7 @@ import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
 import extension.burp.HttpTarget;
+import extension.helpers.ConvertUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
@@ -957,7 +958,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             buff.append("// begen script").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("function %s(%s) {" + HttpUtil.LINE_TERMINATE, new Object[]{submitFunction, timeDelay}));
             buff.append("\tvar xhr = new XMLHttpRequest();").append(HttpUtil.LINE_TERMINATE);
-            buff.append(String.format("\txhr.open('%s', '%s', true);" + HttpUtil.LINE_TERMINATE, new Object[]{csrfFormMethod, TransUtil.encodeJsLangQuote(csrfUrl, false)}));
+            buff.append(String.format("\txhr.open('%s', '%s', true);" + HttpUtil.LINE_TERMINATE, new Object[]{csrfFormMethod, ConvertUtil.encodeJsLangQuote(csrfUrl, false)}));
             buff.append("\txhr.withCredentials = true;").append(HttpUtil.LINE_TERMINATE);       // Cookieを付与
             if (csrfHtml5WithXHeader) {
                 List<HttpHeader> headers = wrapRequest.headers();
@@ -965,7 +966,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     if (header.name().startsWith("X-")) {
                         String name = header.name();
                         String value = header.value();
-                        buff.append(String.format("\txhr.setRequestHeader('%s', '%s');" + HttpUtil.LINE_TERMINATE, TransUtil.encodeJsLangQuote(name, false), TransUtil.encodeJsLangQuote(value, false)));
+                        buff.append(String.format("\txhr.setRequestHeader('%s', '%s');" + HttpUtil.LINE_TERMINATE, ConvertUtil.encodeJsLangQuote(name, false), ConvertUtil.encodeJsLangQuote(value, false)));
                     }
                 }
             }
@@ -1070,8 +1071,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             } else {
                                 // js escape
                                 buff.append(String.format("'%s' + '=' + '%s';" + HttpUtil.LINE_TERMINATE,
-                                        new Object[]{TransUtil.encodeJsLangQuote(paramName, false),
-                                            TransUtil.encodeJsLangQuote(paramValue, false)}));
+                                        new Object[]{
+                                            ConvertUtil.encodeJsLangQuote(paramName, false),
+                                            ConvertUtil.encodeJsLangQuote(paramValue, false)
+                                        }));
                             }
                             first = false;
                         } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {

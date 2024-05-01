@@ -2,6 +2,7 @@ package yagura.model;
 
 import com.google.gson.annotations.Expose;
 import extend.util.external.TransUtil;
+import extension.helpers.ConvertUtil;
 import extension.helpers.MatchUtil;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,13 +47,13 @@ public class MatchReplaceItem extends MatchItem {
     public String getReplace(boolean quote, boolean metachar) {
         if (quote) {
             if (metachar) {
-                return Matcher.quoteReplacement(TransUtil.decodeJsLangMeta(this.getReplace()));
+                return Matcher.quoteReplacement(ConvertUtil.decodeJsLangMeta(this.getReplace()));
             } else {
                 return Matcher.quoteReplacement(this.getReplace());
             }
         } else {
             if (metachar) {
-                return TransUtil.decodeJsLangMeta(this.getReplace());
+                return ConvertUtil.decodeJsLangMeta(this.getReplace());
             } else {
                 return this.getReplace();
             }

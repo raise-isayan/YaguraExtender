@@ -413,6 +413,11 @@ This can be set if the server is checked.
 * Use Custom Proxy Settings
 ** Use your own HTTP client for sending SendTo.
 
+.Timeout
+
+Connection/Read/Write::
+    Specifies the number of seconds until timeout.
+
 .Authorization
 
 Authorization Type::

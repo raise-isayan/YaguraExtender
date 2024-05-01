@@ -85,6 +85,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
+import extension.helpers.ConvertUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.SmartCodec;
@@ -754,7 +755,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, new ITranslateAction() {
                 @Override
                 public String translate(String allText, String selectedText) {
-                    return TransUtil.encodeJsonLiteral(selectedText, true);
+                    return ConvertUtil.encodeJsonLiteral(selectedText, true);
                 }
             });
 
@@ -840,7 +841,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, new ITranslateAction() {
                 @Override
                 public String translate(String allText, String selectedText) {
-                    return TransUtil.decodeJsonLiteral(selectedText, true);
+                    return ConvertUtil.decodeJsonLiteral(selectedText, true);
                 }
             });
 

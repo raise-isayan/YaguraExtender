@@ -2644,13 +2644,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 }
                 encode = buff.toString();
             } else if (this.rdoCLang.isSelected()) {
-                encode = TransUtil.encodeCLangQuote(encode, metaChar);
+                encode = ConvertUtil.encodeCLangQuote(encode, metaChar);
             } else if (this.rdoJSON.isSelected()) {
-                encode = TransUtil.encodeJsonLiteral(encode, metaChar);
+                encode = ConvertUtil.encodeJsonLiteral(encode, metaChar);
             } else if (this.rdoSQLLang.isSelected()) {
-                encode = TransUtil.encodeSQLLangQuote(encode, metaChar);
+                encode = ConvertUtil.encodeSQLLangQuote(encode, metaChar);
             } else if (this.rdoRegex.isSelected()) {
-                encode = TransUtil.toRegexEncode(encode, metaChar);
+                encode = ConvertUtil.toRegexEncode(encode, metaChar);
             }
             this.setOutput(encode);
         } catch (Exception ex) {

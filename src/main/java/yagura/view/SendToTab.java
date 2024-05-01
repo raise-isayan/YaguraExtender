@@ -22,6 +22,15 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import extension.burp.IBurpTab;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -237,7 +246,6 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
 
     private final TransferHandler handler = new TableRowTransferHandler();
-
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
@@ -465,6 +473,52 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         sendToProperty.setSubMenu(this.chkSubmenu.isSelected());
         sendToProperty.setForceSortOrder(this.chkForceSortOrder.isSelected());
         return sendToProperty;
+    }
+
+    public static void main(String [] args) {
+        EventQueue.invokeLater(MainPanel::createAndShowGui);
+    }
+
+    final static class MainPanel extends JPanel {
+
+        private MainPanel() {
+            super(new BorderLayout());
+            SendToTab sendTo = new SendToTab();
+            java.util.List<SendToItem> list = new ArrayList<>();
+            SendToItem item1 = new SendToItem();
+            item1.setCaption("caption1");
+            item1.setTarget("target1");
+            item1.setExtend(SendToItem.ExtendType.SEND_TO_JTRANSCODER);
+            list.add(item1);
+            SendToItem item2 = new SendToItem();
+            item2.setCaption("caption2");
+            item2.setTarget("target2");
+            list.add(item2);
+            SendToItem item3 = new SendToItem();
+            item3.setCaption("caption3");
+            item3.setTarget("target3");
+            list.add(item3);
+            sendTo.setSendToItemList(list);
+            this.add(sendTo, BorderLayout.CENTER);
+            setPreferredSize(new Dimension(800, 600));
+        }
+
+        private static void createAndShowGui() {
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (UnsupportedLookAndFeelException ignored) {
+                Toolkit.getDefaultToolkit().beep();
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                ex.printStackTrace();
+                return;
+            }
+            JFrame frame = new JFrame("DnDTable");
+            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.getContentPane().add(new MainPanel());
+            frame.pack();
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
     }
 
 }
