@@ -1,6 +1,6 @@
 package yagura.model;
 
-import burp.BurpExtender;
+import extension.burp.IssueAlertEvent;
 import burp.BurpExtension;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.HighlightColor;
@@ -78,7 +78,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import yagura.model.SendToParameterProperty.SendToParameterType;
 
 /**
  *
@@ -135,21 +134,21 @@ public class SendToServer extends SendToMenuItem {
                     int statusCode = http.response().statusCode();
                     if (statusCode == HttpURLConnection.HTTP_OK) {
                         if (resnponse.body().length() == 0) {
-                            fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                            fireIssueAlertInfoEvent(new IssueAlertEvent(this, "Success[" + statusCode + "]"));
                         } else {
-                            fireSendToWarningEvent(new SendToEvent(this, "Information[" + statusCode + "]:" + resnponse.bodyToString()));
+                            fireIssueAlertErrorEvent(new IssueAlertEvent(this, "Information[" + statusCode + "]:" + resnponse.bodyToString()));
                             logger.log(Level.INFO, "[" + statusCode + "]", resnponse.body());
                         }
                     } else {
                         // 200以外
-                        fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + resnponse.bodyToString()));
+                        fireIssueAlertErrorEvent(new IssueAlertEvent(this, "Error[" + statusCode + "]:" + resnponse.bodyToString()));
                         logger.log(Level.WARNING, "[" + statusCode + "]", resnponse.body());
                     }
                 } catch (IOException ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (Exception ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
@@ -230,9 +229,9 @@ public class SendToServer extends SendToMenuItem {
                     try (OutputStream ostm = conn.getOutputStream()) {
                         outMultipart(boundary, ostm, messageInfo, extendProp);
                     } catch (IOException e) {
-                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
+                        fireIssueAlertCriticalEvent(new IssueAlertEvent(this, e.getMessage()));
                     } catch (Exception e) {
-                        fireSendToErrorEvent(new SendToEvent(this, e.getMessage()));
+                        fireIssueAlertCriticalEvent(new IssueAlertEvent(this, e.getMessage()));
                     }
 
                     InputStream istm = conn.getInputStream();
@@ -248,26 +247,26 @@ public class SendToServer extends SendToMenuItem {
                         decodeMessage = StringUtil.getBytesRawString(bostm.toByteArray());
                         if (statusCode == HttpURLConnection.HTTP_OK) {
                             if (decodeMessage.length() == 0) {
-                                fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                                fireIssueAlertInfoEvent(new IssueAlertEvent(this, "Success[" + statusCode + "]"));
                             } else {
-                                fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + decodeMessage));
+                                fireIssueAlertErrorEvent(new IssueAlertEvent(this, "Warning[" + statusCode + "]:" + decodeMessage));
                             }
                         } else {
                             // 200以外
-                            fireSendToErrorEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + decodeMessage));
+                            fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + statusCode + "]:" + decodeMessage));
                         }
 
                     } catch (IOException e) {
-                        fireSendToErrorEvent(new SendToEvent(this, "Error[" + e.getClass().getName() + "]:" + e.getMessage()));
+                        fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + e.getClass().getName() + "]:" + e.getMessage()));
                     } finally {
                         if (istm != null) {
                             istm.close();
                         }
                     }
                 } catch (IOException ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                 } catch (Exception ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                 } finally {
                     if (conn != null) {
                         conn.disconnect();
@@ -347,7 +346,7 @@ public class SendToServer extends SendToMenuItem {
                         ProxySelector staticProxy = new HttpUtil.StaticProxySelector(proxy) {
                             @Override
                             public void connectFailed(URI uri, SocketAddress sa, IOException ex) {
-                                fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                                fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                                 logger.log(Level.SEVERE, ex.getMessage(), ex);
                             }
                         };
@@ -376,14 +375,14 @@ public class SendToServer extends SendToMenuItem {
                                 String bodyMessage = response.body();
                                 if (statusCode == HttpURLConnection.HTTP_OK) {
                                     if (bodyMessage.length() == 0) {
-                                        fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                                        fireIssueAlertInfoEvent(new IssueAlertEvent(this, "Success[" + statusCode + "]"));
                                     } else {
-                                        fireSendToWarningEvent(new SendToEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
+                                        fireIssueAlertErrorEvent(new IssueAlertEvent(this, "Warning[" + statusCode + "]:" + bodyMessage));
                                         logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                                     }
                                 } else {
                                     // 200以外
-                                    fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
+                                    fireIssueAlertErrorEvent(new IssueAlertEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
                                     logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                                 }
                             } finally {
@@ -394,10 +393,10 @@ public class SendToServer extends SendToMenuItem {
                         }
                     }
                 } catch (IOException ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (Exception ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
@@ -586,21 +585,21 @@ public class SendToServer extends SendToMenuItem {
                     String bodyMessage = response.body().string();
                     if (statusCode == HttpURLConnection.HTTP_OK) {
                         if (bodyMessage.length() == 0) {
-                            fireSendToCompleteEvent(new SendToEvent(this, "Success[" + statusCode + "]"));
+                            fireIssueAlertInfoEvent(new IssueAlertEvent(this, "Success[" + statusCode + "]"));
                         } else {
-                            fireSendToWarningEvent(new SendToEvent(this, "Information[" + statusCode + "]:" + bodyMessage));
+                            fireIssueAlertErrorEvent(new IssueAlertEvent(this, "Information[" + statusCode + "]:" + bodyMessage));
                             logger.log(Level.INFO, "[" + statusCode + "]", bodyMessage);
                         }
                     } else {
                         // 200以外
-                        fireSendToWarningEvent(new SendToEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
+                        fireIssueAlertErrorEvent(new IssueAlertEvent(this, "Error[" + statusCode + "]:" + bodyMessage));
                         logger.log(Level.WARNING, "[" + statusCode + "]", bodyMessage);
                     }
                 } catch (IOException | NoSuchAlgorithmException | KeyStoreException | CertificateException | UnrecoverableKeyException | KeyManagementException ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 } catch (Exception ex) {
-                    fireSendToErrorEvent(new SendToEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
+                    fireIssueAlertCriticalEvent(new IssueAlertEvent(this, "Error[" + ex.getClass().getName() + "]:" + ex.getMessage()));
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }
             }
@@ -608,7 +607,7 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
-    public String getSendToParameter(SendToParameterType type, HttpRequestResponse messageInfo) {
+    public String getSendToParameter(SendToParameterProperty.SendToParameterType type, HttpRequestResponse messageInfo) {
         String value = null;
         switch (type) {
             case HISTORY_COMMENT:
@@ -662,7 +661,7 @@ public class SendToServer extends SendToMenuItem {
                 }
             }
             if (extendSendToParameterProp.isUseReqComment()) {
-                if (extendSendToParameterProp.getReqName() == SendToParameterType.HISTORY_COMMENT) {
+                if (extendSendToParameterProp.getReqName() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
                     String value = getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo);
                     if (value != null) {
                         HttpUtil.outMultipartText(boundary, out, "reqComment", value, StandardCharsets.UTF_8);
@@ -670,7 +669,7 @@ public class SendToServer extends SendToMenuItem {
                 }
             }
             if (extendSendToParameterProp.isUseReqNum()) {
-                if (extendSendToParameterProp.getReqName() == SendToParameterType.HISTORY_NUMBER) {
+                if (extendSendToParameterProp.getReqName() == SendToParameterProperty.SendToParameterType.HISTORY_NUMBER) {
                     String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
                     if (value != null) {
                         HttpUtil.outMultipartText(boundary, out, "reqNum", value, StandardCharsets.UTF_8);

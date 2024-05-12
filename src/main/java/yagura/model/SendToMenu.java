@@ -1,5 +1,7 @@
 package yagura.model;
 
+import extension.burp.IssueAlertListener;
+import extension.burp.IssueAlertEvent;
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.core.ByteArray;
@@ -8,7 +10,7 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import extend.util.external.TransUtil;
-import extension.burp.MessageType;
+import extension.burp.IssueAlert;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -25,7 +27,7 @@ import javax.swing.JMenuItem;
  *
  * @author isayan
  */
-public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
+public class SendToMenu implements ContextMenuItemsProvider {
 
     private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
 
@@ -33,11 +35,14 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
     private final MontoyaApi api;
     private ContextMenuEvent contextMenuEvent;
 
+    private final IssueAlert issueAlert;
+
     private final javax.swing.JMenu mnuSendTo = new javax.swing.JMenu();
 
     public SendToMenu(MontoyaApi api, SendToProperty property) {
         this.api = api;
         this.property = property;
+        this.issueAlert = new IssueAlert(api);
     }
 
     private final List<Component> menuList = new ArrayList<>();
@@ -116,24 +121,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                     mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
                     if (item.isServer()) {
                         SendToMenuItem sendToItem = new SendToServer(item, this.contextMenuEvent);
-                        sendToItem.addSendToListener(new SendToListener() {
-                            @Override
-                            public void complete(SendToEvent evt) {
-                            }
-
-                            @Override
-                            public void warning(SendToEvent evt) {
-                                BurpExtension.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.INFO);
-                                logger.log(Level.WARNING, evt.getMessage());
-                            }
-
-                            @Override
-                            public void error(SendToEvent evt) {
-                                BurpExtension.helpers().issueAlert("SendToServer", evt.getMessage(), MessageType.ERROR);
-                                logger.log(Level.SEVERE, evt.getMessage());
-                            }
-
-                        });
+                        sendToItem.addIssueAlertListener(this.issueAlert);
                         mnuItem.addActionListener(sendToItem);
                         if (sendToItem.isEnabled()) {
                             sendToList.add(mnuItem);
@@ -232,7 +220,7 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
                     } else {
                         if (item.isServer()) {
                             final SendToMenuItem sendToItem = new SendToServer(item, contextMenuEvent);
-                            sendToItem.addSendToListener(this);
+                            sendToItem.addIssueAlertListener(this.issueAlert);
                             mnuItem.addActionListener(new ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
@@ -321,20 +309,6 @@ public class SendToMenu implements ContextMenuItemsProvider, SendToListener {
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }
-
-    @Override
-    public void complete(SendToEvent evt) {
-    }
-
-    @Override
-    public void warning(SendToEvent evt) {
-        this.api.logging().raiseErrorEvent(evt.getMessage());
-    }
-
-    @Override
-    public void error(SendToEvent evt) {
-        this.api.logging().raiseCriticalEvent(evt.getMessage());
     }
 
 }

@@ -1,6 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import extension.burp.IssueAlertFireEvent;
 import extension.helpers.StringUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,13 +9,12 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.event.EventListenerList;
 
 /**
  *
  * @author isayan
  */
-public class SendToItem {
+public class SendToItem extends IssueAlertFireEvent {
 
     private final static Logger logger = Logger.getLogger(SendToItem.class.getName());
 
@@ -273,43 +273,6 @@ public class SendToItem {
      */
     public void setExtend(ExtendType sendExtend) {
         this.sendExtend = sendExtend;
-    }
-
-    private final EventListenerList sendToEventList = new EventListenerList();
-
-    protected void fireSendToCompleteEvent(SendToEvent evt) {
-        Object[] listeners = this.sendToEventList.getListenerList();
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == SendToListener.class) {
-                ((SendToListener) listeners[i + 1]).complete(evt);
-            }
-        }
-    }
-
-    protected void fireSendToWarningEvent(SendToEvent evt) {
-        Object[] listeners = this.sendToEventList.getListenerList();
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == SendToListener.class) {
-                ((SendToListener) listeners[i + 1]).warning(evt);
-            }
-        }
-    }
-
-    protected void fireSendToErrorEvent(SendToEvent evt) {
-        Object[] listeners = this.sendToEventList.getListenerList();
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == SendToListener.class) {
-                ((SendToListener) listeners[i + 1]).error(evt);
-            }
-        }
-    }
-
-    public void addSendToListener(SendToListener l) {
-        this.sendToEventList.add(SendToListener.class, l);
-    }
-
-    public void removeSendToListener(SendToListener l) {
-        this.sendToEventList.remove(SendToListener.class, l);
     }
 
     public static Object[] toObjects(SendToItem sendTo) {

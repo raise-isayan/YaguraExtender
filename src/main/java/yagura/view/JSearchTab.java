@@ -1,8 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtension;
-import burp.api.montoya.http.message.requests.HttpRequest;
-import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import extension.burp.FilterProperty;
 import java.awt.BorderLayout;

@@ -1,5 +1,6 @@
 package yagura.model;
 
+import extension.burp.IssueAlertEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
@@ -70,7 +71,7 @@ public class SendToMultiEditor extends SendToMenuItem {
                 }
                 ConvertUtil.executeFormat(this.getTarget(), args);
             } catch (IOException ex) {
-                this.fireSendToErrorEvent(new SendToEvent(this, ex.getMessage()));
+                this.fireIssueAlertCriticalEvent(new IssueAlertEvent(this, ex.getMessage()));
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }

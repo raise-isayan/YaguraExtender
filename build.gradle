@@ -10,9 +10,9 @@ plugins {
     id 'java-library'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'  
-    id 'org.asciidoctor.jvm.base' version '3.3.2'
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
-    id 'org.asciidoctor.jvm.pdf' version '3.3.2'
+    id 'org.asciidoctor.jvm.base' version '4.0.2'
+    id 'org.asciidoctor.jvm.convert' version '4.0.2'
+    id 'org.asciidoctor.jvm.pdf' version '4.0.2'
 }
 
 repositories {

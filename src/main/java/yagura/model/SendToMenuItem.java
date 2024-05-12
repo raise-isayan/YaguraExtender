@@ -1,8 +1,6 @@
 package yagura.model;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.requests.HttpRequest;
-import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
