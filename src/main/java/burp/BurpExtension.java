@@ -1217,11 +1217,12 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     URL[] urls = TargetScopeItem.parseMultilineURL(paste);
                     List<SSLPassThroughRule> rules = new ArrayList<>();
                     for (URL u : urls) {
-                        rules.add(new SSLPassThroughRule(true, u.getHost(), u.getPort() > 0 ? u.getPort() : u.getDefaultPort()));
+                        int port = u.getPort() > 0 ? u.getPort() : u.getDefaultPort();
+                        rules.add(new SSLPassThroughRule(true, BurpUtil.escapeRegex(u.getHost()), BurpUtil.escapeRegex(StringUtil.toString(port))));
                     }
                     BurpConfig.configSSLPassThroughRules(api, rules, false);
                     IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
-                    BurpUtil.flashTab(tab, "Target");
+                    BurpUtil.flashTab(tab, "Proxy");
                 } catch (Exception ex) {
                     logger.log(Level.SEVERE, ex.getMessage(), ex);
                 }

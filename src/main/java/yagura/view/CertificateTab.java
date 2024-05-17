@@ -572,7 +572,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_chkProvidedServerActionPerformed
 
     private void rdoCustomCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCustomCAActionPerformed
-        SwingUtil.setContainerEnable(this.pnlCertificateExports, this.rdoCustomCA.isSelected());
+//        SwingUtil.setContainerEnable(this.pnlCertificateExports, this.rdoCustomCA.isSelected());
+        this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
     }//GEN-LAST:event_rdoCustomCAActionPerformed
 
     private void rdoBurpCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpCAActionPerformed

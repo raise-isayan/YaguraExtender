@@ -58,28 +58,6 @@ clean.doFirst {
     }
 }
 
-
-//jar {
-//    // Keep jar clean:
-//    exclude 'META-INF/**', 'about.html', 'module-info.class'
-//    exclude 'junit/**'
-//
-//    manifest {
-//        attributes 'Main-Class': mainClassName
-//    }
-//
-//    from {
-//        configurations.runtimeClasspath.filter{
-//            it.exists()
-//        }.collect {
-//            it.isDirectory() ? it : zipTree(it)
-//        }
-//    }
-//
-//    destinationDirectory = file('release')
-//    archiveVersion =  "v${release_version_major}"
-//}
-
 shadowJar {
    exclude 'META-INF/*.SF'
    exclude 'META-INF/*.DSA'
@@ -147,10 +125,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
     testImplementation 'net.portswigger.burp.extensions:montoya-api:2023.12.1'
-        // https://mvnrepository.com/artifact/com.google.code.gson/gson
-        testImplementation 'com.google.code.gson:gson:2.10.1'
-        // https://mvnrepository.com/artifact/com.googlecode.juniversalchardet/juniversalchardet
-        testImplementation 'com.googlecode.juniversalchardet:juniversalchardet:1.0.3'
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     testImplementation 'com.squareup.okhttp3:okhttp:4.11.0'
