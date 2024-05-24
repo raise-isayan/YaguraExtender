@@ -33,7 +33,7 @@ asciidoctor {
 }
 
 application {
-    mainClassName = 'yagura.view.MainFrame'
+    mainClass = 'yagura.view.MainFrame'
 }
 
 processResources {

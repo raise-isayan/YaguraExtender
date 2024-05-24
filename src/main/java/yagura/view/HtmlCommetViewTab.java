@@ -4,9 +4,9 @@ import burp.BurpExtension;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
+import extension.burp.IBurpMessageTab;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.SmartCodec;
@@ -29,7 +29,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
+public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
@@ -190,6 +190,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements ExtensionPr
     /**
      * @return
      */
+    @Override
     public HttpRequestResponse getHttpRequestResponse() {
         return this.httpRequestResponse;
     }

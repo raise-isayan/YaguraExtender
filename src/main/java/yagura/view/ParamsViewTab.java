@@ -9,8 +9,8 @@ import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.http.message.ContentType;
+import extension.burp.IBurpMessageTab;
 import extension.helpers.HttpRequestWapper;
 import java.awt.Component;
 import java.awt.Font;
@@ -28,12 +28,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
-import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import yagura.model.Parameter;
 import yagura.model.ParamsView;
@@ -44,7 +41,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author raise.isayan
  */
-public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
+public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     private final static Logger logger = Logger.getLogger(ParamsViewTab.class.getName());
 
@@ -437,6 +434,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements ExtensionProvid
 //        this.httpRequestResponse = null;
     }
 
+    @Override
     public HttpRequestResponse getHttpRequestResponse() {
         HttpRequest httpRequest = this.httpRequestResponse.request();
         if (httpRequest.contentType() == ContentType.URL_ENCODED) {

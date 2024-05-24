@@ -2,7 +2,6 @@ package yagura.view;
 
 import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import yagura.model.*;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -17,7 +16,6 @@ import yagura.model.UniversalViewProperty.UniversalView;
  *
  * @author isayan
  */
-// public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
 public class MessageViewTab extends javax.swing.JPanel implements SendToMessage {
 
     private final static Logger logger = Logger.getLogger(MessageViewTab.class.getName());

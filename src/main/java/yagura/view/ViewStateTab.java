@@ -12,8 +12,8 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extension.burp.ExtensionHelper;
+import extension.burp.IBurpMessageTab;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -42,7 +42,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
+public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     private final static Logger logger = Logger.getLogger(ViewStateTab.class.getName());
 
@@ -320,6 +320,7 @@ public class ViewStateTab extends javax.swing.JPanel implements ExtensionProvide
         SwingUtil.collapseAll(this.treeViewState, selectionPath);
     }
 
+    @Override
     public HttpRequestResponse getHttpRequestResponse() {
         return this.httpRequestResponse;
     }

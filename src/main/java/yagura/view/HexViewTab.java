@@ -2,10 +2,10 @@ package yagura.view;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.Selection;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extension.helpers.ConvertUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
+import extension.burp.IBurpMessageTab;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -29,8 +29,7 @@ import javax.swing.table.TableColumnModel;
  *
  * @author isayan
  */
-//public class RawViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor, ExtensionProvidedHttpRequestEditor, ExtensionProvidedHttpResponseEditor {
-public class HexViewTab extends javax.swing.JPanel implements ExtensionProvidedEditor {
+public class HexViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     private final static Logger logger = Logger.getLogger(HexViewTab.class.getName());
 
@@ -228,7 +227,13 @@ public class HexViewTab extends javax.swing.JPanel implements ExtensionProvidedE
     }
 
     @Override
+    public HttpRequestResponse getHttpRequestResponse() {
+        return this.httpRequestResponse;
+    }
+
+    @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.httpRequestResponse = httpRequestResponse;
         this.setData(httpRequestResponse.request().toByteArray().getBytes());
     }
 

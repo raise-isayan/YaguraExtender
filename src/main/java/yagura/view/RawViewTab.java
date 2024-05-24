@@ -10,9 +10,9 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import extension.burp.ExtensionHelper;
 import extend.util.external.ThemeUI;
+import extension.burp.IBurpMessageTab;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.StringUtil;
@@ -45,7 +45,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class RawViewTab extends javax.swing.JPanel implements SendToMessage, ExtensionProvidedEditor {
+public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBurpMessageTab {
 
     private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 

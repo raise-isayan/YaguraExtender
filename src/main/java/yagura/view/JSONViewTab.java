@@ -7,12 +7,12 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.EditorMode;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedEditor;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
 import extension.burp.ExtensionHelper;
 import extend.util.external.FormatUtil;
+import extension.burp.IBurpMessageTab;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.StringUtil;
@@ -36,7 +36,7 @@ import yagura.model.UniversalViewProperty;
  *
  * @author isayan
  */
-public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, ExtensionProvidedEditor {
+public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IBurpMessageTab {
 
     private final static Logger logger = Logger.getLogger(JSONViewTab.class.getName());
 
@@ -251,36 +251,8 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, Ex
         this.jsonView.setLineWrap(lineWrap);
     }
 
+    @Override
     public HttpRequestResponse getHttpRequestResponse() {
-//        if (this.httpRequestResponse != null) {
-//            if (this.textModified) {
-//                String modifiedText = this.jsonView.getMessage();
-//                String encoding = this.quickSearchTab.getSelectedEncoding();
-//                if (encoding != null) {
-//                    try {
-//                        if (this.isRequest) {
-//                            HttpRequest httpRequest = HttpRequest.httpRequest(this.httpRequestResponse.request().httpService(), this.httpRequestResponse.request().headers(), ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
-//                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(httpRequest, this.httpRequestResponse.response(), this.httpRequestResponse.annotations());
-//                            return http;
-//                        }
-//                        else {
-//                            HttpResponse httpResponse = HttpResponse.httpResponse(ByteArray.byteArray(StringUtil.getBytesCharset(modifiedText, encoding)));
-//                            HttpRequestResponse http = HttpRequestResponse.httpRequestResponse(this.httpRequestResponse.request(), httpResponse, this.httpRequestResponse.annotations());
-//                            return http;
-//                        }
-//
-//                    } catch (UnsupportedEncodingException ex) {
-//                        return null;
-//                    }
-//                } else {
-//                    return this.httpRequestResponse;
-//                }
-//            } else {
-//                return this.httpRequestResponse;
-//            }
-//        } else {
-//            return null;
-//        }
         return this.httpRequestResponse;
     }
 
