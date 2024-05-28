@@ -1609,6 +1609,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             // Match and Replace
             if (getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
                 MatchReplaceGroup group = getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(getProperty().getMatchReplaceProperty().getSelectedName());
+                BurpExtension.helpers().outPrintln("rbody:\r\n" + StringUtil.getBytesRawString(requestBytes) + "\r\n:rbody");
                 if (group != null && group.isInScopeOnly()) {
                     if (helpers().isInScope(interceptedHttpRequest.url())) {
                         resultBytes = this.replaceProxyMessage(true, requestBytes, interceptedHttpRequest.bodyOffset());
@@ -1618,9 +1619,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 }
             }
             if (requestBytes != resultBytes) {
-//                HttpRequest modifyRequest = HttpRequest.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
                 HttpRequest modifyRequest = ExtensionHelper.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
-                return ProxyRequestReceivedAction.continueWith(modifyRequest, annotations);
+                HttpRequestWapper wrapModifyRequest = new HttpRequestWapper(modifyRequest);
+                return ProxyRequestReceivedAction.continueWith(wrapModifyRequest.withUpdateContentLength(), annotations);
             } else {
                 return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
             }
@@ -1749,7 +1750,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
          * @param bodyOffset
          * @return 変換後メッセージ
          */
-        protected byte[] replaceProxyMessage(
+        protected synchronized byte[] replaceProxyMessage(
                 boolean messageIsRequest,
                 byte[] httpMessage,
                 int bodyOffset) {
