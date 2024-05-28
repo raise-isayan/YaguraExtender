@@ -1621,7 +1621,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             if (requestBytes != resultBytes) {
                 HttpRequest modifyRequest = ExtensionHelper.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
                 HttpRequestWapper wrapModifyRequest = new HttpRequestWapper(modifyRequest);
-                return ProxyRequestReceivedAction.continueWith(wrapModifyRequest.withUpdateContentLength(), annotations);
+                return ProxyRequestReceivedAction.continueWith(wrapModifyRequest.withAjustContentLength(), annotations);
             } else {
                 return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
             }
