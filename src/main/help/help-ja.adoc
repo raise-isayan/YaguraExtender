@@ -123,46 +123,46 @@ Target::
 Select::
     選択したエンコーディング一覧されます。
 
-[<]、[>]ボタン::
+[<]、[>] ボタン::
     選択したエンコーディングをTargetに移動もしくは、Selectに移動します。
 
-[Up]、[Down]ボタン::
+[Up]、[Down] ボタン::
     選択したエンコーディングの順番を移動します。
     ここでの順番が、エンコーディングに表示される順番になります。
 
-[Reset]ボタン::
+[Reset] ボタン::
     選択された言語のエンコーディングをデフォルトに設定します。
 
-[clip bord auto decode]チェックボックス::
+[clip bord auto decode] チェックボックス::
     チェック時、Burp suiteからクリップボードにコピーされた文字列を自動デコードし、他のアプリケーションに文字化けせずに貼り付けられるようにします。
     クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。 +
     現在のバージョンではサポートされていません。
 
 ==== CJK Message View
 
-[Cenerate PoC]チェックボックス::
+[Cenerate PoC] チェックボックス::
     メッセージタブにCenerate PoCタブを表示するようにします。
    
-[HTML Comment]チェックボックス::
+[HTML Comment] チェックボックス::
     メッセージタブにHTML Commentタブを表示するようにします。
 
-[JSON]チェックボックス::
+[JSON] チェックボックス::
     メッセージタブにJSONタブを表示するようにします。
 
-[JSONP]チェックボックス::
+[JSONP] チェックボックス::
     メッセージタブにJSONPタブを表示するようにします。
 
-[JWT]チェックボックス::
+[JWT] チェックボックス::
     メッセージタブにJWTタブを表示するようにします。
 
-[ViewState]チェックボックス::
+[ViewState] チェックボックス::
     メッセージタブにViewStateタブを表示するようにします。
 
-[Universal Raw]チェックボックス::
+[Universal Raw] チェックボックス::
     メッセージタブにCJKに対応したRawタブを表示するようにします。
     現時点ではリードオンリーです。
 
-[Universal Param]チェックボックス::
+[Universal Param] チェックボックス::
     メッセージタブにCJKに対応したParamタブを表示するようにします。
     現時点ではリードオンリーです。
 
@@ -181,47 +181,47 @@ Burp sute 本体の Proxy => Optionタブの ** Match and Replace ** の拡張�
 
 ==== MatchReplace
 
-[Select]ボタン::
+[Select] ボタン::
     選択したMatchReplaceを適用します。
     適用済みを再度選択した場合は、解除されます。
 
-[New]ボタン::
+[New] ボタン::
     MatchReplaceを新規作成します。
     空のMatchReplaceItemダイヤログが表示されます。
 
-[Edit]ボタン::
+[Edit] ボタン::
     選択したMatchReplaceを編集します。
     選択した内容のMatchReplaceItemダイヤログが表示されます。
 
-[Remove]ボタン::
+[Remove] ボタン::
     選択したMatchReplaceを削除します。
 
-[Up]、[Down]ボタン::
+[Up]、[Down] ボタン::
     選択したMatchReplaceの順番を移動します。
 
 ==== MatchReplace ダイヤログ
 image:images/custom_matchreplace_edit.png[MatchReplaceItemダイヤログ]
 
-[in-scope only]チェックボックス::
+[in-scope only] チェックボックス::
     BurpのTarget Scopeの条件にマッチする場合のみ検索します。
 
-[burp import match and replace rule]ボタン::
+[burp import match and replace rule] ボタン::
     現在のBurpのmatch and replace設定をインポートします。 +
     現在のバージョンではサポートされていません。
 
-[Edit]ボタン::
+[Edit] ボタン::
     選択した MatchReplace を編集します。
 
-[Remove]ボタン::
+[Remove] ボタン::
     選択した MatchReplace を削除します。
 
-[Up]、[Down]ボタン::
+[Up]、[Down] ボタン::
     選択した MatchReplace Item の順番を移動します。
 
-[All Clear]ボタン::
+[All Clear] ボタン::
     リストをすべて削除します。
 
-[Add]、[Update]ボタン::
+[Add]、[Update] ボタン::
     MatchReplace を追加します。編集中の場合は更新します。
 
 ==== MatchReplace Item 編集ダイヤログ
@@ -240,13 +240,13 @@ Replace(置換後)::
     いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
     アスキー文字以外を指定する場合は、メタ文字を利用します。
 
-[Regexp]チェックボックス::
+[Regexp] チェックボックス::
     チェック時、正規表現を有効にします。
 
-[IgnoreCase]チェックボックス::
+[IgnoreCase] チェックボックス::
     チェック時、大文字小文字を無視します。
 
-[Metachar]チェックボックス::
+[Metachar] チェックボックス::
     メタ文字を有効にします。
     以下のメタ文字が利用可能です。
 
@@ -281,13 +281,13 @@ image:images/custom_matchalert.png[MatchAlertタブ]
 
 ==== MatchAlert
 
-[Enable Alert]チェックボックス::
+[Enable Alert] チェックボックス::
     チェック時にMatchAlert機能を有効にします。
-[Edit]ボタン::
+[Edit] ボタン::
     選択した MatchAlert Item を編集します。
-[Remove]ボタン::
+[Remove] ボタン::
     選択した MatchAlert Item を削除します。
-[Add]、[Update]ボタン::
+[Add]、[Update] ボタン::
     MatchAlert Item を追加します。編集中時は更新します。
 
 ==== MatchAlert Item 編集ダイヤログ
@@ -304,32 +304,32 @@ Target(アラート対象)::
     proxy, repeater, spider, intruder, scanner, sequencer, extender
     チェックした対象がMatchAlertの対象になります。
 
-[Regexp]チェックボックス::
+[Regexp] チェックボックス::
     チェック時正規表現を有効にします。
 
-[IgnoreCase]チェックボックス::
+[IgnoreCase] チェックボックス::
     チェック時大文字小文字を無視します。
 
-[alert tabs]チェックボックス::
+[alert tabs] チェックボックス::
     Burp suite のalertsが通知先になります。
 
-[tray message]チェックボックス::
+[tray message] チェックボックス::
     トレイのメッセージが通知先になります。
     現在のバージョンではサポートされていません。
 
-[Highlight Color]チェックボックス::
+[Highlight Color] チェックボックス::
     文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
     proxyログにチェックした場合のみ有効です。
 
-[comment]チェックボックス::
+[comment] チェックボックス::
     文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
     proxyログにチェックした場合のみ有効です。
 
-[capture group]チェックボックス::
+[capture group] チェックボックス::
     文字列がマッチした場合、マッチしたキャプチャグループの文字列をコメントに設定することができます +
     コメントの箇所に「$1」、「$2」等のグループ参照を指定することで該当のグループの値がコメントになります。
 
-[scanner issue]チェックボックス::
+[scanner issue] チェックボックス::
     文字列がマッチした場合、該当のScannerのIssueを作成します。
 
 === SendToタブ
@@ -341,25 +341,25 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 
 ==== SendTo
 
-[Send To Submenu]チェックボックス::
+[Send To Submenu] チェックボックス::
     チェックした場合、Send To Menuをサブメニューで表示します。
 
-[Edit]ボタン::
+[Edit] ボタン::
     選択したSendToItemを編集します。
     選択した内容のSendToItemの編集ダイヤログが表示されます。
 
-[Remove]ボタン::
+[Remove] ボタン::
     選択したSendToItemを削除します。
 
-[Up]、[Down]ボタン::
+[Up]、[Down] ボタン::
     選択したSendToItemの順番を移動します。
     ここでの順番が、右クリックのメニューに表示される順番になります。
 
-[Add]ボタン::
+[Add] ボタン::
     SendToItemを追加します。
     空のSendToItemの編集ダイヤログが表示されます。
 
-[Duplicate]ボタン::
+[Duplicate] ボタン::
     SendToItemを複製します。
     選択したSendToItemの編集ダイヤログが表示されます。
     各項目を任意に変更して追加することができます。
@@ -380,14 +380,14 @@ Target::
     任意のバイナリエディタやファイル比較ツール等の実行パスを記載します。
     serverにチェックが入ってる場合は、http:// または https:// で始まるURLを書きます。
 
-[server]チェックボックス::
+[server] チェックボックス::
     サーバに送信する場合にチェックします。
     serverにチェックが入ってる場合は、Target に記載されたURLに対してmultipartのデータを送ります。
 
-[reverse order]チェックボックス::
+[reverse order] チェックボックス::
     選択したリストの逆順に送信をおこないます。
 
-[requset]、[response]チェックボックス::
+[requset]、[response] チェックボックス::
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
     リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。
 
@@ -580,21 +580,21 @@ image:images/custom_autoresponder.png[AutoResponderタブ]
 
 リクエストに対応した固定のレスポンスを定義することができます。
 
-[Enable]ボタン::
+[Enable] ボタン::
     チェック時に、AutoResponderを有効にします。
 
-[Edit]ボタン::
+[Edit] ボタン::
     選択したAutoResponderItemを編集します。
     選択した内容のAutoResponderItemの編集ダイヤログが表示されます。
 
-[Remove]ボタン::
+[Remove] ボタン::
     選択したAutoResponderItemを削除します。
 
-[Up]、[Down]ボタン::
+[Up]、[Down] ボタン::
     選択したAutoResponderItemの順番を移動します。
     ここでの順番が、AutoResponderの適用される順番になります。
 
-[Add]ボタン::
+[Add] ボタン::
     AutoResponderItemを追加します。
     空のAutoResponderItemの編集ダイヤログが表示されます。
 
@@ -608,20 +608,20 @@ Method::
 Match URL::
     マッチさせるURLを指定します。指定された値は前方一致されます。
 
-[Regexp]チェックボックス::
+[Regexp] チェックボックス::
     チェック時、マッチさせるURLに対しての正規表現を有効にします。
 
-[IgnoreCase]チェックボックス::
+[IgnoreCase] チェックボックス::
     チェック時マッチさせるURLに対しての大文字小文字を無視します。
 
 Replace::
     レスポンスとして利用するファイルを指定します。
 
-[Body only]チェックボックス::
+[Body only] チェックボックス::
     レスポンスとして指定したファイルをレスポンスボディに出力します。
     チェックされていない場合は、ファイルにレスポンスヘッダの記載も必要です。
 
-[Conent-Type]コンボボックス::
+[Conent-Type] コンボボックス::
     レスポンスのConent-Typeを指定します。[Body only]にチェックがされている場合にのみ有効です。
 
 === ResultFilterタブ
@@ -630,28 +630,28 @@ image:images/custom_resultfilter.png[ResultFilterタブ]
 
 ProxyのBambda modeを切り替えるための設定を行います｡
 
-[New]ボタン::
+[New] ボタン::
     ResultFilterItemを追加します。
     空のResultFilterItemの編集ダイヤログが表示されます。
 
-[Edit]ボタン::
+[Edit] ボタン::
     選択したResultFilterItemを編集します。
     選択した内容のResultFilterItemの編集ダイヤログが表示されます。
 
-[Remove]ボタン::
+[Remove] ボタン::
     選択したResultFilterItemを削除します。
 
-[Up]、[Down]ボタン::
+[Up]、[Down] ボタン::
     選択したResultFilterItemの順番を移動します。
 
 ==== ResultFilterItem 編集ダイヤログ
 
 image:images/custom_resultfilter_item.png[ResultFilterItem編集 ダイヤログ]
 
-[Convert to Bambda]ボタン::
+[Convert to Bambda] ボタン::
   指定された設定をBambda クエリーに変換します。
 
-[Import Bambda]ボタン::
+[Import Bambda] ボタン::
   BurpのBambda設定をインポートします。
 
 === Loggingタブ
@@ -663,7 +663,7 @@ image:images/custom_logging.png[Loggingタブ]
 
 ==== Logging
 
-[auto logging]チェックボックス::
+[auto logging] チェックボックス::
     チェックすると自動でログを記録します。LogDirで指定したディレクトリに作成されます。
 
 Log Dir::
@@ -685,15 +685,21 @@ proxy-message.log.2
 
 ===== Logging target
 
-[ProxyLog]チェックボックス::
+[ProxyLog] チェックボックス::
      Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。
-[ToolLog]チェックボックス::
+[ToolLog] チェックボックス::
      各種Toolのログの値が記録されます。
-[history is included]チェックボックス::
+[history is included] チェックボックス::
      auto loggingがオフの状態でのみチェックできます。
      チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。
-[Exclude Extension]チェックボックス::
+[Exclude Extension] チェックボックス::
      設定された拡張子をロギングから除外します。
+
+[Temporary project warning when closing  Burp Suite] チェックボックス::
+    Temporary projectの状態でBurpを閉じようとするとポップアップによる警告を表示します。
+
+[Popup Time] ::
+     Popupしている時間を1000 ms から10000 ms までの間で指定します。デフォルトは5000 msです。
 
 === JSearchタブ
 
@@ -703,20 +709,20 @@ JSearch タブはProxyのHistory一覧から文字を検索するための機能
 
 ==== JSearch
 
-[Search]ボタン::
+[Search] ボタン::
      ProxyのHistory一覧からテキストボックスに入力した値で検索します。
 
-[Smart Match]チェックボックス::
+[Smart Match] チェックボックス::
     HTMLエスケープ、URLエンコードなど複数のエスケープ考慮した検索を実行します。
     正規表現は有効にできません。
 
-[Regexp]チェックボックス::
+[Regexp] チェックボックス::
     チェック時正規表現を有効にします。
 
-[IgnoreCase]チェックボックス::
+[IgnoreCase] チェックボックス::
     チェック時大文字小文字を無視します。
 
-[in-scope only]チェックボックス::
+[in-scope only] チェックボックス::
     検索対象をBurpのTargetタブのscopeに一致するパスにします。
 
 request::
@@ -725,7 +731,7 @@ request::
 response::
     検索対象をレスポンス(Header,Body)を指定します。
 
-[comment]チェックボックス::
+[comment] チェックボックス::
     検索対象にコメントを含めます。
 
 Search Encoding::
@@ -754,24 +760,24 @@ Encodeing::
      Raw にチェックすると ISO-8859_1 にてエンコード、デコードします。 +
      Guess にチェックすると文字コードを自動で判定してエンコード、デコードします。
 
-[Clear]ボタン::
+[Clear] ボタン::
      InputおよびOutputの内容をクリアします。
 
-[Output => Input]ボタン::
+[Output => Input] ボタン::
      Outputの内容をInputに送ります。
 
-[Output Copy]ボタン::
+[Output Copy] ボタン::
      Outputの内容をクリップボードに送ります。
 
-Historyコンボボックス::
+[History] コンボボックス::
      変換した履歴が記録されており、選択すると以前の変換を取得できます。
 
 ===== Encode/Decode
 
-[Smart Decode]ボタン::
+[Smart Decode] ボタン::
      文字列の形式を自動判定しデコードします。
 
-[Encode]/[Decode]ボタン::
+[Encode]/[Decode] ボタン::
      選択した変換方式でエンコード、デコード変換を行います。
 
 チェックしたエンコード/デコードを行います。
@@ -1018,13 +1024,13 @@ end::
 step::
     startからendまでの日付の増加数を指定します。
 
-[generate]ボタン::
+[generate] ボタン::
   指定した情報でリストを生成します。
 
-[List Copy]ボタン::
+[List Copy] ボタン::
   生成したリストをクリップボードに出力します。
 
-[Save to file]ボタン::
+[Save to file] ボタン::
   生成したリストをファイルに出力します。
 
 .randomタブ
@@ -1042,13 +1048,13 @@ Character length::
 generator count::
     生成する個数を入力します。
 
-[generate]ボタン::
+[generate] ボタン::
     指定した情報でリストを生成します。
 
-[List Copy]ボタン::
+[List Copy] ボタン::
     生成したリストをクリップボードに出力します。
 
-[Save to file]ボタン::
+[Save to file] ボタン::
     生成したリストをファイルに出力します。
 
 ==== Converter tab
@@ -1133,60 +1139,60 @@ Ineger IP ::
 
 image:images/custom_certificate.png[Certificateタブ]
 
-[JKS] [PKCS12]ボタン::
+[JKS] [PKCS12] ボタン::
     証明書の種類を選択します。
 
-[Import]ボタン::
+[Import] ボタン::
     証明書をインポートします。
 
 [Certificate and Private key in PEM format]ボタン::
     秘密鍵と公開鍵を含めてPEM形式でエクスポートします。
 
-[Certificate in PEM format]ボタン::
+[Certificate in PEM format] ボタン::
     公開鍵を含めてDER形式でエクスポートします。
 
-[Certificate in DER format]ボタン::
+[Certificate in DER format] ボタン::
     公開鍵を含めてDER形式でエクスポートします。
 
-[Certificate in DER format]ボタン::
+[Certificate in DER format] ボタン::
     秘密鍵を含めてDER形式でエクスポートします。
 
-[Provide certificate on the server]チェックボックス::
+[Provide certificate on the server] チェックボックス::
     指定したポートで証明書をインポートするためのサーバを起動します。
   
-[Export]ボタン::
+[Export] ボタン::
     証明書をエクスポートします。
 
 ==== View State Decoder タブ
 
 image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
 
-[expand]ボタン::
+[expand] ボタン::
     選択したツリーを展開します。
 
-[collapse]ボタン::
+[collapse] ボタン::
     選択したツリーを折りたたみます。
 
-[Decode]ボタン::
+[Decode] ボタン::
      ViewStateのデコードを行います。
 
-[Clear]ボタン::
+[Clear] ボタン::
      ViewStateをクリアします。
 
 ==== JWT Token Decoder タブ
 
 image:images/custom_jtranscoder_JWT_decoder.png[JWT Token Decoderタブ]
 
-[JWT]テキストエリア::
+[JWT] テキストエリア::
   デコードするJWTを入力します。
 
-[Header]テキストエリア::
+[Header] テキストエリア::
   JWTのHeaderをデコードして表示します。
 
-[Payload]テキストエリア::
+[Payload] テキストエリア::
   JWTのPayloadをデコードして表示します。
 
-[Signature]テキストエリア::
+[Signature] テキストエリア::
   JWTのSignatureを表示します。
 
 === Generate CSRF PoC
@@ -1198,36 +1204,36 @@ ProxyのHistoryタブなどのリクエストを確認可能な箇所におい�
 
 image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
 
-[Generate]ボタン::
+[Generate] ボタン::
     設定した条件にしたがってPoCを生成します。
     条件を変更した場合は再度、[Generate]ボタンを押して生成しなおす必要があります。
 
-[Copy to Clipbord]ボタン::
+[Copy to Clipbord] ボタン::
     生成したPoCをクリップボードにコピーします。 +
     文字コードは無視されます。
 
-[Save to file]ボタン::
+[Save to file] ボタン::
     生成したPoCをファイルに保存します。 +
     指定した文字コードで保存されます。
    
-[auto submit]チェックボックス::
+[auto submit] チェックボックス::
     自動でsubmitされるPoCを生成します。
 
-[Time Delay]チェックボックス::
+[Time Delay] チェックボックス::
     指定時間後(秒)にsubmitされるPoCを生成します。 +
     [auto submit]チェック時のみ有効になります。
 
-[https]チェックボックス::
+[https] チェックボックス::
     PoCのリクエストをHTTPSにする必要がある場合にチェックします。
     選択したリクエストから自動判定された値がデフォルトになります。
 
-[GET]チェックボックス::
+[GET] チェックボックス::
     PoCのリクエストメソッドがGETメソッドになるようにします。
 
-[multi form]チェックボックス::
+[multi form] チェックボックス::
     複数フォームによるPoCを作成するのに便利なコードを出力します。
    
-[HTML5]チェックボックス::
+[HTML5] チェックボックス::
     PoCの罠をHTML5の機能を利用して作成します。
     バイナリアップロードを行う場合ここをチェックします。
    
@@ -1243,32 +1249,32 @@ plain:: text area を利用してPoCを作成します。 +
 
 image:images/custom_viewstate.png[View Stateタブ]
 
-[expand]ボタン::
+[expand] ボタン::
     選択したツリーを展開します。
 
-[collapse]ボタン::
+[collapse] ボタン::
     選択したツリーを折りたたみます。
 
-[Decode]ボタン::
+[Decode] ボタン::
      ViewStateのデコードを行います。
 
-[Clear]ボタン::
+[Clear] ボタン::
      ViewStateをクリアします。
 
 ==== JWT タブ
 
 image:images/custom_JWT.png[JWTタブ]
 
-[JWT]コンボボックス::
+[JWT] コンボボックス::
   デコードするJWTを選択します。
 
-[Header]テキストエリア::
+[Header] テキストエリア::
   JWTのHeaderをデコードして表示します。
 
-[Payload]テキストエリア::
+[Payload] テキストエリア::
   JWTのPayloadをデコードして表示します。
 
-[Signature]テキストエリア::
+[Signature ]テキストエリア::
   JWTのSignatureを表示します。
 
 === Version
@@ -1276,8 +1282,8 @@ image:images/custom_JWT.png[JWTタブ]
 
 image:images/custom_version.png[Versionタブ]
 
-[Import]ボタン::
+[Import] ボタン::
     設定をJSON形式にてImportします。
-[Export]ボタン::
+[Export] ボタン::
     JSON形式の設定をExportします。
 

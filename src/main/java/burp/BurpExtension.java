@@ -89,18 +89,24 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.SmartCodec;
+import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
@@ -130,6 +136,7 @@ import yagura.view.HtmlCommetViewTabEditor;
 import yagura.view.JSONViewTabEditor;
 import yagura.view.JWTViewTabEditor;
 import yagura.view.ParamsViewTabEditor;
+import yagura.view.PopupMessage;
 import yagura.view.RawViewTabEditor;
 import yagura.view.ViewStateTabEditor;
 
@@ -156,6 +163,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private EditorProvider editorProvider;
     private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
+
+    private final PopupMessage popupMessage = new PopupMessage(null);
 
     public BurpExtension() {
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -187,6 +196,26 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
+    private final WindowListener windowPopupListener = new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
+                String title = burpFrame.getTitle();
+                boolean temporaryProject = (title.contains(" - Temporary Project"));
+                if (option.getLoggingProperty().isWarnClosingTemporaryProject() && temporaryProject) {
+                    int popupTime = option.getLoggingProperty().getPopupTime();
+                    popupMessage.show("Project is Temporary.", popupTime);
+                    //                        int option = JOptionPane.showConfirmDialog(
+                    //                                burpFrame, "ProjectがTemporaryです。本当に終了しますか？", "Save Comfirm",
+                    //                                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                    //                        if (option == JOptionPane.YES_OPTION) {
+                    //                            burpFrame.dispose();
+                    //                        }
+                }
+            }
+        }
+    };
+
     /**
      * 古い Montoya API ではメソッド名をあやまっており ここにくる場合は必ず古いバージョン
      *
@@ -213,6 +242,20 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("minor:" + burpVersion.getMinor());
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
+
+        // MainFrame閉じる処理
+        if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
+            //burpFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+            WindowListener[] wl = burpFrame.getWindowListeners();
+            for (WindowListener l : wl) {
+                burpFrame.removeWindowListener(l);
+            }
+            burpFrame.addWindowListener(windowPopupListener);
+            for (WindowListener l : wl) {
+                burpFrame.addWindowListener(l);
+            }
+        }
+
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));
 
@@ -605,6 +648,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     protected final class MenuHander {
+
         private final MontoyaApi api;
         private final ButtonGroup menuBurpCharsetsGroup = new ButtonGroup();
         private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
@@ -1882,6 +1926,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         @Override
         public void extensionUnloaded() {
+            if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
+                 burpFrame.removeWindowListener(windowPopupListener);
+             }
             BurpConfig.configHostnameResolution(this.api, this.resolvHost, true);
         }
     }

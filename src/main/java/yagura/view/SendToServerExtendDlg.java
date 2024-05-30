@@ -585,6 +585,7 @@ public class SendToServerExtendDlg extends CustomDialog {
 
     private void rdoCustomClientStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomClientStateChanged
         SwingUtil.setContainerEnable(this.pnlUseCustomClient, this.rdoCustomClient.isSelected());
+        this.chkClientCertififate.setEnabled(this.modelCertificate.getRowCount() > 0);
     }//GEN-LAST:event_rdoCustomClientStateChanged
 
     private void txtAuthorizationPasswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAuthorizationPasswdActionPerformed

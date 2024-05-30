@@ -702,6 +702,12 @@ If you specify 0, there is no upper limit.
 [Exclude Extension] check box::
      Exclude the configured extension from logging.
 
+[Temporary project warning when closing  Burp Suite]  check box::
+   If you try to close Burp in the Temporary project state, a pop-up warning will be displayed.
+
+[Popup Time] ::
+    Specify the time of popup between 1000 ms and 10000 ms. The default is 5000 ms.
+
 === JSearch tab
 
 image:images/custom_jsearch.png[JSearch tab]

@@ -59,6 +59,10 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         chkAutoLogging = new javax.swing.JCheckBox();
         txtExcludeExtension = new javax.swing.JTextField();
         chkExclude = new javax.swing.JCheckBox();
+        chkWarnTemporaryProject = new javax.swing.JCheckBox();
+        spnPopupTime = new javax.swing.JSpinner();
+        lblPopupTime = new javax.swing.JLabel();
+        lblPopupTimeUnit = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -156,42 +160,72 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        chkWarnTemporaryProject.setText("Temporary project warning when closing  Burp Suite");
+        chkWarnTemporaryProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkWarnTemporaryProjectActionPerformed(evt);
+            }
+        });
+
+        spnPopupTime.setModel(new javax.swing.SpinnerNumberModel(5000, 1000, 10000, 1));
+        spnPopupTime.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnPopupTimeStateChanged(evt);
+            }
+        });
+
+        lblPopupTime.setText("Popup Time:");
+
+        lblPopupTimeUnit.setText("ms");
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkToolLog)
-                            .addComponent(chkProxyLog)))
-                    .addComponent(chkExclude, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblLogDir2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkHistoryLogInclude, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(txtExcludeExtension, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblLogDir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblLogDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chkToolLog)
+                                    .addComponent(chkProxyLog)))
+                            .addComponent(chkExclude, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblLogDir2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkHistoryLogInclude, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(txtExcludeExtension, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
+                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblLogDir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblLogDir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                                        .addComponent(txtFileLimitSize, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblFileUnit)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblToolTip))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
+                                        .addComponent(txtLogDir, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnSelectImage, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18))))))
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(chkWarnTemporaryProject))
+                    .addGroup(pnlCenterLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(lblPopupTime)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlCenterLayout.createSequentialGroup()
-                                .addComponent(txtFileLimitSize, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblFileUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblToolTip))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
-                                .addComponent(txtLogDir, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSelectImage, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)))))
-                .addContainerGap())
+                        .addComponent(spnPopupTime, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblPopupTimeUnit)))
+                .addContainerGap(12, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
@@ -229,7 +263,14 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                 .addComponent(chkExclude)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtExcludeExtension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkWarnTemporaryProject)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPopupTime)
+                    .addComponent(spnPopupTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPopupTimeUnit))
+                .addContainerGap(131, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
@@ -313,6 +354,14 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtExcludeExtensionActionPerformed
 
+    private void chkWarnTemporaryProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkWarnTemporaryProjectActionPerformed
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkWarnTemporaryProjectActionPerformed
+
+    private void spnPopupTimeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnPopupTimeStateChanged
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_spnPopupTimeStateChanged
+
     private void customizeComponents() {
         this.txtFileLimitSize.setDocument(new SwingUtil.IntegerDocument());
         // Logging Tab
@@ -326,12 +375,16 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JCheckBox chkHistoryLogInclude;
     private javax.swing.JCheckBox chkProxyLog;
     private javax.swing.JCheckBox chkToolLog;
+    private javax.swing.JCheckBox chkWarnTemporaryProject;
     private javax.swing.JLabel lblFileUnit;
     private javax.swing.JLabel lblLogDir;
     private javax.swing.JLabel lblLogDir1;
     private javax.swing.JLabel lblLogDir2;
+    private javax.swing.JLabel lblPopupTime;
+    private javax.swing.JLabel lblPopupTimeUnit;
     private javax.swing.JLabel lblToolTip;
     private javax.swing.JPanel pnlCenter;
+    private javax.swing.JSpinner spnPopupTime;
     private javax.swing.JPanel tabLogging;
     private javax.swing.JTextField txtExcludeExtension;
     private javax.swing.JTextField txtFileLimitSize;
@@ -450,6 +503,35 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.txtExcludeExtension.setText(extensionFilter);
     }
 
+    /**
+     * @return the warnClosingTemporaryProject
+     */
+    public boolean isWarnClosingTemporaryProject() {
+        return this.chkWarnTemporaryProject.isSelected();
+    }
+
+    /**
+     * @param warnClosingTemporaryProject the warnClosingTemporaryProject to set
+     */
+    public void setWarnClosingTemporaryProject(boolean warnClosingTemporaryProject) {
+        this.chkWarnTemporaryProject.setSelected(warnClosingTemporaryProject);
+    }
+
+    /**
+     * @return the popupTime
+     */
+    public int getPopupTime() {
+        return (int)this.spnPopupTime.getValue();
+    }
+
+    /**
+     * @param popupTime the popupTime to set
+     */
+    public void setPopupTime(int popupTime) {
+        this.spnPopupTime.setValue(popupTime);
+    }
+
+
     public void setLoggingProperty(LoggingProperty loggingProperty) {
         this.setAutoLogging(loggingProperty.isAutoLogging());
         this.setLogDir(loggingProperty.getBaseDir());
@@ -458,6 +540,8 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.setToolLog(loggingProperty.isToolLog());
         this.setExclude(loggingProperty.isExclude());
         this.setExcludeExtension(loggingProperty.getExcludeExtension());
+        this.setWarnClosingTemporaryProject(loggingProperty.isWarnClosingTemporaryProject());
+        this.setPopupTime(loggingProperty.getPopupTime());
     }
 
     public LoggingProperty getLoggingProperty() {
@@ -469,6 +553,8 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         loggingProperty.setToolLog(this.isToolLog());
         loggingProperty.setExclude(this.isExclude());
         loggingProperty.setExcludeExtension(this.getExcludeExtension());
+        loggingProperty.setWarnClosingTemporaryProject(this.isWarnClosingTemporaryProject());
+        loggingProperty.setPopupTime(this.getPopupTime());
         return loggingProperty;
     }
 

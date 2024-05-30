@@ -131,6 +131,40 @@ public class LoggingProperty implements IPropertyConfig {
         this.excludeFilterExtension = excludeFilterExtension;
     }
 
+    @Expose
+    private boolean warnClosingTemporaryProject = false;
+
+    /**
+     * @return the warnClosingTemporaryProject
+     */
+    public boolean isWarnClosingTemporaryProject() {
+        return warnClosingTemporaryProject;
+    }
+
+    /**
+     * @param warnClosingTemporaryProject the warnClosingTemporaryProject to set
+     */
+    public void setWarnClosingTemporaryProject(boolean warnClosingTemporaryProject) {
+        this.warnClosingTemporaryProject = warnClosingTemporaryProject;
+    }
+
+    @Expose
+    private int popupTime = 5000;
+
+    /**
+     * @return the popupTime
+     */
+    public int getPopupTime() {
+        return popupTime;
+    }
+
+    /**
+     * @param popupTime the popupTime to set
+     */
+    public void setPopupTime(int popupTime) {
+        this.popupTime = popupTime;
+    }
+
     public void setProperty(LoggingProperty property) {
         this.setAutoLogging(property.isAutoLogging());
         this.setBaseDir(property.getBaseDir());
@@ -141,6 +175,8 @@ public class LoggingProperty implements IPropertyConfig {
         this.setLogTimestampFormat(property.getLogTimestampFormat());
         this.setExclude(property.isExclude());
         this.setExcludeExtension(getExcludeExtension());
+        this.setWarnClosingTemporaryProject(property.isWarnClosingTemporaryProject());
+        this.setPopupTime(property.getPopupTime());
     }
 
     @Override
@@ -164,5 +200,6 @@ public class LoggingProperty implements IPropertyConfig {
         LoggingProperty property = new LoggingProperty();
         return JsonUtil.jsonToString(property, true);
     }
+
 
 }
