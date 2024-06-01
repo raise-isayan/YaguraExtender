@@ -403,17 +403,17 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
         return new HttpRequestResponse() {
             @Override
             public HttpRequest request() {
-                return httpRequestResponse.finalRequest();
+                return httpRequestResponse.request();
             }
 
             @Override
             public HttpResponse response() {
-                return httpRequestResponse.originalResponse();
+                return httpRequestResponse.response();
             }
 
             @Override
             public boolean hasResponse() {
-                return httpRequestResponse.originalResponse() != null;
+                return httpRequestResponse.hasResponse();
             }
 
             @Override
@@ -429,49 +429,51 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
             @Override
             @SuppressWarnings("removal")
             public String url() {
-                return httpRequestResponse.finalRequest().url();
+                return httpRequestResponse.request().url();
             }
 
             @Override
             public HttpService httpService() {
-                return httpRequestResponse.finalRequest().httpService();
+                return httpRequestResponse.request().httpService();
             }
 
             @Override
             @SuppressWarnings("removal")
             public ContentType contentType() {
-                return httpRequestResponse.finalRequest().contentType();
+                return httpRequestResponse.request().contentType();
             }
 
             @Override
             @SuppressWarnings("removal")
             public short statusCode() {
-                return httpRequestResponse.originalResponse().statusCode();
+                return httpRequestResponse.response().statusCode();
             }
 
             @Override
             public List<Marker> requestMarkers() {
-                return httpRequestResponse.finalRequest().markers();
+                return httpRequestResponse.request().markers();
             }
 
             @Override
             public List<Marker> responseMarkers() {
-                return httpRequestResponse.originalResponse().markers();
+                return httpRequestResponse.response().markers();
             }
 
             @Override
-            public boolean contains(String string, boolean bln) {
-                return httpRequestResponse.contains(string, bln);
+            public boolean contains(String searchTerm, boolean caseSensitive) {
+                return httpRequestResponse.contains(searchTerm, caseSensitive);
             }
 
             @Override
-            public boolean contains(Pattern ptrn) {
-                return httpRequestResponse.contains(ptrn);
+            public boolean contains(Pattern pattern) {
+                return httpRequestResponse.contains(pattern);
             }
 
             @Override
             public HttpRequestResponse copyToTempFile() {
-                throw new UnsupportedOperationException("Not supported yet.");
+                HttpRequest resuest = httpRequestResponse.request();
+                HttpResponse response = httpRequestResponse.hasResponse() ? null : httpRequestResponse.response();
+                return HttpRequestResponse.httpRequestResponse(resuest, response);
             }
 
             @Override

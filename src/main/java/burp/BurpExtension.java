@@ -89,7 +89,6 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.SmartCodec;
-import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -97,6 +96,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
@@ -106,7 +106,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
-import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
@@ -164,6 +163,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
 
+    private boolean isTemporaryProject = false;
+
     private final PopupMessage popupMessage = new PopupMessage(null);
 
     public BurpExtension() {
@@ -200,17 +201,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public void windowClosing(WindowEvent e) {
             if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
-                String title = burpFrame.getTitle();
-                boolean temporaryProject = (title.contains(" - Temporary Project"));
-                if (option.getLoggingProperty().isWarnClosingTemporaryProject() && temporaryProject) {
+                if (option.getLoggingProperty().isWarnClosingTemporaryProject() && isTemporaryProject) {
                     int popupTime = option.getLoggingProperty().getPopupTime();
                     popupMessage.show("Project is Temporary.", popupTime);
-                    //                        int option = JOptionPane.showConfirmDialog(
-                    //                                burpFrame, "ProjectがTemporaryです。本当に終了しますか？", "Save Comfirm",
-                    //                                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                    //                        if (option == JOptionPane.YES_OPTION) {
-                    //                            burpFrame.dispose();
-                    //                        }
                 }
             }
         }
@@ -235,6 +228,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             BurpVersion.showUnsupporttDlg(burpVersion, Version.getInstance().getProjectName());
             throw new UnsupportedOperationException("Unsupported burp version");
         }
+
+        this.isTemporaryProject = BurpUtil.isTemporaryProject();
 
         if (DEBUG) {
             api.logging().logToOutput("name:" + burpVersion.getProductName());
@@ -1520,6 +1515,24 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             return ProxyResponseToBeSentAction.continueWith(interceptedResponse, interceptedResponse.annotations());
         }
 
+        protected void writeMessage(OutputStream ostm, HttpRequestResponse messageInfo) throws IOException {
+            try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
+                fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+                fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(messageInfo.request().httpService()) + HttpUtil.LINE_TERMINATE));
+                fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+                if (messageInfo.request() != null) {
+                    fostm.write(messageInfo.request().toByteArray().getBytes());
+                    fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
+                }
+                if (messageInfo.hasResponse()) {
+                    fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+                    fostm.write(messageInfo.response().toByteArray().getBytes());
+                    fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
+                }
+                fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+            }
+        }
+
         /**
          * プロキシログの出力
          *
@@ -1535,8 +1548,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 HttpResponse httpResponse) {
             if (httpResponse != null) {
                 try {
-                    HttpRequestWapper wrapRequest = new HttpRequestWapper(httpResuest);
-                    HttpResponseWapper wrapResponse = new HttpResponseWapper(httpResponse);
                     File fname = new File(getLogDir(), Config.getProxyLogMessageName());
                     if (fname.length() > getProperty().getLoggingProperty().getLogFileByteLimitSize()
                             && getProperty().getLoggingProperty().getLogFileByteLimitSize() > 0) {
@@ -1552,19 +1563,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         }
                     }
                     if (includeLog) {
-                        try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
-                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(httpService) + HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            fostm.write(wrapRequest.getMessageByte());
-                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
-                            fostm.write(wrapResponse.getMessageByte());
-                            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw("=========================================================" + HttpUtil.LINE_TERMINATE));
-                        }
+                        HttpRequestResponse messageInfo = HttpRequestResponse.httpRequestResponse(httpResuest, httpResponse);
+                        writeMessage(new FileOutputStream(fname, true), messageInfo);
                     }
                 } catch (IOException ex) {
                     helpers().issueAlert("logger", ex.getMessage(), extension.burp.MessageType.ERROR);
@@ -1604,21 +1604,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         }
                     }
                     if (includeLog) {
-                        try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(fname, true))) {
-                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(messageInfo.request().httpService()) + HttpUtil.LINE_TERMINATE));
-                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                            if (messageInfo.request() != null) {
-                                fostm.write(messageInfo.request().toByteArray().getBytes());
-                                fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            }
-                            if (messageInfo.response() != null) {
-                                fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                                fostm.write(messageInfo.response().toByteArray().getBytes());
-                                fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                            }
-                            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                        }
+                        writeMessage(new FileOutputStream(fname, true), messageInfo);
                     }
                 }
             } catch (IOException ex) {
@@ -1927,8 +1913,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public void extensionUnloaded() {
             if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
-                 burpFrame.removeWindowListener(windowPopupListener);
-             }
+                burpFrame.removeWindowListener(windowPopupListener);
+            }
             BurpConfig.configHostnameResolution(this.api, this.resolvHost, true);
         }
     }
