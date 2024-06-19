@@ -8,7 +8,6 @@ import burp.api.montoya.core.ToolSource;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.http.handler.HttpHandler;
-import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.handler.HttpRequestToBeSent;
 import burp.api.montoya.http.handler.HttpResponseReceived;
 import burp.api.montoya.http.handler.RequestToBeSentAction;
@@ -47,7 +46,6 @@ import extension.burp.ExtensionHelper;
 import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
 import extension.burp.TargetScopeItem;
-import extension.helpers.FileUtil;
 import extension.helpers.HttpMessageWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
@@ -60,17 +58,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -96,8 +90,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -121,6 +116,7 @@ import yagura.model.AutoResponderProperty;
 import yagura.model.ITranslateAction;
 import yagura.model.JSearchProperty;
 import yagura.model.JTransCoderProperty;
+import yagura.model.Logging;
 import yagura.model.LoggingProperty;
 import yagura.model.MatchAlertItem;
 import yagura.model.MatchAlertProperty;
@@ -164,6 +160,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private Registration registerContextMenu;
 
     private boolean isTemporaryProject = false;
+
+    private final Logging logging = new Logging();
 
     private final PopupMessage popupMessage = new PopupMessage(null);
 
@@ -250,7 +248,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 burpFrame.addWindowListener(l);
             }
         }
-
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));
 
@@ -265,10 +262,13 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
         this.option.setProperty(config);
 
+        // Logging
         try {
-            // 自動ログ作成時のみディレクトリ作成
-            if (this.option.getLoggingProperty().isAutoLogging()) {
-                this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
+            this.logging.setLoggingProperty(this.option.getLoggingProperty());
+            File file = this.logging.mkLog();
+            this.logging.open(file);
+            if (!this.option.getLoggingProperty().isCompress()) {
+                //               this.logging.mkLogDir();
             }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -329,8 +329,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
      * @return タイムスタンプ
      */
     public synchronized String getCurrentLogTimestamp() {
-        DateFormat format = this.option.getLoggingProperty().getLogTimestampDateFormat();
-        return format.format(new java.util.Date());
+        DateTimeFormatter format = this.option.getLoggingProperty().getLogTimestampDateFormat();
+        return format.format(ZonedDateTime.now());
     }
 
     /**
@@ -352,60 +352,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             list.add(defaultCharset);
         }
         return list;
-    }
-
-    private File logdir = null;
-
-    /**
-     * ログディレクトリの取得
-     *
-     * @return ディレクトリ
-     */
-    protected File getLogDir() {
-        return this.logdir;
-    }
-
-    /**
-     * ログディレクトリの設定
-     *
-     * @param logdir ログディレクトリ
-     */
-    protected void setLogDir(File logdir) {
-        this.logdir = logdir;
-    }
-
-    /**
-     * ログディレクトリの作成
-     *
-     * @param logBaseDir 基準ディレクトリ
-     * @param logdirFormat フォーマット
-     * @return 作成ディレクトリ
-     * @throws java.io.IOException
-     */
-    public static File mkLogDir(String logBaseDir, String logdirFormat) throws IOException {
-        File logdir = null;
-        int countup = 0;
-        SimpleDateFormat logfmt = new SimpleDateFormat(logdirFormat);
-        do {
-            String prefix = "burp_";
-            String suffix = (countup == 0) ? "" : String.format("_%d", countup);
-            String fname = String.format("%s%s%s", prefix, logfmt.format(new java.util.Date()), suffix);
-            logdir = new File(logBaseDir, fname);
-            File lists[] = logdir.listFiles();
-            if (lists != null && lists.length == 0) {
-                break;
-            }
-            countup++;
-            if (logdir.exists()) {
-                // ディレクトリが存在した場合は無条件にログディレクトリの対象にする
-                break;
-            } else if (logdir.mkdir()) {
-                break;
-            } else {
-                throw new IOException("mkdir error:" + logdir.getAbsolutePath());
-            }
-        } while (true);
-        return logdir;
     }
 
     private SendToMenu sendToMenu = null;
@@ -482,7 +428,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     protected void applyOptionProperty() {
         if (this.tabbetOption.isLogDirChanged()) {
             try {
-                this.setLogDir(mkLogDir(this.option.getLoggingProperty().getBaseDir(), this.option.getLoggingProperty().getLogDirFormat()));
+                logging.mkLog();
                 if (this.tabbetOption.isHistoryLogInclude()) {
                     this.proxyHandler.historyLogAppend();
                 }
@@ -526,6 +472,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.tabbetOption.extensionUnloaded();
         this.autoResponderHandler.extensionUnloaded();
         ThemeUI.removePropertyChangeListener();
+        try {
+            this.logging.close();
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
     }
 
     protected final class EditorProvider {
@@ -1416,7 +1367,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 chkResultFilterItem.setText(name);
                 chkResultFilterItem.addActionListener(this.resultFilterModeAction);
                 yaguraResultFilterMenu.add(chkResultFilterItem);
-                //               this.menuBurpResultFilterGroup.add(chkResultFilterItem);
+                // this.menuBurpResultFilterGroup.add(chkResultFilterItem);
             }
 //            Enumeration<AbstractButton> rdoCheckGroup = this.menuBurpResultFilterGroup.getElements();
 //            while (rdoCheckGroup.hasMoreElements()) {
@@ -1459,7 +1410,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             HttpRequestResponse messageInfo = HttpRequestResponse.httpRequestResponse(httpResponseReceived.initiatingRequest(), httpResponseReceived, httpResponseReceived.annotations());
             // Tool Log 出力
             if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isToolLog()) {
-                this.writeToolMessage(toolSource.toolType(), false, messageInfo);
+                BurpExtension.helpers().outPrintln("writeToolMessage");
+                logging.writeToolMessage(toolSource.toolType(), false, messageInfo);
             }
             return ResponseReceivedAction.continueWith(httpResponseReceived, httpResponseReceived.annotations());
         }
@@ -1510,115 +1462,17 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
             // autologging 出力
             if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isProxyLog()) {
-                this.writeProxyMessage(interceptedResponse.messageId(), interceptedResponse.initiatingRequest().httpService(), interceptedResponse.initiatingRequest(), interceptedResponse);
+                BurpExtension.helpers().outPrintln("writeProxyMessage");
+                logging.writeProxyMessage(interceptedResponse.messageId(), interceptedResponse.initiatingRequest().httpService(), interceptedResponse.initiatingRequest(), interceptedResponse);
             }
             return ProxyResponseToBeSentAction.continueWith(interceptedResponse, interceptedResponse.annotations());
-        }
-
-        protected void writeMessage(OutputStream ostm, HttpRequestResponse messageInfo) throws IOException {
-            try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
-                fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                fostm.write(StringUtil.getBytesRaw(getCurrentLogTimestamp() + " " + HttpTarget.toURLString(messageInfo.request().httpService()) + HttpUtil.LINE_TERMINATE));
-                fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                if (messageInfo.request() != null) {
-                    fostm.write(messageInfo.request().toByteArray().getBytes());
-                    fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                }
-                if (messageInfo.hasResponse()) {
-                    fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-                    fostm.write(messageInfo.response().toByteArray().getBytes());
-                    fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
-                }
-                fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            }
-        }
-
-        /**
-         * プロキシログの出力
-         *
-         * @param messageId
-         * @param httpService
-         * @param httpResuest
-         * @param httpResponse
-         */
-        protected synchronized void writeProxyMessage(
-                int messageId,
-                HttpService httpService,
-                HttpRequest httpResuest,
-                HttpResponse httpResponse) {
-            if (httpResponse != null) {
-                try {
-                    File fname = new File(getLogDir(), Config.getProxyLogMessageName());
-                    if (fname.length() > getProperty().getLoggingProperty().getLogFileByteLimitSize()
-                            && getProperty().getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                        File renameFile = FileUtil.rotateFile(getLogDir(), Config.getProxyLogMessageName());
-                        fname.renameTo(renameFile);
-                    }
-                    boolean includeLog = true;
-                    if (getProperty().getLoggingProperty().isExclude()) {
-                        Pattern patternExclude = Pattern.compile(BurpUtil.parseFilterPattern(getProperty().getLoggingProperty().getExcludeExtension()));
-                        Matcher matchExclude = patternExclude.matcher(httpResuest.pathWithoutQuery());
-                        if (matchExclude.find()) {
-                            includeLog = false;
-                        }
-                    }
-                    if (includeLog) {
-                        HttpRequestResponse messageInfo = HttpRequestResponse.httpRequestResponse(httpResuest, httpResponse);
-                        writeMessage(new FileOutputStream(fname, true), messageInfo);
-                    }
-                } catch (IOException ex) {
-                    helpers().issueAlert("logger", ex.getMessage(), extension.burp.MessageType.ERROR);
-                    logger.log(Level.SEVERE, ex.getMessage(), ex);
-                } catch (Exception ex) {
-                    logger.log(Level.SEVERE, ex.getMessage(), ex);
-                }
-            }
-        }
-
-        /**
-         * tool ログの出力
-         *
-         * @param toolType ツール名
-         * @param messageIsRequest リクエストかどうか
-         * @param messageInfo メッセージ情報
-         */
-        protected synchronized void writeToolMessage(
-                ToolType toolType,
-                boolean messageIsRequest,
-                HttpRequestResponse messageInfo) {
-            String baselogfname = Config.getToolLogName(toolType.name());
-            try {
-                if (!messageIsRequest) {
-                    File fname = new File(getLogDir(), baselogfname);
-                    if (fname.length() > getProperty().getLoggingProperty().getLogFileByteLimitSize()
-                            && getProperty().getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                        File renameFile = FileUtil.rotateFile(getLogDir(), baselogfname);
-                        fname.renameTo(renameFile);
-                    }
-                    boolean includeLog = true;
-                    if (getProperty().getLoggingProperty().isExclude()) {
-                        Pattern patternExclude = Pattern.compile(BurpUtil.parseFilterPattern(getProperty().getLoggingProperty().getExcludeExtension()));
-                        Matcher matchExclude = patternExclude.matcher(messageInfo.request().url());
-                        if (matchExclude.find()) {
-                            includeLog = false;
-                        }
-                    }
-                    if (includeLog) {
-                        writeMessage(new FileOutputStream(fname, true), messageInfo);
-                    }
-                }
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
         }
 
         protected void historyLogAppend() {
             if (this.api != null) {
                 List<ProxyHttpRequestResponse> messageInfo = this.api.proxy().history();
                 for (ProxyHttpRequestResponse info : messageInfo) {
-                    this.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()));
+                    logging.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()));
                 }
             }
         }
@@ -1639,7 +1493,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             // Match and Replace
             if (getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
                 MatchReplaceGroup group = getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(getProperty().getMatchReplaceProperty().getSelectedName());
-                BurpExtension.helpers().outPrintln("rbody:\r\n" + StringUtil.getBytesRawString(requestBytes) + "\r\n:rbody");
                 if (group != null && group.isInScopeOnly()) {
                     if (helpers().isInScope(interceptedHttpRequest.url())) {
                         resultBytes = this.replaceProxyMessage(true, requestBytes, interceptedHttpRequest.bodyOffset());

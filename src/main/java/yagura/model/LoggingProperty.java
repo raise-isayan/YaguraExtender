@@ -3,8 +3,8 @@ package yagura.model;
 import com.google.gson.annotations.Expose;
 import extension.burp.IPropertyConfig;
 import extension.helpers.json.JsonUtil;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import yagura.Config;
 
 /**
@@ -17,6 +17,23 @@ public class LoggingProperty implements IPropertyConfig {
 
     private final static String DEFAULT_LOG_TIMESTAMP_FORMAT = "yyyyMMdd HH:mm:ss";
     private final static String DEFAULT_LOG_DIR_FORMAT = "yyyyMMdd";
+
+    @Expose
+    private boolean compress = false;
+
+    /**
+     * @return the compress
+     */
+    public boolean isCompress() {
+        return compress;
+    }
+
+    /**
+     * @param compress the compress to set
+     */
+    public void setCompress(boolean compress) {
+        this.compress = compress;
+    }
 
     @Expose
     private boolean autoLogging = false;
@@ -91,7 +108,7 @@ public class LoggingProperty implements IPropertyConfig {
         this.logDirFormat = logDirFormat;
     }
 
-    private SimpleDateFormat logTimestampDateFormat = new SimpleDateFormat(DEFAULT_LOG_TIMESTAMP_FORMAT);
+    private DateTimeFormatter  logTimestampDateFormat = DateTimeFormatter.ofPattern(DEFAULT_LOG_TIMESTAMP_FORMAT);
 
     @Expose
     private String logTimestampFormat = DEFAULT_LOG_TIMESTAMP_FORMAT;
@@ -102,11 +119,20 @@ public class LoggingProperty implements IPropertyConfig {
 
     public void setLogTimestampFormat(String logTimestampFormat) {
         this.logTimestampFormat = logTimestampFormat;
-        this.logTimestampDateFormat = new SimpleDateFormat(logTimestampFormat);
+        this.logTimestampDateFormat = DateTimeFormatter.ofPattern(logTimestampFormat);
     }
 
-    public DateFormat getLogTimestampDateFormat() {
+    public DateTimeFormatter getLogTimestampDateFormat() {
         return this.logTimestampDateFormat;
+    }
+
+    /**
+     *
+     * @return タイムスタンプ
+     */
+    public synchronized String getCurrentLogTimestamp() {
+        DateTimeFormatter format = this.getLogTimestampDateFormat();
+        return format.format(ZonedDateTime.now());
     }
 
     @Expose
@@ -177,6 +203,7 @@ public class LoggingProperty implements IPropertyConfig {
         this.setExcludeExtension(getExcludeExtension());
         this.setWarnClosingTemporaryProject(property.isWarnClosingTemporaryProject());
         this.setPopupTime(property.getPopupTime());
+        this.setCompress(property.isCompress());
     }
 
     @Override

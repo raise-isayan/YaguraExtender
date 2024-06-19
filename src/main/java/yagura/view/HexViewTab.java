@@ -110,6 +110,7 @@ public class HexViewTab extends javax.swing.JPanel implements IBurpMessageTab {
     private CustomTableModel modelHex = null;
 
     private final Action copyAction = new AbstractAction() {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             //選択されている行の列コピーの値を取得
             JTable table = (JTable) evt.getSource();

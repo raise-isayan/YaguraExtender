@@ -63,6 +63,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         spnPopupTime = new javax.swing.JSpinner();
         lblPopupTime = new javax.swing.JLabel();
         lblPopupTimeUnit = new javax.swing.JLabel();
+        chkCompressLog = new javax.swing.JCheckBox();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -178,6 +179,13 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
 
         lblPopupTimeUnit.setText("ms");
 
+        chkCompressLog.setText("Compress Log");
+        chkCompressLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkCompressLogActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
@@ -214,7 +222,8 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                                         .addComponent(txtLogDir, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnSelectImage, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18))))))
+                                        .addGap(18, 18, 18))))
+                            .addComponent(chkCompressLog, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(chkWarnTemporaryProject))
@@ -241,7 +250,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtLogDir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblLogDir))
-                        .addGap(12, 12, 12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnSelectImage, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -251,13 +260,15 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(txtFileLimitSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblFileUnit)
                     .addComponent(lblToolTip))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkCompressLog)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblLogDir2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkProxyLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkToolLog)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkHistoryLogInclude)
                 .addGap(2, 2, 2)
                 .addComponent(chkExclude)
@@ -270,7 +281,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(lblPopupTime)
                     .addComponent(spnPopupTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPopupTimeUnit))
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(135, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
@@ -283,15 +294,21 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         add(tabLogging, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public String getTabCaption() {
-        return "Logging";
-    }
+    private void spnPopupTimeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnPopupTimeStateChanged
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_spnPopupTimeStateChanged
 
-    @Override
-    public Component getUiComponent() {
-        return this;
-    }
+    private void chkWarnTemporaryProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkWarnTemporaryProjectActionPerformed
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkWarnTemporaryProjectActionPerformed
+
+    private void chkExcludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExcludeActionPerformed
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkExcludeActionPerformed
+
+    private void chkExcludeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExcludeStateChanged
+        this.txtExcludeExtension.setEnabled(this.chkExclude.isSelected());
+    }//GEN-LAST:event_chkExcludeStateChanged
 
     private void chkAutoLoggingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAutoLoggingActionPerformed
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
@@ -301,6 +318,10 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         boolean enable = this.chkAutoLogging.isSelected();
         this.chkHistoryLogInclude.setEnabled(!enable);
     }//GEN-LAST:event_chkAutoLoggingStateChanged
+
+    private void txtLogDirFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLogDirFocusLost
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_txtLogDirFocusLost
 
     private void btnSelectImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectImageActionPerformed
         JFileChooser filechooser = new JFileChooser();
@@ -318,25 +339,9 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_btnSelectImageActionPerformed
 
-    private void txtExcludeExtensionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExcludeExtensionFocusLost
-        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_txtExcludeExtensionFocusLost
-
-    private void txtLogDirFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLogDirFocusLost
-        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_txtLogDirFocusLost
-
     private void txtFileLimitSizeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFileLimitSizeFocusLost
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_txtFileLimitSizeFocusLost
-
-    private void chkHistoryLogIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHistoryLogIncludeActionPerformed
-        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_chkHistoryLogIncludeActionPerformed
-
-    private void chkExcludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExcludeActionPerformed
-        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_chkExcludeActionPerformed
 
     private void chkProxyLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkProxyLogActionPerformed
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
@@ -346,21 +351,31 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkToolLogActionPerformed
 
-    private void chkExcludeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkExcludeStateChanged
-        this.txtExcludeExtension.setEnabled(this.chkExclude.isSelected());
-    }//GEN-LAST:event_chkExcludeStateChanged
+    private void chkHistoryLogIncludeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHistoryLogIncludeActionPerformed
+        this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
+    }//GEN-LAST:event_chkHistoryLogIncludeActionPerformed
 
     private void txtExcludeExtensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExcludeExtensionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtExcludeExtensionActionPerformed
 
-    private void chkWarnTemporaryProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkWarnTemporaryProjectActionPerformed
+    private void txtExcludeExtensionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExcludeExtensionFocusLost
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_chkWarnTemporaryProjectActionPerformed
+    }//GEN-LAST:event_txtExcludeExtensionFocusLost
 
-    private void spnPopupTimeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnPopupTimeStateChanged
+    private void chkCompressLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCompressLogActionPerformed
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
-    }//GEN-LAST:event_spnPopupTimeStateChanged
+    }//GEN-LAST:event_chkCompressLogActionPerformed
+
+    @Override
+    public String getTabCaption() {
+        return "Logging";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
 
     private void customizeComponents() {
         this.txtFileLimitSize.setDocument(new SwingUtil.IntegerDocument());
@@ -371,6 +386,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSelectImage;
     private javax.swing.JCheckBox chkAutoLogging;
+    private javax.swing.JCheckBox chkCompressLog;
     private javax.swing.JCheckBox chkExclude;
     private javax.swing.JCheckBox chkHistoryLogInclude;
     private javax.swing.JCheckBox chkProxyLog;
@@ -434,6 +450,20 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
      */
     public void setLogFileLimitSize(int logFileLimitSize) {
         this.txtFileLimitSize.setText(StringUtil.toString(logFileLimitSize));
+    }
+
+    /**
+     * @return the isCompressLog
+     */
+    public boolean isCompressLog() {
+        return this.chkCompressLog.isSelected();
+    }
+
+    /**
+     * @param compress
+     */
+    public void setCompressLog(boolean compress) {
+        this.chkCompressLog.setSelected(compress);
     }
 
     /**
@@ -531,7 +561,6 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.spnPopupTime.setValue(popupTime);
     }
 
-
     public void setLoggingProperty(LoggingProperty loggingProperty) {
         this.setAutoLogging(loggingProperty.isAutoLogging());
         this.setLogDir(loggingProperty.getBaseDir());
@@ -542,6 +571,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.setExcludeExtension(loggingProperty.getExcludeExtension());
         this.setWarnClosingTemporaryProject(loggingProperty.isWarnClosingTemporaryProject());
         this.setPopupTime(loggingProperty.getPopupTime());
+        this.setCompressLog(loggingProperty.isCompress());
     }
 
     public LoggingProperty getLoggingProperty() {
@@ -555,6 +585,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         loggingProperty.setExcludeExtension(this.getExcludeExtension());
         loggingProperty.setWarnClosingTemporaryProject(this.isWarnClosingTemporaryProject());
         loggingProperty.setPopupTime(this.getPopupTime());
+        loggingProperty.setCompress(this.isCompressLog());
         return loggingProperty;
     }
 

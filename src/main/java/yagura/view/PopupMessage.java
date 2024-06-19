@@ -1,15 +1,14 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import extension.burp.BurpUtil;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
-import javax.swing.Timer;
+//import javax.swing.Timer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -21,6 +20,8 @@ public class PopupMessage extends javax.swing.JPanel {
 
     /**
      * Creates new form PopupMessage
+     *
+     * @param owner
      */
     public PopupMessage(Component owner) {
         this.owner = owner;
@@ -37,6 +38,7 @@ public class PopupMessage extends javax.swing.JPanel {
     private void initComponents() {
 
         lblMessage = new javax.swing.JLabel();
+        lblTimer = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
         setPreferredSize(new java.awt.Dimension(600, 120));
@@ -46,11 +48,17 @@ public class PopupMessage extends javax.swing.JPanel {
         lblMessage.setFont(new java.awt.Font("Yu Gothic UI", 0, 24)); // NOI18N
         lblMessage.setText("Message");
         add(lblMessage, java.awt.BorderLayout.CENTER);
-    }// </editor-fold>//GEN-END:initComponents
 
+        lblTimer.setFont(new java.awt.Font("Yu Gothic UI", 0, 18)); // NOI18N
+        lblTimer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTimer.setText("%d second to popup auto-close");
+        lblTimer.setPreferredSize(new java.awt.Dimension(40, 30));
+        add(lblTimer, java.awt.BorderLayout.PAGE_END);
+    }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblMessage;
+    private javax.swing.JLabel lblTimer;
     // End of variables declaration//GEN-END:variables
 
     public String getMessage() {
@@ -66,20 +74,35 @@ public class PopupMessage extends javax.swing.JPanel {
         this.show(delay);
     }
 
-    public void show(int delay) {
+    /**
+     * *
+     * @return
+     */
+    private Popup createPopup() {
         Frame suiteFrame = BurpUtil.suiteFrame();
         Dimension fitSize = this.getPreferredSize();
-        final Popup p = PopupFactory.getSharedInstance().getPopup(suiteFrame, this, suiteFrame.getX() + (suiteFrame.getWidth() / 2) - (fitSize.width / 2), suiteFrame.getY() + (suiteFrame.getHeight() / 2) - (fitSize.height / 2));
-        p.show();
+        final Popup popup = PopupFactory.getSharedInstance().getPopup(suiteFrame, this, suiteFrame.getX() + (suiteFrame.getWidth() / 2) - (fitSize.width / 2), suiteFrame.getY() + (suiteFrame.getHeight() / 2) - (fitSize.height / 2));
+        return popup;
+    }
+
+    public void show(int delay) {
+        final Popup popup = createPopup();
+        popup.show();
         // create a timer to hide the popup later
-        Timer t = new Timer(delay, new ActionListener() {
+        final Timer tm = new Timer();
+        tm.schedule(new TimerTask() {
+            int count = delay / 1000;
+
             @Override
-            public void actionPerformed(ActionEvent e) {
-                p.hide();
+            public void run() {
+                lblTimer.setText(String.format("%d sec. to popup auto-close", count));
+                if (count < 0) {
+                    popup.hide();
+                    tm.cancel();
+                }
+                count--;
             }
-        });
-        t.setRepeats(false);
-        t.start();
+        }, 0, 1000L);
     }
 
 }

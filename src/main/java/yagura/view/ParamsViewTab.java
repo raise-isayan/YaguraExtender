@@ -269,6 +269,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     private final Action copyAction = new AbstractAction() {
+        @Override
         public void actionPerformed(ActionEvent evt) {
             SwingUtil.systemClipboardCopy(CustomTableModel.tableCopy(tableParams, true));
         }

@@ -177,6 +177,7 @@ public class BouncyUtil {
      * @param algorithm
      * @param str 対象文字列
      * @param charset エンコーディング
+     * @param upperCase
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      * @throws java.security.NoSuchAlgorithmException
@@ -188,11 +189,10 @@ public class BouncyUtil {
 
     public static String toMessageDigest(String algorithm, byte[] binary, boolean upperCase)
             throws NoSuchAlgorithmException {
-        String digeststr = "";
         MessageDigest md = MessageDigest.getInstance(algorithm, BC_PROVIDER);
         md.reset();
         md.update(binary);
-        digeststr = ConvertUtil.toHexString(md.digest());
+        String digeststr = ConvertUtil.toHexString(md.digest());
         if (upperCase) {
             return digeststr;
         } else {

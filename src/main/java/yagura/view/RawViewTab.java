@@ -36,7 +36,6 @@ import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import yagura.model.HttpMessageItem;
 import yagura.model.SendToMenu;
 import yagura.model.SendToMessage;
 import yagura.model.UniversalViewProperty;
@@ -226,6 +225,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
         MIME_MAP.put(MimeType.IMAGE_SVG_XML, SyntaxConstants.SYNTAX_STYLE_XML);
         MIME_MAP.put(MimeType.XML, SyntaxConstants.SYNTAX_STYLE_XML);
         MIME_MAP.put(MimeType.YAML, SyntaxConstants.SYNTAX_STYLE_YAML);
+        MIME_MAP.put(MimeType.PLAIN_TEXT, SyntaxConstants.SYNTAX_STYLE_NONE);
     }
 
     public static String getSyntaxEditingStyle(String mimeType) {
@@ -349,6 +349,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
         return this.textModified;
     }
 
+    @Override
     public HttpRequestResponse getHttpRequestResponse() {
         if (this.httpRequestResponse != null) {
             if (this.textModified) {
