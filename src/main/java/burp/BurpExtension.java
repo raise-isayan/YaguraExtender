@@ -80,6 +80,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import extension.burp.scanner.IssueItem;
 import extension.helpers.ConvertUtil;
+import extension.helpers.HttpMessage;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.SmartCodec;
@@ -267,9 +268,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             this.logging.setLoggingProperty(this.option.getLoggingProperty());
             File file = this.logging.mkLog();
             this.logging.open(file);
-            if (!this.option.getLoggingProperty().isCompress()) {
-                //               this.logging.mkLogDir();
-            }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -1410,7 +1408,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             HttpRequestResponse messageInfo = HttpRequestResponse.httpRequestResponse(httpResponseReceived.initiatingRequest(), httpResponseReceived, httpResponseReceived.annotations());
             // Tool Log 出力
             if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isToolLog()) {
-                BurpExtension.helpers().outPrintln("writeToolMessage");
                 logging.writeToolMessage(toolSource.toolType(), false, messageInfo);
             }
             return ResponseReceivedAction.continueWith(httpResponseReceived, httpResponseReceived.annotations());
@@ -1462,7 +1459,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
             // autologging 出力
             if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isProxyLog()) {
-                BurpExtension.helpers().outPrintln("writeProxyMessage");
                 logging.writeProxyMessage(interceptedResponse.messageId(), interceptedResponse.initiatingRequest().httpService(), interceptedResponse.initiatingRequest(), interceptedResponse);
             }
             return ProxyResponseToBeSentAction.continueWith(interceptedResponse, interceptedResponse.annotations());
@@ -1488,26 +1484,19 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
 
         private ProxyRequestReceivedAction processProxyMessage(InterceptedRequest interceptedHttpRequest, Annotations annotations) {
-            byte[] requestBytes = interceptedHttpRequest.toByteArray().getBytes();
-            byte[] resultBytes = requestBytes;
+            HttpRequest httpRequest = interceptedHttpRequest;
             // Match and Replace
             if (getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
                 MatchReplaceGroup group = getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(getProperty().getMatchReplaceProperty().getSelectedName());
                 if (group != null && group.isInScopeOnly()) {
                     if (helpers().isInScope(interceptedHttpRequest.url())) {
-                        resultBytes = this.replaceProxyMessage(true, requestBytes, interceptedHttpRequest.bodyOffset());
+                        httpRequest = this.replaceProxyMessage(interceptedHttpRequest);
                     }
                 } else {
-                    resultBytes = this.replaceProxyMessage(true, requestBytes, interceptedHttpRequest.bodyOffset());
+                    httpRequest = this.replaceProxyMessage(interceptedHttpRequest);
                 }
             }
-            if (requestBytes != resultBytes) {
-                HttpRequest modifyRequest = ExtensionHelper.httpRequest(interceptedHttpRequest.httpService(), ByteArray.byteArray(resultBytes));
-                HttpRequestWapper wrapModifyRequest = new HttpRequestWapper(modifyRequest);
-                return ProxyRequestReceivedAction.continueWith(wrapModifyRequest.withAjustContentLength(), annotations);
-            } else {
-                return ProxyRequestReceivedAction.continueWith(interceptedHttpRequest, annotations);
-            }
+            return ProxyRequestReceivedAction.continueWith(httpRequest, annotations);
         }
 
         /**
@@ -1522,27 +1511,19 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
 
         private ProxyResponseReceivedAction processProxyMessage(InterceptedResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
-            HttpResponseWapper wrapResponse = new HttpResponseWapper(interceptedHttpResponse);
-            byte[] responseByte = wrapResponse.getMessageByte();
-            byte[] resultBytes = responseByte;
-
+            HttpResponse httpResponse = interceptedHttpResponse;
             // Match and Replace
             if (getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
                 MatchReplaceGroup group = getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(getProperty().getMatchReplaceProperty().getSelectedName());
                 if (group != null && group.isInScopeOnly()) {
                     if (helpers().isInScope(httpRequest.url())) {
-                        resultBytes = this.replaceProxyMessage(false, responseByte, interceptedHttpResponse.bodyOffset());
+                        httpResponse = this.replaceProxyMessage(httpResponse);
                     }
                 } else {
-                    resultBytes = this.replaceProxyMessage(false, responseByte, interceptedHttpResponse.bodyOffset());
+                    httpResponse = this.replaceProxyMessage(httpResponse);
                 }
             }
-            if (responseByte != resultBytes) {
-                HttpResponse modifyResponse = HttpResponse.httpResponse(ByteArray.byteArray(resultBytes));
-                return ProxyResponseReceivedAction.continueWith(modifyResponse, annotations);
-            } else {
-                return ProxyResponseReceivedAction.continueWith(interceptedHttpResponse, annotations);
-            }
+            return ProxyResponseReceivedAction.continueWith(httpResponse, annotations);
         }
 
         /**
@@ -1625,6 +1606,196 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             return modifyRequestResponse;
         }
 
+//        /**
+//         * メッセージの置換
+//         *
+//         * @param messageIsRequest
+//         * @param httpMessage
+//         * @param bodyOffset
+//         * @return 変換後メッセージ
+//         */
+//        protected synchronized byte[] replaceProxyMessage(
+//                boolean messageIsRequest,
+//                byte[] httpMessage,
+//                int bodyOffset) {
+//
+//            // headerとbodyに分割
+//            boolean edited = false;
+//            String header = StringUtil.getBytesRawString(Arrays.copyOfRange(httpMessage, 0, bodyOffset));
+//            String body = StringUtil.getBytesRawString(Arrays.copyOfRange(httpMessage, bodyOffset, httpMessage.length));
+//
+//            List<MatchReplaceItem> matchReplaceList = option.getMatchReplaceProperty().getMatchReplaceList();
+//            for (int i = 0; i < matchReplaceList.size(); i++) {
+//                MatchReplaceItem bean = matchReplaceList.get(i);
+//                if (!bean.isSelected()) {
+//                    continue;
+//                }
+//                if ((messageIsRequest && bean.isRequest()) || (!messageIsRequest && bean.isResponse())) {
+//                    // body
+//                    Pattern pattern = bean.getRegexPattern();
+//                    if (bean.isBody() && !body.isEmpty()) {
+//                        Matcher m = pattern.matcher(body);
+//                        if (m.find()) {
+//                            body = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+//                            edited = true;
+//                        }
+//                    } else if (messageIsRequest && bean.isRequestLine()) {
+//                        // header
+//                        if (!"".equals(bean.getMatch())) {
+//                            // 置換
+//                            Matcher m = HttpRequestWapper.FIRST_LINE.matcher(header);
+//                            if (m.find()) {
+//                                String firstline = m.group(0);
+//                                Matcher m2 = pattern.matcher(firstline);
+//                                if (m2.find()) {
+//                                    firstline = m2.replaceFirst(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+//                                }
+//                                header = m.replaceFirst(Pattern.quote(firstline));
+//                                edited = true;
+//                            }
+//                        }
+//                    } else if (bean.isHeader()) {
+//                        // header
+//                        if ("".equals(bean.getMatch())) {
+//                            // 追加
+//                            StringBuilder builder = new StringBuilder(header);
+//                            builder.append(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+//                            builder.append(HttpMessageWapper.LINE_TERMINATE);
+//                            header = builder.toString();
+//                            edited = true;
+//                        } else {
+//                            // 置換
+//                            Matcher m = pattern.matcher(header);
+//                            if (m.find()) {
+//                                header = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+//                                edited = true;
+//                            }
+//                        }
+//                        Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
+//                        header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
+//                    }
+//                }
+//            }
+//
+//            if (edited) {
+//                // messageの再構築
+//                StringBuilder message = new StringBuilder();
+//                Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
+//                header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
+//                message.append(header);
+//                message.append(HttpMessageWapper.LINE_TERMINATE);
+//                message.append(body);
+//                httpMessage = StringUtil.getBytesRaw(message.toString());
+//            }
+//            return httpMessage;
+//        }
+
+        /**
+         *
+         * @param httpRequest
+         * @return
+         */
+        private HttpRequest replaceProxyMessage(HttpRequest httpRequest) {
+            ByteArray message = httpRequest.toByteArray();
+            HttpMessage updateMessage = replaceProxyMessage(true, HttpMessage.httpMessage(StringUtil.getStringRaw(message.getBytes())));
+            if (updateMessage.isModifiedBody()) {
+                HttpRequestWapper wrapRequest = new HttpRequestWapper(HttpRequest.httpRequest(httpRequest.httpService(), updateMessage.getMessage()));
+                return wrapRequest.withAjustContentLength();
+            }
+            else if (updateMessage.isModifiedHeader()) {
+                HttpRequestWapper wrapRequest = new HttpRequestWapper(HttpRequest.httpRequest(httpRequest.httpService(), updateMessage.getMessage()));
+                return wrapRequest;
+            }
+            else {
+                HttpRequestWapper wrapRequest = new HttpRequestWapper(HttpRequest.httpRequest(httpRequest.httpService(), message));
+                return wrapRequest;
+            }
+        }
+
+        /**
+         *
+         * @param httpResponse
+         * @return
+         */
+        private HttpResponse replaceProxyMessage(HttpResponse httpResponse) {
+            ByteArray message = httpResponse.toByteArray();
+            HttpMessage updateMessage = replaceProxyMessage(false, HttpMessage.httpMessage(StringUtil.getStringRaw(message.getBytes())));
+            if (updateMessage.isModifiedBody() || updateMessage.isModifiedHeader()) {
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(HttpResponse.httpResponse(updateMessage.getMessage()));
+                return wrapResponse;
+            }
+            else {
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(HttpResponse.httpResponse(message));
+                return wrapResponse;
+            }
+        }
+
+        private HttpMessage replaceProxyMessage(
+               boolean messageIsRequest,
+               HttpMessage message) {
+
+            // headerとbodyに分割
+            boolean edited = false;
+            String header = message.getHeader();
+            String body = message.getBody();
+
+            List<MatchReplaceItem> matchReplaceList = option.getMatchReplaceProperty().getMatchReplaceList();
+            for (int i = 0; i < matchReplaceList.size(); i++) {
+                MatchReplaceItem bean = matchReplaceList.get(i);
+                if (!bean.isSelected()) {
+                    continue;
+                }
+                if ((messageIsRequest && bean.isRequest()) || (!messageIsRequest && bean.isResponse())) {
+                    // body
+                    Pattern pattern = bean.getRegexPattern();
+                    if (bean.isBody() && !body.isEmpty()) {
+                        Matcher m = pattern.matcher(body);
+                        if (m.find()) {
+                            String updateBody = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                            message.setBody(updateBody);
+                            edited = true;
+                        }
+                    } else if (messageIsRequest && bean.isRequestLine()) {
+                        // header
+                        if (!"".equals(bean.getMatch())) {
+                            // 置換
+                            Matcher m = HttpRequestWapper.FIRST_LINE.matcher(header);
+                            if (m.find()) {
+                                String firstline = m.group(0);
+                                Matcher m2 = pattern.matcher(firstline);
+                                if (m2.find()) {
+                                    firstline = m2.replaceFirst(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                                }
+                                String updateHeader = m.replaceFirst(Pattern.quote(firstline));
+                                message.setHeader(updateHeader);
+                                edited = true;
+                            }
+                        }
+                    } else if (bean.isHeader()) {
+                        // header
+                        if ("".equals(bean.getMatch())) {
+                            // 追加
+                            StringBuilder builder = new StringBuilder(header);
+                            builder.append(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                            builder.append(HttpMessageWapper.LINE_TERMINATE);
+                            String updateHeader = builder.toString();
+                            message.setHeader(updateHeader);
+                            edited = true;
+                        } else {
+                            // 置換
+                            Matcher m = pattern.matcher(header);
+                            if (m.find()) {
+                                String updateHeader = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                                message.setHeader(updateHeader);
+                                edited = true;
+                            }
+                        }
+                    }
+                }
+            }
+            return message;
+        }
+
         /**
          * メッセージの置換
          *
@@ -1633,7 +1804,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
          * @param bodyOffset
          * @return 変換後メッセージ
          */
-        protected synchronized byte[] replaceProxyMessage(
+        protected synchronized byte[] replaceProxyMessage2(
                 boolean messageIsRequest,
                 byte[] httpMessage,
                 int bodyOffset) {

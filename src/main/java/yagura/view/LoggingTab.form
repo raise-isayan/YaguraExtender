@@ -286,7 +286,7 @@
             <Component class="javax.swing.JSpinner" name="spnPopupTime">
               <Properties>
                 <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                  <SpinnerModel initial="5000" maximum="10000" minimum="1000" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                  <SpinnerModel initial="3000" maximum="10000" minimum="1000" numberType="java.lang.Integer" stepSize="1000" type="number"/>
                 </Property>
               </Properties>
               <Events>
