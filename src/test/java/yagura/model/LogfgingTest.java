@@ -15,6 +15,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +61,7 @@ public class LogfgingTest {
 
     @Test
     public void testDirFile() throws IOException {
-        File fileDir = new File("C:\\Windows\\Temp");
+        File fileDir = new File(System.getProperty("java.io.tmpdir"));
         System.out.println("dirName:" + fileDir.getName());
         System.out.println("dirPath:" + fileDir.getPath());
     }
@@ -82,19 +83,14 @@ public class LogfgingTest {
         Path file = Path.of(path.toString(), "makefile123");
     }
 
-
     @Test
-    public void testZipFileSystem() throws IOException {
-        Path zipPath = Path.of("C:\\App\\burp\\burp_20240618.zip");
-        System.out.println("pathx:" + zipPath.toUri().getPath());
-        FileSystem fs = openZip(zipPath);
-        Path p = fs.getPath("test.log");
-        System.out.println("pt:" + p.toAbsolutePath());
-        try (OutputStream ostm = Files.newOutputStream(p, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-            ostm.write("test".getBytes());
-        }
-        fs.close();
+    public void testGetLogFileCounter() {
+        System.out.println("testGetLogFileCounter");
+        assertEquals(-1, Logging.getLogFileCounter("test_20200101"));
+        assertEquals(0, Logging.getLogFileCounter("burp_20201201"));
+        assertEquals(1, Logging.getLogFileCounter("burp_20210110_1"));
+        assertEquals(9, Logging.getLogFileCounter("burp_20210110_9"));
+        assertEquals(10, Logging.getLogFileCounter("burp_20250900_10"));
     }
-
 
 }

@@ -42,7 +42,6 @@ import extension.burp.NotifyType;
 import extension.burp.TargetTool;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
-import extension.burp.ExtensionHelper;
 import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
 import extension.burp.TargetScopeItem;
@@ -395,6 +394,20 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     applyOptionProperty();
                 } else if (LoggingProperty.LOGGING_PROPERTY.equals(evt.getPropertyName())) {
                     option.setLoggingProperty(tabbetOption.getLoggingProperty());
+                    if (tabbetOption.isLoggingChanged()) {
+                        try {
+                            logging.close();
+                            File file = logging.mkLog();
+                            logging.open(file);
+                            if (tabbetOption.isHistoryLogInclude()) {
+                                proxyHandler.historyLogAppend();
+                            }
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(null, ex.getMessage(), Version.getInstance().getVersion(), JOptionPane.INFORMATION_MESSAGE);
+                            option.getLoggingProperty().setAutoLogging(false);
+                            tabbetOption.setLoggingProperty(option.getLoggingProperty());
+                        }
+                    }
                     applyOptionProperty();
                 } else if (MatchAlertProperty.MATCHALERT_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
@@ -424,19 +437,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     protected void applyOptionProperty() {
-        if (this.tabbetOption.isLogDirChanged()) {
-            try {
-                logging.mkLog();
-                if (this.tabbetOption.isHistoryLogInclude()) {
-                    this.proxyHandler.historyLogAppend();
-                }
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), Version.getInstance().getVersion(), JOptionPane.INFORMATION_MESSAGE);
-                this.option.getLoggingProperty().setAutoLogging(false);
-                this.tabbetOption.setLoggingProperty(this.option.getLoggingProperty());
-            }
-        }
-
         try {
             Map<String, String> config = this.option.getProperty();
             JsonUtil.saveToJson(CONFIG_FILE, config);
@@ -1689,7 +1689,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //            }
 //            return httpMessage;
 //        }
-
         /**
          *
          * @param httpRequest
@@ -1701,12 +1700,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             if (updateMessage.isModifiedBody()) {
                 HttpRequestWapper wrapRequest = new HttpRequestWapper(HttpRequest.httpRequest(httpRequest.httpService(), updateMessage.getMessage()));
                 return wrapRequest.withAjustContentLength();
-            }
-            else if (updateMessage.isModifiedHeader()) {
+            } else if (updateMessage.isModifiedHeader()) {
                 HttpRequestWapper wrapRequest = new HttpRequestWapper(HttpRequest.httpRequest(httpRequest.httpService(), updateMessage.getMessage()));
                 return wrapRequest;
-            }
-            else {
+            } else {
                 HttpRequestWapper wrapRequest = new HttpRequestWapper(HttpRequest.httpRequest(httpRequest.httpService(), message));
                 return wrapRequest;
             }
@@ -1723,16 +1720,15 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             if (updateMessage.isModifiedBody() || updateMessage.isModifiedHeader()) {
                 HttpResponseWapper wrapResponse = new HttpResponseWapper(HttpResponse.httpResponse(updateMessage.getMessage()));
                 return wrapResponse;
-            }
-            else {
+            } else {
                 HttpResponseWapper wrapResponse = new HttpResponseWapper(HttpResponse.httpResponse(message));
                 return wrapResponse;
             }
         }
 
         private HttpMessage replaceProxyMessage(
-               boolean messageIsRequest,
-               HttpMessage message) {
+                boolean messageIsRequest,
+                HttpMessage message) {
 
             // headerとbodyに分割
             boolean edited = false;
@@ -1751,8 +1747,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     if (bean.isBody() && !body.isEmpty()) {
                         Matcher m = pattern.matcher(body);
                         if (m.find()) {
-                            String updateBody = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                            message.setBody(updateBody);
+                            body = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
                             edited = true;
                         }
                     } else if (messageIsRequest && bean.isRequestLine()) {
@@ -1766,8 +1761,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                                 if (m2.find()) {
                                     firstline = m2.replaceFirst(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
                                 }
-                                String updateHeader = m.replaceFirst(Pattern.quote(firstline));
-                                message.setHeader(updateHeader);
+                                header = m.replaceFirst(Pattern.quote(firstline));
                                 edited = true;
                             }
                         }
@@ -1778,20 +1772,22 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                             StringBuilder builder = new StringBuilder(header);
                             builder.append(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
                             builder.append(HttpMessageWapper.LINE_TERMINATE);
-                            String updateHeader = builder.toString();
-                            message.setHeader(updateHeader);
+                            header = builder.toString();
                             edited = true;
                         } else {
                             // 置換
                             Matcher m = pattern.matcher(header);
                             if (m.find()) {
-                                String updateHeader = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                                message.setHeader(updateHeader);
+                                header = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
                                 edited = true;
                             }
                         }
                     }
                 }
+            }
+            if (edited) {
+                message.setHeader(header);
+                message.setBody(body);
             }
             return message;
         }

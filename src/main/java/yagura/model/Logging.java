@@ -7,13 +7,14 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
 import extension.burp.BurpUtil;
 import extension.burp.HttpTarget;
+import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
@@ -24,6 +25,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,6 +50,41 @@ public class Logging implements Closeable {
 
     public LoggingProperty getLoggingProperty() {
         return this.loggingProperty;
+    }
+
+    public final static String LOG_PREFIX = "burp_";
+    public final static String LOG_SUFFIX = ".zip";
+
+    private final static Pattern LOG_COUNTER = Pattern.compile(LOG_PREFIX + "\\d{8}(?:_(\\d+))?");
+
+    static int getLogFileCounter(String logFileName) {
+        Matcher m = LOG_COUNTER.matcher(logFileName);
+        if (m.find()) {
+            return ConvertUtil.parseIntDefault(m.group(1), 0);
+        }
+        else {
+            return -1;
+        }
+    }
+
+    protected FilenameFilter listLogFileFilter() {
+        return new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                final String fileName = getLogFileBaseName(getLoggingProperty().getLogDirFormat());
+                return name.startsWith(fileName);
+            }
+        };
+    }
+
+    protected FilenameFilter listLogFileFilter(String suffix) {
+        return new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                final String fileName = getLogFileBaseName(getLoggingProperty().getLogDirFormat());
+                return name.startsWith(fileName) && name.endsWith(suffix);
+            }
+        };
     }
 
     protected static FileSystem openZip(Path zipPath) throws IOException {
@@ -93,15 +131,37 @@ public class Logging implements Closeable {
      * @return 作成ディレクトリ
      * @throws java.io.IOException
      */
-    protected static File mkLogZip(String logBaseDir, String logdirFormat) throws IOException {
-        String fname = getBaseLogfileName(logdirFormat, 0) + ".zip";
-        File logzip = new File(logBaseDir, fname);
-        if (logzip.exists()) {
-            return logzip;
+    protected File mkLogZip(String logBaseDir, String logdirFormat) throws IOException {
+        File baseDir = new File(logBaseDir);
+        File [] logFiles = baseDir.listFiles(listLogFileFilter(LOG_SUFFIX));
+        if (logFiles == null) {
+            logFiles =  new File [] { new File(getLogFileName(logdirFormat, 0) + LOG_SUFFIX) };
         }
-        else {
-            return FileUtil.createEmptyZip(logzip);
-        }
+        Arrays.sort(logFiles, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                int i1 = getLogFileCounter(o1.getName());
+                int i2 = getLogFileCounter(o2.getName());
+                return i1 - i2;
+            }
+        });
+        File targetZip = logFiles[0];
+        int countup = getLogFileCounter(targetZip.getName());
+        do {
+            String fname = getLogFileName(logdirFormat, countup) + LOG_SUFFIX;
+             targetZip = new File(logBaseDir, fname);
+             if (!targetZip.exists()) {
+                 targetZip = FileUtil.createEmptyZip(targetZip);
+                 break;
+             } else {
+                 if (FileUtil.totalFileSize(targetZip, false) > this.getLoggingProperty().getLogFileByteLimitSize()) {
+                     countup++;
+                     continue;
+                 }
+                 break;
+             }
+        } while (true);
+        return targetZip;
     }
 
     /**
@@ -112,40 +172,47 @@ public class Logging implements Closeable {
      * @return 作成ディレクトリ
      * @throws java.io.IOException
      */
-    protected static File mkLogDir(String logBaseDir, String logdirFormat) throws IOException {
-        File logdir = null;
-        int countup = 0;
+    protected File mkLogDir(String logBaseDir, String logdirFormat) throws IOException {
+        File baseDir = new File(logBaseDir);
+        File [] logFiles = baseDir.listFiles(listLogFileFilter());
+        if (logFiles == null) {
+            logFiles =  new File [] { new File(getLogFileName(logdirFormat, 0)) };
+        }
+        Arrays.sort(logFiles, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                int i1 = getLogFileCounter(o1.getName());
+                int i2 = getLogFileCounter(o2.getName());
+                return i1 - i2;
+            }
+        });
+        File targetDir = logFiles[0];
+        int countup = getLogFileCounter(targetDir.getName());
         do {
-            String fname = getBaseLogfileName(logdirFormat, countup);
-            logdir = new File(logBaseDir, fname);
-            File lists[] = logdir.listFiles(new FileFilter() {
-                @Override
-                public boolean accept(File pathname) {
-                    return pathname.getName().startsWith(LOG_PREFIX);
-                }
-            });
-            if (lists != null && lists.length == 0) {
-                break;
-            }
-            countup++;
-            if (logdir.exists()) {
-                // ディレクトリが存在した場合は無条件にログディレクトリの対象にする
-                break;
-            } else if (logdir.mkdir()) {
-                break;
-            } else {
-                throw new IOException("mkdir error:" + logdir.getAbsolutePath());
-            }
+            String fname = getLogFileName(logdirFormat, countup);
+             targetDir = new File(logBaseDir, fname);
+             if (!targetDir.exists()) {
+                 targetDir = FileUtil.createEmptyZip(targetDir);
+                 break;
+             } else {
+                 if (FileUtil.totalFileSize(targetDir, false) > this.getLoggingProperty().getLogFileByteLimitSize()) {
+                     countup++;
+                     continue;
+                 }
+                 break;
+             }
         } while (true);
-        return logdir;
+        return targetDir;
+   }
+
+    public static String getLogFileBaseName(String logdirFormat) {
+        SimpleDateFormat logfmt = new SimpleDateFormat(logdirFormat);
+        return LOG_PREFIX + logfmt.format(new java.util.Date());
     }
 
-    public final static String LOG_PREFIX = "burp_";
-
-    public static String getBaseLogfileName(String logdirFormat, int countup) {
-        SimpleDateFormat logfmt = new SimpleDateFormat(logdirFormat);
+    public static String getLogFileName(String logdirFormat, int countup) {
         String suffix = (countup == 0) ? "" : String.format("_%d", countup);
-        return LOG_PREFIX + logfmt.format(new java.util.Date()) + suffix;
+        return getLogFileBaseName(logdirFormat) + suffix;
     }
 
     private FileSystem fs = null;
@@ -169,24 +236,6 @@ public class Logging implements Closeable {
         }
     }
 
-//    protected File rotateLogFile(String baseDir, String baseName) throws IOException {
-//        File fname = rotateLogFile(getLoggingProperty().getBaseDir(), Config.getProxyLogMessageName());
-//        File fname = rotateLogFile(getLoggingProperty().getBaseDir(), baseLogFileName);
-//        if (this.getLoggingProperty().isCompress()) {
-//            File fname = new File(baseDir, baseName + ".zip");
-//            File renameFile = FileUtil.rotateFile(new File(baseDir), baseName + ".zip");
-//            fname.renameTo(renameFile);
-//            return fname;
-//        } else {
-//            File fname = new File(baseName);
-//            if (Files.size(fname.toPath()) > getLoggingProperty().getLogFileByteLimitSize()
-//                    && getLoggingProperty().getLogFileByteLimitSize() > 0) {
-//                File renameFile = FileUtil.rotateFile(mkLogDir(), baseName);
-//                fname.renameTo(renameFile);
-//            }
-//            return fname;
-//        }
-//    }
     protected Path getLoggingPath(String filename) {
         Path path = null;
         if (this.getLoggingProperty().isCompress()) {

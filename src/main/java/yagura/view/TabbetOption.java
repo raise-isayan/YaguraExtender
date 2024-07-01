@@ -130,8 +130,8 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         return this.tabAutoResponder.getMockServer();
     }
 
-    public boolean isLogDirChanged() {
-        return this.tabLogging.isLogDirChanged();
+    public boolean isLoggingChanged() {
+        return this.tabLogging.isLogDirChanged() || this.tabLogging.isLogCompressChanged();
     }
 
     public boolean isHistoryLogInclude() {
