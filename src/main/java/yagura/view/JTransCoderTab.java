@@ -652,6 +652,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         txtIntIP = new javax.swing.JTextField();
         btnIntIP = new javax.swing.JButton();
         lblIPValid = new javax.swing.JLabel();
+        btnDecIPPaste = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -2442,6 +2443,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         lblIPValid.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         lblIPValid.setToolTipText("");
 
+        btnDecIPPaste.setText("Paste");
+        btnDecIPPaste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDecIPPasteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabIPFormatConverterLayout = new javax.swing.GroupLayout(tabIPFormatConverter);
         tabIPFormatConverter.setLayout(tabIPFormatConverterLayout);
         tabIPFormatConverterLayout.setHorizontalGroup(
@@ -2464,29 +2472,32 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addGroup(tabIPFormatConverterLayout.createSequentialGroup()
                         .addComponent(pnlDotDecIP, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE))
+                        .addComponent(btnDecIPPaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(84, 84, 84)
+                        .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE))
                     .addComponent(txtDotOctIP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnOctIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnDecIPConvert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnHexIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDotOctIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnDotHexIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnIntIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnIntIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDecIPConvert, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         tabIPFormatConverterLayout.setVerticalGroup(
             tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabIPFormatConverterLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tabIPFormatConverterLayout.createSequentialGroup()
-                        .addContainerGap()
+                    .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblDotDeclIP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblIPValid, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnlDotDecIP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(btnDecIPConvert))
+                            .addComponent(pnlDotDecIP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnDecIPConvert))
+                    .addComponent(btnDecIPPaste))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnDotOctIP)
@@ -3636,6 +3647,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnSHAKE256ActionPerformed
 
+    private void btnDecIPPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecIPPasteActionPerformed
+        try {
+            byte ipv4 [] = IpUtil.parseIPv4AddressByte(SwingUtil.systemClipboardPaste());
+            this.txtDec1.setText(String.valueOf(Byte.toUnsignedInt(ipv4[0])));
+            this.txtDec2.setText(String.valueOf(Byte.toUnsignedInt(ipv4[1])));
+            this.txtDec3.setText(String.valueOf(Byte.toUnsignedInt(ipv4[2])));
+            this.txtDec4.setText(String.valueOf(Byte.toUnsignedInt(ipv4[4])));
+        } catch (ParseException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnDecIPPasteActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3658,6 +3681,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.ButtonGroup btnConvertCase;
     private javax.swing.JButton btnDecCopy;
     private javax.swing.JButton btnDecIPConvert;
+    private javax.swing.JButton btnDecIPPaste;
     private javax.swing.JButton btnDecode;
     private javax.swing.JButton btnDotHexIP;
     private javax.swing.JButton btnDotOctIP;

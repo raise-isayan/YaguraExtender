@@ -2793,36 +2793,39 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="pnlDotDecIP" min="-2" pref="300" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblIPValid" pref="673" max="32767" attributes="0"/>
+                                  <Component id="btnDecIPPaste" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
+                                  <Component id="lblIPValid" pref="517" max="32767" attributes="0"/>
                               </Group>
                               <Component id="txtDotOctIP" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnOctIP" max="32767" attributes="0"/>
-                              <Component id="btnDecIPConvert" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnHexIP" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnDotOctIP" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnDotHexIP" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnIntIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnDecIPConvert" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="lblDotDeclIP" alignment="0" max="32767" attributes="0"/>
                                       <Component id="lblIPValid" alignment="0" max="32767" attributes="0"/>
                                       <Component id="pnlDotDecIP" alignment="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="btnDecIPConvert" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="btnDecIPConvert" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDecIPPaste" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -3010,6 +3013,14 @@
                     <Property name="horizontalAlignment" type="int" value="11"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDecIPPaste">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Paste"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDecIPPasteActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

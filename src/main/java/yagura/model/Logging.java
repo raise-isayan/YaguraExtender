@@ -167,7 +167,6 @@ public class Logging implements Closeable {
                  break;
              }
         } while (true);
-        BurpExtension.helpers().outPrintln("TargetZip:" + targetZip.getAbsolutePath());
         return targetZip;
     }
 
@@ -202,7 +201,6 @@ public class Logging implements Closeable {
                  break;
              }
         } while (true);
-        BurpExtension.helpers().outPrintln("TargetDir:" + targetDir.getAbsolutePath());
         return targetDir;
    }
 
