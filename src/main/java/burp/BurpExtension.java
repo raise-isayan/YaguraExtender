@@ -397,6 +397,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     if (tabbetOption.isLoggingChanged()) {
                         try {
                             logging.close();
+                            logging.setLoggingProperty(tabbetOption.getLoggingProperty());
                             File file = logging.mkLog();
                             logging.open(file);
                             if (tabbetOption.isHistoryLogInclude()) {
@@ -1606,89 +1607,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             return modifyRequestResponse;
         }
 
-//        /**
-//         * メッセージの置換
-//         *
-//         * @param messageIsRequest
-//         * @param httpMessage
-//         * @param bodyOffset
-//         * @return 変換後メッセージ
-//         */
-//        protected synchronized byte[] replaceProxyMessage(
-//                boolean messageIsRequest,
-//                byte[] httpMessage,
-//                int bodyOffset) {
-//
-//            // headerとbodyに分割
-//            boolean edited = false;
-//            String header = StringUtil.getBytesRawString(Arrays.copyOfRange(httpMessage, 0, bodyOffset));
-//            String body = StringUtil.getBytesRawString(Arrays.copyOfRange(httpMessage, bodyOffset, httpMessage.length));
-//
-//            List<MatchReplaceItem> matchReplaceList = option.getMatchReplaceProperty().getMatchReplaceList();
-//            for (int i = 0; i < matchReplaceList.size(); i++) {
-//                MatchReplaceItem bean = matchReplaceList.get(i);
-//                if (!bean.isSelected()) {
-//                    continue;
-//                }
-//                if ((messageIsRequest && bean.isRequest()) || (!messageIsRequest && bean.isResponse())) {
-//                    // body
-//                    Pattern pattern = bean.getRegexPattern();
-//                    if (bean.isBody() && !body.isEmpty()) {
-//                        Matcher m = pattern.matcher(body);
-//                        if (m.find()) {
-//                            body = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-//                            edited = true;
-//                        }
-//                    } else if (messageIsRequest && bean.isRequestLine()) {
-//                        // header
-//                        if (!"".equals(bean.getMatch())) {
-//                            // 置換
-//                            Matcher m = HttpRequestWapper.FIRST_LINE.matcher(header);
-//                            if (m.find()) {
-//                                String firstline = m.group(0);
-//                                Matcher m2 = pattern.matcher(firstline);
-//                                if (m2.find()) {
-//                                    firstline = m2.replaceFirst(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-//                                }
-//                                header = m.replaceFirst(Pattern.quote(firstline));
-//                                edited = true;
-//                            }
-//                        }
-//                    } else if (bean.isHeader()) {
-//                        // header
-//                        if ("".equals(bean.getMatch())) {
-//                            // 追加
-//                            StringBuilder builder = new StringBuilder(header);
-//                            builder.append(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-//                            builder.append(HttpMessageWapper.LINE_TERMINATE);
-//                            header = builder.toString();
-//                            edited = true;
-//                        } else {
-//                            // 置換
-//                            Matcher m = pattern.matcher(header);
-//                            if (m.find()) {
-//                                header = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-//                                edited = true;
-//                            }
-//                        }
-//                        Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
-//                        header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
-//                    }
-//                }
-//            }
-//
-//            if (edited) {
-//                // messageの再構築
-//                StringBuilder message = new StringBuilder();
-//                Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
-//                header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
-//                message.append(header);
-//                message.append(HttpMessageWapper.LINE_TERMINATE);
-//                message.append(body);
-//                httpMessage = StringUtil.getBytesRaw(message.toString());
-//            }
-//            return httpMessage;
-//        }
         /**
          *
          * @param httpRequest
@@ -1790,90 +1708,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 message.setBody(body);
             }
             return message;
-        }
-
-        /**
-         * メッセージの置換
-         *
-         * @param messageIsRequest
-         * @param httpMessage
-         * @param bodyOffset
-         * @return 変換後メッセージ
-         */
-        protected synchronized byte[] replaceProxyMessage2(
-                boolean messageIsRequest,
-                byte[] httpMessage,
-                int bodyOffset) {
-
-            // headerとbodyに分割
-            boolean edited = false;
-            String header = StringUtil.getBytesRawString(Arrays.copyOfRange(httpMessage, 0, bodyOffset));
-            String body = StringUtil.getBytesRawString(Arrays.copyOfRange(httpMessage, bodyOffset, httpMessage.length));
-
-            List<MatchReplaceItem> matchReplaceList = option.getMatchReplaceProperty().getMatchReplaceList();
-            for (int i = 0; i < matchReplaceList.size(); i++) {
-                MatchReplaceItem bean = matchReplaceList.get(i);
-                if (!bean.isSelected()) {
-                    continue;
-                }
-                if ((messageIsRequest && bean.isRequest()) || (!messageIsRequest && bean.isResponse())) {
-                    // body
-                    Pattern pattern = bean.getRegexPattern();
-                    if (bean.isBody() && !body.isEmpty()) {
-                        Matcher m = pattern.matcher(body);
-                        if (m.find()) {
-                            body = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                            edited = true;
-                        }
-                    } else if (messageIsRequest && bean.isRequestLine()) {
-                        // header
-                        if (!"".equals(bean.getMatch())) {
-                            // 置換
-                            Matcher m = HttpRequestWapper.FIRST_LINE.matcher(header);
-                            if (m.find()) {
-                                String firstline = m.group(0);
-                                Matcher m2 = pattern.matcher(firstline);
-                                if (m2.find()) {
-                                    firstline = m2.replaceFirst(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                                }
-                                header = m.replaceFirst(Pattern.quote(firstline));
-                                edited = true;
-                            }
-                        }
-                    } else if (bean.isHeader()) {
-                        // header
-                        if ("".equals(bean.getMatch())) {
-                            // 追加
-                            StringBuilder builder = new StringBuilder(header);
-                            builder.append(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                            builder.append(HttpMessageWapper.LINE_TERMINATE);
-                            header = builder.toString();
-                            edited = true;
-                        } else {
-                            // 置換
-                            Matcher m = pattern.matcher(header);
-                            if (m.find()) {
-                                header = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                                edited = true;
-                            }
-                        }
-                        Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
-                        header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
-                    }
-                }
-            }
-
-            if (edited) {
-                // messageの再構築
-                StringBuilder message = new StringBuilder();
-                Matcher m = HttpMessageWapper.HTTP_LINESEP.matcher(header);
-                header = m.replaceAll(HttpMessageWapper.LINE_TERMINATE);
-                message.append(header);
-                message.append(HttpMessageWapper.LINE_TERMINATE);
-                message.append(body);
-                httpMessage = StringUtil.getBytesRaw(message.toString());
-            }
-            return httpMessage;
         }
 
     }

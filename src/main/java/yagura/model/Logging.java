@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.BurpExtension;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -67,22 +68,24 @@ public class Logging implements Closeable {
         }
     }
 
-    protected FilenameFilter listLogFileFilter() {
+    protected FilenameFilter listLogFileFilter(boolean dirOnly) {
         return new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
+                File filter = new File(dir, name);
                 final String fileName = getLogFileBaseName(getLoggingProperty().getLogDirFormat());
-                return name.startsWith(fileName);
+                return (dirOnly && filter.isDirectory() || !dirOnly) && name.startsWith(fileName);
             }
         };
     }
 
-    protected FilenameFilter listLogFileFilter(String suffix) {
+    protected FilenameFilter listLogFileFilter(boolean dirOnly, String suffix) {
         return new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
+                File filter = new File(dir, name);
                 final String fileName = getLogFileBaseName(getLoggingProperty().getLogDirFormat());
-                return name.startsWith(fileName) && name.endsWith(suffix);
+                return (dirOnly && filter.isDirectory() || !dirOnly) && name.startsWith(fileName) && name.endsWith(suffix);
             }
         };
     }
@@ -123,6 +126,16 @@ public class Logging implements Closeable {
         }
     }
 
+    private final static Comparator<File> LOG_FILE_COMPARE = new Comparator<File>() {
+        @Override
+        public int compare(File o1, File o2) {
+            int i1 = getLogFileCounter(o1.getName());
+            int i2 = getLogFileCounter(o2.getName());
+            return i2 - i1;
+        }
+    };
+
+
     /**
      * ログZipファイルの作成
      *
@@ -133,18 +146,11 @@ public class Logging implements Closeable {
      */
     protected File mkLogZip(String logBaseDir, String logdirFormat) throws IOException {
         File baseDir = new File(logBaseDir);
-        File [] logFiles = baseDir.listFiles(listLogFileFilter(LOG_SUFFIX));
-        if (logFiles == null) {
+        File [] logFiles = baseDir.listFiles(listLogFileFilter(false, LOG_SUFFIX));
+        if (logFiles == null || (logFiles != null && logFiles.length == 0)) {
             logFiles =  new File [] { new File(getLogFileName(logdirFormat, 0) + LOG_SUFFIX) };
         }
-        Arrays.sort(logFiles, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                int i1 = getLogFileCounter(o1.getName());
-                int i2 = getLogFileCounter(o2.getName());
-                return i1 - i2;
-            }
-        });
+        Arrays.sort(logFiles, LOG_FILE_COMPARE);
         File targetZip = logFiles[0];
         int countup = getLogFileCounter(targetZip.getName());
         do {
@@ -154,13 +160,14 @@ public class Logging implements Closeable {
                  targetZip = FileUtil.createEmptyZip(targetZip);
                  break;
              } else {
-                 if (FileUtil.totalFileSize(targetZip, false) > this.getLoggingProperty().getLogFileByteLimitSize()) {
+                 if (FileUtil.totalFileSize(targetZip, false) > this.getLoggingProperty().getLogFileByteLimitSize() && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
                      countup++;
                      continue;
                  }
                  break;
              }
         } while (true);
+        BurpExtension.helpers().outPrintln("TargetZip:" + targetZip.getAbsolutePath());
         return targetZip;
     }
 
@@ -174,34 +181,28 @@ public class Logging implements Closeable {
      */
     protected File mkLogDir(String logBaseDir, String logdirFormat) throws IOException {
         File baseDir = new File(logBaseDir);
-        File [] logFiles = baseDir.listFiles(listLogFileFilter());
-        if (logFiles == null) {
-            logFiles =  new File [] { new File(getLogFileName(logdirFormat, 0)) };
+        File [] logFiles = baseDir.listFiles(listLogFileFilter(true));
+        if (logFiles == null || (logFiles != null && logFiles.length == 0)) {
+            logFiles = new File [] { new File(getLogFileName(logdirFormat, 0)) };
         }
-        Arrays.sort(logFiles, new Comparator<File>() {
-            @Override
-            public int compare(File o1, File o2) {
-                int i1 = getLogFileCounter(o1.getName());
-                int i2 = getLogFileCounter(o2.getName());
-                return i1 - i2;
-            }
-        });
+        Arrays.sort(logFiles, LOG_FILE_COMPARE);
         File targetDir = logFiles[0];
         int countup = getLogFileCounter(targetDir.getName());
         do {
             String fname = getLogFileName(logdirFormat, countup);
              targetDir = new File(logBaseDir, fname);
              if (!targetDir.exists()) {
-                 targetDir = FileUtil.createEmptyZip(targetDir);
+                 targetDir.mkdir();
                  break;
              } else {
-                 if (FileUtil.totalFileSize(targetDir, false) > this.getLoggingProperty().getLogFileByteLimitSize()) {
+                 if (FileUtil.totalFileSize(targetDir, false) > this.getLoggingProperty().getLogFileByteLimitSize() && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
                      countup++;
                      continue;
                  }
                  break;
              }
         } while (true);
+        BurpExtension.helpers().outPrintln("TargetDir:" + targetDir.getAbsolutePath());
         return targetDir;
    }
 

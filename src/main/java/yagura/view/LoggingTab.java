@@ -405,7 +405,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JTextField txtFileLimitSize;
     private javax.swing.JTextField txtLogDir;
     // End of variables declaration//GEN-END:variables
-    private boolean modifyAutoLogging = false;
+    private boolean initAutoLogging = false;
 
     /**
      * @return the autoLogging
@@ -418,29 +418,29 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
      * @param autoLogging the autoLogging to set
      */
     public void setAutoLogging(boolean autoLogging) {
-        this.modifyAutoLogging = (this.chkAutoLogging.isSelected() != autoLogging);
+        this.initAutoLogging = autoLogging;
         this.chkAutoLogging.setSelected(autoLogging);
     }
 
-    private boolean modifyLogDir = false;
+    private String initLogDir = null;
 
     public String getBaseDir() {
         return this.txtLogDir.getText();
     }
 
     public void setLogDir(String logdir) {
-        this.modifyLogDir = !this.txtLogDir.getText().equals(logdir);
+        this.initLogDir = logdir;
         this.txtLogDir.setText(logdir);
     }
 
     public boolean isLogDirChanged() {
         return this.isAutoLogging()
-                && (this.modifyAutoLogging || (this.modifyLogDir || isHistoryLogInclude()));
+                && ((this.chkAutoLogging.isSelected() != this.initAutoLogging) || (!this.txtLogDir.getText().equals(this.initLogDir) || isHistoryLogInclude()));
     }
 
     public boolean isLogCompressChanged() {
         return this.isAutoLogging()
-                && (this.modifyAutoLogging || this.modifyCompress);
+                && ((this.chkAutoLogging.isSelected() != this.initAutoLogging) || (this.chkCompressLog.isSelected() != this.initCompress));
     }
 
     /**
@@ -457,7 +457,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.txtFileLimitSize.setText(StringUtil.toString(logFileLimitSize));
     }
 
-    private boolean modifyCompress = false;
+    private boolean initCompress = false;
 
     /**
      * @return the isCompressLog
@@ -470,7 +470,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
      * @param compress
      */
     public void setCompressLog(boolean compress) {
-        this.modifyCompress = (this.chkCompressLog.isSelected() != compress);
+        this.initCompress = compress;
         this.chkCompressLog.setSelected(compress);
     }
 
@@ -580,9 +580,9 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.setWarnClosingTemporaryProject(loggingProperty.isWarnClosingTemporaryProject());
         this.setPopupTime(loggingProperty.getPopupTime());
         this.setCompressLog(loggingProperty.isCompress());
-        this.modifyAutoLogging = false;
-        this.modifyLogDir = false;
-        this.modifyCompress = false;
+        this.initAutoLogging = false;
+        this.initLogDir = null;
+        this.initCompress = false;
     }
 
     public LoggingProperty getLoggingProperty() {
