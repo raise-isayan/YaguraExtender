@@ -683,23 +683,31 @@ proxy-message.log.2
 
 0を指定した場合は上限はありません。
 
+Compress Log::
+    ログを圧縮します｡
+
 ===== Logging target
 
 [ProxyLog] チェックボックス::
      Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。
+
 [ToolLog] チェックボックス::
      各種Toolのログの値が記録されます。
+
 [history is included] チェックボックス::
      auto loggingがオフの状態でのみチェックできます。
      チェックすると現時点でHistoryに記録されているすべてののログをファイルに記録します。
+
 [Exclude Extension] チェックボックス::
      設定された拡張子をロギングから除外します。
+
+===== Temporary project
 
 [Temporary project warning when closing  Burp Suite] チェックボックス::
     Temporary projectの状態でBurpを閉じようとするとポップアップによる警告を表示します。
 
 [Popup Time] ::
-     Popupしている時間を1000 ms から10000 ms までの間で指定します。デフォルトは5000 msです。
+     Popupしている時間を 1000 ms から 10000 ms までの間で指定します。デフォルトは 3000 msです。
 
 === JSearchタブ
 

@@ -690,23 +690,31 @@ proxy-message.log.2
 
 If you specify 0, there is no upper limit.
 
+Compress Log::
+     Compresses logs.
+
 ===== Logging target
 
 [ProxyLog] check box::
      ProxyLog of the value after the change in Match and Replace or Inspecter is recorded.
+
 [ToolLog] check box::
      Log values ​​of various tools are recorded.
+
 [history is included] check box::
      This can be checked only when auto logging is off.
      If checked, all logs currently recorded in History are recorded in a file.
+
 [Exclude Extension] check box::
      Exclude the configured extension from logging.
+
+===== Temporary project
 
 [Temporary project warning when closing  Burp Suite]  check box::
    If you try to close Burp in the Temporary project state, a pop-up warning will be displayed.
 
 [Popup Time] ::
-    Specify the time of popup between 1000 ms and 10000 ms. The default is 5000 ms.
+    Specify the time of popup between 1000 ms and 10000 ms. The default is 3000 ms.
 
 === JSearch tab
 
