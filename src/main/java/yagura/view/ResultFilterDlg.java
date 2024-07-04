@@ -1,12 +1,10 @@
 package yagura.view;
 
 import burp.BurpExtension;
-import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import extension.burp.BurpConfig;
 import extension.burp.BurpExtensionImpl;
-import static extension.burp.BurpExtensionImpl.api;
 import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
 import extension.burp.MessageHighlightColor;

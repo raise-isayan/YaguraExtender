@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.BurpExtender;
 import burp.BurpExtension;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;

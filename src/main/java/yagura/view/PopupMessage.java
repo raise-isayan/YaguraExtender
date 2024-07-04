@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
-//import javax.swing.Timer;
 import java.util.Timer;
 import java.util.TimerTask;
 

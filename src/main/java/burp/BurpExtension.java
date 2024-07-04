@@ -65,7 +65,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -207,6 +206,23 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
     };
 
+    private void registerTemporaryProject() {
+        this.isTemporaryProject = BurpUtil.isTemporaryProject();
+
+        // MainFrame閉じる処理
+        if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
+            //burpFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+            WindowListener[] wl = burpFrame.getWindowListeners();
+            for (WindowListener l : wl) {
+                burpFrame.removeWindowListener(l);
+            }
+            burpFrame.addWindowListener(windowPopupListener);
+            for (WindowListener l : wl) {
+                burpFrame.addWindowListener(l);
+            }
+        }
+    }
+
     /**
      * 古い Montoya API ではメソッド名をあやまっており ここにくる場合は必ず古いバージョン
      *
@@ -226,9 +242,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             BurpVersion.showUnsupporttDlg(burpVersion, Version.getInstance().getProjectName());
             throw new UnsupportedOperationException("Unsupported burp version");
         }
-
-        this.isTemporaryProject = BurpUtil.isTemporaryProject();
-
         if (DEBUG) {
             api.logging().logToOutput("name:" + burpVersion.getProductName());
             api.logging().logToOutput("major:" + burpVersion.getMajor());
@@ -236,18 +249,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
 
-        // MainFrame閉じる処理
-        if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
-            //burpFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-            WindowListener[] wl = burpFrame.getWindowListeners();
-            for (WindowListener l : wl) {
-                burpFrame.removeWindowListener(l);
-            }
-            burpFrame.addWindowListener(windowPopupListener);
-            for (WindowListener l : wl) {
-                burpFrame.addWindowListener(l);
-            }
-        }
+        registerTemporaryProject();
+
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));
 
@@ -1357,9 +1360,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
          */
         private void updateResultFilterUI(JMenu yaguraResultFilterMenu) {
             yaguraResultFilterMenu.removeAll();
-//            for (Enumeration<AbstractButton> e = this.menuBurpResultFilterGroup.getElements(); e.hasMoreElements();) {
-//                this.menuBurpResultFilterGroup.remove(e.nextElement());
-//            }
             Map<String, FilterProperty> filterMap = option.getResultFilterProperty().getFilterMap();
             for (String name : filterMap.keySet()) {
                 JMenuItem chkResultFilterItem = new JMenuItem();
@@ -1368,14 +1368,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 yaguraResultFilterMenu.add(chkResultFilterItem);
                 // this.menuBurpResultFilterGroup.add(chkResultFilterItem);
             }
-//            Enumeration<AbstractButton> rdoCheckGroup = this.menuBurpResultFilterGroup.getElements();
-//            while (rdoCheckGroup.hasMoreElements()) {
-//                AbstractButton rdoCheck = rdoCheckGroup.nextElement();
-//                String name = rdoCheck.getText();
-//                if (name.equals(option.getResultFilterProperty().getSelectedName())) {
-//                    rdoCheck.setSelected(true);
-//                }
-//            }
         }
     }
 

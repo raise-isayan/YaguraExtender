@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.BurpExtension;
 import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import java.nio.charset.StandardCharsets;
