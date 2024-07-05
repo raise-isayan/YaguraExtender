@@ -486,6 +486,10 @@ multipart のデータ形式でサーバに送信されます。次の内容を�
         レスポンス
     comment::
         コメント
+    reqName::
+        リクエスト名
+    reqComment::
+        リクエストコメント
     highlight::
         選択した Highlight Color
         以下のいずれかの値になります。 +

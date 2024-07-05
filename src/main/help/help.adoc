@@ -490,6 +490,10 @@ It is sent to the server in the form of multipart data. It includes the followin
         requset
     response::
         response
+    reqName::
+        request name
+    reqComment::
+        request comment
     comment::
         comment
     highlight::
