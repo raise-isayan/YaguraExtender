@@ -175,7 +175,7 @@ public class LoggingProperty implements IPropertyConfig {
     }
 
     @Expose
-    private int popupTime = 5000;
+    private int popupTime = 3000;
 
     /**
      * @return the popupTime
@@ -227,6 +227,5 @@ public class LoggingProperty implements IPropertyConfig {
         LoggingProperty property = new LoggingProperty();
         return JsonUtil.jsonToString(property, true);
     }
-
 
 }

@@ -1,12 +1,22 @@
 package extend.util.external;
 
+import burp.BurpPreferences;
 import extension.helpers.CertUtil;
 import java.io.File;
 import java.security.Key;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.KeyStore;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.bouncycastle.asn1.x500.AttributeTypeAndValue;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +30,8 @@ import org.junit.jupiter.api.Test;
  * @author isayan
  */
 public class BoncyUtilTest {
+
+    private final static Logger logger = Logger.getLogger(BoncyUtilTest.class.getName());
 
     private final static BouncyCastleProvider BC_PROVIDER = new BouncyCastleProvider();
 
@@ -54,6 +66,60 @@ public class BoncyUtilTest {
             Map.Entry<Key, X509Certificate> cert = certMap.get(key);
             System.out.println(cert.getValue().getType());
             System.out.println(cert.getValue().getSubjectX500Principal().getName());
+        }
+    }
+
+    @Test
+    public void testCN() {
+        System.out.println("testCN");
+        System.out.println("CN ->" + BCStyle.CN);
+        org.bouncycastle.asn1.x500.X500Name subjectDN = new org.bouncycastle.asn1.x500.X500Name("cn=hoge, ou=fuga, o=\"Foo Co., Ltd.\", c=JP");
+        for (RDN rdn : subjectDN.getRDNs()) {
+            for (AttributeTypeAndValue t : rdn.getTypesAndValues()) {
+                System.out.println("t.Type:" + BCStyle.INSTANCE.oidToDisplayName(t.getType()) + " t.Value:" + t.getValue());
+            }
+        }
+    }
+
+    @Test
+    public void testSelfCA() {
+        System.out.println("testSelfCA");
+        try {
+            Security.addProvider(new BouncyCastleProvider());
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(2048);
+            KeyPair caKeyPair = keyGen.generateKeyPair();
+            org.bouncycastle.asn1.x500.X500Name subjectDN = new org.bouncycastle.asn1.x500.X500Name("cn=hoge, ou=fuga, o=\"Foo Co., Ltd.\", c=JP");
+            System.out.println("subjectDN:");
+            X509Certificate cert = BouncyUtil.createRootCA(caKeyPair, subjectDN, 2);
+            System.out.println("createCA:" + cert.getSubjectX500Principal().getName());
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+
+    @Test
+    public void testBurpSign() {
+        System.out.println("testBurpSign");
+        try {
+            Security.addProvider(new BouncyCastleProvider());
+            KeyStore burpKeyStore = BurpPreferences.loadCACeart();
+            KeyPair burpKeyPair = BurpPreferences.loadCAKeyPair();
+            X509Certificate burpCert = (X509Certificate) burpKeyStore.getCertificate(CertUtil.getFirstAlias(burpKeyStore));
+
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(2048);
+            KeyPair keyPair = keyGen.generateKeyPair();
+            System.out.println("subjectDN:");
+            X509Certificate cert = BouncyUtil.issueSignCert(burpKeyPair.getPrivate(), burpCert, keyPair, "www.example.com" , new String [] { "www.example.com" } , 2);
+            System.out.println("createCA:" + cert.getSubjectX500Principal().getName());
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -97,6 +163,5 @@ public class BoncyUtilTest {
             System.out.println("SHAKE256:" + hash);
         }
     }
-
 
 }
