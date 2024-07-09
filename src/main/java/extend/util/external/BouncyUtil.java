@@ -189,7 +189,8 @@ public class BouncyUtil {
         return null;
     }
 
-    // https://github.com/rtyley/test-bc-java-cvsimport/blob/master/crypto/test/src/org/bouncycastle/jce/provider/test/DigestTest.java
+    // https://github.com/bcgit/bc-java/tree/main/prov/src/main/java/org/bouncycastle/jcajce/provider/digest
+
     /**
      * ハッシュ値の取得
      *
@@ -241,7 +242,7 @@ public class BouncyUtil {
      * @param upperCase 大文字で出力
      * @return ハッシュ値
      */
-    public static String toSHAKE128um(byte[] binary, boolean upperCase) {
+    public static String toSHAKE128Sum(byte[] binary, boolean upperCase) {
         try {
             return toMessageDigest("SHAKE128", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
@@ -277,7 +278,7 @@ public class BouncyUtil {
      */
     public static String toSHAKE128Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
-        return toSHAKE128um(StringUtil.getBytesCharset(str, charset), upperCase);
+        return toSHAKE128Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -557,6 +558,144 @@ public class BouncyUtil {
     }
 
     /**
+     * DSTU7564-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toDSTU7564_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("DSTU7564-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * DSTU7564-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toDSTU7564_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("DSTU7564-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * DSTU7564-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toDSTU7564_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toDSTU7564_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * DSTU7564-384値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toDSTU7564_384Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("DSTU7564-384", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * DSTU7564-384値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toDSTU7564_384Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("DSTU7564-384", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * DSTU7564-384値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toDSTU7564_384Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toDSTU7564_384Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * DSTU7564-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toDSTU7564_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("DSTU7564-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * DSTU7564-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toDSTU7564_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("DSTU7564-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * DSTU7564-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toDSTU7564_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toDSTU7564_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
      * GOST3411値の取得
      *
      * @param binary 対象バイト
@@ -589,7 +728,7 @@ public class BouncyUtil {
     }
 
     /**
-     * GOST3411値の取得
+     * GOST-3411値の取得
      *
      * @param str 対象文字列
      * @param charset エンコーディング
@@ -600,6 +739,98 @@ public class BouncyUtil {
     public static String toGOST3411Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         return toGOST3411Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * GOST-3411-2012-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toGOST3411_2012_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("GOST-3411-2012-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * GOST-3411-2012-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toGOST3411_2012_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("GOST-3411-2012-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * GOST-3411-2012-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toGOST3411_2012_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toGOST3411_2012_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * GOST-3411-2012-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toGOST3411_2012_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("GOST-3411-2012-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * GOST-3411-2012-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toGOST3411_2012_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("GOST-3411-2012-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * GOST-3411-2012-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toGOST3411_2012_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toGOST3411_2012_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**
@@ -646,6 +877,1387 @@ public class BouncyUtil {
     public static String toWHIRLPOOLSum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         return toWHIRLPOOLSum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SM3値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSM3Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SM3", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SM3値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSM3Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SM3", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SM3値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSM3Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSM3Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2S-128値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_128Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-128", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-128値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_128Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-128", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-128値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2S_128Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2S_128Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2B-160値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_160Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-160", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-160値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_160Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-160", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-160値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2B_160Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2B_160Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2B-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2B_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2B_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2B-384値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_384Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-384", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-384値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_384Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-384", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-384値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2B_384Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2B_384Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2B-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2B_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2B-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2B-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2B_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2B_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2S-160値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_160Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-160", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-160値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_160Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-160", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-160値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2S_160Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2S_160Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2S-224値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_224Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-224", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-224値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_224Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-224", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-224値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2S_224Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2S_224Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE2S-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE2S_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE2S-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE2S-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE2S_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE2S_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * BLAKE3-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE3_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE3-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE3-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toBLAKE3_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("BLAKE3-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * BLAKE3-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toBLAKE3_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toBLAKE3_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * HARAKA-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toHARAKA256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("HARAKA-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * HARAKA-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toHARAKA256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("HARAKA-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * HARAKA-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toHARAKA256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toHARAKA256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+
+    /**
+     * HARAKA-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toHARAKA512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("HARAKA-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * HARAKA-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toHARAKA512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("HARAKA-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * HARAKA-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toHARAKA512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toHARAKA512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * KECCAK-224値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK224Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-224", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-224値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK224Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-224", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-224値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toKECCAK224Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toKECCAK224Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * KECCAK-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toKECCAK256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toKECCAK256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * KECCAK-288値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK288Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-288", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-288値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK288Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-288", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-288値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toKECCAK288Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toKECCAK288Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * KECCAK-384値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK384Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-384", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-384値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK384Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-384", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-384値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toKECCAK384Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toKECCAK384Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * KECCAK-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toKECCAK512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("KECCAK-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * KECCAK-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toKECCAK512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toKECCAK512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-256-128値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_128Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-128", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-128値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_128Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-128", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-128値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN256_128Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN256_128Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-256-160値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_160Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-160", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-160値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_160Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-160", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-160値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN256_160Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN256_160Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-256-224値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_224Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-224", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-224値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_224Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-224", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-224値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN256_224Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN256_224Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-256-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN256_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-256-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN256_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN256_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-512-128値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_128Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-128", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-128値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_128Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-128", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-128値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN512_128Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN512_128Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-512-160値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_160Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-160", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-160値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_160Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-160", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-160値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN512_160Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN512_160Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-512-224値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_224Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-224", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-224値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_224Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-224", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-224値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN512_224Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN512_224Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-512-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN512_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN512_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-512-384値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_384Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-384", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-384値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_384Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-384", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-384値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN512_384Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN512_384Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-512-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-512-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN512_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-512-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-256-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN512_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN512_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-1024-384値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN1024_384Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-1024-384", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-1024-384値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN1024_384Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-1024-384", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-1024-384値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN1024_384Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN1024_384Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-1024-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN1024_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-1024-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-1024-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN1024_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-1024-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-1024-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN1024_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN1024_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SKEIN-1024-1024値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN1024_1024Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-1024-1024", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-1024-1024値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSKEIN1024_1024Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SKEIN-1024-1024", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * SKEIN-1024-1024値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSKEIN1024_1024Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSKEIN1024_1024Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
     /**

@@ -213,7 +213,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 //        this.scrollOutputFormat = new javax.swing.JScrollPane(this.txtOutputFormat);
         this.scrollOutputFormat = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputFormat);
 
-        this.pnlTransButton.setLayout(new VerticalFlowLayout());
+        this.pnlTransAction.setLayout(new VerticalFlowLayout());
 
         this.tabbetOutput.addTab("Hex", this.hexOutputViewTab);
         this.hexOutputViewTab.setEnabled(false);
@@ -224,6 +224,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         this.setEncodingList(UniversalViewProperty.getDefaultEncodingList(), StandardCharsets.UTF_8.name());
 
         this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
+
+        this.pnlHashCheckSum.setLayout(new VerticalFlowLayout());
 
         this.pnlCharacter.setLayout(new VerticalFlowLayout());
 
@@ -397,7 +399,52 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoFormatGrp = new javax.swing.ButtonGroup();
         tabbetTranscoder = new javax.swing.JTabbedPane();
         tabTransrator = new javax.swing.JPanel();
-        pnlTransButton = new javax.swing.JPanel();
+        pnlTranslator = new javax.swing.JPanel();
+        pnlConvert = new javax.swing.JPanel();
+        pnlHeader = new javax.swing.JPanel();
+        lblPositionStatus = new javax.swing.JLabel();
+        cmbHistory = new javax.swing.JComboBox<>();
+        splitConvert = new javax.swing.JSplitPane();
+        tabbetInput = new javax.swing.JTabbedPane();
+        pnlInputRaw = new javax.swing.JPanel();
+        tabbetOutput = new javax.swing.JTabbedPane();
+        pnlOutputRaw = new javax.swing.JPanel();
+        pnlStatus = new javax.swing.JPanel();
+        pnlInput = new javax.swing.JPanel();
+        btnInputfile = new javax.swing.JButton();
+        scrollStatus = new javax.swing.JScrollPane();
+        txtStatus = new javax.swing.JTextArea();
+        btnOutput = new javax.swing.JPanel();
+        btnOutputfile = new javax.swing.JButton();
+        pnlSelect = new javax.swing.JPanel();
+        pnlInputOutput = new javax.swing.JPanel();
+        pnlEncoding = new javax.swing.JPanel();
+        cmbEncoding = new javax.swing.JComboBox<>();
+        chkRawMode = new javax.swing.JCheckBox();
+        chkGuess = new javax.swing.JCheckBox();
+        pnlOutputToInput = new javax.swing.JPanel();
+        btnOutputToInput = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
+        btnOutputCopy = new javax.swing.JButton();
+        pnlSelectOption = new javax.swing.JPanel();
+        pnlEncode = new javax.swing.JPanel();
+        rdoAll = new javax.swing.JRadioButton();
+        rdoAlphaNum = new javax.swing.JRadioButton();
+        rdoURLSafe = new javax.swing.JRadioButton();
+        rdoLigth = new javax.swing.JRadioButton();
+        rdoStandard = new javax.swing.JRadioButton();
+        pnlConvertCase = new javax.swing.JPanel();
+        rdoLowerCase = new javax.swing.JRadioButton();
+        rdoUpperCase = new javax.swing.JRadioButton();
+        pnlNewLine = new javax.swing.JPanel();
+        rdoNone = new javax.swing.JRadioButton();
+        rdoCR = new javax.swing.JRadioButton();
+        rdoLF = new javax.swing.JRadioButton();
+        rdoCRLF = new javax.swing.JRadioButton();
+        pnlWrap = new javax.swing.JPanel();
+        chkViewLineWrap = new javax.swing.JCheckBox();
+        tabbetTransAction = new javax.swing.JTabbedPane();
+        pnlTransAction = new javax.swing.JPanel();
         pnlEncodeDecode = new javax.swing.JPanel();
         btnSmartDecode = new javax.swing.JButton();
         pnlEncDec = new javax.swing.JPanel();
@@ -455,6 +502,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlRegex = new javax.swing.JPanel();
         btnSmartMatch = new javax.swing.JButton();
         chkWithByte = new javax.swing.JCheckBox();
+        pnlHashCheckSum = new javax.swing.JPanel();
         pnlHashTrans = new javax.swing.JPanel();
         btnHashMd2 = new javax.swing.JButton();
         btnHashMd5 = new javax.swing.JButton();
@@ -471,63 +519,54 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashSha3_512 = new javax.swing.JButton();
         btnSHAKE128 = new javax.swing.JButton();
         btnSHAKE256 = new javax.swing.JButton();
+        btnSKEIN256_128 = new javax.swing.JButton();
+        btnSKEIN256_160 = new javax.swing.JButton();
+        btnSKEIN256_224 = new javax.swing.JButton();
+        btnSKEIN256_256 = new javax.swing.JButton();
+        btnSKEIN512_128 = new javax.swing.JButton();
+        btnSKEIN512_160 = new javax.swing.JButton();
+        btnSKEIN512_224 = new javax.swing.JButton();
+        btnSKEIN512_256 = new javax.swing.JButton();
+        btnSKEIN512_384 = new javax.swing.JButton();
+        btnSKEIN512_512 = new javax.swing.JButton();
+        btnSKEIN1024_384 = new javax.swing.JButton();
+        btnSKEIN1024_512 = new javax.swing.JButton();
+        btnSKEIN1024_1024 = new javax.swing.JButton();
+        btnHashKECCAK224 = new javax.swing.JButton();
+        btnHashKECCAK256 = new javax.swing.JButton();
+        btnHashKECCAK288 = new javax.swing.JButton();
+        btnHashKECCAK384 = new javax.swing.JButton();
+        btnHashKECCAK512 = new javax.swing.JButton();
+        btnHashHARAKA256 = new javax.swing.JButton();
+        btnHashHARAKA512 = new javax.swing.JButton();
         btnHashRIPEMD128 = new javax.swing.JButton();
         btnHashRIPEMD129 = new javax.swing.JButton();
         btnHashRIPEMD256 = new javax.swing.JButton();
         btnHashRIPEMD320 = new javax.swing.JButton();
-        btnHashTiger = new javax.swing.JButton();
         btnHashGOST3411 = new javax.swing.JButton();
+        btnHashGOST3411_2012_256 = new javax.swing.JButton();
+        btnHashGOST3411_2012_512 = new javax.swing.JButton();
+        btnHashDSTU7564_256 = new javax.swing.JButton();
+        btnHashDSTU7564_384 = new javax.swing.JButton();
+        btnHashDSTU7564_512 = new javax.swing.JButton();
+        btnHashBLAKE2B_160 = new javax.swing.JButton();
+        btnHashBLAKE2B_256 = new javax.swing.JButton();
+        btnHashBLAKE2B_384 = new javax.swing.JButton();
+        btnHashBLAKE2B_512 = new javax.swing.JButton();
+        btnHashBLAKE2S_128 = new javax.swing.JButton();
+        btnHashBLAKE2S_160 = new javax.swing.JButton();
+        btnHashBLAKE2_S224 = new javax.swing.JButton();
+        btnHashBLAKE2S_256 = new javax.swing.JButton();
+        btnHashBLAKE3_256 = new javax.swing.JButton();
+        btnHashTiger = new javax.swing.JButton();
         btnHashWHIRLPOOL = new javax.swing.JButton();
+        btnHashSM3 = new javax.swing.JButton();
         pnlCheckSumTrans = new javax.swing.JPanel();
         btnCRC32 = new javax.swing.JButton();
         btnCRC32C = new javax.swing.JButton();
         btnAdler32 = new javax.swing.JButton();
         btnMurmurHash2_32 = new javax.swing.JButton();
         btnMurmurHash2_64 = new javax.swing.JButton();
-        pnlTranslator = new javax.swing.JPanel();
-        pnlConvert = new javax.swing.JPanel();
-        pnlHeader = new javax.swing.JPanel();
-        lblPositionStatus = new javax.swing.JLabel();
-        cmbHistory = new javax.swing.JComboBox<>();
-        splitConvert = new javax.swing.JSplitPane();
-        tabbetInput = new javax.swing.JTabbedPane();
-        pnlInputRaw = new javax.swing.JPanel();
-        tabbetOutput = new javax.swing.JTabbedPane();
-        pnlOutputRaw = new javax.swing.JPanel();
-        pnlStatus = new javax.swing.JPanel();
-        pnlInput = new javax.swing.JPanel();
-        btnInputfile = new javax.swing.JButton();
-        scrollStatus = new javax.swing.JScrollPane();
-        txtStatus = new javax.swing.JTextArea();
-        btnOutput = new javax.swing.JPanel();
-        btnOutputfile = new javax.swing.JButton();
-        pnlSelect = new javax.swing.JPanel();
-        pnlInputOutput = new javax.swing.JPanel();
-        pnlEncoding = new javax.swing.JPanel();
-        cmbEncoding = new javax.swing.JComboBox<>();
-        chkRawMode = new javax.swing.JCheckBox();
-        chkGuess = new javax.swing.JCheckBox();
-        pnlOutputToInput = new javax.swing.JPanel();
-        btnOutputToInput = new javax.swing.JButton();
-        btnClear = new javax.swing.JButton();
-        btnOutputCopy = new javax.swing.JButton();
-        pnlSelectOption = new javax.swing.JPanel();
-        pnlEncode = new javax.swing.JPanel();
-        rdoAll = new javax.swing.JRadioButton();
-        rdoAlphaNum = new javax.swing.JRadioButton();
-        rdoURLSafe = new javax.swing.JRadioButton();
-        rdoLigth = new javax.swing.JRadioButton();
-        rdoStandard = new javax.swing.JRadioButton();
-        pnlConvertCase = new javax.swing.JPanel();
-        rdoLowerCase = new javax.swing.JRadioButton();
-        rdoUpperCase = new javax.swing.JRadioButton();
-        pnlNewLine = new javax.swing.JPanel();
-        rdoNone = new javax.swing.JRadioButton();
-        rdoCR = new javax.swing.JRadioButton();
-        rdoLF = new javax.swing.JRadioButton();
-        rdoCRLF = new javax.swing.JRadioButton();
-        pnlWrap = new javax.swing.JPanel();
-        chkViewLineWrap = new javax.swing.JCheckBox();
         tabGenerator = new javax.swing.JPanel();
         splitGenerator = new javax.swing.JSplitPane();
         scrollGenerate = new javax.swing.JScrollPane();
@@ -657,565 +696,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         setLayout(new java.awt.BorderLayout());
 
         tabTransrator.setLayout(new java.awt.BorderLayout());
-
-        pnlTransButton.setLayout(new javax.swing.BoxLayout(pnlTransButton, javax.swing.BoxLayout.PAGE_AXIS));
-
-        pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(15, 0));
-
-        btnSmartDecode.setText("Smart Decode");
-        btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSmartDecodeActionPerformed(evt);
-            }
-        });
-        pnlEncodeDecode.add(btnSmartDecode);
-
-        pnlEncDec.setLayout(new java.awt.GridLayout(1, 1));
-
-        btnEncode.setMnemonic('E');
-        btnEncode.setText("Encode");
-        btnEncode.setMaximumSize(new java.awt.Dimension(71, 21));
-        btnEncode.setMinimumSize(new java.awt.Dimension(71, 21));
-        btnEncode.setPreferredSize(new java.awt.Dimension(71, 21));
-        btnEncode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEncodeActionPerformed(evt);
-            }
-        });
-        pnlEncDec.add(btnEncode);
-
-        btnDecode.setMnemonic('D');
-        btnDecode.setText("Decode");
-        btnDecode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDecodeActionPerformed(evt);
-            }
-        });
-        pnlEncDec.add(btnDecode);
-
-        pnlEncodeDecode.add(pnlEncDec);
-
-        pnlUrl.setLayout(new java.awt.GridLayout(1, 2));
-
-        rdoEncodeDecodeGrp.add(rdoUrl);
-        rdoUrl.setSelected(true);
-        rdoUrl.setText("URL(%hh)");
-        pnlUrl.add(rdoUrl);
-
-        rdoEncodeDecodeGrp.add(rdoUrlUnicode);
-        rdoUrlUnicode.setText("URL(%uhhhh)");
-        pnlUrl.add(rdoUrlUnicode);
-
-        pnlEncodeDecode.add(pnlUrl);
-
-        pnlBase64.setLayout(new java.awt.GridLayout(1, 4));
-
-        rdoEncodeDecodeGrp.add(rdoBase64);
-        rdoBase64.setText("Base64");
-        pnlBase64.add(rdoBase64);
-
-        chk64Newline.setText("64 newline");
-        chk64Newline.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chk64NewlineActionPerformed(evt);
-            }
-        });
-        pnlBase64.add(chk64Newline);
-
-        chk76Newline.setText("76 newline");
-        chk76Newline.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chk76NewlineActionPerformed(evt);
-            }
-        });
-        pnlBase64.add(chk76Newline);
-
-        chkPadding.setSelected(true);
-        chkPadding.setText("Padding");
-        pnlBase64.add(chkPadding);
-
-        pnlEncodeDecode.add(pnlBase64);
-
-        pnlBase64URLSafe.setLayout(new java.awt.GridLayout(1, 0));
-
-        rdoEncodeDecodeGrp.add(rdoBase64URLSafe);
-        rdoBase64URLSafe.setText("Base64URLSafe");
-        pnlBase64URLSafe.add(rdoBase64URLSafe);
-
-        pnlEncodeDecode.add(pnlBase64URLSafe);
-
-        pnlBaseN.setLayout(new java.awt.GridLayout(1, 0));
-
-        rdoEncodeDecodeGrp.add(rdoBase32);
-        rdoBase32.setText("Base32");
-        pnlBaseN.add(rdoBase32);
-
-        rdoEncodeDecodeGrp.add(rdoBase16);
-        rdoBase16.setText("Base16");
-        rdoBase16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoBase16ActionPerformed(evt);
-            }
-        });
-        pnlBaseN.add(rdoBase16);
-
-        chkNPadding.setSelected(true);
-        chkNPadding.setText("Padding");
-        pnlBaseN.add(chkNPadding);
-
-        pnlEncodeDecode.add(pnlBaseN);
-
-        pnlMail.setLayout(new java.awt.GridLayout(1, 2));
-
-        rdoEncodeDecodeGrp.add(rdoQuotedPrintable);
-        rdoQuotedPrintable.setText("QuotedPrintable");
-        rdoQuotedPrintable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoQuotedPrintableActionPerformed(evt);
-            }
-        });
-        pnlMail.add(rdoQuotedPrintable);
-
-        pnlEncodeDecode.add(pnlMail);
-
-        rdoEncodeDecodeGrp.add(rdoPunycode);
-        rdoPunycode.setText("puyencode");
-        pnlEncodeDecode.add(rdoPunycode);
-
-        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 4));
-
-        rdoEncodeDecodeGrp.add(rdoHtml);
-        rdoHtml.setText("HTML(<,>,&,\",')");
-        pnlHtmlEnc.add(rdoHtml);
-
-        rdoEncodeDecodeGrp.add(rdoHtmlDec);
-        rdoHtmlDec.setText("&#d;");
-        pnlHtmlEnc.add(rdoHtmlDec);
-
-        pnlEncodeDecode.add(pnlHtmlEnc);
-
-        pnlHtmlHex.setLayout(new java.awt.GridLayout(1, 2));
-
-        rdoEncodeDecodeGrp.add(rdoHtmlUnicode);
-        rdoHtmlUnicode.setText("&#xhh;(unicode)");
-        rdoHtmlUnicode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoHtmlUnicodeActionPerformed(evt);
-            }
-        });
-        pnlHtmlHex.add(rdoHtmlUnicode);
-
-        rdoEncodeDecodeGrp.add(rdoHtmlByteHex);
-        rdoHtmlByteHex.setText("&#xhh;(byte)");
-        rdoHtmlByteHex.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoHtmlByteHexActionPerformed(evt);
-            }
-        });
-        pnlHtmlHex.add(rdoHtmlByteHex);
-
-        pnlEncodeDecode.add(pnlHtmlHex);
-
-        pnlJSUnicodeEnc.setLayout(new java.awt.GridLayout(1, 1));
-
-        rdoEncodeDecodeGrp.add(rdoUnicodeHex);
-        rdoUnicodeHex.setText("\\uhhhh");
-        pnlJSUnicodeEnc.add(rdoUnicodeHex);
-
-        rdoEncodeDecodeGrp.add(rdoUnicodeHex2);
-        rdoUnicodeHex2.setText("$hhhh");
-        rdoUnicodeHex2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoUnicodeHex2ActionPerformed(evt);
-            }
-        });
-        pnlJSUnicodeEnc.add(rdoUnicodeHex2);
-
-        pnlEncodeDecode.add(pnlJSUnicodeEnc);
-
-        pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
-
-        rdoEncodeDecodeGrp.add(rdoByteNoneHex);
-        rdoByteNoneHex.setText("hh(hex)");
-        rdoByteNoneHex.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoByteNoneHexActionPerformed(evt);
-            }
-        });
-        pnlJSHexEnc.add(rdoByteNoneHex);
-
-        rdoEncodeDecodeGrp.add(rdoByteXHex);
-        rdoByteXHex.setText("\\xhh(hex)");
-        rdoByteXHex.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoByteXHexActionPerformed(evt);
-            }
-        });
-        pnlJSHexEnc.add(rdoByteXHex);
-
-        rdoEncodeDecodeGrp.add(rdoByteHex2);
-        rdoByteHex2.setText("\\h(hex)");
-        rdoByteHex2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoByteHex2ActionPerformed(evt);
-            }
-        });
-        pnlJSHexEnc.add(rdoByteHex2);
-
-        rdoEncodeDecodeGrp.add(rdoByteOct);
-        rdoByteOct.setText("\\ooo(oct)");
-        rdoByteOct.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoByteOctActionPerformed(evt);
-            }
-        });
-        pnlJSHexEnc.add(rdoByteOct);
-
-        pnlEncodeDecode.add(pnlJSHexEnc);
-
-        pnlCompress.setLayout(new java.awt.GridLayout(1, 2));
-
-        rdoEncodeDecodeGrp.add(rdoGzip);
-        rdoGzip.setText("Gzip");
-        pnlCompress.add(rdoGzip);
-
-        rdoEncodeDecodeGrp.add(rdoZLIB);
-        rdoZLIB.setText("Zlib");
-        pnlCompress.add(rdoZLIB);
-
-        rdoEncodeDecodeGrp.add(rdoZLIB_NOWRAP);
-        rdoZLIB_NOWRAP.setText("Zlib(with Gzip)");
-        pnlCompress.add(rdoZLIB_NOWRAP);
-
-        pnlEncodeDecode.add(pnlCompress);
-
-        pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 3));
-
-        rdoEncodeDecodeGrp.add(rdoUTF7);
-        rdoUTF7.setText("UTF-7");
-        pnlILLUTF8.add(rdoUTF7);
-
-        rdoEncodeDecodeGrp.add(rdoILLUTF8);
-        rdoILLUTF8.setText("UTF-8(URL)");
-        rdoILLUTF8.setToolTipText("");
-        rdoILLUTF8.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rdoILLUTF8StateChanged(evt);
-            }
-        });
-        pnlILLUTF8.add(rdoILLUTF8);
-
-        cmbIILUTF8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "3", "4" }));
-        pnlILLUTF8.add(cmbIILUTF8);
-
-        pnlEncodeDecode.add(pnlILLUTF8);
-
-        pnlLang.setLayout(new java.awt.GridLayout(1, 4));
-
-        rdoEncodeDecodeGrp.add(rdoCLang);
-        rdoCLang.setText("C Lang");
-        pnlLang.add(rdoCLang);
-
-        rdoEncodeDecodeGrp.add(rdoJSON);
-        rdoJSON.setText("JSON");
-        pnlLang.add(rdoJSON);
-
-        rdoEncodeDecodeGrp.add(rdoSQLLang);
-        rdoSQLLang.setText("SQL");
-        pnlLang.add(rdoSQLLang);
-
-        rdoEncodeDecodeGrp.add(rdoRegex);
-        rdoRegex.setText("Regex");
-        rdoRegex.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                rdoRegexStateChanged(evt);
-            }
-        });
-        pnlLang.add(rdoRegex);
-
-        chkMetaChar.setText("Metachar");
-        pnlLang.add(chkMetaChar);
-
-        pnlEncodeDecode.add(pnlLang);
-
-        pnlTransButton.add(pnlEncodeDecode);
-
-        pnlFormat.setBorder(javax.swing.BorderFactory.createTitledBorder("Format"));
-        pnlFormat.setLayout(new java.awt.GridLayout(1, 3));
-
-        rdoFormatGrp.add(rdoMinifyFormat);
-        rdoMinifyFormat.setText("Minify");
-        rdoMinifyFormat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoMinifyFormatActionPerformed(evt);
-            }
-        });
-        pnlFormat.add(rdoMinifyFormat);
-
-        rdoFormatGrp.add(rdoBeautifyFormat);
-        rdoBeautifyFormat.setSelected(true);
-        rdoBeautifyFormat.setText("Beautify");
-        rdoBeautifyFormat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoBeautifyFormatActionPerformed(evt);
-            }
-        });
-        pnlFormat.add(rdoBeautifyFormat);
-
-        btnSmartFormat.setText("Smart Format");
-        btnSmartFormat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSmartFormatActionPerformed(evt);
-            }
-        });
-        pnlFormat.add(btnSmartFormat);
-
-        pnlTransButton.add(pnlFormat);
-
-        pnlRegex.setBorder(javax.swing.BorderFactory.createTitledBorder("Regex"));
-        pnlRegex.setLayout(new java.awt.BorderLayout());
-
-        btnSmartMatch.setText("Smart Match");
-        btnSmartMatch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSmartMatchActionPerformed(evt);
-            }
-        });
-        pnlRegex.add(btnSmartMatch, java.awt.BorderLayout.CENTER);
-
-        chkWithByte.setText("with Byte");
-        pnlRegex.add(chkWithByte, java.awt.BorderLayout.EAST);
-
-        pnlTransButton.add(pnlRegex);
-
-        pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(8, 3));
-
-        btnHashMd2.setText("md2");
-        btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashMd2ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashMd2);
-
-        btnHashMd5.setText("md5");
-        btnHashMd5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashMd5ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashMd5);
-
-        btnHashSha1.setText("sha1");
-        btnHashSha1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha1ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha1);
-
-        btnHashSha224.setText("sha224");
-        btnHashSha224.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha224ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha224);
-
-        btnHashSha256.setText("sha256");
-        btnHashSha256.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha256ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha256);
-
-        btnHashSha384.setText("sha384");
-        btnHashSha384.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha384ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha384);
-
-        btnHashSha512.setText("sha512");
-        btnHashSha512.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha512ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha512);
-
-        btnHashSha512_224.setText("sha512/224");
-        btnHashSha512_224.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha512_224ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha512_224);
-
-        btnHashSha512_256.setText("sha512/256");
-        btnHashSha512_256.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha512_256ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha512_256);
-
-        btnHashSha3_224.setText("sha3-224");
-        btnHashSha3_224.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha3_224ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha3_224);
-
-        btnHashSha3_256.setText("sha3-256");
-        btnHashSha3_256.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha3_256ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha3_256);
-
-        btnHashSha3_384.setText("sha3-384");
-        btnHashSha3_384.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha3_384ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha3_384);
-
-        btnHashSha3_512.setText("sha3-512");
-        btnHashSha3_512.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashSha3_512ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashSha3_512);
-
-        btnSHAKE128.setText("SHAKE128");
-        btnSHAKE128.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSHAKE128ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnSHAKE128);
-
-        btnSHAKE256.setText("SHAKE256");
-        btnSHAKE256.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSHAKE256ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnSHAKE256);
-
-        btnHashRIPEMD128.setText("RIPEMD128");
-        btnHashRIPEMD128.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashRIPEMD128ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashRIPEMD128);
-
-        btnHashRIPEMD129.setText("RIPEMD160");
-        btnHashRIPEMD129.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashRIPEMD160ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashRIPEMD129);
-
-        btnHashRIPEMD256.setText("RIPEMD256");
-        btnHashRIPEMD256.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashRIPEMD256ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashRIPEMD256);
-
-        btnHashRIPEMD320.setText("RIPEMD320");
-        btnHashRIPEMD320.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashRIPEMD320ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashRIPEMD320);
-
-        btnHashTiger.setText("Tiger");
-        btnHashTiger.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashTigerActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashTiger);
-
-        btnHashGOST3411.setText("GOST3411");
-        btnHashGOST3411.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashGOST3411ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashGOST3411);
-
-        btnHashWHIRLPOOL.setText("WHIRLPOOL");
-        btnHashWHIRLPOOL.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashWHIRLPOOLActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashWHIRLPOOL);
-
-        pnlTransButton.add(pnlHashTrans);
-
-        pnlCheckSumTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("CheckSum"));
-        pnlCheckSumTrans.setLayout(new java.awt.GridLayout(2, 3));
-
-        btnCRC32.setText("CRC32");
-        btnCRC32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCRC32ActionPerformed(evt);
-            }
-        });
-        pnlCheckSumTrans.add(btnCRC32);
-
-        btnCRC32C.setText("CRC32C");
-        btnCRC32C.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCRC32CActionPerformed(evt);
-            }
-        });
-        pnlCheckSumTrans.add(btnCRC32C);
-
-        btnAdler32.setText("Adler32");
-        btnAdler32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdler32ActionPerformed(evt);
-            }
-        });
-        pnlCheckSumTrans.add(btnAdler32);
-
-        btnMurmurHash2_32.setText("MurmurHash2/32");
-        btnMurmurHash2_32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMurmurHash2_32ActionPerformed(evt);
-            }
-        });
-        pnlCheckSumTrans.add(btnMurmurHash2_32);
-
-        btnMurmurHash2_64.setText("MurmurHash2/64");
-        btnMurmurHash2_64.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMurmurHash2_64ActionPerformed(evt);
-            }
-        });
-        pnlCheckSumTrans.add(btnMurmurHash2_64);
-
-        pnlTransButton.add(pnlCheckSumTrans);
-
-        tabTransrator.add(pnlTransButton, java.awt.BorderLayout.EAST);
 
         pnlTranslator.setLayout(new java.awt.BorderLayout());
 
@@ -1563,6 +1043,851 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         tabTransrator.add(pnlTranslator, java.awt.BorderLayout.CENTER);
 
+        pnlTransAction.setLayout(new javax.swing.BoxLayout(pnlTransAction, javax.swing.BoxLayout.PAGE_AXIS));
+
+        pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(15, 0));
+
+        btnSmartDecode.setText("Smart Decode");
+        btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSmartDecodeActionPerformed(evt);
+            }
+        });
+        pnlEncodeDecode.add(btnSmartDecode);
+
+        pnlEncDec.setLayout(new java.awt.GridLayout(1, 1));
+
+        btnEncode.setMnemonic('E');
+        btnEncode.setText("Encode");
+        btnEncode.setMaximumSize(new java.awt.Dimension(71, 21));
+        btnEncode.setMinimumSize(new java.awt.Dimension(71, 21));
+        btnEncode.setPreferredSize(new java.awt.Dimension(71, 21));
+        btnEncode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEncodeActionPerformed(evt);
+            }
+        });
+        pnlEncDec.add(btnEncode);
+
+        btnDecode.setMnemonic('D');
+        btnDecode.setText("Decode");
+        btnDecode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDecodeActionPerformed(evt);
+            }
+        });
+        pnlEncDec.add(btnDecode);
+
+        pnlEncodeDecode.add(pnlEncDec);
+
+        pnlUrl.setLayout(new java.awt.GridLayout(1, 2));
+
+        rdoEncodeDecodeGrp.add(rdoUrl);
+        rdoUrl.setSelected(true);
+        rdoUrl.setText("URL(%hh)");
+        pnlUrl.add(rdoUrl);
+
+        rdoEncodeDecodeGrp.add(rdoUrlUnicode);
+        rdoUrlUnicode.setText("URL(%uhhhh)");
+        pnlUrl.add(rdoUrlUnicode);
+
+        pnlEncodeDecode.add(pnlUrl);
+
+        pnlBase64.setLayout(new java.awt.GridLayout(1, 4));
+
+        rdoEncodeDecodeGrp.add(rdoBase64);
+        rdoBase64.setText("Base64");
+        pnlBase64.add(rdoBase64);
+
+        chk64Newline.setText("64 newline");
+        chk64Newline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chk64NewlineActionPerformed(evt);
+            }
+        });
+        pnlBase64.add(chk64Newline);
+
+        chk76Newline.setText("76 newline");
+        chk76Newline.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chk76NewlineActionPerformed(evt);
+            }
+        });
+        pnlBase64.add(chk76Newline);
+
+        chkPadding.setSelected(true);
+        chkPadding.setText("Padding");
+        pnlBase64.add(chkPadding);
+
+        pnlEncodeDecode.add(pnlBase64);
+
+        pnlBase64URLSafe.setLayout(new java.awt.GridLayout(1, 0));
+
+        rdoEncodeDecodeGrp.add(rdoBase64URLSafe);
+        rdoBase64URLSafe.setText("Base64URLSafe");
+        pnlBase64URLSafe.add(rdoBase64URLSafe);
+
+        pnlEncodeDecode.add(pnlBase64URLSafe);
+
+        pnlBaseN.setLayout(new java.awt.GridLayout(1, 0));
+
+        rdoEncodeDecodeGrp.add(rdoBase32);
+        rdoBase32.setText("Base32");
+        pnlBaseN.add(rdoBase32);
+
+        rdoEncodeDecodeGrp.add(rdoBase16);
+        rdoBase16.setText("Base16");
+        rdoBase16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoBase16ActionPerformed(evt);
+            }
+        });
+        pnlBaseN.add(rdoBase16);
+
+        chkNPadding.setSelected(true);
+        chkNPadding.setText("Padding");
+        pnlBaseN.add(chkNPadding);
+
+        pnlEncodeDecode.add(pnlBaseN);
+
+        pnlMail.setLayout(new java.awt.GridLayout(1, 2));
+
+        rdoEncodeDecodeGrp.add(rdoQuotedPrintable);
+        rdoQuotedPrintable.setText("QuotedPrintable");
+        rdoQuotedPrintable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoQuotedPrintableActionPerformed(evt);
+            }
+        });
+        pnlMail.add(rdoQuotedPrintable);
+
+        pnlEncodeDecode.add(pnlMail);
+
+        rdoEncodeDecodeGrp.add(rdoPunycode);
+        rdoPunycode.setText("puyencode");
+        pnlEncodeDecode.add(rdoPunycode);
+
+        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 4));
+
+        rdoEncodeDecodeGrp.add(rdoHtml);
+        rdoHtml.setText("HTML(<,>,&,\",')");
+        pnlHtmlEnc.add(rdoHtml);
+
+        rdoEncodeDecodeGrp.add(rdoHtmlDec);
+        rdoHtmlDec.setText("&#d;");
+        pnlHtmlEnc.add(rdoHtmlDec);
+
+        pnlEncodeDecode.add(pnlHtmlEnc);
+
+        pnlHtmlHex.setLayout(new java.awt.GridLayout(1, 2));
+
+        rdoEncodeDecodeGrp.add(rdoHtmlUnicode);
+        rdoHtmlUnicode.setText("&#xhh;(unicode)");
+        rdoHtmlUnicode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoHtmlUnicodeActionPerformed(evt);
+            }
+        });
+        pnlHtmlHex.add(rdoHtmlUnicode);
+
+        rdoEncodeDecodeGrp.add(rdoHtmlByteHex);
+        rdoHtmlByteHex.setText("&#xhh;(byte)");
+        rdoHtmlByteHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoHtmlByteHexActionPerformed(evt);
+            }
+        });
+        pnlHtmlHex.add(rdoHtmlByteHex);
+
+        pnlEncodeDecode.add(pnlHtmlHex);
+
+        pnlJSUnicodeEnc.setLayout(new java.awt.GridLayout(1, 1));
+
+        rdoEncodeDecodeGrp.add(rdoUnicodeHex);
+        rdoUnicodeHex.setText("\\uhhhh");
+        pnlJSUnicodeEnc.add(rdoUnicodeHex);
+
+        rdoEncodeDecodeGrp.add(rdoUnicodeHex2);
+        rdoUnicodeHex2.setText("$hhhh");
+        rdoUnicodeHex2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoUnicodeHex2ActionPerformed(evt);
+            }
+        });
+        pnlJSUnicodeEnc.add(rdoUnicodeHex2);
+
+        pnlEncodeDecode.add(pnlJSUnicodeEnc);
+
+        pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
+
+        rdoEncodeDecodeGrp.add(rdoByteNoneHex);
+        rdoByteNoneHex.setText("hh(hex)");
+        rdoByteNoneHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteNoneHexActionPerformed(evt);
+            }
+        });
+        pnlJSHexEnc.add(rdoByteNoneHex);
+
+        rdoEncodeDecodeGrp.add(rdoByteXHex);
+        rdoByteXHex.setText("\\xhh(hex)");
+        rdoByteXHex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteXHexActionPerformed(evt);
+            }
+        });
+        pnlJSHexEnc.add(rdoByteXHex);
+
+        rdoEncodeDecodeGrp.add(rdoByteHex2);
+        rdoByteHex2.setText("\\h(hex)");
+        rdoByteHex2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteHex2ActionPerformed(evt);
+            }
+        });
+        pnlJSHexEnc.add(rdoByteHex2);
+
+        rdoEncodeDecodeGrp.add(rdoByteOct);
+        rdoByteOct.setText("\\ooo(oct)");
+        rdoByteOct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteOctActionPerformed(evt);
+            }
+        });
+        pnlJSHexEnc.add(rdoByteOct);
+
+        pnlEncodeDecode.add(pnlJSHexEnc);
+
+        pnlCompress.setLayout(new java.awt.GridLayout(1, 2));
+
+        rdoEncodeDecodeGrp.add(rdoGzip);
+        rdoGzip.setText("Gzip");
+        pnlCompress.add(rdoGzip);
+
+        rdoEncodeDecodeGrp.add(rdoZLIB);
+        rdoZLIB.setText("Zlib");
+        pnlCompress.add(rdoZLIB);
+
+        rdoEncodeDecodeGrp.add(rdoZLIB_NOWRAP);
+        rdoZLIB_NOWRAP.setText("Zlib(with Gzip)");
+        pnlCompress.add(rdoZLIB_NOWRAP);
+
+        pnlEncodeDecode.add(pnlCompress);
+
+        pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 3));
+
+        rdoEncodeDecodeGrp.add(rdoUTF7);
+        rdoUTF7.setText("UTF-7");
+        pnlILLUTF8.add(rdoUTF7);
+
+        rdoEncodeDecodeGrp.add(rdoILLUTF8);
+        rdoILLUTF8.setText("UTF-8(URL)");
+        rdoILLUTF8.setToolTipText("");
+        rdoILLUTF8.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rdoILLUTF8StateChanged(evt);
+            }
+        });
+        pnlILLUTF8.add(rdoILLUTF8);
+
+        cmbIILUTF8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "3", "4" }));
+        pnlILLUTF8.add(cmbIILUTF8);
+
+        pnlEncodeDecode.add(pnlILLUTF8);
+
+        pnlLang.setLayout(new java.awt.GridLayout(1, 4));
+
+        rdoEncodeDecodeGrp.add(rdoCLang);
+        rdoCLang.setText("C Lang");
+        pnlLang.add(rdoCLang);
+
+        rdoEncodeDecodeGrp.add(rdoJSON);
+        rdoJSON.setText("JSON");
+        pnlLang.add(rdoJSON);
+
+        rdoEncodeDecodeGrp.add(rdoSQLLang);
+        rdoSQLLang.setText("SQL");
+        pnlLang.add(rdoSQLLang);
+
+        rdoEncodeDecodeGrp.add(rdoRegex);
+        rdoRegex.setText("Regex");
+        rdoRegex.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                rdoRegexStateChanged(evt);
+            }
+        });
+        pnlLang.add(rdoRegex);
+
+        chkMetaChar.setText("Metachar");
+        pnlLang.add(chkMetaChar);
+
+        pnlEncodeDecode.add(pnlLang);
+
+        pnlTransAction.add(pnlEncodeDecode);
+
+        pnlFormat.setBorder(javax.swing.BorderFactory.createTitledBorder("Format"));
+        pnlFormat.setLayout(new java.awt.GridLayout(1, 3));
+
+        rdoFormatGrp.add(rdoMinifyFormat);
+        rdoMinifyFormat.setText("Minify");
+        rdoMinifyFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoMinifyFormatActionPerformed(evt);
+            }
+        });
+        pnlFormat.add(rdoMinifyFormat);
+
+        rdoFormatGrp.add(rdoBeautifyFormat);
+        rdoBeautifyFormat.setSelected(true);
+        rdoBeautifyFormat.setText("Beautify");
+        rdoBeautifyFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoBeautifyFormatActionPerformed(evt);
+            }
+        });
+        pnlFormat.add(rdoBeautifyFormat);
+
+        btnSmartFormat.setText("Smart Format");
+        btnSmartFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSmartFormatActionPerformed(evt);
+            }
+        });
+        pnlFormat.add(btnSmartFormat);
+
+        pnlTransAction.add(pnlFormat);
+
+        pnlRegex.setBorder(javax.swing.BorderFactory.createTitledBorder("Regex"));
+        pnlRegex.setLayout(new java.awt.BorderLayout());
+
+        btnSmartMatch.setText("Smart Match");
+        btnSmartMatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSmartMatchActionPerformed(evt);
+            }
+        });
+        pnlRegex.add(btnSmartMatch, java.awt.BorderLayout.CENTER);
+
+        chkWithByte.setText("with Byte");
+        pnlRegex.add(chkWithByte, java.awt.BorderLayout.EAST);
+
+        pnlTransAction.add(pnlRegex);
+
+        tabbetTransAction.addTab("Encode/Decode", pnlTransAction);
+
+        pnlHashCheckSum.setLayout(new javax.swing.BoxLayout(pnlHashCheckSum, javax.swing.BoxLayout.PAGE_AXIS));
+
+        pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(19, 3));
+
+        btnHashMd2.setText("md2");
+        btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashMd2ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashMd2);
+
+        btnHashMd5.setText("md5");
+        btnHashMd5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashMd5ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashMd5);
+
+        btnHashSha1.setText("sha1");
+        btnHashSha1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha1ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha1);
+
+        btnHashSha224.setText("sha224");
+        btnHashSha224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha224);
+
+        btnHashSha256.setText("sha256");
+        btnHashSha256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha256);
+
+        btnHashSha384.setText("sha384");
+        btnHashSha384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha384);
+
+        btnHashSha512.setText("sha512");
+        btnHashSha512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha512);
+
+        btnHashSha512_224.setText("sha512/224");
+        btnHashSha512_224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha512_224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha512_224);
+
+        btnHashSha512_256.setText("sha512/256");
+        btnHashSha512_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha512_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha512_256);
+
+        btnHashSha3_224.setText("sha3-224");
+        btnHashSha3_224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_224);
+
+        btnHashSha3_256.setText("sha3-256");
+        btnHashSha3_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_256);
+
+        btnHashSha3_384.setText("sha3-384");
+        btnHashSha3_384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_384);
+
+        btnHashSha3_512.setText("sha3-512");
+        btnHashSha3_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSha3_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSha3_512);
+
+        btnSHAKE128.setText("SHAKE128");
+        btnSHAKE128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSHAKE128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSHAKE128);
+
+        btnSHAKE256.setText("SHAKE256");
+        btnSHAKE256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSHAKE256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSHAKE256);
+
+        btnSKEIN256_128.setText("SKEIN-256-128");
+        btnSKEIN256_128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN256_128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN256_128);
+
+        btnSKEIN256_160.setText("SKEIN-256-160");
+        btnSKEIN256_160.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN256_160ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN256_160);
+
+        btnSKEIN256_224.setText("SKEIN-256-224");
+        btnSKEIN256_224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN256_224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN256_224);
+
+        btnSKEIN256_256.setText("SKEIN-256-256");
+        btnSKEIN256_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN256_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN256_256);
+
+        btnSKEIN512_128.setText("SKEIN-512-128");
+        btnSKEIN512_128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN512_128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN512_128);
+
+        btnSKEIN512_160.setText("SKEIN-512-160");
+        btnSKEIN512_160.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN512_160ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN512_160);
+
+        btnSKEIN512_224.setText("SKEIN-512-224");
+        btnSKEIN512_224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN512_224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN512_224);
+
+        btnSKEIN512_256.setText("SKEIN-512-256");
+        btnSKEIN512_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN512_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN512_256);
+
+        btnSKEIN512_384.setText("SKEIN-512-384");
+        btnSKEIN512_384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN512_384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN512_384);
+
+        btnSKEIN512_512.setText("SKEIN-512-512");
+        btnSKEIN512_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN512_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN512_512);
+
+        btnSKEIN1024_384.setText("SKEIN-1024-384");
+        btnSKEIN1024_384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN1024_384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN1024_384);
+
+        btnSKEIN1024_512.setText("SKEIN-1024-512");
+        btnSKEIN1024_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN1024_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN1024_512);
+
+        btnSKEIN1024_1024.setText("SKEIN-1024-1024");
+        btnSKEIN1024_1024.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSKEIN1024_1024ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnSKEIN1024_1024);
+
+        btnHashKECCAK224.setText("KECCAK-224");
+        btnHashKECCAK224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashKECCAK224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashKECCAK224);
+
+        btnHashKECCAK256.setText("KECCAK-256");
+        btnHashKECCAK256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashKECCAK256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashKECCAK256);
+
+        btnHashKECCAK288.setText("KECCAK-288");
+        btnHashKECCAK288.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashKECCAK288ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashKECCAK288);
+
+        btnHashKECCAK384.setText("KECCAK-384");
+        btnHashKECCAK384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashKECCAK384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashKECCAK384);
+
+        btnHashKECCAK512.setText("KECCAK-512");
+        btnHashKECCAK512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashKECCAK512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashKECCAK512);
+
+        btnHashHARAKA256.setText("HARAKA-256");
+        btnHashHARAKA256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashHARAKA256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashHARAKA256);
+
+        btnHashHARAKA512.setText("HARAKA-512");
+        btnHashHARAKA512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashHARAKA512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashHARAKA512);
+
+        btnHashRIPEMD128.setText("RIPEMD128");
+        btnHashRIPEMD128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD128);
+
+        btnHashRIPEMD129.setText("RIPEMD160");
+        btnHashRIPEMD129.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD160ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD129);
+
+        btnHashRIPEMD256.setText("RIPEMD256");
+        btnHashRIPEMD256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD256);
+
+        btnHashRIPEMD320.setText("RIPEMD320");
+        btnHashRIPEMD320.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashRIPEMD320ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashRIPEMD320);
+
+        btnHashGOST3411.setText("GOST3411");
+        btnHashGOST3411.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashGOST3411ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashGOST3411);
+
+        btnHashGOST3411_2012_256.setText("GOST2012-256");
+        btnHashGOST3411_2012_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashGOST3411_2012_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashGOST3411_2012_256);
+
+        btnHashGOST3411_2012_512.setText("GOST2012-512");
+        btnHashGOST3411_2012_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashGOST3411_2012_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashGOST3411_2012_512);
+
+        btnHashDSTU7564_256.setText("DSTU7564-256");
+        btnHashDSTU7564_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashDSTU7564_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashDSTU7564_256);
+
+        btnHashDSTU7564_384.setText("DSTU7564-384");
+        btnHashDSTU7564_384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashDSTU7564_384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashDSTU7564_384);
+
+        btnHashDSTU7564_512.setText("DSTU7564-512");
+        btnHashDSTU7564_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashDSTU7564_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashDSTU7564_512);
+
+        btnHashBLAKE2B_160.setText("BLAKE2B-160");
+        btnHashBLAKE2B_160.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2B_160ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2B_160);
+
+        btnHashBLAKE2B_256.setText("BLAKE2B-256");
+        btnHashBLAKE2B_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2B_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2B_256);
+
+        btnHashBLAKE2B_384.setText("BLAKE2B-384");
+        btnHashBLAKE2B_384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2B_384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2B_384);
+
+        btnHashBLAKE2B_512.setText("BLAKE2B-512");
+        btnHashBLAKE2B_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2B_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2B_512);
+
+        btnHashBLAKE2S_128.setText("BLAKE2S-128");
+        btnHashBLAKE2S_128.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2S_128ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2S_128);
+
+        btnHashBLAKE2S_160.setText("BLAKE2S-160");
+        btnHashBLAKE2S_160.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2S_160ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2S_160);
+
+        btnHashBLAKE2_S224.setText("BLAKE2S-224");
+        btnHashBLAKE2_S224.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2_S224ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2_S224);
+
+        btnHashBLAKE2S_256.setText("BLAKE2S-256");
+        btnHashBLAKE2S_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE2S_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE2S_256);
+
+        btnHashBLAKE3_256.setText("BLAKE3-256");
+        btnHashBLAKE3_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashBLAKE3_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashBLAKE3_256);
+
+        btnHashTiger.setText("Tiger");
+        btnHashTiger.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashTigerActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashTiger);
+
+        btnHashWHIRLPOOL.setText("WHIRLPOOL");
+        btnHashWHIRLPOOL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashWHIRLPOOLActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashWHIRLPOOL);
+
+        btnHashSM3.setText("SM3");
+        btnHashSM3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashSM3ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashSM3);
+
+        pnlHashCheckSum.add(pnlHashTrans);
+
+        pnlCheckSumTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("CheckSum"));
+        pnlCheckSumTrans.setLayout(new java.awt.GridLayout(2, 3));
+
+        btnCRC32.setText("CRC32");
+        btnCRC32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCRC32ActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCRC32);
+
+        btnCRC32C.setText("CRC32C");
+        btnCRC32C.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCRC32CActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCRC32C);
+
+        btnAdler32.setText("Adler32");
+        btnAdler32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdler32ActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnAdler32);
+
+        btnMurmurHash2_32.setText("MurmurHash2/32");
+        btnMurmurHash2_32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMurmurHash2_32ActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnMurmurHash2_32);
+
+        btnMurmurHash2_64.setText("MurmurHash2/64");
+        btnMurmurHash2_64.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMurmurHash2_64ActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnMurmurHash2_64);
+
+        pnlHashCheckSum.add(pnlCheckSumTrans);
+
+        tabbetTransAction.addTab("Hash/Checksum", pnlHashCheckSum);
+
+        tabTransrator.add(tabbetTransAction, java.awt.BorderLayout.EAST);
+
         tabbetTranscoder.addTab("Translator", tabTransrator);
 
         tabGenerator.setLayout(new java.awt.BorderLayout());
@@ -1623,7 +1948,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                             .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(656, Short.MAX_VALUE))
+                .addContainerGap(698, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1717,7 +2042,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbDateUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(spnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(612, Short.MAX_VALUE))
+                .addContainerGap(654, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1848,7 +2173,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(581, Short.MAX_VALUE))
+                .addContainerGap(623, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2010,7 +2335,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(429, Short.MAX_VALUE))
+                .addContainerGap(737, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -2121,7 +2446,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addGroup(tabBaseConverterLayout.createSequentialGroup()
                         .addComponent(lblRadix32)
                         .addGap(30, 30, 30)
-                        .addComponent(txtRadix32, javax.swing.GroupLayout.DEFAULT_SIZE, 1008, Short.MAX_VALUE))
+                        .addComponent(txtRadix32, javax.swing.GroupLayout.DEFAULT_SIZE, 1050, Short.MAX_VALUE))
                     .addGroup(tabBaseConverterLayout.createSequentialGroup()
                         .addGroup(tabBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDec)
@@ -2172,7 +2497,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(txtRadix32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRadix32)
                     .addComponent(btnRadix32Copy))
-                .addContainerGap(510, Short.MAX_VALUE))
+                .addContainerGap(818, Short.MAX_VALUE))
         );
 
         tabbetConverter.addTab("Base", tabBaseConverter);
@@ -2299,7 +2624,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(lblExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
                     .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2474,7 +2799,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDecIPPaste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(84, 84, 84)
-                        .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, 517, Short.MAX_VALUE))
+                        .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE))
                     .addComponent(txtDotOctIP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3659,6 +3984,384 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnDecIPPasteActionPerformed
 
+    private void btnHashSM3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSM3ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSM3Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashSM3ActionPerformed
+
+    private void btnSKEIN256_128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_128ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN256_128Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN256_128ActionPerformed
+
+    private void btnSKEIN256_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_160ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN256_160Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN256_160ActionPerformed
+
+    private void btnSKEIN256_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_224ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN256_224Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN256_224ActionPerformed
+
+    private void btnSKEIN256_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN256_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN256_256ActionPerformed
+
+    private void btnSKEIN512_128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_128ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN512_128Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN512_128ActionPerformed
+
+    private void btnSKEIN512_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_160ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN512_160Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN512_160ActionPerformed
+
+    private void btnSKEIN512_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_224ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN512_224Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN512_224ActionPerformed
+
+    private void btnSKEIN512_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN512_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN512_256ActionPerformed
+
+    private void btnSKEIN512_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_384ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN512_384Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN512_384ActionPerformed
+
+    private void btnSKEIN512_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_512ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN512_512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN512_512ActionPerformed
+
+    private void btnSKEIN1024_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN1024_384ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN1024_384Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN1024_384ActionPerformed
+
+    private void btnSKEIN1024_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN1024_512ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN1024_512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN1024_512ActionPerformed
+
+    private void btnSKEIN1024_1024ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN1024_1024ActionPerformed
+        try {
+            String inputText = BouncyUtil.toSKEIN1024_1024Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnSKEIN1024_1024ActionPerformed
+
+    private void btnHashKECCAK224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashKECCAK224ActionPerformed
+        try {
+            String inputText = BouncyUtil.toKECCAK224Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashKECCAK224ActionPerformed
+
+    private void btnHashKECCAK256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashKECCAK256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toKECCAK256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashKECCAK256ActionPerformed
+
+    private void btnHashKECCAK288ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashKECCAK288ActionPerformed
+        try {
+            String inputText = BouncyUtil.toKECCAK288Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashKECCAK288ActionPerformed
+
+    private void btnHashKECCAK384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashKECCAK384ActionPerformed
+        try {
+            String inputText = BouncyUtil.toKECCAK384Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashKECCAK384ActionPerformed
+
+    private void btnHashKECCAK512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashKECCAK512ActionPerformed
+        try {
+            String inputText = BouncyUtil.toKECCAK512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashKECCAK512ActionPerformed
+
+    private void btnHashHARAKA256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashHARAKA256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toHARAKA256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashHARAKA256ActionPerformed
+
+    private void btnHashHARAKA512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashHARAKA512ActionPerformed
+        try {
+            String inputText = BouncyUtil.toHARAKA512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashHARAKA512ActionPerformed
+
+    private void btnHashGOST3411_2012_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashGOST3411_2012_256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toGOST3411_2012_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashGOST3411_2012_256ActionPerformed
+
+    private void btnHashGOST3411_2012_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashGOST3411_2012_512ActionPerformed
+        try {
+            String inputText = BouncyUtil.toGOST3411_2012_512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashGOST3411_2012_512ActionPerformed
+
+    private void btnHashDSTU7564_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashDSTU7564_256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toDSTU7564_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashDSTU7564_256ActionPerformed
+
+    private void btnHashDSTU7564_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashDSTU7564_384ActionPerformed
+        try {
+            String inputText = BouncyUtil.toDSTU7564_384Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashDSTU7564_384ActionPerformed
+
+    private void btnHashDSTU7564_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashDSTU7564_512ActionPerformed
+        try {
+            String inputText = BouncyUtil.toDSTU7564_512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashDSTU7564_512ActionPerformed
+
+    private void btnHashBLAKE2B_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2B_160ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2B_160Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2B_160ActionPerformed
+
+    private void btnHashBLAKE2B_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2B_256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2B_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2B_256ActionPerformed
+
+    private void btnHashBLAKE2B_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2B_384ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2B_384Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2B_384ActionPerformed
+
+    private void btnHashBLAKE2B_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2B_512ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2B_512Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2B_512ActionPerformed
+
+    private void btnHashBLAKE2S_128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2S_128ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2S_128Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2S_128ActionPerformed
+
+    private void btnHashBLAKE2S_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2S_160ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2S_160Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2S_160ActionPerformed
+
+    private void btnHashBLAKE2_S224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2_S224ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2S_224Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2_S224ActionPerformed
+
+    private void btnHashBLAKE2S_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE2S_256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toBLAKE2S_256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashBLAKE2S_256ActionPerformed
+
+    private void btnHashBLAKE3_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashBLAKE3_256ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHashBLAKE3_256ActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3690,13 +4393,35 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnGenerate;
     private javax.swing.ButtonGroup btnGrpEncodeType;
     private javax.swing.ButtonGroup btnGrpNewLine;
+    private javax.swing.JButton btnHashBLAKE2B_160;
+    private javax.swing.JButton btnHashBLAKE2B_256;
+    private javax.swing.JButton btnHashBLAKE2B_384;
+    private javax.swing.JButton btnHashBLAKE2B_512;
+    private javax.swing.JButton btnHashBLAKE2S_128;
+    private javax.swing.JButton btnHashBLAKE2S_160;
+    private javax.swing.JButton btnHashBLAKE2S_256;
+    private javax.swing.JButton btnHashBLAKE2_S224;
+    private javax.swing.JButton btnHashBLAKE3_256;
+    private javax.swing.JButton btnHashDSTU7564_256;
+    private javax.swing.JButton btnHashDSTU7564_384;
+    private javax.swing.JButton btnHashDSTU7564_512;
     private javax.swing.JButton btnHashGOST3411;
+    private javax.swing.JButton btnHashGOST3411_2012_256;
+    private javax.swing.JButton btnHashGOST3411_2012_512;
+    private javax.swing.JButton btnHashHARAKA256;
+    private javax.swing.JButton btnHashHARAKA512;
+    private javax.swing.JButton btnHashKECCAK224;
+    private javax.swing.JButton btnHashKECCAK256;
+    private javax.swing.JButton btnHashKECCAK288;
+    private javax.swing.JButton btnHashKECCAK384;
+    private javax.swing.JButton btnHashKECCAK512;
     private javax.swing.JButton btnHashMd2;
     private javax.swing.JButton btnHashMd5;
     private javax.swing.JButton btnHashRIPEMD128;
     private javax.swing.JButton btnHashRIPEMD129;
     private javax.swing.JButton btnHashRIPEMD256;
     private javax.swing.JButton btnHashRIPEMD320;
+    private javax.swing.JButton btnHashSM3;
     private javax.swing.JButton btnHashSha1;
     private javax.swing.JButton btnHashSha224;
     private javax.swing.JButton btnHashSha256;
@@ -3726,6 +4451,19 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnRadix32Copy;
     private javax.swing.JButton btnSHAKE128;
     private javax.swing.JButton btnSHAKE256;
+    private javax.swing.JButton btnSKEIN1024_1024;
+    private javax.swing.JButton btnSKEIN1024_384;
+    private javax.swing.JButton btnSKEIN1024_512;
+    private javax.swing.JButton btnSKEIN256_128;
+    private javax.swing.JButton btnSKEIN256_160;
+    private javax.swing.JButton btnSKEIN256_224;
+    private javax.swing.JButton btnSKEIN256_256;
+    private javax.swing.JButton btnSKEIN512_128;
+    private javax.swing.JButton btnSKEIN512_160;
+    private javax.swing.JButton btnSKEIN512_224;
+    private javax.swing.JButton btnSKEIN512_256;
+    private javax.swing.JButton btnSKEIN512_384;
+    private javax.swing.JButton btnSKEIN512_512;
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JButton btnSmartDecode;
     private javax.swing.JButton btnSmartFormat;
@@ -3802,6 +4540,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlEncoding;
     private javax.swing.JPanel pnlFormat;
     private javax.swing.JPanel pnlGenerate;
+    private javax.swing.JPanel pnlHashCheckSum;
     private javax.swing.JPanel pnlHashTrans;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlHtmlEnc;
@@ -3825,7 +4564,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlStatus;
     private javax.swing.JPanel pnlStringLength;
     private javax.swing.JPanel pnlTop;
-    private javax.swing.JPanel pnlTransButton;
+    private javax.swing.JPanel pnlTransAction;
     private javax.swing.JPanel pnlTranslator;
     private javax.swing.JPanel pnlUrl;
     private javax.swing.JPanel pnlWrap;
@@ -3908,6 +4647,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JTabbedPane tabbetInput;
     private javax.swing.JTabbedPane tabbetOutput;
     private javax.swing.JTabbedPane tabbetSequence;
+    private javax.swing.JTabbedPane tabbetTransAction;
     private javax.swing.JTabbedPane tabbetTranscoder;
     private javax.swing.JTextField txtBase;
     private javax.swing.JTextField txtBin;
