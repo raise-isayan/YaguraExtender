@@ -966,6 +966,61 @@ SHAKE128::
 SHAK256::
     Calculate hash with SHAKE256
 
+SKEIN-256-128::
+    Calculate hash with SKEIN-256-128
+
+SKEIN-256-160::
+    Calculate hash with SKEIN-256-160
+
+SKEIN-256-224::
+    Calculate hash with SKEIN-256-224
+
+SKEIN-256-256::
+    Calculate hash with SKEIN-256-256
+
+SKEIN-512-128::
+    Calculate hash with  SKEIN-512-128
+
+SKEIN-512-160::
+    Calculate hash with SKEIN-512-160
+
+SKEIN-512-224::
+    Calculate hash with SKEIN-512-224
+
+SKEIN-512-256::
+    Calculate hash with SKEIN-512-256
+
+SKEIN-512-384::
+    Calculate hash with SKEIN-512-384
+
+SKEIN-512-512::
+    Calculate hash with SKEIN-512-512
+
+SKEIN-1024-384::
+    Calculate hash with SKEIN-1024-384
+
+SKEIN-1024-512::
+    Calculate hash with SKEIN-1024-512
+
+SKEIN-1024-1024::
+    Calculate hash with SKEIN-1024-1024
+
+KECCAK-288::
+    Calculate hash with KECCAK-288
+
+KECCAK-384::
+    Calculate hash with KECCAK-384
+
+KECCAK-512::
+    Calculate hash with KECCAK-512
+
+HARAKA-256::
+   Calculate hash with  HARAKA-256
+
+HARAKA-512::
+   Calculate hash with HARAKA-512
+
+
 RIPEMD128::
     Calculate hash with RIPEMD128
 
@@ -978,6 +1033,48 @@ RIPEMD256::
 RIPEMD320::
     Calculate hash with RIPEMD320
 
+GOST2012-256::
+    Calculate hash with GOST3411-2012-256
+
+GOST2012-512::
+    Calculate hash with GOST3411-2012-512
+
+DSTU7564-256::
+    Calculate hash with DSTU7564-256
+
+DSTU7564-384::
+    Calculate hash with DSTU7564-384
+
+DSTU7564-512::
+    Calculate hash with DSTU7564-512
+
+BLAKE2B-160::
+    Calculate hash with BLAKE2B-160
+
+BLAKE2B-256::
+    Calculate hash with BLAKE2B-256
+
+BLAKE2B-384::
+    Calculate hash with BLAKE2B-384
+
+BLAKE2B-512::
+    Calculate hash with BLAKE2B-512
+
+BLAKE2S-128::
+    Calculate hash with BLAKE2S-128
+
+BLAKE2S-160::
+    Calculate hash with BLAKE2S-160
+
+BLAKE2S-224::
+    Calculate hash with BLAKE2S-224
+
+BLAKE2S-256::
+    Calculate hash with BLAKE2S-256
+
+BLAKE3-256::
+    Calculate hash with BLAKE3-256
+
 Tiger::
     Calculate hash with Tiger
 
@@ -986,6 +1083,10 @@ GOST3411::
 
 WHIRLPOOL::
     Calculate hash with WHIRLPOOL
+
+SM3::
+   SM3Lによるハッシュを計算します。
+
 
 CRC32::
     Calculate checksum by crc32

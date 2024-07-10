@@ -103,7 +103,6 @@ public class BoncyUtilTest {
         }
     }
 
-
     @Test
     public void testBurpSign() {
         System.out.println("testBurpSign");
@@ -117,7 +116,7 @@ public class BoncyUtilTest {
             keyGen.initialize(2048);
             KeyPair keyPair = keyGen.generateKeyPair();
             System.out.println("subjectDN:");
-            X509Certificate cert = BouncyUtil.issueSignCert(burpKeyPair.getPrivate(), burpCert, keyPair, "www.example.com" , new String [] { "www.example.com" } , 2);
+            X509Certificate cert = BouncyUtil.issueSignCert(burpKeyPair.getPrivate(), burpCert, keyPair, "www.example.com", new String[]{"www.example.com"}, 2);
             System.out.println("createCA:" + cert.getSubjectX500Principal().getName());
         } catch (NoSuchAlgorithmException | KeyStoreException | CertificateException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -224,6 +223,42 @@ public class BoncyUtilTest {
             }
         }
 
+        {
+            try {
+                String hash = BouncyUtil.toDSTU7564_256Sum("hello world", true);
+                assertEquals("59602A882A49C1AA6443225004E5796A664793C8D26CD4B8A40D63AAB024F02B", hash);
+                String hash2 = BouncyUtil.toDSTU7564_256Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("59602A882A49C1AA6443225004E5796A664793C8D26CD4B8A40D63AAB024F02B", hash2);
+                String hash3 = BouncyUtil.toDSTU7564_256Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("59602A882A49C1AA6443225004E5796A664793C8D26CD4B8A40D63AAB024F02B", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toDSTU7564_384Sum("hello world", true);
+                assertEquals("850FA7480A3ABFBC0FFE20181896868AE20F87BB16E79FAC62D85F59D84D3FC45871830BEF8FD9C967AA6CF5779AA17C", hash);
+                String hash2 = BouncyUtil.toDSTU7564_384Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("850FA7480A3ABFBC0FFE20181896868AE20F87BB16E79FAC62D85F59D84D3FC45871830BEF8FD9C967AA6CF5779AA17C", hash2);
+                String hash3 = BouncyUtil.toDSTU7564_384Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("850FA7480A3ABFBC0FFE20181896868AE20F87BB16E79FAC62D85F59D84D3FC45871830BEF8FD9C967AA6CF5779AA17C", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toDSTU7564_512Sum("hello world", true);
+                assertEquals("8C3DD617D29BF9102475BF2CF58BC57F850FA7480A3ABFBC0FFE20181896868AE20F87BB16E79FAC62D85F59D84D3FC45871830BEF8FD9C967AA6CF5779AA17C", hash);
+                String hash2 = BouncyUtil.toDSTU7564_512Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("8C3DD617D29BF9102475BF2CF58BC57F850FA7480A3ABFBC0FFE20181896868AE20F87BB16E79FAC62D85F59D84D3FC45871830BEF8FD9C967AA6CF5779AA17C", hash2);
+                String hash3 = BouncyUtil.toDSTU7564_512Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("8C3DD617D29BF9102475BF2CF58BC57F850FA7480A3ABFBC0FFE20181896868AE20F87BB16E79FAC62D85F59D84D3FC45871830BEF8FD9C967AA6CF5779AA17C", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
         {
             try {
                 String hash = BouncyUtil.toWHIRLPOOLSum("hello world", true);
@@ -619,10 +654,6 @@ public class BoncyUtilTest {
             } catch (UnsupportedEncodingException ex) {
                 logger.log(Level.SEVERE, null, ex);
             }
-        }
-        {
-            String hash = BouncyUtil.toSHAKE256um("hello world", true);
-            System.out.println("SHAKE256:" + hash);
         }
     }
 
