@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1Encoding;
 import org.bouncycastle.asn1.ASN1Object;
@@ -2261,7 +2260,6 @@ public class BouncyUtil {
     }
 
     // https://github.com/bcgit/bc-java/tree/main/core/src/test/java/org/bouncycastle/crypto/test
-
 
     /**
      * 証明書
