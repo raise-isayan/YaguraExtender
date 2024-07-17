@@ -1,17 +1,9 @@
 package extend.util.external;
 
-import static extension.helpers.ConvertUtil.compressZlib;
-import static extension.helpers.ConvertUtil.toBase64Encode;
-import extension.helpers.StringUtil;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.zip.Deflater;
-import java.util.zip.GZIPInputStream;
 import org.brotli.dec.BrotliInputStream;
 
 /**

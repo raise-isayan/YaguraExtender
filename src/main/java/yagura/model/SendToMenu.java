@@ -97,7 +97,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
                     final SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
-                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
+                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), sendToList.size(), item.getCaption()));
                         List<String> encodingList = BurpExtension.getInstance().getSelectEncodingList();
                         for (String encoding : encodingList) {
                             javax.swing.JMenuItem mnuItemEncoding = new javax.swing.JMenuItem();
@@ -110,7 +110,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
                         }
                     } else {
                         javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
-                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
+                        mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), sendToList.size(), item.getCaption()));
                         mnuItem.addActionListener(sendToItem);
                         if (sendToItem.isEnabled()) {
                             sendToList.add(mnuItem);
@@ -118,7 +118,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
                     }
                 } else {
                     javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
-                    mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), getMenuItemCount(property.isSubMenu()), item.getCaption()));
+                    mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), sendToList.size(), item.getCaption()));
                     if (item.isServer()) {
                         SendToMenuItem sendToItem = new SendToServer(item, this.contextMenuEvent);
                         sendToItem.addIssueAlertListener(this.issueAlert);
