@@ -505,6 +505,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlHashCheckSum = new javax.swing.JPanel();
         pnlHashTrans = new javax.swing.JPanel();
         btnHashMd2 = new javax.swing.JButton();
+        btnHashMd4 = new javax.swing.JButton();
         btnHashMd5 = new javax.swing.JButton();
         btnHashSha1 = new javax.swing.JButton();
         btnHashSha224 = new javax.swing.JButton();
@@ -558,11 +559,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashBLAKE2_S224 = new javax.swing.JButton();
         btnHashBLAKE2S_256 = new javax.swing.JButton();
         btnHashBLAKE3_256 = new javax.swing.JButton();
+        btnHashPARALLELHASH128_256 = new javax.swing.JButton();
+        btnHashPARALLELHASH256_512 = new javax.swing.JButton();
         btnHashTiger = new javax.swing.JButton();
         btnHashWHIRLPOOL = new javax.swing.JButton();
         btnHashSM3 = new javax.swing.JButton();
-        btnHashPARALLELHASH128_256 = new javax.swing.JButton();
-        btnHashPARALLELHASH256_512 = new javax.swing.JButton();
         btnHashTUPLEHASH128_256 = new javax.swing.JButton();
         btnHashTUPLEHASH256_512 = new javax.swing.JButton();
         pnlCheckSumTrans = new javax.swing.JPanel();
@@ -1343,6 +1344,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlHashTrans.add(btnHashMd2);
 
+        btnHashMd4.setText("md4");
+        btnHashMd4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashMd4ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashMd4);
+
         btnHashMd5.setText("md5");
         btnHashMd5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1767,6 +1776,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlHashTrans.add(btnHashBLAKE3_256);
 
+        btnHashPARALLELHASH128_256.setText("PARALLEL128-256");
+        btnHashPARALLELHASH128_256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashPARALLELHASH128_256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashPARALLELHASH128_256);
+
+        btnHashPARALLELHASH256_512.setText("PARALLEL256-512");
+        btnHashPARALLELHASH256_512.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashPARALLELHASH256_512ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashPARALLELHASH256_512);
+
         btnHashTiger.setText("Tiger");
         btnHashTiger.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1790,22 +1815,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlHashTrans.add(btnHashSM3);
-
-        btnHashPARALLELHASH128_256.setText("PARALLEL128-256");
-        btnHashPARALLELHASH128_256.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashPARALLELHASH128_256ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashPARALLELHASH128_256);
-
-        btnHashPARALLELHASH256_512.setText("PARALLEL256-512");
-        btnHashPARALLELHASH256_512.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHashPARALLELHASH256_512ActionPerformed(evt);
-            }
-        });
-        pnlHashTrans.add(btnHashPARALLELHASH256_512);
 
         btnHashTUPLEHASH128_256.setText("TUPLE128-256");
         btnHashTUPLEHASH128_256.addActionListener(new java.awt.event.ActionListener() {
@@ -3038,7 +3047,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashMd2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd2ActionPerformed
         try {
-            String inputText = TransUtil.toMd2Sum(getInputText(),
+            String inputText = BouncyUtil.toMD2Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3049,7 +3058,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashMd5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd5ActionPerformed
         try {
-            String inputText = TransUtil.toMd5Sum(getInputText(),
+            String inputText = BouncyUtil.toMD5Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3060,7 +3069,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha1ActionPerformed
         try {
-            String inputText = TransUtil.toSHA1Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA1Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3071,7 +3080,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha224ActionPerformed
         try {
-            String inputText = TransUtil.toSHA224Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA224Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3082,7 +3091,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha384ActionPerformed
         try {
-            String inputText = TransUtil.toSHA384Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA384Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3093,7 +3102,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512ActionPerformed
         try {
-            String inputText = TransUtil.toSHA512Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA512Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3628,7 +3637,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha256ActionPerformed
         try {
-            String inputText = TransUtil.toSHA256Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3639,7 +3648,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha512_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512_224ActionPerformed
         try {
-            String inputText = TransUtil.toSHA512_224Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA512_224Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3650,7 +3659,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha512_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha512_256ActionPerformed
         try {
-            String inputText = TransUtil.toSHA512_256Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA512_256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3661,7 +3670,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha3_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_224ActionPerformed
         try {
-            String inputText = TransUtil.toSHA3_224Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA3_224Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3672,7 +3681,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha3_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_256ActionPerformed
         try {
-            String inputText = TransUtil.toSHA3_256Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA3_256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3683,7 +3692,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha3_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_384ActionPerformed
         try {
-            String inputText = TransUtil.toSHA3_384Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA3_384Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -3694,7 +3703,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSha3_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSha3_512ActionPerformed
         try {
-            String inputText = TransUtil.toSHA3_512Sum(getInputText(),
+            String inputText = BouncyUtil.toSHA3_512Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
@@ -4303,6 +4312,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnHashTUPLEHASH256_512ActionPerformed
 
+    private void btnHashMd4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashMd4ActionPerformed
+        try {
+            String inputText = BouncyUtil.toMD4Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashMd4ActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4357,6 +4377,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashKECCAK384;
     private javax.swing.JButton btnHashKECCAK512;
     private javax.swing.JButton btnHashMd2;
+    private javax.swing.JButton btnHashMd4;
     private javax.swing.JButton btnHashMd5;
     private javax.swing.JButton btnHashPARALLELHASH128_256;
     private javax.swing.JButton btnHashPARALLELHASH256_512;

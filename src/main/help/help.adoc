@@ -927,6 +927,9 @@ The hash value is calculated using the value entered in the text area.
 md2::
     Calculate hash with md2
 
+md4::
+    Calculate hash with md4
+
 md5::
     Calculate hash with md5
 
@@ -1098,7 +1101,6 @@ WHIRLPOOL::
 
 SM3::
    Calculate hash with SM3
-
 
 CRC32::
     Calculate checksum by crc32

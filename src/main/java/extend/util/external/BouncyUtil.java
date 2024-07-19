@@ -235,6 +235,622 @@ public class BouncyUtil {
     }
 
     /**
+     * MD2値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toMD2Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("MD2", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * MD2値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toMD2Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("MD2", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * MD2値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toMD2Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toMD2Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * MD4値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toMD4Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("MD4", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * MD4値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toMD4Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("MD4", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * MD4値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toMD4Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toMD4Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * MD5値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toMD5Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("MD5", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * MD5値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toMD5Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("MD5", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * MD5値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toMD5Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toMD5Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA1値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA1Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA1", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA1値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA1Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA1", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA1値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA1Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA1Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA224値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA224Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA224", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA224値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA224Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA224", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA224値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA224Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA224Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA384値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA384Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA384", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA384値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA384Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA384", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA384値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA384Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA384Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA512-224値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA512_224Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA512/224", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA512-224値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA512_224Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA512/224", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA512-224値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA512_224Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA512_224Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA512-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA512_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA512/256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA512-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA512_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA512/256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA512-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA512_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA512_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA3-224値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_224Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-224", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-224値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_224Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-224", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-224値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA3_224Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA3_224Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA3-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA3_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA3_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA3-384値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_384Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-384", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-384値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_384Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-384", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-384値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA3_384Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA3_384Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * SHA3-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toSHA3_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("SHA3-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            return null;
+        }
+    }
+
+    /**
+     * SHA3-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHA3_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toSHA3_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
      * SHAKE128値の取得
      *
      * @param binary 対象バイト

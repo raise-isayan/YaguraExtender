@@ -1240,6 +1240,14 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashMd2ActionPerformed"/>
                           </Events>
                         </Component>
+                        <Component class="javax.swing.JButton" name="btnHashMd4">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="md4"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashMd4ActionPerformed"/>
+                          </Events>
+                        </Component>
                         <Component class="javax.swing.JButton" name="btnHashMd5">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="md5"/>
@@ -1664,6 +1672,22 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashBLAKE3_256ActionPerformed"/>
                           </Events>
                         </Component>
+                        <Component class="javax.swing.JButton" name="btnHashPARALLELHASH128_256">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="PARALLEL128-256"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashPARALLELHASH128_256ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashPARALLELHASH256_512">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="PARALLEL256-512"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashPARALLELHASH256_512ActionPerformed"/>
+                          </Events>
+                        </Component>
                         <Component class="javax.swing.JButton" name="btnHashTiger">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Tiger"/>
@@ -1686,22 +1710,6 @@
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSM3ActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="btnHashPARALLELHASH128_256">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="PARALLEL128-256"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashPARALLELHASH128_256ActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="btnHashPARALLELHASH256_512">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="PARALLEL256-512"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashPARALLELHASH256_512ActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="btnHashTUPLEHASH128_256">

@@ -128,6 +128,175 @@ public class BoncyUtilTest {
         System.out.println("testHashUtil");
         {
             try {
+                String hash = BouncyUtil.toMD2Sum("hello world", true);
+                assertEquals("D9CCE882EE690A5C1CE70BEFF3A78C77", hash);
+                String hash2 = BouncyUtil.toMD2Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("D9CCE882EE690A5C1CE70BEFF3A78C77", hash2);
+                String hash3 = BouncyUtil.toMD2Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("D9CCE882EE690A5C1CE70BEFF3A78C77", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toMD4Sum("hello world", true);
+                assertEquals("AA010FBC1D14C795D86EF98C95479D17", hash);
+                String hash2 = BouncyUtil.toMD4Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("AA010FBC1D14C795D86EF98C95479D17", hash2);
+                String hash3 = BouncyUtil.toMD4Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("AA010FBC1D14C795D86EF98C95479D17", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toMD5Sum("hello world", true);
+                assertEquals("5EB63BBBE01EEED093CB22BB8F5ACDC3", hash);
+                String hash2 = BouncyUtil.toMD5Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("5EB63BBBE01EEED093CB22BB8F5ACDC3", hash2);
+                String hash3 = BouncyUtil.toMD5Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("5EB63BBBE01EEED093CB22BB8F5ACDC3", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+
+        {
+            try {
+                String hash = BouncyUtil.toSHA1Sum("hello world", true);
+                assertEquals("2AAE6C35C94FCFB415DBE95F408B9CE91EE846ED", hash);
+                String hash2 = BouncyUtil.toSHA1Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("2AAE6C35C94FCFB415DBE95F408B9CE91EE846ED", hash2);
+                String hash3 = BouncyUtil.toSHA1Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("2AAE6C35C94FCFB415DBE95F408B9CE91EE846ED", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA224Sum("hello world", true);
+                assertEquals("2F05477FC24BB4FAEFD86517156DAFDECEC45B8AD3CF2522A563582B", hash);
+                String hash2 = BouncyUtil.toSHA224Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("2F05477FC24BB4FAEFD86517156DAFDECEC45B8AD3CF2522A563582B", hash2);
+                String hash3 = BouncyUtil.toSHA224Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("2F05477FC24BB4FAEFD86517156DAFDECEC45B8AD3CF2522A563582B", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA256Sum("hello world", true);
+                assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", hash);
+                String hash2 = BouncyUtil.toSHA256Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", hash2);
+                String hash3 = BouncyUtil.toSHA256Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA384Sum("hello world", true);
+                assertEquals("FDBD8E75A67F29F701A4E040385E2E23986303EA10239211AF907FCBB83578B3E417CB71CE646EFD0819DD8C088DE1BD", hash);
+                String hash2 = BouncyUtil.toSHA384Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("FDBD8E75A67F29F701A4E040385E2E23986303EA10239211AF907FCBB83578B3E417CB71CE646EFD0819DD8C088DE1BD", hash2);
+                String hash3 = BouncyUtil.toSHA384Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("FDBD8E75A67F29F701A4E040385E2E23986303EA10239211AF907FCBB83578B3E417CB71CE646EFD0819DD8C088DE1BD", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA512Sum("hello world", true);
+                assertEquals("309ECC489C12D6EB4CC40F50C902F2B4D0ED77EE511A7C7A9BCD3CA86D4CD86F989DD35BC5FF499670DA34255B45B0CFD830E81F605DCF7DC5542E93AE9CD76F", hash);
+                String hash2 = BouncyUtil.toSHA512Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("309ECC489C12D6EB4CC40F50C902F2B4D0ED77EE511A7C7A9BCD3CA86D4CD86F989DD35BC5FF499670DA34255B45B0CFD830E81F605DCF7DC5542E93AE9CD76F", hash2);
+                String hash3 = BouncyUtil.toSHA512Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("309ECC489C12D6EB4CC40F50C902F2B4D0ED77EE511A7C7A9BCD3CA86D4CD86F989DD35BC5FF499670DA34255B45B0CFD830E81F605DCF7DC5542E93AE9CD76F", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA512_224Sum("hello world", true);
+                assertEquals("22E0D52336F64A998085078B05A6E37B26F8120F43BF4DB4C43A64EE", hash);
+                String hash2 = BouncyUtil.toSHA512_224Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("22E0D52336F64A998085078B05A6E37B26F8120F43BF4DB4C43A64EE", hash2);
+                String hash3 = BouncyUtil.toSHA512_224Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("22E0D52336F64A998085078B05A6E37B26F8120F43BF4DB4C43A64EE", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA512_256Sum("hello world", true);
+                assertEquals("0AC561FAC838104E3F2E4AD107B4BEE3E938BF15F2B15F009CCCCD61A913F017", hash);
+                String hash2 = BouncyUtil.toSHA512_256Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("0AC561FAC838104E3F2E4AD107B4BEE3E938BF15F2B15F009CCCCD61A913F017", hash2);
+                String hash3 = BouncyUtil.toSHA512_256Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("0AC561FAC838104E3F2E4AD107B4BEE3E938BF15F2B15F009CCCCD61A913F017", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA3_224Sum("hello world", true);
+                assertEquals("DFB7F18C77E928BB56FAEB2DA27291BD790BC1045CDE45F3210BB6C5", hash);
+                String hash2 = BouncyUtil.toSHA3_224Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("DFB7F18C77E928BB56FAEB2DA27291BD790BC1045CDE45F3210BB6C5", hash2);
+                String hash3 = BouncyUtil.toSHA3_224Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("DFB7F18C77E928BB56FAEB2DA27291BD790BC1045CDE45F3210BB6C5", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA3_256Sum("hello world", true);
+                assertEquals("644BCC7E564373040999AAC89E7622F3CA71FBA1D972FD94A31C3BFBF24E3938", hash);
+                String hash2 = BouncyUtil.toSHA3_256Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("644BCC7E564373040999AAC89E7622F3CA71FBA1D972FD94A31C3BFBF24E3938", hash2);
+                String hash3 = BouncyUtil.toSHA3_256Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("644BCC7E564373040999AAC89E7622F3CA71FBA1D972FD94A31C3BFBF24E3938", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA3_384Sum("hello world", true);
+                assertEquals("83BFF28DDE1B1BF5810071C6643C08E5B05BDB836EFFD70B403EA8EA0A634DC4997EB1053AA3593F590F9C63630DD90B", hash);
+                String hash2 = BouncyUtil.toSHA3_384Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("83BFF28DDE1B1BF5810071C6643C08E5B05BDB836EFFD70B403EA8EA0A634DC4997EB1053AA3593F590F9C63630DD90B", hash2);
+                String hash3 = BouncyUtil.toSHA3_384Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("83BFF28DDE1B1BF5810071C6643C08E5B05BDB836EFFD70B403EA8EA0A634DC4997EB1053AA3593F590F9C63630DD90B", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toSHA3_512Sum("hello world", true);
+                assertEquals("840006653E9AC9E95117A15C915CAAB81662918E925DE9E004F774FF82D7079A40D4D27B1B372657C61D46D470304C88C788B3A4527AD074D1DCCBEE5DBAA99A", hash);
+                String hash2 = BouncyUtil.toSHA3_512Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("840006653E9AC9E95117A15C915CAAB81662918E925DE9E004F774FF82D7079A40D4D27B1B372657C61D46D470304C88C788B3A4527AD074D1DCCBEE5DBAA99A", hash2);
+                String hash3 = BouncyUtil.toSHA3_512Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("840006653E9AC9E95117A15C915CAAB81662918E925DE9E004F774FF82D7079A40D4D27B1B372657C61D46D470304C88C788B3A4527AD074D1DCCBEE5DBAA99A", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
                 String hash = BouncyUtil.toRIPEMD128Sum("hello world", true);
                 assertEquals("C52AC4D06245286B33953957BE6C6F81", hash);
                 String hash2 = BouncyUtil.toRIPEMD128Sum(StringUtil.getBytesRaw("hello world"), true);
