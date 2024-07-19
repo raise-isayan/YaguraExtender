@@ -1078,6 +1078,18 @@ BLAKE3-256::
 Tiger::
     Calculate hash with Tiger
 
+PARALLEL128-256::
+   Calculate hash with PARALLELHASH128-256
+
+PARALLEL256-512::
+   Calculate hash with PARALLELHASH256-512
+
+TUPLE128-256::
+   Calculate hash with TUPLEHASH128-256
+
+TUPLE256-512::
+   Calculate hash with TUPLEHASH256-512
+
 GOST3411::
     Calculate hash with GOST3411
 
@@ -1085,7 +1097,7 @@ WHIRLPOOL::
     Calculate hash with WHIRLPOOL
 
 SM3::
-   SM3Lによるハッシュを計算します。
+   Calculate hash with SM3
 
 
 CRC32::

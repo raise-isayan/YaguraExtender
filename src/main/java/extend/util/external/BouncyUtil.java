@@ -2259,6 +2259,190 @@ public class BouncyUtil {
         return toSKEIN1024_1024Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
+    /**
+     * PARALLELHASH128-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toPARALLELHASH128_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("PARALLELHASH128-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * PARALLELHASH128-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toPARALLELHASH128_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("PARALLELHASH128-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * PARALLELHASH128-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toPARALLELHASH128_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return toPARALLELHASH128_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * PARALLELHASH128-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toPARALLELHASH256_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("PARALLELHASH256-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * PARALLELHASH128-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toPARALLELHASH256_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("PARALLELHASH256-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * PARALLELHASH128-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toPARALLELHASH256_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return BouncyUtil.toPARALLELHASH256_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * TUPLEHASH128-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toTUPLEHASH128_256Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("TUPLEHASH128-256", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * TUPLEHASH128-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toTUPLEHASH128_256Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("TUPLEHASH128-256", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * TUPLEHASH128-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toTUPLEHASH128_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return BouncyUtil.toTUPLEHASH128_256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
+    /**
+     * TUPLEHASH256-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toTUPLEHASH256_512Sum(byte[] binary, boolean upperCase) {
+        try {
+            return toMessageDigest("TUPLEHASH256-512", binary, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * TUPLEHASH256-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase 大文字で出力
+     * @return ハッシュ値
+     */
+    public static String toTUPLEHASH256_512Sum(String str, boolean upperCase) {
+        try {
+            return toMessageDigest("TUPLEHASH256-512", str, StandardCharsets.ISO_8859_1, upperCase);
+        } catch (NoSuchAlgorithmException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return null;
+    }
+
+    /**
+     * TUPLEHASH256-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toTUPLEHASH256_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        return BouncyUtil.toTUPLEHASH256_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
+    }
+
     // https://github.com/bcgit/bc-java/tree/main/core/src/test/java/org/bouncycastle/crypto/test
 
     /**

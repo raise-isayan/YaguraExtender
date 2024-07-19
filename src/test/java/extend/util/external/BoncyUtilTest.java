@@ -655,6 +655,55 @@ public class BoncyUtilTest {
                 logger.log(Level.SEVERE, null, ex);
             }
         }
+        {
+            try {
+                String hash = BouncyUtil.toPARALLELHASH128_256Sum("hello world", true);
+                assertEquals("FE34147E1BBCA35381E6EB09F74F8FAD9C48AB4673D2DF97F7B78244E5C6A705", hash);
+                String hash2 = BouncyUtil.toPARALLELHASH128_256Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("FE34147E1BBCA35381E6EB09F74F8FAD9C48AB4673D2DF97F7B78244E5C6A705", hash2);
+                String hash3 = BouncyUtil.toPARALLELHASH128_256Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("FE34147E1BBCA35381E6EB09F74F8FAD9C48AB4673D2DF97F7B78244E5C6A705", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toPARALLELHASH256_512Sum("hello world", true);
+                assertEquals("15A36398E9E0E939558A3C1BF919A6DB7ACE03864A3599641C3F49EA4BB5474ABE194A2DB10416329CE99C619B21298537C3CE28DD3441235606EB33A5D700AD", hash);
+                String hash2 = BouncyUtil.toPARALLELHASH256_512Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("15A36398E9E0E939558A3C1BF919A6DB7ACE03864A3599641C3F49EA4BB5474ABE194A2DB10416329CE99C619B21298537C3CE28DD3441235606EB33A5D700AD", hash2);
+                String hash3 = BouncyUtil.toPARALLELHASH256_512Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("15A36398E9E0E939558A3C1BF919A6DB7ACE03864A3599641C3F49EA4BB5474ABE194A2DB10416329CE99C619B21298537C3CE28DD3441235606EB33A5D700AD", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toTUPLEHASH128_256Sum("hello world", true);
+                assertEquals("7657A64DF9CF98B5C82ADB343858A57C03785031D46755B871BE5552A7850F56", hash);
+                String hash2 = BouncyUtil.toTUPLEHASH128_256Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("7657A64DF9CF98B5C82ADB343858A57C03785031D46755B871BE5552A7850F56", hash2);
+                String hash3 = BouncyUtil.toTUPLEHASH128_256Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("7657A64DF9CF98B5C82ADB343858A57C03785031D46755B871BE5552A7850F56", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        {
+            try {
+                String hash = BouncyUtil.toTUPLEHASH256_512Sum("hello world", true);
+                assertEquals("E7CA4B2A739699EC0566D810BB9243DF8B2EC56212DE061041CD7A6290A828EEED9FF92948FD6E357AF66FA54D5C4E83FC5F6EE582BE12F5252BFDDD3554A59D", hash);
+                String hash2 = BouncyUtil.toTUPLEHASH256_512Sum(StringUtil.getBytesRaw("hello world"), true);
+                assertEquals("E7CA4B2A739699EC0566D810BB9243DF8B2EC56212DE061041CD7A6290A828EEED9FF92948FD6E357AF66FA54D5C4E83FC5F6EE582BE12F5252BFDDD3554A59D", hash2);
+                String hash3 = BouncyUtil.toTUPLEHASH256_512Sum("hello world", StandardCharsets.ISO_8859_1.name(), true);
+                assertEquals("E7CA4B2A739699EC0566D810BB9243DF8B2EC56212DE061041CD7A6290A828EEED9FF92948FD6E357AF66FA54D5C4E83FC5F6EE582BE12F5252BFDDD3554A59D", hash3);
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+
     }
 
 }

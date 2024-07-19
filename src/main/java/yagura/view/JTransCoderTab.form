@@ -875,9 +875,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="QuotedPrintable"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoQuotedPrintableActionPerformed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -928,9 +925,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="&amp;#xhh;(unicode)"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoHtmlUnicodeActionPerformed"/>
-                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoHtmlByteHex">
                               <Properties>
@@ -939,9 +933,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="&amp;#xhh;(byte)"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoHtmlByteHexActionPerformed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -967,9 +958,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="$hhhh"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoUnicodeHex2ActionPerformed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -987,9 +975,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="hh(hex)"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteNoneHexActionPerformed"/>
-                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoByteXHex">
                               <Properties>
@@ -998,9 +983,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="\u005cxhh(hex)" containsInvalidXMLChars="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteXHexActionPerformed"/>
-                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoByteHex2">
                               <Properties>
@@ -1009,9 +991,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="\u005ch(hex)" containsInvalidXMLChars="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteHex2ActionPerformed"/>
-                              </Events>
                             </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoByteOct">
                               <Properties>
@@ -1020,9 +999,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="\u005cooo(oct)" containsInvalidXMLChars="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteOctActionPerformed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1171,9 +1147,6 @@
                             </Property>
                             <Property name="text" type="java.lang.String" value="Minify"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoMinifyFormatActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="rdoBeautifyFormat">
                           <Properties>
@@ -1183,9 +1156,6 @@
                             <Property name="selected" type="boolean" value="true"/>
                             <Property name="text" type="java.lang.String" value="Beautify"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoBeautifyFormatActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="btnSmartFormat">
                           <Properties>
@@ -1259,7 +1229,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                         <Property name="columns" type="int" value="3"/>
-                        <Property name="rows" type="int" value="19"/>
+                        <Property name="rows" type="int" value="21"/>
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="btnHashMd2">
@@ -1716,6 +1686,38 @@
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSM3ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashPARALLELHASH128_256">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="PARALLEL128-256"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashPARALLELHASH128_256ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashPARALLELHASH256_512">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="PARALLEL256-512"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashPARALLELHASH256_512ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashTUPLEHASH128_256">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="TUPLE128-256"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashTUPLEHASH128_256ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashTUPLEHASH256_512">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="TUPLE256-512"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashTUPLEHASH256_512ActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>
@@ -2768,7 +2770,6 @@
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtHexActionPerformed"/>
                     <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtHexKeyReleased"/>
                   </Events>
                 </Component>
@@ -2998,7 +2999,6 @@
                   </Properties>
                   <Events>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtExcelSerialFocusLost"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtExcelSerialActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JFormattedTextField" name="txtJavaSerial">
@@ -3018,7 +3018,6 @@
                   </Properties>
                   <Events>
                     <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtJavaSerialFocusLost"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtJavaSerialActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JFormattedTextField" name="txtUnixtime">
@@ -3064,9 +3063,6 @@
                     </Property>
                     <Property name="requestFocusEnabled" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSystemZoneDateActionPerformed"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -3191,9 +3187,6 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="192"/>
                       </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDec1ActionPerformed"/>
-                      </Events>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtDec2">
                       <Properties>
@@ -3229,9 +3222,6 @@
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDotOctIPActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnDotOctIP">
                   <Properties>
@@ -3304,9 +3294,6 @@
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIntIPActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnIntIP">
                   <Properties>

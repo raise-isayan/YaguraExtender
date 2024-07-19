@@ -1077,7 +1077,19 @@ WHIRLPOOL::
     WHIRLPOOLによるハッシュを計算します。
 
 SM3::
-   SM3Lによるハッシュを計算します。
+   SM3によるハッシュを計算します。
+
+PARALLEL128-256::
+   PARALLELHASH128-256によるハッシュを計算します。
+
+PARALLEL256-512::
+   PARALLELHASH256-512によるハッシュを計算します。
+
+TUPLE128-256::
+   TUPLEHASH128-256によるハッシュを計算します。
+
+TUPLE256-512::
+   TUPLEHASH256-512によるハッシュを計算します。
 
 CRC32::
     crc32によるチェックサムを計算します。
