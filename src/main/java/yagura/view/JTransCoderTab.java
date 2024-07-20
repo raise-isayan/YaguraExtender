@@ -913,7 +913,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlEncode.setLayout(new java.awt.GridLayout(5, 0));
 
         btnGrpEncodeType.add(rdoAll);
-        rdoAll.setSelected(true);
         rdoAll.setText("All");
         rdoAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -923,7 +922,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlEncode.add(rdoAll);
 
         btnGrpEncodeType.add(rdoAlphaNum);
-        rdoAlphaNum.setText("[^A-Za-z0-9]");
+        rdoAlphaNum.setSelected(true);
+        rdoAlphaNum.setText("Alphanum");
+        rdoAlphaNum.setToolTipText("[^A-Za-z0-9]");
         rdoAlphaNum.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoAlphaNumActionPerformed(evt);
@@ -932,7 +933,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlEncode.add(rdoAlphaNum);
 
         btnGrpEncodeType.add(rdoURLSafe);
-        rdoURLSafe.setText("Burp");
+        rdoURLSafe.setText("BurpLike");
         rdoURLSafe.setToolTipText("[^A-Za-z0-9!\\\"$'()*,/:<>@\\[\\\\\\]^`{|},.~-]");
         rdoURLSafe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

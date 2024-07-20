@@ -74,11 +74,22 @@ public class TransUtil {
     }
 
     public enum EncodeType {
-        ALL, ALPHANUM, STANDARD, LIGHT, BURP_LIKE, JAVA_SCRIPT
+        ALL("All"), ALPHANUM("Alphanum"), STANDARD("Standard"), LIGHT("Light"), BURP_LIKE("BurpLike");
+
+        private final String ident;
+
+        EncodeType(final String ident) {
+            this.ident = ident;
+        }
+
+        public String toIdent() {
+            return this.ident;
+        }
+
     };
 
     public enum ConvertCase {
-        UPPER, LOWLER
+        UPPER, LOWLER;
     };
 
     public static Pattern getEncodeTypePattern(EncodeType type) {
@@ -93,8 +104,6 @@ public class TransUtil {
                 return SmartCodec.ENCODE_PATTERN_LIGHT;
             case BURP_LIKE:
                 return SmartCodec.ENCODE_PATTERN_BURP;
-            case JAVA_SCRIPT:
-                return SmartCodec.ENCODE_PATTERN_JS;
             default:
                 break;
         }

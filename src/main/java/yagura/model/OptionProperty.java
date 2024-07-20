@@ -24,20 +24,25 @@ public class OptionProperty implements IOptionProperty {
     }
 
     /**
+     * implements YaguraProperty
+     */
+    @Expose
+    private final YaguraProperty yaguraProperty = new YaguraProperty();
+
+    public YaguraProperty getYaguraProperty() {
+        return this.yaguraProperty;
+    }
+
+    public void setYaguraProperty(YaguraProperty yaguraProperty) {
+        this.yaguraProperty.setProperty(yaguraProperty);
+    }
+
+    /**
      * implements UniversalViewProperty
      */
     @Expose
     private final UniversalViewProperty universalViewProperty = new UniversalViewProperty();
 
-    public void defaultSettingProperty() {
-        Map<String, String> map = loadConfigSetting();
-        String value = map.get(UniversalViewProperty.CJK_VIEW_PROPERTY);
-        if (value == null) {
-            value = this.universalViewProperty.defaultSetting();
-            this.universalViewProperty.saveSetting(value);    
-        }
-    }
-    
     public UniversalViewProperty getEncodingProperty() {
         return this.universalViewProperty;
     }
@@ -176,6 +181,7 @@ public class OptionProperty implements IOptionProperty {
      * @return
      */
     public Map<String, String> getProperty() {
+        this.config.put(this.yaguraProperty.getSettingName(), this.yaguraProperty.loadSetting());
         this.config.put(this.universalViewProperty.getSettingName(), this.universalViewProperty.loadSetting());
         this.config.put(this.matchReplaceProperty.getSettingName(), this.matchReplaceProperty.loadSetting());
         this.config.put(this.matchAlertProperty.getSettingName(), this.matchAlertProperty.loadSetting());
@@ -189,6 +195,10 @@ public class OptionProperty implements IOptionProperty {
     }
 
     public void setProperty(Map<String, String> config) {
+        String configYaguraProperty = config.get(this.yaguraProperty.getSettingName());
+        if (configYaguraProperty != null) {
+            this.yaguraProperty.saveSetting(configYaguraProperty);
+        }
         String configUniversalViewProperty = config.get(this.universalViewProperty.getSettingName());
         if (configUniversalViewProperty != null) {
             this.universalViewProperty.saveSetting(configUniversalViewProperty);
