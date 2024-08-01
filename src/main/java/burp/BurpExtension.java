@@ -30,29 +30,6 @@ import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
-import extend.util.external.BouncyUtil;
-import extend.util.external.ThemeUI;
-import extend.util.external.TransUtil;
-import extend.util.external.TransUtil.EncodeType;
-import extend.util.external.gson.XMatchItemAdapter;
-import extension.burp.BurpConfig;
-import extension.burp.BurpConfig.HostnameResolution;
-import extension.burp.BurpConfig.SSLPassThroughRule;
-import extension.burp.BurpExtensionImpl;
-import extension.burp.HttpTarget;
-import extension.burp.NotifyType;
-import extension.burp.TargetTool;
-import extension.burp.BurpUtil;
-import extension.burp.BurpVersion;
-import extension.burp.FilterProperty;
-import extension.burp.IBurpTab;
-import extension.burp.TargetScopeItem;
-import extension.helpers.HttpMessageWapper;
-import extension.helpers.HttpUtil;
-import extension.helpers.StringUtil;
-import extension.helpers.SwingUtil;
-import extension.helpers.json.JsonUtil;
-import extension.view.base.MatchItem;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -78,12 +55,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import extension.burp.scanner.IssueItem;
-import extension.helpers.ConvertUtil;
-import extension.helpers.HttpMessage;
-import extension.helpers.HttpRequestWapper;
-import extension.helpers.HttpResponseWapper;
-import extension.helpers.SmartCodec;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -107,6 +78,35 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import extend.util.external.BouncyUtil;
+import extend.util.external.ThemeUI;
+import extend.util.external.TransUtil;
+import extend.util.external.TransUtil.EncodeType;
+import extend.util.external.gson.XMatchItemAdapter;
+import extension.burp.BurpConfig;
+import extension.burp.BurpConfig.HostnameResolution;
+import extension.burp.BurpConfig.SSLPassThroughRule;
+import extension.burp.BurpExtensionImpl;
+import extension.burp.HttpTarget;
+import extension.burp.NotifyType;
+import extension.burp.TargetTool;
+import extension.burp.BurpUtil;
+import extension.burp.BurpVersion;
+import extension.burp.FilterProperty;
+import extension.burp.IBurpTab;
+import extension.burp.TargetScopeItem;
+import extension.helpers.HttpMessageWapper;
+import extension.helpers.HttpUtil;
+import extension.helpers.StringUtil;
+import extension.helpers.SwingUtil;
+import extension.helpers.json.JsonUtil;
+import extension.view.base.MatchItem;
+import extension.burp.scanner.IssueItem;
+import extension.helpers.ConvertUtil;
+import extension.helpers.HttpMessage;
+import extension.helpers.HttpRequestWapper;
+import extension.helpers.HttpResponseWapper;
+import extension.helpers.SmartCodec;
 import passive.signature.MatchAlert;
 import yagura.Config;
 import yagura.Version;
@@ -128,7 +128,6 @@ import yagura.model.MatchReplaceProperty;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
-import yagura.model.YaguraProperty;
 import yagura.view.GeneratePoCTabEditor;
 import yagura.view.HtmlCommetViewTabEditor;
 import yagura.view.JSONViewTabEditor;
@@ -201,7 +200,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private final WindowListener windowPopupListener = new WindowAdapter() {
         @Override
         public void windowClosing(WindowEvent e) {
-            if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
+            if (BurpUtil.suiteFrame() instanceof JFrame) {
                 if (option.getLoggingProperty().isWarnClosingTemporaryProject() && isTemporaryProject) {
                     int popupTime = option.getLoggingProperty().getPopupTime();
                     popupMessage.show("Project is Temporary.", popupTime);
@@ -605,7 +604,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     protected final class MenuHander {
-
         private final MontoyaApi api;
         private final ButtonGroup menuBurpCharsetsGroup = new ButtonGroup();
         private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
@@ -614,9 +612,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         private final JMenu burpCharsetMenu = new JMenu();
         private final JMenu yaguraCharsetMenu = new JMenu();
         private final JMenu yaguraResultFilterMenu = new JMenu();
-        private String yaguraCharset = StandardCharsets.UTF_8.name();
-
         private final static String USE_BURP_CHARSETS = "Use Burp Charsets";
+
+        private String yaguraCharset = StandardCharsets.UTF_8.name();
 
         public MenuHander(MontoyaApi api) {
             this.api = api;
@@ -1047,29 +1045,16 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             yaguraExtensionMenu.setText("Extension (X)");
             yaguraExtensionMenu.setMnemonic(KeyEvent.VK_X);
 
-//            JMenuItem yaguraPasteIncludeScopeMenu = createMenuItem("Paste include scope(multi-line)", KeyEvent.VK_I, includeScopeAction);
-//
-//            yaguraExtensionMenu.add(yaguraPasteIncludeScopeMenu);
             JMenuItem yaguraPasteIncludeTargetScopeMenu = createMenuItem("Paste include Target scope(multi-line)", KeyEvent.VK_I, includeTargetScopeAction);
-
             yaguraExtensionMenu.add(yaguraPasteIncludeTargetScopeMenu);
 
-//            JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Host scope(multi-line)", KeyEvent.VK_H, includeHostScopeAction);
-//
-//            yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
             JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Top URL Target scope(multi-line)", KeyEvent.VK_H, includeTopURLTargetScopeAction);
-
             yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
 
-//            JMenuItem yaguraPasteExludeScopeMenu = createMenuItem("Paste exclude scope(multi-line)", KeyEvent.VK_E, excludeScopeAction);
-//
-//            yaguraExtensionMenu.add(yaguraPasteExludeScopeMenu);
             JMenuItem yaguraPasteExludeTargetScopeMenu = createMenuItem("Paste exclude Target scope(multi-line)", KeyEvent.VK_E, excludeTargetScopeAction);
-
             yaguraExtensionMenu.add(yaguraPasteExludeTargetScopeMenu);
 
             JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through(multi-line)", KeyEvent.VK_P, sslPassThroughAction);
-
             yaguraExtensionMenu.add(yaguraPasteSSLPassThroughMenu);
             yaguraMenu.add(yaguraExtensionMenu);
 
@@ -1139,7 +1124,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             });
         }
 
-        private ActionListener burpCharsetModeAction = new ActionListener() {
+        private final ActionListener burpCharsetModeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 final List<String> encodngList = getSelectEncodingList();
@@ -1161,7 +1146,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener resultFilterModeAction = new ActionListener() {
+        private final ActionListener resultFilterModeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ResultFilterProperty resultFilterProperty = option.getResultFilterProperty();
@@ -1180,7 +1165,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener includeScopeAction = new ActionListener() {
+        private final ActionListener includeScopeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -1192,7 +1177,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener includeHostScopeAction = new ActionListener() {
+        private final ActionListener includeHostScopeAction = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1206,7 +1191,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener excludeScopeAction = new ActionListener() {
+        private final ActionListener excludeScopeAction = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1219,7 +1204,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener includeTargetScopeAction = new ActionListener() {
+        private final ActionListener includeTargetScopeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -1233,7 +1218,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener includeTopURLTargetScopeAction = new ActionListener() {
+        private final ActionListener includeTopURLTargetScopeAction = new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -1248,7 +1233,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener excludeTargetScopeAction = new ActionListener() {
+        private final ActionListener excludeTargetScopeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -1262,7 +1247,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener sslPassThroughAction = new ActionListener() {
+        private final ActionListener sslPassThroughAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -1297,7 +1282,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             updateYaguraCharsetUI(this.yaguraCharsetMenu);
         }
 
-        private ActionListener yaguraCharsetAction = new ActionListener() {
+        private final ActionListener yaguraCharsetAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (e.getSource() instanceof JRadioButtonMenuItem item) {
@@ -1307,7 +1292,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ChangeListener yaguraCharsetChangeAction = new ChangeListener() {
+        private final ChangeListener yaguraCharsetChangeAction = new ChangeListener() {
 
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -1324,7 +1309,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         };
 
-        private ActionListener yaguraEncodeTypeAction = new ActionListener() {
+        private final ActionListener yaguraEncodeTypeAction = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 option.getYaguraProperty().setEncodeType(getYaguraEncodeType());

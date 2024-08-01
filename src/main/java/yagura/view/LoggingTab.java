@@ -78,7 +78,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        chkToolLog.setText("ToolLog:(proxy, spider, scanner, intruder, repeater, extender tool)");
+        chkToolLog.setText("ToolLog:(proxy, scanner, intruder, repeater, sequencer, extension tool)");
         chkToolLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkToolLogActionPerformed(evt);

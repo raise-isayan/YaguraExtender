@@ -162,7 +162,8 @@ public class SendToMenu implements ContextMenuItemsProvider {
     }
 
     public javax.swing.JPopupMenu appendSendToMenu(javax.swing.JPopupMenu popSendToMenu, final SendToMessage message, ContextMenuEvent contextMenuEvent) {
-        javax.swing.JMenuItem mnuRepeater = new javax.swing.JMenuItem();
+
+        final javax.swing.JMenuItem mnuRepeater = new javax.swing.JMenuItem();
         mnuRepeater.setText("Sendto Repeater");
         mnuRepeater.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -171,7 +172,8 @@ public class SendToMenu implements ContextMenuItemsProvider {
             }
         });
         popSendToMenu.add(mnuRepeater);
-        javax.swing.JMenuItem mnuIntruder = new javax.swing.JMenuItem();
+
+        final javax.swing.JMenuItem mnuIntruder = new javax.swing.JMenuItem();
         mnuIntruder.setText("Sndto Intruder");
         mnuIntruder.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -180,9 +182,20 @@ public class SendToMenu implements ContextMenuItemsProvider {
             }
         });
         popSendToMenu.add(mnuIntruder);
+
+        final javax.swing.JMenuItem mnuOrganizer = new javax.swing.JMenuItem();
+        mnuOrganizer.setText("Sndto Organizer");
+        mnuOrganizer.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sendToOrganizer(message);
+            }
+        });
+        popSendToMenu.add(mnuOrganizer);
+
         String selectText = message.getSelectedText();
         if (selectText != null) {
-            javax.swing.JMenuItem mnuDecoder = new javax.swing.JMenuItem();
+            final javax.swing.JMenuItem mnuDecoder = new javax.swing.JMenuItem();
             mnuDecoder.setText("Sendto Decoder");
             mnuDecoder.addActionListener(new java.awt.event.ActionListener() {
                 @Override
@@ -191,7 +204,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
                 }
             });
             popSendToMenu.add(mnuDecoder);
-            javax.swing.JMenuItem mnuComparer = new javax.swing.JMenuItem();
+            final javax.swing.JMenuItem mnuComparer = new javax.swing.JMenuItem();
             mnuComparer.setText("Sendto Comparer");
             mnuComparer.addActionListener(new java.awt.event.ActionListener() {
                 @Override
@@ -206,7 +219,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
             List<SendToItem> sendToItemList = property.getSendToItemList();
             for (SendToItem item : sendToItemList) {
                 if (item.isSelected()) {
-                    javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
+                    final javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
                     mnuItem.setText(item.getCaption());
                     if (item.getExtend() != null) {
                         final SendToExtend sendToItem = new SendToExtend(item, contextMenuEvent);
@@ -294,6 +307,32 @@ public class SendToMenu implements ContextMenuItemsProvider {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
+
+    public void sendToOrganizer(SendToMessage message) {
+        try {
+            List<HttpRequestResponse> messageItem = message.getSelectedMessages();
+            HttpRequestResponse httpRequestResponse = messageItem.get(0);
+            if (!httpRequestResponse.hasResponse()) {
+                this.api.organizer().sendToOrganizer(httpRequestResponse.request());
+            }
+            else {
+                this.api.organizer().sendToOrganizer(httpRequestResponse);
+            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public void sendTo(SendToMessage message) {
+        try {
+            List<HttpRequestResponse> messageItem = message.getSelectedMessages();
+            HttpRequest httpRequest = messageItem.get(0).request();
+            this.api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
 
     public void sendToDecoder(byte[] message) {
         try {

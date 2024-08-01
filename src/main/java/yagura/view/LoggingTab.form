@@ -181,7 +181,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkToolLog">
               <Properties>
-                <Property name="text" type="java.lang.String" value="ToolLog:(proxy, spider, scanner, intruder, repeater, extender tool)"/>
+                <Property name="text" type="java.lang.String" value="ToolLog:(proxy, scanner, intruder, repeater, sequencer, extension tool)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkToolLogActionPerformed"/>
