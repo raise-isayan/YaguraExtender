@@ -63,6 +63,7 @@ import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.SmartCodec;
+import org.apache.commons.codec.DecoderException;
 
 /**
  *
@@ -2950,7 +2951,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = ConvertUtil.toRegexEncode(encode, metaChar);
             }
             this.setOutput(encode);
-        } catch (Exception ex) {
+        } catch (IOException | DecoderException ex) {
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -3341,7 +3342,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         }
                     };
                     swList.execute();
-
                 } catch (IllegalFormatException e) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 } catch (IllegalArgumentException e) {
@@ -4092,10 +4092,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             String inputText = BouncyUtil.toHARAKA256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
-        } catch (IllegalStateException ex) {
-            this.setOutputText(StringUtil.getStackTraceMessage(ex));
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (UnsupportedEncodingException ex) {
+        } catch (IllegalStateException | UnsupportedEncodingException ex) {
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -4106,10 +4103,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             String inputText = BouncyUtil.toHARAKA512Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
-        } catch (IllegalStateException ex) {
-            this.setOutputText(StringUtil.getStackTraceMessage(ex));
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (UnsupportedEncodingException ex) {
+        } catch (IllegalStateException | UnsupportedEncodingException ex) {
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }

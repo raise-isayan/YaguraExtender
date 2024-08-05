@@ -178,8 +178,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(lblSelect)
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(scrollSelect, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+                            .addComponent(scrollSelect, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                            .addComponent(cmbDefaultLangEncoding, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -323,7 +323,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(chkJSONP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(chkViewState)
                     .addComponent(chklineWrap)
-                    .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                    .addComponent(spnDispayMaxLength))
                 .addContainerGap())
         );
         tabMessageViewLayout.setVerticalGroup(
@@ -344,13 +344,13 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkJWT)
                     .addComponent(chkViewState))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chklineWrap)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDispayMaxLength)
                     .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 263, Short.MAX_VALUE))
+                .addGap(0, 275, Short.MAX_VALUE))
         );
 
         tabEncoding.add(tabMessageView, java.awt.BorderLayout.EAST);
