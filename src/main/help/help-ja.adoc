@@ -464,6 +464,15 @@ use request name::
 . response title tag +
  レスポンスのタイトルタグの値を送信します。
 
+. all line
+ 全ての行を値として利用します｡
+
+. first line
+ 最初の行を値として利用します｡
+
+. second line
+ 2行目の以降を値として利用します｡
+
 use request comment::
     reqCommentパラメータに指定した内容で送信します。
     送信可能な内容はreqNameと同じです。

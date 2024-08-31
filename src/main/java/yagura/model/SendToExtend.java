@@ -250,24 +250,19 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case MESSAGE_INFO_COPY:
-                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);
+                enabled = !(this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS
+                        || this.contextMenu.invocationType() == InvocationType.PROXY_INTERCEPT
+                        || this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS
+                        || this.contextMenu.invocationType() == InvocationType.SCANNER_RESULTS
+                        || this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE);
                 break;
             case ADD_HOST_TO_INCLUDE_SCOPE:
             case ADD_HOST_TO_EXCLUDE_SCOPE:
             case ADD_TO_EXCLUDE_SCOPE: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TREE)
-                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);
+                enabled = !(this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS
+                        || this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS
+                        || this.contextMenu.invocationType() == InvocationType.SCANNER_RESULTS
+                        || this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE);
                 break;
             }
             default:

@@ -14,14 +14,11 @@ import com.burgstaller.okhttp.DispatchingAuthenticator;
 import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
-import extend.util.external.TransUtil;
-import extend.util.external.TransUtil.EncodePattern;
 import extension.burp.HttpTarget;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.HttpUtil.DummyOutputStream;
-import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
 import java.awt.event.ActionEvent;
 import java.io.BufferedInputStream;
@@ -30,7 +27,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -425,19 +421,21 @@ public class SendToServer extends SendToMenuItem {
 
                     if (extendSendToParameterProp.isUseOverride()) {
                         if (extendSendToParameterProp.isUseReqName()) {
-                            String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                            SendToParameterProperty.LinePartType lineType = extendSendToParameterProp.getReqNameLineType();
+                            String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqName(), messageInfo);
                             if (value != null) {
-                                multipartBuilder.addFormDataPart("reqName", value);
+                                multipartBuilder.addFormDataPart("reqName", SendToParameterProperty.extractLinePart(lineType, value));
                             }
                         }
                         if (extendSendToParameterProp.isUseReqComment()) {
-                            String value = getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo);
+                            SendToParameterProperty.LinePartType lineType = extendSendToParameterProp.getReqCommentLineType();
+                            String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqComment(), messageInfo);
                             if (value != null) {
-                                multipartBuilder.addFormDataPart("reqComment", value);
+                                multipartBuilder.addFormDataPart("reqComment", SendToParameterProperty.extractLinePart(lineType, value));
                             }
                         }
                         if (extendSendToParameterProp.isUseReqNum()) {
-                            String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                            String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqName(), messageInfo);
                             if (value != null) {
                                 multipartBuilder.addFormDataPart("reqNum", value);
                             }
@@ -607,35 +605,6 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
-    public String getSendToParameter(SendToParameterProperty.SendToParameterType type, HttpRequestResponse messageInfo) {
-        String value = null;
-        switch (type) {
-            case HISTORY_COMMENT:
-                value = messageInfo.annotations().notes();
-                break;
-            case RESPONSE_TITLE:
-                if (messageInfo.response() != null) {
-            try {
-                HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
-                String body = wrapResponse.getBodyString(wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name()),  false);
-                value = HttpUtil.extractHTMLTitle(body);
-                if (value != null) {
-                    EncodePattern patern = TransUtil.getSmartDecode(value);
-                    if (patern == EncodePattern.HTML) {
-                        value = SmartCodec.toHtmlUnicodeDecode(value);
-                    }
-                }
-                } catch (UnsupportedEncodingException ex) {
-                    logger.log(Level.SEVERE, ex.getMessage(), ex);
-                }
-                }
-                break;
-            case HISTORY_NUMBER:
-                break;
-        }
-        return value;
-    }
-
     protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
         HttpTarget httpService = new HttpTarget(tagetURL);
         String target = tagetURL.getFile().isEmpty() ? "/" : tagetURL.getFile();
@@ -655,22 +624,24 @@ public class SendToServer extends SendToMenuItem {
         SendToParameterProperty extendSendToParameterProp = extendProp.getSendToParameterProperty();
         if (extendSendToParameterProp.isUseOverride()) {
             if (extendSendToParameterProp.isUseReqName()) {
-                String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                SendToParameterProperty.LinePartType lineType = extendSendToParameterProp.getReqNameLineType();
+                String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqName(), messageInfo);
                 if (value != null) {
-                    HttpUtil.outMultipartText(boundary, out, "reqName", value, StandardCharsets.UTF_8);
+                    HttpUtil.outMultipartText(boundary, out, "reqName", SendToParameterProperty.extractLinePart(lineType, value), StandardCharsets.UTF_8);
                 }
             }
             if (extendSendToParameterProp.isUseReqComment()) {
+                SendToParameterProperty.LinePartType lineType = extendSendToParameterProp.getReqCommentLineType();
                 if (extendSendToParameterProp.getReqName() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
-                    String value = getSendToParameter(extendSendToParameterProp.getReqComment(), messageInfo);
+                    String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqComment(), messageInfo);
                     if (value != null) {
-                        HttpUtil.outMultipartText(boundary, out, "reqComment", value, StandardCharsets.UTF_8);
+                        HttpUtil.outMultipartText(boundary, out, "reqComment", SendToParameterProperty.extractLinePart(lineType, value), StandardCharsets.UTF_8);
                     }
                 }
             }
             if (extendSendToParameterProp.isUseReqNum()) {
                 if (extendSendToParameterProp.getReqName() == SendToParameterProperty.SendToParameterType.HISTORY_NUMBER) {
-                    String value = getSendToParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                    String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqName(), messageInfo);
                     if (value != null) {
                         HttpUtil.outMultipartText(boundary, out, "reqNum", value, StandardCharsets.UTF_8);
                     }
@@ -740,12 +711,9 @@ public class SendToServer extends SendToMenuItem {
 
     @Override
     public boolean isEnabled() {
-        return (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);
+        return !(this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE
+                || this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE
+                || this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);
     }
 
 }

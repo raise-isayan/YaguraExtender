@@ -46,6 +46,8 @@ public class SendToServerExtendDlg extends CustomDialog {
         btnGrpReqComment = new javax.swing.ButtonGroup();
         btnGrpReqNumber = new javax.swing.ButtonGroup();
         btnGrpReqName = new javax.swing.ButtonGroup();
+        btnGrpReqNameHistoryCommentType = new javax.swing.ButtonGroup();
+        rdoReqCommentHistoryCommentType = new javax.swing.ButtonGroup();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -94,6 +96,14 @@ public class SendToServerExtendDlg extends CustomDialog {
         rdoReqNameHistoryComment = new javax.swing.JRadioButton();
         rdoReqCommentHistoryComment = new javax.swing.JRadioButton();
         rdoReqCommentResponseTitle = new javax.swing.JRadioButton();
+        pnlReqNameLineGrp = new javax.swing.JPanel();
+        rdoReqNameAllLine = new javax.swing.JRadioButton();
+        rdoReqNameFirstLine = new javax.swing.JRadioButton();
+        rdoReqNameSecondLine = new javax.swing.JRadioButton();
+        pnlReqCommentLineGrp = new javax.swing.JPanel();
+        rdoReqCommentAllLine = new javax.swing.JRadioButton();
+        rdoReqCommentFirstLine = new javax.swing.JRadioButton();
+        rdoReqCommentSecondLine = new javax.swing.JRadioButton();
         chkOverrideSendToParameter = new javax.swing.JCheckBox();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -462,10 +472,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         });
 
         btnGrpReqName.add(rdoReqNameResponseTitle);
-        rdoReqNameResponseTitle.setSelected(true);
         rdoReqNameResponseTitle.setText("response title tag");
 
         btnGrpReqName.add(rdoReqNameHistoryComment);
+        rdoReqNameHistoryComment.setSelected(true);
         rdoReqNameHistoryComment.setText("history comment");
 
         btnGrpReqComment.add(rdoReqCommentHistoryComment);
@@ -474,6 +484,79 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         btnGrpReqComment.add(rdoReqCommentResponseTitle);
         rdoReqCommentResponseTitle.setText("response title tag");
+        rdoReqCommentResponseTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqCommentResponseTitleActionPerformed(evt);
+            }
+        });
+
+        btnGrpReqNameHistoryCommentType.add(rdoReqNameAllLine);
+        rdoReqNameAllLine.setText("all line");
+
+        btnGrpReqNameHistoryCommentType.add(rdoReqNameFirstLine);
+        rdoReqNameFirstLine.setSelected(true);
+        rdoReqNameFirstLine.setText("first line");
+
+        btnGrpReqNameHistoryCommentType.add(rdoReqNameSecondLine);
+        rdoReqNameSecondLine.setText("after second line");
+
+        javax.swing.GroupLayout pnlReqNameLineGrpLayout = new javax.swing.GroupLayout(pnlReqNameLineGrp);
+        pnlReqNameLineGrp.setLayout(pnlReqNameLineGrpLayout);
+        pnlReqNameLineGrpLayout.setHorizontalGroup(
+            pnlReqNameLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqNameLineGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(rdoReqNameAllLine)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(rdoReqNameFirstLine)
+                .addGap(52, 52, 52)
+                .addComponent(rdoReqNameSecondLine)
+                .addContainerGap())
+        );
+        pnlReqNameLineGrpLayout.setVerticalGroup(
+            pnlReqNameLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqNameLineGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlReqNameLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoReqNameAllLine)
+                    .addComponent(rdoReqNameFirstLine)
+                    .addComponent(rdoReqNameSecondLine))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        rdoReqCommentHistoryCommentType.add(rdoReqCommentAllLine);
+        rdoReqCommentAllLine.setText("all line");
+
+        rdoReqCommentHistoryCommentType.add(rdoReqCommentFirstLine);
+        rdoReqCommentFirstLine.setText("first line");
+
+        rdoReqCommentHistoryCommentType.add(rdoReqCommentSecondLine);
+        rdoReqCommentSecondLine.setSelected(true);
+        rdoReqCommentSecondLine.setText("after second line");
+
+        javax.swing.GroupLayout pnlReqCommentLineGrpLayout = new javax.swing.GroupLayout(pnlReqCommentLineGrp);
+        pnlReqCommentLineGrp.setLayout(pnlReqCommentLineGrpLayout);
+        pnlReqCommentLineGrpLayout.setHorizontalGroup(
+            pnlReqCommentLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqCommentLineGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(rdoReqCommentAllLine)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(rdoReqCommentFirstLine)
+                .addGap(52, 52, 52)
+                .addComponent(rdoReqCommentSecondLine)
+                .addContainerGap())
+        );
+        pnlReqCommentLineGrpLayout.setVerticalGroup(
+            pnlReqCommentLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqCommentLineGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlReqCommentLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoReqCommentAllLine)
+                    .addComponent(rdoReqCommentFirstLine)
+                    .addComponent(rdoReqCommentSecondLine))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout pnlSendToOverrideLayout = new javax.swing.GroupLayout(pnlSendToOverride);
         pnlSendToOverride.setLayout(pnlSendToOverrideLayout);
@@ -482,19 +565,25 @@ public class SendToServerExtendDlg extends CustomDialog {
             .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkUseReqComment)
                     .addComponent(chkUseReqName)
                     .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(rdoReqCommentHistoryComment)
+                        .addGap(18, 18, 18)
+                        .addComponent(rdoReqCommentResponseTitle))
+                    .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                .addComponent(rdoReqCommentHistoryComment)
-                                .addGap(30, 30, 30)
-                                .addComponent(rdoReqCommentResponseTitle))
-                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                .addComponent(rdoReqNameHistoryComment)
-                                .addGap(30, 30, 30)
-                                .addComponent(rdoReqNameResponseTitle)))))
+                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                    .addGap(21, 21, 21)
+                                    .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                    .addComponent(rdoReqNameHistoryComment)
+                                    .addGap(30, 30, 30)
+                                    .addComponent(rdoReqNameResponseTitle)))))
+                    .addComponent(chkUseReqComment))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlSendToOverrideLayout.setVerticalGroup(
@@ -507,12 +596,16 @@ public class SendToServerExtendDlg extends CustomDialog {
                     .addComponent(rdoReqNameHistoryComment)
                     .addComponent(rdoReqNameResponseTitle))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
                 .addComponent(chkUseReqComment)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoReqCommentHistoryComment)
                     .addComponent(rdoReqCommentResponseTitle))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(312, Short.MAX_VALUE))
         );
 
         chkOverrideSendToParameter.setText("override sendto parameter");
@@ -541,8 +634,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addGap(9, 9, 9)
                 .addComponent(chkOverrideSendToParameter)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlSendToOverride, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addComponent(pnlSendToOverride, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         tabbetSendToExtend.addTab("SendToParameter", pnlSendToParameter);
@@ -600,6 +692,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         SwingUtil.setContainerEnable(this.pnlSendToOverride, this.chkOverrideSendToParameter.isSelected());
     }//GEN-LAST:event_chkOverrideSendToParameterStateChanged
 
+    private void rdoReqCommentResponseTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqCommentResponseTitleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoReqCommentResponseTitleActionPerformed
+
     private void chkUseReqNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUseReqNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chkUseReqNameActionPerformed
@@ -645,6 +741,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.ButtonGroup btnGrpHttpClientType;
     private javax.swing.ButtonGroup btnGrpReqComment;
     private javax.swing.ButtonGroup btnGrpReqName;
+    private javax.swing.ButtonGroup btnGrpReqNameHistoryCommentType;
     private javax.swing.ButtonGroup btnGrpReqNumber;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnSelectExecute;
@@ -672,6 +769,8 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JPanel pnlCustom;
     private javax.swing.JPanel pnlCustomAuthorization;
     private javax.swing.JPanel pnlCustomProxy;
+    private javax.swing.JPanel pnlReqCommentLineGrp;
+    private javax.swing.JPanel pnlReqNameLineGrp;
     private javax.swing.JPanel pnlSendToOverride;
     private javax.swing.JPanel pnlSendToParameter;
     private javax.swing.JPanel pnlServerCerficate;
@@ -681,10 +780,17 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JPanel pnlUseCustomClient;
     private javax.swing.JRadioButton rdoBurpClient;
     private javax.swing.JRadioButton rdoCustomClient;
+    private javax.swing.JRadioButton rdoReqCommentAllLine;
+    private javax.swing.JRadioButton rdoReqCommentFirstLine;
     private javax.swing.JRadioButton rdoReqCommentHistoryComment;
+    private javax.swing.ButtonGroup rdoReqCommentHistoryCommentType;
     private javax.swing.JRadioButton rdoReqCommentResponseTitle;
+    private javax.swing.JRadioButton rdoReqCommentSecondLine;
+    private javax.swing.JRadioButton rdoReqNameAllLine;
+    private javax.swing.JRadioButton rdoReqNameFirstLine;
     private javax.swing.JRadioButton rdoReqNameHistoryComment;
     private javax.swing.JRadioButton rdoReqNameResponseTitle;
+    private javax.swing.JRadioButton rdoReqNameSecondLine;
     private javax.swing.JSpinner spnProxyPort;
     private javax.swing.JSpinner spnTimeout;
     private javax.swing.JTabbedPane tabbetSendToExtend;
@@ -763,7 +869,6 @@ public class SendToServerExtendDlg extends CustomDialog {
     }
 
     public void setProperty(SendToParameterProperty prop) {
-
         this.chkOverrideSendToParameter.setSelected(prop.isUseOverride());
         this.chkUseReqName.setSelected(prop.isUseReqName());
         if (prop.getReqName() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
@@ -772,11 +877,35 @@ public class SendToServerExtendDlg extends CustomDialog {
             this.rdoReqNameResponseTitle.setSelected(true);
         }
 
+        switch (prop.getReqNameLineType()) {
+            case FIRST_LINE:
+                this.rdoReqNameFirstLine.setSelected(true);
+                break;
+            case SECOND_LINE:
+                this.rdoReqNameSecondLine.setSelected(true);
+                break;
+            default:
+                this.rdoReqNameAllLine.setSelected(true);
+                break;
+        }
+
         this.chkUseReqComment.setSelected(prop.isUseReqComment());
         if (prop.getReqComment() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
             this.rdoReqCommentHistoryComment.setSelected(true);
         } else {
             this.rdoReqCommentResponseTitle.setSelected(true);
+        }
+
+        switch (prop.getReqCommentLineType()) {
+            case FIRST_LINE:
+                this.rdoReqCommentFirstLine.setSelected(true);
+                break;
+            case SECOND_LINE:
+                this.rdoReqCommentSecondLine.setSelected(true);
+                break;
+            default:
+                this.rdoReqCommentAllLine.setSelected(true);
+                break;
         }
 
 //        this.chkUseReqNum.setSelected(prop.isUseReqNum());
@@ -834,8 +963,20 @@ public class SendToServerExtendDlg extends CustomDialog {
         prop.setUseReqName(this.chkUseReqName.isSelected());
         prop.setReqName(this.rdoReqNameHistoryComment.isSelected() ? SendToParameterProperty.SendToParameterType.HISTORY_COMMENT : SendToParameterProperty.SendToParameterType.RESPONSE_TITLE);
 
+        prop.setReqNameLineType(SendToParameterProperty.LinePartType.ALL_LINE);
+        if (this.rdoReqNameFirstLine.isSelected())
+            prop.setReqNameLineType(SendToParameterProperty.LinePartType.FIRST_LINE);
+        if (this.rdoReqNameSecondLine.isSelected())
+            prop.setReqNameLineType(SendToParameterProperty.LinePartType.SECOND_LINE);
+
         prop.setUseReqComment(this.chkUseReqComment.isSelected());
         prop.setReqComment(this.rdoReqCommentHistoryComment.isSelected() ? SendToParameterProperty.SendToParameterType.HISTORY_COMMENT : SendToParameterProperty.SendToParameterType.RESPONSE_TITLE);
+
+        prop.setReqCommentLineType(SendToParameterProperty.LinePartType.ALL_LINE);
+        if (this.rdoReqCommentFirstLine.isSelected())
+            prop.setReqCommentLineType(SendToParameterProperty.LinePartType.FIRST_LINE);
+        if (this.rdoReqCommentSecondLine.isSelected())
+            prop.setReqCommentLineType(SendToParameterProperty.LinePartType.SECOND_LINE);
 
 //        prop.setUseReqNum(this.chkUseReqNum.isSelected());
 //        prop.setReqNum(SendToParameterProperty.SendToParameterType.HISTORY_NUMBER);

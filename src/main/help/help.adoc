@@ -470,6 +470,15 @@ use request name::
 . response title tag +
  Send the value of the response title tag.
 
+. all line
+ All lines are used as values.
+
+. first line
+ First lines are used as values.
+
+. second line
+ After Second lines are used as values.
+
 use request comment::
   The content specified in the reqComment parameter is sent.
   The contents that can be sent are the same as for reqName.

@@ -26,12 +26,9 @@ public class SendToMultiEditor extends SendToMenuItem {
 
     @Override
     public boolean isEnabled() {
-        return (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE);
+        return !(this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE
+                || this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE
+                || this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);
     }
 
     @Override
