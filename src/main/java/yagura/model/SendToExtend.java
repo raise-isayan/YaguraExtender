@@ -212,7 +212,8 @@ public class SendToExtend extends SendToMenuItem {
                 enabled = (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE);
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             }
             case REQUEST_AND_RESPONSE_TO_FILE: {
@@ -221,14 +222,16 @@ public class SendToExtend extends SendToMenuItem {
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE);
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             }
             case REQUEST_BODY_TO_FILE:
                 enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
                         || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST);
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             case RESPONSE_BODY_TO_FILE: {
                 enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
@@ -246,23 +249,31 @@ public class SendToExtend extends SendToMenuItem {
             case PASTE_FROM_CLIPBOARD: {
                 enabled = (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);
+                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             }
             case MESSAGE_INFO_COPY:
-                enabled = !(this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS
-                        || this.contextMenu.invocationType() == InvocationType.PROXY_INTERCEPT
-                        || this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS
-                        || this.contextMenu.invocationType() == InvocationType.SCANNER_RESULTS
-                        || this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE);
+               enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             case ADD_HOST_TO_INCLUDE_SCOPE:
             case ADD_HOST_TO_EXCLUDE_SCOPE:
             case ADD_TO_EXCLUDE_SCOPE: {
-                enabled = !(this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS
-                        || this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS
-                        || this.contextMenu.invocationType() == InvocationType.SCANNER_RESULTS
-                        || this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE);
+                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TREE)
+                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             }
             default:

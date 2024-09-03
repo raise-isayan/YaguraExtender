@@ -716,9 +716,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
             boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
-            int timeOutValue = (int) csrfParam.getTimeOutValue();
+            int timeOutValue = csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
-            final MontoyaApi api = BurpExtension.api();
+
             final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             // 自動判定
             String contentType = wrapRequest.getEnctype();
@@ -899,7 +899,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
             String csrfEncoding = csrfParam.getCsrfEncoding();
-            int timeOutValue = (int) csrfParam.getTimeOutValue();
+            int timeOutValue = csrfParam.getTimeOutValue();
             boolean csrfXHRWithXHeader = csrfParam.isCsrfXHRWithXHeader();
 
             final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
