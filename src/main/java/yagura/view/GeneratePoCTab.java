@@ -148,8 +148,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         chkTimeDelay = new javax.swing.JCheckBox();
         chkGETmethod = new javax.swing.JCheckBox();
         chkUseHttps = new javax.swing.JCheckBox();
-        chkHtml5 = new javax.swing.JCheckBox();
-        chkHtml5WithXHeader = new javax.swing.JCheckBox();
+        chkXHR = new javax.swing.JCheckBox();
+        chkXHRWithXHeader = new javax.swing.JCheckBox();
         spnTime = new javax.swing.JSpinner();
         chkMultiForm = new javax.swing.JCheckBox();
         pnlSelect = new javax.swing.JPanel();
@@ -220,15 +220,15 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
         chkUseHttps.setText("use https");
 
-        chkHtml5.setText("Html5");
-        chkHtml5.addChangeListener(new javax.swing.event.ChangeListener() {
+        chkXHR.setText("XHR");
+        chkXHR.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkHtml5StateChanged(evt);
+                chkXHRStateChanged(evt);
             }
         });
 
-        chkHtml5WithXHeader.setText("with X- Header");
-        chkHtml5WithXHeader.setEnabled(false);
+        chkXHRWithXHeader.setText("with X- Header");
+        chkXHRWithXHeader.setEnabled(false);
 
         spnTime.setValue(1000);
 
@@ -248,9 +248,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         .addGroup(pnlCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlCheckLayout.createSequentialGroup()
                                 .addGap(21, 21, 21)
-                                .addComponent(chkHtml5WithXHeader))
+                                .addComponent(chkXHRWithXHeader))
                             .addComponent(chkMultiForm)
-                            .addComponent(chkHtml5)
+                            .addComponent(chkXHR)
                             .addGroup(pnlCheckLayout.createSequentialGroup()
                                 .addComponent(chkTimeDelay)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -277,10 +277,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkMultiForm)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chkHtml5)
+                .addComponent(chkXHR)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chkHtml5WithXHeader)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(chkXHRWithXHeader)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlCheck);
@@ -364,8 +364,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             @Override
             protected String doInBackground() throws Exception {
                 publish("...");
-                if (csrfParam.isCsrfHtml5()) {
-                    return generateHTML5PoC(csrfParam);
+                if (csrfParam.isCsrfXHR()) {
+                    return generateXHRPoC(csrfParam);
                 } else {
                     return generatePoC(csrfParam);
                 }
@@ -392,10 +392,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         swPoC.execute();
     }//GEN-LAST:event_btnGenerateActionPerformed
 
-    private void chkHtml5StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHtml5StateChanged
-//        this.chkHtml5Binaly.setEnabled(this.chkHtml5.isSelected());
-        this.chkHtml5WithXHeader.setEnabled(this.chkHtml5.isSelected());
-    }//GEN-LAST:event_chkHtml5StateChanged
+    private void chkXHRStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkXHRStateChanged
+        this.chkXHRWithXHeader.setEnabled(this.chkXHR.isSelected());
+    }//GEN-LAST:event_chkXHRStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopyClipbord;
@@ -403,11 +402,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JCheckBox chkAutoSubmit;
     private javax.swing.JCheckBox chkGETmethod;
-    private javax.swing.JCheckBox chkHtml5;
-    private javax.swing.JCheckBox chkHtml5WithXHeader;
     private javax.swing.JCheckBox chkMultiForm;
     private javax.swing.JCheckBox chkTimeDelay;
     private javax.swing.JCheckBox chkUseHttps;
+    private javax.swing.JCheckBox chkXHR;
+    private javax.swing.JCheckBox chkXHRWithXHeader;
     private javax.swing.ButtonGroup grpGene;
     private javax.swing.JPanel pnlButton;
     private javax.swing.JPanel pnlCheck;
@@ -458,9 +457,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         private boolean csrfMultiPart = false;
         private boolean csrfTextPlain = false;
         private String csrfEncoding = StandardCharsets.ISO_8859_1.name();
-        public boolean csrfHtml5 = false;
-        private boolean csrfHtml5Binaly = false;
-        private boolean csrfHtml5WithXHeader = false;
+        public boolean csrfXHR = false;
+        private boolean csrfXHRBinaly = false;
+        private boolean csrfXHRWithXHeader = false;
         private boolean csrfGetMethod = false;
         private boolean csrfMultiForm = false;
         public boolean useHttps = false;
@@ -565,45 +564,45 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         }
 
         /**
-         * @return the csrfHtml5
+         * @return the csrfXHR
          */
-        public boolean isCsrfHtml5() {
-            return csrfHtml5;
+        public boolean isCsrfXHR() {
+            return csrfXHR;
         }
 
         /**
-         * @param csrfHtml5 the csrfHtml5 to set
+         * @param csrfXHR the csrfXHR to set
          */
-        public void setCsrfHtml5(boolean csrfHtml5) {
-            this.csrfHtml5 = csrfHtml5;
+        public void setCsrfXHR(boolean csrfXHR) {
+            this.csrfXHR = csrfXHR;
         }
 
         /**
-         * @return the csrfHtml5Binaly
+         * @return the csrfXHRBinaly
          */
-        public boolean isCsrfHtml5Binaly() {
-            return csrfHtml5Binaly;
+        public boolean isCsrfXHRBinaly() {
+            return csrfXHRBinaly;
         }
 
         /**
-         * @param csrfHtml5Binaly the csrfHtml5Binaly to set
+         * @param csrfXHRBinaly the csrfXHRBinaly to set
          */
-        public void setCsrfHtml5Binaly(boolean csrfHtml5Binaly) {
-            this.csrfHtml5Binaly = csrfHtml5Binaly;
+        public void setCsrfXHRBinaly(boolean csrfXHRBinaly) {
+            this.csrfXHRBinaly = csrfXHRBinaly;
         }
 
         /**
-         * @return the csrfHtml5WithXHeader
+         * @return the csrfXHRWithXHeader
          */
-        public boolean isCsrfHtml5WithXHeader() {
-            return csrfHtml5WithXHeader;
+        public boolean isCsrfXHRWithXHeader() {
+            return csrfXHRWithXHeader;
         }
 
         /**
-         * @param csrfHtml5WithXHeader the csrfHtml5WithXHeader to set
+         * @param csrfXHRWithXHeader the csrfXHRWithXHeader to set
          */
-        public void setCsrfHtml5WithXHeader(boolean csrfHtml5WithXHeader) {
-            this.csrfHtml5WithXHeader = csrfHtml5WithXHeader;
+        public void setCsrfXHRWithXHeader(boolean csrfXHRWithXHeader) {
+            this.csrfXHRWithXHeader = csrfXHRWithXHeader;
         }
 
         /**
@@ -700,8 +699,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         csrfParam.setCsrfMultiPart(this.rdoMultipart.isSelected());
         csrfParam.setCsrfTextPlain(this.rdoPlain.isSelected());
         csrfParam.setCsrfEncoding(this.quickSearchTab.getSelectedEncoding());
-        csrfParam.setCsrfHtml5(this.chkHtml5.isSelected());
-        csrfParam.setCsrfHtml5WithXHeader(this.chkHtml5WithXHeader.isSelected());
+        csrfParam.setCsrfXHR(this.chkXHR.isSelected());
+        csrfParam.setCsrfXHRWithXHeader(this.chkXHRWithXHeader.isSelected());
         csrfParam.setCsrfGetMethod(this.chkGETmethod.isSelected());
         csrfParam.setCsrfMultiForm(this.chkMultiForm.isSelected());
         csrfParam.setUseHttps(this.chkUseHttps.isSelected());
@@ -891,7 +890,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    private String generateHTML5PoC(GenerateCsrfParameter csrfParam) {
+    private String generateXHRPoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
             boolean csrfAutoSubmit = csrfParam.isCsrfAutoSubmit();
@@ -901,7 +900,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
             String csrfEncoding = csrfParam.getCsrfEncoding();
             int timeOutValue = (int) csrfParam.getTimeOutValue();
-            boolean csrfHtml5WithXHeader = csrfParam.isCsrfHtml5WithXHeader();
+            boolean csrfXHRWithXHeader = csrfParam.isCsrfXHRWithXHeader();
 
             final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             String contentType = wrapRequest.getEnctype();
@@ -960,7 +959,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             buff.append("\tvar xhr = new XMLHttpRequest();").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("\txhr.open('%s', '%s', true);" + HttpUtil.LINE_TERMINATE, new Object[]{csrfFormMethod, ConvertUtil.encodeJsLangQuote(csrfUrl, false)}));
             buff.append("\txhr.withCredentials = true;").append(HttpUtil.LINE_TERMINATE);       // Cookieを付与
-            if (csrfHtml5WithXHeader) {
+            if (csrfXHRWithXHeader) {
                 List<HttpHeader> headers = wrapRequest.headers();
                 for (HttpHeader header : headers) {
                     if (header.name().startsWith("X-")) {

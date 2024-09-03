@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.BurpExtension;
 import extension.burp.IssueAlertEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
@@ -26,6 +27,7 @@ public class SendToMultiEditor extends SendToMenuItem {
 
     @Override
     public boolean isEnabled() {
+        BurpExtension.helpers().outPrintln("invocationType:" + this.contextMenu.invocationType());
         return !(this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE
                 || this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE
                 || this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);

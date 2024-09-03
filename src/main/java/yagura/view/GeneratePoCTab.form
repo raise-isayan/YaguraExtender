@@ -118,10 +118,10 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
                                           <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                                          <Component id="chkHtml5WithXHeader" min="-2" max="-2" attributes="0"/>
+                                          <Component id="chkXHRWithXHeader" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Component id="chkMultiForm" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="chkHtml5" min="-2" max="-2" attributes="0"/>
+                                      <Component id="chkXHR" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="chkTimeDelay" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
@@ -157,9 +157,9 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="chkMultiForm" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="chkHtml5" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkXHR" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="chkHtml5WithXHeader" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkXHRWithXHeader" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -186,15 +186,15 @@
                     <Property name="text" type="java.lang.String" value="use https"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkHtml5">
+                <Component class="javax.swing.JCheckBox" name="chkXHR">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Html5"/>
+                    <Property name="text" type="java.lang.String" value="XHR"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkHtml5StateChanged"/>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkXHRStateChanged"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkHtml5WithXHeader">
+                <Component class="javax.swing.JCheckBox" name="chkXHRWithXHeader">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="with X- Header"/>
                     <Property name="enabled" type="boolean" value="false"/>
