@@ -57,7 +57,7 @@
                               <Component id="btnCopyClipbord" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="btnSavetoFile" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="112" max="32767" attributes="0"/>
+                          <EmptySpace pref="60" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -107,7 +107,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
@@ -116,10 +116,6 @@
                               </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                                          <Component id="chkXHRWithXHeader" min="-2" max="-2" attributes="0"/>
-                                      </Group>
                                       <Component id="chkMultiForm" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="chkXHR" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
@@ -132,8 +128,13 @@
                                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                                           <Component id="chkGETmethod" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <Group type="102" attributes="0">
+                                          <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                                          <Component id="chkXHRWithXHeader" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Component id="chkLegacyFileUpload" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <EmptySpace min="0" pref="64" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -160,6 +161,8 @@
                           <Component id="chkXHR" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="chkXHRWithXHeader" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="chkLegacyFileUpload" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -211,6 +214,14 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="multi form (with target=blank)"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JCheckBox" name="chkLegacyFileUpload">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Legacy FileUpload"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkLegacyFileUploadStateChanged"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

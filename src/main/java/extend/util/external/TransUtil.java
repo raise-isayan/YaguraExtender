@@ -899,11 +899,7 @@ public class TransUtil {
     }
 
     public static String toByteHexEncode(byte[] bytes, boolean upperCase) {
-        if (upperCase) {
-            return ConvertUtil.toHexString(bytes);
-        } else {
-            return ConvertUtil.toHexString(bytes).toLowerCase();
-        }
+        return ConvertUtil.toHexString(bytes, upperCase);
     }
 
     public static String toByteHex1Encode(byte[] bytes, Pattern pattern, boolean upperCase) {
@@ -1279,7 +1275,7 @@ public class TransUtil {
              */
             String[] hexs = new String[output.length];
             for (int i = 0; i < output.length; i++) {
-                hexs[i] = ConvertUtil.toHexString(output[i]);
+                hexs[i] = ConvertUtil.toHexString(output[i], true);
             }
             /*
              * HEX表示の作成

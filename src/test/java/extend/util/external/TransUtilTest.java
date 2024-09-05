@@ -539,7 +539,6 @@ public class TransUtilTest {
 //            assertTrue(false);
 //        }
 //    }
-
     /**
      * // * Test of generaterList method, of class TransUtil.
      */
@@ -832,14 +831,12 @@ public class TransUtilTest {
         System.out.println(UnixCrypt.crypt("aaa"));
     }
 
-
     @Test
     public void testSha2Crypt() {
         System.out.println("testSha2Crypt");
         System.out.println(Sha2Crypt.sha256Crypt("aaa".getBytes()));
         System.out.println(Sha2Crypt.sha256Crypt("aaa".getBytes()));
     }
-
 
     @Test
     public void testTranslate() {
@@ -894,7 +891,7 @@ public class TransUtilTest {
         hasher.update("Hello, world!".getBytes(StandardCharsets.UTF_8));
         byte[] hash = new byte[32];
         hasher.doFinalize(hash);
-        System.out.println(ConvertUtil.toHexString(hash));
+        System.out.println(ConvertUtil.toHexString(hash, true));
     }
 
     @Test
@@ -904,18 +901,16 @@ public class TransUtilTest {
         hasher.update("Hello, world!".getBytes(StandardCharsets.UTF_8));
         byte[] hash = new byte[64];
         hasher.doFinalize(hash);
-        System.out.println(ConvertUtil.toHexString(hash));
+        System.out.println(ConvertUtil.toHexString(hash, true));
     }
-
 
     @Test
     public void testBinary() throws IOException {
         System.out.println("testBinary");
         FileOutputStream fstm = new FileOutputStream("C:\\Windows\\Temp\\output");
         for (int i = 0; i < 256; i++) {
-            fstm.write((byte)i);
+            fstm.write((byte) i);
         }
     }
-
 
 }

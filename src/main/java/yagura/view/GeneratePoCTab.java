@@ -1,7 +1,6 @@
 package yagura.view;
 
 import burp.BurpExtension;
-import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpHeader;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -36,12 +35,15 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
@@ -152,6 +154,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         chkXHRWithXHeader = new javax.swing.JCheckBox();
         spnTime = new javax.swing.JSpinner();
         chkMultiForm = new javax.swing.JCheckBox();
+        chkLegacyFileUpload = new javax.swing.JCheckBox();
         pnlSelect = new javax.swing.JPanel();
         rdoPlain = new javax.swing.JRadioButton();
         rdoMultipart = new javax.swing.JRadioButton();
@@ -196,7 +199,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     .addComponent(btnGenerate)
                     .addComponent(btnCopyClipbord)
                     .addComponent(btnSavetoFile))
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         pnlButtonLayout.setVerticalGroup(
             pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -234,6 +237,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
         chkMultiForm.setText("multi form (with target=blank)");
 
+        chkLegacyFileUpload.setText("Legacy FileUpload");
+        chkLegacyFileUpload.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkLegacyFileUploadStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlCheckLayout = new javax.swing.GroupLayout(pnlCheck);
         pnlCheck.setLayout(pnlCheckLayout);
         pnlCheckLayout.setHorizontalGroup(
@@ -246,9 +256,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlCheckLayout.createSequentialGroup()
                         .addGroup(pnlCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlCheckLayout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(chkXHRWithXHeader))
                             .addComponent(chkMultiForm)
                             .addComponent(chkXHR)
                             .addGroup(pnlCheckLayout.createSequentialGroup()
@@ -258,8 +265,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             .addGroup(pnlCheckLayout.createSequentialGroup()
                                 .addComponent(chkUseHttps)
                                 .addGap(22, 22, 22)
-                                .addComponent(chkGETmethod)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(chkGETmethod))
+                            .addGroup(pnlCheckLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(chkXHRWithXHeader))
+                            .addComponent(chkLegacyFileUpload))
+                        .addGap(0, 64, Short.MAX_VALUE))))
         );
         pnlCheckLayout.setVerticalGroup(
             pnlCheckLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,7 +291,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 .addComponent(chkXHR)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkXHRWithXHeader)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkLegacyFileUpload)
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlCheck);
@@ -367,7 +380,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 if (csrfParam.isCsrfXHR()) {
                     return generateXHRPoC(csrfParam);
                 } else {
-                    return generatePoC(csrfParam);
+//                    return generatePoC(csrfParam);
+                    return generateStandardPoC(csrfParam);
                 }
             }
 
@@ -394,7 +408,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
     private void chkXHRStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkXHRStateChanged
         this.chkXHRWithXHeader.setEnabled(this.chkXHR.isSelected());
+        this.chkLegacyFileUpload.setEnabled(!this.chkXHR.isSelected());
     }//GEN-LAST:event_chkXHRStateChanged
+
+    private void chkLegacyFileUploadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkLegacyFileUploadStateChanged
+        this.chkXHR.setEnabled(!this.chkLegacyFileUpload.isSelected());
+    }//GEN-LAST:event_chkLegacyFileUploadStateChanged
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopyClipbord;
@@ -402,6 +421,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JCheckBox chkAutoSubmit;
     private javax.swing.JCheckBox chkGETmethod;
+    private javax.swing.JCheckBox chkLegacyFileUpload;
     private javax.swing.JCheckBox chkMultiForm;
     private javax.swing.JCheckBox chkTimeDelay;
     private javax.swing.JCheckBox chkUseHttps;
@@ -464,6 +484,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         private boolean csrfMultiForm = false;
         public boolean useHttps = false;
         private boolean csrfTimeDelay = false;
+        private boolean csrfLegacyFileUpload = false;
 
         /**
          * @return the csrfAutoSubmit
@@ -606,6 +627,20 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         }
 
         /**
+         * @return the csrfLegacyFileUpload
+         */
+        public boolean isCsrfLegacyFileUpload() {
+            return csrfLegacyFileUpload;
+        }
+
+        /**
+         * @param csrfLegacyFileUpload the csrfLegacyFileUpload to set
+         */
+        public void setCsrfLegacyFileUpload(boolean csrfLegacyFileUpload) {
+            this.csrfLegacyFileUpload = csrfLegacyFileUpload;
+        }
+
+        /**
          * @return the csrfGetMethod
          */
         public boolean isCsrfGetMethod() {
@@ -666,13 +701,31 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     protected String generateMultiFormFunction(boolean isCsrfTimeDelay) {
         String timeDelay = isCsrfTimeDelay ? "msec" : "";
         StringBuilder buff = new StringBuilder();
-        buff.append(String.format("function csrfPoC(%s) {" + HttpUtil.LINE_TERMINATE, new Object[]{timeDelay}));
+        buff.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
         buff.append("\tfor(let i = 0; i < document.forms.length; i++) {").append(HttpUtil.LINE_TERMINATE);
         if (isCsrfTimeDelay) {
             buff.append("\t\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
         }
         buff.append("\t\tdocument.forms[i].submit();").append(HttpUtil.LINE_TERMINATE);
         buff.append("\t}").append(HttpUtil.LINE_TERMINATE);
+        buff.append("}").append(HttpUtil.LINE_TERMINATE);
+        return buff.toString();
+    }
+
+    protected String generateDataTransferFunctionCall(byte[] binaly, String fileid, String filename, String contentType) {
+        StringBuilder buff = new StringBuilder();
+        buff.append("\tconst ").append(fileid).append(" = new File([Uint8Array.of(").append(generateHexBinay(binaly)).append(").buffer],\"").append(ConvertUtil.encodeJsLangQuote(filename, false)).append("\",{\"type\": \"").append(ConvertUtil.encodeJsLangQuote(contentType, false)).append("\"});").append(HttpUtil.LINE_TERMINATE);;
+        buff.append("\tfileAttachment(").append(fileid).append(", \"").append(fileid).append("\");").append(HttpUtil.LINE_TERMINATE);;
+        return buff.toString();
+    }
+
+    protected String generateDataTransferFunction() {
+        StringBuilder buff = new StringBuilder();
+        buff.append("function fileAttachment(file, fileid){").append(HttpUtil.LINE_TERMINATE);
+        buff.append("\tconst part  = document.getElementById(fileid);").append(HttpUtil.LINE_TERMINATE);
+        buff.append("\tconst dT = new DataTransfer();").append(HttpUtil.LINE_TERMINATE);
+        buff.append("\tdT.items.add(file);").append(HttpUtil.LINE_TERMINATE);
+        buff.append("\tpart.files = dT.files;").append(HttpUtil.LINE_TERMINATE);
         buff.append("}").append(HttpUtil.LINE_TERMINATE);
         return buff.toString();
     }
@@ -701,6 +754,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         csrfParam.setCsrfEncoding(this.quickSearchTab.getSelectedEncoding());
         csrfParam.setCsrfXHR(this.chkXHR.isSelected());
         csrfParam.setCsrfXHRWithXHeader(this.chkXHRWithXHeader.isSelected());
+        csrfParam.setCsrfLegacyFileUpload(this.chkLegacyFileUpload.isSelected());
         csrfParam.setCsrfGetMethod(this.chkGETmethod.isSelected());
         csrfParam.setCsrfMultiForm(this.chkMultiForm.isSelected());
         csrfParam.setUseHttps(this.chkUseHttps.isSelected());
@@ -754,7 +808,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseHttps());
             String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(wrapRequest.url()) : wrapRequest.url();
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
-            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">" + HttpUtil.LINE_TERMINATE, new Object[]{csrfEncoding}));
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
 
             buff.append("<script type=\"text/javascript\">").append(HttpUtil.LINE_TERMINATE);
             if (csrfParam.isCsrfTimeDelay()) {
@@ -764,7 +818,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 buff.append(generateMultiFormFunction(csrfParam.isCsrfTimeDelay()));
             } else {
                 String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
-                buff.append(String.format("function csrfPoC(%s) {" + HttpUtil.LINE_TERMINATE, new Object[]{timeDelay}));
+                buff.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
                 if (csrfParam.isCsrfTimeDelay()) {
                     buff.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
                 }
@@ -780,17 +834,17 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
             }
-            buff.append(String.format("<body%s>" + HttpUtil.LINE_TERMINATE, new Object[]{autoSubmit}));
+            buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
             buff.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
             String targetLink = (csrfParam.isCsrfMultiForm()) ? "target=\"_blank\"" : "";
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
                 if (HttpUtil.isUrlEencoded(csrfEnctype)) {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\" %s>" + HttpUtil.LINE_TERMINATE,
-                            new Object[]{csrfUrl, csrfFormMethod, targetLink}));
+                    buff.append(String.format("<form action=\"%s\" method=\"%s\" %s>",
+                            new Object[]{csrfUrl, csrfFormMethod, targetLink})).append(HttpUtil.LINE_TERMINATE);
                 } else {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>" + HttpUtil.LINE_TERMINATE,
-                            new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
+                    buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
+                            new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
                 }
                 List<ParsedHttpParameter> parameters = wrapRequest.parameters();
                 logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
@@ -815,8 +869,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         }
                         String decodename = HttpUtil.toHtmlEncode(paramName);
                         String decodevalue = HttpUtil.toHtmlEncode(paramValue);
-                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">" + HttpUtil.LINE_TERMINATE,
-                                new Object[]{decodename, decodevalue}));
+                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
+                                new Object[]{decodename, decodevalue})).append(HttpUtil.LINE_TERMINATE);
                     } else if (paramType == HttpParameterType.BODY && !binaryParam) {
                         //if Resuest MultiPart binaryParam;
                         if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
@@ -837,8 +891,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         }
                         String decodename = HttpUtil.toHtmlEncode(paramName);
                         String decodevalue = HttpUtil.toHtmlEncode(paramValue);
-                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">" + HttpUtil.LINE_TERMINATE,
-                                new Object[]{decodename, decodevalue}));
+                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
+                                new Object[]{decodename, decodevalue})).append(HttpUtil.LINE_TERMINATE);
                     } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {
                         binaryParam = true;
                         filename = paramValue;
@@ -855,8 +909,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             } else {
                 // csrf textplain
-                buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>" + HttpUtil.LINE_TERMINATE,
-                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink}));
+                buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
+                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
                 Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(wrapRequest.body().getBytes(), csrfEncoding));
                 String key = pair.getKey();
                 String val = pair.getValue();
@@ -879,7 +933,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 if (csrfParam.isCsrfTimeDelay()) {
                     autoSubmit = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
-                buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>" + HttpUtil.LINE_TERMINATE, autoSubmit));
+                buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>", autoSubmit)).append(HttpUtil.LINE_TERMINATE);
             }
             buff.append("</form>").append(HttpUtil.LINE_TERMINATE);
             buff.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
@@ -935,7 +989,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             String csrfUrl = wrapRequest.url();
 
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
-            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">" + HttpUtil.LINE_TERMINATE, new Object[]{csrfEncoding}));
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
 
             // 現在時刻
             LocalDateTime localDateTime = LocalDateTime.now();
@@ -955,9 +1009,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 submitFunction = String.format("csrfSubmit%s", new Object[]{localfmt.format(localDateTime)});
             }
             buff.append("// begen script").append(HttpUtil.LINE_TERMINATE);
-            buff.append(String.format("function %s(%s) {" + HttpUtil.LINE_TERMINATE, new Object[]{submitFunction, timeDelay}));
+            buff.append(String.format("function %s(%s) {", new Object[]{submitFunction, timeDelay})).append(HttpUtil.LINE_TERMINATE);
             buff.append("\tvar xhr = new XMLHttpRequest();").append(HttpUtil.LINE_TERMINATE);
-            buff.append(String.format("\txhr.open('%s', '%s', true);" + HttpUtil.LINE_TERMINATE, new Object[]{csrfFormMethod, ConvertUtil.encodeJsLangQuote(csrfUrl, false)}));
+            buff.append(String.format("\txhr.open('%s', '%s', true);", new Object[]{csrfFormMethod, ConvertUtil.encodeJsLangQuote(csrfUrl, false)})).append(HttpUtil.LINE_TERMINATE);
             buff.append("\txhr.withCredentials = true;").append(HttpUtil.LINE_TERMINATE);       // Cookieを付与
             if (csrfXHRWithXHeader) {
                 List<HttpHeader> headers = wrapRequest.headers();
@@ -965,7 +1019,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     if (header.name().startsWith("X-")) {
                         String name = header.name();
                         String value = header.value();
-                        buff.append(String.format("\txhr.setRequestHeader('%s', '%s');" + HttpUtil.LINE_TERMINATE, ConvertUtil.encodeJsLangQuote(name, false), ConvertUtil.encodeJsLangQuote(value, false)));
+                        buff.append(String.format("\txhr.setRequestHeader('%s', '%s');", ConvertUtil.encodeJsLangQuote(name, false), ConvertUtil.encodeJsLangQuote(value, false))).append(HttpUtil.LINE_TERMINATE);
                     }
                 }
             }
@@ -974,7 +1028,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             if (!csrfTextPlain) {
                 String boundary = HttpUtil.generateBoundary();
                 if (csrfMultiPart) {
-                    buff.append(String.format("\tvar boundary = '--%s';" + HttpUtil.LINE_TERMINATE, new Object[]{boundary}));
+                    buff.append(String.format("\tvar boundary = '--%s';", new Object[]{boundary})).append(HttpUtil.LINE_TERMINATE);
                     buff.append("\txhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=' + boundary);").append(HttpUtil.LINE_TERMINATE);
                     List<ParsedHttpParameter> parameters = wrapRequest.parameters();
                     logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
@@ -1013,7 +1067,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                                 parambuff.append(";").append(System.lineSeparator());
                             }
                             parambuff.append("\treq += '--' + boundary + '\\r\\n' + ").append(HttpUtil.LINE_TERMINATE);
-                            parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"\\r\\n\\r\\n' + " + HttpUtil.LINE_TERMINATE, new Object[]{paramName}));
+                            parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"\\r\\n\\r\\n' + ", new Object[]{paramName})).append(HttpUtil.LINE_TERMINATE);
                             String encodeHex = TransUtil.toByteHex1Encode(StringUtil.getBytesCharset(paramValue, csrfEncoding), SmartCodec.ENCODE_PATTERN_JS, false);
                             parambuff.append(String.format("\t'%s\\r\\n'", new Object[]{encodeHex}));
                         } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {
@@ -1024,7 +1078,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                                 parambuff.append(";").append(System.lineSeparator());
                             }
                             parambuff.append("\treq += '--' + boundary + '\\r\\n' + ").append(HttpUtil.LINE_TERMINATE);
-                            parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\\r\\n' + " + HttpUtil.LINE_TERMINATE, new Object[]{paramName, filename}));
+                            parambuff.append(String.format("\t'Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"\\r\\n' + ", new Object[]{paramName, filename})).append(HttpUtil.LINE_TERMINATE);
                             parambuff.append("\t'Content-Type: application/octet-stream\\r\\n\\r\\n'");
                             parambuff.append("+ ").append(System.lineSeparator());
                             String encodeHex = TransUtil.toByteHex1Encode(StringUtil.getBytesRaw(paramValue), SmartCodec.ENCODE_PATTERN_JS, false);
@@ -1064,16 +1118,16 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             }
                             if (contentType != null && HttpUtil.isMaltiPart(contentType) && HttpUtil.isUrlEencoded(csrfEnctype)) {
                                 // urlencodeの必要がある場合
-                                buff.append(String.format("'%s' + '=' + '%s';" + HttpUtil.LINE_TERMINATE,
+                                buff.append(String.format("'%s' + '=' + '%s';",
                                         new Object[]{SmartCodec.toUrlEncode(paramName, csrfEncoding, true),
-                                            SmartCodec.toUrlEncode(paramValue, csrfEncoding, true)}));
+                                            SmartCodec.toUrlEncode(paramValue, csrfEncoding, true)})).append(HttpUtil.LINE_TERMINATE);
                             } else {
                                 // js escape
-                                buff.append(String.format("'%s' + '=' + '%s';" + HttpUtil.LINE_TERMINATE,
+                                buff.append(String.format("'%s' + '=' + '%s';",
                                         new Object[]{
-                                            ConvertUtil.encodeJsLangQuote(paramName, false),
-                                            ConvertUtil.encodeJsLangQuote(paramValue, false)
-                                        }));
+                                            ConvertUtil.encodeJsLangQuote(paramName),
+                                            ConvertUtil.encodeJsLangQuote(paramValue)
+                                        })).append(HttpUtil.LINE_TERMINATE);
                             }
                             first = false;
                         } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {
@@ -1087,11 +1141,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             } // csrf textplain
             else {
-                buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');" + HttpUtil.LINE_TERMINATE, csrfEnctype));
+                buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');", csrfEnctype)).append(HttpUtil.LINE_TERMINATE);
                 byte[] bodyByte = wrapRequest.body().getBytes();
                 String escapeJS = TransUtil.toByteHex1Encode(bodyByte, SmartCodec.ENCODE_PATTERN_JS, false);
                 String jsonComment = JsonUtil.isJson(StringUtil.getStringUTF8(bodyByte)) ? "//" : "";
-                buff.append(String.format("\treq += '%s%s';" + HttpUtil.LINE_TERMINATE, new Object[]{escapeJS, jsonComment}));
+                buff.append(String.format("\treq += '%s%s';", new Object[]{escapeJS, jsonComment})).append(HttpUtil.LINE_TERMINATE);
                 buff.append("\tvar blob = new Uint8Array(req.length);").append(HttpUtil.LINE_TERMINATE);
                 buff.append("\tfor (var i = 0; i < blob.length; i++)").append(HttpUtil.LINE_TERMINATE);
                 buff.append("\t\tblob[i] = req.charCodeAt(i);").append(HttpUtil.LINE_TERMINATE);
@@ -1108,7 +1162,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
             }
-            buff.append(String.format("<body%s>" + HttpUtil.LINE_TERMINATE, new Object[]{autoSubmit}));
+            buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
 
             autoSubmit = " onClick=\"csrfPoC();\"";
             if (csrfParam.isCsrfTimeDelay()) {
@@ -1117,13 +1171,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
             if (csrfParam.isCsrfMultiForm()) {
                 buff.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
-                buff.append(String.format("<form action=\"javascript:csrfSubmit%s();\">" + HttpUtil.LINE_TERMINATE, new Object[]{localfmt.format(localDateTime)}));
+                buff.append(String.format("<form action=\"javascript:csrfSubmit%s();\">", new Object[]{localfmt.format(localDateTime)})).append(HttpUtil.LINE_TERMINATE);
                 buff.append("</form>").append(HttpUtil.LINE_TERMINATE);
                 buff.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
             }
 
             if (!csrfAutoSubmit) {
-                buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>" + HttpUtil.LINE_TERMINATE, autoSubmit));
+                buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>", autoSubmit)).append(HttpUtil.LINE_TERMINATE);
             }
 
             buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);
@@ -1229,6 +1283,259 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }
+    }
+
+    private static final Pattern MULTIPART_CONTENT_TYPE = Pattern.compile("Content-Type: (.*)", Pattern.CASE_INSENSITIVE);
+
+    static String getMultipartContentType(byte[] binay, int st, int ed) {
+        Matcher m = MULTIPART_CONTENT_TYPE.matcher(StringUtil.getStringRaw(Arrays.copyOfRange(binay, st, ed)));
+        if (m.find()) {
+            return m.group(1);
+        }
+        return "";
+    }
+
+    static String generateHexBinay(byte[] binay) {
+        final StringBuilder buff = new StringBuilder();
+        for (int i = 0; i < binay.length; i++) {
+            if (buff.length() > 0) {
+                buff.append(",");
+            }
+            buff.append("0x");
+            buff.append(ConvertUtil.toHexString(binay[i], false));
+        }
+        return buff.toString();
+    }
+
+    /*
+
+    <script>
+    function launch(){
+        const dT = new DataTransfer();
+        const file = new File( [ "CSRF-filecontent" ], "CSRF-filename" );
+        dT.items.add( file );
+        document.xss[0].files = dT.files;
+        document.xss.submit()
+    }
+    </script>
+
+    <form style="display: none" name="xss" method="post" action="<target>" enctype="multipart/form-data">
+    <input id="file" type="file" name="file"/>
+    <input type="submit" name="" value="" size="0" />
+    </form>
+    <button value="button" onclick="launch()">Submit Request</button>
+
+     */
+    private String generateStandardPoC(GenerateCsrfParameter csrfParam) {
+        final StringBuilder buff = new StringBuilder();
+        try {
+            final StringBuilder dataTransfer = new StringBuilder();
+            boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
+            boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
+            boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
+            boolean csrfLegacyFileUpload = csrfParam.isCsrfLegacyFileUpload();
+            boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
+            String csrfEncoding = csrfParam.getCsrfEncoding();
+
+            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
+            // 自動判定
+            String contentType = wrapRequest.getEnctype();
+            String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
+            // select auto
+            if (csrfParam.isCsrfAuto()) {
+                if (contentType != null) {
+                    csrfEnctype = contentType;
+                    if (HttpUtil.isMaltiPart(contentType)) {
+                        csrfMultiPart = true;
+                    } else if (HttpUtil.isPlain(contentType)) {
+                        csrfTextPlain = true;
+                        csrfEnctype = "text/plain"; // 固定
+                    }
+                }
+                logger.log(Level.FINE, "multipart:{0}", csrfMultiPart);
+            } else {
+                // select urlencode mode
+                if (csrfUrlencode) {
+                    csrfEnctype = "application/x-www-form-urlencoded";
+                }
+                // select multipart
+                if (csrfMultiPart) {
+                    csrfEnctype = "multipart/form-data";
+                }
+                // select text/plain
+                if (csrfTextPlain) {
+                    csrfEnctype = "text/plain"; // 固定
+                }
+            }
+
+            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseHttps());
+            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(wrapRequest.url()) : wrapRequest.url();
+
+            final StringBuilder formAction = new StringBuilder();
+            formAction.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
+            String targetLink = (csrfParam.isCsrfMultiForm()) ? "target=\"_blank\"" : "";
+            // csrf urlencoded/multipart
+            if (!csrfTextPlain) {
+                if (HttpUtil.isUrlEencoded(csrfEnctype)) {
+                    formAction.append(String.format("<form action=\"%s\" method=\"%s\" %s>",
+                            new Object[]{ConvertUtil.encodeJsLangQuote(csrfUrl), csrfFormMethod, targetLink})).append(HttpUtil.LINE_TERMINATE);
+                } else {
+                    formAction.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
+                            new Object[]{ConvertUtil.encodeJsLangQuote(csrfUrl), csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
+                }
+                List<ParsedHttpParameter> parameters = wrapRequest.parameters();
+                logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
+                boolean binaryParam = false;
+                String filename = "";
+                for (int i = 0; i < parameters.size(); i++) {
+                    ParsedHttpParameter param = parameters.get(i);
+                    String paramName = param.name();
+                    String paramValue = param.value();
+                    HttpParameterType paramType = param.type();
+                    if (paramType == HttpParameterType.COOKIE) {
+                        continue;
+                    }
+                    if (paramType == HttpParameterType.URL) {
+                        paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
+                        paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
+                        if (MatchUtil.isUrlencoded(paramName)) {
+                            paramName = SmartCodec.toUrlDecode(paramName, csrfEncoding);
+                        }
+                        if (MatchUtil.isUrlencoded(paramValue)) {
+                            paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
+                        }
+                        String decodename = HttpUtil.toHtmlEncode(paramName);
+                        String decodevalue = HttpUtil.toHtmlEncode(paramValue);
+                        formAction.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
+                                new Object[]{decodename, decodevalue})).append(HttpUtil.LINE_TERMINATE);
+                    } else if (paramType == HttpParameterType.BODY && !binaryParam) {
+                        //if Resuest MultiPart binaryParam;
+                        if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
+                            paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
+                            // ファイルアップロード時エンコードを判定しない
+                            if (binaryParam) {
+                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), StandardCharsets.ISO_8859_1);
+                            } else {
+                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
+                            }
+                        } else {
+                            if (MatchUtil.isUrlencoded(paramName)) {
+                                paramName = SmartCodec.toUrlDecode(paramName, csrfEncoding);
+                            }
+                            if (MatchUtil.isUrlencoded(paramValue)) {
+                                paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
+                            }
+                        }
+                        String encodeName = HttpUtil.toHtmlEncode(paramName);
+                        String encodeValue = HttpUtil.toHtmlEncode(paramValue);
+                        formAction.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
+                                new Object[]{ ConvertUtil.encodeJsLangQuote(encodeName), ConvertUtil.encodeJsLangQuote(encodeValue) })).append(HttpUtil.LINE_TERMINATE);
+                    } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {
+                        binaryParam = true;
+                        filename = paramValue;
+                    } else {
+                        String file_encoding = csrfEncoding;
+                        String decodevalue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), file_encoding);
+                        if (csrfLegacyFileUpload) {
+                            formAction.append("<!-- Internet Explorer browser only technique -->").append(HttpUtil.LINE_TERMINATE);
+                            formAction.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
+                                    new Object[]{ ConvertUtil.encodeJsLangQuote(paramName), ConvertUtil.encodeJsLangQuote(filename), ConvertUtil.encodeJsLangQuote(file_encoding)}));
+                            formAction.append(HttpUtil.toHtmlEncode(decodevalue));
+                            formAction.append("</textarea>");
+                        } else {
+                            String fileid = "fileupload" + i;
+                            formAction.append(String.format("<input id=\"%s\" type=\"file\" name=\"%s\"/>",
+                                    new Object[]{fileid, ConvertUtil.encodeJsLangQuote(paramName) })).append(HttpUtil.LINE_TERMINATE);
+                            String multiPartContentType = getMultipartContentType(wrapRequest.getMessageByte(), param.nameOffsets().startIndexInclusive(), param.valueOffsets().startIndexInclusive());
+                            byte[] valueRaw = Arrays.copyOfRange(wrapRequest.getMessageByte(), param.valueOffsets().startIndexInclusive(), param.valueOffsets().endIndexExclusive());
+                            dataTransfer.append(generateDataTransferFunctionCall(valueRaw, fileid, ConvertUtil.encodeJsLangQuote(filename), ConvertUtil.encodeJsLangQuote(multiPartContentType)));
+                        }
+                        binaryParam = false;
+                    }
+                }
+            } else {
+                // csrf textplain
+                formAction.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
+                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
+                Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(wrapRequest.body().getBytes(), csrfEncoding));
+                String paramName = pair.getKey();
+                String paramValue = pair.getValue();
+                if (csrfLegacyFileUpload) {
+                    if ("".equals(paramValue)) {
+                        String sp[] = paramName.split("=", 2);
+                        if (sp.length == 1) {
+                            formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                                new Object[]{ ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[0])) , ""}));
+                        } else {
+                            formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                                new Object[]{ ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[0])), ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[1])) }));
+                        }
+                    } else {
+                        formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                            new Object[]{ ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramName)), ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramValue)) }));
+                    }
+                } else {
+                    formAction.append(String.format("<input id=\"fileupload\" type=\"file\" name=\"%s\"/>",
+                            new Object[]{ConvertUtil.encodeJsLangQuote(paramName)})).append(HttpUtil.LINE_TERMINATE);
+                }
+            }
+
+            String onClick = "";
+            if (!csrfParam.isCsrfAutoSubmit()) {
+                onClick = " onClick=\"csrfPoC();\"";
+                if (csrfParam.isCsrfTimeDelay()) {
+                    onClick = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{csrfParam.getTimeOutValue()});
+                }
+                formAction.append(String.format("<input type=\"button\" value=\"Submit\" %s>", onClick)).append(HttpUtil.LINE_TERMINATE);
+            }
+            formAction.append("</form>").append(HttpUtil.LINE_TERMINATE);
+            formAction.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
+
+            final StringBuilder scriptTag = new StringBuilder();
+            scriptTag.append("<script type=\"text/javascript\">").append(HttpUtil.LINE_TERMINATE);
+            if (csrfParam.isCsrfTimeDelay()) {
+                scriptTag.append(generateTimeDelayFunction());
+            }
+            // FileUpload
+            if (dataTransfer.length() > 0) {
+                scriptTag.append(generateDataTransferFunction());
+            }
+
+            if (csrfMultiForm) {
+                scriptTag.append(generateMultiFormFunction(csrfParam.isCsrfTimeDelay()));
+            } else {
+                String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
+                scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);;
+                if (!csrfParam.isCsrfLegacyFileUpload()) {
+                    scriptTag.append(dataTransfer).append(HttpUtil.LINE_TERMINATE);
+                }
+                if (csrfParam.isCsrfTimeDelay()) {
+                    scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
+                }
+                scriptTag.append("\tdocument.forms[0].submit();").append(HttpUtil.LINE_TERMINATE);
+                scriptTag.append("}").append(HttpUtil.LINE_TERMINATE);
+            }
+            scriptTag.append("</script>").append(HttpUtil.LINE_TERMINATE);
+
+            buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
+            buff.append(scriptTag);
+            buff.append("</head>");
+            String autoSubmit = "";
+            if (csrfParam.isCsrfAutoSubmit()) {
+                autoSubmit = " onload=\"csrfPoC();\"";
+                if (csrfParam.isCsrfTimeDelay()) {
+                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{csrfParam.getTimeOutValue()});
+                }
+            }
+            buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
+            buff.append(formAction);
+            buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return buff.toString();
     }
 
     @Override

@@ -175,7 +175,7 @@ public class HexViewTab extends javax.swing.JPanel implements IBurpMessageTab {
              */
             String[] hexs = new String[output.length];
             for (int i = 0; i < output.length; i++) {
-                hexs[i] = ConvertUtil.toHexString(output[i]);
+                hexs[i] = ConvertUtil.toHexString(output[i], true);
             }
             /*
              * HEX表示の作成

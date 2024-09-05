@@ -226,12 +226,8 @@ public class BouncyUtil {
         MessageDigest md = MessageDigest.getInstance(algorithm, BC_PROVIDER_INSTANCE);
         md.reset();
         md.update(binary);
-        String digeststr = ConvertUtil.toHexString(md.digest());
-        if (upperCase) {
-            return digeststr;
-        } else {
-            return digeststr.toLowerCase();
-        }
+        String digeststr = ConvertUtil.toHexString(md.digest(), upperCase);
+        return digeststr;
     }
 
     /**
