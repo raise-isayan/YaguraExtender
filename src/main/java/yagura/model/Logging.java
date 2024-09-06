@@ -5,6 +5,9 @@ import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.http.message.responses.HttpResponse;
+import burp.api.montoya.proxy.websocket.ProxyWebSocketCreation;
+import burp.api.montoya.websocket.BinaryMessage;
+import burp.api.montoya.websocket.TextMessage;
 import extension.burp.BurpUtil;
 import extension.burp.HttpTarget;
 import extension.helpers.ConvertUtil;
@@ -335,6 +338,75 @@ public class Logging implements Closeable {
                 fostm.write(messageInfo.response().toByteArray().getBytes());
                 fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
             }
+            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+        }
+    }
+
+    public void writeWebSocktMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
+        String baseLogFileName = Config.getWebSocktLogMessageName();
+        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, textMessage);
+    }
+
+    public void writeWebSocktFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
+        String baseLogFileName = Config.getWebSocktLogFinalMessageName();
+        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, textMessage);
+    }
+
+    protected synchronized void writeWebSocktMessage(String baseLogFileName, final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
+        try {
+            Path path = getLoggingPath(baseLogFileName);
+            try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                writeWebSocktTextMessage(ostm, proxyWebSocketCreation, textMessage);
+                ostm.flush();
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public void writeWebSocktMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
+        String baseLogFileName = Config.getWebSocktLogMessageName();
+        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, binaryMessage);
+    }
+
+    public void writeWebSocktFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
+        String baseLogFileName = Config.getWebSocktLogFinalMessageName();
+        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, binaryMessage);
+    }
+
+    public void writeWebSocktMessage(String baseLogFileName, final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
+        try {
+            Path path = getLoggingPath(baseLogFileName);
+            try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                writeWebSocktBinayMessage(ostm, proxyWebSocketCreation, binaryMessage);
+                ostm.flush();
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    protected void writeWebSocktTextMessage(OutputStream ostm, ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) throws IOException {
+        try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
+            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + textMessage.direction().name() + " " + proxyWebSocketCreation.upgradeRequest().url() + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(textMessage.payload() + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+        }
+    }
+
+    protected void writeWebSocktBinayMessage(OutputStream ostm, ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) throws IOException {
+        try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
+            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + binaryMessage.direction().name() + " " + proxyWebSocketCreation.upgradeRequest().url() + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
+            fostm.write(binaryMessage.payload().getBytes());
+            fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
         }
     }

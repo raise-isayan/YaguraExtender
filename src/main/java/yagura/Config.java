@@ -36,6 +36,14 @@ public class Config extends BurpConfig {
         return "proxy-message.log";
     }
 
+    public static String getWebSocktLogMessageName() {
+        return "websockt-message.log";
+    }
+
+    public static String getWebSocktLogFinalMessageName() {
+        return "websockt-final-message.log";
+    }
+
     public static String getToolLogName(String toolName) {
         return String.format("burp_tool_%s.log", toolName);
     }

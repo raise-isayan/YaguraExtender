@@ -24,12 +24,21 @@ import burp.api.montoya.proxy.http.ProxyRequestToBeSentAction;
 import burp.api.montoya.proxy.http.ProxyResponseHandler;
 import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
 import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
+import burp.api.montoya.proxy.websocket.BinaryMessageReceivedAction;
+import burp.api.montoya.proxy.websocket.BinaryMessageToBeSentAction;
+import burp.api.montoya.proxy.websocket.InterceptedBinaryMessage;
+import burp.api.montoya.proxy.websocket.InterceptedTextMessage;
+import burp.api.montoya.proxy.websocket.ProxyMessageHandler;
+import burp.api.montoya.proxy.websocket.ProxyWebSocketCreation;
+import burp.api.montoya.proxy.websocket.TextMessageReceivedAction;
+import burp.api.montoya.proxy.websocket.TextMessageToBeSentAction;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
+import burp.api.montoya.proxy.websocket.ProxyWebSocketCreationHandler;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -157,6 +166,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     private MenuHander menuHandler;
     private ProxyHander proxyHandler;
+    private WebSocktCreationHander websocktHandler;
     private EditorProvider editorProvider;
     private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
@@ -281,6 +291,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             this.registerView();
             this.menuHandler = new MenuHander(api);
             this.proxyHandler = new ProxyHander(api);
+            this.websocktHandler = new WebSocktCreationHander(api);
             this.autoResponderHandler = new AutoResponderHandler(api);
             api.extension().registerUnloadingHandler(this);
 
@@ -1798,6 +1809,70 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 message.setBody(body);
             }
             return message;
+        }
+
+    }
+
+    protected final class WebSocktCreationHander implements ProxyWebSocketCreationHandler {
+
+        private final MontoyaApi api;
+
+        public WebSocktCreationHander(MontoyaApi api) {
+            this.api = api;
+            api.proxy().registerWebSocketCreationHandler(this);
+        }
+
+        @Override
+        public void handleWebSocketCreation(ProxyWebSocketCreation proxyWebSocketCreation) {
+            proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(new WebSocktHander(api, proxyWebSocketCreation));
+        }
+
+    }
+
+    protected final class WebSocktHander implements ProxyMessageHandler {
+        private final MontoyaApi api;
+        private final ProxyWebSocketCreation proxyWebSocketCreation;
+
+        public WebSocktHander(MontoyaApi api, ProxyWebSocketCreation proxyWebSocketCreation) {
+            this.api = api;
+            this.proxyWebSocketCreation = proxyWebSocketCreation;
+            proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(this);
+        }
+
+        @Override
+        public TextMessageReceivedAction handleTextMessageReceived(InterceptedTextMessage interceptedTextMessage) {
+            // WebSockt 出力
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
+            }
+            return TextMessageReceivedAction.continueWith(interceptedTextMessage);
+        }
+
+        @Override
+        public TextMessageToBeSentAction handleTextMessageToBeSent(InterceptedTextMessage interceptedTextMessage) {
+            // WebSockt 出力
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
+            }
+            return TextMessageToBeSentAction.continueWith(interceptedTextMessage);
+        }
+
+        @Override
+        public BinaryMessageReceivedAction handleBinaryMessageReceived(InterceptedBinaryMessage interceptedBinaryMessage) {
+            // WebSockt 出力
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
+            }
+            return BinaryMessageReceivedAction.continueWith(interceptedBinaryMessage);
+        }
+
+        @Override
+        public BinaryMessageToBeSentAction handleBinaryMessageToBeSent(InterceptedBinaryMessage interceptedBinaryMessage) {
+            // WebSockt 出力
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
+            }
+            return BinaryMessageToBeSentAction.continueWith(interceptedBinaryMessage);
         }
 
     }

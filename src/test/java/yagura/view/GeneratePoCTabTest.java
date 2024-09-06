@@ -53,7 +53,7 @@ public class GeneratePoCTabTest {
     @Test
     public void testGenerateBinay() {
         System.out.println("generateBinay");
-        String expResult = "0x00,0x0A,0x0F,0xAF,0xFF";
+        String expResult = "0x00,0x0a,0x0f,0xaf,0xff";
         String result = GeneratePoCTab.generateHexBinay(new byte[]{(byte) 0x00, (byte) 0x0a, (byte) 0x0f, (byte) 0xaf, (byte) 0xff});
         assertEquals(expResult, result);
     }
