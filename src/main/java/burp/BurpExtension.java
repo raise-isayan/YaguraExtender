@@ -39,6 +39,8 @@ import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
 import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
 import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import burp.api.montoya.proxy.websocket.ProxyWebSocketCreationHandler;
+import burp.api.montoya.ui.editor.extension.ExtensionProvidedWebSocketMessageEditor;
+import burp.api.montoya.ui.editor.extension.WebSocketMessageEditorProvider;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -138,6 +140,7 @@ import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
 import yagura.view.GeneratePoCTabEditor;
+import yagura.view.GenerateWebsocktPoCEditor;
 import yagura.view.HtmlCommetViewTabEditor;
 import yagura.view.JSONViewTabEditor;
 import yagura.view.JWTViewTabEditor;
@@ -516,6 +519,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.userInterface().registerHttpResponseEditorProvider(this.responseJSONTab);
             api.userInterface().registerHttpResponseEditorProvider(this.responseJSONPTab);
             api.userInterface().registerHttpRequestEditorProvider(this.requestJwtViewTab);
+            api.userInterface().registerWebSocketMessageEditorProvider(this.requestGenerateWebSocketPoCTab);
         }
 
         private final HttpRequestEditorProvider requestRawTab = new HttpRequestEditorProvider() {
@@ -608,6 +612,14 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             @Override
             public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
                 final GeneratePoCTabEditor tab = new GeneratePoCTabEditor(editorCreationContext);
+                return tab;
+            }
+        };
+
+        private final WebSocketMessageEditorProvider  requestGenerateWebSocketPoCTab = new WebSocketMessageEditorProvider() {
+            @Override
+            public ExtensionProvidedWebSocketMessageEditor provideMessageEditor(EditorCreationContext editorCreationContext) {
+                final GenerateWebsocktPoCEditor tab = new GenerateWebsocktPoCEditor(editorCreationContext);
                 return tab;
             }
         };

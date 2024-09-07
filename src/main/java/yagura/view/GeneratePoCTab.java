@@ -440,51 +440,14 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     private javax.swing.JSpinner spnTime;
     // End of variables declaration//GEN-END:variables
 
-    public void setMessageFont(Font font) {
-        this.txtGeneratorPoC.setFont(font);
-        this.quickSearchTab.setMessageFont(font);
-    }
-
-    private HttpRequestResponse httpRequestResponse;
-
-    public void setMessageEncoding(String encoding) {
-        try {
-            if (this.httpRequestResponse == null) {
-                return;
-            }
-            JTextComponent ta = this.txtGeneratorPoC;
-            if (this.httpRequestResponse != null) {
-                // Raw
-                ta.setText("");
-                ta.setCaretPosition(0);
-                // View
-            } else {
-                ta.setText("");
-                ta.setCaretPosition(0);
-            }
-            this.quickSearchTab.clearView();
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-    }
-
-    protected class GenerateCsrfParameter {
+    static class GenerateBaseCsrfParameter {
 
         private boolean csrfAutoSubmit = false;
         private int timeOutValue = 1000;
         public boolean csrfAuto = false;
-        private boolean csrfUrlencode = false;
-        private boolean csrfMultiPart = false;
-        private boolean csrfTextPlain = false;
-        private String csrfEncoding = StandardCharsets.ISO_8859_1.name();
-        public boolean csrfXHR = false;
-        private boolean csrfXHRBinaly = false;
-        private boolean csrfXHRWithXHeader = false;
-        private boolean csrfGetMethod = false;
-        private boolean csrfMultiForm = false;
-        public boolean useHttps = false;
+        public boolean useSecure = false;
         private boolean csrfTimeDelay = false;
-        private boolean csrfLegacyFileUpload = false;
+        private String csrfEncoding = StandardCharsets.UTF_8.name();
 
         /**
          * @return the csrfAutoSubmit
@@ -529,6 +492,62 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         }
 
         /**
+         * @return the useSecure
+         */
+        public boolean isUseSecure() {
+            return useSecure;
+        }
+
+        /**
+         * @param useSecure the useSecure to set
+         */
+        public void setUseSecure(boolean useSecure) {
+            this.useSecure = useSecure;
+        }
+
+        /**
+         * @return the csrfTimeDelay
+         */
+        public boolean isCsrfTimeDelay() {
+            return csrfTimeDelay;
+        }
+
+        /**
+         * @param csrfTimeDelay the csrfTimeDelay to set
+         */
+        public void setCsrfTimeDelay(boolean csrfTimeDelay) {
+            this.csrfTimeDelay = csrfTimeDelay;
+        }
+
+        /**
+         * @return the csrfEncoding
+         */
+        public String getCsrfEncoding() {
+            return csrfEncoding;
+        }
+
+        /**
+         * @param csrfEncoding the csrfEncoding to set
+         */
+        public void setCsrfEncoding(String csrfEncoding) {
+            this.csrfEncoding = csrfEncoding;
+        }
+
+    }
+
+    protected class GenerateCsrfParameter extends GenerateBaseCsrfParameter {
+
+        private boolean csrfUrlencode = false;
+        private boolean csrfMultiPart = false;
+        private boolean csrfTextPlain = false;
+        public boolean csrfXHR = false;
+        private boolean csrfXHRBinaly = false;
+        private boolean csrfXHRWithXHeader = false;
+        private boolean csrfGetMethod = false;
+        private boolean csrfMultiForm = false;
+        private boolean csrfLegacyFileUpload = false;
+
+        /**
          * @return the csrfUrlencode
          */
         public boolean isCsrfUrlencode() {
@@ -570,19 +589,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             this.csrfTextPlain = csrfTextPlain;
         }
 
-        /**
-         * @return the csrfEncoding
-         */
-        public String getCsrfEncoding() {
-            return csrfEncoding;
-        }
-
-        /**
-         * @param csrfEncoding the csrfEncoding to set
-         */
-        public void setCsrfEncoding(String csrfEncoding) {
-            this.csrfEncoding = csrfEncoding;
-        }
 
         /**
          * @return the csrfXHR
@@ -668,34 +674,53 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             this.csrfMultiForm = csrfMultiForm;
         }
 
-        /**
-         * @return the useHttps
-         */
-        public boolean isUseHttps() {
-            return useHttps;
-        }
+    }
 
-        /**
-         * @param useHttps the useHttps to set
-         */
-        public void setUseHttps(boolean useHttps) {
-            this.useHttps = useHttps;
-        }
+    protected GenerateCsrfParameter getGenerateCsrfParameter() {
+        GenerateCsrfParameter csrfParam = new GenerateCsrfParameter();
+        csrfParam.setCsrfAutoSubmit(this.chkAutoSubmit.isSelected());
+        csrfParam.setTimeOutValue((int) this.spnTime.getValue());
+        csrfParam.setCsrfAuto(this.rdoAuto.isSelected());
+        csrfParam.setCsrfUrlencode(this.rdoUrlencode.isSelected());
+        csrfParam.setCsrfMultiPart(this.rdoMultipart.isSelected());
+        csrfParam.setCsrfTextPlain(this.rdoPlain.isSelected());
+        csrfParam.setCsrfEncoding(this.quickSearchTab.getSelectedEncoding());
+        csrfParam.setCsrfXHR(this.chkXHR.isSelected());
+        csrfParam.setCsrfXHRWithXHeader(this.chkXHRWithXHeader.isSelected());
+        csrfParam.setCsrfLegacyFileUpload(this.chkLegacyFileUpload.isSelected());
+        csrfParam.setCsrfGetMethod(this.chkGETmethod.isSelected());
+        csrfParam.setCsrfMultiForm(this.chkMultiForm.isSelected());
+        csrfParam.setUseSecure(this.chkUseHttps.isSelected());
+        csrfParam.setCsrfTimeDelay(this.chkTimeDelay.isSelected());
+        return csrfParam;
+    }
 
-        /**
-         * @return the csrfTimeDelay
-         */
-        public boolean isCsrfTimeDelay() {
-            return csrfTimeDelay;
-        }
+    public void setMessageFont(Font font) {
+        this.txtGeneratorPoC.setFont(font);
+        this.quickSearchTab.setMessageFont(font);
+    }
 
-        /**
-         * @param csrfTimeDelay the csrfTimeDelay to set
-         */
-        public void setCsrfTimeDelay(boolean csrfTimeDelay) {
-            this.csrfTimeDelay = csrfTimeDelay;
-        }
+    private HttpRequestResponse httpRequestResponse;
 
+    public void setMessageEncoding(String encoding) {
+        try {
+            if (this.httpRequestResponse == null) {
+                return;
+            }
+            JTextComponent ta = this.txtGeneratorPoC;
+            if (this.httpRequestResponse != null) {
+                // Raw
+                ta.setText("");
+                ta.setCaretPosition(0);
+                // View
+            } else {
+                ta.setText("");
+                ta.setCaretPosition(0);
+            }
+            this.quickSearchTab.clearView();
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
     }
 
     protected String generateMultiFormFunction(boolean isCsrfTimeDelay) {
@@ -719,7 +744,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    protected String generateDataTransferFunction() {
+    static String generateDataTransferFunction() {
         StringBuilder buff = new StringBuilder();
         buff.append("function fileAttachment(file, fileid){").append(HttpUtil.LINE_TERMINATE);
         buff.append("\tconst part  = document.getElementById(fileid);").append(HttpUtil.LINE_TERMINATE);
@@ -730,7 +755,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    protected String generateTimeDelayFunction() {
+    static String generateTimeDelayFunction() {
         StringBuilder buff = new StringBuilder();
         buff.append("function msleep(msec) {").append(HttpUtil.LINE_TERMINATE);
         buff.append("\tvar preDate = new Date();").append(HttpUtil.LINE_TERMINATE);
@@ -743,28 +768,32 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    protected GenerateCsrfParameter getGenerateCsrfParameter() {
-        GenerateCsrfParameter csrfParam = new GenerateCsrfParameter();
-        csrfParam.setCsrfAutoSubmit(this.chkAutoSubmit.isSelected());
-        csrfParam.setTimeOutValue((int) this.spnTime.getValue());
-        csrfParam.setCsrfAuto(this.rdoAuto.isSelected());
-        csrfParam.setCsrfUrlencode(this.rdoUrlencode.isSelected());
-        csrfParam.setCsrfMultiPart(this.rdoMultipart.isSelected());
-        csrfParam.setCsrfTextPlain(this.rdoPlain.isSelected());
-        csrfParam.setCsrfEncoding(this.quickSearchTab.getSelectedEncoding());
-        csrfParam.setCsrfXHR(this.chkXHR.isSelected());
-        csrfParam.setCsrfXHRWithXHeader(this.chkXHRWithXHeader.isSelected());
-        csrfParam.setCsrfLegacyFileUpload(this.chkLegacyFileUpload.isSelected());
-        csrfParam.setCsrfGetMethod(this.chkGETmethod.isSelected());
-        csrfParam.setCsrfMultiForm(this.chkMultiForm.isSelected());
-        csrfParam.setUseHttps(this.chkUseHttps.isSelected());
-        csrfParam.setCsrfTimeDelay(this.chkTimeDelay.isSelected());
-        return csrfParam;
+    private static final Pattern MULTIPART_CONTENT_TYPE = Pattern.compile("Content-Type: (.*)", Pattern.CASE_INSENSITIVE);
+
+    static String getMultipartContentType(byte[] binay, int st, int ed) {
+        Matcher m = MULTIPART_CONTENT_TYPE.matcher(StringUtil.getStringRaw(Arrays.copyOfRange(binay, st, ed)));
+        if (m.find()) {
+            return m.group(1);
+        }
+        return "";
+    }
+
+    static String generateHexBinay(byte[] binay) {
+        final StringBuilder buff = new StringBuilder();
+        for (int i = 0; i < binay.length; i++) {
+            if (buff.length() > 0) {
+                buff.append(",");
+            }
+            buff.append("0x");
+            buff.append(ConvertUtil.toHexString(binay[i], false));
+        }
+        return buff.toString();
     }
 
     private String generatePoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
+            boolean csrfSecure = csrfParam.isUseSecure();
             boolean csrfAutoSubmit = csrfParam.isCsrfAutoSubmit();
             boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
             boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
@@ -805,7 +834,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             }
 
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseHttps());
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfSecure);
             String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(wrapRequest.url()) : wrapRequest.url();
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
@@ -929,7 +958,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
             if (!csrfAutoSubmit) {
-                autoSubmit = " onClick=\"csrfPoC()\"";
+                autoSubmit = " onClick=\"csrfPoC();\"";
                 if (csrfParam.isCsrfTimeDelay()) {
                     autoSubmit = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
@@ -985,7 +1014,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : wrapRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseHttps());
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseSecure());
             String csrfUrl = wrapRequest.url();
 
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
@@ -1188,126 +1217,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    public void clearView() {
-        this.quickSearchTab.clearView();
-    }
-
-    /**
-     * @return the lineWrap
-     */
-    public boolean isLineWrap() {
-        return this.txtGeneratorPoC.getLineWrap();
-    }
-
-    /**
-     * @param lineWrap the lineWrap to set
-     */
-    public void setLineWrap(boolean lineWrap) {
-        this.txtGeneratorPoC.setLineWrap(lineWrap);
-    }
-
-    public String getSelectedText() {
-        String selectText = this.txtGeneratorPoC.getSelectedText();
-        return selectText;
-    }
-
-    public HttpRequestResponse getHttpRequestResponse() {
-        return this.httpRequestResponse;
-    }
-
-    @Override
-    public HttpRequest getRequest() {
-        return httpRequestResponse.request();
-    }
-
-    @Override
-    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
-        this.httpRequestResponse = httpRequestResponse;
-        String guessCharset = StandardCharsets.ISO_8859_1.name();
-        final boolean useHttps;
-        HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
-        if (httpRequestResponse.response() != null) {
-            HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
-            guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
-        }
-        HttpService service = wrapRequest.httpService();
-        if (service != null) {
-            useHttps = wrapRequest.httpService().secure();
-        } else {
-            useHttps = wrapRequest.isSecure();
-        }
-        final BurpExtension extenderImpl = BurpExtension.getInstance();
-        this.chkUseHttps.setSelected(useHttps);
-        this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-        this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-        encodingItemStateChanged.itemStateChanged(null);
-        this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
-    }
-
-    @Override
-    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
-        if (httpRequestResponse == null) {
-            return false;
-        }
-        try {
-            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-            this.setLineWrap(viewProperty.isLineWrap());
-            if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
-                return false;
-            }
-            // Burp v2023.4.1 以降の謎挙動に対応
-            if ((httpRequestResponse.request() != null && httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null)
-                    || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
-                return true;
-            }
-            HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
-            if (wrapRequest.httpService() == null) {
-                return false;
-            }
-            String host = wrapRequest.httpService().host();
-            if (host == null) {
-                return false;
-            }
-            // MalformedRequestExceptionが発生する場合は無視
-            try {
-                wrapRequest.method();
-            } catch (MalformedRequestException ex) {
-                return false;
-            }
-            if (!("POST".equals(wrapRequest.method()) || "GET".equals(wrapRequest.method()))) {
-                return false;
-            }
-            return (wrapRequest.body().length() > 0) || (wrapRequest.hasQueryParameter());
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return false;
-        }
-    }
-
-    private static final Pattern MULTIPART_CONTENT_TYPE = Pattern.compile("Content-Type: (.*)", Pattern.CASE_INSENSITIVE);
-
-    static String getMultipartContentType(byte[] binay, int st, int ed) {
-        Matcher m = MULTIPART_CONTENT_TYPE.matcher(StringUtil.getStringRaw(Arrays.copyOfRange(binay, st, ed)));
-        if (m.find()) {
-            return m.group(1);
-        }
-        return "";
-    }
-
-    static String generateHexBinay(byte[] binay) {
-        final StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < binay.length; i++) {
-            if (buff.length() > 0) {
-                buff.append(",");
-            }
-            buff.append("0x");
-            buff.append(ConvertUtil.toHexString(binay[i], false));
-        }
-        return buff.toString();
-    }
-
-    /*
+    /***
 
     <script>
     function launch(){
@@ -1325,11 +1235,13 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     </form>
     <button value="button" onclick="launch()">Submit Request</button>
 
-     */
+     ***/
+
     private String generateStandardPoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
             final StringBuilder dataTransfer = new StringBuilder();
+            boolean csrfSecure = csrfParam.isUseSecure();
             boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
             boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
             boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
@@ -1369,7 +1281,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             }
 
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseHttps());
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfSecure);
             String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(wrapRequest.url()) : wrapRequest.url();
 
             final StringBuilder formAction = new StringBuilder();
@@ -1538,6 +1450,80 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
+    public HttpRequestResponse getHttpRequestResponse() {
+        return this.httpRequestResponse;
+    }
+
+    @Override
+    public HttpRequest getRequest() {
+        return httpRequestResponse.request();
+    }
+
+    @Override
+    public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        this.httpRequestResponse = httpRequestResponse;
+        String guessCharset = StandardCharsets.ISO_8859_1.name();
+        final boolean useSecure;
+        HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
+        if (httpRequestResponse.response() != null) {
+            HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
+            guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
+        }
+        HttpService service = wrapRequest.httpService();
+        if (service != null) {
+            useSecure = wrapRequest.httpService().secure();
+        } else {
+            useSecure = wrapRequest.isSecure();
+        }
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
+        this.chkUseHttps.setSelected(useSecure);
+        this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
+        this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
+        encodingItemStateChanged.itemStateChanged(null);
+        this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
+    }
+
+    @Override
+    public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        if (httpRequestResponse == null) {
+            return false;
+        }
+        try {
+            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            this.setLineWrap(viewProperty.isLineWrap());
+            if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+                return false;
+            }
+            // Burp v2023.4.1 以降の謎挙動に対応
+            if ((httpRequestResponse.request() != null && httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null)
+                    || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
+                return true;
+            }
+            HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
+            if (wrapRequest.httpService() == null) {
+                return false;
+            }
+            String host = wrapRequest.httpService().host();
+            if (host == null) {
+                return false;
+            }
+            // MalformedRequestExceptionが発生する場合は無視
+            try {
+                wrapRequest.method();
+            } catch (MalformedRequestException ex) {
+                return false;
+            }
+            if (!("POST".equals(wrapRequest.method()) || "GET".equals(wrapRequest.method()))) {
+                return false;
+            }
+            return (wrapRequest.body().length() > 0) || (wrapRequest.hasQueryParameter());
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+            return false;
+        }
+    }
+
     @Override
     public String caption() {
         return "Generate PoC";
@@ -1556,6 +1542,29 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     @Override
     public boolean isModified() {
         return false;
+    }
+
+    public void clearView() {
+        this.quickSearchTab.clearView();
+    }
+
+    /**
+     * @return the lineWrap
+     */
+    public boolean isLineWrap() {
+        return this.txtGeneratorPoC.getLineWrap();
+    }
+
+    /**
+     * @param lineWrap the lineWrap to set
+     */
+    public void setLineWrap(boolean lineWrap) {
+        this.txtGeneratorPoC.setLineWrap(lineWrap);
+    }
+
+    public String getSelectedText() {
+        String selectText = this.txtGeneratorPoC.getSelectedText();
+        return selectText;
     }
 
 }

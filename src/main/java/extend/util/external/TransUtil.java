@@ -48,6 +48,13 @@ public class TransUtil {
 
     private final static Logger logger = Logger.getLogger(TransUtil.class.getName());
 
+    private final static Pattern PRINTERBLE_MATCH = Pattern.compile("\\p{Print}*");
+
+    public static boolean isPrinterble(String value) {
+        Matcher m = PRINTERBLE_MATCH.matcher(value);
+        return m.matches();
+    }
+
     public enum DateUnit {
         DAYS, WEEKS, MONTHS, YEARS;
 

@@ -64,6 +64,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         lblPopupTime = new javax.swing.JLabel();
         lblPopupTimeUnit = new javax.swing.JLabel();
         chkCompressLog = new javax.swing.JCheckBox();
+        chkWebSocketLog = new javax.swing.JCheckBox();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
         setLayout(new java.awt.BorderLayout());
@@ -78,14 +79,14 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        chkToolLog.setText("ToolLog:(proxy, scanner, intruder, repeater, sequencer, extension tool)");
+        chkToolLog.setText("Tool Log:(proxy, scanner, intruder, repeater, sequencer, extension tool)");
         chkToolLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkToolLogActionPerformed(evt);
             }
         });
 
-        chkProxyLog.setText("ProxyLog(proxy history modifyed log)");
+        chkProxyLog.setText("Proxy Log(proxy history modifyed log)");
         chkProxyLog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkProxyLogActionPerformed(evt);
@@ -186,6 +187,13 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        chkWebSocketLog.setText("WebSocket Log");
+        chkWebSocketLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkWebSocketLogActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
         pnlCenterLayout.setHorizontalGroup(
@@ -199,7 +207,8 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                                 .addGap(45, 45, 45)
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(chkToolLog)
-                                    .addComponent(chkProxyLog)))
+                                    .addComponent(chkProxyLog)
+                                    .addComponent(chkWebSocketLog)))
                             .addComponent(chkExclude, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblLogDir2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkHistoryLogInclude, javax.swing.GroupLayout.Alignment.LEADING)
@@ -268,6 +277,8 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkToolLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkWebSocketLog)
+                .addGap(8, 8, 8)
                 .addComponent(chkHistoryLogInclude)
                 .addGap(2, 2, 2)
                 .addComponent(chkExclude)
@@ -280,7 +291,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(lblPopupTime)
                     .addComponent(spnPopupTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPopupTimeUnit))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
             .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(pnlCenterLayout.createSequentialGroup()
                     .addContainerGap()
@@ -366,6 +377,10 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkCompressLogActionPerformed
 
+    private void chkWebSocketLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkWebSocketLogActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkWebSocketLogActionPerformed
+
     @Override
     public String getTabCaption() {
         return "Logging";
@@ -391,6 +406,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JCheckBox chkProxyLog;
     private javax.swing.JCheckBox chkToolLog;
     private javax.swing.JCheckBox chkWarnTemporaryProject;
+    private javax.swing.JCheckBox chkWebSocketLog;
     private javax.swing.JLabel lblFileUnit;
     private javax.swing.JLabel lblLogDir;
     private javax.swing.JLabel lblLogDir1;
@@ -405,6 +421,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JTextField txtFileLimitSize;
     private javax.swing.JTextField txtLogDir;
     // End of variables declaration//GEN-END:variables
+
     private boolean initAutoLogging = false;
 
     /**
@@ -507,6 +524,22 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     }
 
     /**
+     *
+     * @return
+     */
+    public boolean isWebSocketLog() {
+        return this.chkWebSocketLog.isSelected();
+    }
+
+    /**
+     *
+     * @param value
+     */
+    public void setWebSocketLog(boolean value) {
+        this.chkWebSocketLog.setSelected(value);
+    }
+
+    /**
      * @return the HistoryLogSave
      */
     public boolean isHistoryLogInclude() {
@@ -575,6 +608,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.setLogFileLimitSize(loggingProperty.getLogFileLimitSize());
         this.setProxyLog(loggingProperty.isProxyLog());
         this.setToolLog(loggingProperty.isToolLog());
+        this.setWebSocketLog(loggingProperty.isWebSocktLog());
         this.setExclude(loggingProperty.isExclude());
         this.setExcludeExtension(loggingProperty.getExcludeExtension());
         this.setWarnClosingTemporaryProject(loggingProperty.isWarnClosingTemporaryProject());
@@ -592,6 +626,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         loggingProperty.setLogFileLimitSize(this.getLogFileLimitSize());
         loggingProperty.setProxyLog(this.isProxyLog());
         loggingProperty.setToolLog(this.isToolLog());
+        loggingProperty.setWebSocktLog(this.isWebSocketLog());
         loggingProperty.setExclude(this.isExclude());
         loggingProperty.setExcludeExtension(this.getExcludeExtension());
         loggingProperty.setWarnClosingTemporaryProject(this.isWarnClosingTemporaryProject());

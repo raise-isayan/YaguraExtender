@@ -55,6 +55,7 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="chkToolLog" min="-2" max="-2" attributes="0"/>
                                           <Component id="chkProxyLog" min="-2" max="-2" attributes="0"/>
+                                          <Component id="chkWebSocketLog" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Component id="chkExclude" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -145,6 +146,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chkToolLog" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
+                      <Component id="chkWebSocketLog" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Component id="chkHistoryLogInclude" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Component id="chkExclude" min="-2" max="-2" attributes="0"/>
@@ -158,7 +161,7 @@
                           <Component id="spnPopupTime" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblPopupTimeUnit" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="135" max="32767" attributes="0"/>
+                      <EmptySpace pref="107" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -181,7 +184,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkToolLog">
               <Properties>
-                <Property name="text" type="java.lang.String" value="ToolLog:(proxy, scanner, intruder, repeater, sequencer, extension tool)"/>
+                <Property name="text" type="java.lang.String" value="Tool Log:(proxy, scanner, intruder, repeater, sequencer, extension tool)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkToolLogActionPerformed"/>
@@ -189,7 +192,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkProxyLog">
               <Properties>
-                <Property name="text" type="java.lang.String" value="ProxyLog(proxy history modifyed log)"/>
+                <Property name="text" type="java.lang.String" value="Proxy Log(proxy history modifyed log)"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkProxyLogActionPerformed"/>
@@ -309,6 +312,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkCompressLogActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="chkWebSocketLog">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="WebSocket Log"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkWebSocketLogActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
