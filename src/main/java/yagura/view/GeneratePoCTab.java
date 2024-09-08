@@ -163,7 +163,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
         setLayout(new java.awt.BorderLayout());
 
-        splitGeneratorPoC.setDividerLocation(160);
+        splitGeneratorPoC.setDividerLocation(200);
         splitGeneratorPoC.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         pnlPoC.setLayout(new java.awt.GridLayout(1, 3));
@@ -210,7 +210,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 .addComponent(btnCopyClipbord)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSavetoFile)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlButton);
@@ -293,7 +293,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 .addComponent(chkXHRWithXHeader)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkLegacyFileUpload)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlCheck);
@@ -333,7 +333,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 .addComponent(rdoMultipart)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoPlain)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         pnlPoC.add(pnlSelect);
@@ -835,7 +835,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
             final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfSecure);
-            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(wrapRequest.url()) : wrapRequest.url();
+            String actionUrl = wrapRequest.withService(httpService).url();
+            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(actionUrl) : actionUrl;
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
 
@@ -1015,7 +1016,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             }
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : wrapRequest.method();
             final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseSecure());
-            String csrfUrl = wrapRequest.url();
+            String csrfUrl = wrapRequest.withService(httpService).url();
 
             buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
@@ -1240,7 +1241,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     private String generateStandardPoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
-            final StringBuilder dataTransfer = new StringBuilder();
             boolean csrfSecure = csrfParam.isUseSecure();
             boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
             boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
@@ -1280,9 +1280,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
 
+            final StringBuilder dataTransfer = new StringBuilder();
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
             final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfSecure);
-            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(wrapRequest.url()) : wrapRequest.url();
+            String actiontUrl = wrapRequest.withService(httpService).url();
+            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(actiontUrl) : actiontUrl;
 
             final StringBuilder formAction = new StringBuilder();
             formAction.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
@@ -1373,7 +1375,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(wrapRequest.body().getBytes(), csrfEncoding));
                 String paramName = pair.getKey();
                 String paramValue = pair.getValue();
-                if (csrfLegacyFileUpload) {
+                //if (csrfLegacyFileUpload) {
                     if ("".equals(paramValue)) {
                         String sp[] = paramName.split("=", 2);
                         if (sp.length == 1) {
@@ -1387,10 +1389,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
                             new Object[]{ ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramName)), ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramValue)) }));
                     }
-                } else {
-                    formAction.append(String.format("<input id=\"fileupload\" type=\"file\" name=\"%s\"/>",
-                            new Object[]{ConvertUtil.encodeJsLangQuote(paramName)})).append(HttpUtil.LINE_TERMINATE);
-                }
+                //} else {
+                //    formAction.append(String.format("<input id=\"fileupload\" type=\"file\" name=\"%s\"/>",
+                //            new Object[]{ConvertUtil.encodeJsLangQuote(paramName)})).append(HttpUtil.LINE_TERMINATE);
+                //}
             }
 
             String onClick = "";

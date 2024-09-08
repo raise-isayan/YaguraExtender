@@ -22,7 +22,7 @@
   <SubComponents>
     <Container class="javax.swing.JSplitPane" name="splitGeneratorPoC">
       <Properties>
-        <Property name="dividerLocation" type="int" value="160"/>
+        <Property name="dividerLocation" type="int" value="200"/>
         <Property name="orientation" type="int" value="0"/>
       </Properties>
       <Constraints>
@@ -70,7 +70,7 @@
                           <Component id="btnCopyClipbord" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnSavetoFile" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="101" max="32767" attributes="0"/>
+                          <EmptySpace pref="116" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -264,7 +264,7 @@
                           <Component id="rdoMultipart" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="rdoPlain" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="60" max="32767" attributes="0"/>
+                          <EmptySpace pref="75" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
