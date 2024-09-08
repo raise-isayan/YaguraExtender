@@ -8,7 +8,6 @@ import burp.api.montoya.ui.contextmenu.WebSocketMessage;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedWebSocketMessageEditor;
 import burp.api.montoya.websocket.Direction;
 import extend.util.external.ThemeUI;
-import extend.util.external.TransUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
@@ -24,15 +23,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -380,7 +380,7 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
 
     static String generateWebSocketFunctionCall(String url, byte [] binaly) {
         StringBuilder buff = new StringBuilder();
-        buff.append("\tconst url = ").append("\"").append(ConvertUtil.decodeJsLangQuote(url)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
+        buff.append("\tconst url = ").append("\"").append(ConvertUtil.encodeJsLangQuote(url)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
         buff.append("\tconst data = ").append("Uint8Array.of(").append(GeneratePoCTab.generateHexBinay(binaly)).append(").buffer;").append(HttpUtil.LINE_TERMINATE);
         buff.append("\tsend(url, data)").append(HttpUtil.LINE_TERMINATE);
         return buff.toString();
@@ -388,8 +388,8 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
 
     static String generateWebSocketFunctionCall(String url, String value) {
         StringBuilder buff = new StringBuilder();
-        buff.append("\tconst url = ").append("\"").append(ConvertUtil.decodeJsLangQuote(url)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
-        buff.append("\tconst data = ").append("\"").append(ConvertUtil.decodeJsLangQuote(value)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
+        buff.append("\tconst url = ").append("\"").append(ConvertUtil.encodeJsLangQuote(url)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
+        buff.append("\tconst data = ").append("\"").append(ConvertUtil.encodeJsLangQuote(value, true)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
         buff.append("\tsendWebSocket(url, data);").append(HttpUtil.LINE_TERMINATE);
         return buff.toString();
     }
@@ -440,7 +440,7 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
                 scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
             }
             String value = StringUtil.getStringCharset(payload.getBytes(), csrfEncoding);
-            if (TransUtil.isPrinterble(value)) {
+            if (StringUtil.isPrinterble(value)) {
                 scriptTag.append(generateWebSocketFunctionCall(url, value)).append(HttpUtil.LINE_TERMINATE);
             }
             else {
@@ -498,6 +498,12 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
     @Override
     public boolean isEnabledFor(WebSocketMessage webSocketMessage) {
         if (webSocketMessage == null) {
+            return false;
+        }
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+        this.setLineWrap(viewProperty.isLineWrap());
+        if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
             return false;
         }
         return (webSocketMessage.direction() == Direction.CLIENT_TO_SERVER);

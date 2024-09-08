@@ -64,14 +64,6 @@ public class TransUtilTest {
     }
 
     @Test
-    public void testPrinterble() {
-        System.out.println("isPrinterble");
-        assertTrue(TransUtil.isPrinterble("abcdef0123456789"));
-        assertTrue(TransUtil.isPrinterble("\\tabcdef0123456789\\r\\n"));
-        assertFalse(TransUtil.isPrinterble("\u0000\u0001\u0002\u0003\u0004\u0005\u0006\u0007\u0008\u0009\u001a"));
-    }
-
-    @Test
     public void testHexDump() {
         String output = ">あいうえお<";
         byte row[] = StringUtil.getBytesRaw(output);
