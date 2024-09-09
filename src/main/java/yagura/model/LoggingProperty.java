@@ -98,14 +98,14 @@ public class LoggingProperty implements IPropertyConfig {
     }
 
     @Expose
-    private boolean websocktLog = true;
+    private boolean websocketLog = true;
 
-    public boolean isWebSocktLog() {
-        return this.websocktLog;
+    public boolean isWebSocketLog() {
+        return this.websocketLog;
     }
 
-    public void setWebSocktLog(boolean websocktLog) {
-        this.websocktLog = websocktLog;
+    public void setWebSocketLog(boolean websocketLog) {
+        this.websocketLog = websocketLog;
     }
 
     @Expose
@@ -208,7 +208,7 @@ public class LoggingProperty implements IPropertyConfig {
         this.setLogFileLimitSize(property.getLogFileLimitSize());
         this.setProxyLog(property.isProxyLog());
         this.setToolLog(property.isToolLog());
-        this.setWebSocktLog(property.isWebSocktLog());
+        this.setWebSocketLog(property.isWebSocketLog());
         this.setLogDirFormat(property.getLogDirFormat());
         this.setLogTimestampFormat(property.getLogTimestampFormat());
         this.setExclude(property.isExclude());

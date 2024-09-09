@@ -608,7 +608,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.setLogFileLimitSize(loggingProperty.getLogFileLimitSize());
         this.setProxyLog(loggingProperty.isProxyLog());
         this.setToolLog(loggingProperty.isToolLog());
-        this.setWebSocketLog(loggingProperty.isWebSocktLog());
+        this.setWebSocketLog(loggingProperty.isWebSocketLog());
         this.setExclude(loggingProperty.isExclude());
         this.setExcludeExtension(loggingProperty.getExcludeExtension());
         this.setWarnClosingTemporaryProject(loggingProperty.isWarnClosingTemporaryProject());
@@ -626,7 +626,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         loggingProperty.setLogFileLimitSize(this.getLogFileLimitSize());
         loggingProperty.setProxyLog(this.isProxyLog());
         loggingProperty.setToolLog(this.isToolLog());
-        loggingProperty.setWebSocktLog(this.isWebSocketLog());
+        loggingProperty.setWebSocketLog(this.isWebSocketLog());
         loggingProperty.setExclude(this.isExclude());
         loggingProperty.setExcludeExtension(this.getExcludeExtension());
         loggingProperty.setWarnClosingTemporaryProject(this.isWarnClosingTemporaryProject());

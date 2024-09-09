@@ -36,12 +36,12 @@ public class Config extends BurpConfig {
         return "proxy-message.log";
     }
 
-    public static String getWebSocktLogMessageName() {
-        return "websockt-message.log";
+    public static String getWebSocketLogMessageName() {
+        return "websocket-message.log";
     }
 
-    public static String getWebSocktLogFinalMessageName() {
-        return "websockt-final-message.log";
+    public static String getWebSocketLogFinalMessageName() {
+        return "websocket-final-message.log";
     }
 
     public static String getToolLogName(String toolName) {

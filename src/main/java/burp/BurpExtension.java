@@ -169,7 +169,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     private MenuHander menuHandler;
     private ProxyHander proxyHandler;
-    private WebSocktCreationHander websocktHandler;
+    private WebSocketCreationHander websocektHandler;
     private EditorProvider editorProvider;
     private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
@@ -294,7 +294,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             this.registerView();
             this.menuHandler = new MenuHander(api);
             this.proxyHandler = new ProxyHander(api);
-            this.websocktHandler = new WebSocktCreationHander(api);
+            this.websocektHandler = new WebSocketCreationHander(api);
             this.autoResponderHandler = new AutoResponderHandler(api);
             api.extension().registerUnloadingHandler(this);
 
@@ -1825,11 +1825,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     }
 
-    protected final class WebSocktCreationHander implements ProxyWebSocketCreationHandler {
+    protected final class WebSocketCreationHander implements ProxyWebSocketCreationHandler {
 
         private final MontoyaApi api;
 
-        public WebSocktCreationHander(MontoyaApi api) {
+        public WebSocketCreationHander(MontoyaApi api) {
             this.api = api;
             api.proxy().registerWebSocketCreationHandler(this);
         }
@@ -1854,7 +1854,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public TextMessageReceivedAction handleTextMessageReceived(InterceptedTextMessage interceptedTextMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
                 logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
             }
             return TextMessageReceivedAction.continueWith(interceptedTextMessage);
@@ -1863,7 +1863,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public TextMessageToBeSentAction handleTextMessageToBeSent(InterceptedTextMessage interceptedTextMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
                 logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
             }
             return TextMessageToBeSentAction.continueWith(interceptedTextMessage);
@@ -1872,7 +1872,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public BinaryMessageReceivedAction handleBinaryMessageReceived(InterceptedBinaryMessage interceptedBinaryMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
                 logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
             }
             return BinaryMessageReceivedAction.continueWith(interceptedBinaryMessage);
@@ -1881,7 +1881,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public BinaryMessageToBeSentAction handleBinaryMessageToBeSent(InterceptedBinaryMessage interceptedBinaryMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocktLog()) {
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
                 logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
             }
             return BinaryMessageToBeSentAction.continueWith(interceptedBinaryMessage);

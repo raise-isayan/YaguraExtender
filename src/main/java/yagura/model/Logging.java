@@ -343,12 +343,12 @@ public class Logging implements Closeable {
     }
 
     public void writeWebSocktMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
-        String baseLogFileName = Config.getWebSocktLogMessageName();
+        String baseLogFileName = Config.getWebSocketLogMessageName();
         this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, textMessage);
     }
 
     public void writeWebSocktFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
-        String baseLogFileName = Config.getWebSocktLogFinalMessageName();
+        String baseLogFileName = Config.getWebSocketLogFinalMessageName();
         this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, textMessage);
     }
 
@@ -367,12 +367,12 @@ public class Logging implements Closeable {
     }
 
     public void writeWebSocktMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
-        String baseLogFileName = Config.getWebSocktLogMessageName();
+        String baseLogFileName = Config.getWebSocketLogMessageName();
         this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, binaryMessage);
     }
 
     public void writeWebSocktFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
-        String baseLogFileName = Config.getWebSocktLogFinalMessageName();
+        String baseLogFileName = Config.getWebSocketLogFinalMessageName();
         this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, binaryMessage);
     }
 
