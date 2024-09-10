@@ -1725,13 +1725,17 @@ proxy-message.log.2
 <h5 id="_logging_target">Logging target</h5>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[ProxyLog] check box</dt>
+<dt class="hdlist1">[Proxy Log] check box</dt>
 <dd>
 <p>ProxyLog of the value after the change in Match and Replace or Inspecter is recorded.</p>
 </dd>
-<dt class="hdlist1">[ToolLog] check box</dt>
+<dt class="hdlist1">[Tool Log] check box</dt>
 <dd>
-<p>Log values ​​of various tools are recorded.</p>
+<p>Log values of various tools are recorded.</p>
+</dd>
+<dt class="hdlist1">[WebSocket Log] check box</dt>
+<dd>
+<p>Websocket logs will be recorded.</p>
 </dd>
 <dt class="hdlist1">[history is included] check box</dt>
 <dd>
@@ -2721,15 +2725,17 @@ The value automatically determined from the selected request will be the default
 <dd>
 <p>Outputs code that is useful for creating a multi-form PoC.</p>
 </dd>
-<dt class="hdlist1">[HTML5] check box</dt>
+<dt class="hdlist1">[XHR] check box</dt>
 <dd>
-<p>Create a PoC trap using HTML5 functions.
-Check here when performing binary upload.</p>
+<p>Create a PoC trap using XHR functions.</p>
 </dd>
-<dt class="hdlist1">[Binay] check box</dt>
+<dt class="hdlist1">[with X-Header] check box</dt>
 <dd>
-<p>No check is required in the current version.
-If you check [HTML5], binary upload is enabled by default.</p>
+<p>Set the header starting with "X-" when checking XHR.</p>
+</dd>
+<dt class="hdlist1">[Legacy FileUpload] check box</dt>
+<dd>
+<p>File upload using textarea. (This is an Internet Explorer-only technique.)</p>
 </dd>
 </dl>
 </div>
@@ -2750,9 +2756,8 @@ If you check [HTML5], binary upload is enabled by default.</p>
 </dd>
 <dt class="hdlist1">plain</dt>
 <dd>
-<p>Create PoC using text area.<br>
-Select when you want to send the contents of the Body as it is.<br>
-This may not work for items that contain binaries. In that case, please use Binay of HTML5.</p>
+<p>Select this option if you want to send the contents of Body as is. <br>
+This option may not work for items that contain binaries. In that case, use the default option.</p>
 </dd>
 </dl>
 </div>
@@ -2836,7 +2841,7 @@ This may not work for items that contain binaries. In that case, please use Bina
 <div id="footer">
 <div id="footer-text">
 Version unspecified<br>
-Last updated 2024-08-31 16:47:38 +0900
+Last updated 2024-09-10 19:43:35 +0900
 </div>
 </div>
 </body>

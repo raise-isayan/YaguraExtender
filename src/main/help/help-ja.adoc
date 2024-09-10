@@ -701,11 +701,14 @@ Compress Log::
 
 ===== Logging target
 
-[ProxyLog] チェックボックス::
+[Proxy Log] チェックボックス::
      Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。
 
-[ToolLog] チェックボックス::
+[Tool Log] チェックボックス::
      各種Toolのログの値が記録されます。
+
+[WebSocket Log] check box::
+     Websocketのログが記録されます。
 
 [history is included] チェックボックス::
      auto loggingがオフの状態でのみチェックできます。
@@ -1368,9 +1371,14 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
 [multi form] チェックボックス::
     複数フォームによるPoCを作成するのに便利なコードを出力します。
    
-[HTML5] チェックボックス::
-    PoCの罠をHTML5の機能を利用して作成します。
-    バイナリアップロードを行う場合ここをチェックします。
+[XHR] チェックボックス::
+    PoCの罠をXHRの機能を利用して作成します。
+
+[with X-Header] チェックボックス::
+    XHR チェック時に「X-」で始まるヘッダを設定します。
+
+[Legacy FileUpload] チェックボックス::
+    textareaを利用したファイルアップロードを行います。(Internet Exploler限定のテクニックです。)
    
 .Content-Type
 auto:: Content-Typeを自動判定します。
@@ -1378,7 +1386,7 @@ urlencode:: text フィールドを利用してPoCを作成します。 +
 multi part:: Content-TypeがMulti partの場合にこの選択を行います。 +
 plain:: text area を利用してPoCを作成します。 +
     Bodyの内容をそのまま送信したい場合に選択します。 +
-    バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。
+    バイナリを含む項目の場合はうまくいかない場合があります。そのときはデフォルトのオプションを利用してください。
 
 ==== ViewState タブ
 

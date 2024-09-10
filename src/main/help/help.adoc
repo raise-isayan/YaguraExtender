@@ -708,11 +708,14 @@ Compress Log::
 
 ===== Logging target
 
-[ProxyLog] check box::
+[Proxy Log] check box::
      ProxyLog of the value after the change in Match and Replace or Inspecter is recorded.
 
-[ToolLog] check box::
-     Log values ​​of various tools are recorded.
+[Tool Log] check box::
+     Log values of various tools are recorded.
+
+[WebSocket Log] check box::
+     Websocket logs will be recorded.
 
 [history is included] check box::
      This can be checked only when auto logging is off.
@@ -1379,21 +1382,21 @@ image:images/custom_CSRF_PoC.png[YaguraExtender CSRF-PoC]
 [multi form] check box::
     Outputs code that is useful for creating a multi-form PoC.
 
-[HTML5] check box::
-    Create a PoC trap using HTML5 functions.
-    Check here when performing binary upload.   
+[XHR] check box::
+    Create a PoC trap using XHR functions.
    
-[Binay] check box::
-    No check is required in the current version.
-    If you check [HTML5], binary upload is enabled by default.
+[with X-Header] check box::
+    Set the header starting with "X-" when checking XHR.    
+
+[Legacy FileUpload] check box::
+    File upload using textarea. (This is an Internet Explorer-only technique.)
 
 .Content-Type
     auto:: Content-Type is automatically determined.
     urlencode:: Create PoC using text field. +
     multi part:: Make this selection when Content-Type is Multi part. +
-    plain:: Create PoC using text area. +
-        Select when you want to send the contents of the Body as it is. +
-        This may not work for items that contain binaries. In that case, please use Binay of HTML5.
+    plain:: Select this option if you want to send the contents of Body as is.  +
+This option may not work for items that contain binaries. In that case, use the default option.
 
 ==== View State tab
 

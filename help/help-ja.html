@@ -1702,13 +1702,17 @@ proxy-message.log.2
 <h5 id="_logging_target">Logging target</h5>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">[ProxyLog] チェックボックス</dt>
+<dt class="hdlist1">[Proxy Log] チェックボックス</dt>
 <dd>
 <p>Match and Replace や Inspecter での変更後の値のProxyLogが記録されます。</p>
 </dd>
-<dt class="hdlist1">[ToolLog] チェックボックス</dt>
+<dt class="hdlist1">[Tool Log] チェックボックス</dt>
 <dd>
 <p>各種Toolのログの値が記録されます。</p>
+</dd>
+<dt class="hdlist1">[WebSocket Log] check box</dt>
+<dd>
+<p>Websocketのログが記録されます。</p>
 </dd>
 <dt class="hdlist1">[history is included] チェックボックス</dt>
 <dd>
@@ -2694,10 +2698,17 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>複数フォームによるPoCを作成するのに便利なコードを出力します。</p>
 </dd>
-<dt class="hdlist1">[HTML5] チェックボックス</dt>
+<dt class="hdlist1">[XHR] チェックボックス</dt>
 <dd>
-<p>PoCの罠をHTML5の機能を利用して作成します。
-バイナリアップロードを行う場合ここをチェックします。</p>
+<p>PoCの罠をXHRの機能を利用して作成します。</p>
+</dd>
+<dt class="hdlist1">[with X-Header] チェックボックス</dt>
+<dd>
+<p>XHR チェック時に「X-」で始まるヘッダを設定します。</p>
+</dd>
+<dt class="hdlist1">[Legacy FileUpload] チェックボックス</dt>
+<dd>
+<p>textareaを利用したファイルアップロードを行います。(Internet Exploler限定のテクニックです。)</p>
 </dd>
 </dl>
 </div>
@@ -2720,7 +2731,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>text area を利用してPoCを作成します。<br>
 Bodyの内容をそのまま送信したい場合に選択します。<br>
-バイナリを含む項目の場合はうまくいかない場合があります。そのときはHTML5のBinayを利用してください。</p>
+バイナリを含む項目の場合はうまくいかない場合があります。そのときはデフォルトのオプションを利用してください。</p>
 </dd>
 </dl>
 </div>
@@ -2804,7 +2815,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <div id="footer">
 <div id="footer-text">
 Version unspecified<br>
-Last updated 2024-08-31 16:45:23 +0900
+Last updated 2024-09-10 19:41:06 +0900
 </div>
 </div>
 </body>
