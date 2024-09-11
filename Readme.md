@@ -1,4 +1,4 @@
-Burp suite Extension YaguraExtender
+Burp suite Extension YaguraExtension
 =============
 
 Language/[日本語](Readme-ja.md)
@@ -46,13 +46,13 @@ gradlew release
 * v2023.1.2 or higher (http://www.portswigger.net/burp/)
 
 ### Development environment
-* NetBeans 20 (https://netbeans.apache.org/)
+* NetBeans 22 (https://netbeans.apache.org/)
 * Gradle 7.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
 ## Required library
 Building requires a [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) library.
-* BurpExtensionCommons v3.0.x
+* BurpExtensionCommons v3.2.x
 
 ## Use Library
 * Apache common codec (https://commons.apache.org/proper/commons-codec/)

@@ -1,4 +1,4 @@
-Burp suite 拡張 YaguraExtender
+Burp suite 拡張 YaguraExtension
 =============
 
 Language/[English](Readme.md)
@@ -46,13 +46,13 @@ gradlew release
 * v2023.1.2以上 (http://www.portswigger.net/burp/)
 
 ### 開発環境
-* NetBeans 20 (https://netbeans.apache.org/)
+* NetBeans 22 (https://netbeans.apache.org/)
 * Gradle 7.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) のライブラリを必要とします。
-* BurpExtensionCommons v3.0.x
+* BurpExtensionCommons v3.2.x
 
 ### 利用ライブラリ
 

@@ -41,6 +41,14 @@ import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
 import burp.api.montoya.proxy.websocket.ProxyWebSocketCreationHandler;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedWebSocketMessageEditor;
 import burp.api.montoya.ui.editor.extension.WebSocketMessageEditorProvider;
+import burp.api.montoya.websocket.BinaryMessage;
+import burp.api.montoya.websocket.BinaryMessageAction;
+import burp.api.montoya.websocket.Direction;
+import burp.api.montoya.websocket.MessageHandler;
+import burp.api.montoya.websocket.TextMessage;
+import burp.api.montoya.websocket.TextMessageAction;
+import burp.api.montoya.websocket.WebSocketCreated;
+import burp.api.montoya.websocket.WebSocketCreatedHandler;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -1825,27 +1833,65 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     }
 
-    protected final class WebSocketCreationHander implements ProxyWebSocketCreationHandler {
+    protected final class WebSocketCreationHander implements ProxyWebSocketCreationHandler, WebSocketCreatedHandler {
 
         private final MontoyaApi api;
 
         public WebSocketCreationHander(MontoyaApi api) {
             this.api = api;
             api.proxy().registerWebSocketCreationHandler(this);
+            api.websockets().registerWebSocketCreatedHandler(this);
         }
 
         @Override
         public void handleWebSocketCreation(ProxyWebSocketCreation proxyWebSocketCreation) {
-            proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(new WebSocktHander(api, proxyWebSocketCreation));
+            proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(new WebSocktProxyMessageHander(api, proxyWebSocketCreation));
+        }
+
+        @Override
+        public void handleWebSocketCreated(WebSocketCreated webSocketCreated) {
+            webSocketCreated.webSocket().registerMessageHandler(new WebSocktMessageHander(api, webSocketCreated));
         }
 
     }
 
-    protected final class WebSocktHander implements ProxyMessageHandler {
+    protected final class WebSocktMessageHander implements MessageHandler {
+        private final MontoyaApi api;
+        private final WebSocketCreated webSocketCreated;
+
+        public WebSocktMessageHander(MontoyaApi api, WebSocketCreated webSocketCreated) {
+            this.api = api;
+            this.webSocketCreated = webSocketCreated;
+        }
+
+        @Override
+        public TextMessageAction handleTextMessage(TextMessage textMessage) {
+            // WebSockt 出力
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
+                ToolSource toolSource = webSocketCreated.toolSource();
+                logging.writeWebSocketToolMessage(toolSource.toolType(), webSocketCreated, textMessage);
+            }
+            return TextMessageAction.continueWith(textMessage);
+        }
+
+        @Override
+        public BinaryMessageAction handleBinaryMessage(BinaryMessage binaryMessage) {
+            // WebSockt 出力
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
+                ToolSource toolSource = webSocketCreated.toolSource();
+                logging.writeWebSocektToolMessage(toolSource.toolType(), webSocketCreated, binaryMessage);
+            }
+            return BinaryMessageAction.continueWith(binaryMessage);
+        }
+
+    }
+
+
+    protected final class WebSocktProxyMessageHander implements ProxyMessageHandler {
         private final MontoyaApi api;
         private final ProxyWebSocketCreation proxyWebSocketCreation;
 
-        public WebSocktHander(MontoyaApi api, ProxyWebSocketCreation proxyWebSocketCreation) {
+        public WebSocktProxyMessageHander(MontoyaApi api, ProxyWebSocketCreation proxyWebSocketCreation) {
             this.api = api;
             this.proxyWebSocketCreation = proxyWebSocketCreation;
             proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(this);
@@ -1854,8 +1900,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public TextMessageReceivedAction handleTextMessageReceived(InterceptedTextMessage interceptedTextMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
-                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog() &&
+                    interceptedTextMessage.direction() == Direction.SERVER_TO_CLIENT) {
+                logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedTextMessage);
             }
             return TextMessageReceivedAction.continueWith(interceptedTextMessage);
         }
@@ -1863,8 +1910,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public TextMessageToBeSentAction handleTextMessageToBeSent(InterceptedTextMessage interceptedTextMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
-                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog() &&
+                    interceptedTextMessage.direction() == Direction.CLIENT_TO_SERVER) {
+                logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
             }
             return TextMessageToBeSentAction.continueWith(interceptedTextMessage);
         }
@@ -1872,8 +1920,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public BinaryMessageReceivedAction handleBinaryMessageReceived(InterceptedBinaryMessage interceptedBinaryMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
-                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog() &&
+                    interceptedBinaryMessage.direction() == Direction.SERVER_TO_CLIENT) {
+                logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
             }
             return BinaryMessageReceivedAction.continueWith(interceptedBinaryMessage);
         }
@@ -1881,8 +1930,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         @Override
         public BinaryMessageToBeSentAction handleBinaryMessageToBeSent(InterceptedBinaryMessage interceptedBinaryMessage) {
             // WebSockt 出力
-            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog()) {
-                logging.writeWebSocktFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
+            if (getProperty().getLoggingProperty().isAutoLogging() && getProperty().getLoggingProperty().isWebSocketLog() &&
+                    interceptedBinaryMessage.direction() == Direction.CLIENT_TO_SERVER) {
+                logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
             }
             return BinaryMessageToBeSentAction.continueWith(interceptedBinaryMessage);
         }

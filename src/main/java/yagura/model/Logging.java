@@ -8,6 +8,7 @@ import burp.api.montoya.http.message.responses.HttpResponse;
 import burp.api.montoya.proxy.websocket.ProxyWebSocketCreation;
 import burp.api.montoya.websocket.BinaryMessage;
 import burp.api.montoya.websocket.TextMessage;
+import burp.api.montoya.websocket.WebSocketCreated;
 import extension.burp.BurpUtil;
 import extension.burp.HttpTarget;
 import extension.helpers.ConvertUtil;
@@ -64,8 +65,7 @@ public class Logging implements Closeable {
         Matcher m = LOG_COUNTER.matcher(logFileName);
         if (m.find()) {
             return ConvertUtil.parseIntDefault(m.group(1), 0);
-        }
-        else {
+        } else {
             return -1;
         }
     }
@@ -137,7 +137,6 @@ public class Logging implements Closeable {
         }
     };
 
-
     /**
      * ログZipファイルの作成
      *
@@ -148,26 +147,26 @@ public class Logging implements Closeable {
      */
     protected File mkLogZip(String logBaseDir, String logdirFormat) throws IOException {
         File baseDir = new File(logBaseDir);
-        File [] logFiles = baseDir.listFiles(listLogFileFilter(false, LOG_SUFFIX));
+        File[] logFiles = baseDir.listFiles(listLogFileFilter(false, LOG_SUFFIX));
         if (logFiles == null || (logFiles != null && logFiles.length == 0)) {
-            logFiles =  new File [] { new File(getLogFileName(logdirFormat, 0) + LOG_SUFFIX) };
+            logFiles = new File[]{new File(getLogFileName(logdirFormat, 0) + LOG_SUFFIX)};
         }
         Arrays.sort(logFiles, LOG_FILE_COMPARE);
         File targetZip = logFiles[0];
         int countup = getLogFileCounter(targetZip.getName());
         do {
             String fname = getLogFileName(logdirFormat, countup) + LOG_SUFFIX;
-             targetZip = new File(logBaseDir, fname);
-             if (!targetZip.exists()) {
-                 targetZip = FileUtil.createEmptyZip(targetZip);
-                 break;
-             } else {
-                 if (FileUtil.totalFileSize(targetZip, false) > this.getLoggingProperty().getLogFileByteLimitSize() && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                     countup++;
-                     continue;
-                 }
-                 break;
-             }
+            targetZip = new File(logBaseDir, fname);
+            if (!targetZip.exists()) {
+                targetZip = FileUtil.createEmptyZip(targetZip);
+                break;
+            } else {
+                if (FileUtil.totalFileSize(targetZip, false) > this.getLoggingProperty().getLogFileByteLimitSize() && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
+                    countup++;
+                    continue;
+                }
+                break;
+            }
         } while (true);
         return targetZip;
     }
@@ -182,29 +181,29 @@ public class Logging implements Closeable {
      */
     protected File mkLogDir(String logBaseDir, String logdirFormat) throws IOException {
         File baseDir = new File(logBaseDir);
-        File [] logFiles = baseDir.listFiles(listLogFileFilter(true));
+        File[] logFiles = baseDir.listFiles(listLogFileFilter(true));
         if (logFiles == null || (logFiles != null && logFiles.length == 0)) {
-            logFiles = new File [] { new File(getLogFileName(logdirFormat, 0)) };
+            logFiles = new File[]{new File(getLogFileName(logdirFormat, 0))};
         }
         Arrays.sort(logFiles, LOG_FILE_COMPARE);
         File targetDir = logFiles[0];
         int countup = getLogFileCounter(targetDir.getName());
         do {
             String fname = getLogFileName(logdirFormat, countup);
-             targetDir = new File(logBaseDir, fname);
-             if (!targetDir.exists()) {
-                 targetDir.mkdir();
-                 break;
-             } else {
-                 if (FileUtil.totalFileSize(targetDir, false) > this.getLoggingProperty().getLogFileByteLimitSize() && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                     countup++;
-                     continue;
-                 }
-                 break;
-             }
+            targetDir = new File(logBaseDir, fname);
+            if (!targetDir.exists()) {
+                targetDir.mkdir();
+                break;
+            } else {
+                if (FileUtil.totalFileSize(targetDir, false) > this.getLoggingProperty().getLogFileByteLimitSize() && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
+                    countup++;
+                    continue;
+                }
+                break;
+            }
         } while (true);
         return targetDir;
-   }
+    }
 
     public static String getLogFileBaseName(String logdirFormat) {
         SimpleDateFormat logfmt = new SimpleDateFormat(logdirFormat);
@@ -342,21 +341,30 @@ public class Logging implements Closeable {
         }
     }
 
-    public void writeWebSocktMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
-        String baseLogFileName = Config.getWebSocketLogMessageName();
-        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, textMessage);
+    public void writeWebSocketToolMessage(ToolType toolType, final WebSocketCreated webSocketCreated, TextMessage textMessage) {
+        String baseLogFileName = Config.getWebSocketToolLogName(toolType.name());
+        this.writeWebSocektMessage(baseLogFileName, webSocketCreated.upgradeRequest(), textMessage);
     }
 
-    public void writeWebSocktFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
+    public void writeWebSocektToolMessage(ToolType toolType, final WebSocketCreated webSocketCreated, BinaryMessage binaryMessage) {
+        String baseLogFileName = Config.getWebSocketToolLogName(toolType.name());
+        this.writeWebSocektMessage(baseLogFileName, webSocketCreated.upgradeRequest(), binaryMessage);
+    }
+
+//    public void writeWebSocektMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
+//        String baseLogFileName = Config.getWebSocketLogMessageName();
+//        this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), textMessage);
+//    }
+    public void writeWebSocketFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
         String baseLogFileName = Config.getWebSocketLogFinalMessageName();
-        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, textMessage);
+        this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), textMessage);
     }
 
-    protected synchronized void writeWebSocktMessage(String baseLogFileName, final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
+    protected synchronized void writeWebSocektMessage(String baseLogFileName, final HttpRequest upgradeRequest, TextMessage textMessage) {
         try {
             Path path = getLoggingPath(baseLogFileName);
             try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-                writeWebSocktTextMessage(ostm, proxyWebSocketCreation, textMessage);
+                writeWebSocektTextMessage(ostm, upgradeRequest, textMessage);
                 ostm.flush();
             }
         } catch (IOException ex) {
@@ -366,21 +374,20 @@ public class Logging implements Closeable {
         }
     }
 
-    public void writeWebSocktMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
-        String baseLogFileName = Config.getWebSocketLogMessageName();
-        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, binaryMessage);
-    }
-
-    public void writeWebSocktFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
+//    public void writeWebSocketMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
+//        String baseLogFileName = Config.getWebSocketLogMessageName();
+//        this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), binaryMessage);
+//    }
+    public void writeWebSocketFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
         String baseLogFileName = Config.getWebSocketLogFinalMessageName();
-        this.writeWebSocktMessage(baseLogFileName, proxyWebSocketCreation, binaryMessage);
+        this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), binaryMessage);
     }
 
-    public void writeWebSocktMessage(String baseLogFileName, final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
+    public void writeWebSocektMessage(String baseLogFileName, final HttpRequest upgradeRequest, BinaryMessage binaryMessage) {
         try {
             Path path = getLoggingPath(baseLogFileName);
             try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
-                writeWebSocktBinayMessage(ostm, proxyWebSocketCreation, binaryMessage);
+                writeWebSocektBinayMessage(ostm, upgradeRequest, binaryMessage);
                 ostm.flush();
             }
         } catch (IOException ex) {
@@ -390,20 +397,20 @@ public class Logging implements Closeable {
         }
     }
 
-    protected void writeWebSocktTextMessage(OutputStream ostm, ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) throws IOException {
+    protected void writeWebSocektTextMessage(OutputStream ostm, HttpRequest upgradeRequest, TextMessage textMessage) throws IOException {
         try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + textMessage.direction().name() + " " + proxyWebSocketCreation.upgradeRequest().url() + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + textMessage.direction().name() + " " + upgradeRequest.url() + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw(textMessage.payload() + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
         }
     }
 
-    protected void writeWebSocktBinayMessage(OutputStream ostm, ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) throws IOException {
+    protected void writeWebSocektBinayMessage(OutputStream ostm, HttpRequest upgradeRequest, BinaryMessage binaryMessage) throws IOException {
         try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + binaryMessage.direction().name() + " " + proxyWebSocketCreation.upgradeRequest().url() + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + binaryMessage.direction().name() + " " + upgradeRequest.url() + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
             fostm.write(binaryMessage.payload().getBytes());
             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
