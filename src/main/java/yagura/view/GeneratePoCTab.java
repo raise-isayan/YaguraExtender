@@ -1172,6 +1172,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     buff.append("\txhr.send(new Blob([blob]));").append(HttpUtil.LINE_TERMINATE);
                 }
             } // csrf textplain
+
             else {
                 buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');", csrfEnctype)).append(HttpUtil.LINE_TERMINATE);
                 byte[] bodyByte = wrapRequest.body().getBytes();
@@ -1495,6 +1496,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = StandardCharsets.ISO_8859_1.name();
         final boolean useSecure;
@@ -1509,7 +1511,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         } else {
             useSecure = wrapRequest.isSecure();
         }
-        final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.chkUseHttps.setSelected(useSecure);
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());

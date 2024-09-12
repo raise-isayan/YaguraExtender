@@ -197,17 +197,19 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
 
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.httpRequestResponse = httpRequestResponse;
         HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
         String guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
-        this.quickSearchTab.renewEncodingList(guessCharset, BurpExtension.getInstance().getSelectEncodingList());
+        this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
         encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
     }
 
     @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         if (httpRequestResponse == null) {
             return false;
         }
@@ -216,7 +218,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
             if (wrapResponse.hasHttpResponse()) {
                 return false;
             }
-            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
             EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
             this.setLineWrap(viewProperty.isLineWrap());
             if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {

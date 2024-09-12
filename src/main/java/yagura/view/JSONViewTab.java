@@ -160,7 +160,8 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
     }
 
     public boolean isEnabledJson(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
-        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+        BurpExtension extenderImpl = BurpExtension.getInstance();
+        UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
         EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
             return false;
@@ -200,8 +201,9 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
     }
 
     public boolean isEnabledJsonp(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
-        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = BurpExtension.getInstance().getProperty().getEncodingProperty().getMessageView();
+        BurpExtension extenderImpl = BurpExtension.getInstance();
+        UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
+        EnumSet<UniversalViewProperty.UniversalView> view = extenderImpl.getProperty().getEncodingProperty().getMessageView();
         if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
             return false;
         }
@@ -258,6 +260,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
 
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.httpRequestResponse = httpRequestResponse;
         String guessCharset = StandardCharsets.UTF_8.name();
         if (this.isRequest) {
@@ -267,7 +270,6 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
             HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
             guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
         }
-        BurpExtension extenderImpl = BurpExtension.getInstance();
 
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());

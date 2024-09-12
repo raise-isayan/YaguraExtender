@@ -30,9 +30,10 @@ import javax.swing.JMenuItem;
 public class SendToMenu implements ContextMenuItemsProvider {
 
     private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
+    private final MontoyaApi api;
+    private final BurpExtension extenderImpl;
 
     private final SendToProperty property;
-    private final MontoyaApi api;
     private ContextMenuEvent contextMenuEvent;
 
     private final IssueAlert issueAlert;
@@ -41,6 +42,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
 
     public SendToMenu(MontoyaApi api, SendToProperty property) {
         this.api = api;
+        this.extenderImpl = BurpExtension.getInstance();
         this.property = property;
         this.issueAlert = new IssueAlert(api);
     }
@@ -98,7 +100,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
                         mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), sendToList.size(), item.getCaption()));
-                        List<String> encodingList = BurpExtension.getInstance().getSelectEncodingList();
+                        List<String> encodingList = extenderImpl.getSelectEncodingList();
                         for (String encoding : encodingList) {
                             javax.swing.JMenuItem mnuItemEncoding = new javax.swing.JMenuItem();
                             mnuItemEncoding.setText(encoding);

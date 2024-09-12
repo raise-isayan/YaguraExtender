@@ -447,6 +447,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
 
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.httpRequestResponse = httpRequestResponse;
         if (this.httpRequestResponse == null) {
             this.clearView();
@@ -454,10 +455,9 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
 
             HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
             if (wrapRequest.contentType() == ContentType.URL_ENCODED) {
-                this.setEditable(BurpExtension.getInstance().option.getDebugMode());
+                this.setEditable(extenderImpl.getProperty().getDebugMode());
             }
             String guessCharset = wrapRequest.getGuessCharset(StandardCharsets.UTF_8.name());
-            BurpExtension extenderImpl = BurpExtension.getInstance();
 
             this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
@@ -473,11 +473,12 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
 
     @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         if (httpRequestResponse == null) {
             return false;
         }
         try {
-            EnumSet<UniversalViewProperty.UniversalView> view = BurpExtension.getInstance().getProperty().getEncodingProperty().getMessageView();
+            EnumSet<UniversalViewProperty.UniversalView> view = extenderImpl.getProperty().getEncodingProperty().getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
                 return false;
             }
@@ -487,8 +488,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
                 return true;
             }
             HttpRequestWapper warapRequest = new HttpRequestWapper(httpRequestResponse.request());
-            if (warapRequest.toByteArray().length() > BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength()
-                    && BurpExtension.getInstance().getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+            if (warapRequest.toByteArray().length() > extenderImpl.getProperty().getEncodingProperty().getDispayMaxLength()
+                    && extenderImpl.getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
                 return false;
             }
             boolean enabled = warapRequest.hasParameters();

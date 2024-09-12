@@ -286,12 +286,13 @@ public class JWTViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         if (httpRequestResponse == null) {
             return false;
         }
         boolean find = false;
         try {
-            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
             EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
                 return false;

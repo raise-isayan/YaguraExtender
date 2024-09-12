@@ -39,8 +39,10 @@ public class AutoMockServer {
 
     public void startServer(int listenPort) {
         try {
+            final BurpExtension extenderImpl = BurpExtension.getInstance();
+
             BurpExtension.helpers().issueAlert("MockServer", "start listen port:" + listenPort, MessageType.INFO);
-            AutoResponderProperty autoResponder = BurpExtension.getInstance().getProperty().getAutoResponderProperty();
+            AutoResponderProperty autoResponder = extenderImpl.getProperty().getAutoResponderProperty();
             final AutoResponderDispatcher dispacher = new AutoResponderDispatcher(autoResponder);
             this.server = new MockWebServer();
             this.server.setDispatcher(dispacher);

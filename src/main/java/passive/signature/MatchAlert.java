@@ -62,10 +62,11 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
 
             @Override
             public String detail() {
+                final BurpExtension extenderImpl = BurpExtension.getInstance();
                 StringBuilder buff = new StringBuilder();
                 buff.append("<h4>Match:</h4>");
                 buff.append(String.format("<p>toolName: %s</p>", HttpUtil.toHtmlEncode(toolName)));
-                buff.append(String.format("<p>Scan Date: %s</p>", BurpExtension.getInstance().getCurrentLogTimestamp()));
+                buff.append(String.format("<p>Scan Date: %s</p>", extenderImpl.getCurrentLogTimestamp()));
                 return buff.toString();
             }
 

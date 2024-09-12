@@ -260,6 +260,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
 
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.httpRequestResponse = httpRequestResponse;
         if (this.httpRequestResponse == null) {
             this.clearView();
@@ -275,7 +276,6 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
                 MimeType contentType = wrapResponse.statedMimeType();
                 this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
             }
-            BurpExtension extenderImpl = BurpExtension.getInstance();
 
             this.quickSearchTab.getEncodingComboBox().removeItemListener(this.encodingItemStateChanged);
             this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
@@ -290,13 +290,14 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
 
     @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         if (httpRequestResponse == null || (this.isRequest && httpRequestResponse.request() == null) || (!this.isRequest && !httpRequestResponse.hasResponse())) {
             return false;
         }
 
         try {
             // "This message is too large to display"
-            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
+            UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
             EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
             if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
                 return false;

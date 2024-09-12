@@ -232,7 +232,8 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     }
 
     public void sendToJTransCoder(String text) {
-        IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
+        IBurpTab tab = extenderImpl.getRootTabComponent();
         BurpUtil.flashTab(tab, tab.getTabCaption());
         this.tabJTransCoder.sendToJTransCoder(text);
     }

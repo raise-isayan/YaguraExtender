@@ -569,10 +569,12 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.cmbSeverity.setEnabled(false);
         this.cmbConfidence.setEnabled(false);
 
+
         // FreeVersion only
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            final BurpExtension extenderImpl = BurpExtension.getInstance();
             public void componentShown(ComponentEvent e) {
-                SwingUtil.setContainerEnable(pnlScannerIssue, BurpExtension.getInstance().getBurpVersion().isProfessional());
+                SwingUtil.setContainerEnable(pnlScannerIssue, extenderImpl.getBurpVersion().isProfessional());
             }
         });
 

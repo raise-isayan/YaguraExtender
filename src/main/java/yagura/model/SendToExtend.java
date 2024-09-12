@@ -65,11 +65,12 @@ public class SendToExtend extends SendToMenuItem {
 
     @Override
     public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         switch (this.getExtend()) {
             case SEND_TO_JTRANSCODER: {
                 String text = BurpUtil.copySelectionData(this.contextMenu, this.isEnabled());
                 if (text != null) {
-                    BurpExtension.getInstance().sendToJTransCoder(text);
+                    extenderImpl.sendToJTransCoder(text);
                 }
                 break;
             }
@@ -86,7 +87,7 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case PASTE_FROM_JTRANSCODER: {
-                byte[] text = BurpExtension.getInstance().receiveFromJTransCoder();
+                byte[] text = extenderImpl.receiveFromJTransCoder();
                 if (text != null) {
                     BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), false);
                 }
@@ -95,7 +96,7 @@ public class SendToExtend extends SendToMenuItem {
             case PASTE_FROM_CLIPBOARD: {
                 try {
                     // menuItemCaption にエンコーディングが入ってくる
-                    byte[] text = BurpExtension.getInstance().receiveFromClipbord(menuItemCaption);
+                    byte[] text = extenderImpl.receiveFromClipbord(menuItemCaption);
                     if (text != null) {
                         BurpUtil.pasteSelectionData(this.contextMenu, StringUtil.getStringRaw(text), false);
                     }

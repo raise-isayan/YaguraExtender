@@ -197,11 +197,12 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_btnItemNewActionPerformed
 
     private void btnItemApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemApplyActionPerformed
+        final BurpExtension extenderImpl = BurpExtension.getInstance();
         String selectedFilterName = this.getFilterSelectedName();
         if (selectedFilterName != null) {
             BurpConfig.configBambda(BurpExtension.api(), this.filterMap.get(selectedFilterName), true);
         }
-        IBurpTab tab = BurpExtension.getInstance().getRootTabComponent();
+        IBurpTab tab = extenderImpl.getRootTabComponent();
         if (tab != null) {
             BurpUtil.flashTab(tab, "Proxy");
         }
