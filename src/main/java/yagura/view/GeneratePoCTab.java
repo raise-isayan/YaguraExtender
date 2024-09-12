@@ -589,7 +589,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             this.csrfTextPlain = csrfTextPlain;
         }
 
-
         /**
          * @return the csrfXHR
          */
@@ -768,16 +767,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    private static final Pattern MULTIPART_CONTENT_TYPE = Pattern.compile("Content-Type: (.*)", Pattern.CASE_INSENSITIVE);
-
-    static String getMultipartContentType(byte[] binay, int st, int ed) {
-        Matcher m = MULTIPART_CONTENT_TYPE.matcher(StringUtil.getStringRaw(Arrays.copyOfRange(binay, st, ed)));
-        if (m.find()) {
-            return m.group(1);
-        }
-        return "";
-    }
-
     static String generateHexBinay(byte[] binay) {
         final StringBuilder buff = new StringBuilder();
         for (int i = 0; i < binay.length; i++) {
@@ -790,14 +779,32 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    private String generatePoC(GenerateCsrfParameter csrfParam) {
+    /**
+     * *
+     *
+     * <script>
+     * function launch(){ const dT = new DataTransfer(); const file = new File(
+     * [ "CSRF-filecontent" ], "CSRF-filename" ); dT.items.add( file );
+     * document.xss[0].files = dT.files; document.xss.submit() }
+     * </script>
+     *
+    <form style="display: none" name="xss" method="post" action="<target>"
+     * enctype="multipart/form-data">
+     * <input id="file" type="file" name="file"/>
+     * <input type="submit" name="" value="" size="0" />
+     * </form>
+     * <button value="button" onclick="launch()">Submit Request</button>
+     *
+     **
+     */
+    private String generateStandardPoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
             boolean csrfSecure = csrfParam.isUseSecure();
-            boolean csrfAutoSubmit = csrfParam.isCsrfAutoSubmit();
             boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
             boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
             boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
+            boolean csrfLegacyFileUpload = csrfParam.isCsrfLegacyFileUpload();
             boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
             boolean isCsrfTimeDelay = csrfParam.isCsrfTimeDelay();
             int timeOutValue = csrfParam.getTimeOutValue();
@@ -834,48 +841,28 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
 
+            final StringBuilder dataTransfer = new StringBuilder();
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
             final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfSecure);
-            String actionUrl = wrapRequest.withService(httpService).url();
-            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(actionUrl) : actionUrl;
-            buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
-            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
 
-            buff.append("<script type=\"text/javascript\">").append(HttpUtil.LINE_TERMINATE);
-            if (isCsrfTimeDelay) {
-                buff.append(generateTimeDelayFunction());
-            }
-            if (csrfMultiForm) {
-                buff.append(generateMultiFormFunction(csrfParam.isCsrfTimeDelay()));
-            } else {
-                String timeDelay = isCsrfTimeDelay ? "msec" : "";
-                buff.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
-                if (csrfParam.isCsrfTimeDelay()) {
-                    buff.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
-                }
-                buff.append("\tdocument.forms[0].submit();").append(HttpUtil.LINE_TERMINATE);
-                buff.append("}").append(HttpUtil.LINE_TERMINATE);
-            }
-            buff.append("</script></head>").append(HttpUtil.LINE_TERMINATE);
+            String actiontUrl = wrapRequest.withService(httpService).url();
+            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(actiontUrl) : actiontUrl;
 
-            String autoSubmit = "";
-            if (csrfAutoSubmit) {
-                autoSubmit = " onload=\"csrfPoC();\"";
-                if (isCsrfTimeDelay) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
-                }
-            }
-            buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
-            buff.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
+            // 現在時刻
+            LocalDateTime localDateTime = LocalDateTime.now();
+            DateTimeFormatter localfmt = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
+            final StringBuilder formAction = new StringBuilder();
+            formAction.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
             String targetLink = (csrfMultiForm) ? "target=\"_blank\"" : "";
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
                 if (HttpUtil.isUrlEencoded(csrfEnctype)) {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\" %s>",
-                            new Object[]{csrfUrl, csrfFormMethod, targetLink})).append(HttpUtil.LINE_TERMINATE);
+                    formAction.append(String.format("<form action=\"%s\" method=\"%s\" %s>",
+                            new Object[]{ConvertUtil.encodeJsLangQuote(csrfUrl), csrfFormMethod, targetLink})).append(HttpUtil.LINE_TERMINATE);
                 } else {
-                    buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
-                            new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
+                    formAction.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
+                            new Object[]{ConvertUtil.encodeJsLangQuote(csrfUrl), csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
                 }
                 List<ParsedHttpParameter> parameters = wrapRequest.parameters();
                 logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
@@ -900,7 +887,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                         }
                         String decodename = HttpUtil.toHtmlEncode(paramName);
                         String decodevalue = HttpUtil.toHtmlEncode(paramValue);
-                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
+                        formAction.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
                                 new Object[]{decodename, decodevalue})).append(HttpUtil.LINE_TERMINATE);
                     } else if (paramType == HttpParameterType.BODY && !binaryParam) {
                         //if Resuest MultiPart binaryParam;
@@ -920,59 +907,148 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                                 paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
                             }
                         }
-                        String decodename = HttpUtil.toHtmlEncode(paramName);
-                        String decodevalue = HttpUtil.toHtmlEncode(paramValue);
-                        buff.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
-                                new Object[]{decodename, decodevalue})).append(HttpUtil.LINE_TERMINATE);
+                        String encodeName = HttpUtil.toHtmlEncode(paramName);
+                        String encodeValue = HttpUtil.toHtmlEncode(paramValue);
+                        formAction.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
+                                new Object[]{ConvertUtil.encodeJsLangQuote(encodeName), ConvertUtil.encodeJsLangQuote(encodeValue)})).append(HttpUtil.LINE_TERMINATE);
                     } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {
                         binaryParam = true;
                         filename = paramValue;
                     } else {
                         String file_encoding = csrfEncoding;
                         String decodevalue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), file_encoding);
-                        buff.append("<!-- Internet Explorer browser only technique -->").append(HttpUtil.LINE_TERMINATE);
-                        buff.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
-                                new Object[]{paramName, filename, file_encoding}));
-                        buff.append(HttpUtil.toHtmlEncode(decodevalue));
-                        buff.append("</textarea>");
+                        if (csrfLegacyFileUpload) {
+                            formAction.append("<!-- Internet Explorer browser only technique -->").append(HttpUtil.LINE_TERMINATE);
+                            formAction.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
+                                    new Object[]{ConvertUtil.encodeJsLangQuote(paramName), ConvertUtil.encodeJsLangQuote(filename), ConvertUtil.encodeJsLangQuote(file_encoding)}));
+                            formAction.append(HttpUtil.toHtmlEncode(decodevalue));
+                            formAction.append("</textarea>");
+                        } else {
+                            String fileid = String.format("fileid%s_%d", new Object[]{csrfMultiForm ? localfmt.format(localDateTime) : "", i});
+                            formAction.append(String.format("<input id=\"%s\" type=\"file\" name=\"%s\"/>",
+                                    new Object[]{fileid, ConvertUtil.encodeJsLangQuote(paramName)})).append(HttpUtil.LINE_TERMINATE);
+                            String multiPartContentType = getMultipartContentType(wrapRequest.getMessageByte(), param.nameOffsets().startIndexInclusive(), param.valueOffsets().startIndexInclusive());
+                            byte[] valueRaw = Arrays.copyOfRange(wrapRequest.getMessageByte(), param.valueOffsets().startIndexInclusive(), param.valueOffsets().endIndexExclusive());
+                            dataTransfer.append(generateDataTransferFunctionCall(fileid, valueRaw, ConvertUtil.encodeJsLangQuote(filename), ConvertUtil.encodeJsLangQuote(multiPartContentType)));
+                        }
                         binaryParam = false;
                     }
                 }
             } else {
                 // csrf textplain
-                buff.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
+                formAction.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
                         new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
                 Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(wrapRequest.body().getBytes(), csrfEncoding));
-                String key = pair.getKey();
-                String val = pair.getValue();
-                if ("".equals(val)) {
-                    String sp[] = key.split("=", 2);
+                String paramName = pair.getKey();
+                String paramValue = pair.getValue();
+                //if (csrfLegacyFileUpload) {
+                if ("".equals(paramValue)) {
+                    String sp[] = paramName.split("=", 2);
                     if (sp.length == 1) {
-                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",
-                                new Object[]{HttpUtil.toHtmlEncode(sp[0]), ""}));
+                        formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                                new Object[]{ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[0])), ""}));
                     } else {
-                        buff.append(String.format("<textarea name=\"%s\">%s</textarea>",
-                                new Object[]{HttpUtil.toHtmlEncode(sp[0]), HttpUtil.toHtmlEncode(sp[1])}));
+                        formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                                new Object[]{ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[0])), ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[1]))}));
                     }
                 } else {
-                    buff.append(String.format("<textarea name=\"%s\">%s</textarea>",
-                            new Object[]{HttpUtil.toHtmlEncode(key), HttpUtil.toHtmlEncode(val)}));
+                    formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
+                            new Object[]{ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramName)), ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramValue))}));
                 }
+                //} else {
+                //    formAction.append(String.format("<input id=\"fileupload\" type=\"file\" name=\"%s\"/>",
+                //            new Object[]{ConvertUtil.encodeJsLangQuote(paramName)})).append(HttpUtil.LINE_TERMINATE);
+                //}
             }
-            if (!csrfAutoSubmit) {
-                autoSubmit = " onClick=\"csrfPoC();\"";
+
+            String onClick = "";
+            if (!csrfParam.isCsrfAutoSubmit()) {
+                onClick = " onClick=\"csrfPoC();\"";
                 if (isCsrfTimeDelay) {
-                    autoSubmit = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
+                    onClick = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
                 }
-                buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>", autoSubmit)).append(HttpUtil.LINE_TERMINATE);
+                formAction.append(String.format("<input type=\"button\" value=\"Submit\" %s>", onClick)).append(HttpUtil.LINE_TERMINATE);
             }
-            buff.append("</form>").append(HttpUtil.LINE_TERMINATE);
-            buff.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
+            formAction.append("</form>").append(HttpUtil.LINE_TERMINATE);
+            formAction.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
+
+            final StringBuilder scriptTag = new StringBuilder();
+            scriptTag.append("<script type=\"text/javascript\">").append(HttpUtil.LINE_TERMINATE);
+            if (isCsrfTimeDelay) {
+                scriptTag.append(generateTimeDelayFunction());
+            }
+
+            final StringBuilder submitFormAction = new StringBuilder();
+            if (csrfMultiForm) {
+                String submitFunction = String.format("csrfSubmit%s", new Object[]{localfmt.format(localDateTime)});
+                submitFormAction.append(String.format("function %s() {", new Object[]{submitFunction})).append(HttpUtil.LINE_TERMINATE);
+                // FileUpload
+                if (dataTransfer.length() > 0) {
+                    submitFormAction.append(dataTransfer);
+                }
+                submitFormAction.append("}").append(HttpUtil.LINE_TERMINATE);
+
+                // FileUpload
+                if (dataTransfer.length() > 0) {
+                    scriptTag.append(submitFormAction);
+                    scriptTag.append(generateDataTransferFunction()).append(HttpUtil.LINE_TERMINATE);
+                }
+                String timeDelay = isCsrfTimeDelay ? "msec" : "";
+                scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);;
+                if (!csrfLegacyFileUpload) {
+                    scriptTag.append("\t").append(submitFunction).append("();").append(HttpUtil.LINE_TERMINATE);
+                }
+                if (isCsrfTimeDelay) {
+                    scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
+                }
+                scriptTag.append("\tdocument.forms[0].submit();").append(HttpUtil.LINE_TERMINATE);
+                scriptTag.append("}").append(HttpUtil.LINE_TERMINATE);
+            } else {
+                // FileUpload
+                if (dataTransfer.length() > 0) {
+                    scriptTag.append(generateDataTransferFunction()).append(HttpUtil.LINE_TERMINATE);
+                }
+                String timeDelay = isCsrfTimeDelay ? "msec" : "";
+                scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
+                if (dataTransfer.length() > 0) {
+                    scriptTag.append(dataTransfer).append(HttpUtil.LINE_TERMINATE);
+                }
+                if (isCsrfTimeDelay) {
+                    scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
+                }
+                scriptTag.append("\tdocument.forms[0].submit();").append(HttpUtil.LINE_TERMINATE);
+                scriptTag.append("}").append(HttpUtil.LINE_TERMINATE);
+            }
+            scriptTag.append("</script>").append(HttpUtil.LINE_TERMINATE);
+
+            buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
+            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
+            buff.append(scriptTag);
+            buff.append("</head>");
+            String autoSubmit = "";
+            if (csrfParam.isCsrfAutoSubmit()) {
+                autoSubmit = " onload=\"csrfPoC();\"";
+                if (csrfParam.isCsrfTimeDelay()) {
+                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
+                }
+            }
+            buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
+            buff.append(formAction);
             buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return buff.toString();
+    }
+
+    private static final Pattern MULTIPART_CONTENT_TYPE = Pattern.compile("Content-Type: (.*)", Pattern.CASE_INSENSITIVE);
+
+    static String getMultipartContentType(byte[] binay, int st, int ed) {
+        Matcher m = MULTIPART_CONTENT_TYPE.matcher(StringUtil.getStringRaw(Arrays.copyOfRange(binay, st, ed)));
+        if (m.find()) {
+            return m.group(1);
+        }
+        return "";
     }
 
     private String generateXHRPoC(GenerateCsrfParameter csrfParam) {
@@ -1172,7 +1248,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     buff.append("\txhr.send(new Blob([blob]));").append(HttpUtil.LINE_TERMINATE);
                 }
             } // csrf textplain
-
             else {
                 buff.append(String.format("\txhr.setRequestHeader('Content-Type', '%s');", csrfEnctype)).append(HttpUtil.LINE_TERMINATE);
                 byte[] bodyByte = wrapRequest.body().getBytes();
@@ -1215,270 +1290,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
             buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);
 
-        } catch (UnsupportedEncodingException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return buff.toString();
-    }
-
-    /***
-
-    <script>
-    function launch(){
-        const dT = new DataTransfer();
-        const file = new File( [ "CSRF-filecontent" ], "CSRF-filename" );
-        dT.items.add( file );
-        document.xss[0].files = dT.files;
-        document.xss.submit()
-    }
-    </script>
-
-    <form style="display: none" name="xss" method="post" action="<target>" enctype="multipart/form-data">
-    <input id="file" type="file" name="file"/>
-    <input type="submit" name="" value="" size="0" />
-    </form>
-    <button value="button" onclick="launch()">Submit Request</button>
-
-     ***/
-
-    private String generateStandardPoC(GenerateCsrfParameter csrfParam) {
-        final StringBuilder buff = new StringBuilder();
-        try {
-            boolean csrfSecure = csrfParam.isUseSecure();
-            boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
-            boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
-            boolean csrfMultiPart = csrfParam.isCsrfMultiPart();
-            boolean csrfLegacyFileUpload = csrfParam.isCsrfLegacyFileUpload();
-            boolean csrfTextPlain = csrfParam.isCsrfTextPlain();
-            boolean isCsrfTimeDelay = csrfParam.isCsrfTimeDelay();
-            int timeOutValue = csrfParam.getTimeOutValue();
-            String csrfEncoding = csrfParam.getCsrfEncoding();
-
-            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
-            // 自動判定
-            String contentType = wrapRequest.getEnctype();
-            String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
-            // select auto
-            if (csrfParam.isCsrfAuto()) {
-                if (contentType != null) {
-                    csrfEnctype = contentType;
-                    if (HttpUtil.isMaltiPart(contentType)) {
-                        csrfMultiPart = true;
-                    } else if (HttpUtil.isPlain(contentType)) {
-                        csrfTextPlain = true;
-                        csrfEnctype = "text/plain"; // 固定
-                    }
-                }
-                logger.log(Level.FINE, "multipart:{0}", csrfMultiPart);
-            } else {
-                // select urlencode mode
-                if (csrfUrlencode) {
-                    csrfEnctype = "application/x-www-form-urlencoded";
-                }
-                // select multipart
-                if (csrfMultiPart) {
-                    csrfEnctype = "multipart/form-data";
-                }
-                // select text/plain
-                if (csrfTextPlain) {
-                    csrfEnctype = "text/plain"; // 固定
-                }
-            }
-
-            final StringBuilder dataTransfer = new StringBuilder();
-            String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfSecure);
-
-            String actiontUrl = wrapRequest.withService(httpService).url();
-            String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(actiontUrl) : actiontUrl;
-
-            // 現在時刻
-            LocalDateTime localDateTime = LocalDateTime.now();
-            DateTimeFormatter localfmt = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-
-            final StringBuilder formAction = new StringBuilder();
-            formAction.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
-            String targetLink = (csrfMultiForm) ? "target=\"_blank\"" : "";
-            // csrf urlencoded/multipart
-            if (!csrfTextPlain) {
-                if (HttpUtil.isUrlEencoded(csrfEnctype)) {
-                    formAction.append(String.format("<form action=\"%s\" method=\"%s\" %s>",
-                            new Object[]{ConvertUtil.encodeJsLangQuote(csrfUrl), csrfFormMethod, targetLink})).append(HttpUtil.LINE_TERMINATE);
-                } else {
-                    formAction.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
-                            new Object[]{ConvertUtil.encodeJsLangQuote(csrfUrl), csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
-                }
-                List<ParsedHttpParameter> parameters = wrapRequest.parameters();
-                logger.log(Level.FINE, "parameters.length:{0}", parameters.size());
-                boolean binaryParam = false;
-                String filename = "";
-                for (int i = 0; i < parameters.size(); i++) {
-                    ParsedHttpParameter param = parameters.get(i);
-                    String paramName = param.name();
-                    String paramValue = param.value();
-                    HttpParameterType paramType = param.type();
-                    if (paramType == HttpParameterType.COOKIE) {
-                        continue;
-                    }
-                    if (paramType == HttpParameterType.URL) {
-                        paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
-                        paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
-                        if (MatchUtil.isUrlencoded(paramName)) {
-                            paramName = SmartCodec.toUrlDecode(paramName, csrfEncoding);
-                        }
-                        if (MatchUtil.isUrlencoded(paramValue)) {
-                            paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
-                        }
-                        String decodename = HttpUtil.toHtmlEncode(paramName);
-                        String decodevalue = HttpUtil.toHtmlEncode(paramValue);
-                        formAction.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
-                                new Object[]{decodename, decodevalue})).append(HttpUtil.LINE_TERMINATE);
-                    } else if (paramType == HttpParameterType.BODY && !binaryParam) {
-                        //if Resuest MultiPart binaryParam;
-                        if (contentType != null && HttpUtil.isMaltiPart(contentType)) {
-                            paramName = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramName), csrfEncoding);
-                            // ファイルアップロード時エンコードを判定しない
-                            if (binaryParam) {
-                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), StandardCharsets.ISO_8859_1);
-                            } else {
-                                paramValue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), csrfEncoding);
-                            }
-                        } else {
-                            if (MatchUtil.isUrlencoded(paramName)) {
-                                paramName = SmartCodec.toUrlDecode(paramName, csrfEncoding);
-                            }
-                            if (MatchUtil.isUrlencoded(paramValue)) {
-                                paramValue = SmartCodec.toUrlDecode(paramValue, csrfEncoding);
-                            }
-                        }
-                        String encodeName = HttpUtil.toHtmlEncode(paramName);
-                        String encodeValue = HttpUtil.toHtmlEncode(paramValue);
-                        formAction.append(String.format("<input type=\"hidden\" name=\"%s\" value=\"%s\">",
-                                new Object[]{ ConvertUtil.encodeJsLangQuote(encodeName), ConvertUtil.encodeJsLangQuote(encodeValue) })).append(HttpUtil.LINE_TERMINATE);
-                    } else if (paramType == HttpParameterType.MULTIPART_ATTRIBUTE) {
-                        binaryParam = true;
-                        filename = paramValue;
-                    } else {
-                        String file_encoding = csrfEncoding;
-                        String decodevalue = StringUtil.getStringCharset(StringUtil.getBytesRaw(paramValue), file_encoding);
-                        if (csrfLegacyFileUpload) {
-                            formAction.append("<!-- Internet Explorer browser only technique -->").append(HttpUtil.LINE_TERMINATE);
-                            formAction.append(String.format("<textarea name=\"%s&quot;; filename=&quot;%s&quot;&#x0d;&#x0a;Content-Type: text/plain; charset=%s\">",
-                                    new Object[]{ ConvertUtil.encodeJsLangQuote(paramName), ConvertUtil.encodeJsLangQuote(filename), ConvertUtil.encodeJsLangQuote(file_encoding)}));
-                            formAction.append(HttpUtil.toHtmlEncode(decodevalue));
-                            formAction.append("</textarea>");
-                        } else {
-                            String fileid = String.format("fileid%s_%d", new Object[]{ csrfMultiForm ? localfmt.format(localDateTime) : "" , i});
-                            formAction.append(String.format("<input id=\"%s\" type=\"file\" name=\"%s\"/>",
-                                    new Object[]{fileid, ConvertUtil.encodeJsLangQuote(paramName) })).append(HttpUtil.LINE_TERMINATE);
-                            String multiPartContentType = getMultipartContentType(wrapRequest.getMessageByte(), param.nameOffsets().startIndexInclusive(), param.valueOffsets().startIndexInclusive());
-                            byte[] valueRaw = Arrays.copyOfRange(wrapRequest.getMessageByte(), param.valueOffsets().startIndexInclusive(), param.valueOffsets().endIndexExclusive());
-                            dataTransfer.append(generateDataTransferFunctionCall(fileid, valueRaw, ConvertUtil.encodeJsLangQuote(filename), ConvertUtil.encodeJsLangQuote(multiPartContentType)));
-                        }
-                        binaryParam = false;
-                    }
-                }
-            } else {
-                // csrf textplain
-                formAction.append(String.format("<form action=\"%s\" method=\"%s\" enctype=\"%s\" %s>",
-                        new Object[]{csrfUrl, csrfFormMethod, csrfEnctype, targetLink})).append(HttpUtil.LINE_TERMINATE);
-                Map.Entry<String, String> pair = HttpUtil.getParameter(StringUtil.getStringCharset(wrapRequest.body().getBytes(), csrfEncoding));
-                String paramName = pair.getKey();
-                String paramValue = pair.getValue();
-                //if (csrfLegacyFileUpload) {
-                    if ("".equals(paramValue)) {
-                        String sp[] = paramName.split("=", 2);
-                        if (sp.length == 1) {
-                            formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
-                                new Object[]{ ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[0])) , ""}));
-                        } else {
-                            formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
-                                new Object[]{ ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[0])), ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(sp[1])) }));
-                        }
-                    } else {
-                        formAction.append(String.format("<textarea name=\"%s\">%s</textarea>",
-                            new Object[]{ ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramName)), ConvertUtil.encodeJsLangQuote(HttpUtil.toHtmlEncode(paramValue)) }));
-                    }
-                //} else {
-                //    formAction.append(String.format("<input id=\"fileupload\" type=\"file\" name=\"%s\"/>",
-                //            new Object[]{ConvertUtil.encodeJsLangQuote(paramName)})).append(HttpUtil.LINE_TERMINATE);
-                //}
-            }
-
-            String onClick = "";
-            if (!csrfParam.isCsrfAutoSubmit()) {
-                onClick = " onClick=\"csrfPoC();\"";
-                if (isCsrfTimeDelay) {
-                    onClick = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
-                }
-                formAction.append(String.format("<input type=\"button\" value=\"Submit\" %s>", onClick)).append(HttpUtil.LINE_TERMINATE);
-            }
-            formAction.append("</form>").append(HttpUtil.LINE_TERMINATE);
-            formAction.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
-
-            final StringBuilder scriptTag = new StringBuilder();
-            scriptTag.append("<script type=\"text/javascript\">").append(HttpUtil.LINE_TERMINATE);
-            if (isCsrfTimeDelay) {
-                scriptTag.append(generateTimeDelayFunction());
-            }
-
-            final StringBuilder submitFormAction = new StringBuilder();
-            if (csrfMultiForm) {
-                String submitFunction = String.format("csrfSubmit%s", new Object[]{localfmt.format(localDateTime)});
-                submitFormAction.append(String.format("function %s() {", new Object[]{submitFunction})).append(HttpUtil.LINE_TERMINATE);
-                // FileUpload
-                if (dataTransfer.length() > 0) {
-                    submitFormAction.append(dataTransfer);
-                }
-                submitFormAction.append("}").append(HttpUtil.LINE_TERMINATE);
-
-                // FileUpload
-                if (dataTransfer.length() > 0) {
-                    scriptTag.append(submitFormAction);
-                    scriptTag.append(generateDataTransferFunction()).append(HttpUtil.LINE_TERMINATE);
-                }
-                String timeDelay = isCsrfTimeDelay ? "msec" : "";
-                scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);;
-                if (!csrfLegacyFileUpload) {
-                    scriptTag.append("\t").append(submitFunction).append("();").append(HttpUtil.LINE_TERMINATE);
-                }
-                if (isCsrfTimeDelay) {
-                    scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
-                }
-                scriptTag.append("\tdocument.forms[0].submit();").append(HttpUtil.LINE_TERMINATE);
-                scriptTag.append("}").append(HttpUtil.LINE_TERMINATE);
-            } else {
-                // FileUpload
-                if (dataTransfer.length() > 0) {
-                    scriptTag.append(generateDataTransferFunction()).append(HttpUtil.LINE_TERMINATE);
-                }
-                String timeDelay = isCsrfTimeDelay ? "msec" : "";
-                scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
-                if (!csrfLegacyFileUpload) {
-                    scriptTag.append(dataTransfer).append(HttpUtil.LINE_TERMINATE);
-                }
-                if (isCsrfTimeDelay) {
-                    scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
-                }
-                scriptTag.append("\tdocument.forms[0].submit();").append(HttpUtil.LINE_TERMINATE);
-                scriptTag.append("}").append(HttpUtil.LINE_TERMINATE);
-            }
-            scriptTag.append("</script>").append(HttpUtil.LINE_TERMINATE);
-
-            buff.append("<html>").append(HttpUtil.LINE_TERMINATE);
-            buff.append(String.format("<head><meta http-equiv=\"Content-type\" content=\"text/html; charset='%s'\">", new Object[]{csrfEncoding})).append(HttpUtil.LINE_TERMINATE);
-            buff.append(scriptTag);
-            buff.append("</head>");
-            String autoSubmit = "";
-            if (csrfParam.isCsrfAutoSubmit()) {
-                autoSubmit = " onload=\"csrfPoC();\"";
-                if (csrfParam.isCsrfTimeDelay()) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
-                }
-            }
-            buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
-            buff.append(formAction);
-            buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }

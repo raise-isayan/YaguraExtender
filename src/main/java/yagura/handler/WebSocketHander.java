@@ -20,6 +20,7 @@ import burp.api.montoya.websocket.TextMessage;
 import burp.api.montoya.websocket.TextMessageAction;
 import burp.api.montoya.websocket.WebSocketCreated;
 import burp.api.montoya.websocket.WebSocketCreatedHandler;
+import java.util.logging.Logger;
 import yagura.model.Logging;
 
 /**
@@ -27,6 +28,8 @@ import yagura.model.Logging;
  * @author isayan
  */
 public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocketCreatedHandler {
+
+    private final static Logger logger = Logger.getLogger(WebSocketHander.class.getName());
 
     private final MontoyaApi api;
 
