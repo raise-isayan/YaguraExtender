@@ -1,6 +1,8 @@
 package yagura.model;
 
+import burp.api.montoya.websocket.Direction;
 import com.google.gson.annotations.Expose;
+import extension.burp.ProtocolType;
 import extension.helpers.ConvertUtil;
 import extension.helpers.MatchUtil;
 import java.util.regex.Matcher;
@@ -14,23 +16,44 @@ public class MatchReplaceItem extends MatchItem {
 
     public MatchReplaceItem() {
         super();
-        this.setType(types[0]);
+        this.setType((this.protocolType == ProtocolType.HTTP) ? http_types[0] : websocket_types[0]);
     }
 
     public static final String TYPE_REQUEST_HEADER = "request header";
     public static final String TYPE_REQUEST_BODY = "request body";
     public static final String TYPE_RESPONSE_HEADER = "response header";
     public static final String TYPE_RESPONSE_BODY = "response body";
-
     public static final String TYPE_REQUEST_PARAM_NAME = "request param name";
     public static final String TYPE_REQUEST_PARAM_VALUE = "request param value";
-
     public static final String TYPE_REQUEST_FIRST_LINE = "request first line";
 
-    private static final String types[] = {TYPE_REQUEST_HEADER, TYPE_REQUEST_BODY, TYPE_RESPONSE_HEADER, TYPE_RESPONSE_BODY, TYPE_REQUEST_FIRST_LINE};
+    private static final String http_types[] = {TYPE_REQUEST_HEADER, TYPE_REQUEST_BODY, TYPE_RESPONSE_HEADER, TYPE_RESPONSE_BODY, TYPE_REQUEST_FIRST_LINE};
 
-    public static String[] getTypes() {
-        return types;
+    public static final String TYPE_CLIENT_TO_SERVER = Direction.CLIENT_TO_SERVER.name().toLowerCase().replace('_', ' ');
+    public static final String TYPE_SERVER_TO_CLIENT = Direction.SERVER_TO_CLIENT.name().toLowerCase().replace('_', ' ');
+
+    private static final String websocket_types[] = {TYPE_CLIENT_TO_SERVER, TYPE_SERVER_TO_CLIENT};
+
+    public String[] getTypes() {
+        return getTypes(getProtocolType());
+    }
+
+    public static String[] getTypes(ProtocolType protocolType) {
+        if (protocolType == ProtocolType.HTTP) {
+            return http_types;
+        } else {
+            return websocket_types;
+        }
+    }
+
+    private ProtocolType protocolType = ProtocolType.HTTP;
+
+    public ProtocolType getProtocolType() {
+        return this.protocolType;
+    }
+
+    public void setProtocolType(ProtocolType protocolType) {
+        this.protocolType = protocolType;
     }
 
     @Override
@@ -105,6 +128,14 @@ public class MatchReplaceItem extends MatchItem {
 
     public boolean isBody() {
         return this.getType().endsWith("body");
+    }
+
+    public boolean isClientToServer() {
+        return this.getType().equals(TYPE_CLIENT_TO_SERVER);
+    }
+
+    public boolean isServerToClient() {
+        return this.getType().equals(TYPE_SERVER_TO_CLIENT);
     }
 
     public void setProperty(MatchReplaceItem item) {

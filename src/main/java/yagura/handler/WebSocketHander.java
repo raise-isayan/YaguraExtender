@@ -2,6 +2,7 @@ package yagura.handler;
 
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.ToolSource;
 import burp.api.montoya.proxy.websocket.BinaryMessageReceivedAction;
 import burp.api.montoya.proxy.websocket.BinaryMessageToBeSentAction;
@@ -20,8 +21,13 @@ import burp.api.montoya.websocket.TextMessage;
 import burp.api.montoya.websocket.TextMessageAction;
 import burp.api.montoya.websocket.WebSocketCreated;
 import burp.api.montoya.websocket.WebSocketCreatedHandler;
+import extension.helpers.StringUtil;
+import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import yagura.model.Logging;
+import yagura.model.MatchReplaceItem;
 
 /**
  *
@@ -32,31 +38,33 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
     private final static Logger logger = Logger.getLogger(WebSocketHander.class.getName());
 
     private final MontoyaApi api;
+    private final BurpExtension extenderImpl;
 
     public WebSocketHander(MontoyaApi api) {
         this.api = api;
+        this.extenderImpl = BurpExtension.getInstance();
         api.proxy().registerWebSocketCreationHandler(this);
         api.websockets().registerWebSocketCreatedHandler(this);
     }
 
     @Override
     public void handleWebSocketCreation(ProxyWebSocketCreation proxyWebSocketCreation) {
-        proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(new WebSocktProxyMessageHander(api, proxyWebSocketCreation));
+        proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(new WebSockettProxyMessageHander(api, proxyWebSocketCreation));
     }
 
     @Override
     public void handleWebSocketCreated(WebSocketCreated webSocketCreated) {
-        webSocketCreated.webSocket().registerMessageHandler(new WebSocktMessageHander(api, webSocketCreated));
+        webSocketCreated.webSocket().registerMessageHandler(new WebSockettMessageHander(api, webSocketCreated));
     }
 
-    static class WebSocktMessageHander implements MessageHandler {
+    static class WebSockettMessageHander implements MessageHandler {
 
         private final MontoyaApi api;
         private final WebSocketCreated webSocketCreated;
         private final BurpExtension extenderImpl;
         private final Logging logging;
 
-        public WebSocktMessageHander(MontoyaApi api, WebSocketCreated webSocketCreated) {
+        public WebSockettMessageHander(MontoyaApi api, WebSocketCreated webSocketCreated) {
             this.api = api;
             this.webSocketCreated = webSocketCreated;
             this.extenderImpl = BurpExtension.getInstance();
@@ -65,7 +73,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
         @Override
         public TextMessageAction handleTextMessage(TextMessage textMessage) {
-            // WebSockt 出力
+            // WebSocket 出力
             if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && this.extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()) {
                 ToolSource toolSource = webSocketCreated.toolSource();
                 logging.writeWebSocketToolMessage(toolSource.toolType(), webSocketCreated, textMessage);
@@ -75,7 +83,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
         @Override
         public BinaryMessageAction handleBinaryMessage(BinaryMessage binaryMessage) {
-            // WebSockt 出力
+            // WebSocket 出力
             if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && this.extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()) {
                 ToolSource toolSource = webSocketCreated.toolSource();
                 logging.writeWebSocektToolMessage(toolSource.toolType(), webSocketCreated, binaryMessage);
@@ -85,14 +93,14 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
     }
 
-    static class WebSocktProxyMessageHander implements ProxyMessageHandler {
+    static class WebSockettProxyMessageHander implements ProxyMessageHandler {
 
         private final MontoyaApi api;
         private final ProxyWebSocketCreation proxyWebSocketCreation;
         private final BurpExtension extenderImpl;
         private final Logging logging;
 
-        public WebSocktProxyMessageHander(MontoyaApi api, ProxyWebSocketCreation proxyWebSocketCreation) {
+        public WebSockettProxyMessageHander(MontoyaApi api, ProxyWebSocketCreation proxyWebSocketCreation) {
             this.api = api;
             this.proxyWebSocketCreation = proxyWebSocketCreation;
             this.extenderImpl = BurpExtension.getInstance();
@@ -102,7 +110,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
         @Override
         public TextMessageReceivedAction handleTextMessageReceived(InterceptedTextMessage interceptedTextMessage) {
-            // WebSockt 出力
+            // WebSocket 出力
             if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedTextMessage.direction() == Direction.SERVER_TO_CLIENT) {
                 logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedTextMessage);
@@ -122,7 +130,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
         @Override
         public BinaryMessageReceivedAction handleBinaryMessageReceived(InterceptedBinaryMessage interceptedBinaryMessage) {
-            // WebSockt 出力
+            // WebSocket 出力
             if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedBinaryMessage.direction() == Direction.SERVER_TO_CLIENT) {
                 logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
@@ -132,7 +140,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
         @Override
         public BinaryMessageToBeSentAction handleBinaryMessageToBeSent(InterceptedBinaryMessage interceptedBinaryMessage) {
-            // WebSockt 出力
+            // WebSocket 出力
             if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedBinaryMessage.direction() == Direction.CLIENT_TO_SERVER) {
                 logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
@@ -140,6 +148,52 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
             return BinaryMessageToBeSentAction.continueWith(interceptedBinaryMessage);
         }
 
+    }
+
+    /**
+     * @return
+     */
+    private String replaceProxyMessage(TextMessage message) {
+        byte[] payload = replaceProxyMessage(message.direction(), message.payload().getBytes());
+        return StringUtil.getStringRaw(payload);
+    }
+
+    /**
+     * @return
+     */
+    private ByteArray replaceProxyMessage(BinaryMessage message) {
+        byte[] payload = replaceProxyMessage(message.direction(), message.payload().getBytes());
+        return ByteArray.byteArray(payload);
+    }
+
+    private byte[] replaceProxyMessage(
+            Direction direction,
+            byte[] payload) {
+
+        // headerとbodyに分割
+        boolean edited = false;
+        String message = StringUtil.getStringRaw(payload);
+        List<MatchReplaceItem> matchReplaceList = extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList();
+        for (int i = 0; i < matchReplaceList.size(); i++) {
+            MatchReplaceItem bean = matchReplaceList.get(i);
+            if (!bean.isSelected()) {
+                continue;
+            }
+            if (bean.isClientToServer() || bean.isServerToClient()) {
+                Pattern pattern = bean.getRegexPattern();
+                if ((bean.isClientToServer() && direction == Direction.CLIENT_TO_SERVER) || (bean.isServerToClient() && direction == Direction.SERVER_TO_CLIENT)) {
+                    Matcher m = pattern.matcher(message);
+                    if (m.find()) {
+                        message = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                        edited = true;
+                    }
+                }
+            }
+        }
+        if (edited) {
+            payload = StringUtil.getBytesRaw(message);
+        }
+        return payload;
     }
 
 }

@@ -53,6 +53,7 @@ public class MenuHander {
 
     private final MontoyaApi api;
     private final BurpExtension extenderImpl;
+
     private final ButtonGroup menuBurpCharsetsGroup = new ButtonGroup();
     private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
     private final ButtonGroup menuYaguraEncodeTypeGroup = new ButtonGroup();

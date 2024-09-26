@@ -23,7 +23,6 @@ public class SocksProxyAuthenticator extends Authenticator {
 
     public void setCredentials(PasswordAuthentication credentials) {
         SocksProxyAuthenticator authenticator = SocksProxyAuthenticator.getInstance();
-        //Authenticator.setDefault(authenticator);
         authenticator.saveAuthenticator.set(HttpUtil.putAuthenticator(authenticator));
         authenticator.credentials.set(credentials);
     }

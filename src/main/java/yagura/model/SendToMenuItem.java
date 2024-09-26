@@ -70,7 +70,7 @@ public abstract class SendToMenuItem
                 }
                 HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
                 if ((this.isResponseHeader() || this.isResponseBody()) && wrapResponse.hasHttpResponse()) {
-                    byte resMessage[] = wrapResponse.getHeaderBytes();
+                    byte resMessage[] = wrapResponse.getMessageByte();
                     if (!(this.isResponseHeader() && this.isResponseBody())) {
                         if (this.isResponseHeader()) {
                             resMessage = Arrays.copyOfRange(resMessage, 0, wrapResponse.bodyOffset());

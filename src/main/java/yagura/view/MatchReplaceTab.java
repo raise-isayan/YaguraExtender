@@ -7,6 +7,7 @@ package yagura.view;
 
 import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
+import extension.burp.IBurpTab;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import java.awt.Component;
@@ -20,7 +21,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import yagura.model.MatchReplaceGroup;
-import extension.burp.IBurpTab;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -332,6 +332,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
             }
             this.replaceDlg.setReplaceName(selectedName);
             MatchReplaceGroup group = this.getSelectedReplaceGroup();
+//            this.replaceDlg
             this.replaceDlg.setInScopeOnly(group.isInScopeOnly());
             this.replaceDlg.setReplaceNameList(this.modelReplace.toList());
             this.replaceDlg.setMathReplaceList(group.getReplaceList());

@@ -119,7 +119,7 @@ public class LoggingProperty implements IPropertyConfig {
         this.logDirFormat = logDirFormat;
     }
 
-    private DateTimeFormatter  logTimestampDateFormat = DateTimeFormatter.ofPattern(DEFAULT_LOG_TIMESTAMP_FORMAT);
+    private DateTimeFormatter logTimestampDateFormat = DateTimeFormatter.ofPattern(DEFAULT_LOG_TIMESTAMP_FORMAT);
 
     @Expose
     private String logTimestampFormat = DEFAULT_LOG_TIMESTAMP_FORMAT;

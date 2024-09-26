@@ -48,6 +48,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
 import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import yagura.model.Parameter;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -380,7 +381,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 if (csrfParam.isCsrfXHR()) {
                     return generateXHRPoC(csrfParam);
                 } else {
-//                    return generatePoC(csrfParam);
                     return generateStandardPoC(csrfParam);
                 }
             }
@@ -441,7 +441,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     // End of variables declaration//GEN-END:variables
 
     static class GenerateBaseCsrfParameter {
-
         private boolean csrfAutoSubmit = false;
         private int timeOutValue = 1000;
         public boolean csrfAuto = false;
@@ -536,7 +535,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     }
 
     protected class GenerateCsrfParameter extends GenerateBaseCsrfParameter {
-
         private boolean csrfUrlencode = false;
         private boolean csrfMultiPart = false;
         private boolean csrfTextPlain = false;
@@ -725,7 +723,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     protected String generateMultiFormFunction(boolean isCsrfTimeDelay) {
         String timeDelay = isCsrfTimeDelay ? "msec" : "";
         StringBuilder buff = new StringBuilder();
-        buff.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
+        buff.append(String.format("function submitPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
         buff.append("\tfor(let i = 0; i < document.forms.length; i++) {").append(HttpUtil.LINE_TERMINATE);
         if (isCsrfTimeDelay) {
             buff.append("\t\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
@@ -788,7 +786,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
      * document.xss[0].files = dT.files; document.xss.submit() }
      * </script>
      *
-    <form style="display: none" name="xss" method="post" action="<target>"
+     * <form style="display: none" name="xss" method="post" action="<target>"
      * enctype="multipart/form-data">
      * <input id="file" type="file" name="file"/>
      * <input type="submit" name="" value="" size="0" />
@@ -813,7 +811,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             // 自動判定
             String contentType = wrapRequest.getEnctype();
-            String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
+            String csrfEnctype = (contentType == null) ? HttpUtil.URL_ENCODED : contentType;
             // select auto
             if (csrfParam.isCsrfAuto()) {
                 if (contentType != null) {
@@ -829,11 +827,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             } else {
                 // select urlencode mode
                 if (csrfUrlencode) {
-                    csrfEnctype = "application/x-www-form-urlencoded";
+                    csrfEnctype = HttpUtil.URL_ENCODED;
                 }
                 // select multipart
                 if (csrfMultiPart) {
-                    csrfEnctype = "multipart/form-data";
+                    csrfEnctype = HttpUtil.MULTIPART_FORM_DATA;
                 }
                 // select text/plain
                 if (csrfTextPlain) {
@@ -843,7 +841,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
             final StringBuilder dataTransfer = new StringBuilder();
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? HttpRequestWapper.METHOD_GET : wrapRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfSecure);
+            int csrfPort = wrapRequest.httpService().port();
+            if (HttpUtil.getDefaultPort(wrapRequest.httpService().secure()) == wrapRequest.httpService().port()) {
+                csrfPort = (wrapRequest.httpService().secure() == csrfSecure) ? HttpUtil.getDefaultPort(wrapRequest.httpService().secure()) : HttpUtil.getDefaultPort(csrfSecure);
+            }
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), csrfPort, csrfSecure);
 
             String actiontUrl = wrapRequest.withService(httpService).url();
             String csrfUrl = (csrfParam.isCsrfGetMethod() || wrapRequest.isGET()) ? HttpRequestWapper.getUrlPath(actiontUrl) : actiontUrl;
@@ -927,7 +929,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                             String fileid = String.format("fileid%s_%d", new Object[]{csrfMultiForm ? localfmt.format(localDateTime) : "", i});
                             formAction.append(String.format("<input id=\"%s\" type=\"file\" name=\"%s\"/>",
                                     new Object[]{fileid, ConvertUtil.encodeJsLangQuote(paramName)})).append(HttpUtil.LINE_TERMINATE);
-                            String multiPartContentType = getMultipartContentType(wrapRequest.getMessageByte(), param.nameOffsets().startIndexInclusive(), param.valueOffsets().startIndexInclusive());
+                            String multiPartContentType = Parameter.getMultipartContentType(wrapRequest.getMessageByte(), param.nameOffsets().startIndexInclusive(), param.valueOffsets().startIndexInclusive());
                             byte[] valueRaw = Arrays.copyOfRange(wrapRequest.getMessageByte(), param.valueOffsets().startIndexInclusive(), param.valueOffsets().endIndexExclusive());
                             dataTransfer.append(generateDataTransferFunctionCall(fileid, valueRaw, ConvertUtil.encodeJsLangQuote(filename), ConvertUtil.encodeJsLangQuote(multiPartContentType)));
                         }
@@ -963,9 +965,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
             String onClick = "";
             if (!csrfParam.isCsrfAutoSubmit()) {
-                onClick = " onClick=\"csrfPoC();\"";
+                onClick = " onClick=\"submitPoC();\"";
                 if (isCsrfTimeDelay) {
-                    onClick = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
+                    onClick = String.format(" onClick=\"submitPoC(%d);\"", new Object[]{timeOutValue});
                 }
                 formAction.append(String.format("<input type=\"button\" value=\"Submit\" %s>", onClick)).append(HttpUtil.LINE_TERMINATE);
             }
@@ -994,7 +996,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     scriptTag.append(generateDataTransferFunction()).append(HttpUtil.LINE_TERMINATE);
                 }
                 String timeDelay = isCsrfTimeDelay ? "msec" : "";
-                scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);;
+                scriptTag.append(String.format("function submitPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);;
                 if (!csrfLegacyFileUpload) {
                     scriptTag.append("\t").append(submitFunction).append("();").append(HttpUtil.LINE_TERMINATE);
                 }
@@ -1009,7 +1011,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     scriptTag.append(generateDataTransferFunction()).append(HttpUtil.LINE_TERMINATE);
                 }
                 String timeDelay = isCsrfTimeDelay ? "msec" : "";
-                scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
+                scriptTag.append(String.format("function submitPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
                 if (dataTransfer.length() > 0) {
                     scriptTag.append(dataTransfer).append(HttpUtil.LINE_TERMINATE);
                 }
@@ -1027,9 +1029,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             buff.append("</head>");
             String autoSubmit = "";
             if (csrfParam.isCsrfAutoSubmit()) {
-                autoSubmit = " onload=\"csrfPoC();\"";
+                autoSubmit = " onload=\"submitPoC();\"";
                 if (csrfParam.isCsrfTimeDelay()) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
+                    autoSubmit = String.format(" onload=\"submitPoC(%d);\"", new Object[]{timeOutValue});
                 }
             }
             buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
@@ -1041,19 +1043,10 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         return buff.toString();
     }
 
-    private static final Pattern MULTIPART_CONTENT_TYPE = Pattern.compile("Content-Type: (.*)", Pattern.CASE_INSENSITIVE);
-
-    static String getMultipartContentType(byte[] binay, int st, int ed) {
-        Matcher m = MULTIPART_CONTENT_TYPE.matcher(StringUtil.getStringRaw(Arrays.copyOfRange(binay, st, ed)));
-        if (m.find()) {
-            return m.group(1);
-        }
-        return "";
-    }
-
     private String generateXHRPoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
+            boolean csrfSecure = csrfParam.isUseSecure();
             boolean csrfAutoSubmit = csrfParam.isCsrfAutoSubmit();
             boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
             boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
@@ -1066,7 +1059,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
             final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             String contentType = wrapRequest.getEnctype();
-            String csrfEnctype = (contentType == null) ? "application/x-www-form-urlencoded" : contentType;
+            String csrfEnctype = (contentType == null) ? HttpUtil.URL_ENCODED : contentType;
             // 自動判定
             if (csrfParam.isCsrfAuto()) {
                 if (contentType != null) {
@@ -1081,11 +1074,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             } else {
                 // select urlencode mode
                 if (csrfUrlencode) {
-                    csrfEnctype = "application/x-www-form-urlencoded";
+                    csrfEnctype = HttpUtil.URL_ENCODED;
                 }
                 // select multipart
                 if (csrfMultiPart) {
-                    csrfEnctype = "multipart/form-data";
+                    csrfEnctype = HttpUtil.MULTIPART_FORM_DATA;
                 }
                 // select text/plain
                 if (csrfTextPlain) {
@@ -1093,7 +1086,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 }
             }
             String csrfFormMethod = csrfParam.isCsrfGetMethod() ? "GET" : wrapRequest.method();
-            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), wrapRequest.httpService().port(), csrfParam.isUseSecure());
+            int csrfPort = wrapRequest.httpService().port();
+            if (HttpUtil.getDefaultPort(wrapRequest.httpService().secure()) == wrapRequest.httpService().port()) {
+                csrfPort = (wrapRequest.httpService().secure() == csrfSecure) ? HttpUtil.getDefaultPort(wrapRequest.httpService().secure()) : HttpUtil.getDefaultPort(csrfSecure);
+            }
+            final HttpTarget httpService = HttpTarget.getHttpTarget(wrapRequest.httpService().host(), csrfPort, csrfSecure);
             String csrfUrl = wrapRequest.withService(httpService).url();
 
             // 現在時刻
@@ -1112,9 +1109,9 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 buff.append(generateMultiFormFunction(csrfParam.isCsrfTimeDelay()));
             }
 
-            String submitFunction = "csrfPoC";
+            String submitFunction = "submitPoC";
             if (csrfMultiForm) {
-                submitFunction = String.format("csrfSubmit%s", new Object[]{localfmt.format(localDateTime)});
+                submitFunction = String.format("submitPoC%s", new Object[]{localfmt.format(localDateTime)});
             }
             buff.append("// begen script").append(HttpUtil.LINE_TERMINATE);
             buff.append(String.format("function %s(%s) {", new Object[]{submitFunction, timeDelay})).append(HttpUtil.LINE_TERMINATE);
@@ -1202,7 +1199,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                     buff.append("\t\tblob[i] = req.charCodeAt(i);").append(HttpUtil.LINE_TERMINATE);
                     buff.append("\txhr.send(new Blob([blob]));").append(HttpUtil.LINE_TERMINATE);
                 } else {
-                    buff.append("\txhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');").append(HttpUtil.LINE_TERMINATE);
+                    buff.append("\txhr.setRequestHeader('Content-Type', '").append(HttpUtil.URL_ENCODED).append("');").append(HttpUtil.LINE_TERMINATE);
                     List<ParsedHttpParameter> parameters = wrapRequest.parameters();
                     logger.log(Level.FINE, "parameters.size:{0}", parameters.size());
                     boolean binaryParam = false;
@@ -1265,16 +1262,16 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             buff.append("</head>").append(HttpUtil.LINE_TERMINATE);
             String autoSubmit = "";
             if (csrfAutoSubmit) {
-                autoSubmit = " onload=\"csrfPoC();\"";
+                autoSubmit = " onload=\"submitPoC();\"";
                 if (this.chkTimeDelay.isSelected()) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
+                    autoSubmit = String.format(" onload=\"submitPoC(%d);\"", new Object[]{timeOutValue});
                 }
             }
             buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
 
-            autoSubmit = " onClick=\"csrfPoC();\"";
+            autoSubmit = " onClick=\"submitPoC();\"";
             if (isCsrfTimeDelay) {
-                autoSubmit = String.format(" onClick=\"csrfPoC(%d)\"", new Object[]{timeOutValue});
+                autoSubmit = String.format(" onClick=\"submitPoC(%d)\"", new Object[]{timeOutValue});
             }
 
             if (csrfMultiForm) {

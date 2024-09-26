@@ -10,9 +10,9 @@ plugins {
     id 'java-library'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'  
-    id 'org.asciidoctor.jvm.base' version '4.0.2'
-    id 'org.asciidoctor.jvm.convert' version '4.0.2'
-    id 'org.asciidoctor.jvm.pdf' version '4.0.2'
+    id 'org.asciidoctor.jvm.base' version '4.0.3'
+    id 'org.asciidoctor.jvm.convert' version '4.0.3'
+    id 'org.asciidoctor.jvm.pdf' version '4.0.3'
 }
 
 repositories {
@@ -105,7 +105,7 @@ dependencies {
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
     implementation 'net.portswigger.burp.extensions:montoya-api:2024.7'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    implementation 'commons-codec:commons-codec:1.17.0'
+    implementation 'commons-codec:commons-codec:1.17.1'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.3.4'
 

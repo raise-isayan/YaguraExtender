@@ -24,7 +24,6 @@ import burp.api.montoya.proxy.http.ProxyResponseHandler;
 import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
 import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
-import static extension.burp.BurpExtensionImpl.helpers;
 import extension.burp.NotifyType;
 import extension.burp.TargetTool;
 import extension.burp.scanner.IssueItem;
@@ -53,10 +52,9 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
 
     private final static Logger logger = Logger.getLogger(ProxyHander.class.getName());
 
+    private final MontoyaApi api;
     private final BurpExtension extenderImpl;
     private final Logging logging;
-
-    private final MontoyaApi api;
 
     public ProxyHander(MontoyaApi api) {
         this.api = api;
@@ -167,7 +165,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         if (extenderImpl.getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
             MatchReplaceGroup group = extenderImpl.getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(extenderImpl.getProperty().getMatchReplaceProperty().getSelectedName());
             if (group != null && group.isInScopeOnly()) {
-                if (helpers().isInScope(interceptedHttpRequest.url())) {
+                if (extenderImpl.helpers().isInScope(interceptedHttpRequest.url())) {
                     httpRequest = this.replaceProxyMessage(interceptedHttpRequest);
                 }
             } else {
@@ -194,7 +192,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         if (extenderImpl.getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
             MatchReplaceGroup group = extenderImpl.getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(extenderImpl.getProperty().getMatchReplaceProperty().getSelectedName());
             if (group != null && group.isInScopeOnly()) {
-                if (helpers().isInScope(httpRequest.url())) {
+                if (extenderImpl.helpers().isInScope(httpRequest.url())) {
                     httpResponse = this.replaceProxyMessage(httpResponse);
                 }
             } else {
@@ -253,7 +251,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
                 }
                 if (count > 0) {
                     if (bean.getNotifyTypes().contains(NotifyType.ALERTS_TAB)) {
-                        helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.request().url()), extension.burp.MessageType.INFO);
+                        extenderImpl.helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.request().url()), extension.burp.MessageType.INFO);
                     }
                     if (bean.getNotifyTypes().contains(NotifyType.TRAY_MESSAGE)) {
                         // trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);

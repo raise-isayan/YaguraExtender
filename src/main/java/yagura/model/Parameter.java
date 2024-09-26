@@ -7,6 +7,9 @@ import burp.api.montoya.http.message.params.ParsedHttpParameter;
 
 import extension.helpers.StringUtil;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -163,6 +166,16 @@ public class Parameter implements ParsedHttpParameter {
     @Override
     public Range valueOffsets() {
         return this.parameter.valueOffsets();
+    }
+
+    private static final Pattern MULTIPART_CONTENT_TYPE = Pattern.compile("Content-Type: (.*)", Pattern.CASE_INSENSITIVE);
+
+    public static String getMultipartContentType(byte[] binay, int st, int ed) {
+        Matcher m = MULTIPART_CONTENT_TYPE.matcher(StringUtil.getStringRaw(Arrays.copyOfRange(binay, st, ed)));
+        if (m.find()) {
+            return m.group(1);
+        }
+        return "";
     }
 
 }

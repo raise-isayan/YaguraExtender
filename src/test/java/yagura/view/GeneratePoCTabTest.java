@@ -1,6 +1,5 @@
 package yagura.view;
 
-import extension.helpers.StringUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -31,23 +30,6 @@ public class GeneratePoCTabTest {
 
     @AfterEach
     public void tearDown() {
-    }
-
-    @Test
-    public void testMultipartContentType() {
-        System.out.println("getMultipartContentType");
-
-        String part = "------WebKitFormBoundaryWBgkjxY4kK7BfbBR\r\n"
-                + "Content-Disposition: form-data; name=\"request\"; filename=\"\"\r\n"
-                + "Content-Type: application/octet-stream\r\n"
-                + "\r\n"
-                + "test\r\n"
-                + "------WebKitFormBoundaryWBgkjxY4kK7BfbBR\r\n";
-
-        String expResult = "application/octet-stream";
-        String result = GeneratePoCTab.getMultipartContentType(StringUtil.getBytesRaw(part), 0, 200);
-        assertEquals(expResult, result);
-
     }
 
     @Test

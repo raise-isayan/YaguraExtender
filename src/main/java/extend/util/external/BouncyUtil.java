@@ -189,7 +189,6 @@ public class BouncyUtil {
     }
 
     // https://github.com/bcgit/bc-java/tree/main/prov/src/main/java/org/bouncycastle/jcajce/provider/digest
-
     /**
      * ハッシュ値の取得
      *
@@ -1996,7 +1995,6 @@ public class BouncyUtil {
         return toHARAKA256Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
-
     /**
      * HARAKA-512値の取得
      *
@@ -3056,10 +3054,8 @@ public class BouncyUtil {
     }
 
     // https://github.com/bcgit/bc-java/tree/main/core/src/test/java/org/bouncycastle/crypto/test
-
     /**
-     * 証明書
-     * https://gist.github.com/vivekkr12/c74f7ee08593a8c606ed96f4b62a208a
+     * 証明書 https://gist.github.com/vivekkr12/c74f7ee08593a8c606ed96f4b62a208a
      * https://magnus-k-karlsson.blogspot.com/2020/03/creating-x509-certificate-with-bouncy.html
      */
     private static final String BC_PROVIDER = "BC";

@@ -44,10 +44,6 @@ public class Config extends BurpConfig {
         return String.format("websocket_tool_%s.log", toolName);
     }
 
-//    public static String getWebSocketLogMessageName() {
-//        return "websocket-message.log";
-//    }
-
     public static String getWebSocketLogFinalMessageName() {
         return "websocket-final-message.log";
     }

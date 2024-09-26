@@ -154,7 +154,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         return this.tabMatchReplace.getMatchReplaceProperty();
     }
 
-    public Map<String, FilterProperty>  getResultFilterMap() {
+    public Map<String, FilterProperty> getResultFilterMap() {
         return this.tabResultFilter.getFilterMap();
     }
 

@@ -1,5 +1,6 @@
 package yagura.view;
 
+import extension.burp.ProtocolType;
 import extension.view.base.CustomDialog;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -202,9 +203,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
-        for (String t : MatchReplaceItem.getTypes()) {
-            this.cmbRepType.addItem(t);
-        }
+        this.setTypes(ProtocolType.HTTP);
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -229,7 +228,6 @@ public class MatchReplaceItemDlg extends CustomDialog {
     }//GEN-LAST:event_txtRepReplaceActionPerformed
 
     private void chkIgnoreCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkIgnoreCaseActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_chkIgnoreCaseActionPerformed
 
     private void cmbRepTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbRepTypeItemStateChanged
@@ -306,6 +304,24 @@ public class MatchReplaceItemDlg extends CustomDialog {
     private javax.swing.JTextField txtRepMatch;
     private javax.swing.JTextField txtRepReplace;
     // End of variables declaration//GEN-END:variables
+
+    protected void setTypes(ProtocolType protocolType) {
+        this.cmbRepType.removeAll();
+        for (String t : MatchReplaceItem.getTypes(protocolType)) {
+            this.cmbRepType.addItem(t);
+        }
+    }
+
+    private ProtocolType protocolType = ProtocolType.HTTP;
+
+    public ProtocolType getProtocolType() {
+        return this.protocolType;
+    }
+
+    public void setProtocolType(ProtocolType protocolType) {
+        this.protocolType = protocolType;
+        setTypes(protocolType);
+    }
 
     /**
      * @return the item

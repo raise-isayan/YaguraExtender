@@ -328,7 +328,6 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
     private javax.swing.JSpinner spnTime;
     // End of variables declaration//GEN-END:variables
 
-
     protected class GenerateCsrfParameter extends GeneratePoCTab.GenerateBaseCsrfParameter {
 
     }
@@ -343,42 +342,34 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
         return csrfParam;
     }
 
-    /***
-
-    *<html>
-    <head><meta http-equiv="Content-type" content="text/html; charset='UTF-8'">
-    <script type="text/javascript">
-    function csrfPoC() {
-      var ws = new WebSocket(
-          'wss://echo.websocket.org/'
-      );
-
-      ws.onopen = function(e) {
-        ws.send("sending");
-      };
-
-      ws.onerror = function(error) {
-        var otag = document.getElementById("message");
-        var otxt = document.createTextNode(event.data);
-        otag.appendChild(otxt);
-      };
-
-      ws.onmessage = function(event) {
-        var otag = document.getElementById("message");
-        var otxt = document.createTextNode(event.data);
-        otag.appendChild(otxt);
-      };
-    }
-
-    </script>
-    </head><body>
-    <input type="button" value="submit" onclick="csrfPoC();"></div>
-    <div id="message"></div>
-    </body></html>
-
-    ***/
-
-    static String generateWebSocketFunctionCall(String url, byte [] binaly) {
+    /**
+     * *
+     *
+     * <html>
+     * <head><meta http-equiv="Content-type" content="text/html; charset='UTF-8'">
+     * <script type="text/javascript">
+     * function submitPoC() { var ws = new WebSocket(
+     * 'wss://echo.websocket.org/' );
+     *
+     * ws.onopen = function(e) { ws.send("sending"); };
+     *
+     * ws.onerror = function(error) { var otag =
+     * document.getElementById("message"); var otxt =
+     * document.createTextNode(event.data); otag.appendChild(otxt); };
+     *
+     * ws.onmessage = function(event) { var otag =
+     * document.getElementById("message"); var otxt =
+     * document.createTextNode(event.data); otag.appendChild(otxt); }; }
+     *
+     * </script>
+     * </head><body>
+     * <input type="button" value="submit" onclick="submitPoC();"></div>
+     * <div id="message"></div>
+     * </body></html>
+     *
+     **
+     */
+    static String generateWebSocketFunctionCall(String url, byte[] binaly) {
         StringBuilder buff = new StringBuilder();
         buff.append("\tconst url = ").append("\"").append(ConvertUtil.encodeJsLangQuote(url)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
         buff.append("\tconst data = ").append("Uint8Array.of(").append(GeneratePoCTab.generateHexBinay(binaly)).append(").buffer;").append(HttpUtil.LINE_TERMINATE);
@@ -418,15 +409,14 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
             buff.append("</head>");
             String autoSubmit = "";
             if (csrfParam.isCsrfAutoSubmit()) {
-                autoSubmit = " onload=\"csrfPoC();\"";
+                autoSubmit = " onload=\"submitPoC();\"";
                 if (csrfParam.isCsrfTimeDelay()) {
-                    autoSubmit = String.format(" onload=\"csrfPoC(%d);\"", new Object[]{csrfParam.getTimeOutValue()});
+                    autoSubmit = String.format(" onload=\"submitPoC(%d);\"", new Object[]{csrfParam.getTimeOutValue()});
                 }
             }
             String url = this.webSocketMessage.upgradeRequest().url();
             url = url.replaceFirst("^https:", csrfSecure ? "wss:" : "ws:");
             ByteArray payload = this.webSocketMessage.payload();
-            String data = StringUtil.getStringCharset(payload.getBytes(), csrfEncoding);
             final StringBuilder scriptTag = new StringBuilder();
             scriptTag.append("<script type=\"text/javascript\">").append(HttpUtil.LINE_TERMINATE);
             if (csrfParam.isCsrfTimeDelay()) {
@@ -435,15 +425,14 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
             scriptTag.append(generateWebSocketFunction());
 
             String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
-            scriptTag.append(String.format("function csrfPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
+            scriptTag.append(String.format("function submitPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);
             if (csrfParam.isCsrfTimeDelay()) {
                 scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
             }
             String value = StringUtil.getStringCharset(payload.getBytes(), csrfEncoding);
             if (StringUtil.isPrinterble(value)) {
                 scriptTag.append(generateWebSocketFunctionCall(url, value)).append(HttpUtil.LINE_TERMINATE);
-            }
-            else {
+            } else {
                 scriptTag.append(generateWebSocketFunctionCall(url, payload.getBytes())).append(HttpUtil.LINE_TERMINATE);
             }
             scriptTag.append("}").append(HttpUtil.LINE_TERMINATE);
@@ -452,9 +441,9 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
             buff.append(scriptTag);
             buff.append(String.format("<body%s>", new Object[]{autoSubmit})).append(HttpUtil.LINE_TERMINATE);
             if (!csrfAutoSubmit) {
-                autoSubmit = " onClick=\"csrfPoC();\"";
+                autoSubmit = " onClick=\"submitPoC();\"";
                 if (csrfParam.isCsrfTimeDelay()) {
-                    autoSubmit = String.format(" onClick=\"csrfPoC(%d);\"", new Object[]{timeOutValue});
+                    autoSubmit = String.format(" onClick=\"submitPoC(%d);\"", new Object[]{timeOutValue});
                 }
                 buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>", autoSubmit)).append(HttpUtil.LINE_TERMINATE);
             }
@@ -528,7 +517,6 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
     public boolean isModified() {
         return false;
     }
-
 
     public void clearView() {
         this.quickSearchTab.clearView();

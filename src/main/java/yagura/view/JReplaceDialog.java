@@ -2,6 +2,7 @@ package yagura.view;
 
 import burp.BurpExtension;
 import extension.burp.BurpConfig;
+import extension.burp.ProtocolType;
 import extension.helpers.SwingUtil;
 import yagura.model.MatchReplaceItem;
 import extension.view.base.CustomDialog;
@@ -239,11 +240,11 @@ public class JReplaceDialog extends CustomDialog {
                         .addComponent(btnRepEdit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnEncRemove)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnRepUpArraw)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRepDownArraw)
-                        .addGap(30, 30, 30)
+                        .addGap(18, 18, 18)
                         .addComponent(btnEncAllClear)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRepAdd)
@@ -419,7 +420,8 @@ public class JReplaceDialog extends CustomDialog {
             List<BurpConfig.MatchReplaceRule> rules = BurpConfig.getMatchReplaceRules(BurpExtension.api());
             for (BurpConfig.MatchReplaceRule rule : rules) {
                 MatchReplaceItem item = new MatchReplaceItem();
-                if (Arrays.stream(MatchReplaceItem.getTypes()).anyMatch(s -> s.equalsIgnoreCase(rule.getRuleTypeName()))) {
+                if (Arrays.stream(MatchReplaceItem.getTypes(item.getProtocolType())).anyMatch(s -> s.equalsIgnoreCase(rule.getRuleTypeName()))) {
+                    item.setProtocolType(ProtocolType.HTTP);
                     item.setSelected(rule.isEnabled());
                     item.setType(rule.getRuleType().toLowerCase());
                     item.setMatch(rule.getStringMatch());
@@ -476,6 +478,16 @@ public class JReplaceDialog extends CustomDialog {
     private javax.swing.JTable tableReplace;
     private javax.swing.JTextField txtListName;
     // End of variables declaration//GEN-END:variables
+
+    private ProtocolType protocolType = ProtocolType.HTTP;
+
+    public ProtocolType getProtocolType() {
+        return this.protocolType;
+    }
+
+    public void setProtocolType(ProtocolType protocolType) {
+        this.protocolType = protocolType;
+    }
 
     public String getReplaceListName() {
         return this.txtListName.getText().trim();
@@ -546,6 +558,7 @@ public class JReplaceDialog extends CustomDialog {
     private void showMatchReplaceItemDlg(boolean editMode) {
         try {
             this.matchReplaceItemDlg.setLocationRelativeTo(this);
+            this.matchReplaceItemDlg.setProtocolType(this.getProtocolType());
             if (editMode) {
                 this.matchReplaceItemDlg.setItem(getEditItem());
             } else {
@@ -573,6 +586,7 @@ public class JReplaceDialog extends CustomDialog {
                 String[] lines = this.multiItemDlg.getMultiLine();
                 for (String line : lines) {
                     MatchReplaceItem item = new MatchReplaceItem();
+                    item.setProtocolType(this.protocolType);
                     item.setType(MatchReplaceItem.TYPE_REQUEST_HEADER);
                     item.setSelected(true);
                     item.setMatch("");

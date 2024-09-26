@@ -147,10 +147,11 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
 
     public byte[] getResponse() {
         if (this.httpRequestResponse != null) {
-            if (this.httpRequestResponse.hasResponse())
+            if (this.httpRequestResponse.hasResponse()) {
                 return this.httpRequestResponse.originalResponse().toByteArray().getBytes();
-            else
+            } else {
                 return new byte[0];
+            }
         } else {
             return this.response;
         }
@@ -251,8 +252,7 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
     public int getListenerPort() {
         if (this.httpRequestResponse != null) {
             return this.httpRequestResponse.listenerPort();
-        }
-        else {
+        } else {
             return this.listenerPort;
         }
     }

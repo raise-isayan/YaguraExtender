@@ -21,6 +21,7 @@ import org.fife.ui.rtextarea.Gutter;
  * @author isayan
  */
 public class ThemeUI {
+
     private final static Logger logger = Logger.getLogger(ThemeUI.class.getName());
 
     private final static List<PropertyChangeListener> listeners = new ArrayList<>();
