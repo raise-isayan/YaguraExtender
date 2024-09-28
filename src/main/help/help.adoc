@@ -229,6 +229,14 @@ image:images/custom_matchreplace_edit.png[MatchReplaceItem Dialog]
 ==== MatchReplace Item Edit dialog
 image:images/custom_matchreplace_item.png[MatchReplaceItem Edit dialog]
 
+ProtocolType::
+
+* HTTP
+** Substitution in the HTTP protocol.
+   
+* WebSocket
+** Substitution in the WebSocket protocol.
+   
 Type(Replacement target)::
     Select from request heder, request body, response heder, response body.
 

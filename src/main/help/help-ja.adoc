@@ -227,6 +227,14 @@ image:images/custom_matchreplace_edit.png[MatchReplaceItemダイヤログ]
 ==== MatchReplace Item 編集ダイヤログ
 image:images/custom_matchreplace_item.png[MatchReplaceItem編集ダイヤログ]
 
+ProtocolType::
+
+* HTTP
+**  HTTP プロトコルの置換を行います。
+
+* WebSocket
+**  WebSocket プロトコルの置換を行います。
+
 Type(置換対象)::
     request heder,request body,response heder,response bodyのいずれかから選択します。
 
