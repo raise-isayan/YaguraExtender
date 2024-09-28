@@ -228,8 +228,9 @@
                 <Component class="javax.swing.JTable" name="tableReplace">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="8" rowCount="0">
+                      <Table columnCount="9" rowCount="0">
                         <Column editable="true" title="" type="java.lang.Boolean"/>
+                        <Column editable="false" title="ProtocolType" type="java.lang.String"/>
                         <Column editable="false" title="type" type="java.lang.String"/>
                         <Column editable="false" title="match" type="java.lang.String"/>
                         <Column editable="false" title="smartMatch" type="java.lang.Boolean"/>
@@ -242,6 +243,11 @@
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>
@@ -271,7 +277,7 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                           <Title/>
                           <Editor/>
                           <Renderer/>

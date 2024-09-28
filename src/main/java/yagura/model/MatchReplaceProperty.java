@@ -2,6 +2,7 @@ package yagura.model;
 
 import com.google.gson.annotations.Expose;
 import extension.burp.IPropertyConfig;
+import extension.burp.ProtocolType;
 import extension.helpers.ConvertUtil;
 import extension.helpers.json.JsonUtil;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -84,10 +86,19 @@ public class MatchReplaceProperty implements IPropertyConfig {
      */
     public List<MatchReplaceItem> getMatchReplaceList() {
         MatchReplaceGroup group = this.replaceMap.get(this.selectedName);
-        if (group != null) {
-            return group.getReplaceList();
+        if (group == null) {
+            return new ArrayList<>();
         } else {
-            return null;
+            return group.getReplaceList();
+        }
+    }
+
+    public List<MatchReplaceItem> getMatchReplaceList(ProtocolType protocolType) {
+        List<MatchReplaceItem> list = getMatchReplaceList();
+        if (list == null) {
+            return new ArrayList<>();
+        } else {
+            return list.stream().filter(item -> item.getProtocolType() == protocolType).collect(Collectors.toList());
         }
     }
 

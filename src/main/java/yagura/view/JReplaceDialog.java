@@ -151,14 +151,14 @@ public class JReplaceDialog extends CustomDialog {
 
             },
             new String [] {
-                "", "type", "match", "smartMatch", "regex", "icase", "replace", "metachar"
+                "", "ProtocolType", "type", "match", "smartMatch", "regex", "icase", "replace", "metachar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -172,8 +172,10 @@ public class JReplaceDialog extends CustomDialog {
         tableReplace.getTableHeader().setReorderingAllowed(false);
         scrollPane.setViewportView(tableReplace);
         if (tableReplace.getColumnModel().getColumnCount() > 0) {
-            tableReplace.getColumnModel().getColumn(2).setResizable(false);
+            tableReplace.getColumnModel().getColumn(1).setResizable(false);
+            tableReplace.getColumnModel().getColumn(3).setResizable(false);
             tableReplace.getColumnModel().getColumn(7).setResizable(false);
+            tableReplace.getColumnModel().getColumn(8).setResizable(false);
         }
 
         lblName.setText("Name:");
@@ -334,29 +336,34 @@ public class JReplaceDialog extends CustomDialog {
         this.tableReplace.getColumnModel().getColumn(0).setPreferredWidth(20);
         this.tableReplace.getColumnModel().getColumn(0).setMaxWidth(30);
 
+        // protocol type
+        this.tableReplace.getColumnModel().getColumn(1).setMinWidth(0);
+        this.tableReplace.getColumnModel().getColumn(1).setPreferredWidth(0);
+        this.tableReplace.getColumnModel().getColumn(1).setMaxWidth(0);
+
         // type
-        this.tableReplace.getColumnModel().getColumn(1).setPreferredWidth(120);
-        this.tableReplace.getColumnModel().getColumn(1).setMaxWidth(150);
+        this.tableReplace.getColumnModel().getColumn(2).setPreferredWidth(120);
+        this.tableReplace.getColumnModel().getColumn(2).setMaxWidth(150);
 
         // smartMatch
-        this.tableReplace.getColumnModel().getColumn(3).setMinWidth(20);
-        this.tableReplace.getColumnModel().getColumn(3).setPreferredWidth(30);
-        this.tableReplace.getColumnModel().getColumn(3).setMaxWidth(40);
-
-        // regex
         this.tableReplace.getColumnModel().getColumn(4).setMinWidth(20);
         this.tableReplace.getColumnModel().getColumn(4).setPreferredWidth(30);
         this.tableReplace.getColumnModel().getColumn(4).setMaxWidth(40);
 
-        // ignore
+        // regex
         this.tableReplace.getColumnModel().getColumn(5).setMinWidth(20);
         this.tableReplace.getColumnModel().getColumn(5).setPreferredWidth(30);
         this.tableReplace.getColumnModel().getColumn(5).setMaxWidth(40);
 
+        // ignore
+        this.tableReplace.getColumnModel().getColumn(6).setMinWidth(20);
+        this.tableReplace.getColumnModel().getColumn(6).setPreferredWidth(30);
+        this.tableReplace.getColumnModel().getColumn(6).setMaxWidth(40);
+
         // metachar
-        this.tableReplace.getColumnModel().getColumn(7).setMinWidth(0);
-        this.tableReplace.getColumnModel().getColumn(7).setPreferredWidth(0);
-        this.tableReplace.getColumnModel().getColumn(7).setMaxWidth(0);
+        this.tableReplace.getColumnModel().getColumn(8).setMinWidth(0);
+        this.tableReplace.getColumnModel().getColumn(8).setPreferredWidth(0);
+        this.tableReplace.getColumnModel().getColumn(8).setMaxWidth(0);
 
 //        SwingUtil.setContainerKeyMap(this);
     }
@@ -421,14 +428,14 @@ public class JReplaceDialog extends CustomDialog {
             for (BurpConfig.MatchReplaceRule rule : rules) {
                 MatchReplaceItem item = new MatchReplaceItem();
                 if (Arrays.stream(MatchReplaceItem.getTypes(item.getProtocolType())).anyMatch(s -> s.equalsIgnoreCase(rule.getRuleTypeName()))) {
-                    item.setProtocolType(ProtocolType.HTTP);
                     item.setSelected(rule.isEnabled());
+                    item.setProtocolType(ProtocolType.HTTP);
                     item.setType(rule.getRuleType().toLowerCase());
                     item.setMatch(rule.getStringMatch());
                     item.setReplace(rule.getStringReplace());
                     item.setRegexp(!rule.isSimpleMatch());
                     SwingUtil.addOrUpdateItem(this.tableReplace, MatchReplaceItem.toObjects(item), false);
-               }
+                }
             }
         }
     }//GEN-LAST:event_btnImportRuleActionPerformed
@@ -478,16 +485,6 @@ public class JReplaceDialog extends CustomDialog {
     private javax.swing.JTable tableReplace;
     private javax.swing.JTextField txtListName;
     // End of variables declaration//GEN-END:variables
-
-    private ProtocolType protocolType = ProtocolType.HTTP;
-
-    public ProtocolType getProtocolType() {
-        return this.protocolType;
-    }
-
-    public void setProtocolType(ProtocolType protocolType) {
-        this.protocolType = protocolType;
-    }
 
     public String getReplaceListName() {
         return this.txtListName.getText().trim();
@@ -558,7 +555,6 @@ public class JReplaceDialog extends CustomDialog {
     private void showMatchReplaceItemDlg(boolean editMode) {
         try {
             this.matchReplaceItemDlg.setLocationRelativeTo(this);
-            this.matchReplaceItemDlg.setProtocolType(this.getProtocolType());
             if (editMode) {
                 this.matchReplaceItemDlg.setItem(getEditItem());
             } else {
@@ -586,7 +582,7 @@ public class JReplaceDialog extends CustomDialog {
                 String[] lines = this.multiItemDlg.getMultiLine();
                 for (String line : lines) {
                     MatchReplaceItem item = new MatchReplaceItem();
-                    item.setProtocolType(this.protocolType);
+                    item.setProtocolType(ProtocolType.HTTP);
                     item.setType(MatchReplaceItem.TYPE_REQUEST_HEADER);
                     item.setSelected(true);
                     item.setMatch("");

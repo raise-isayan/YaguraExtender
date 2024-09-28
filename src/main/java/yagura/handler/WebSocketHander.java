@@ -21,6 +21,7 @@ import burp.api.montoya.websocket.TextMessage;
 import burp.api.montoya.websocket.TextMessageAction;
 import burp.api.montoya.websocket.WebSocketCreated;
 import burp.api.montoya.websocket.WebSocketCreatedHandler;
+import extension.burp.ProtocolType;
 import extension.helpers.StringUtil;
 import java.util.List;
 import java.util.logging.Logger;
@@ -49,22 +50,22 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
     @Override
     public void handleWebSocketCreation(ProxyWebSocketCreation proxyWebSocketCreation) {
-        proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(new WebSockettProxyMessageHander(api, proxyWebSocketCreation));
+        proxyWebSocketCreation.proxyWebSocket().registerProxyMessageHandler(new WebSocketProxyMessageHander(api, proxyWebSocketCreation));
     }
 
     @Override
     public void handleWebSocketCreated(WebSocketCreated webSocketCreated) {
-        webSocketCreated.webSocket().registerMessageHandler(new WebSockettMessageHander(api, webSocketCreated));
+        webSocketCreated.webSocket().registerMessageHandler(new WebSocketMessageHander(api, webSocketCreated));
     }
 
-    static class WebSockettMessageHander implements MessageHandler {
+    static class WebSocketMessageHander implements MessageHandler {
 
         private final MontoyaApi api;
         private final WebSocketCreated webSocketCreated;
         private final BurpExtension extenderImpl;
         private final Logging logging;
 
-        public WebSockettMessageHander(MontoyaApi api, WebSocketCreated webSocketCreated) {
+        public WebSocketMessageHander(MontoyaApi api, WebSocketCreated webSocketCreated) {
             this.api = api;
             this.webSocketCreated = webSocketCreated;
             this.extenderImpl = BurpExtension.getInstance();
@@ -75,6 +76,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
         public TextMessageAction handleTextMessage(TextMessage textMessage) {
             // WebSocket 出力
             if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && this.extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()) {
+                // Tool Log 出力
                 ToolSource toolSource = webSocketCreated.toolSource();
                 logging.writeWebSocketToolMessage(toolSource.toolType(), webSocketCreated, textMessage);
             }
@@ -85,6 +87,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
         public BinaryMessageAction handleBinaryMessage(BinaryMessage binaryMessage) {
             // WebSocket 出力
             if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && this.extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()) {
+                // Tool Log 出力
                 ToolSource toolSource = webSocketCreated.toolSource();
                 logging.writeWebSocektToolMessage(toolSource.toolType(), webSocketCreated, binaryMessage);
             }
@@ -93,14 +96,14 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
     }
 
-    static class WebSockettProxyMessageHander implements ProxyMessageHandler {
+    static class WebSocketProxyMessageHander implements ProxyMessageHandler {
 
         private final MontoyaApi api;
         private final ProxyWebSocketCreation proxyWebSocketCreation;
         private final BurpExtension extenderImpl;
         private final Logging logging;
 
-        public WebSockettProxyMessageHander(MontoyaApi api, ProxyWebSocketCreation proxyWebSocketCreation) {
+        public WebSocketProxyMessageHander(MontoyaApi api, ProxyWebSocketCreation proxyWebSocketCreation) {
             this.api = api;
             this.proxyWebSocketCreation = proxyWebSocketCreation;
             this.extenderImpl = BurpExtension.getInstance();
@@ -110,12 +113,13 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
         @Override
         public TextMessageReceivedAction handleTextMessageReceived(InterceptedTextMessage interceptedTextMessage) {
+            TextMessage requestResult = this.replaceProxyMessage(interceptedTextMessage);
             // WebSocket 出力
             if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedTextMessage.direction() == Direction.SERVER_TO_CLIENT) {
                 logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedTextMessage);
             }
-            return TextMessageReceivedAction.continueWith(interceptedTextMessage);
+            return TextMessageReceivedAction.continueWith(requestResult);
         }
 
         @Override
@@ -130,12 +134,13 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
 
         @Override
         public BinaryMessageReceivedAction handleBinaryMessageReceived(InterceptedBinaryMessage interceptedBinaryMessage) {
+            BinaryMessage requestResult = this.replaceProxyMessage(interceptedBinaryMessage);
             // WebSocket 出力
             if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedBinaryMessage.direction() == Direction.SERVER_TO_CLIENT) {
                 logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
             }
-            return BinaryMessageReceivedAction.continueWith(interceptedBinaryMessage);
+            return BinaryMessageReceivedAction.continueWith(requestResult);
         }
 
         @Override
@@ -148,52 +153,89 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
             return BinaryMessageToBeSentAction.continueWith(interceptedBinaryMessage);
         }
 
-    }
-
-    /**
-     * @return
-     */
-    private String replaceProxyMessage(TextMessage message) {
-        byte[] payload = replaceProxyMessage(message.direction(), message.payload().getBytes());
-        return StringUtil.getStringRaw(payload);
-    }
-
-    /**
-     * @return
-     */
-    private ByteArray replaceProxyMessage(BinaryMessage message) {
-        byte[] payload = replaceProxyMessage(message.direction(), message.payload().getBytes());
-        return ByteArray.byteArray(payload);
-    }
-
-    private byte[] replaceProxyMessage(
-            Direction direction,
-            byte[] payload) {
-
-        // headerとbodyに分割
-        boolean edited = false;
-        String message = StringUtil.getStringRaw(payload);
-        List<MatchReplaceItem> matchReplaceList = extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList();
-        for (int i = 0; i < matchReplaceList.size(); i++) {
-            MatchReplaceItem bean = matchReplaceList.get(i);
-            if (!bean.isSelected()) {
-                continue;
+        /**
+         * @message @return
+         */
+        private TextMessage replaceProxyMessage(TextMessage message) {
+            byte[] payload = message.payload().getBytes();
+            byte[] update = replaceProxyMessage(message.direction(), payload);
+            if (payload != update) {
+                return createTextMessage(message.direction(), StringUtil.getStringRaw(update));
+            } else {
+                return message;
             }
-            if (bean.isClientToServer() || bean.isServerToClient()) {
-                Pattern pattern = bean.getRegexPattern();
-                if ((bean.isClientToServer() && direction == Direction.CLIENT_TO_SERVER) || (bean.isServerToClient() && direction == Direction.SERVER_TO_CLIENT)) {
-                    Matcher m = pattern.matcher(message);
-                    if (m.find()) {
-                        message = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
-                        edited = true;
+        }
+
+        /**
+         * @message @return
+         */
+        private BinaryMessage replaceProxyMessage(BinaryMessage message) {
+            byte[] payload = message.payload().getBytes();
+            byte[] update = replaceProxyMessage(message.direction(), payload);
+            if (payload != update) {
+                return createBinaryMessage(message.direction(), ByteArray.byteArray(update));
+            } else {
+                return message;
+            }
+        }
+
+        private byte[] replaceProxyMessage(
+                Direction direction,
+                byte[] payload) {
+
+            // headerとbodyに分割
+            boolean edited = false;
+            String message = StringUtil.getStringRaw(payload);
+            List<MatchReplaceItem> matchReplaceList = extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList(ProtocolType.WEBSOCKET);
+            for (int i = 0; i < matchReplaceList.size(); i++) {
+                MatchReplaceItem bean = matchReplaceList.get(i);
+                if (!bean.isSelected()) {
+                    continue;
+                }
+                if (bean.isClientToServer() || bean.isServerToClient()) {
+                    Pattern pattern = bean.getRegexPattern();
+                    if ((bean.isClientToServer() && direction == Direction.CLIENT_TO_SERVER) || (bean.isServerToClient() && direction == Direction.SERVER_TO_CLIENT)) {
+                        Matcher m = pattern.matcher(message);
+                        if (m.find()) {
+                            message = m.replaceAll(bean.getReplace(!bean.isRegexp(), bean.isMetaChar()));
+                            edited = true;
+                        }
                     }
                 }
             }
+            if (edited) {
+                payload = StringUtil.getBytesRaw(message);
+            }
+            return payload;
         }
-        if (edited) {
-            payload = StringUtil.getBytesRaw(message);
-        }
-        return payload;
+    }
+
+    public static TextMessage createTextMessage(final Direction direction, final String payload) {
+        return new TextMessage() {
+            @Override
+            public String payload() {
+                return payload;
+            }
+
+            @Override
+            public Direction direction() {
+                return direction;
+            }
+        };
+    }
+
+    public static BinaryMessage createBinaryMessage(final Direction direction, final ByteArray payload) {
+        return new BinaryMessage() {
+            @Override
+            public ByteArray payload() {
+                return payload;
+            }
+
+            @Override
+            public Direction direction() {
+                return direction;
+            }
+        };
     }
 
 }

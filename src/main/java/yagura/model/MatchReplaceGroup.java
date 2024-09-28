@@ -5,22 +5,13 @@ import extension.burp.ProtocolType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
  * @author isayan
  */
 public class MatchReplaceGroup {
-
-    private ProtocolType protocolType = ProtocolType.HTTP;
-
-    public ProtocolType getProtocolType() {
-        return this.protocolType;
-    }
-
-    public void setProtocolType(ProtocolType protocolType) {
-        this.protocolType = protocolType;
-    }
 
     @Expose
     private final List<MatchReplaceItem> replaceList = new ArrayList<>();
@@ -30,6 +21,14 @@ public class MatchReplaceGroup {
      */
     public List<MatchReplaceItem> getReplaceList() {
         return Collections.unmodifiableList(this.replaceList);
+    }
+
+    /**
+     * @param protocolType
+     * @return the replaceMap
+     */
+    public List<MatchReplaceItem> getReplaceList(final ProtocolType protocolType) {
+        return Collections.unmodifiableList(this.replaceList.stream().filter(item -> item.getProtocolType() == protocolType).collect(Collectors.toList()));
     }
 
     public void setReplaceList(List<MatchReplaceItem> replaceList) {

@@ -34,10 +34,6 @@ public class MatchReplaceItem extends MatchItem {
 
     private static final String websocket_types[] = {TYPE_CLIENT_TO_SERVER, TYPE_SERVER_TO_CLIENT};
 
-    public String[] getTypes() {
-        return getTypes(getProtocolType());
-    }
-
     public static String[] getTypes(ProtocolType protocolType) {
         if (protocolType == ProtocolType.HTTP) {
             return http_types;
@@ -46,6 +42,7 @@ public class MatchReplaceItem extends MatchItem {
         }
     }
 
+    @Expose
     private ProtocolType protocolType = ProtocolType.HTTP;
 
     public ProtocolType getProtocolType() {
@@ -140,33 +137,36 @@ public class MatchReplaceItem extends MatchItem {
 
     public void setProperty(MatchReplaceItem item) {
         this.setProperty((MatchItem) item);
+        this.setProtocolType(item.getProtocolType());
         this.setMetaChar(item.isMetaChar());
         this.setSmartMatch(item.isSmartMatch());
     }
 
     public static Object[] toObjects(MatchReplaceItem matchReplace) {
-        Object[] beans = new Object[8];
+        Object[] beans = new Object[9];
         beans[0] = matchReplace.isSelected();
-        beans[1] = matchReplace.getType();
-        beans[2] = matchReplace.getMatch();
-        beans[3] = matchReplace.isSmartMatch();
-        beans[4] = matchReplace.isRegexp();
-        beans[5] = matchReplace.isIgnoreCase();
-        beans[6] = matchReplace.getReplace();
-        beans[7] = matchReplace.isMetaChar();
+        beans[1] = matchReplace.getProtocolType().name();
+        beans[2] = matchReplace.getType();
+        beans[3] = matchReplace.getMatch();
+        beans[4] = matchReplace.isSmartMatch();
+        beans[5] = matchReplace.isRegexp();
+        beans[6] = matchReplace.isIgnoreCase();
+        beans[7] = matchReplace.getReplace();
+        beans[8] = matchReplace.isMetaChar();
         return beans;
     }
 
     public static MatchReplaceItem fromObjects(Object[] rows) {
         MatchReplaceItem matchReplace = new MatchReplaceItem();
         matchReplace.setSelected(((Boolean) rows[0]));
-        matchReplace.setType((String) rows[1]);
-        matchReplace.setMatch((String) rows[2]);
-        matchReplace.setSmartMatch((Boolean) rows[3]);
-        matchReplace.setRegexp((Boolean) rows[4]);
-        matchReplace.setIgnoreCase((Boolean) rows[5]);
-        matchReplace.setReplace((String) rows[6]);
-        matchReplace.setMetaChar((Boolean) rows[7]);
+        matchReplace.setProtocolType(ProtocolType.valueOf((String) rows[1]));
+        matchReplace.setType((String) rows[2]);
+        matchReplace.setMatch((String) rows[3]);
+        matchReplace.setSmartMatch((Boolean) rows[4]);
+        matchReplace.setRegexp((Boolean) rows[5]);
+        matchReplace.setIgnoreCase((Boolean) rows[6]);
+        matchReplace.setReplace((String) rows[7]);
+        matchReplace.setMetaChar((Boolean) rows[8]);
         matchReplace.recompileRegex(!matchReplace.isRegexp());
         return matchReplace;
     }

@@ -25,6 +25,7 @@ import burp.api.montoya.proxy.http.ProxyResponseReceivedAction;
 import burp.api.montoya.proxy.http.ProxyResponseToBeSentAction;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import extension.burp.NotifyType;
+import extension.burp.ProtocolType;
 import extension.burp.TargetTool;
 import extension.burp.scanner.IssueItem;
 import extension.helpers.HttpMessage;
@@ -328,7 +329,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         String header = message.getHeader();
         String body = message.getBody();
 
-        List<MatchReplaceItem> matchReplaceList = extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList();
+        List<MatchReplaceItem> matchReplaceList = extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList(ProtocolType.HTTP);
         for (int i = 0; i < matchReplaceList.size(); i++) {
             MatchReplaceItem bean = matchReplaceList.get(i);
             if (!bean.isSelected()) {

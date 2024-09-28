@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import extension.burp.Confidence;
 import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
+import extension.burp.ProtocolType;
 import extension.burp.Severity;
 import extension.burp.TargetTool;
 import extension.view.base.MatchItem;
@@ -49,6 +50,7 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             jsonObject.add("comment", jsc.serialize(matchItem.getComment()));
         } else if (cls.equals(MatchReplaceItem.class)) {
             MatchReplaceItem matchItem = (MatchReplaceItem) t;
+            jsonObject.add("protocolType", jsc.serialize(matchItem.getProtocolType()));
             jsonObject.add("smartMatch", jsc.serialize(matchItem.isSmartMatch()));
             jsonObject.add("metaChar", jsc.serialize(matchItem.isMetaChar()));
         } else if (cls.equals(AutoResponderItem.class)) {
@@ -106,6 +108,9 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
         } else if (cls.equals(MatchReplaceItem.class)) {
             final MatchReplaceItem matchItem = new MatchReplaceItem();
             matchItem.setProperty((MatchItem) item);
+            if (jsonObject.has("protocolType")) {
+                matchItem.setProtocolType(jdc.deserialize(jsonObject.get("protocolType"), ProtocolType.class));
+            }
             if (jsonObject.has("smartMatch")) {
                 matchItem.setSmartMatch(jdc.deserialize(jsonObject.get("smartMatch"), Boolean.TYPE));
             }

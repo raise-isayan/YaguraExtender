@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -21,6 +22,7 @@ import yagura.model.ResultFilterProperty;
  */
 public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
 
+    private final static Logger logger = Logger.getLogger(ResultFilterTab.class.getName());
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     /**
