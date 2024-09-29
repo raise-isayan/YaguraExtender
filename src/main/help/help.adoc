@@ -1,6 +1,6 @@
 = YaguraExtension Help
 :toc2:
-:toclevels: 4
+:toclevels: 3
 :figure-caption: figure
 :table-caption: table
 :numbered:

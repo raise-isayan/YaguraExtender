@@ -28,7 +28,9 @@ asciidoctor {
     sources {
       include 'help.adoc', 'help-ja.adoc'
     }
-
+    attributes = [
+      'revnumber': 'v${release_version_major}.${release_version_minor}'
+    ]
     outputDir = file('help')
 }
 
