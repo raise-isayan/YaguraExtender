@@ -223,8 +223,8 @@ image:images/custom_matchreplace_edit.png[MatchReplaceItem Dialog]
 [All Clear] button::
     Delete all lists.
 
-[Add], [Update] button::
-    Add MatchReplace. Update if it is being edited.
+[Add] button::
+    Add MatchReplace Item.
 
 ==== MatchReplace Item Edit dialog
 image:images/custom_matchreplace_item.png[MatchReplaceItem Edit dialog]
@@ -273,6 +273,9 @@ Replace(After replacement)::
 |\uhhhh   |Specify Unicode code in hexadecimal for hhhh in Unicode notation. Unicode characters are automatically converted to the guessed character code of the guessed response. If there is no corresponding character, it is converted to?.
 |=======================
 
+[Add All] button::
+    header, and MatchAlert Item, which is only supported for the HTTP protocol.
+
 === MatchAlert tab
 
 image:images/custom_matchalert.png[MatchAlert tab]
@@ -303,8 +306,11 @@ There are the following five notification methods, and you can select multiple m
 [Remove] button::
     Delete the selected MatchAlert Item.
 
-[Add], [Update] button::
-    Add a MatchAlert Item. Updates while editing.
+[Add] button::
+    Add a MatchAlert Item.
+
+[Add All] button::
+    Add MatchAlert Item, which adds request headers; only the HTTP protocol is supported.
 
 ==== MatchAlert Item Edit dialog
 

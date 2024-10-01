@@ -24,14 +24,14 @@ tasks.withType(JavaCompile) {
 }
 
 asciidoctor {
-    sourceDir = file('src/main/help')
+    sourceDir = file("src/main/help")
     sources {
-      include 'help.adoc', 'help-ja.adoc'
+      include "help.adoc", "help-ja.adoc"
     }
     attributes = [
-      'revnumber': 'v${release_version_major}.${release_version_minor}'
+      'revnumber': "v${release_version_major}.${release_version_minor}"
     ]
-    outputDir = file('help')
+    outputDir = file("help")
 }
 
 application {

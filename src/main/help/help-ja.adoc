@@ -295,8 +295,10 @@ image:images/custom_matchalert.png[MatchAlertタブ]
     選択した MatchAlert Item を編集します。
 [Remove] ボタン::
     選択した MatchAlert Item を削除します。
-[Add]、[Update] ボタン::
-    MatchAlert Item を追加します。編集中時は更新します。
+[Add] ボタン::
+    MatchAlert Item を追加します。
+[Add All] ボタン::
+    リクエストヘッダを追加する、MatchAlert Item を追加します。HTTPプロトコルのみ対応です。
 
 ==== MatchAlert Item 編集ダイヤログ
 
