@@ -51,6 +51,8 @@ public class MenuHander {
 
     private final static Logger logger = Logger.getLogger(MenuHander.class.getName());
 
+    private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
+
     private final MontoyaApi api;
     private final BurpExtension extenderImpl;
 
@@ -64,6 +66,9 @@ public class MenuHander {
     private final static String USE_BURP_CHARSETS = "Use Burp Charsets";
 
     private String yaguraCharset = StandardCharsets.UTF_8.name();
+
+    private final javax.swing.ImageIcon image_http = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/page_white_world.png"));
+    private final javax.swing.ImageIcon image_websocket = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/connect.png"));
 
     public MenuHander(MontoyaApi api) {
         this.api = api;
@@ -908,7 +913,7 @@ public class MenuHander {
      */
     private void updateResultFilterUI(JMenu yaguraResultFilterMenu) {
         yaguraResultFilterMenu.removeAll();
-        Map<String, FilterProperty> filterMap = extenderImpl.getProperty().getResultFilterProperty().getFilterMap();
+        final Map<String, FilterProperty> filterMap = extenderImpl.getProperty().getResultFilterProperty().getFilterMap();
         for (String name : filterMap.keySet()) {
             JMenuItem chkResultFilterItem = new JMenuItem();
             chkResultFilterItem.setText(name);

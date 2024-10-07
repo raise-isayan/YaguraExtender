@@ -37,7 +37,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
     }
 
     @Expose
-    private FilterProperty filterProp = new FilterProperty();
+    private FilterProperty filterProp = new FilterProperty(FilterProperty.FilterCategory.HTTP);
 
     public FilterProperty getFilterProperty() {
         return this.filterProp;

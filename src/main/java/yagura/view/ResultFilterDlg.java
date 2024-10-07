@@ -1,19 +1,16 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
-import extension.burp.BurpConfig;
+import burp.api.montoya.proxy.ProxyWebSocketMessage;
+import burp.api.montoya.websocket.Direction;
 import extension.burp.BurpExtensionImpl;
 import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
 import extension.burp.MessageHighlightColor;
-import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
-import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
 import extension.view.base.JavaSyntaxDocument;
-import extension.view.layout.VerticalFlowLayout;
 import java.net.HttpURLConnection;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -57,59 +54,7 @@ public class ResultFilterDlg extends CustomDialog {
     private void initComponents() {
 
         pnlMain = new javax.swing.JPanel();
-        tabbetFilter = new javax.swing.JTabbedPane();
-        pnlSettings = new javax.swing.JPanel();
-        pnlColum = new javax.swing.JPanel();
-        pnlAnnotations = new javax.swing.JPanel();
-        pnlAnnotation = new javax.swing.JPanel();
-        chkShowOnlyComment = new javax.swing.JCheckBox();
-        chkShowOnlyHighlight = new javax.swing.JCheckBox();
-        pnlHighlightColor = new javax.swing.JPanel();
-        chkWhite = new javax.swing.JCheckBox();
-        chkRed = new javax.swing.JCheckBox();
-        chkOrange = new javax.swing.JCheckBox();
-        chkYellow = new javax.swing.JCheckBox();
-        chkGreen = new javax.swing.JCheckBox();
-        chkCyan = new javax.swing.JCheckBox();
-        chkBlue = new javax.swing.JCheckBox();
-        chkPink = new javax.swing.JCheckBox();
-        chkMagenta = new javax.swing.JCheckBox();
-        chkGray = new javax.swing.JCheckBox();
-        pnlBottom = new javax.swing.JPanel();
-        pnlListenerPort = new javax.swing.JPanel();
-        txtLiistenerPort = new javax.swing.JTextField();
-        lblListenerPort = new javax.swing.JLabel();
-        pnlCenter = new javax.swing.JPanel();
-        pnlHttp = new javax.swing.JPanel();
-        pnlExtension = new javax.swing.JPanel();
-        txtHide = new javax.swing.JTextField();
-        chkHide = new javax.swing.JCheckBox();
-        chkShowOnly = new javax.swing.JCheckBox();
-        txtShowOnly = new javax.swing.JTextField();
-        pnlFilterSearchItem = new javax.swing.JPanel();
-        txtMethod = new javax.swing.JTextField();
-        chkReqRegExp = new javax.swing.JCheckBox();
-        chkReqIgnoreCase = new javax.swing.JCheckBox();
-        txtRequest = new javax.swing.JTextField();
-        lblMethod = new javax.swing.JLabel();
-        txtPath = new javax.swing.JTextField();
-        lblRequest = new javax.swing.JLabel();
-        lblPath = new javax.swing.JLabel();
-        txtResponse = new javax.swing.JTextField();
-        lblResponse = new javax.swing.JLabel();
-        chkResRegExp = new javax.swing.JCheckBox();
-        chkResIgnoreCase = new javax.swing.JCheckBox();
-        pnlHeader = new javax.swing.JPanel();
-        pnlFilterByRequest = new javax.swing.JPanel();
-        chkShowOnlyinscopeItem = new javax.swing.JCheckBox();
-        chkHideItemsWithoutResponses = new javax.swing.JCheckBox();
-        chkShowOnlyParameterizedRequests = new javax.swing.JCheckBox();
-        chkShowOnlyEditedMessage = new javax.swing.JCheckBox();
-        pnlStatus = new javax.swing.JPanel();
-        chkStat2xx = new javax.swing.JCheckBox();
-        chkStat3xx = new javax.swing.JCheckBox();
-        chkStat4xx = new javax.swing.JCheckBox();
-        chkStat5xx = new javax.swing.JCheckBox();
+        tabbeProtocol = new javax.swing.JTabbedPane();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -127,340 +72,8 @@ public class ResultFilterDlg extends CustomDialog {
         pnlMain.setPreferredSize(new java.awt.Dimension(540, 520));
         pnlMain.setLayout(new java.awt.BorderLayout());
 
-        tabbetFilter.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                tabbetFilterStateChanged(evt);
-            }
-        });
-
-        pnlSettings.setLayout(new java.awt.BorderLayout());
-
-        pnlColum.setLayout(new java.awt.BorderLayout());
-
-        pnlAnnotations.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by Annotations"));
-        pnlAnnotations.setLayout(new java.awt.BorderLayout());
-
-        pnlAnnotation.setLayout(new javax.swing.BoxLayout(pnlAnnotation, javax.swing.BoxLayout.PAGE_AXIS));
-
-        chkShowOnlyComment.setText("Show only comment");
-        chkShowOnlyComment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyCommentActionPerformed(evt);
-            }
-        });
-        pnlAnnotation.add(chkShowOnlyComment);
-
-        chkShowOnlyHighlight.setText("Show only highlight");
-        chkShowOnlyHighlight.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyHighlightActionPerformed(evt);
-            }
-        });
-        pnlAnnotation.add(chkShowOnlyHighlight);
-
-        pnlAnnotations.add(pnlAnnotation, java.awt.BorderLayout.NORTH);
-
-        pnlHighlightColor.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Highlight Color")));
-        pnlHighlightColor.setMinimumSize(new java.awt.Dimension(151, 500));
-        pnlHighlightColor.setPreferredSize(new java.awt.Dimension(151, 500));
-        pnlHighlightColor.setLayout(new javax.swing.BoxLayout(pnlHighlightColor, javax.swing.BoxLayout.Y_AXIS));
-
-        chkWhite.setText("white (none)");
-        pnlHighlightColor.add(chkWhite);
-
-        chkRed.setText("red");
-        pnlHighlightColor.add(chkRed);
-
-        chkOrange.setText("orange");
-        pnlHighlightColor.add(chkOrange);
-
-        chkYellow.setText("yellow");
-        chkYellow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkYellowActionPerformed(evt);
-            }
-        });
-        pnlHighlightColor.add(chkYellow);
-
-        chkGreen.setText("green");
-        pnlHighlightColor.add(chkGreen);
-
-        chkCyan.setText("cyan");
-        pnlHighlightColor.add(chkCyan);
-
-        chkBlue.setText("blue");
-        pnlHighlightColor.add(chkBlue);
-
-        chkPink.setText("pink");
-        pnlHighlightColor.add(chkPink);
-
-        chkMagenta.setText("magenta");
-        pnlHighlightColor.add(chkMagenta);
-
-        chkGray.setText("gray");
-        pnlHighlightColor.add(chkGray);
-
-        pnlAnnotations.add(pnlHighlightColor, java.awt.BorderLayout.CENTER);
-
-        pnlBottom.setLayout(new java.awt.BorderLayout());
-
-        pnlListenerPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by listener "));
-
-        lblListenerPort.setText("Port");
-
-        javax.swing.GroupLayout pnlListenerPortLayout = new javax.swing.GroupLayout(pnlListenerPort);
-        pnlListenerPort.setLayout(pnlListenerPortLayout);
-        pnlListenerPortLayout.setHorizontalGroup(
-            pnlListenerPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlListenerPortLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblListenerPort, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLiistenerPort, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
-        );
-        pnlListenerPortLayout.setVerticalGroup(
-            pnlListenerPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlListenerPortLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlListenerPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblListenerPort)
-                    .addComponent(txtLiistenerPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-
-        pnlBottom.add(pnlListenerPort, java.awt.BorderLayout.SOUTH);
-
-        pnlAnnotations.add(pnlBottom, java.awt.BorderLayout.SOUTH);
-
-        pnlColum.add(pnlAnnotations, java.awt.BorderLayout.CENTER);
-
-        pnlSettings.add(pnlColum, java.awt.BorderLayout.EAST);
-
-        pnlCenter.setLayout(new java.awt.BorderLayout());
-
-        pnlHttp.setMinimumSize(new java.awt.Dimension(217, 300));
-        pnlHttp.setName(""); // NOI18N
-        pnlHttp.setPreferredSize(new java.awt.Dimension(500, 300));
-        pnlHttp.setLayout(new javax.swing.BoxLayout(pnlHttp, javax.swing.BoxLayout.PAGE_AXIS));
-
-        pnlExtension.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Filter by extension")));
-
-        chkHide.setText("hide:");
-        chkHide.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkHideStateChanged(evt);
-            }
-        });
-
-        chkShowOnly.setText("show only:");
-        chkShowOnly.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkShowOnlyStateChanged(evt);
-            }
-        });
-        chkShowOnly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyActionPerformed(evt);
-            }
-        });
-
-        txtShowOnly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtShowOnlyActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlExtensionLayout = new javax.swing.GroupLayout(pnlExtension);
-        pnlExtension.setLayout(pnlExtensionLayout);
-        pnlExtensionLayout.setHorizontalGroup(
-            pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlExtensionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chkShowOnly, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chkHide, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtShowOnly)
-                    .addComponent(txtHide, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(251, Short.MAX_VALUE))
-        );
-        pnlExtensionLayout.setVerticalGroup(
-            pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlExtensionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkShowOnly)
-                    .addComponent(txtShowOnly))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtHide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkHide))
-                .addContainerGap())
-        );
-
-        pnlHttp.add(pnlExtension);
-
-        pnlFilterSearchItem.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by Search Item"));
-        pnlFilterSearchItem.setMinimumSize(new java.awt.Dimension(663, 400));
-        pnlFilterSearchItem.setPreferredSize(new java.awt.Dimension(663, 400));
-
-        chkReqRegExp.setSelected(true);
-        chkReqRegExp.setText("RegExp");
-        chkReqRegExp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkReqRegExpActionPerformed(evt);
-            }
-        });
-
-        chkReqIgnoreCase.setText("IgnoreCase");
-        chkReqIgnoreCase.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkReqIgnoreCaseActionPerformed(evt);
-            }
-        });
-
-        lblMethod.setText("Method:");
-
-        lblRequest.setText("Request:");
-
-        lblPath.setText("Path:");
-
-        lblResponse.setText("Response:");
-
-        chkResRegExp.setSelected(true);
-        chkResRegExp.setText("RegExp");
-        chkResRegExp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkResRegExpActionPerformed(evt);
-            }
-        });
-
-        chkResIgnoreCase.setText("IgnoreCase");
-
-        javax.swing.GroupLayout pnlFilterSearchItemLayout = new javax.swing.GroupLayout(pnlFilterSearchItem);
-        pnlFilterSearchItem.setLayout(pnlFilterSearchItemLayout);
-        pnlFilterSearchItemLayout.setHorizontalGroup(
-            pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilterSearchItemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblResponse, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(lblRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMethod, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPath, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlFilterSearchItemLayout.createSequentialGroup()
-                        .addComponent(txtResponse, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkResRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkResIgnoreCase))
-                    .addGroup(pnlFilterSearchItemLayout.createSequentialGroup()
-                        .addComponent(txtRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkReqRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkReqIgnoreCase)))
-                .addContainerGap(88, Short.MAX_VALUE))
-        );
-        pnlFilterSearchItemLayout.setVerticalGroup(
-            pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlFilterSearchItemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblMethod))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPath)
-                    .addComponent(txtPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRequest)
-                    .addComponent(txtRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkReqRegExp)
-                    .addComponent(chkReqIgnoreCase))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(chkResRegExp)
-                        .addComponent(chkResIgnoreCase))
-                    .addGroup(pnlFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtResponse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblResponse)))
-                .addContainerGap())
-        );
-
-        pnlHttp.add(pnlFilterSearchItem);
-
-        pnlCenter.add(pnlHttp, java.awt.BorderLayout.CENTER);
-
-        pnlHeader.setLayout(new java.awt.BorderLayout());
-
-        pnlFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
-        pnlFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlFilterByRequest, javax.swing.BoxLayout.Y_AXIS));
-
-        chkShowOnlyinscopeItem.setText("Show only in-scope items");
-        pnlFilterByRequest.add(chkShowOnlyinscopeItem);
-
-        chkHideItemsWithoutResponses.setText("Hide items without responses");
-        pnlFilterByRequest.add(chkHideItemsWithoutResponses);
-
-        chkShowOnlyParameterizedRequests.setText("Show only parameterized requests");
-        chkShowOnlyParameterizedRequests.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyParameterizedRequestsActionPerformed(evt);
-            }
-        });
-        pnlFilterByRequest.add(chkShowOnlyParameterizedRequests);
-
-        chkShowOnlyEditedMessage.setText("Show only edited message");
-        chkShowOnlyEditedMessage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyEditedMessageActionPerformed(evt);
-            }
-        });
-        pnlFilterByRequest.add(chkShowOnlyEditedMessage);
-
-        pnlHeader.add(pnlFilterByRequest, java.awt.BorderLayout.CENTER);
-
-        pnlStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Status Filter"));
-        pnlStatus.setMaximumSize(new java.awt.Dimension(133, 110));
-        pnlStatus.setMinimumSize(new java.awt.Dimension(133, 110));
-        pnlStatus.setPreferredSize(new java.awt.Dimension(200, 130));
-        pnlStatus.setRequestFocusEnabled(false);
-        pnlStatus.setLayout(new javax.swing.BoxLayout(pnlStatus, javax.swing.BoxLayout.Y_AXIS));
-
-        chkStat2xx.setText("2xx [success]");
-        pnlStatus.add(chkStat2xx);
-
-        chkStat3xx.setText("3xx [redirection]");
-        pnlStatus.add(chkStat3xx);
-
-        chkStat4xx.setText("4xx [request error]");
-        pnlStatus.add(chkStat4xx);
-
-        chkStat5xx.setText("5xx [server error]");
-        chkStat5xx.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkStat5xxActionPerformed(evt);
-            }
-        });
-        pnlStatus.add(chkStat5xx);
-
-        pnlHeader.add(pnlStatus, java.awt.BorderLayout.EAST);
-
-        pnlCenter.add(pnlHeader, java.awt.BorderLayout.NORTH);
-
-        pnlSettings.add(pnlCenter, java.awt.BorderLayout.CENTER);
-
-        tabbetFilter.addTab("Settings", pnlSettings);
-
-        pnlMain.add(tabbetFilter, java.awt.BorderLayout.CENTER);
+        tabbeProtocol.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
+        pnlMain.add(tabbeProtocol, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
 
@@ -559,56 +172,35 @@ public class ResultFilterDlg extends CustomDialog {
         }
     };
 
-    private javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
-    private javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
-    private javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
+    private final FilterHttpPanel pnlFilterHttp = new FilterHttpPanel();
+    private final FilterWebSocketPanel pnlFilterWebSocket = new FilterWebSocketPanel();
 
     private void customizeComponents() {
-        this.scrollBabda.setViewportView(this.txtBambda);
+        this.tabbeProtocol.addTab("HTTP", this.pnlFilterHttp);
+        this.tabbeProtocol.addTab("WebSocket", this.pnlFilterWebSocket);
 
-        this.txtBambda.setEditorKitForContentType("text/java", this.javaStyleEditorKit);
-        this.txtBambda.setContentType("text/java");
+        this.pnlFilterHttp.addTableChangeListener(new javax.swing.event.ChangeListener() {
+            @Override
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabbetHttpFilterStateChanged(evt);
+            }
+        });
 
-        this.pnlBambda.setLayout(new java.awt.BorderLayout());
-        this.scrollBabda.setViewportView(this.txtBambda);
-        this.pnlBambda.add(scrollBabda, java.awt.BorderLayout.CENTER);
-        this.tabbetFilter.addTab("Bambda", this.pnlBambda);
-
-        this.pnlFilterByRequest.setLayout(new VerticalFlowLayout());
-        this.pnlAnnotation.setLayout(new VerticalFlowLayout());
-        this.pnlHighlightColor.setLayout(new VerticalFlowLayout());
-        this.pnlStatus.setLayout(new VerticalFlowLayout());
-
-        this.chkShowOnlyHighlightActionPerformed(null);
+        this.pnlFilterWebSocket.addTableChangeListener(new javax.swing.event.ChangeListener() {
+            @Override
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabbetWebSocetFilterStateChanged(evt);
+            }
+        });
     }
 
-    private void txtShowOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtShowOnlyActionPerformed
+    private void tabbetHttpFilterStateChanged(javax.swing.event.ChangeEvent evt) {
+        this.btnConvertBambda.setVisible(this.pnlFilterHttp.isFilterModeSettings());
+    }
 
-    }//GEN-LAST:event_txtShowOnlyActionPerformed
-
-    private void chkShowOnlyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkShowOnlyStateChanged
-        this.chkHide.setEnabled(!this.chkShowOnly.isSelected());
-    }//GEN-LAST:event_chkShowOnlyStateChanged
-
-    private void chkStat5xxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkStat5xxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkStat5xxActionPerformed
-
-    private void chkShowOnlyCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyCommentActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkShowOnlyCommentActionPerformed
-
-    private void chkShowOnlyParameterizedRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyParameterizedRequestsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkShowOnlyParameterizedRequestsActionPerformed
-
-    private void chkShowOnlyHighlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyHighlightActionPerformed
-        SwingUtil.setContainerEnable(this.pnlHighlightColor, this.chkShowOnlyHighlight.isSelected());
-    }//GEN-LAST:event_chkShowOnlyHighlightActionPerformed
-
-    private void chkReqRegExpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkReqRegExpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkReqRegExpActionPerformed
+    private void tabbetWebSocetFilterStateChanged(javax.swing.event.ChangeEvent evt) {
+        this.btnConvertBambda.setVisible(this.pnlFilterWebSocket.isFilterModeSettings());
+    }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
@@ -624,44 +216,23 @@ public class ResultFilterDlg extends CustomDialog {
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
-    private void chkResRegExpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkResRegExpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkResRegExpActionPerformed
-
-    private void chkShowOnlyEditedMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyEditedMessageActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkShowOnlyEditedMessageActionPerformed
-
-    private void chkShowOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkShowOnlyActionPerformed
-
-    private void chkYellowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkYellowActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkYellowActionPerformed
-
-    private void chkReqIgnoreCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkReqIgnoreCaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkReqIgnoreCaseActionPerformed
-
     private void btnConvertBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertBambdaActionPerformed
         FilterProperty filter = this.getProperty();
-        this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
-        this.txtBambda.setText(filter.build());
+        if (this.isHttpProtocalType()) {
+            this.pnlFilterHttp.ConverToBambda(filter);
+        }
+        else {
+            this.pnlFilterWebSocket.ConverToBambda(filter);
+        }
     }//GEN-LAST:event_btnConvertBambdaActionPerformed
 
-    private void tabbetFilterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbetFilterStateChanged
-        this.btnConvertBambda.setVisible(this.tabbetFilter.getSelectedIndex() == this.tabbetFilter.indexOfTab("Settings"));
-    }//GEN-LAST:event_tabbetFilterStateChanged
-
-    private void chkHideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHideStateChanged
-        this.chkShowOnly.setEnabled(!this.chkHide.isSelected());
-    }//GEN-LAST:event_chkHideStateChanged
-
     private void btnImportBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportBambdaActionPerformed
-        String bambda = BurpConfig.getBambda(BurpExtension.api());
-        this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
-        this.txtBambda.setText(bambda);
+        if (this.isHttpProtocalType()) {
+            this.pnlFilterHttp.ImportBambda(getFilterCategory());
+        }
+        else {
+            this.pnlFilterWebSocket.ImportBambda(getFilterCategory());
+        }
     }//GEN-LAST:event_btnImportBambdaActionPerformed
 
     /**
@@ -680,15 +251,14 @@ public class ResultFilterDlg extends CustomDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
-        } catch (InstantiationException ex) {
-            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
-        } catch (IllegalAccessException ex) {
-            logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, ex.getMessage(), ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -714,194 +284,41 @@ public class ResultFilterDlg extends CustomDialog {
     private javax.swing.JButton btnConvertBambda;
     private javax.swing.JButton btnImportBambda;
     private javax.swing.JButton btnOK;
-    private javax.swing.JCheckBox chkBlue;
-    private javax.swing.JCheckBox chkCyan;
-    private javax.swing.JCheckBox chkGray;
-    private javax.swing.JCheckBox chkGreen;
-    private javax.swing.JCheckBox chkHide;
-    private javax.swing.JCheckBox chkHideItemsWithoutResponses;
-    private javax.swing.JCheckBox chkMagenta;
-    private javax.swing.JCheckBox chkOrange;
-    private javax.swing.JCheckBox chkPink;
-    private javax.swing.JCheckBox chkRed;
-    private javax.swing.JCheckBox chkReqIgnoreCase;
-    private javax.swing.JCheckBox chkReqRegExp;
-    private javax.swing.JCheckBox chkResIgnoreCase;
-    private javax.swing.JCheckBox chkResRegExp;
-    private javax.swing.JCheckBox chkShowOnly;
-    private javax.swing.JCheckBox chkShowOnlyComment;
-    private javax.swing.JCheckBox chkShowOnlyEditedMessage;
-    private javax.swing.JCheckBox chkShowOnlyHighlight;
-    private javax.swing.JCheckBox chkShowOnlyParameterizedRequests;
-    private javax.swing.JCheckBox chkShowOnlyinscopeItem;
-    private javax.swing.JCheckBox chkStat2xx;
-    private javax.swing.JCheckBox chkStat3xx;
-    private javax.swing.JCheckBox chkStat4xx;
-    private javax.swing.JCheckBox chkStat5xx;
-    private javax.swing.JCheckBox chkWhite;
-    private javax.swing.JCheckBox chkYellow;
-    private javax.swing.JLabel lblListenerPort;
-    private javax.swing.JLabel lblMethod;
     private javax.swing.JLabel lblName;
-    private javax.swing.JLabel lblPath;
-    private javax.swing.JLabel lblRequest;
-    private javax.swing.JLabel lblResponse;
-    private javax.swing.JPanel pnlAnnotation;
-    private javax.swing.JPanel pnlAnnotations;
     private javax.swing.JPanel pnlApply;
-    private javax.swing.JPanel pnlBottom;
-    private javax.swing.JPanel pnlCenter;
-    private javax.swing.JPanel pnlColum;
-    private javax.swing.JPanel pnlExtension;
-    private javax.swing.JPanel pnlFilterByRequest;
-    private javax.swing.JPanel pnlFilterSearchItem;
-    private javax.swing.JPanel pnlHeader;
-    private javax.swing.JPanel pnlHighlightColor;
-    private javax.swing.JPanel pnlHttp;
-    private javax.swing.JPanel pnlListenerPort;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JPanel pnlName;
-    private javax.swing.JPanel pnlSettings;
-    private javax.swing.JPanel pnlStatus;
-    private javax.swing.JTabbedPane tabbetFilter;
-    private javax.swing.JTextField txtHide;
-    private javax.swing.JTextField txtLiistenerPort;
-    private javax.swing.JTextField txtMethod;
+    private javax.swing.JTabbedPane tabbeProtocol;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPath;
-    private javax.swing.JTextField txtRequest;
-    private javax.swing.JTextField txtResponse;
-    private javax.swing.JTextField txtShowOnly;
     // End of variables declaration//GEN-END:variables
 
+
     public void setProperty(FilterProperty filterProp) {
-        if (filterProp.getFilterMode() == FilterProperty.FilterMode.SETTING) {
-            this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Settings"));
-        } else {
-            this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
+        switch (filterProp.getFilterCategory()) {
+        case HTTP:
+            this.pnlFilterHttp.setProperty(filterProp);
+            break;
+        case WEBSOCKET:
+            this.pnlFilterHttp.setProperty(filterProp);
+            break;
         }
-        this.txtLiistenerPort.setText(filterProp.getListenerPort() > -1 ? Integer.toString(filterProp.getListenerPort()) : "");
-        this.chkShowOnlyinscopeItem.setSelected(filterProp.isShowOnlyScopeItems());
-        this.chkHideItemsWithoutResponses.setSelected(filterProp.isHideItemsWithoutResponses());
-        this.chkShowOnlyParameterizedRequests.setSelected(filterProp.isShowOnlyParameterizedRequests());
-        this.chkShowOnlyEditedMessage.setSelected(filterProp.isShowOnlyEditedMessage());
+    }
 
-        this.chkShowOnly.setSelected(filterProp.getShowOnly());
-        this.txtShowOnly.setText(filterProp.getShowOnlyExtension());
-        this.chkHide.setSelected(filterProp.getHide());
-        this.txtHide.setText(filterProp.getHideExtension());
+    private FilterProperty.FilterCategory getFilterCategory() {
+        if (isHttpProtocalType()) {
+            return FilterProperty.FilterCategory.HTTP;
+        } else {
+            return FilterProperty.FilterCategory.WEBSOCKET;
+        }
+    }
 
-        this.chkStat2xx.getModel().setSelected(filterProp.getStat2xx());
-        this.chkStat3xx.getModel().setSelected(filterProp.getStat3xx());
-        this.chkStat4xx.getModel().setSelected(filterProp.getStat4xx());
-        this.chkStat5xx.getModel().setSelected(filterProp.getStat5xx());
-
-        this.chkShowOnlyComment.setSelected(filterProp.getShowOnlyComment());
-        this.chkShowOnlyHighlight.setSelected(filterProp.getShowOnlyHighlightColors());
-        this.setHighlightColors(filterProp.getHighlightColors());
-
-        this.txtMethod.setText(filterProp.getMethod());
-        this.txtPath.setText(filterProp.getPath());
-        this.txtRequest.setText(filterProp.getRequest());
-        this.chkReqRegExp.setSelected(filterProp.isRequestRegex());
-        this.chkReqIgnoreCase.setSelected(filterProp.isRequestIgnoreCase());
-        this.txtResponse.setText(filterProp.getResponse());
-        this.chkResRegExp.setSelected(filterProp.isResponseRegex());
-        this.chkResIgnoreCase.setSelected(filterProp.isResponseIgnoreCase());
-        this.txtBambda.setText(filterProp.getBambdaQuery());
-
-        this.chkShowOnlyHighlightActionPerformed(null);
+    private boolean isHttpProtocalType() {
+        return this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("HTTP");
     }
 
     public FilterProperty getProperty() {
-        FilterProperty filterProp = new FilterProperty();
-        if (this.tabbetFilter.getSelectedIndex() == this.tabbetFilter.indexOfTab("Settings")) {
-            filterProp.setFilterMode(FilterProperty.FilterMode.SETTING);
-        } else {
-            filterProp.setFilterMode(FilterProperty.FilterMode.BAMBDA);
-        }
-        filterProp.setListenerPort(ConvertUtil.parseIntDefault(this.txtLiistenerPort.getText(), -1));
-        filterProp.setShowOnlyScopeItems(this.chkShowOnlyinscopeItem.isSelected());
-        filterProp.setHideItemsWithoutResponses(this.chkHideItemsWithoutResponses.isSelected());
-        filterProp.setShowOnlyParameterizedRequests(this.chkShowOnlyParameterizedRequests.isSelected());
-        filterProp.setShowOnlyEditedMessage(this.chkShowOnlyEditedMessage.isSelected());
-
-        filterProp.setShowOnly(this.chkShowOnly.isSelected());
-        filterProp.setShowOnlyExtension(this.txtShowOnly.getText());
-        filterProp.setHide(this.chkHide.isSelected());
-        filterProp.setHideExtension(this.txtHide.getText());
-
-        filterProp.setStat2xx(this.chkStat2xx.getModel().isSelected());
-        filterProp.setStat3xx(this.chkStat3xx.getModel().isSelected());
-        filterProp.setStat4xx(this.chkStat4xx.getModel().isSelected());
-        filterProp.setStat5xx(this.chkStat5xx.getModel().isSelected());
-
-        filterProp.setShowOnlyComment(this.chkShowOnlyComment.isSelected());
-        filterProp.setShowOnlyHighlightColors(this.chkShowOnlyHighlight.isSelected());
-        filterProp.setHighlightColors(this.getHighlightColors());
-
-        filterProp.setMethod(this.txtMethod.getText());
-        filterProp.setPath(this.txtPath.getText());
-        filterProp.setRequest(this.txtRequest.getText());
-        filterProp.setRequestRegex(this.chkReqRegExp.isSelected());
-        filterProp.setRequestIgnoreCase(this.chkReqIgnoreCase.isSelected());
-        filterProp.setResponse(this.txtResponse.getText());
-        filterProp.setResponseRegex(this.chkResRegExp.isSelected());
-        filterProp.setResponseIgnoreCase(this.chkResIgnoreCase.isSelected());
-        filterProp.setBambda(this.txtBambda.getText());
+        FilterProperty filterProp = isHttpProtocalType() ? this.pnlFilterHttp.getProperty() : this.pnlFilterWebSocket.getProperty();
         return filterProp;
-    }
-
-    public void setShowOnlyHighlightColors(boolean highlightColors) {
-        this.chkShowOnlyHighlight.setSelected(highlightColors);
-    }
-
-    public EnumSet<MessageHighlightColor> getHighlightColors() {
-        EnumSet<MessageHighlightColor> colors = EnumSet.noneOf(MessageHighlightColor.class);
-        if (this.chkWhite.isSelected()) {
-            colors.add(MessageHighlightColor.WHITE);
-        }
-        if (this.chkRed.isSelected()) {
-            colors.add(MessageHighlightColor.RED);
-        }
-        if (this.chkOrange.isSelected()) {
-            colors.add(MessageHighlightColor.ORANGE);
-        }
-        if (this.chkYellow.isSelected()) {
-            colors.add(MessageHighlightColor.YELLOW);
-        }
-        if (this.chkGreen.isSelected()) {
-            colors.add(MessageHighlightColor.GREEN);
-        }
-        if (this.chkCyan.isSelected()) {
-            colors.add(MessageHighlightColor.CYAN);
-        }
-        if (this.chkBlue.isSelected()) {
-            colors.add(MessageHighlightColor.BLUE);
-        }
-        if (this.chkPink.isSelected()) {
-            colors.add(MessageHighlightColor.PINK);
-        }
-        if (this.chkMagenta.isSelected()) {
-            colors.add(MessageHighlightColor.MAGENTA);
-        }
-        if (this.chkGray.isSelected()) {
-            colors.add(MessageHighlightColor.GRAY);
-        }
-        return colors;
-    }
-
-    public void setHighlightColors(EnumSet<MessageHighlightColor> colors) {
-        this.chkWhite.setSelected(colors.contains(MessageHighlightColor.WHITE));
-        this.chkRed.setSelected(colors.contains(MessageHighlightColor.RED));
-        this.chkOrange.setSelected(colors.contains(MessageHighlightColor.ORANGE));
-        this.chkYellow.setSelected(colors.contains(MessageHighlightColor.YELLOW));
-        this.chkGreen.setSelected(colors.contains(MessageHighlightColor.GREEN));
-        this.chkCyan.setSelected(colors.contains(MessageHighlightColor.CYAN));
-        this.chkBlue.setSelected(colors.contains(MessageHighlightColor.BLUE));
-        this.chkPink.setSelected(colors.contains(MessageHighlightColor.PINK));
-        this.chkMagenta.setSelected(colors.contains(MessageHighlightColor.MAGENTA));
-        this.chkGray.setSelected(colors.contains(MessageHighlightColor.GRAY));
     }
 
     public String getFilterName() {
@@ -913,17 +330,15 @@ public class ResultFilterDlg extends CustomDialog {
     }
 
     public void setBambaMode(boolean bamba) {
-        this.tabbetFilter.remove(this.pnlBambda);
-        if (bamba) {
-            this.tabbetFilter.addTab("Bambda", this.pnlBambda);
-            this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Settings"));
+        if (this.isHttpProtocalType()) {
+            this.pnlFilterHttp.setBambaMode(bamba);
         }
         this.btnConvertBambda.setVisible(bamba);
         this.btnImportBambda.setVisible(bamba);
     }
 
     public boolean getEditMode() {
-        return (this.pnlName.getParent() !=  null);
+        return (this.pnlName.getParent() != null);
     }
 
     public void setEditMode(boolean edit) {
@@ -933,11 +348,11 @@ public class ResultFilterDlg extends CustomDialog {
         }
     }
 
-    public static class PropertyRowFilter extends RowFilter<Object, Object> {
+    public static class PropertyRowHttpFilter extends RowFilter<Object, Object> {
 
         private final FilterProperty filterProp;
 
-        public PropertyRowFilter(FilterProperty filterProp) {
+        public PropertyRowHttpFilter(FilterProperty filterProp) {
             this.filterProp = filterProp;
         }
 
@@ -973,8 +388,7 @@ public class ResultFilterDlg extends CustomDialog {
                     // Response Status がない場合は無条件で含める
                     if (!item.hasResponse()) {
                         statusFilter = true;
-                    }
-                    else {
+                    } else {
                         if (item.response().statusCode() == 0) {
                             statusFilter = true;
                         }
@@ -1045,8 +459,7 @@ public class ResultFilterDlg extends CustomDialog {
                 if (!this.filterProp.getRequest().isEmpty()) {
                     if (this.filterProp.isRequestRegex()) {
                         request = item.request().contains(Pattern.compile(this.filterProp.getRequest(), this.filterProp.isRequestIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
-                    }
-                    else {
+                    } else {
                         request = item.request().contains(this.filterProp.getRequest(), this.filterProp.isRequestIgnoreCase());
                     }
                 }
@@ -1056,8 +469,7 @@ public class ResultFilterDlg extends CustomDialog {
                     if (item.hasResponse()) {
                         if (this.filterProp.isResponseRegex()) {
                             response = item.response().contains(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase());
-                        }
-                        else {
+                        } else {
                             response = item.response().contains(Pattern.compile(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
                         }
                     }
@@ -1076,6 +488,77 @@ public class ResultFilterDlg extends CustomDialog {
         }
 
     }
+
+    public static class PropertyRowWebSocetFilter extends RowFilter<Object, Object> {
+
+        private final FilterProperty filterProp;
+
+        public PropertyRowWebSocetFilter(FilterProperty filterProp) {
+            this.filterProp = filterProp;
+        }
+
+        @Override
+        public boolean include(RowFilter.Entry<? extends Object, ? extends Object> entry) {
+            boolean allFilter = false;
+            try {
+                ProxyWebSocketMessage item = (ProxyWebSocketMessage) entry.getValue(0);
+                boolean showOnlyScopFilter = true;
+                // Show only in-scope items
+                if (this.filterProp.isShowOnlyScopeItems()) {
+                    showOnlyScopFilter = BurpExtensionImpl.helpers().isInScope(item.upgradeRequest().url());
+                }
+                // Hide Incoming Message
+                boolean hideIncomingMessage = true;
+                if (this.filterProp.isHideIncomingMessage()) {
+                    hideIncomingMessage = (item.direction() != Direction.SERVER_TO_CLIENT);
+                }
+                // Hide Outgoing Message
+                boolean hideOutgoingMessage = true;
+                if (this.filterProp.isHideOutgoingMessage()) {
+                    hideOutgoingMessage = (item.direction() != Direction.CLIENT_TO_SERVER);
+                }
+                // Highlight Color
+                boolean colorFilter = true;
+                if (showOnlyScopFilter) {
+                    // cololr
+                    if (this.filterProp.getShowOnlyHighlightColors()) {
+                        EnumSet<MessageHighlightColor> colors = this.filterProp.getHighlightColors();
+                        MessageHighlightColor hc = MessageHighlightColor.valueOf(item.annotations().highlightColor());
+                        colorFilter = colors.contains(hc);
+                    }
+                }
+                // Comment Filter
+                boolean commentFilter = true;
+                if (showOnlyScopFilter) {
+                    // comment
+                    if (this.filterProp.getShowOnlyComment()) {
+                        commentFilter = (item.annotations().hasNotes());
+                    }
+                }
+                // message
+                boolean message = true;
+                if (!this.filterProp.getRequest().isEmpty()) {
+                    if (this.filterProp.isRequestRegex()) {
+                        message = item.contains(Pattern.compile(this.filterProp.getMessage(), this.filterProp.isMessageIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
+                    } else {
+                        message = item.contains(this.filterProp.getMessage(), this.filterProp.isMessageIgnoreCase());
+                    }
+                }
+                // ListenerPort
+                boolean listenerPort = true;
+                if (this.filterProp.getListenerPort() > -1) {
+                    listenerPort = this.filterProp.getListenerPort() == item.listenerPort();
+                }
+                // 条件のAND
+                allFilter = (colorFilter && commentFilter && showOnlyScopFilter && hideIncomingMessage && hideOutgoingMessage && message && message && listenerPort);
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+            return allFilter;
+        }
+
+    }
+
 
     public static class PropertyRowSorter<M extends TableModel> extends TableRowSorter<M> {
 

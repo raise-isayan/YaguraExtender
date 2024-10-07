@@ -870,7 +870,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.tableResult.getSelectionModel().clearSelection();
         TableModel model = this.tableResult.getModel();
         TableRowSorter<TableModel> sorter = new ResultFilterDlg.PropertyRowSorter<>(model);
-        sorter.setRowFilter(new ResultFilterDlg.PropertyRowFilter(filterProp));
+        sorter.setRowFilter(new ResultFilterDlg.PropertyRowHttpFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }
