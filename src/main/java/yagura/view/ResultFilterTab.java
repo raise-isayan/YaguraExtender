@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -143,10 +146,34 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private final javax.swing.ImageIcon image_http = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/page_white_world.png"));
+    private final javax.swing.ImageIcon image_websocket = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/connect.png"));
+
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         // ResultFilterTab Tab
         this.listResultFilter.setModel(this.modelResultFilter);
+
+        this.listResultFilter.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                String name = (String) value;
+                FilterProperty filter = filterMap.get(name);
+                if (filter != null) {
+                    if (filter.getFilterCategory() == FilterProperty.FilterCategory.HTTP) {
+                        l.setIcon(image_http);
+                        l.setIconTextGap(2);
+                    }
+                    else {
+                        l.setIcon(image_websocket);
+                        l.setIconTextGap(2);
+                    }
+                }
+                return l;
+            }
+        });
+
         this.btnItemEdit.setEnabled((listResultFilter.getSelectedIndices().length > 0));
         this.btnItemRemove.setEnabled((listResultFilter.getSelectedIndices().length > 0));
         this.btnItemApply.setEnabled((listResultFilter.getSelectedIndices().length > 0));

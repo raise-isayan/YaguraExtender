@@ -332,9 +332,22 @@ public class ResultFilterDlg extends CustomDialog {
     public void setBambaMode(boolean bamba) {
         if (this.isHttpProtocalType()) {
             this.pnlFilterHttp.setBambaMode(bamba);
+            this.pnlFilterWebSocket.setBambaMode(bamba);
         }
         this.btnConvertBambda.setVisible(bamba);
         this.btnImportBambda.setVisible(bamba);
+    }
+
+    public void setSearchMode(boolean mode) {
+        if (mode) {
+            this.tabbeProtocol.remove(this.pnlFilterWebSocket);
+        }
+        else {
+            if (this.tabbeProtocol.indexOfTab("WebSocket") > -1) {
+                this.tabbeProtocol.addTab("WebSocket", this.pnlFilterWebSocket);
+            }
+        }
+        this.setBambaMode(!mode);
     }
 
     public boolean getEditMode() {

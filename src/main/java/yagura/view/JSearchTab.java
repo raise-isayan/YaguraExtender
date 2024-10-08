@@ -465,7 +465,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.resultFilterDlg.setEditMode(false);
-        this.resultFilterDlg.setBambaMode(false);;
+        this.resultFilterDlg.setSearchMode(true);
 
         // group
         this.rdoEncodeingGrp.add(this.rdoRepEnc_8859_1);
