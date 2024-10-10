@@ -3872,7 +3872,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.txtDec1.setText(String.valueOf(Byte.toUnsignedInt(ipv4[0])));
             this.txtDec2.setText(String.valueOf(Byte.toUnsignedInt(ipv4[1])));
             this.txtDec3.setText(String.valueOf(Byte.toUnsignedInt(ipv4[2])));
-            this.txtDec4.setText(String.valueOf(Byte.toUnsignedInt(ipv4[4])));
+            this.txtDec4.setText(String.valueOf(Byte.toUnsignedInt(ipv4[3])));
         } catch (ParseException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
