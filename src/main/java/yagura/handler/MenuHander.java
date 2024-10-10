@@ -18,6 +18,8 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -33,6 +35,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -42,6 +45,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import yagura.model.ITranslateAction;
 import yagura.model.ResultFilterProperty;
+import yagura.model.SendToProperty.SendToMenuLevel;
 
 /**
  *
@@ -922,4 +926,83 @@ public class MenuHander {
             // this.menuBurpResultFilterGroup.add(chkResultFilterItem);
         }
     }
+
+    public static void changeContextMenuLevel(JMenuItem sendToPlaceMenu, SendToMenuLevel sendToMenuLevel) {
+        sendToPlaceMenu.addHierarchyListener(new HierarchyListener() {
+            private boolean changeFlag1 = false;
+
+            @Override
+            public void hierarchyChanged(HierarchyEvent e) {
+                if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
+                    if (changeFlag1) {
+                        return;
+                    }
+                    changeFlag1 = true;
+                    if (sendToPlaceMenu.getParent() instanceof JPopupMenu popupMenu) {
+                        // Extension
+                        if (popupMenu.getInvoker() instanceof JMenuItem extensionNameMenuItem) {
+                            extensionNameMenuItem.remove(sendToPlaceMenu);
+                            extensionNameMenuItem.addHierarchyListener(new ExtensionMenuChangeListener(extensionNameMenuItem, sendToMenuLevel));
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    protected static class ExtensionMenuChangeListener implements HierarchyListener {
+
+        final SendToMenuLevel sendToMenuLevel;
+        final JMenuItem extensionNameMenuItem;
+
+        public ExtensionMenuChangeListener(JMenuItem extensionNameMenuItem, SendToMenuLevel sendToMenuLevel) {
+            this.sendToMenuLevel = sendToMenuLevel;
+            this.extensionNameMenuItem = extensionNameMenuItem;
+        }
+
+        private boolean changeFlag2 = false;
+
+        @Override
+        public void hierarchyChanged(HierarchyEvent e) {
+            if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
+                if (changeFlag2) {
+                    return;
+                }
+                changeFlag2 = true;
+                if (this.extensionNameMenuItem.getParent() instanceof JPopupMenu extensionsPopupMenu) {
+                    if (extensionsPopupMenu.getInvoker() instanceof JMenuItem extensionsMenuItem) {
+                        if (!extensionsMenuItem.getText().equals("Extensions")) {
+                            return;
+                        }
+
+                        extensionsMenuItem.addHierarchyListener(new HierarchyListener() {
+                            private boolean changeFlag3 = false;
+
+                            @Override
+                            public void hierarchyChanged(HierarchyEvent e) {
+                                if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
+                                    if (changeFlag3) {
+                                        return;
+                                    }
+                                    changeFlag3 = true;
+
+                                    if (sendToMenuLevel == SendToMenuLevel.TOP_LEVEL) {
+                                        extensionsPopupMenu.remove(extensionNameMenuItem);  //　
+
+                                        // TopLevel Menu
+                                        if (extensionsMenuItem.getParent() instanceof JPopupMenu topLevelPopupMenu) {
+                                            int index = topLevelPopupMenu.getComponentIndex(extensionsMenuItem) + 1;
+                                            topLevelPopupMenu.add(extensionNameMenuItem, index);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        }
+
+    }
+
 }

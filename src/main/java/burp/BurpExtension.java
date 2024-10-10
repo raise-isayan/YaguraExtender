@@ -4,6 +4,8 @@ import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.core.Registration;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
 import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
@@ -51,6 +53,7 @@ import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.MatchItem;
+import javax.swing.JMenuItem;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -69,6 +72,7 @@ import yagura.handler.ProxyHander;
 import yagura.handler.WebSocketHander;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
+import yagura.model.SendToProperty.SendToMenuLevel;
 import yagura.model.UniversalViewProperty;
 import yagura.view.GeneratePoCTabEditor;
 import yagura.view.GenerateWebsocktPoCEditor;
@@ -274,6 +278,17 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         // 順序重要のため変更は要注意
         this.setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
         this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
+        Registration registerContextMenuItemsProvider = api.userInterface().registerContextMenuItemsProvider(new ContextMenuItemsProvider() {
+            public List<Component> provideMenuItems(ContextMenuEvent event) {
+                List<Component> menuList = new ArrayList<>();
+                JMenuItem item = new JMenuItem();
+                item.setText("Send To");
+                menuList.add(item);
+                MenuHander.changeContextMenuLevel(item, option.getSendToProperty().getMenuPlaceLevel());
+                return menuList;
+            }
+
+        });
         this.editorProvider = new EditorProvider(api);
         this.tabbetOption = new TabbetOption();
         this.tabbetOption.setProperty(this.option);
@@ -346,10 +361,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     option.setSendToProperty(tabbetOption.getSendToProperty());
                     MontoyaApi api = api();
                     if (api != null) {
-                        //登録を解除すると遅いのとそもそも処理として不要っぽいのでコメント
-                        //registerContextMenu.deregister();
+                        // 登録を解除すると遅いため､削除しないで再作成
                         setSendToMenu(new SendToMenu(api, option.getSendToProperty()));
-                        //registerContextMenu = api.userInterface().registerContextMenuItemsProvider(getSendToMenu());
                     }
                     applyOptionProperty();
                 } else if (LoggingProperty.LOGGING_PROPERTY.equals(evt.getPropertyName())) {

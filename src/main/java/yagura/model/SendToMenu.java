@@ -1,7 +1,5 @@
 package yagura.model;
 
-import extension.burp.IssueAlertListener;
-import extension.burp.IssueAlertEvent;
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.core.ByteArray;
@@ -21,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JMenuItem;
+import yagura.handler.MenuHander;
 
 /**
  * burp new IF
@@ -53,7 +52,16 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public List<Component> provideMenuItems(ContextMenuEvent contextMenuEvent) {
         this.contextMenuEvent = contextMenuEvent;
         this.renewMenu(this.property);
+//        changeSendToMenu();
         return this.menuList;
+    }
+
+    public void changeSendToMenu() {
+        if (!this.menuList.isEmpty()) {
+            if (this.menuList.get(0) instanceof javax.swing.JMenuItem menuItem) {
+                MenuHander.changeContextMenuLevel(menuItem, this.property.getMenuPlaceLevel());
+            }
+        }
     }
 
     /**

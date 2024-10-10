@@ -15,6 +15,31 @@ public class SendToProperty implements IPropertyConfig {
 
     public final static String SENDTO_PROPERTY = "sendToProperty";
 
+    public enum SendToMenuLevel {
+        DEFAULT("Default"), TOP_LEVEL("Top Level");
+
+        final String ident;
+
+        SendToMenuLevel(String ident) {
+            this.ident = ident;
+        }
+
+        public String toIdent() {
+            return ident;
+        }
+
+        public static SendToMenuLevel parseEnum(String name) {
+            for (SendToMenuLevel level : SendToMenuLevel.values()) {
+                if (level.toIdent().equals(name)) {
+                    return level;
+                }
+            }
+            throw new IllegalArgumentException(
+                "No enum constant " + SendToMenuLevel.class.getCanonicalName() + "." + name);
+        }
+
+    };
+
     @Expose
     private final List<SendToItem> sendToItemList = new ArrayList<>();
 
@@ -31,6 +56,17 @@ public class SendToProperty implements IPropertyConfig {
     public void setSendToItemList(List<SendToItem> sendToItemList) {
         this.sendToItemList.clear();
         this.sendToItemList.addAll(sendToItemList);
+    }
+
+    @Expose
+    private SendToMenuLevel menuPlaceLevel = SendToMenuLevel.DEFAULT;
+
+    public SendToMenuLevel getMenuPlaceLevel() {
+        return this.menuPlaceLevel;
+    }
+
+    public void setMenuPlaceLevel(SendToMenuLevel menuPlaceLevel) {
+        this.menuPlaceLevel = menuPlaceLevel;
     }
 
     @Expose
@@ -63,6 +99,7 @@ public class SendToProperty implements IPropertyConfig {
 
     public void setProperty(SendToProperty property) {
         this.setSendToItemList(property.getSendToItemList());
+        this.setMenuPlaceLevel(property.getMenuPlaceLevel());
         this.setSubMenu(property.isSubMenu());
         this.setForceSortOrder(property.isForceSortOrder());
     }
