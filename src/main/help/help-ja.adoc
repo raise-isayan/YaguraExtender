@@ -351,8 +351,20 @@ BurpのHistory等から表示される右クリックのメニューを増やす
 
 ==== SendTo
 
+[Menu Place] コンボボックス::
+     SendToMenuの表示位置を変更します
+
+* Default 
+** デフォルトの表示位置で表示します。
+
+* Top Level 
+** ポップアップメニューのTop Levelに表示します。
+
 [Send To Submenu] チェックボックス::
     チェックした場合、Send To Menuをサブメニューで表示します。
+
+[Force Sort Order] チェックボックス::
+    メニューの表示順を本来の順番に強制します。(Burpの一部のバージョンはメニューが名前順にソートされます)
 
 [Edit] ボタン::
     選択したSendToItemを編集します。

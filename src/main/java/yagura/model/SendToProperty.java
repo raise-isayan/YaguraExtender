@@ -15,12 +15,12 @@ public class SendToProperty implements IPropertyConfig {
 
     public final static String SENDTO_PROPERTY = "sendToProperty";
 
-    public enum SendToMenuLevel {
+    public enum SendToMenuPlace {
         DEFAULT("Default"), TOP_LEVEL("Top Level");
 
         final String ident;
 
-        SendToMenuLevel(String ident) {
+        SendToMenuPlace(String ident) {
             this.ident = ident;
         }
 
@@ -28,14 +28,14 @@ public class SendToProperty implements IPropertyConfig {
             return ident;
         }
 
-        public static SendToMenuLevel parseEnum(String name) {
-            for (SendToMenuLevel level : SendToMenuLevel.values()) {
+        public static SendToMenuPlace parseEnumIdent(String name) {
+            for (SendToMenuPlace level : SendToMenuPlace.values()) {
                 if (level.toIdent().equals(name)) {
                     return level;
                 }
             }
             throw new IllegalArgumentException(
-                "No enum constant " + SendToMenuLevel.class.getCanonicalName() + "." + name);
+                "No enum constant " + SendToMenuPlace.class.getCanonicalName() + "." + name);
         }
 
     };
@@ -59,14 +59,14 @@ public class SendToProperty implements IPropertyConfig {
     }
 
     @Expose
-    private SendToMenuLevel menuPlaceLevel = SendToMenuLevel.DEFAULT;
+    private SendToMenuPlace menuPlace = SendToMenuPlace.DEFAULT;
 
-    public SendToMenuLevel getMenuPlaceLevel() {
-        return this.menuPlaceLevel;
+    public SendToMenuPlace getMenuPlace() {
+        return this.menuPlace;
     }
 
-    public void setMenuPlaceLevel(SendToMenuLevel menuPlaceLevel) {
-        this.menuPlaceLevel = menuPlaceLevel;
+    public void setMenuPlace(SendToMenuPlace menuPlace) {
+        this.menuPlace = menuPlace;
     }
 
     @Expose
@@ -99,7 +99,7 @@ public class SendToProperty implements IPropertyConfig {
 
     public void setProperty(SendToProperty property) {
         this.setSendToItemList(property.getSendToItemList());
-        this.setMenuPlaceLevel(property.getMenuPlaceLevel());
+        this.setMenuPlace(property.getMenuPlace());
         this.setSubMenu(property.isSubMenu());
         this.setForceSortOrder(property.isForceSortOrder());
     }

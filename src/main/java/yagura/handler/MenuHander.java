@@ -45,7 +45,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import yagura.model.ITranslateAction;
 import yagura.model.ResultFilterProperty;
-import yagura.model.SendToProperty.SendToMenuLevel;
+import yagura.model.SendToProperty.SendToMenuPlace;
 
 /**
  *
@@ -927,7 +927,7 @@ public class MenuHander {
         }
     }
 
-    public static void changeContextMenuLevel(JMenuItem sendToPlaceMenu, SendToMenuLevel sendToMenuLevel) {
+    public static void changeContextMenuLevel(JMenuItem sendToPlaceMenu, SendToMenuPlace sendToMenuLevel) {
         sendToPlaceMenu.addHierarchyListener(new HierarchyListener() {
             private boolean changeFlag1 = false;
 
@@ -952,11 +952,11 @@ public class MenuHander {
 
     protected static class ExtensionMenuChangeListener implements HierarchyListener {
 
-        final SendToMenuLevel sendToMenuLevel;
+        final SendToMenuPlace sendToMenuPlace;
         final JMenuItem extensionNameMenuItem;
 
-        public ExtensionMenuChangeListener(JMenuItem extensionNameMenuItem, SendToMenuLevel sendToMenuLevel) {
-            this.sendToMenuLevel = sendToMenuLevel;
+        public ExtensionMenuChangeListener(JMenuItem extensionNameMenuItem, SendToMenuPlace sendToMenuPlace) {
+            this.sendToMenuPlace = sendToMenuPlace;
             this.extensionNameMenuItem = extensionNameMenuItem;
         }
 
@@ -986,7 +986,7 @@ public class MenuHander {
                                     }
                                     changeFlag3 = true;
 
-                                    if (sendToMenuLevel == SendToMenuLevel.TOP_LEVEL) {
+                                    if (sendToMenuPlace == SendToMenuPlace.TOP_LEVEL) {
                                         extensionsPopupMenu.remove(extensionNameMenuItem);  //　
 
                                         // TopLevel Menu

@@ -68,14 +68,14 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblPlaceLevel" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblMenuPlace" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmbPlaceLevel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chkSubmenu" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chkForceSortOrder" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="169" max="32767" attributes="0"/>
+                      <EmptySpace pref="165" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -84,7 +84,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblPlaceLevel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblMenuPlace" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="cmbPlaceLevel" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="chkSubmenu" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                           <Component id="chkForceSortOrder" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -277,9 +277,9 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendToDuplicateActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPlaceLevel">
+            <Component class="javax.swing.JLabel" name="lblMenuPlace">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Place Level:"/>
+                <Property name="text" type="java.lang.String" value="Menu Place:"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cmbPlaceLevel">

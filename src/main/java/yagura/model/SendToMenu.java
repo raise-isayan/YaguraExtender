@@ -59,7 +59,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public void changeSendToMenu() {
         if (!this.menuList.isEmpty()) {
             if (this.menuList.get(0) instanceof javax.swing.JMenuItem menuItem) {
-                MenuHander.changeContextMenuLevel(menuItem, this.property.getMenuPlaceLevel());
+                MenuHander.changeContextMenuLevel(menuItem, this.property.getMenuPlace());
             }
         }
     }

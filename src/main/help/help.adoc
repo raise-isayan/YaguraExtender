@@ -363,6 +363,16 @@ You can increase the number of right-click menus displayed from the Burp History
 
 ==== SendTo
 
+[menu place] combo box:: 
+     Change the display position of SendToMenu.
+
+* Default
+** Display SendToMenu in the default position.
+
+* Top Level
+** Display at the Top Level of the popup menu.
+
+
 [Send To Submenu] check box::
     If checked, the Send To Menu will be displayed as a submenu.
 

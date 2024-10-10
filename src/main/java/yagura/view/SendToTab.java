@@ -69,7 +69,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         tableSendTo = new javax.swing.JTable();
         chkForceSortOrder = new javax.swing.JCheckBox();
         btnSendToDuplicate = new javax.swing.JButton();
-        lblPlaceLevel = new javax.swing.JLabel();
+        lblMenuPlace = new javax.swing.JLabel();
         cmbPlaceLevel = new javax.swing.JComboBox<>();
 
         setPreferredSize(new java.awt.Dimension(550, 450));
@@ -176,7 +176,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        lblPlaceLevel.setText("Place Level:");
+        lblMenuPlace.setText("Menu Place:");
 
         cmbPlaceLevel.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -206,21 +206,21 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblPlaceLevel)
+                .addComponent(lblMenuPlace)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbPlaceLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkSubmenu)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkForceSortOrder)
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         pnlCenterLayout.setVerticalGroup(
             pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCenterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPlaceLevel)
+                    .addComponent(lblMenuPlace)
                     .addComponent(cmbPlaceLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkSubmenu, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(chkForceSortOrder))
@@ -267,7 +267,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
     private void customizeComponents() {
 
         // SendTo Tab
-        this.cmbPlaceLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { SendToProperty.SendToMenuLevel.DEFAULT.toIdent(), SendToProperty.SendToMenuLevel.TOP_LEVEL.toIdent()}));
+        this.cmbPlaceLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { SendToProperty.SendToMenuPlace.DEFAULT.toIdent(), SendToProperty.SendToMenuPlace.TOP_LEVEL.toIdent()}));
         this.modelSendTo = new CustomTableModel(this.tableSendTo.getModel());
         this.tableSendTo.setModel(this.modelSendTo);
 
@@ -425,7 +425,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JCheckBox chkSubmenu;
     private javax.swing.JComboBox<String> cmbPlaceLevel;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblPlaceLevel;
+    private javax.swing.JLabel lblMenuPlace;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel tabSendTo;
     private javax.swing.JTable tableSendTo;
@@ -488,14 +488,14 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     public void setSendToProperty(SendToProperty sendToProperty) {
         this.setSendToItemList(sendToProperty.getSendToItemList());
-        this.cmbPlaceLevel.setSelectedItem(sendToProperty.getMenuPlaceLevel().toIdent());
+        this.cmbPlaceLevel.setSelectedItem(sendToProperty.getMenuPlace().toIdent());
         this.chkSubmenu.setSelected(sendToProperty.isSubMenu());
         this.chkForceSortOrder.setSelected(sendToProperty.isForceSortOrder());
     }
 
     public SendToProperty getSendToProperty() {
         SendToProperty sendToProperty = new SendToProperty();
-        sendToProperty.setMenuPlaceLevel(SendToProperty.SendToMenuLevel.parseEnum((String)this.cmbPlaceLevel.getSelectedItem()));
+        sendToProperty.setMenuPlace(SendToProperty.SendToMenuPlace.parseEnumIdent((String)this.cmbPlaceLevel.getSelectedItem()));
         sendToProperty.setSendToItemList(this.getSendToItemList());
         sendToProperty.setSubMenu(this.chkSubmenu.isSelected());
         sendToProperty.setForceSortOrder(this.chkForceSortOrder.isSelected());

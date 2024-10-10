@@ -72,7 +72,6 @@ import yagura.handler.ProxyHander;
 import yagura.handler.WebSocketHander;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
-import yagura.model.SendToProperty.SendToMenuLevel;
 import yagura.model.UniversalViewProperty;
 import yagura.view.GeneratePoCTabEditor;
 import yagura.view.GenerateWebsocktPoCEditor;
@@ -284,7 +283,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 JMenuItem item = new JMenuItem();
                 item.setText("Send To");
                 menuList.add(item);
-                MenuHander.changeContextMenuLevel(item, option.getSendToProperty().getMenuPlaceLevel());
+                MenuHander.changeContextMenuLevel(item, option.getSendToProperty().getMenuPlace());
                 return menuList;
             }
 

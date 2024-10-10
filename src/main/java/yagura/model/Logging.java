@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.api.montoya.collaborator.HttpDetails;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -341,6 +342,10 @@ public class Logging implements Closeable {
         }
     }
 
+    //
+    // WebSocket
+    //
+
     public void writeWebSocketToolMessage(ToolType toolType, final WebSocketCreated webSocketCreated, TextMessage textMessage) {
         String baseLogFileName = Config.getWebSocketToolLogName(toolType.name());
         this.writeWebSocektMessage(baseLogFileName, webSocketCreated.upgradeRequest(), textMessage);
@@ -351,10 +356,6 @@ public class Logging implements Closeable {
         this.writeWebSocektMessage(baseLogFileName, webSocketCreated.upgradeRequest(), binaryMessage);
     }
 
-//    public void writeWebSocektMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
-//        String baseLogFileName = Config.getWebSocketLogMessageName();
-//        this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), textMessage);
-//    }
     public void writeWebSocketFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, TextMessage textMessage) {
         String baseLogFileName = Config.getWebSocketLogFinalMessageName();
         this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), textMessage);
@@ -374,10 +375,6 @@ public class Logging implements Closeable {
         }
     }
 
-//    public void writeWebSocketMessageOriginal(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
-//        String baseLogFileName = Config.getWebSocketLogMessageName();
-//        this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), binaryMessage);
-//    }
     public void writeWebSocketFinalMessage(final ProxyWebSocketCreation proxyWebSocketCreation, BinaryMessage binaryMessage) {
         String baseLogFileName = Config.getWebSocketLogFinalMessageName();
         this.writeWebSocektMessage(baseLogFileName, proxyWebSocketCreation.upgradeRequest(), binaryMessage);
