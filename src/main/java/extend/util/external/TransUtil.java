@@ -2108,4 +2108,17 @@ public class TransUtil {
         return translate(target, HALF_WIDTH_STR, FULL_WIDTH_STR);
     }
 
+    private final static String HARF_UNICODE_DIGIT = "0123456789.";
+
+    private final static String FULL_UNICODE_DIGIT = "⓪①②③④⑤⑥⑦⑧⑨。";
+
+    public static String ipv4ToUnicodeDigit(String value) {
+        StringBuilder buff = new StringBuilder();
+        for (int i = 0; i < value.length(); i++) {
+            int idx = HARF_UNICODE_DIGIT.indexOf(value.charAt(i));
+            if (idx > -1) buff.append(FULL_UNICODE_DIGIT.charAt(idx));
+        }
+        return buff.toString();
+    }
+
 }

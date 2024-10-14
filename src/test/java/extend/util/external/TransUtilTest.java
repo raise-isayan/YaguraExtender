@@ -908,4 +908,11 @@ public class TransUtilTest {
         }
     }
 
+    @Test
+    public void testIpv4ToUnicodeDigit() throws IOException {
+        System.out.println("testIpv4ToUnicodeDigit");
+        System.out.println(TransUtil.ipv4ToUnicodeDigit("192.168.0.11"));
+    }
+
+
 }
