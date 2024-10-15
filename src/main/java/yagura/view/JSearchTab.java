@@ -129,7 +129,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         });
 
         chkComment.setSelected(true);
-        chkComment.setText("Comment");
+        chkComment.setText("notes");
         chkComment.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chkCommentStateChanged(evt);

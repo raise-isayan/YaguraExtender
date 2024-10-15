@@ -187,7 +187,7 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkComment">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="comment"/>
+                    <Property name="text" type="java.lang.String" value="notes"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkCommentActionPerformed"/>

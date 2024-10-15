@@ -785,7 +785,7 @@
               <SubComponents>
                 <Component class="javax.swing.JCheckBox" name="chkUseReqComment">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="use request comment"/>
+                    <Property name="text" type="java.lang.String" value="use request notes"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkUseReqName">
@@ -810,7 +810,7 @@
                       <ComponentRef name="btnGrpReqName"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="history comment"/>
+                    <Property name="text" type="java.lang.String" value="history notes"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="rdoReqCommentHistoryComment">
@@ -819,7 +819,7 @@
                       <ComponentRef name="btnGrpReqComment"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
-                    <Property name="text" type="java.lang.String" value="history comment"/>
+                    <Property name="text" type="java.lang.String" value="history notes"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="rdoReqCommentResponseTitle">

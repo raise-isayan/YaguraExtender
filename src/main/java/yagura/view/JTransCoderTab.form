@@ -850,9 +850,6 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Base16"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoBase16ActionPerformed"/>
-                              </Events>
                             </Component>
                             <Component class="javax.swing.JCheckBox" name="chkNPadding">
                               <Properties>
@@ -2263,9 +2260,6 @@
                                       <Properties>
                                         <Property name="text" type="java.lang.String" value="!&quot;#$%&amp;&apos;()"/>
                                       </Properties>
-                                      <Events>
-                                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCustomActionPerformed"/>
-                                      </Events>
                                       <Constraints>
                                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                                           <BorderConstraints direction="Center"/>
@@ -2751,7 +2745,6 @@
                     <Property name="text" type="java.lang.String" value="0"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtBinActionPerformed"/>
                     <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtBinKeyReleased"/>
                   </Events>
                 </Component>
@@ -3353,9 +3346,6 @@
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIntIPActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnIntIP">
                   <Properties>

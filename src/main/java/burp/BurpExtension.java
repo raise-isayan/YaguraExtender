@@ -277,7 +277,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         // 順序重要のため変更は要注意
         this.setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
         this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
-        Registration registerContextMenuItemsProvider = api.userInterface().registerContextMenuItemsProvider(new ContextMenuItemsProvider() {
+        final Registration registerContextMenuItemsProvider = api.userInterface().registerContextMenuItemsProvider(new ContextMenuItemsProvider() {
             public List<Component> provideMenuItems(ContextMenuEvent event) {
                 List<Component> menuList = new ArrayList<>();
                 JMenuItem item = new JMenuItem();

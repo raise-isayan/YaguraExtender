@@ -129,7 +129,7 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         txtComment.setEnabled(false);
 
-        chkComment.setText("comment");
+        chkComment.setText("notes");
         chkComment.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkCommentActionPerformed(evt);

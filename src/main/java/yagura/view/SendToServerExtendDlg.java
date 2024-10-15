@@ -462,7 +462,7 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         pnlSendToOverride.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        chkUseReqComment.setText("use request comment");
+        chkUseReqComment.setText("use request notes");
 
         chkUseReqName.setText("use request name");
         chkUseReqName.addActionListener(new java.awt.event.ActionListener() {
@@ -476,11 +476,11 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         btnGrpReqName.add(rdoReqNameHistoryComment);
         rdoReqNameHistoryComment.setSelected(true);
-        rdoReqNameHistoryComment.setText("history comment");
+        rdoReqNameHistoryComment.setText("history notes");
 
         btnGrpReqComment.add(rdoReqCommentHistoryComment);
         rdoReqCommentHistoryComment.setSelected(true);
-        rdoReqCommentHistoryComment.setText("history comment");
+        rdoReqCommentHistoryComment.setText("history notes");
 
         btnGrpReqComment.add(rdoReqCommentResponseTitle);
         rdoReqCommentResponseTitle.setText("response title tag");

@@ -1157,11 +1157,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         rdoEncodeDecodeGrp.add(rdoBase16);
         rdoBase16.setText("Base16");
-        rdoBase16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoBase16ActionPerformed(evt);
-            }
-        });
         pnlBaseN.add(rdoBase16);
 
         chkNPadding.setSelected(true);
@@ -2109,11 +2104,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlCustom.add(chkCharacterCustom, java.awt.BorderLayout.WEST);
 
         txtCustom.setText("!\"#$%&'()");
-        txtCustom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCustomActionPerformed(evt);
-            }
-        });
         pnlCustom.add(txtCustom, java.awt.BorderLayout.CENTER);
 
         pnlCharacter.add(pnlCustom);
@@ -2361,11 +2351,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         txtBin.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txtBin.setText("0");
-        txtBin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBinActionPerformed(evt);
-            }
-        });
         txtBin.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtBinKeyReleased(evt);
@@ -2745,11 +2730,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         lblIntIP.setText("Integer IP:");
 
         txtIntIP.setEditable(false);
-        txtIntIP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIntIPActionPerformed(evt);
-            }
-        });
 
         btnIntIP.setText("Copy");
         btnIntIP.addActionListener(new java.awt.event.ActionListener() {
@@ -3235,10 +3215,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoLigthActionPerformed
 
-    private void txtCustomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCustomActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCustomActionPerformed
-
     private void btnOutputToInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutputToInputActionPerformed
         String outputText = this.getOutputText();
         byte[] outputByte = this.getOutputByte();
@@ -3592,14 +3568,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void btnHexCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHexCopyActionPerformed
         SwingUtil.systemClipboardCopy(this.txtHex.getText());
     }//GEN-LAST:event_btnHexCopyActionPerformed
-
-    private void txtBinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBinActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBinActionPerformed
-
-    private void rdoBase16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBase16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoBase16ActionPerformed
 
     private void btnMurmurHash2_32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash2_32ActionPerformed
         try {
@@ -4429,10 +4397,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void btnDotAHexIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDotAHexIPActionPerformed
         SwingUtil.systemClipboardCopy(this.txtDotAHexIP.getText());
     }//GEN-LAST:event_btnDotAHexIPActionPerformed
-
-    private void txtIntIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIntIPActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIntIPActionPerformed
 
     private void btnDotDecBIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDotDecBIPActionPerformed
         SwingUtil.systemClipboardCopy(this.txtDotBDecIP.getText());
