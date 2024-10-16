@@ -2,6 +2,7 @@ package extend.util.external;
 
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
+import extension.helpers.IpUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
@@ -2108,11 +2109,22 @@ public class TransUtil {
         return translate(target, HALF_WIDTH_STR, FULL_WIDTH_STR);
     }
 
+    public static String IPv4MappedIPv6(String value) {
+        if (!IpUtil.isIPv4Valid(value)) new IllegalArgumentException("IllegalA IPv4 Format");
+        StringBuilder buff = new StringBuilder();
+        buff.append("[");
+        buff.append("::ffff:");
+        buff.append(value);
+        buff.append("]");
+        return buff.toString();
+    }
+
     private final static String HARF_UNICODE_DIGIT = "0123456789.";
 
     private final static String FULL_UNICODE_DIGIT = "⓪①②③④⑤⑥⑦⑧⑨。";
 
-    public static String ipv4ToUnicodeDigit(String value) {
+    public static String IPv4ToUnicodeDigit(String value) {
+        if (!IpUtil.isIPv4Valid(value)) new IllegalArgumentException("IllegalA IPv4 Format");
         StringBuilder buff = new StringBuilder();
         for (int i = 0; i < value.length(); i++) {
             int idx = HARF_UNICODE_DIGIT.indexOf(value.charAt(i));
