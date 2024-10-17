@@ -29,7 +29,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,31,0,0,4,-18"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,71,0,0,5,6"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -1914,7 +1914,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="746" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="770" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2036,7 +2036,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="702" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="726" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2183,7 +2183,7 @@
                                               <Component id="pnlCount" min="-2" pref="240" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="671" max="32767" attributes="0"/>
+                                      <EmptySpace pref="695" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2491,7 +2491,7 @@
                                       <Component id="jLabel1" min="-2" pref="44" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnCalc" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="90" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="114" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel3" max="32767" attributes="0"/>
                               </Group>
@@ -2534,7 +2534,7 @@
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="740" max="32767" attributes="0"/>
+                      <EmptySpace pref="780" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2639,29 +2639,18 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblHex" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lblRadix32" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="txtRadix32" pref="1098" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblDec" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblOct" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblBin" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="txtBin" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtOct" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDec" alignment="0" max="32767" attributes="0"/>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="txtHex" max="32767" attributes="0"/>
-                                          <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
+                              <Component id="lblDec" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblOct" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblBin" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblRadix32" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtBin" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtOct" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDec" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtHex" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtRadix32" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -2672,6 +2661,11 @@
                               <Component id="btnRadix32Copy" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                          <Component id="lblHex" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="1232" pref="1232" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2708,7 +2702,7 @@
                               <Component id="lblRadix32" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnRadix32Copy" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="821" max="32767" attributes="0"/>
+                          <EmptySpace pref="861" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2849,7 +2843,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtJavaSerial" alignment="0" pref="871" max="32767" attributes="0"/>
+                              <Component id="txtJavaSerial" alignment="0" pref="895" max="32767" attributes="0"/>
                               <Component id="txtUnixtime" max="32767" attributes="0"/>
                               <Component id="txtExcelSerial" max="32767" attributes="0"/>
                               <Component id="txtSystemZoneDate" alignment="0" max="32767" attributes="0"/>
@@ -3081,59 +3075,82 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lblDotADecIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblIntIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDotOctIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblOctIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDotCHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDotBHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblDotAHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblIPv4MappedIPv6" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="lblDotDeclIP" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="lblDotOctIP1" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtIPv4MappedIPv6" max="32767" attributes="0"/>
-                                      <Component id="txtDotAHexIP" max="32767" attributes="0"/>
-                                      <Component id="txtDotBHexIP" max="32767" attributes="0"/>
-                                      <Component id="txtDotCHexIP" max="32767" attributes="0"/>
-                                      <Component id="txtHexIP" max="32767" attributes="0"/>
-                                      <Component id="txtOctIP" max="32767" attributes="0"/>
-                                      <Component id="txtDotOctIP" max="32767" attributes="0"/>
-                                      <Component id="txtIntIP" max="32767" attributes="0"/>
-                                      <Component id="txtDotADecIP" max="32767" attributes="0"/>
-                                      <Component id="txtDotBDecIP" max="32767" attributes="0"/>
-                                  </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="btnDecIPConvert" pref="207" max="32767" attributes="0"/>
-                                          <Component id="btnDotDecBIP" max="32767" attributes="0"/>
+                                      <Component id="lblDotADecIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIntIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDotCOctIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="lblDotDeclIP" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="lblDotOctIP1" alignment="0" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Component id="lblDotBOctIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDotAOctIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIPv4MappedIPv6" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIPv4toUnicode" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="0" attributes="0">
+                                              <Component id="txtDotBDecIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtDotADecIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtIntIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtDotBOctIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtDotAOctIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtDotCHexIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtDotBHexIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtDotAHexIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtHexIP" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtIPv4MappedIPv6" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtIPv4ToUnicode" alignment="1" max="32767" attributes="0"/>
+                                              <Component id="txtDotCOctIP" alignment="1" max="32767" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="pnlDotDecIP" min="-2" pref="470" max="-2" attributes="0"/>
+                                          <EmptySpace pref="336" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="txtOctIP" max="32767" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="btnDecIPConvert" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="lblIPValid" pref="264" max="32767" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                           <Component id="btnDotDecAIP" alignment="0" max="32767" attributes="0"/>
                                           <Component id="btnIntIP" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="btnDotOctIP" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="btnDotCOctIP" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="btnDotBOctIP" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="btnDotAOctIP" alignment="0" max="32767" attributes="0"/>
                                           <Component id="btnOctIP" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="btnHexIP" alignment="0" max="32767" attributes="0"/>
                                           <Component id="btnDotCHexIP" alignment="0" max="32767" attributes="0"/>
                                           <Component id="btnDotBHexIP" alignment="0" max="32767" attributes="0"/>
                                           <Component id="btnDotAHexIP" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="btnHexIP" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="btnDotAHexIP1" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="btnIPv4ToUnicode" alignment="0" pref="207" max="32767" attributes="0"/>
+                                          <Component id="btnDotDecBIP" max="32767" attributes="0"/>
                                       </Group>
-                                      <Component id="btnDotAHexIP1" alignment="1" min="-2" pref="207" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <Component id="pnlDotDecIP" min="-2" pref="368" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                                  <Component id="lblIPValid" min="-2" pref="522" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="218" max="32767" attributes="0"/>
+                                  <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblOctIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDotCHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDotBHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblDotAHexIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -3143,17 +3160,14 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace pref="9" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnDecIPConvert" alignment="1" max="32767" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="lblIPValid" max="32767" attributes="0"/>
-                                      <Component id="lblDotDeclIP" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="pnlDotDecIP" alignment="0" max="32767" attributes="0"/>
-                                  </Group>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="lblIPValid" max="32767" attributes="0"/>
+                                  <Component id="lblDotDeclIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="pnlDotDecIP" alignment="0" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="btnDecIPConvert" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -3175,23 +3189,31 @@
                           </Group>
                           <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtDotOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnDotOctIP" alignment="3" max="32767" attributes="0"/>
-                              <Component id="lblDotOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDotCOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDotCOctIP" alignment="3" max="32767" attributes="0"/>
+                              <Component id="lblDotCOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnOctIP" alignment="3" max="32767" attributes="0"/>
-                              <Component id="lblOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblDotBOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDotBOctIP" alignment="3" max="32767" attributes="0"/>
+                              <Component id="txtDotBOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblHexIP" alignment="3" min="-2" pref="16" max="-2" attributes="0"/>
-                              <Component id="txtHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnHexIP" alignment="3" max="32767" attributes="0"/>
+                              <Component id="lblDotAOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDotAOctIP" alignment="3" max="32767" attributes="0"/>
+                              <Component id="txtDotAOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtOctIP" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="btnOctIP" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="lblOctIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblDotCHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtDotCHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -3211,11 +3233,23 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtHexIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnHexIP" alignment="3" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblIPv4MappedIPv6" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtIPv4MappedIPv6" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnDotAHexIP1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="617" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lblIPv4toUnicode" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtIPv4ToUnicode" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnIPv4ToUnicode" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="552" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -3275,25 +3309,22 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDecIPConvertActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="lblDotOctIP">
+                <Component class="javax.swing.JLabel" name="lblDotCOctIP">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Dotted Octal IP:"/>
+                    <Property name="text" type="java.lang.String" value="Dotted C Octal IP:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtDotOctIP">
+                <Component class="javax.swing.JTextField" name="txtDotCOctIP">
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDotOctIPActionPerformed"/>
-                  </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnDotOctIP">
+                <Component class="javax.swing.JButton" name="btnDotCOctIP">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Copy"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotOctIPActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotCOctIPActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnOctIP">
@@ -3370,7 +3401,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblIPValid">
                   <Properties>
-                    <Property name="horizontalAlignment" type="int" value="11"/>
+                    <Property name="horizontalAlignment" type="int" value="2"/>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                   </Properties>
                 </Component>
@@ -3463,6 +3494,63 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotAHexIP1ActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblIPv4toUnicode">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="IPv4 to Unicode:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtIPv4ToUnicode">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnIPv4ToUnicode">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIPv4ToUnicodeActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblDotBOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Dotted B Octal IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDotBOctIP">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDotBOctIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDotBOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotBOctIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="lblDotAOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Dotted A Octal IP:"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnDotAOctIP">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotAOctIPActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtDotAOctIP">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
