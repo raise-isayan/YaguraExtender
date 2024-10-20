@@ -92,22 +92,6 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         });
 
         chkShowOnly.setText("show only:");
-        chkShowOnly.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkShowOnlyStateChanged(evt);
-            }
-        });
-        chkShowOnly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyActionPerformed(evt);
-            }
-        });
-
-        txtShowOnly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtShowOnlyActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlHttpExtensionLayout = new javax.swing.GroupLayout(pnlHttpExtension);
         pnlHttpExtension.setLayout(pnlHttpExtensionLayout);
@@ -122,7 +106,7 @@ public class FilterHttpPanel extends javax.swing.JPanel {
                 .addGroup(pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtShowOnly)
                     .addComponent(txtHide, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(454, Short.MAX_VALUE))
+                .addContainerGap(262, Short.MAX_VALUE))
         );
         pnlHttpExtensionLayout.setVerticalGroup(
             pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,18 +129,8 @@ public class FilterHttpPanel extends javax.swing.JPanel {
 
         chkReqRegExp.setSelected(true);
         chkReqRegExp.setText("RegExp");
-        chkReqRegExp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkReqRegExpActionPerformed(evt);
-            }
-        });
 
         chkReqIgnoreCase.setText("IgnoreCase");
-        chkReqIgnoreCase.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkReqIgnoreCaseActionPerformed(evt);
-            }
-        });
 
         lblMethod.setText("Method:");
 
@@ -168,11 +142,6 @@ public class FilterHttpPanel extends javax.swing.JPanel {
 
         chkResRegExp.setSelected(true);
         chkResRegExp.setText("RegExp");
-        chkResRegExp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkResRegExpActionPerformed(evt);
-            }
-        });
 
         chkResIgnoreCase.setText("IgnoreCase");
 
@@ -203,7 +172,7 @@ public class FilterHttpPanel extends javax.swing.JPanel {
                         .addComponent(chkReqRegExp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkReqIgnoreCase)))
-                .addContainerGap(291, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         pnlHttpFilterSearchItemLayout.setVerticalGroup(
             pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,30 +274,6 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         this.chkShowOnly.setEnabled(!this.chkHide.isSelected());
     }//GEN-LAST:event_chkHideStateChanged
 
-    private void chkShowOnlyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkShowOnlyStateChanged
-        this.chkHide.setEnabled(!this.chkShowOnly.isSelected());
-    }//GEN-LAST:event_chkShowOnlyStateChanged
-
-    private void chkShowOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkShowOnlyActionPerformed
-
-    private void txtShowOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtShowOnlyActionPerformed
-
-    }//GEN-LAST:event_txtShowOnlyActionPerformed
-
-    private void chkReqRegExpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkReqRegExpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkReqRegExpActionPerformed
-
-    private void chkReqIgnoreCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkReqIgnoreCaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkReqIgnoreCaseActionPerformed
-
-    private void chkResRegExpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkResRegExpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkResRegExpActionPerformed
-
     private void chkShowOnlyParameterizedRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyParameterizedRequestsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chkShowOnlyParameterizedRequestsActionPerformed
@@ -386,11 +331,11 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         }
     };
 
-    private FilterAnnotationPanel pnlAnnotation = new FilterAnnotationPanel();
+    private final FilterAnnotationPanel pnlAnnotation = new FilterAnnotationPanel();
 
-    private javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
-    private javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
-    private javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
+    private final javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
+    private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
+    private final javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
 
     private void customizeComponents() {
         this.scrollBabda.setViewportView(this.txtBambda);

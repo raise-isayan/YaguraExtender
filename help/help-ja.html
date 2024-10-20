@@ -1391,7 +1391,7 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>history comment<br>
+<p>history notes<br>
 proxyのヒストリのコメントを送信します。</p>
 </li>
 <li>
@@ -1413,7 +1413,7 @@ proxyのヒストリのコメントを送信します。</p>
 </ol>
 </div>
 </dd>
-<dt class="hdlist1">use request comment</dt>
+<dt class="hdlist1">use request notes</dt>
 <dd>
 <p>reqCommentパラメータに指定した内容で送信します。
 送信可能な内容はreqNameと同じです。</p>
@@ -1773,7 +1773,7 @@ proxy-message.log.2
 <dd>
 <p>各種Toolのログの値が記録されます。</p>
 </dd>
-<dt class="hdlist1">[WebSocket Log] check box</dt>
+<dt class="hdlist1">[WebSocket Log] チェックボックス</dt>
 <dd>
 <p>Websocketのログが記録されます。</p>
 </dd>
@@ -2564,39 +2564,21 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 </dd>
-<dt class="hdlist1">Dotted Octal IP </dt>
+<dt class="hdlist1">Dotted Decimal B IP </dt>
 <dd>
-<p>「.」で区切られた8進数のIPアドレスに変換します。</p>
+<p>「.」で区切られた10進数のClass BのIPアドレスに変換します。</p>
 <div class="literalblock">
 <div class="content">
-<pre>例:0300.0000.0002.0001</pre>
+<pre>例:192.168.258</pre>
 </div>
 </div>
 </dd>
-<dt class="hdlist1">Octal IP </dt>
+<dt class="hdlist1">Dotted Decimal A IP </dt>
 <dd>
-<p>8進数のIPアドレスに変換します。</p>
+<p>「.」で区切られた10進数のClass AのIPアドレスに変換します。</p>
 <div class="literalblock">
 <div class="content">
-<pre>例:030000001001</pre>
-</div>
-</div>
-</dd>
-<dt class="hdlist1">Dotted Hex IP </dt>
-<dd>
-<p>「.」で区切られた16進数のIPアドレスに変換します。</p>
-<div class="literalblock">
-<div class="content">
-<pre>例:0xc0.0x00.0x02.0x01</pre>
-</div>
-</div>
-</dd>
-<dt class="hdlist1">Hex IP </dt>
-<dd>
-<p>16進数のIPアドレスに変換します。</p>
-<div class="literalblock">
-<div class="content">
-<pre>例:0xc0000201</pre>
+<pre>例:1192.11010306</pre>
 </div>
 </div>
 </dd>
@@ -2609,7 +2591,97 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 </dd>
+<dt class="hdlist1">Dotted Octal C IP </dt>
+<dd>
+<p>「.」で区切られた8進数のClass CのIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0300.0000.0002.0001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Octal B IP </dt>
+<dd>
+<p>「.」で区切られた8進数のClass BのIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0300.0250.0402</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Octal A IP </dt>
+<dd>
+<p>「.」で区切られた8進数のClass AのIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0300.052000402</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Octal IP </dt>
+<dd>
+<p>8進数のIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:030000001001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex C IP </dt>
+<dd>
+<p>「.」で区切られた16進数のClass CのIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0xc0.0x00.0x02.0x01</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex B IP </dt>
+<dd>
+<p>「.」で区切られた16進数のClass BのIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0xc0.0xa8.0x0102</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex A IP </dt>
+<dd>
+<p>「.」で区切られた16進数のClass AのIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0xc0.0xa80102</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Hex IP </dt>
+<dd>
+<p>16進数のIPアドレスに変換します。</p>
+<div class="literalblock">
+<div class="content">
+<pre>例:0xc0000201</pre>
+</div>
+</div>
+</dd>
 </dl>
+</div>
+<div class="paragraph">
+<p>IPv4 Mapped IPv6:
+    IPv4アドレスを含むIPv6アドレスに変換します。</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>例:[::ffff:192.168.1.2]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>IPv4 to Unicode:
+    IPv4アドレスを含むUnicode表記アドレスに変換します。</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>例:①⑨②。①⑥⑧。①。②</pre>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -2878,7 +2950,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <div id="footer">
 <div id="footer-text">
 Version v3.1.4.2<br>
-Last updated 2024-10-11 02:23:19 +0900
+Last updated 2024-10-20 22:57:16 +0900
 </div>
 </div>
 </body>

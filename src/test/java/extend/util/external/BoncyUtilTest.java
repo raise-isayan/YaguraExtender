@@ -562,7 +562,7 @@ public class BoncyUtilTest {
                 assertEquals("D74981EFA70A0C880B8D8C1985D075DBCBF679B99A5F9914E5AAF96B831A9E24", hash3);
             } catch (UnsupportedEncodingException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
-           }
+            }
         }
         {
             try {
@@ -574,7 +574,7 @@ public class BoncyUtilTest {
                 assertEquals("70E8ECE5E293E1BDA064DEEF6B080EDDE357010F", hash3);
             } catch (UnsupportedEncodingException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
-           }
+            }
         }
         {
             try {

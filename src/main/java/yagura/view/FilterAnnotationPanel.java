@@ -59,11 +59,6 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
         pnlAnnotation.setLayout(new javax.swing.BoxLayout(pnlAnnotation, javax.swing.BoxLayout.PAGE_AXIS));
 
         chkShowOnlyComment.setText("Show only comment");
-        chkShowOnlyComment.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyCommentActionPerformed(evt);
-            }
-        });
         pnlAnnotation.add(chkShowOnlyComment);
 
         chkShowOnlyHighlight.setText("Show only highlight");
@@ -151,10 +146,6 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
         this.pnlHighlightColor.setLayout(new VerticalFlowLayout());
         this.chkShowOnlyHighlightActionPerformed(null);
     }
-
-    private void chkShowOnlyCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyCommentActionPerformed
-
-    }//GEN-LAST:event_chkShowOnlyCommentActionPerformed
 
     private void chkShowOnlyHighlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyHighlightActionPerformed
         SwingUtil.setContainerEnable(this.pnlHighlightColor, this.chkShowOnlyHighlight.isSelected());

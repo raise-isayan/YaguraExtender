@@ -1278,30 +1278,70 @@ Dotted Decimal IP ::
 
     Example: 192.168.2.1
 
-Dotted Octal IP ::
-    Convert to an octal IP address separated by a "."
+Dotted Decimal B IP ::
+    Convert to an decimal Class B IP address separated by a "."
+
+    Example:192.168.258
+
+Dotted Decimal A IP ::
+    Convert to an decimal Class A IP address separated by a "."
+
+    Example:192.11010306
+
+Ineger IP ::
+    Converts to a decimal IP address.
+
+    Example: 3221225985
+
+Dotted Octal C IP ::
+    Convert to an octal Class C IP address separated by a "."
 
     Example: 0300.0000.0002.0001
+
+Dotted Octal C IP ::
+    Convert to an octal Class B IP address separated by a "."
+
+    Example:0300.0250.0402
+
+Dotted Octal C IP ::
+    Convert to an octal Class A IP address separated by a "."
+
+    Example:0300.052000402
 
 Octal IP ::
     Converts to an octal IP address.
 
     Example: 030000001001
 
-Dotted Hex IP ::
-    Converts to a hexadecimal IP address separated by a "."
+Dotted Hex C IP ::
+    Converts to a hexadecimal Class C IP address separated by a "."
 
     Example: 0xc0.0x00.0x02.0x01
+
+Dotted Hex B IP ::
+    Converts to a hexadecimal Class B IP address separated by a "."
+
+    Example:0xc0.0xa8.0x0102
+
+Dotted Hex A IP ::
+    Converts to a hexadecimal Class A IP address separated by a "."
+
+    Example:0xc0.0xa8.0x0102
 
 Hex IP ::
     Converts to a hexadecimal IP address.
 
     Example: 0xc0000201
 
-Ineger IP ::
-    Converts to a decimal IP address.
+IPv4 Mapped IPv6:
+    Convert to IPv4 Mapped IPv6.
 
-    Example: 3221225985
+    Example: [::ffff:192.168.1.2]
+
+IPv4 to Unicode:
+    Convert to Unicode notation address.
+
+    Example: ①⑨②。①⑥⑧。①。②
 
 ==== Certificate tab
 

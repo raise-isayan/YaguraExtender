@@ -105,18 +105,8 @@ public class AutoResponderItemDlg extends CustomDialog {
         lblReplace.setText("Replace:");
 
         txtRepReplace.setName(""); // NOI18N
-        txtRepReplace.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRepReplaceActionPerformed(evt);
-            }
-        });
 
         txtRepMatch.setName(""); // NOI18N
-        txtRepMatch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRepMatchActionPerformed(evt);
-            }
-        });
 
         chkRegExp.setText("RegExp");
 
@@ -131,11 +121,6 @@ public class AutoResponderItemDlg extends CustomDialog {
         });
 
         chkIgnoreCase.setText("IgnoreCase");
-        chkIgnoreCase.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkIgnoreCaseActionPerformed(evt);
-            }
-        });
 
         cmbContentType.setEditable(true);
         cmbContentType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "text/html", "text/plain", "image/jpeg", "image/gif", "image/png", "application/json", "application/javascript" }));
@@ -245,14 +230,6 @@ public class AutoResponderItemDlg extends CustomDialog {
         });
     }
 
-    private void txtRepReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepReplaceActionPerformed
-
-    }//GEN-LAST:event_txtRepReplaceActionPerformed
-
-    private void chkIgnoreCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkIgnoreCaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkIgnoreCaseActionPerformed
-
     private void btnSelectExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectExecuteActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -287,10 +264,6 @@ public class AutoResponderItemDlg extends CustomDialog {
             this.closeDialog(null);
         }
     }//GEN-LAST:event_btnOKActionPerformed
-
-    private void txtRepMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepMatchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRepMatchActionPerformed
 
     private void chkBodyOnlyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkBodyOnlyStateChanged
         this.cmbContentType.setEnabled(this.chkBodyOnly.isSelected());

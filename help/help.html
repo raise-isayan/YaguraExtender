@@ -2573,39 +2573,21 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 </dd>
-<dt class="hdlist1">Dotted Octal IP </dt>
+<dt class="hdlist1">Dotted Decimal B IP </dt>
 <dd>
-<p>Convert to an octal IP address separated by a "."</p>
+<p>Convert to an decimal Class B IP address separated by a "."</p>
 <div class="literalblock">
 <div class="content">
-<pre>Example: 0300.0000.0002.0001</pre>
+<pre>Example:192.168.258</pre>
 </div>
 </div>
 </dd>
-<dt class="hdlist1">Octal IP </dt>
+<dt class="hdlist1">Dotted Decimal A IP </dt>
 <dd>
-<p>Converts to an octal IP address.</p>
+<p>Convert to an decimal Class A IP address separated by a "."</p>
 <div class="literalblock">
 <div class="content">
-<pre>Example: 030000001001</pre>
-</div>
-</div>
-</dd>
-<dt class="hdlist1">Dotted Hex IP </dt>
-<dd>
-<p>Converts to a hexadecimal IP address separated by a "."</p>
-<div class="literalblock">
-<div class="content">
-<pre>Example: 0xc0.0x00.0x02.0x01</pre>
-</div>
-</div>
-</dd>
-<dt class="hdlist1">Hex IP </dt>
-<dd>
-<p>Converts to a hexadecimal IP address.</p>
-<div class="literalblock">
-<div class="content">
-<pre>Example: 0xc0000201</pre>
+<pre>Example:192.11010306</pre>
 </div>
 </div>
 </dd>
@@ -2618,7 +2600,97 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 </dd>
+<dt class="hdlist1">Dotted Octal C IP </dt>
+<dd>
+<p>Convert to an octal Class C IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 0300.0000.0002.0001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Octal C IP </dt>
+<dd>
+<p>Convert to an octal Class B IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example:0300.0250.0402</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Octal C IP </dt>
+<dd>
+<p>Convert to an octal Class A IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example:0300.052000402</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Octal IP </dt>
+<dd>
+<p>Converts to an octal IP address.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 030000001001</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex C IP </dt>
+<dd>
+<p>Converts to a hexadecimal Class C IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 0xc0.0x00.0x02.0x01</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex B IP </dt>
+<dd>
+<p>Converts to a hexadecimal Class B IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example:0xc0.0xa8.0x0102</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Dotted Hex A IP </dt>
+<dd>
+<p>Converts to a hexadecimal Class A IP address separated by a "."</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example:0xc0.0xa8.0x0102</pre>
+</div>
+</div>
+</dd>
+<dt class="hdlist1">Hex IP </dt>
+<dd>
+<p>Converts to a hexadecimal IP address.</p>
+<div class="literalblock">
+<div class="content">
+<pre>Example: 0xc0000201</pre>
+</div>
+</div>
+</dd>
 </dl>
+</div>
+<div class="paragraph">
+<p>IPv4 Mapped IPv6:
+    Convert to IPv4 Mapped IPv6.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Example: [::ffff:192.168.1.2]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>IPv4 to Unicode:
+    Convert to Unicode notation address.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Example: ①⑨②。①⑥⑧。①。②</pre>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -2890,7 +2962,7 @@ This option may not work for items that contain binaries. In that case, use the 
 <div id="footer">
 <div id="footer-text">
 Version v3.1.4.2<br>
-Last updated 2024-10-11 02:26:37 +0900
+Last updated 2024-10-18 16:05:08 +0900
 </div>
 </div>
 </body>

@@ -55,20 +55,9 @@ public class ImportCertificatetDlg extends CustomDialog {
 
         btnGrpFormat.add(btnStoreTypeJKS);
         btnStoreTypeJKS.setText("JKS");
-        btnStoreTypeJKS.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStoreTypeJKSActionPerformed(evt);
-            }
-        });
 
         btnGrpFormat.add(btnStoreTypePKCS12);
         btnStoreTypePKCS12.setText("PKCS12");
-
-        txtStoreFile.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtStoreFileKeyPressed(evt);
-            }
-        });
 
         btnImport.setText("Import");
         btnImport.addActionListener(new java.awt.event.ActionListener() {
@@ -183,14 +172,6 @@ public class ImportCertificatetDlg extends CustomDialog {
             this.closeDialog(null);
         }
     }//GEN-LAST:event_btnOKActionPerformed
-
-    private void btnStoreTypeJKSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStoreTypeJKSActionPerformed
-
-    }//GEN-LAST:event_btnStoreTypeJKSActionPerformed
-
-    private void txtStoreFileKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStoreFileKeyPressed
-
-    }//GEN-LAST:event_txtStoreFileKeyPressed
 
     private File currentCertificateDirectory = null;
 

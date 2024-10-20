@@ -480,7 +480,7 @@ override SendTo parameter::
 use request name::
  reqNameパラメータに指定した内容で送信します。
 
-. history comment +
+. history notes +
  proxyのヒストリのコメントを送信します。
 
 . response title tag +
@@ -495,7 +495,7 @@ use request name::
 . second line
  2行目の以降を値として利用します｡
 
-use request comment::
+use request notes::
     reqCommentパラメータに指定した内容で送信します。
     送信可能な内容はreqNameと同じです。
 
@@ -729,7 +729,7 @@ Compress Log::
 [Tool Log] チェックボックス::
      各種Toolのログの値が記録されます。
 
-[WebSocket Log] check box::
+[WebSocket Log] チェックボックス::
      Websocketのログが記録されます。
 
 [history is included] チェックボックス::
@@ -1268,30 +1268,70 @@ Dotted Decimal IP ::
 
     例:192.168.2.1
 
-Dotted Octal IP ::
-    「.」で区切られた8進数のIPアドレスに変換します。
+Dotted Decimal B IP ::
+   「.」で区切られた10進数のClass BのIPアドレスに変換します。    
+    
+    例:192.168.258
+
+Dotted Decimal A IP ::
+   「.」で区切られた10進数のClass AのIPアドレスに変換します。    
+
+    例:1192.11010306
+
+Ineger IP ::
+    10進数のIPアドレスに変換します。
+
+    例:3221225985
+
+Dotted Octal C IP ::
+    「.」で区切られた8進数のClass CのIPアドレスに変換します。
 
      例:0300.0000.0002.0001
+
+Dotted Octal B IP ::
+    「.」で区切られた8進数のClass BのIPアドレスに変換します。
+
+     例:0300.0250.0402
+
+Dotted Octal A IP ::
+    「.」で区切られた8進数のClass AのIPアドレスに変換します。
+
+     例:0300.052000402
 
 Octal IP ::
     8進数のIPアドレスに変換します。
 
     例:030000001001
 
-Dotted Hex IP ::
-   「.」で区切られた16進数のIPアドレスに変換します。
+Dotted Hex C IP ::
+   「.」で区切られた16進数のClass CのIPアドレスに変換します。
 
     例:0xc0.0x00.0x02.0x01
+
+Dotted Hex B IP ::
+   「.」で区切られた16進数のClass BのIPアドレスに変換します。
+
+    例:0xc0.0xa8.0x0102
+
+Dotted Hex A IP ::
+   「.」で区切られた16進数のClass AのIPアドレスに変換します。
+
+    例:0xc0.0xa80102
 
 Hex IP ::
     16進数のIPアドレスに変換します。
 
     例:0xc0000201
 
-Ineger IP ::
-    10進数のIPアドレスに変換します。
+IPv4 Mapped IPv6:
+    IPv4アドレスを含むIPv6アドレスに変換します。
 
-    例:3221225985
+    例:[::ffff:192.168.1.2]
+
+IPv4 to Unicode:
+    IPv4アドレスを含むUnicode表記アドレスに変換します。
+
+    例:①⑨②。①⑥⑧。①。②
 
 ==== Certificate タブ
 

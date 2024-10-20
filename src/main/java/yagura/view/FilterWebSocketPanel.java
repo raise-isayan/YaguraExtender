@@ -75,18 +75,8 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
 
         chkMsgRegExp.setSelected(true);
         chkMsgRegExp.setText("RegExp");
-        chkMsgRegExp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkMsgRegExpActionPerformed(evt);
-            }
-        });
 
         chkMsgIgnoreCase.setText("IgnoreCase");
-        chkMsgIgnoreCase.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkMsgIgnoreCaseActionPerformed(evt);
-            }
-        });
 
         lblMessage.setText("Message:");
 
@@ -125,14 +115,6 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
 
         add(tabbetFilter, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void chkMsgIgnoreCaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMsgIgnoreCaseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkMsgIgnoreCaseActionPerformed
-
-    private void chkMsgRegExpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkMsgRegExpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkMsgRegExpActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox chkHideIncomingMessage;

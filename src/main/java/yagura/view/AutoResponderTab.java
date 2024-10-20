@@ -139,11 +139,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
 
         chkHostNameForceResolv.setSelected(true);
         chkHostNameForceResolv.setText("<html>Hostname Resolution<br/> to allow invalid <br/>hostname redirection.</html>");
-        chkHostNameForceResolv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkHostNameForceResolvActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -344,10 +339,6 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
         this.tableAutoResponder.getSelectionModel().setSelectionInterval(index, index);
         firePropertyChange(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, null, getProperty());
     }//GEN-LAST:event_btnDownArrawActionPerformed
-
-    private void chkHostNameForceResolvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHostNameForceResolvActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkHostNameForceResolvActionPerformed
 
     protected void enableRule() {
         if (this.btnEnable.isSelected()) {

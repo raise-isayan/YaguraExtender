@@ -87,9 +87,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="JKS"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnStoreTypeJKSActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="btnStoreTypePKCS12">
           <Properties>
@@ -100,9 +97,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtStoreFile">
-          <Events>
-            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtStoreFileKeyPressed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnImport">
           <Properties>

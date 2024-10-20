@@ -38,7 +38,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bouncycastle.asn1.ASN1EncodableVector;
 import org.bouncycastle.asn1.ASN1Encoding;
-import org.bouncycastle.asn1.ASN1Object;
 import org.bouncycastle.asn1.DERBitString;
 import org.bouncycastle.asn1.DERSequence;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
@@ -3153,7 +3152,7 @@ public class BouncyUtil {
         }
     }
 
-    protected static byte[] generateSig(ContentSigner signer, ASN1Object tbsObj) throws IOException {
+    protected static byte[] generateSig(ContentSigner signer, org.bouncycastle.asn1.ASN1Object tbsObj) throws IOException {
         try (OutputStream sOut = signer.getOutputStream()) {
             tbsObj.encodeTo(sOut, ASN1Encoding.DER);
         }
@@ -3167,5 +3166,4 @@ public class BouncyUtil {
         v.add(new DERBitString(signature));
         return org.bouncycastle.asn1.x509.Certificate.getInstance(new DERSequence(v));
     }
-
 }
