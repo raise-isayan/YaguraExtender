@@ -32,6 +32,23 @@ public class YaguraProperty implements IPropertyConfig {
     }
 
     @Expose
+    private TransUtil.ConvertCase convertCase = TransUtil.ConvertCase.LOWLER;
+
+    /**
+     * @return the convertCase
+     */
+    public TransUtil.ConvertCase getConvertCase() {
+        return convertCase;
+    }
+
+    /**
+     * @param convertCase the convertCase to set
+     */
+    public void setConvertCase(TransUtil.ConvertCase convertCase) {
+        this.convertCase = convertCase;
+    }
+
+    @Expose
     private TransUtil.EncodeType encodeType = TransUtil.EncodeType.ALL;
 
     /**
@@ -50,6 +67,7 @@ public class YaguraProperty implements IPropertyConfig {
 
     public void setProperty(YaguraProperty property) {
         this.setSelectEncoding(property.getSelectEncoding());
+        this.setConvertCase(property.getConvertCase());
         this.setEncodeType(property.getEncodeType());
     }
 

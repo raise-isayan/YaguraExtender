@@ -63,6 +63,7 @@ public class MenuHander {
     private final ButtonGroup menuBurpCharsetsGroup = new ButtonGroup();
     private final ButtonGroup menuYaguraCharsetsGroup = new ButtonGroup();
     private final ButtonGroup menuYaguraEncodeTypeGroup = new ButtonGroup();
+    private final ButtonGroup menuYaguraConvertCaseGroup = new ButtonGroup();
     private final ButtonGroup menuBurpResultFilterGroup = new ButtonGroup();
     private final JMenu burpCharsetMenu = new JMenu();
     private final JMenu yaguraCharsetMenu = new JMenu();
@@ -107,7 +108,7 @@ public class MenuHander {
         yaguraCharsetMenu.setText("Yagura Charsets");
         yaguraCharsetMenu.setMnemonic(KeyEvent.VK_Y);
 
-//            updateYaguraCharsetUI(this.yaguraCharsetMenu);
+        // updateYaguraCharsetUI(this.yaguraCharsetMenu);
         yaguraMenu.add(this.yaguraCharsetMenu);
 
         /**
@@ -116,6 +117,25 @@ public class MenuHander {
         JMenu yaguraEncodTypeMenu = new JMenu();
         yaguraEncodTypeMenu.setText("Yagura Encode Type");
         yaguraEncodTypeMenu.setMnemonic(KeyEvent.VK_T);
+
+        JRadioButtonMenuItem yaguraUpperCase = new JRadioButtonMenuItem();
+        yaguraUpperCase.setText("Upper Case");
+        yaguraUpperCase.setMnemonic(KeyEvent.VK_U);
+        yaguraUpperCase.setActionCommand(TransUtil.ConvertCase.UPPER.name());
+        yaguraUpperCase.addActionListener(yaguraConvertCaseAction);
+        yaguraEncodTypeMenu.add(yaguraUpperCase);
+        this.menuYaguraConvertCaseGroup.add(yaguraUpperCase);
+
+        JRadioButtonMenuItem yaguraLowerCase = new JRadioButtonMenuItem();
+        yaguraLowerCase.setText("Lowler Case");
+        yaguraLowerCase.setMnemonic(KeyEvent.VK_L);
+        yaguraLowerCase.setActionCommand(TransUtil.ConvertCase.LOWLER.name());
+        yaguraLowerCase.addActionListener(yaguraConvertCaseAction);
+        yaguraEncodTypeMenu.add(yaguraLowerCase);
+        this.menuYaguraConvertCaseGroup.add(yaguraLowerCase);
+
+        yaguraLowerCase.setSelected(true);
+        yaguraEncodTypeMenu.addSeparator();
 
         JRadioButtonMenuItem yaguraEncodeTypeAll = new JRadioButtonMenuItem();
         yaguraEncodeTypeAll.setText(TransUtil.EncodeType.ALL.toIdent());
@@ -143,7 +163,7 @@ public class MenuHander {
 
         JRadioButtonMenuItem yaguraEncodeTypeLight = new JRadioButtonMenuItem();
         yaguraEncodeTypeLight.setText(TransUtil.EncodeType.LIGHT.toIdent());
-        yaguraEncodeTypeLight.setMnemonic(KeyEvent.VK_L);
+        yaguraEncodeTypeLight.setMnemonic(KeyEvent.VK_T);
         yaguraEncodeTypeLight.setActionCommand(TransUtil.EncodeType.LIGHT.name());
         yaguraEncodeTypeLight.addActionListener(yaguraEncodeTypeAction);
         yaguraEncodTypeMenu.add(yaguraEncodeTypeLight);
@@ -172,7 +192,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return SmartCodec.toUrlEncode(selectedText, getYaguraCharset(selectedText), TransUtil.getEncodeTypePattern(getYaguraEncodeType()), false);
+                    return SmartCodec.toUrlEncode(selectedText, getYaguraCharset(selectedText), TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -184,7 +204,7 @@ public class MenuHander {
         JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
             @Override
             public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnocodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), false);
+                return SmartCodec.toUnocodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
             }
         });
 
@@ -193,7 +213,7 @@ public class MenuHander {
         JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
             @Override
             public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnocodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), false);
+                return SmartCodec.toUnocodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
             }
         });
 
@@ -410,7 +430,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return BouncyUtil.toMD2Sum(selectedText, getYaguraCharset(selectedText), false);
+                    return BouncyUtil.toMD2Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -423,7 +443,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return BouncyUtil.toMD5Sum(selectedText, getYaguraCharset(selectedText), false);
+                    return BouncyUtil.toMD5Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -436,7 +456,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return BouncyUtil.toSHA1Sum(selectedText, getYaguraCharset(selectedText), false);
+                    return BouncyUtil.toSHA1Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -450,7 +470,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return BouncyUtil.toSHA256Sum(selectedText, getYaguraCharset(selectedText), false);
+                    return BouncyUtil.toSHA256Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -464,7 +484,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return BouncyUtil.toSHA384Sum(selectedText, getYaguraCharset(selectedText), false);
+                    return BouncyUtil.toSHA384Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -478,7 +498,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return BouncyUtil.toSHA512Sum(selectedText, getYaguraCharset(selectedText), false);
+                    return BouncyUtil.toSHA512Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -768,10 +788,20 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener yaguraEncodeTypeAction = new ActionListener() {
+    public boolean isYaguraConvertUpperCase() {
+        return TransUtil.ConvertCase.UPPER.equals(getYaguraConvertCase());
+    }
+
+    public TransUtil.ConvertCase getYaguraConvertCase() {
+        ButtonModel model = menuYaguraConvertCaseGroup.getSelection();
+        TransUtil.ConvertCase convertCase = Enum.valueOf(TransUtil.ConvertCase.class, model.getActionCommand());
+        return convertCase;
+    }
+
+    private final ActionListener yaguraConvertCaseAction = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            extenderImpl.getProperty().getYaguraProperty().setEncodeType(getYaguraEncodeType());
+            extenderImpl.getProperty().getYaguraProperty().setConvertCase(getYaguraConvertCase());
             extenderImpl.applyOptionProperty();
         }
     };
@@ -781,6 +811,14 @@ public class MenuHander {
         TransUtil.EncodeType encodeType = Enum.valueOf(TransUtil.EncodeType.class, model.getActionCommand());
         return encodeType;
     }
+
+    private final ActionListener yaguraEncodeTypeAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            extenderImpl.getProperty().getYaguraProperty().setEncodeType(getYaguraEncodeType());
+            extenderImpl.applyOptionProperty();
+        }
+    };
 
     public void setYaguraEncodeType(TransUtil.EncodeType encodeType) {
         for (Enumeration<AbstractButton> e = this.menuYaguraEncodeTypeGroup.getElements(); e.hasMoreElements();) {
