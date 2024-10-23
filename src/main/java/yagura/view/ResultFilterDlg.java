@@ -10,7 +10,6 @@ import extension.burp.FilterProperty;
 import extension.burp.MessageHighlightColor;
 import extension.helpers.StringUtil;
 import extension.view.base.CustomDialog;
-import extension.view.base.JavaSyntaxDocument;
 import java.net.HttpURLConnection;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -22,9 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
-import javax.swing.text.StyledEditorKit;
 
 /**
  *
@@ -165,13 +161,6 @@ public class ResultFilterDlg extends CustomDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private final EditorKit javaStyleEditorKit = new StyledEditorKit() {
-        @Override
-        public Document createDefaultDocument() {
-            return new JavaSyntaxDocument();
-        }
-    };
-
     private final FilterHttpPanel pnlFilterHttp = new FilterHttpPanel();
     private final FilterWebSocketPanel pnlFilterWebSocket = new FilterWebSocketPanel();
 
@@ -292,14 +281,14 @@ public class ResultFilterDlg extends CustomDialog {
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 
-
     public void setProperty(FilterProperty filterProp) {
+        setProtocalType(filterProp.getFilterCategory());
         switch (filterProp.getFilterCategory()) {
         case HTTP:
             this.pnlFilterHttp.setProperty(filterProp);
             break;
         case WEBSOCKET:
-            this.pnlFilterHttp.setProperty(filterProp);
+            this.pnlFilterWebSocket.setProperty(filterProp);
             break;
         }
     }
@@ -314,6 +303,17 @@ public class ResultFilterDlg extends CustomDialog {
 
     private boolean isHttpProtocalType() {
         return this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("HTTP");
+    }
+
+    private void setProtocalType(FilterProperty.FilterCategory filterCategory) {
+        switch (filterCategory) {
+        case HTTP:
+            this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("HTTP"));
+            break;
+        case WEBSOCKET:
+            this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("WebSocket"));
+            break;
+        }
     }
 
     public FilterProperty getProperty() {
@@ -530,6 +530,12 @@ public class ResultFilterDlg extends CustomDialog {
                 if (this.filterProp.isHideOutgoingMessage()) {
                     hideOutgoingMessage = (item.direction() != Direction.CLIENT_TO_SERVER);
                 }
+                // ShowOnlyEditedMessage
+                boolean showOnlyEditedMessage = true;
+                if (this.filterProp.isShowOnlyEditedMessage()) {
+                    showOnlyEditedMessage = (item.editedPayload() != null);
+                }
+
                 // Highlight Color
                 boolean colorFilter = true;
                 if (showOnlyScopFilter) {
@@ -563,7 +569,7 @@ public class ResultFilterDlg extends CustomDialog {
                     listenerPort = this.filterProp.getListenerPort() == item.listenerPort();
                 }
                 // 条件のAND
-                allFilter = (colorFilter && commentFilter && showOnlyScopFilter && hideIncomingMessage && hideOutgoingMessage && message && message && listenerPort);
+                allFilter = (colorFilter && commentFilter && showOnlyScopFilter && hideIncomingMessage && hideOutgoingMessage && showOnlyEditedMessage && message && message && listenerPort);
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
@@ -571,7 +577,6 @@ public class ResultFilterDlg extends CustomDialog {
         }
 
     }
-
 
     public static class PropertyRowSorter<M extends TableModel> extends TableRowSorter<M> {
 

@@ -3052,6 +3052,7 @@ public class BouncyUtil {
         return BouncyUtil.toTUPLEHASH256_512Sum(StringUtil.getBytesCharset(str, charset), upperCase);
     }
 
+
     // https://github.com/bcgit/bc-java/tree/main/core/src/test/java/org/bouncycastle/crypto/test
     /**
      * 証明書 https://gist.github.com/vivekkr12/c74f7ee08593a8c606ed96f4b62a208a

@@ -126,29 +126,14 @@ public class SendToItemDlg extends CustomDialog {
         });
 
         cmbTargetLocal.setEditable(true);
-        cmbTargetLocal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbTargetLocalActionPerformed(evt);
-            }
-        });
 
         pnlRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Request"));
 
         chkRequestHeader.setSelected(true);
         chkRequestHeader.setText("Header");
-        chkRequestHeader.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkRequestHeaderStateChanged(evt);
-            }
-        });
 
         chkRequestBody.setSelected(true);
         chkRequestBody.setText("Body");
-        chkRequestBody.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkRequestBodyStateChanged(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlRequestLayout = new javax.swing.GroupLayout(pnlRequest);
         pnlRequest.setLayout(pnlRequestLayout);
@@ -173,19 +158,9 @@ public class SendToItemDlg extends CustomDialog {
 
         chkResponseHeader.setSelected(true);
         chkResponseHeader.setText("Header");
-        chkResponseHeader.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkResponseHeaderStateChanged(evt);
-            }
-        });
 
         chkResponseBody.setSelected(true);
         chkResponseBody.setText("Body");
-        chkResponseBody.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkResponseBodyStateChanged(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlRequest1Layout = new javax.swing.GroupLayout(pnlRequest1);
         pnlRequest1.setLayout(pnlRequest1Layout);
@@ -342,22 +317,6 @@ public class SendToItemDlg extends CustomDialog {
             this.closeDialog(null);
         }
     }//GEN-LAST:event_btnOKActionPerformed
-
-    private void chkResponseBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseBodyStateChanged
-    }//GEN-LAST:event_chkResponseBodyStateChanged
-
-    private void chkResponseHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkResponseHeaderStateChanged
-    }//GEN-LAST:event_chkResponseHeaderStateChanged
-
-    private void chkRequestBodyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestBodyStateChanged
-    }//GEN-LAST:event_chkRequestBodyStateChanged
-
-    private void chkRequestHeaderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkRequestHeaderStateChanged
-    }//GEN-LAST:event_chkRequestHeaderStateChanged
-
-    private void cmbTargetLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTargetLocalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbTargetLocalActionPerformed
 
     private void btnSelectExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectExecuteActionPerformed
         JFileChooser filechooser = new JFileChooser();

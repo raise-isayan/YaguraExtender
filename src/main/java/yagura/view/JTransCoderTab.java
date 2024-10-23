@@ -625,7 +625,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         spnCountNum = new javax.swing.JSpinner();
         pnlRight = new javax.swing.JPanel();
         btnGenerate = new javax.swing.JButton();
-        txtListCopy = new javax.swing.JButton();
+        btnListCopy = new javax.swing.JButton();
         btnSavetoFile = new javax.swing.JButton();
         tabTokenStrength = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -980,11 +980,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnGrpEncodeType.add(rdoStandard);
         rdoStandard.setText("Standard");
         rdoStandard.setToolTipText("[^A-Za-z0-9!\\\"'()*,/:<>@\\[\\\\\\]^`{|}~]");
-        rdoStandard.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoStandardActionPerformed(evt);
-            }
-        });
         pnlEncode.add(rdoStandard);
 
         pnlSelectOption.add(pnlEncode);
@@ -994,7 +989,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         btnConvertCase.add(rdoLowerCase);
         rdoLowerCase.setSelected(true);
-        rdoLowerCase.setText("LowerCase");
+        rdoLowerCase.setText("Lower Case");
         rdoLowerCase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoLowerCaseActionPerformed(evt);
@@ -1003,7 +998,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlConvertCase.add(rdoLowerCase);
 
         btnConvertCase.add(rdoUpperCase);
-        rdoUpperCase.setText("UpperCase");
+        rdoUpperCase.setText("Upper Case");
         rdoUpperCase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoUpperCaseActionPerformed(evt);
@@ -1964,7 +1959,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                             .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(770, Short.MAX_VALUE))
+                .addContainerGap(746, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1991,16 +1986,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         tabbetSequence.addTab("Numbers", pnlNumbers);
 
         txtDateFormat.setText("yyyy/MM/dd");
-        txtDateFormat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDateFormatActionPerformed(evt);
-            }
-        });
-        txtDateFormat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtDateFormatKeyPressed(evt);
-            }
-        });
 
         lblDateFormat.setText("(DateTimeFormatter pattern)");
 
@@ -2018,21 +2003,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         spnDateStart.setToolTipText("");
         spnDateStart.setEditor(new javax.swing.JSpinner.DateEditor(spnDateStart, "yyyy/MM/dd"));
         spnDateStart.setRequestFocusEnabled(false);
-        spnDateStart.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                spnDateStartStateChanged(evt);
-            }
-        });
 
         spnDateEnd.setModel(new javax.swing.SpinnerDateModel());
         spnDateEnd.setToolTipText("");
         spnDateEnd.setEditor(new javax.swing.JSpinner.DateEditor(spnDateEnd, "yyyy/MM/dd"));
         spnDateEnd.setRequestFocusEnabled(false);
-        spnDateEnd.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                spnDateEndStateChanged(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlDateLayout = new javax.swing.GroupLayout(pnlDate);
         pnlDate.setLayout(pnlDateLayout);
@@ -2058,7 +2033,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbDateUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(spnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(726, Short.MAX_VALUE))
+                .addContainerGap(702, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2184,7 +2159,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(695, Short.MAX_VALUE))
+                .addContainerGap(671, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2209,10 +2184,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
 
-        txtListCopy.setText("List Copy");
-        txtListCopy.addActionListener(new java.awt.event.ActionListener() {
+        btnListCopy.setText("List Copy");
+        btnListCopy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtListCopyActionPerformed(evt);
+                btnListCopyActionPerformed(evt);
             }
         });
 
@@ -2230,7 +2205,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             .addGroup(pnlRightLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtListCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnListCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGenerate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnSavetoFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -2241,7 +2216,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addGap(29, 29, 29)
                 .addComponent(btnGenerate)
                 .addGap(9, 9, 9)
-                .addComponent(txtListCopy)
+                .addComponent(btnListCopy)
                 .addGap(9, 9, 9)
                 .addComponent(btnSavetoFile)
                 .addContainerGap(201, Short.MAX_VALUE))
@@ -2315,7 +2290,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
-                                .addGap(0, 114, Short.MAX_VALUE))
+                                .addGap(0, 90, Short.MAX_VALUE))
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
@@ -2327,17 +2302,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         tabTokenStrengthLayout.setVerticalGroup(
             tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabTokenStrengthLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAnalyze))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel4)
                         .addComponent(jLabel2))
                     .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtBase, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(tabTokenStrengthLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -2346,7 +2321,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(txtExponent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblmaximum)
                         .addComponent(jLabel1)))
-                .addContainerGap(780, Short.MAX_VALUE))
+                .addContainerGap(796, Short.MAX_VALUE))
         );
 
         tabbetTranscoder.addTab("Token strength", tabTokenStrength);
@@ -2447,7 +2422,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(lblOct)
                     .addComponent(lblBin)
                     .addComponent(lblRadix32))
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtBin)
                     .addComponent(txtOct)
@@ -2607,7 +2582,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(lblExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 895, Short.MAX_VALUE)
+                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 871, Short.MAX_VALUE)
                     .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2865,7 +2840,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDecIPConvert)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                        .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabIPFormatConverterLayout.createSequentialGroup()
                         .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -3438,10 +3413,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         firePropertyChange(JTransCoderProperty.JTRANS_CODER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_cmbEncodingActionPerformed
 
-    private void txtDateFormatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDateFormatKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDateFormatKeyPressed
-
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
         if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Sequence")) {
             if (this.tabbetSequence.getSelectedIndex() == this.tabbetSequence.indexOfTab("Numbers")) {
@@ -3545,10 +3516,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnGenerateActionPerformed
 
-    private void txtListCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtListCopyActionPerformed
+    private void btnListCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListCopyActionPerformed
         String s = this.txtGenarate.getText();
         SwingUtil.systemClipboardCopy(s);
-    }//GEN-LAST:event_txtListCopyActionPerformed
+    }//GEN-LAST:event_btnListCopyActionPerformed
 
     private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
         String s = this.txtGenarate.getText();
@@ -3566,10 +3537,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         }
     }//GEN-LAST:event_btnSavetoFileActionPerformed
-
-    private void txtDateFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDateFormatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDateFormatActionPerformed
 
     private void btnSmartMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartMatchActionPerformed
         try {
@@ -3717,18 +3684,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void setSystemZoneDate(ZonedDateTime zdtm) {
         this.txtSystemZoneDate.setText(SYSTEM_ZONE_DATE_FORMATTER.withZone(ZoneId.systemDefault()).format(zdtm));
     }
-
-    private void spnDateStartStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnDateStartStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_spnDateStartStateChanged
-
-    private void spnDateEndStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnDateEndStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_spnDateEndStateChanged
-
-    private void rdoStandardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoStandardActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoStandardActionPerformed
 
     private void txtUnixtimeFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUnixtimeFocusLost
         try {
@@ -4612,6 +4567,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnInputfile;
     private javax.swing.JButton btnIntIP;
     private javax.swing.JButton btnJavaSerialCopy;
+    private javax.swing.JButton btnListCopy;
     private javax.swing.JButton btnMurmurHash2_32;
     private javax.swing.JButton btnMurmurHash2_64;
     private javax.swing.JButton btnOctCopy;
@@ -4855,7 +4811,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JTextField txtIPv4ToUnicode;
     private javax.swing.JTextField txtIntIP;
     private javax.swing.JFormattedTextField txtJavaSerial;
-    private javax.swing.JButton txtListCopy;
     private javax.swing.JTextField txtNumFormat;
     private javax.swing.JTextField txtOct;
     private javax.swing.JTextField txtOctIP;

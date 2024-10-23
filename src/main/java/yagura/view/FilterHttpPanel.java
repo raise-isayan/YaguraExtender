@@ -193,9 +193,8 @@ public class FilterHttpPanel extends javax.swing.JPanel {
                     .addComponent(chkReqIgnoreCase))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(chkResRegExp)
-                        .addComponent(chkResIgnoreCase))
+                    .addComponent(chkResIgnoreCase)
+                    .addComponent(chkResRegExp)
                     .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtResponse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblResponse)))
@@ -218,19 +217,9 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         pnlHttpFilterByRequest.add(chkHideItemsWithoutResponses);
 
         chkShowOnlyParameterizedRequests.setText("Show only parameterized requests");
-        chkShowOnlyParameterizedRequests.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyParameterizedRequestsActionPerformed(evt);
-            }
-        });
         pnlHttpFilterByRequest.add(chkShowOnlyParameterizedRequests);
 
         chkShowOnlyEditedMessage.setText("Show only edited message");
-        chkShowOnlyEditedMessage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkShowOnlyEditedMessageActionPerformed(evt);
-            }
-        });
         pnlHttpFilterByRequest.add(chkShowOnlyEditedMessage);
 
         pnlHeader.add(pnlHttpFilterByRequest, java.awt.BorderLayout.CENTER);
@@ -252,11 +241,6 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         pnlHttpStatus.add(chkStat4xx);
 
         chkStat5xx.setText("5xx [server error]");
-        chkStat5xx.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkStat5xxActionPerformed(evt);
-            }
-        });
         pnlHttpStatus.add(chkStat5xx);
 
         pnlHeader.add(pnlHttpStatus, java.awt.BorderLayout.EAST);
@@ -273,18 +257,6 @@ public class FilterHttpPanel extends javax.swing.JPanel {
     private void chkHideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHideStateChanged
         this.chkShowOnly.setEnabled(!this.chkHide.isSelected());
     }//GEN-LAST:event_chkHideStateChanged
-
-    private void chkShowOnlyParameterizedRequestsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyParameterizedRequestsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkShowOnlyParameterizedRequestsActionPerformed
-
-    private void chkShowOnlyEditedMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkShowOnlyEditedMessageActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkShowOnlyEditedMessageActionPerformed
-
-    private void chkStat5xxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkStat5xxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkStat5xxActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

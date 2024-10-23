@@ -266,7 +266,6 @@
               </Properties>
               <Events>
                 <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtExcludeExtensionFocusLost"/>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtExcludeExtensionActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkExclude">
@@ -318,9 +317,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="WebSocket Log"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkWebSocketLogActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

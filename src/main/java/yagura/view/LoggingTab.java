@@ -144,11 +144,6 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                 txtExcludeExtensionFocusLost(evt);
             }
         });
-        txtExcludeExtension.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtExcludeExtensionActionPerformed(evt);
-            }
-        });
 
         chkExclude.setText("Exclude Extension");
         chkExclude.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -188,11 +183,6 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         });
 
         chkWebSocketLog.setText("WebSocket Log");
-        chkWebSocketLog.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkWebSocketLogActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlCenterLayout = new javax.swing.GroupLayout(pnlCenter);
         pnlCenter.setLayout(pnlCenterLayout);
@@ -365,10 +355,6 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkHistoryLogIncludeActionPerformed
 
-    private void txtExcludeExtensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExcludeExtensionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtExcludeExtensionActionPerformed
-
     private void txtExcludeExtensionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExcludeExtensionFocusLost
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_txtExcludeExtensionFocusLost
@@ -376,10 +362,6 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private void chkCompressLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCompressLogActionPerformed
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkCompressLogActionPerformed
-
-    private void chkWebSocketLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkWebSocketLogActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkWebSocketLogActionPerformed
 
     @Override
     public String getTabCaption() {

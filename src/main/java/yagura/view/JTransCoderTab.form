@@ -29,7 +29,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,71,0,0,5,6"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,71,0,0,4,-18"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -530,9 +530,6 @@
                                 <Property name="text" type="java.lang.String" value="Standard"/>
                                 <Property name="toolTipText" type="java.lang.String" value="[^A-Za-z0-9!\u005c&quot;&apos;()*,/:&lt;&gt;@\u005c[\u005c\u005c\u005c]^`{|}~]" containsInvalidXMLChars="true"/>
                               </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoStandardActionPerformed"/>
-                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -556,7 +553,7 @@
                                   <ComponentRef name="btnConvertCase"/>
                                 </Property>
                                 <Property name="selected" type="boolean" value="true"/>
-                                <Property name="text" type="java.lang.String" value="LowerCase"/>
+                                <Property name="text" type="java.lang.String" value="Lower Case"/>
                               </Properties>
                               <Events>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoLowerCaseActionPerformed"/>
@@ -567,7 +564,7 @@
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                   <ComponentRef name="btnConvertCase"/>
                                 </Property>
-                                <Property name="text" type="java.lang.String" value="UpperCase"/>
+                                <Property name="text" type="java.lang.String" value="Upper Case"/>
                               </Properties>
                               <Events>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoUpperCaseActionPerformed"/>
@@ -1914,7 +1911,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="770" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="746" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2036,7 +2033,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="726" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="702" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2076,10 +2073,6 @@
                                           <Properties>
                                             <Property name="text" type="java.lang.String" value="yyyy/MM/dd"/>
                                           </Properties>
-                                          <Events>
-                                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtDateFormatActionPerformed"/>
-                                            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtDateFormatKeyPressed"/>
-                                          </Events>
                                         </Component>
                                         <Component class="javax.swing.JLabel" name="lblDateFormat">
                                           <Properties>
@@ -2134,9 +2127,6 @@
                                             </Property>
                                             <Property name="requestFocusEnabled" type="boolean" value="false"/>
                                           </Properties>
-                                          <Events>
-                                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnDateStartStateChanged"/>
-                                          </Events>
                                         </Component>
                                         <Component class="javax.swing.JSpinner" name="spnDateEnd">
                                           <Properties>
@@ -2149,9 +2139,6 @@
                                             </Property>
                                             <Property name="requestFocusEnabled" type="boolean" value="false"/>
                                           </Properties>
-                                          <Events>
-                                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnDateEndStateChanged"/>
-                                          </Events>
                                         </Component>
                                       </SubComponents>
                                     </Container>
@@ -2183,7 +2170,7 @@
                                               <Component id="pnlCount" min="-2" pref="240" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="695" max="32767" attributes="0"/>
+                                      <EmptySpace pref="671" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2399,7 +2386,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtListCopy" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnListCopy" alignment="0" max="32767" attributes="0"/>
                                       <Component id="btnGenerate" alignment="0" max="32767" attributes="0"/>
                                       <Component id="btnSavetoFile" alignment="0" max="32767" attributes="0"/>
                                   </Group>
@@ -2413,7 +2400,7 @@
                                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                                   <Component id="btnGenerate" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                                  <Component id="txtListCopy" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnListCopy" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                                   <Component id="btnSavetoFile" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace pref="201" max="32767" attributes="0"/>
@@ -2430,12 +2417,12 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerateActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="txtListCopy">
+                        <Component class="javax.swing.JButton" name="btnListCopy">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="List Copy"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtListCopyActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnListCopyActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="btnSavetoFile">
@@ -2491,7 +2478,7 @@
                                       <Component id="jLabel1" min="-2" pref="44" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnCalc" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="114" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="90" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel3" max="32767" attributes="0"/>
                               </Group>
@@ -2510,12 +2497,12 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" pref="196" max="-2" attributes="0"/>
                           <Component id="btnAnalyze" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -2523,7 +2510,7 @@
                           </Group>
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="txtBase" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -2534,7 +2521,7 @@
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="780" max="32767" attributes="0"/>
+                      <EmptySpace pref="796" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -2644,7 +2631,7 @@
                               <Component id="lblBin" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="lblRadix32" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txtBin" alignment="0" max="32767" attributes="0"/>
                               <Component id="txtOct" alignment="0" max="32767" attributes="0"/>
@@ -2843,7 +2830,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtJavaSerial" alignment="0" pref="895" max="32767" attributes="0"/>
+                              <Component id="txtJavaSerial" alignment="0" pref="871" max="32767" attributes="0"/>
                               <Component id="txtUnixtime" max="32767" attributes="0"/>
                               <Component id="txtExcelSerial" max="32767" attributes="0"/>
                               <Component id="txtSystemZoneDate" alignment="0" max="32767" attributes="0"/>
@@ -3100,7 +3087,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnDecIPConvert" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblIPValid" pref="422" max="32767" attributes="0"/>
+                                  <Component id="lblIPValid" pref="398" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">

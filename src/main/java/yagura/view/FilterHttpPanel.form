@@ -211,10 +211,8 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                          <Component id="chkResRegExp" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="chkResIgnoreCase" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="chkResIgnoreCase" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="chkResRegExp" min="-2" max="-2" attributes="0"/>
                                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                           <Component id="txtResponse" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblResponse" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -321,17 +319,11 @@
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Show only parameterized requests"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkShowOnlyParameterizedRequestsActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="javax.swing.JCheckBox" name="chkShowOnlyEditedMessage">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Show only edited message"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkShowOnlyEditedMessageActionPerformed"/>
-                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -382,9 +374,6 @@
                           <Properties>
                             <Property name="text" type="java.lang.String" value="5xx [server error]"/>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkStat5xxActionPerformed"/>
-                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>

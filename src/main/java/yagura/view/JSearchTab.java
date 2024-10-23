@@ -115,11 +115,6 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                 chkRegExpStateChanged(evt);
             }
         });
-        chkRegExp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkRegExpActionPerformed(evt);
-            }
-        });
 
         chkIgnoreCase.setText("IgnoreCase");
         chkIgnoreCase.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -230,21 +225,11 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         lblProgress.setText("100.0%");
 
         chkScopeOnly.setText("in-scope only");
-        chkScopeOnly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkScopeOnlyActionPerformed(evt);
-            }
-        });
 
         chkSmartMatch.setText("Smart Match");
         chkSmartMatch.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chkSmartMatchStateChanged(evt);
-            }
-        });
-        chkSmartMatch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkSmartMatchActionPerformed(evt);
             }
         });
 
@@ -622,18 +607,6 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.chkRegExp.setEnabled(!this.chkSmartMatch.isSelected());
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_chkSmartMatchStateChanged
-
-    private void chkScopeOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkScopeOnlyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkScopeOnlyActionPerformed
-
-    private void chkSmartMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSmartMatchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkSmartMatchActionPerformed
-
-    private void chkRegExpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRegExpActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkRegExpActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -41,6 +41,7 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         chkShowOnlyinscopeItem = new javax.swing.JCheckBox();
         chkHideOutgoingMessage = new javax.swing.JCheckBox();
         chkHideIncomingMessage = new javax.swing.JCheckBox();
+        chkShowOnlyEditedMessage = new javax.swing.JCheckBox();
         pnlWebsocketFilterSearchItem = new javax.swing.JPanel();
         chkMsgRegExp = new javax.swing.JCheckBox();
         chkMsgIgnoreCase = new javax.swing.JCheckBox();
@@ -68,12 +69,14 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         chkHideIncomingMessage.setText("Hide incoming message");
         pnlFilterByRequest.add(chkHideIncomingMessage);
 
+        chkShowOnlyEditedMessage.setText("Show only edited message");
+        pnlFilterByRequest.add(chkShowOnlyEditedMessage);
+
         pnlCenter.add(pnlFilterByRequest, java.awt.BorderLayout.NORTH);
 
         pnlWebsocketFilterSearchItem.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by Search Item"));
         pnlWebsocketFilterSearchItem.setMinimumSize(new java.awt.Dimension(663, 400));
 
-        chkMsgRegExp.setSelected(true);
         chkMsgRegExp.setText("RegExp");
 
         chkMsgIgnoreCase.setText("IgnoreCase");
@@ -121,6 +124,7 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkHideOutgoingMessage;
     private javax.swing.JCheckBox chkMsgIgnoreCase;
     private javax.swing.JCheckBox chkMsgRegExp;
+    private javax.swing.JCheckBox chkShowOnlyEditedMessage;
     private javax.swing.JCheckBox chkShowOnlyinscopeItem;
     private javax.swing.JLabel lblMessage;
     private javax.swing.JPanel pnlCenter;
@@ -139,11 +143,11 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         }
     };
 
-    private FilterAnnotationPanel pnlAnnotation = new FilterAnnotationPanel();
+    private final FilterAnnotationPanel pnlAnnotation = new FilterAnnotationPanel();
 
-    private javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
-    private javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
-    private javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
+    private final javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
+    private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
+    private final javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
 
     private void customizeComponents() {
         this.scrollBabda.setViewportView(this.txtBambda);
@@ -202,6 +206,7 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         this.chkShowOnlyinscopeItem.setSelected(filterProp.isShowOnlyScopeItems());
         this.chkHideIncomingMessage.setSelected(filterProp.isHideIncomingMessage());
         this.chkHideOutgoingMessage.setSelected(filterProp.isHideOutgoingMessage());
+        this.chkShowOnlyEditedMessage.setSelected(filterProp.isShowOnlyEditedMessage());
 
         this.txtMessage.setText(filterProp.getMessage());
         this.chkMsgRegExp.setSelected(filterProp.isMessageRegex());
@@ -222,6 +227,7 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         filterProp.setShowOnlyScopeItems(this.chkShowOnlyinscopeItem.isSelected());
         filterProp.setHideIncomingMessage(this.chkHideIncomingMessage.isSelected());
         filterProp.setHideOutgoingMessage(this.chkHideOutgoingMessage.isSelected());
+        filterProp.setShowOnlyEditedMessage(this.chkShowOnlyEditedMessage.isSelected());
 
         this.pnlAnnotation.getAnnotationProperty(filterProp);
 

@@ -167,9 +167,6 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="Use Burp http client (with burp settings)"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoBurpClientActionPerformed"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -333,9 +330,6 @@
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JPasswordField" name="txtAuthorizationPasswd">
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtAuthorizationPasswdActionPerformed"/>
-                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -435,9 +429,6 @@
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JPasswordField" name="txtProxyPasswd">
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtProxyPasswdActionPerformed"/>
-                          </Events>
                         </Component>
                         <Component class="javax.swing.JTextField" name="txtProxyUser">
                         </Component>
@@ -792,9 +783,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="use request name"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkUseReqNameActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="rdoReqNameResponseTitle">
                   <Properties>
@@ -829,9 +817,6 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="response title tag"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoReqCommentResponseTitleActionPerformed"/>
-                  </Events>
                 </Component>
                 <Container class="javax.swing.JPanel" name="pnlReqNameLineGrp">
 

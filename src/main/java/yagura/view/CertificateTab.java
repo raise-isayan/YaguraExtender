@@ -284,11 +284,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 chkProvidedServerStateChanged(evt);
             }
         });
-        chkProvidedServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkProvidedServerActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlServerEnableLayout = new javax.swing.GroupLayout(pnlServerEnable);
         pnlServerEnable.setLayout(pnlServerEnableLayout);
@@ -682,10 +677,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private void btnSelectExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectExecuteActionPerformed
         this.showImportCertificatetDlg();
     }//GEN-LAST:event_btnSelectExecuteActionPerformed
-
-    private void chkProvidedServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkProvidedServerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkProvidedServerActionPerformed
 
     private void rdoCustomCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCustomCAActionPerformed
 //        SwingUtil.setContainerEnable(this.pnlCertificateExports, this.rdoCustomCA.isSelected());

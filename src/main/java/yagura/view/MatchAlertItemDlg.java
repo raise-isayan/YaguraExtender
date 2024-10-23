@@ -138,11 +138,6 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         cmbAlertColor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "red", "orange", "yellow", "green", "cyan", "blue", "pink", "magenta", "gray" }));
         cmbAlertColor.setEnabled(false);
-        cmbAlertColor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbAlertColorActionPerformed(evt);
-            }
-        });
 
         chkItemHighlight.setText("item highlight");
         chkItemHighlight.addActionListener(new java.awt.event.ActionListener() {
@@ -198,11 +193,6 @@ public class MatchAlertItemDlg extends CustomDialog {
         );
 
         chkCaptureGroup.setText("capture group");
-        chkCaptureGroup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkCaptureGroupActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlNoticeLayout = new javax.swing.GroupLayout(pnlNotice);
         pnlNotice.setLayout(pnlNoticeLayout);
@@ -251,11 +241,6 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         chkSpider.setText("spider");
         chkSpider.setEnabled(false);
-        chkSpider.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkSpiderActionPerformed(evt);
-            }
-        });
 
         chkIntruder.setText("intruder");
 
@@ -266,11 +251,6 @@ public class MatchAlertItemDlg extends CustomDialog {
         chkSequencer.setText("sequencer");
 
         chkExtension.setText("extension");
-        chkExtension.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkExtensionActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlTargetLayout = new javax.swing.GroupLayout(pnlTarget);
         pnlTarget.setLayout(pnlTargetLayout);
@@ -413,10 +393,6 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
-    private void cmbAlertColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlertColorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbAlertColorActionPerformed
-
     private void chkScannerIssueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkScannerIssueActionPerformed
         this.txtIssueName.setEnabled(this.chkScannerIssue.isSelected());
         this.cmbSeverity.setEnabled(this.chkScannerIssue.isSelected());
@@ -435,18 +411,6 @@ public class MatchAlertItemDlg extends CustomDialog {
     private void chkSmartMatchStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkSmartMatchStateChanged
         this.chkRegExp.setEnabled(!this.chkSmartMatch.isSelected());
     }//GEN-LAST:event_chkSmartMatchStateChanged
-
-    private void chkCaptureGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCaptureGroupActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkCaptureGroupActionPerformed
-
-    private void chkSpiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkSpiderActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkSpiderActionPerformed
-
-    private void chkExtensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkExtensionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkExtensionActionPerformed
 
     /**
      * @param args the command line arguments

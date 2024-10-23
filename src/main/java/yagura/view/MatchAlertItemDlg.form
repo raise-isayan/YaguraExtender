@@ -210,9 +210,6 @@
                     </Property>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbAlertColorActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkItemHighlight">
                   <Properties>
@@ -317,9 +314,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="capture group"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkCaptureGroupActionPerformed"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -388,9 +382,6 @@
                     <Property name="text" type="java.lang.String" value="spider"/>
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkSpiderActionPerformed"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="chkIntruder">
                   <Properties>
@@ -416,9 +407,6 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="extension"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkExtensionActionPerformed"/>
-                  </Events>
                 </Component>
               </SubComponents>
             </Container>

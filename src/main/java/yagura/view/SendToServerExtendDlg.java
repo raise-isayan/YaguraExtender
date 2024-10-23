@@ -164,11 +164,6 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         btnGrpHttpClientType.add(rdoBurpClient);
         rdoBurpClient.setText("Use Burp http client (with burp settings)");
-        rdoBurpClient.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoBurpClientActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlUseClientLayout = new javax.swing.GroupLayout(pnlUseClient);
         pnlUseClient.setLayout(pnlUseClientLayout);
@@ -234,12 +229,6 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         lblAuthorizationPasswd.setText("Password:");
 
-        txtAuthorizationPasswd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtAuthorizationPasswdActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnlCustomAuthorizationLayout = new javax.swing.GroupLayout(pnlCustomAuthorization);
         pnlCustomAuthorization.setLayout(pnlCustomAuthorizationLayout);
         pnlCustomAuthorizationLayout.setHorizontalGroup(
@@ -286,12 +275,6 @@ public class SendToServerExtendDlg extends CustomDialog {
         lblProxyUser.setText("User:");
 
         lblProxyPasswd.setText("Password:");
-
-        txtProxyPasswd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtProxyPasswdActionPerformed(evt);
-            }
-        });
 
         lblProxyPort.setText("port:");
 
@@ -465,11 +448,6 @@ public class SendToServerExtendDlg extends CustomDialog {
         chkUseReqComment.setText("use request notes");
 
         chkUseReqName.setText("use request name");
-        chkUseReqName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkUseReqNameActionPerformed(evt);
-            }
-        });
 
         btnGrpReqName.add(rdoReqNameResponseTitle);
         rdoReqNameResponseTitle.setText("response title tag");
@@ -484,11 +462,6 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         btnGrpReqComment.add(rdoReqCommentResponseTitle);
         rdoReqCommentResponseTitle.setText("response title tag");
-        rdoReqCommentResponseTitle.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoReqCommentResponseTitleActionPerformed(evt);
-            }
-        });
 
         btnGrpReqNameHistoryCommentType.add(rdoReqNameAllLine);
         rdoReqNameAllLine.setText("all line");
@@ -667,22 +640,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         }
     }//GEN-LAST:event_btnOKActionPerformed
 
-    private void txtProxyPasswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProxyPasswdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtProxyPasswdActionPerformed
-
-    private void rdoBurpClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpClientActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoBurpClientActionPerformed
-
     private void rdoCustomClientStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_rdoCustomClientStateChanged
         SwingUtil.setContainerEnable(this.pnlUseCustomClient, this.rdoCustomClient.isSelected());
         this.chkClientCertififate.setEnabled(this.modelCertificate.getRowCount() > 0);
     }//GEN-LAST:event_rdoCustomClientStateChanged
-
-    private void txtAuthorizationPasswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAuthorizationPasswdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtAuthorizationPasswdActionPerformed
 
     private void btnSelectExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectExecuteActionPerformed
         this.showImportCertificatetDlg();
@@ -691,14 +652,6 @@ public class SendToServerExtendDlg extends CustomDialog {
     private void chkOverrideSendToParameterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkOverrideSendToParameterStateChanged
         SwingUtil.setContainerEnable(this.pnlSendToOverride, this.chkOverrideSendToParameter.isSelected());
     }//GEN-LAST:event_chkOverrideSendToParameterStateChanged
-
-    private void rdoReqCommentResponseTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqCommentResponseTitleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoReqCommentResponseTitleActionPerformed
-
-    private void chkUseReqNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUseReqNameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkUseReqNameActionPerformed
 
     private final ImportCertificatetDlg importCertificatetDlg = new ImportCertificatetDlg(null, true);
 
