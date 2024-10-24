@@ -96,20 +96,20 @@ public class MatchAlertItem extends MatchItem {
     }
 
     @Expose
-    private String comment = "";
+    private String notes = "";
 
     /**
-     * @return the comment
+     * @return the notes
      */
-    public String getComment() {
-        return this.comment;
+    public String getNotes() {
+        return this.notes;
     }
 
     /**
-     * @param comment the comment to set
+     * @param notes the notes to set
      */
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     @Expose
@@ -200,7 +200,7 @@ public class MatchAlertItem extends MatchItem {
         beans[7] = matchAlert.getNotifyTypes();
         beans[8] = matchAlert.getTargetTools();
         beans[9] = matchAlert.getHighlightColor();
-        beans[10] = matchAlert.getComment();
+        beans[10] = matchAlert.getNotes();
         beans[11] = matchAlert.getIssueName();
         beans[12] = matchAlert.getSeverity();
         beans[13] = matchAlert.getConfidence();
@@ -220,7 +220,7 @@ public class MatchAlertItem extends MatchItem {
         matchAlert.setNotifyTypes((EnumSet<NotifyType>) rows[7]);
         matchAlert.setTargetTools((EnumSet<TargetTool>) rows[8]);
         matchAlert.setHighlightColor((MessageHighlightColor) rows[9]);
-        matchAlert.setComment((String) rows[10]);
+        matchAlert.setNotes((String) rows[10]);
         matchAlert.setIssueName((String) rows[11]);
         matchAlert.setSeverity((Severity) rows[12]);
         matchAlert.setConfidence((Confidence) rows[13]);
@@ -238,7 +238,7 @@ public class MatchAlertItem extends MatchItem {
         this.setTargetTools(item.getTargetTools());
         this.setHighlightColor(item.getHighlightColor());
         this.setNotifyTypes(item.getNotifyTypes());
-        this.setComment(item.getComment());
+        this.setNotes(item.getNotes());
     }
 
 }

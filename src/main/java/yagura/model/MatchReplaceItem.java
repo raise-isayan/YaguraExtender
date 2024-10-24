@@ -107,6 +107,17 @@ public class MatchReplaceItem extends MatchItem {
         this.metaChar = metachar;
     }
 
+    @Expose
+    private String comment = "";
+
+    public String getComment() {
+        return this.comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public boolean isRequestLine() {
         return this.getType().startsWith(TYPE_REQUEST_FIRST_LINE);
     }
@@ -140,10 +151,11 @@ public class MatchReplaceItem extends MatchItem {
         this.setProtocolType(item.getProtocolType());
         this.setMetaChar(item.isMetaChar());
         this.setSmartMatch(item.isSmartMatch());
+        this.setComment(item.getComment());
     }
 
     public static Object[] toObjects(MatchReplaceItem matchReplace) {
-        Object[] beans = new Object[9];
+        Object[] beans = new Object[10];
         beans[0] = matchReplace.isSelected();
         beans[1] = matchReplace.getProtocolType().name();
         beans[2] = matchReplace.getType();
@@ -153,6 +165,7 @@ public class MatchReplaceItem extends MatchItem {
         beans[6] = matchReplace.isIgnoreCase();
         beans[7] = matchReplace.getReplace();
         beans[8] = matchReplace.isMetaChar();
+        beans[9] = matchReplace.getComment();
         return beans;
     }
 
@@ -167,6 +180,7 @@ public class MatchReplaceItem extends MatchItem {
         matchReplace.setIgnoreCase((Boolean) rows[6]);
         matchReplace.setReplace((String) rows[7]);
         matchReplace.setMetaChar((Boolean) rows[8]);
+        matchReplace.setComment((String) rows[9]);
         matchReplace.recompileRegex(!matchReplace.isRegexp());
         return matchReplace;
     }

@@ -245,7 +245,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
                     // コメントは最初にマッチしたもののみ
                     if (bean.isCaptureGroup() && replacemeComment == null) {
                         String group = m.group();
-                        replacemeComment = p.matcher(group).replaceFirst(bean.getComment());
+                        replacemeComment = p.matcher(group).replaceFirst(bean.getNotes());
                     }
                     markList.add(issue);
                     count++;
@@ -264,7 +264,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
                         if (replacemeComment != null) {
                             annotations.setNotes(replacemeComment);
                         } else {
-                            annotations.setNotes(bean.getComment());
+                            annotations.setNotes(bean.getNotes());
                         }
                     }
                     if (bean.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {

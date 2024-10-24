@@ -47,12 +47,13 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             jsonObject.add("notifyTypes", jsc.serialize(matchItem.getNotifyTypes()));
             jsonObject.add("targetTools", jsc.serialize(matchItem.getTargetTools()));
             jsonObject.add("highlightColor", jsc.serialize(matchItem.getHighlightColor()));
-            jsonObject.add("comment", jsc.serialize(matchItem.getComment()));
+            jsonObject.add("notes", jsc.serialize(matchItem.getNotes()));
         } else if (cls.equals(MatchReplaceItem.class)) {
             MatchReplaceItem matchItem = (MatchReplaceItem) t;
             jsonObject.add("protocolType", jsc.serialize(matchItem.getProtocolType()));
             jsonObject.add("smartMatch", jsc.serialize(matchItem.isSmartMatch()));
             jsonObject.add("metaChar", jsc.serialize(matchItem.isMetaChar()));
+            jsonObject.add("comment", jsc.serialize(matchItem.getComment()));
         } else if (cls.equals(AutoResponderItem.class)) {
             AutoResponderItem matchItem = (AutoResponderItem) t;
             jsonObject.add("method", jsc.serialize(matchItem.getMethod()));
@@ -101,8 +102,10 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             if (jsonObject.has("highlightColor")) {
                 matchItem.setHighlightColor(jdc.deserialize(jsonObject.get("highlightColor"), MessageHighlightColor.class));
             }
-            if (jsonObject.has("comment")) {
-                matchItem.setComment(jdc.deserialize(jsonObject.get("comment"), String.class));
+            if (jsonObject.has("notes")) {
+                matchItem.setNotes(jdc.deserialize(jsonObject.get("notes"), String.class));
+            } else if (jsonObject.has("comment")) {
+                matchItem.setNotes(jdc.deserialize(jsonObject.get("comment"), String.class));
             }
             return matchItem;
         } else if (cls.equals(MatchReplaceItem.class)) {
@@ -116,6 +119,9 @@ public class XMatchItemAdapter implements JsonSerializer<MatchItem>, JsonDeseria
             }
             if (jsonObject.has("metaChar")) {
                 matchItem.setMetaChar(jdc.deserialize(jsonObject.get("metaChar"), Boolean.TYPE));
+            }
+            if (jsonObject.has("comment")) {
+                matchItem.setComment(jdc.deserialize(jsonObject.get("comment"), String.class));
             }
             return matchItem;
         } else if (cls.equals(AutoResponderItem.class)) {

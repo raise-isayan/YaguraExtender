@@ -958,7 +958,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlEncode.add(rdoAlphaNum);
 
         btnGrpEncodeType.add(rdoURLSafe);
-        rdoURLSafe.setText("BurpLike");
+        rdoURLSafe.setText("Burp Like");
         rdoURLSafe.setToolTipText("[^A-Za-z0-9!\\\"$'()*,/:<>@\\[\\\\\\]^`{|},.~-]");
         rdoURLSafe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

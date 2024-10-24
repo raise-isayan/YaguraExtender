@@ -54,7 +54,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         pnlContaner = new javax.swing.JPanel();
         pnlNotice = new javax.swing.JPanel();
         txtComment = new javax.swing.JTextField();
-        chkComment = new javax.swing.JCheckBox();
+        chkNotes = new javax.swing.JCheckBox();
         cmbAlertColor = new javax.swing.JComboBox();
         chkItemHighlight = new javax.swing.JCheckBox();
         chkTrayMessage = new javax.swing.JCheckBox();
@@ -129,10 +129,10 @@ public class MatchAlertItemDlg extends CustomDialog {
 
         txtComment.setEnabled(false);
 
-        chkComment.setText("notes");
-        chkComment.addActionListener(new java.awt.event.ActionListener() {
+        chkNotes.setText("notes");
+        chkNotes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkCommentActionPerformed(evt);
+                chkNotesActionPerformed(evt);
             }
         });
 
@@ -202,7 +202,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addGap(11, 11, 11)
                 .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnlNoticeLayout.createSequentialGroup()
-                        .addComponent(chkComment, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(chkNotes, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkCaptureGroup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(chkTrayMessage, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
@@ -227,7 +227,7 @@ public class MatchAlertItemDlg extends CustomDialog {
                 .addComponent(cmbAlertColor, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnlNoticeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkComment)
+                    .addComponent(chkNotes)
                     .addComponent(chkCaptureGroup))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -399,10 +399,10 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.cmbConfidence.setEnabled(this.chkScannerIssue.isSelected());
     }//GEN-LAST:event_chkScannerIssueActionPerformed
 
-    private void chkCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCommentActionPerformed
-        this.txtComment.setEnabled(this.chkComment.isSelected());
-        this.chkCaptureGroup.setEnabled(this.chkComment.isSelected());
-    }//GEN-LAST:event_chkCommentActionPerformed
+    private void chkNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkNotesActionPerformed
+        this.txtComment.setEnabled(this.chkNotes.isSelected());
+        this.chkCaptureGroup.setEnabled(this.chkNotes.isSelected());
+    }//GEN-LAST:event_chkNotesActionPerformed
 
     private void chkItemHighlightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkItemHighlightActionPerformed
         this.cmbAlertColor.setEnabled(this.chkItemHighlight.isSelected());
@@ -468,11 +468,11 @@ public class MatchAlertItemDlg extends CustomDialog {
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox chkAlertsTab;
     private javax.swing.JCheckBox chkCaptureGroup;
-    private javax.swing.JCheckBox chkComment;
     private javax.swing.JCheckBox chkExtension;
     private javax.swing.JCheckBox chkIgnoreCase;
     private javax.swing.JCheckBox chkIntruder;
     private javax.swing.JCheckBox chkItemHighlight;
+    private javax.swing.JCheckBox chkNotes;
     private javax.swing.JCheckBox chkProxy;
     private javax.swing.JCheckBox chkRegExp;
     private javax.swing.JCheckBox chkRepeater;
@@ -567,7 +567,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         if (this.chkItemHighlight.isSelected()) {
             notifys.add(NotifyType.ITEM_HIGHLIGHT);
         }
-        if (this.chkComment.isSelected()) {
+        if (this.chkNotes.isSelected()) {
             notifys.add(NotifyType.COMMENT);
         }
         if (this.chkScannerIssue.isSelected()) {
@@ -603,7 +603,7 @@ public class MatchAlertItemDlg extends CustomDialog {
             item.setHighlightColor((MessageHighlightColor) this.cmbAlertColor.getSelectedItem());
         }
         if (item.getNotifyTypes().contains(NotifyType.COMMENT)) {
-            item.setComment(this.txtComment.getText());
+            item.setNotes(this.txtComment.getText());
         }
         if (item.getNotifyTypes().contains(NotifyType.SCANNER_ISSUE)) {
             item.setIssueName(this.txtIssueName.getText());
@@ -631,7 +631,7 @@ public class MatchAlertItemDlg extends CustomDialog {
         this.chkAlertsTab.setSelected(notifys.contains(NotifyType.ALERTS_TAB));
         this.chkTrayMessage.setSelected(notifys.contains(NotifyType.TRAY_MESSAGE));
         this.chkItemHighlight.setSelected(notifys.contains(NotifyType.ITEM_HIGHLIGHT));
-        this.chkComment.setSelected(notifys.contains(NotifyType.COMMENT));
+        this.chkNotes.setSelected(notifys.contains(NotifyType.COMMENT));
         this.chkScannerIssue.setSelected(notifys.contains(NotifyType.SCANNER_ISSUE));
 
         EnumSet<TargetTool> tools = item.getTargetTools();
@@ -648,8 +648,8 @@ public class MatchAlertItemDlg extends CustomDialog {
         }
         chkItemHighlightActionPerformed(null);
 
-        this.txtComment.setText(item.getComment());
-        this.chkCommentActionPerformed(null);
+        this.txtComment.setText(item.getNotes());
+        this.chkNotesActionPerformed(null);
 
         this.txtIssueName.setText(item.getIssueName());
         this.cmbSeverity.setSelectedItem(item.getSeverity().name());

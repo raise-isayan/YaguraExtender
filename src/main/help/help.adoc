@@ -31,6 +31,14 @@ You can Encode/Decode with the specified character set.
       Use Burp'sCharset setting.
       However, if "recognize_automatically" is selected, the charset may not match the charset interpreted by Burp.
 
+=== Yagura Encode Type
+
+   Uppder Case/Lowler Case::
+     For case-insensitive conversions, specifies the case of the converted text.
+
+   All/Alphanum/Burp Like/Light/Standard::
+     Specify the encoding type to be converted.
+
 === Encoder
 
 Encode the selected string in the character code selected in "Yagura Charsets".
@@ -250,6 +258,9 @@ Replace(After replacement)::
     Non-ASCII characters cannot be specified here. If specified, the characters will be converted to?.
     To specify a character other than ASCII characters, use meta characters.
 
+Comment::
+    Comments to be replaced
+
 [Regexp] check box::
     When checked, enable regular expressions.
 
@@ -283,7 +294,7 @@ image:images/custom_matchalert.png[MatchAlert tab]
 Notifies you when a character that matches the specified string appears in the response. It is assumed that a character string of ErrorCode such as Exception is registered.
 There are the following five notification methods, and you can select multiple methods at the same time
 
-. How to notify on the Burp Alerts tab
+. How to notify on the Burp Event log tab
 
 . How to notify by message in task tray +
   Not supported in current version.
@@ -291,7 +302,7 @@ There are the following five notification methods, and you can select multiple m
 . How to change HighlightColor of matched history +
   It is effective when proxy is checked.
 
-. How to change the comment of the matched history +
+. How to change the Notes of the matched history +
   It is effective when proxy is checked.
 
 . Create a Scanner Issue with the matched content and the specified value.
@@ -343,8 +354,8 @@ Target(Alert target)::
     If the string matches, the HighlightColor of the corresponding Burp History will be the specified color +
     Valid only when you check the proxy log.
 
-[comment] check box::
-    If the string matches, the comment of the history of the corresponding Burp will be the specified comment +
+[notes] check box::
+    If the string matches, the notes of the history of the corresponding Burp will be the specified content +
     Valid only when you check the proxy log.
 
 [capture group] check box::
@@ -786,8 +797,8 @@ request::
 response::
     Specify the search target (header, body)
 
-[comment] check box::
-    Include comments in search.
+[notes] check box::
+    Include notes in search.
 
 Search Encoding::
     Specify the encoding when searching.
@@ -1333,12 +1344,12 @@ Hex IP ::
 
     Example: 0xc0000201
 
-IPv4 Mapped IPv6:
+IPv4 Mapped IPv6 ::
     Convert to IPv4 Mapped IPv6.
 
     Example: [::ffff:192.168.1.2]
 
-IPv4 to Unicode:
+IPv4 to Unicode ::
     Convert to Unicode notation address.
 
     Example: ①⑨②。①⑥⑧。①。②

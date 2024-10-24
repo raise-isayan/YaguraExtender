@@ -127,7 +127,7 @@ public class ConfigTest {
         MatchAlertItem matchAlertItem0 = new MatchAlertItem();
         matchAlertItem0.setNotifyTypes(EnumSet.allOf(NotifyType.class));
         matchAlertItem0.setHighlightColor(MessageHighlightColor.CYAN);
-        matchAlertItem0.setComment("comment");
+        matchAlertItem0.setNotes("comment");
         matchAlertItem0.setTargetTools(EnumSet.allOf(TargetTool.class));
         matchAlertList.add(matchAlertItem0);
 

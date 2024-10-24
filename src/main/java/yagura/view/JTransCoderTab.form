@@ -503,7 +503,7 @@
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                   <ComponentRef name="btnGrpEncodeType"/>
                                 </Property>
-                                <Property name="text" type="java.lang.String" value="BurpLike"/>
+                                <Property name="text" type="java.lang.String" value="Burp Like"/>
                                 <Property name="toolTipText" type="java.lang.String" value="[^A-Za-z0-9!\u005c&quot;$&apos;()*,/:&lt;&gt;@\u005c[\u005c\u005c\u005c]^`{|},.~-]" containsInvalidXMLChars="true"/>
                               </Properties>
                               <Events>

@@ -52,6 +52,8 @@ public class MatchReplaceItemDlg extends CustomDialog {
         chkMetaChar = new javax.swing.JCheckBox();
         tglHttp = new javax.swing.JToggleButton();
         tglWebSocket = new javax.swing.JToggleButton();
+        txtComment = new javax.swing.JTextField();
+        lblComment = new javax.swing.JLabel();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -121,6 +123,15 @@ public class MatchReplaceItemDlg extends CustomDialog {
             }
         });
 
+        txtComment.setName(""); // NOI18N
+        txtComment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCommentActionPerformed(evt);
+            }
+        });
+
+        lblComment.setText("Comment:");
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
@@ -130,10 +141,23 @@ public class MatchReplaceItemDlg extends CustomDialog {
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblReplace)
-                            .addComponent(lblMatch))
-                        .addGap(18, 18, 18)
+                            .addGroup(pnlMainLayout.createSequentialGroup()
+                                .addComponent(lblType)
+                                .addGap(35, 35, 35)
+                                .addComponent(cmbRepType, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlMainLayout.createSequentialGroup()
+                                .addComponent(tglHttp, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tglWebSocket, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 249, Short.MAX_VALUE))
+                    .addGroup(pnlMainLayout.createSequentialGroup()
                         .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblReplace)
+                            .addComponent(lblMatch)
+                            .addComponent(lblComment))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtComment, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtRepMatch)
                             .addComponent(txtRepReplace)
                             .addGroup(pnlMainLayout.createSequentialGroup()
@@ -145,18 +169,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
                                         .addComponent(chkRegExp)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(chkIgnoreCase)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlMainLayout.createSequentialGroup()
-                                .addComponent(lblType)
-                                .addGap(35, 35, 35)
-                                .addComponent(cmbRepType, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlMainLayout.createSequentialGroup()
-                                .addComponent(tglHttp, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(tglWebSocket, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 249, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
@@ -183,9 +196,13 @@ public class MatchReplaceItemDlg extends CustomDialog {
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRepReplace, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblReplace))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(5, 5, 5)
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtComment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblComment))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkMetaChar)
-                .addGap(40, 40, 40))
+                .addGap(19, 19, 19))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -276,6 +293,10 @@ public class MatchReplaceItemDlg extends CustomDialog {
         setProtocolType(ProtocolType.WEBSOCKET);
     }//GEN-LAST:event_tglWebSocketActionPerformed
 
+    private void txtCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCommentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCommentActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -336,6 +357,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkRegExp;
     private javax.swing.JCheckBox chkSmartMatch;
     private javax.swing.JComboBox cmbRepType;
+    private javax.swing.JLabel lblComment;
     private javax.swing.JLabel lblMatch;
     private javax.swing.JLabel lblReplace;
     private javax.swing.JLabel lblType;
@@ -343,6 +365,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
     private javax.swing.JPanel pnlMain;
     private javax.swing.JToggleButton tglHttp;
     private javax.swing.JToggleButton tglWebSocket;
+    private javax.swing.JTextField txtComment;
     private javax.swing.JTextField txtRepMatch;
     private javax.swing.JTextField txtRepReplace;
     // End of variables declaration//GEN-END:variables
@@ -385,6 +408,7 @@ public class MatchReplaceItemDlg extends CustomDialog {
         item.setType((String) this.cmbRepType.getSelectedItem());
         item.setMatch(this.txtRepMatch.getText());
         item.setReplace(this.txtRepReplace.getText());
+        item.setComment(this.txtComment.getText());
         item.setMetaChar(this.chkMetaChar.isSelected());
         item.recompileRegex(!item.isRegexp());
         return item;
@@ -402,5 +426,6 @@ public class MatchReplaceItemDlg extends CustomDialog {
         this.chkIgnoreCase.setSelected(item.isIgnoreCase());
         this.txtRepReplace.setText(item.getReplace());
         this.chkMetaChar.setSelected(item.isMetaChar());
+        this.txtComment.setText(item.getComment());
     }
 }

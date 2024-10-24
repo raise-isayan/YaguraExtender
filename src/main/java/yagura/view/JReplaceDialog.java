@@ -151,14 +151,14 @@ public class JReplaceDialog extends CustomDialog {
 
             },
             new String [] {
-                "", "ProtocolType", "type", "match", "smartMatch", "regex", "icase", "replace", "metachar"
+                "", "ProtocolType", "type", "match", "smartMatch", "regex", "icase", "replace", "metachar", "comment"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -199,14 +199,14 @@ public class JReplaceDialog extends CustomDialog {
                     .addGroup(pnlCenterLayout.createSequentialGroup()
                         .addComponent(lblName)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtListName, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtListName, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkScopeOnly)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnImportRule, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnImportRule, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(pnlCenterLayout.createSequentialGroup()
-                        .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+                        .addComponent(scrollPane)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlCenterLayout.createSequentialGroup()
@@ -281,7 +281,7 @@ public class JReplaceDialog extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(617, Short.MAX_VALUE)
+                .addContainerGap(702, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -434,6 +434,7 @@ public class JReplaceDialog extends CustomDialog {
                     item.setMatch(rule.getStringMatch());
                     item.setReplace(rule.getStringReplace());
                     item.setRegexp(!rule.isSimpleMatch());
+                    item.setComment(rule.getComment());
                     SwingUtil.addOrUpdateItem(this.tableReplace, MatchReplaceItem.toObjects(item), false);
                 }
             }
@@ -590,6 +591,7 @@ public class JReplaceDialog extends CustomDialog {
                     item.setRegexp(false);
                     item.setReplace(line);
                     item.setMetaChar(false);
+                    item.setComment("");
                     this.setEditItem(item, false);
                 }
             }

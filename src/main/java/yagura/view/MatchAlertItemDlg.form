@@ -139,7 +139,7 @@
                           <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="chkComment" min="-2" pref="120" max="-2" attributes="0"/>
+                                  <Component id="chkNotes" min="-2" pref="120" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="chkCaptureGroup" max="32767" attributes="0"/>
                               </Group>
@@ -168,7 +168,7 @@
                           <Component id="cmbAlertColor" min="-2" pref="21" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="chkComment" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkNotes" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="chkCaptureGroup" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -185,12 +185,12 @@
                     <Property name="enabled" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="chkComment">
+                <Component class="javax.swing.JCheckBox" name="chkNotes">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="notes"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkCommentActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkNotesActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="cmbAlertColor">

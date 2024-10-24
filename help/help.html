@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>YaguraExtension Help</h1>
 <div class="details">
-<span id="revnumber">version v3.1.4.2</span>
+<span id="revnumber">version v3.1.5.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -449,13 +449,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_yagura_menu">2. Yagura Menu</a>
 <ul class="sectlevel2">
 <li><a href="#_yagura_charsets">2.1. Yagura Charsets</a></li>
-<li><a href="#_encoder">2.2. Encoder</a></li>
-<li><a href="#_decoder">2.3. Decoder</a></li>
-<li><a href="#_converter">2.4. Converter</a></li>
-<li><a href="#_hash">2.5. Hash</a></li>
-<li><a href="#_result_filter">2.6. Result Filter</a></li>
-<li><a href="#_extension">2.7. Extension</a></li>
-<li><a href="#_burp_charsets">2.8. Burp Charsets</a></li>
+<li><a href="#_yagura_encode_type">2.2. Yagura Encode Type</a></li>
+<li><a href="#_encoder">2.3. Encoder</a></li>
+<li><a href="#_decoder">2.4. Decoder</a></li>
+<li><a href="#_converter">2.5. Converter</a></li>
+<li><a href="#_hash">2.6. Hash</a></li>
+<li><a href="#_result_filter">2.7. Result Filter</a></li>
+<li><a href="#_extension">2.8. Extension</a></li>
+<li><a href="#_burp_charsets">2.9. Burp Charsets</a></li>
 </ul>
 </li>
 <li><a href="#_yagura_tab">3. Yagura tab</a>
@@ -578,7 +579,22 @@ However, if "recognize_automatically" is selected, the charset may not match the
 </div>
 </div>
 <div class="sect2">
-<h3 id="_encoder">2.2. Encoder</h3>
+<h3 id="_yagura_encode_type">2.2. Yagura Encode Type</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Uppder Case/Lowler Case</dt>
+<dd>
+<p>For case-insensitive conversions, specifies the case of the converted text.</p>
+</dd>
+<dt class="hdlist1">All/Alphanum/Burp Like/Light/Standard</dt>
+<dd>
+<p>Specify the encoding type to be converted.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_encoder">2.3. Encoder</h3>
 <div class="paragraph">
 <p>Encode the selected string in the character code selected in "Yagura Charsets".
 The following conversions are supported</p>
@@ -610,7 +626,7 @@ The following conversions are supported</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_decoder">2.3. Decoder</h3>
+<h3 id="_decoder">2.4. Decoder</h3>
 <div class="paragraph">
 <p>Decode the selected string in the character code selected in "Yagura Charsets".
 The following conversions are supported</p>
@@ -642,7 +658,7 @@ The following conversions are supported</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_converter">2.4. Converter</h3>
+<h3 id="_converter">2.5. Converter</h3>
 <div class="paragraph">
 <p>Converts the selected string in the character code selected in "Yagura Charsets".
 The following conversions are supported</p>
@@ -671,7 +687,7 @@ The following conversions are supported</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_hash">2.5. Hash</h3>
+<h3 id="_hash">2.6. Hash</h3>
 <div class="paragraph">
 <p>Hash calculation the selected string in the character code selected in "Yagura Charsets".
 The following conversions are supported</p>
@@ -700,14 +716,14 @@ The following conversions are supported</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_result_filter">2.6. Result Filter</h3>
+<h3 id="_result_filter">2.7. Result Filter</h3>
 <div class="paragraph">
 <p>It is possible to switch Bambda mode queries in Proxy History.
 You can create a tab to switch Bambda mode in the Result Filter tab.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_extension">2.7. Extension</h3>
+<h3 id="_extension">2.8. Extension</h3>
 <div class="paragraph">
 <p>Run the selected extension.</p>
 </div>
@@ -733,7 +749,7 @@ You can create a tab to switch Bambda mode in the Result Filter tab.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_burp_charsets">2.8. Burp Charsets</h3>
+<h3 id="_burp_charsets">2.9. Burp Charsets</h3>
 <div class="paragraph">
 <p>Changes the character code in the User settings of Burp.
 It is equivalent to switching Charsets in Burp&#8217;s [User Interface] &#8594; [Inspector and Message Editor].</p>
@@ -966,6 +982,10 @@ You can also specify a capture group such as $1, $2.
 Non-ASCII characters cannot be specified here. If specified, the characters will be converted to?.
 To specify a character other than ASCII characters, use meta characters.</p>
 </dd>
+<dt class="hdlist1">Comment</dt>
+<dd>
+<p>Comments to be replaced</p>
+</dd>
 <dt class="hdlist1">[Regexp] check box</dt>
 <dd>
 <p>When checked, enable regular expressions.</p>
@@ -1049,7 +1069,7 @@ There are the following five notification methods, and you can select multiple m
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>How to notify on the Burp Alerts tab</p>
+<p>How to notify on the Burp Event log tab</p>
 </li>
 <li>
 <p>How to notify by message in task tray<br>
@@ -1060,7 +1080,7 @@ Not supported in current version.</p>
 It is effective when proxy is checked.</p>
 </li>
 <li>
-<p>How to change the comment of the matched history<br>
+<p>How to change the Notes of the matched history<br>
 It is effective when proxy is checked.</p>
 </li>
 <li>
@@ -1137,9 +1157,9 @@ Not supported in current version.</p>
 <p>If the string matches, the HighlightColor of the corresponding Burp History will be the specified color<br>
 Valid only when you check the proxy log.</p>
 </dd>
-<dt class="hdlist1">[comment] check box</dt>
+<dt class="hdlist1">[notes] check box</dt>
 <dd>
-<p>If the string matches, the comment of the history of the corresponding Burp will be the specified comment<br>
+<p>If the string matches, the notes of the history of the corresponding Burp will be the specified content<br>
 Valid only when you check the proxy log.</p>
 </dd>
 <dt class="hdlist1">[capture group] check box</dt>
@@ -1856,9 +1876,9 @@ Regular expressions cannot be enabled.</p>
 <dd>
 <p>Specify the search target (header, body)</p>
 </dd>
-<dt class="hdlist1">[comment] check box</dt>
+<dt class="hdlist1">[notes] check box</dt>
 <dd>
-<p>Include comments in search.</p>
+<p>Include notes in search.</p>
 </dd>
 <dt class="hdlist1">Search Encoding</dt>
 <dd>
@@ -2672,25 +2692,25 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 </dd>
-</dl>
-</div>
-<div class="paragraph">
-<p>IPv4 Mapped IPv6:
-    Convert to IPv4 Mapped IPv6.</p>
-</div>
+<dt class="hdlist1">IPv4 Mapped IPv6 </dt>
+<dd>
+<p>Convert to IPv4 Mapped IPv6.</p>
 <div class="literalblock">
 <div class="content">
 <pre>Example: [::ffff:192.168.1.2]</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>IPv4 to Unicode:
-    Convert to Unicode notation address.</p>
-</div>
+</dd>
+<dt class="hdlist1">IPv4 to Unicode </dt>
+<dd>
+<p>Convert to Unicode notation address.</p>
 <div class="literalblock">
 <div class="content">
 <pre>Example: ①⑨②。①⑥⑧。①。②</pre>
 </div>
+</div>
+</dd>
+</dl>
 </div>
 </div>
 <div class="sect3">
@@ -2961,8 +2981,8 @@ This option may not work for items that contain binaries. In that case, use the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Version v3.1.4.2<br>
-Last updated 2024-10-18 16:05:08 +0900
+Version v3.1.5.0<br>
+Last updated 2024-10-24 20:34:52 +0900
 </div>
 </div>
 </body>

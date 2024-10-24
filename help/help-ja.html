@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>YaguraExtension ヘルプ</h1>
 <div class="details">
-<span id="revnumber">version v3.1.4.2</span>
+<span id="revnumber">version v3.1.5.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -449,13 +449,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_yagura_menu">2. Yagura Menu</a>
 <ul class="sectlevel2">
 <li><a href="#_yagura_charsets">2.1. Yagura Charsets</a></li>
-<li><a href="#_encoder">2.2. Encoder</a></li>
-<li><a href="#_decoder">2.3. Decoder</a></li>
-<li><a href="#_converter">2.4. Converter</a></li>
-<li><a href="#_hash">2.5. Hash</a></li>
-<li><a href="#_result_filter">2.6. Result Filter</a></li>
-<li><a href="#_extension">2.7. Extension</a></li>
-<li><a href="#_burp_charsets">2.8. Burp Charsets</a></li>
+<li><a href="#_yagura_encode_type">2.2. Yagura Encode Type</a></li>
+<li><a href="#_encoder">2.3. Encoder</a></li>
+<li><a href="#_decoder">2.4. Decoder</a></li>
+<li><a href="#_converter">2.5. Converter</a></li>
+<li><a href="#_hash">2.6. Hash</a></li>
+<li><a href="#_result_filter">2.7. Result Filter</a></li>
+<li><a href="#_extension">2.8. Extension</a></li>
+<li><a href="#_burp_charsets">2.9. Burp Charsets</a></li>
 </ul>
 </li>
 <li><a href="#_yaguraタブ">3. Yaguraタブ</a>
@@ -577,7 +578,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_encoder">2.2. Encoder</h3>
+<h3 id="_yagura_encode_type">2.2. Yagura Encode Type</h3>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Uppder Case/Lowler Case</dt>
+<dd>
+<p>大文字小文字を区別しない変換において、変換後の大文字小文字を指定します。</p>
+</dd>
+<dt class="hdlist1">All/Alphanum/Burp Like/Light/Standard</dt>
+<dd>
+<p>変換するエンコードタイプを指定します。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_encoder">2.3. Encoder</h3>
 <div class="paragraph">
 <p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
 次の変換に対応しています。</p>
@@ -609,7 +625,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_decoder">2.3. Decoder</h3>
+<h3 id="_decoder">2.4. Decoder</h3>
 <div class="paragraph">
 <p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてDecodeします。
 次の変換に対応しています。</p>
@@ -641,7 +657,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_converter">2.4. Converter</h3>
+<h3 id="_converter">2.5. Converter</h3>
 <div class="paragraph">
 <p>選択された文字列を「Yagura Charsets」にて選択した文字コードにて変換します。
 次の変換に対応しています。</p>
@@ -670,7 +686,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_hash">2.5. Hash</h3>
+<h3 id="_hash">2.6. Hash</h3>
 <div class="paragraph">
 <p>選択された文字列を「Yagura Charsets」にて選択した文字コードにてHash計算します。
 次の変換に対応しています。</p>
@@ -699,14 +715,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_result_filter">2.6. Result Filter</h3>
+<h3 id="_result_filter">2.7. Result Filter</h3>
 <div class="paragraph">
 <p>Proxy HistoryのBambda mode のクエリを切り替えることが可能です。
 Result FilterタブでBambda modeを切り換えるためのタブを作成することができます。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_extension">2.7. Extension</h3>
+<h3 id="_extension">2.8. Extension</h3>
 <div class="paragraph">
 <p>選択した拡張機能を実行します。</p>
 </div>
@@ -732,7 +748,7 @@ Result FilterタブでBambda modeを切り換えるためのタブを作成す�
 </div>
 </div>
 <div class="sect2">
-<h3 id="_burp_charsets">2.8. Burp Charsets</h3>
+<h3 id="_burp_charsets">2.9. Burp Charsets</h3>
 <div class="paragraph">
 <p>BurpのUser設定の文字コードを変更します。
 Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの切り替えと同等です。</p>
@@ -964,6 +980,10 @@ Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの�
 いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
 アスキー文字以外を指定する場合は、メタ文字を利用します。</p>
 </dd>
+<dt class="hdlist1">Comment</dt>
+<dd>
+<p>置換対象のコメントを入力します。</p>
+</dd>
 <dt class="hdlist1">[Regexp] チェックボックス</dt>
 <dd>
 <p>チェック時、正規表現を有効にします。</p>
@@ -1039,7 +1059,7 @@ Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの�
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>BurpのAlertsタブにて通知する方法</p>
+<p>BurpのEvent logタブにて通知する方法</p>
 </li>
 <li>
 <p>タスクトレイのメッセージにて通知する方法<br>
@@ -1050,7 +1070,7 @@ Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの�
 proxyにチェックが入っている場合に有効です。</p>
 </li>
 <li>
-<p>マッチしたヒストリのCommentを変更する方法<br>
+<p>マッチしたヒストリのNotesを変更する方法<br>
 proxyにチェックが入っている場合に有効です。</p>
 </li>
 <li>
@@ -1127,9 +1147,9 @@ proxyにチェックが入っている場合に有効です。</p>
 <p>文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります<br>
 proxyログにチェックした場合のみ有効です。</p>
 </dd>
-<dt class="hdlist1">[comment] チェックボックス</dt>
+<dt class="hdlist1">[notes] チェックボックス</dt>
 <dd>
-<p>文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります<br>
+<p>文字列がマッチした場合、該当のBurpのHistoryのNotesが指定した内容になります<br>
 proxyログにチェックした場合のみ有効です。</p>
 </dd>
 <dt class="hdlist1">[capture group] チェックボックス</dt>
@@ -2663,25 +2683,25 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 </dd>
-</dl>
-</div>
-<div class="paragraph">
-<p>IPv4 Mapped IPv6:
-    IPv4アドレスを含むIPv6アドレスに変換します。</p>
-</div>
+<dt class="hdlist1">IPv4 Mapped IPv6 </dt>
+<dd>
+<p>IPv4アドレスを含むIPv6アドレスに変換します。</p>
 <div class="literalblock">
 <div class="content">
 <pre>例:[::ffff:192.168.1.2]</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>IPv4 to Unicode:
-    IPv4アドレスを含むUnicode表記アドレスに変換します。</p>
-</div>
+</dd>
+<dt class="hdlist1">IPv4 to Unicode </dt>
+<dd>
+<p>IPv4アドレスを含むUnicode表記アドレスに変換します。</p>
 <div class="literalblock">
 <div class="content">
 <pre>例:①⑨②。①⑥⑧。①。②</pre>
 </div>
+</div>
+</dd>
+</dl>
 </div>
 </div>
 <div class="sect3">
@@ -2949,8 +2969,8 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version v3.1.4.2<br>
-Last updated 2024-10-20 22:57:16 +0900
+Version v3.1.5.0<br>
+Last updated 2024-10-24 20:35:04 +0900
 </div>
 </div>
 </body>

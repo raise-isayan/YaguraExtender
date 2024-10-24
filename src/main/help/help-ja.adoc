@@ -30,6 +30,14 @@ IntercepterやRepeterにてYaguraのEncode/Decodeの各種変換機能を呼び�
       BurpのCharsetの設定を利用します。
       ただし、「recognize_automatically」が選択されている場合の文字コードはBurpが解釈している文字コードと一致しない可能性があります。
 
+=== Yagura Encode Type
+
+   Uppder Case/Lowler Case::
+     大文字小文字を区別しない変換において、変換後の大文字小文字を指定します。
+
+   All/Alphanum/Burp Like/Light/Standard::
+     変換するエンコードタイプを指定します。
+
 === Encoder
 
 選択された文字列を「Yagura Charsets」にて選択した文字コードにてEncodeします。
@@ -248,6 +256,9 @@ Replace(置換後)::
     いわゆるアスキー文字以外をここには指定することはできません。指定した場合、文字は、?に変換されてしまいます。
     アスキー文字以外を指定する場合は、メタ文字を利用します。
 
+Comment::
+    置換対象のコメントを入力します。
+
 [Regexp] チェックボックス::
     チェック時、正規表現を有効にします。
 
@@ -278,12 +289,12 @@ image:images/custom_matchalert.png[MatchAlertタブ]
 指定した文字列にマッチする文字がレスポンスに現れた場合に通知してくれます。 ExceptionなどのErrorCode系の文字列を登録することを想定しています。
 通知方法には以下の５つの方法があり、同時に複数の方法を選択できます
 
-. BurpのAlertsタブにて通知する方法
+. BurpのEvent logタブにて通知する方法
 . タスクトレイのメッセージにて通知する方法 +
     現在のバージョンではサポートされていません。
 . マッチしたヒストリのHighlightColorを変更する方法 +
     proxyにチェックが入っている場合に有効です。
-. マッチしたヒストリのCommentを変更する方法 +
+. マッチしたヒストリのNotesを変更する方法 +
     proxyにチェックが入っている場合に有効です。
 . マッチした内容と指定した値にてScannerのIssueを作成します。
 
@@ -331,8 +342,8 @@ Target(アラート対象)::
     文字列がマッチした場合、該当のBurpのHistoryのHighlightColorが指定した色になります +
     proxyログにチェックした場合のみ有効です。
 
-[comment] チェックボックス::
-    文字列がマッチした場合、該当のBurpのHistoryのCommentが指定したコメントになります +
+[notes] チェックボックス::
+    文字列がマッチした場合、該当のBurpのHistoryのNotesが指定した内容になります +
     proxyログにチェックした場合のみ有効です。
 
 [capture group] チェックボックス::
@@ -1323,12 +1334,12 @@ Hex IP ::
 
     例:0xc0000201
 
-IPv4 Mapped IPv6:
+IPv4 Mapped IPv6 ::
     IPv4アドレスを含むIPv6アドレスに変換します。
 
     例:[::ffff:192.168.1.2]
 
-IPv4 to Unicode:
+IPv4 to Unicode ::
     IPv4アドレスを含むUnicode表記アドレスに変換します。
 
     例:①⑨②。①⑥⑧。①。②
