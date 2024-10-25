@@ -47,6 +47,8 @@ public class SendToParameterProperty {
 
     private SendToParameterType reqNum = SendToParameterType.HISTORY_NUMBER;
 
+    private boolean useDummyResponse = false;
+
     /**
      * @return the useOverride
      */
@@ -173,6 +175,20 @@ public class SendToParameterProperty {
         this.reqCommentLineType = reqCommentHistoryCommentType;
     }
 
+    /**
+     * @return the useDummyResponse
+     */
+    public boolean isUseDummyResponse() {
+        return useDummyResponse;
+    }
+
+    /**
+     * @param useDummyResponse the useDummyResponse to set
+     */
+    public void setUseDummyResponse(boolean useDummyResponse) {
+        this.useDummyResponse = useDummyResponse;
+    }
+
     public void setProperty(SendToParameterProperty property) {
         this.useOverride = property.useOverride;
 
@@ -185,6 +201,8 @@ public class SendToParameterProperty {
         this.reqComment = property.reqComment;
         this.reqCommentLineType = property.reqCommentLineType;
         this.reqNum = property.reqNum;
+
+        this.useDummyResponse = property.useDummyResponse;
     }
 
     public void setProperties(Properties prop) {
@@ -199,6 +217,9 @@ public class SendToParameterProperty {
         this.reqComment = SendToParameterType.valueOf(prop.getProperty("SendToPamareter.reqComment", SendToParameterType.HISTORY_COMMENT.name()));
         this.reqCommentLineType = LinePartType.valueOf(prop.getProperty("SendToPamareter.reqCommentLineType", LinePartType.SECOND_LINE.name()));
         this.reqNum = SendToParameterType.valueOf(prop.getProperty("SendToPamareter.reqNum", SendToParameterType.HISTORY_NUMBER.name()));
+
+        this.useDummyResponse = ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useDummyResponse"), false);
+
     }
 
     public Properties getProperties() {
@@ -214,6 +235,7 @@ public class SendToParameterProperty {
         prop.setProperty("SendToPamareter.reqComment", this.reqComment.name());
         prop.setProperty("SendToPamareter.reqCommentLineType", this.reqCommentLineType.name());
         prop.setProperty("SendToPamareter.reqNum", this.reqNum.name());
+        prop.setProperty("SendToPamareter.useDummyResponse", Boolean.toString(this.useDummyResponse));
         return prop;
     }
 

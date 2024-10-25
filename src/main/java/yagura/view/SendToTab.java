@@ -236,7 +236,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
                         .addComponent(btnSendToDownArraw)
                         .addGap(18, 18, 18)
                         .addComponent(btnSendToAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSendToDuplicate))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

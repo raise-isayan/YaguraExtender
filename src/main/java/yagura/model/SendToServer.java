@@ -15,6 +15,7 @@ import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
 import extension.burp.HttpTarget;
+import extension.helpers.DateUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
@@ -51,6 +52,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -400,6 +404,14 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
+    protected String newDummyRespose() {
+        final String DUMMY_RESPOSE = "HTTP/1.1 202 Accepted" + HttpUtil.LINE_TERMINATE +
+            "Date: " + DateUtil.valueOfHttpDate(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("GMT"))) + HttpUtil.LINE_TERMINATE +
+            "Server: Yagura-Dummy-Response" + HttpUtil.LINE_TERMINATE +
+            "Content-Length: 0" + HttpUtil.LINE_TERMINATE + HttpUtil.LINE_TERMINATE;
+        return DUMMY_RESPOSE;
+    }
+
     protected void sendToServerUseOkHttpClient(HttpRequestResponse messageInfo, SendToExtendProperty extendProp) {
         SendToParameterProperty extendSendToParameterProp = extendProp.getSendToParameterProperty();
         final HttpExtendProperty extendConnectionProp = extendProp.getHttpExtendProperty();
@@ -461,6 +473,12 @@ public class SendToServer extends SendToMenuItem {
                         String guessCharset = wrapResponse.getGuessCharset();
                         if (guessCharset != null) {
                             multipartBuilder.addFormDataPart("encoding", guessCharset);
+                        }
+                    }
+                    else {
+                        if (extendSendToParameterProp.isUseOverride() && extendSendToParameterProp.isUseDummyResponse()) {
+                            burp.api.montoya.http.message.responses.HttpResponse dummyResponse = burp.api.montoya.http.message.responses.HttpResponse.httpResponse(newDummyRespose());
+                            multipartBuilder.addFormDataPart("response", "response", RequestBody.create(dummyResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
                         }
                     }
 
@@ -663,13 +681,22 @@ public class SendToServer extends SendToMenuItem {
             HttpRequestWapper wrapRequest = new HttpRequestWapper(messageInfo.request());
             HttpUtil.outMultipartBinary(boundary, out, "request", wrapRequest.getMessageByte());
         }
-        if (messageInfo.response() != null && this.isResponse()) {
-            HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
-            HttpUtil.outMultipartBinary(boundary, out, "response", wrapResponse.getMessageByte());
-            String guessCharset = wrapResponse.getGuessCharset();
-            if (guessCharset != null) {
-                HttpUtil.outMultipartText(boundary, out, "encoding", guessCharset);
+        if (this.isResponse()) {
+            if (messageInfo.response() != null) {
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
+                HttpUtil.outMultipartBinary(boundary, out, "response", wrapResponse.getMessageByte());
+                String guessCharset = wrapResponse.getGuessCharset();
+                if (guessCharset != null) {
+                    HttpUtil.outMultipartText(boundary, out, "encoding", guessCharset);
+                }
             }
+            else {
+                if (extendSendToParameterProp.isUseOverride() && extendSendToParameterProp.isUseDummyResponse()) {
+                    burp.api.montoya.http.message.responses.HttpResponse dummyResponse = burp.api.montoya.http.message.responses.HttpResponse.httpResponse(newDummyRespose());
+                    HttpUtil.outMultipartBinary(boundary, out, "response", dummyResponse.toByteArray().getBytes());
+                }
+            }
+
         }
 
         HttpUtil.outMultipartFinish(boundary, out);

@@ -104,6 +104,7 @@ public class SendToServerExtendDlg extends CustomDialog {
         rdoReqCommentAllLine = new javax.swing.JRadioButton();
         rdoReqCommentFirstLine = new javax.swing.JRadioButton();
         rdoReqCommentSecondLine = new javax.swing.JRadioButton();
+        chkDummyResponse = new javax.swing.JCheckBox();
         chkOverrideSendToParameter = new javax.swing.JCheckBox();
 
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -531,32 +532,45 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        chkDummyResponse.setText("use dummy response if response is null");
+        chkDummyResponse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkDummyResponseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlSendToOverrideLayout = new javax.swing.GroupLayout(pnlSendToOverride);
         pnlSendToOverride.setLayout(pnlSendToOverrideLayout);
         pnlSendToOverrideLayout.setHorizontalGroup(
             pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkUseReqName)
                     .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(rdoReqCommentHistoryComment)
-                        .addGap(18, 18, 18)
-                        .addComponent(rdoReqCommentResponseTitle))
+                        .addContainerGap()
+                        .addComponent(chkDummyResponse))
                     .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                    .addGap(21, 21, 21)
-                                    .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                    .addComponent(rdoReqNameHistoryComment)
-                                    .addGap(30, 30, 30)
-                                    .addComponent(rdoReqNameResponseTitle)))))
-                    .addComponent(chkUseReqComment))
+                        .addGap(27, 27, 27)
+                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                .addComponent(rdoReqNameHistoryComment)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdoReqNameResponseTitle))))
+                    .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(rdoReqCommentHistoryComment)
+                                .addGap(18, 18, 18)
+                                .addComponent(rdoReqCommentResponseTitle))
+                            .addComponent(chkUseReqName)
+                            .addComponent(chkUseReqComment))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlSendToOverrideLayout.setVerticalGroup(
@@ -570,7 +584,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                     .addComponent(rdoReqNameResponseTitle))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addComponent(chkUseReqComment)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -578,7 +592,9 @@ public class SendToServerExtendDlg extends CustomDialog {
                     .addComponent(rdoReqCommentResponseTitle))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(312, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chkDummyResponse)
+                .addContainerGap(300, Short.MAX_VALUE))
         );
 
         chkOverrideSendToParameter.setText("override sendto parameter");
@@ -653,6 +669,10 @@ public class SendToServerExtendDlg extends CustomDialog {
         SwingUtil.setContainerEnable(this.pnlSendToOverride, this.chkOverrideSendToParameter.isSelected());
     }//GEN-LAST:event_chkOverrideSendToParameterStateChanged
 
+    private void chkDummyResponseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkDummyResponseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chkDummyResponseActionPerformed
+
     private final ImportCertificatetDlg importCertificatetDlg = new ImportCertificatetDlg(null, true);
 
     private final CertificateItem certProp = new CertificateItem();
@@ -699,6 +719,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnSelectExecute;
     private javax.swing.JCheckBox chkClientCertififate;
+    private javax.swing.JCheckBox chkDummyResponse;
     private javax.swing.JCheckBox chkIgnoreValidateCertification;
     private javax.swing.JCheckBox chkOverrideSendToParameter;
     private javax.swing.JCheckBox chkUseReqComment;
@@ -865,6 +886,9 @@ public class SendToServerExtendDlg extends CustomDialog {
 //        if (prop.getReqNum() == SendToParameterProperty.SendToParameterType.HISTORY_NUMBER) {
 //            this.rdoReqNameHistoryNumber.setSelected(true);
 //        }
+
+        this.chkDummyResponse.setSelected(prop.isUseDummyResponse());
+
     }
 
     public void setProperty(HttpExtendProperty prop) {
@@ -933,6 +957,9 @@ public class SendToServerExtendDlg extends CustomDialog {
 
 //        prop.setUseReqNum(this.chkUseReqNum.isSelected());
 //        prop.setReqNum(SendToParameterProperty.SendToParameterType.HISTORY_NUMBER);
+
+        prop.setUseDummyResponse(this.chkDummyResponse.isSelected());
+
         return prop;
     }
 

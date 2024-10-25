@@ -76,7 +76,7 @@ public class TransUtil {
     }
 
     public enum EncodeType {
-        ALL("All"), ALPHANUM("Alphanum"), STANDARD("Standard"), LIGHT("Light"), BURP_LIKE("BurpLike");
+        ALL("All"), ALPHANUM("Alphanum"), STANDARD("Standard"), LIGHT("Light"), BURP_LIKE("Burp Like");
 
         private final String ident;
 

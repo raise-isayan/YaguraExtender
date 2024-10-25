@@ -1072,7 +1072,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlTransAction.setLayout(new javax.swing.BoxLayout(pnlTransAction, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(15, 0));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(15, 0, 1, 1));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
