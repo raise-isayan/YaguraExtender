@@ -174,7 +174,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public javax.swing.JPopupMenu appendSendToMenu(javax.swing.JPopupMenu popSendToMenu, final SendToMessage message, ContextMenuEvent contextMenuEvent) {
 
         final javax.swing.JMenuItem mnuRepeater = new javax.swing.JMenuItem();
-        mnuRepeater.setText("Sendto Repeater");
+        mnuRepeater.setText("Send to Repeater");
         mnuRepeater.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -184,7 +184,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
         popSendToMenu.add(mnuRepeater);
 
         final javax.swing.JMenuItem mnuIntruder = new javax.swing.JMenuItem();
-        mnuIntruder.setText("Sndto Intruder");
+        mnuIntruder.setText("Snd to Intruder");
         mnuIntruder.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,7 +194,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
         popSendToMenu.add(mnuIntruder);
 
         final javax.swing.JMenuItem mnuOrganizer = new javax.swing.JMenuItem();
-        mnuOrganizer.setText("Sndto Organizer");
+        mnuOrganizer.setText("Snd to Organizer");
         mnuOrganizer.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,7 +206,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
         String selectText = message.getSelectedText();
         if (selectText != null) {
             final javax.swing.JMenuItem mnuDecoder = new javax.swing.JMenuItem();
-            mnuDecoder.setText("Sendto Decoder");
+            mnuDecoder.setText("Send to Decoder");
             mnuDecoder.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,7 +215,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
             });
             popSendToMenu.add(mnuDecoder);
             final javax.swing.JMenuItem mnuComparer = new javax.swing.JMenuItem();
-            mnuComparer.setText("Sendto Comparer");
+            mnuComparer.setText("Send to Comparer");
             mnuComparer.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -506,34 +506,6 @@ public class TransUtilTest {
         assertEquals("0235257240471136036304134774172206743033664471063177431331617605322", TransUtil.toBigOct("0235257240471136036304134774172206743033664471063177431331617605322"));
     }
 
-//    /**
-//     * Test of getGuessCode method, of class TransUtil.
-//     */
-//    @Test
-//    public void testGetGuessCode() {
-//        try {
-//            System.out.println("TransUtil");
-//            String str1 = new String(new byte[]{(byte) 0xff}, StandardCharsets.ISO_8859_1);
-//            String str2 = new String(new byte[]{(byte) 0x7f}, StandardCharsets.ISO_8859_1);
-//            String str3 = new String(new byte[]{(byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x06}, StandardCharsets.ISO_8859_1);
-//            String str4 = new String(new byte[]{(byte) 0x1a, (byte) 0x0a, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x0d, (byte) 0x49, (byte) 0x48, (byte) 0x44, (byte) 0x52}, "8859_1");
-//            assertEquals(null, HttpUtil.getGuessCode(str1.getBytes(StandardCharsets.ISO_8859_1)));
-//            assertEquals(null, HttpUtil.getGuessCode(str2.getBytes(StandardCharsets.ISO_8859_1)));
-//            assertEquals(null, HttpUtil.getGuessCode(str3.getBytes(StandardCharsets.ISO_8859_1)));
-//            assertEquals(null, HttpUtil.getGuessCode(str4.getBytes(StandardCharsets.ISO_8859_1)));
-//
-//            assertEquals("US-ASCII", HttpUtil.getGuessCode("0123456ABCDEF".getBytes("UTF-8")));
-//            assertEquals("Shift_JIS", HttpUtil.getGuessCode("入口入口入口入口".getBytes("Shift_JIS")));
-//            assertEquals("EUC-JP", HttpUtil.getGuessCode("入口入口入口入口".getBytes("EUC-JP")));
-//            assertEquals("UTF-8", HttpUtil.getGuessCode("入口入口入口入口".getBytes("UTF-8")));
-//            assertEquals("UTF-16", HttpUtil.getGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16BE")));
-//            assertEquals("UTF-16", HttpUtil.getGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16LE"))); // UTF-16LE になるのがベスト
-//            assertEquals("UTF-16", HttpUtil.getGuessCode("ABCDEFGHIJKLMNOPQRSTUVWXYZあいうえおかきくけこ".getBytes("UTF-16")));
-//        } catch (UnsupportedEncodingException ex) {
-//            logger.log(Level.SEVERE, null, ex);
-//            assertTrue(false);
-//        }
-//    }
     /**
      * // * Test of generaterList method, of class TransUtil.
      */

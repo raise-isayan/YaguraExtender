@@ -239,8 +239,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("MD2", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -254,8 +255,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("MD2", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -283,8 +285,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("MD4", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -298,8 +301,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("MD4", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -327,8 +331,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("MD5", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -342,8 +347,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("MD5", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -371,8 +377,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA1", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -386,8 +393,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA1", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -415,8 +423,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA224", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -430,8 +439,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA224", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -459,8 +469,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA256", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -474,8 +485,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA256", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -503,8 +515,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA384", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -518,8 +531,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA384", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -547,8 +561,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA512", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -562,8 +577,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA512", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -591,8 +607,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA512/224", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -606,8 +623,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA512/224", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -635,8 +653,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA512/256", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -650,8 +669,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA512/256", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -679,8 +699,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-224", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -694,8 +715,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-224", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -723,8 +745,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-256", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -738,8 +761,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-256", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -767,8 +791,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-384", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -782,8 +807,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-384", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -811,8 +837,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-512", binary, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**
@@ -826,8 +853,9 @@ public class BouncyUtil {
         try {
             return toMessageDigest("SHA3-512", str, StandardCharsets.ISO_8859_1, upperCase);
         } catch (NoSuchAlgorithmException ex) {
-            return null;
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        return null;
     }
 
     /**

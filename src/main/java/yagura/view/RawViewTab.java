@@ -323,11 +323,10 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
             } else if (!this.isRequest && httpResponse.toByteArray().length() > 0) {
                 return true;
             }
-            return false;
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            return false;
         }
+        return false;
     }
 
     @Override
@@ -369,7 +368,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
                         }
 
                     } catch (UnsupportedEncodingException ex) {
-                        return null;
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
                     }
                 } else {
                     return this.httpRequestResponse;
@@ -377,9 +376,8 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
             } else {
                 return this.httpRequestResponse;
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
     /* impelements SendToMessage */

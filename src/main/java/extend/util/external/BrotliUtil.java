@@ -18,7 +18,7 @@ public class BrotliUtil {
             try (BufferedOutputStream out = new BufferedOutputStream(baos)) {
                 byte[] buf = new byte[1024];
                 int size;
-                while ((size = btis.read(buf, 0, buf.length)) != -1) {
+                while ((size = btis.read(buf, 0, buf.length)) > -1) {
                     out.write(buf, 0, size);
                 }
                 out.flush();

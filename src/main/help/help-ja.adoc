@@ -510,6 +510,9 @@ use request notes::
     reqCommentパラメータに指定した内容で送信します。
     送信可能な内容はreqNameと同じです。
 
+use dummy response if response is null::
+    レスポンスがnullの場合にダミーのレスポンスを送信します。
+
 ===== サーバチェック時にサーバに送信される形式
 
 multipart のデータ形式でサーバに送信されます。次の内容を含みます。

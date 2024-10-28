@@ -494,12 +494,12 @@ If checked for sending to server, Customize the request parameters used to send 
 image:images/custom_sendto_server_sendtoparameter.png[SendToItem Edit SendTo Connection Setting Dialog]
 
 override SendTo parameter::
-  Use Burp HTTP client for sending SendTo.
+ Use Burp HTTP client for sending SendTo.
 
 use request name::
  Send with the contents specified in the reqName parameter.
  
-. history comment +
+. history notes +
  Send comment on the proxy history.
 
 . response title tag +
@@ -514,10 +514,13 @@ use request name::
 . second line
  After Second lines are used as values.
 
-use request comment::
+use request notes::
   The content specified in the reqComment parameter is sent.
   The contents that can be sent are the same as for reqName.
 
+use dummy response if response is null::
+  Specifies a dummy response if the response is null.
+    
 ===== The format sent to the server when checking the server
 
 It is sent to the server in the form of multipart data. It includes the following

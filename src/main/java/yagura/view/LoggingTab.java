@@ -144,6 +144,11 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                 txtExcludeExtensionFocusLost(evt);
             }
         });
+        txtExcludeExtension.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtExcludeExtensionActionPerformed(evt);
+            }
+        });
 
         chkExclude.setText("Exclude Extension");
         chkExclude.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -194,7 +199,7 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                         .addGap(50, 50, 50)
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
-                                .addGap(45, 45, 45)
+                                .addGap(30, 30, 30)
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(chkToolLog)
                                     .addComponent(chkProxyLog)
@@ -270,11 +275,11 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
                 .addComponent(chkWebSocketLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkHistoryLogInclude)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkExclude)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtExcludeExtension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtExcludeExtension, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
                 .addComponent(chkWarnTemporaryProject)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -362,6 +367,10 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
     private void chkCompressLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkCompressLogActionPerformed
         this.firePropertyChange(LoggingProperty.LOGGING_PROPERTY, null, this.getLoggingProperty());
     }//GEN-LAST:event_chkCompressLogActionPerformed
+
+    private void txtExcludeExtensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtExcludeExtensionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtExcludeExtensionActionPerformed
 
     @Override
     public String getTabCaption() {

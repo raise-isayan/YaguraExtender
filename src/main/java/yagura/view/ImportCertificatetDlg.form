@@ -47,13 +47,13 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="txtStoreFile" min="-2" pref="274" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnImport" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="lblPassword" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="txtStorePassword" alignment="0" min="-2" pref="193" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                  <EmptySpace pref="42" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

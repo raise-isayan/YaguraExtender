@@ -84,7 +84,7 @@ public class JWTToken implements JsonToken {
                 return Algorithm.parseValue(m.group(1));
             }
         } catch (java.lang.IllegalArgumentException ex) {
-
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return null;
     }

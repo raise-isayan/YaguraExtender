@@ -105,7 +105,7 @@ public class MenuHander {
         /**
          * Yagura Charsets
          */
-        yaguraCharsetMenu.setText("Yagura Charsets");
+        yaguraCharsetMenu.setText("Yagura Charsets (Y)");
         yaguraCharsetMenu.setMnemonic(KeyEvent.VK_Y);
 
         // updateYaguraCharsetUI(this.yaguraCharsetMenu);
@@ -115,7 +115,7 @@ public class MenuHander {
          * Yagura Encode Type
          */
         JMenu yaguraEncodTypeMenu = new JMenu();
-        yaguraEncodTypeMenu.setText("Yagura Encode Type");
+        yaguraEncodTypeMenu.setText("Yagura Encode Type (T)");
         yaguraEncodTypeMenu.setMnemonic(KeyEvent.VK_T);
 
         JRadioButtonMenuItem yaguraUpperCase = new JRadioButtonMenuItem();
@@ -540,7 +540,7 @@ public class MenuHander {
         /**
          * Burp Charsets
          */
-        this.burpCharsetMenu.setText("Burp Charsets");
+        this.burpCharsetMenu.setText("Burp Charsets (B)");
         this.burpCharsetMenu.setMnemonic(KeyEvent.VK_B);
         this.burpCharsetMenu.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION));
 //            updateBurpCharsetUI(this.burpCharsetMenu);

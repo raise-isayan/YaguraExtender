@@ -81,11 +81,11 @@ public class ImportCertificatetDlg extends CustomDialog {
                         .addComponent(btnStoreTypePKCS12))
                     .addGroup(pnlCertSIelectmportLayout.createSequentialGroup()
                         .addComponent(txtStoreFile, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnImport))
                     .addComponent(lblPassword)
                     .addComponent(txtStorePassword, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         pnlCertSIelectmportLayout.setVerticalGroup(
             pnlCertSIelectmportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
