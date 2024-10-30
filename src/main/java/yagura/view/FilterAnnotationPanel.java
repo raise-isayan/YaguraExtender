@@ -33,7 +33,7 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
 
         pnlAnnotations = new javax.swing.JPanel();
         pnlAnnotation = new javax.swing.JPanel();
-        chkShowOnlyComment = new javax.swing.JCheckBox();
+        chkShowOnlyNotes = new javax.swing.JCheckBox();
         chkShowOnlyHighlight = new javax.swing.JCheckBox();
         pnlHighlightColor = new javax.swing.JPanel();
         chkWhite = new javax.swing.JCheckBox();
@@ -58,8 +58,8 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
 
         pnlAnnotation.setLayout(new javax.swing.BoxLayout(pnlAnnotation, javax.swing.BoxLayout.PAGE_AXIS));
 
-        chkShowOnlyComment.setText("Show only comment");
-        pnlAnnotation.add(chkShowOnlyComment);
+        chkShowOnlyNotes.setText("Show only notes");
+        pnlAnnotation.add(chkShowOnlyNotes);
 
         chkShowOnlyHighlight.setText("Show only highlight");
         chkShowOnlyHighlight.addActionListener(new java.awt.event.ActionListener() {
@@ -161,8 +161,8 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkOrange;
     private javax.swing.JCheckBox chkPink;
     private javax.swing.JCheckBox chkRed;
-    private javax.swing.JCheckBox chkShowOnlyComment;
     private javax.swing.JCheckBox chkShowOnlyHighlight;
+    private javax.swing.JCheckBox chkShowOnlyNotes;
     private javax.swing.JCheckBox chkWhite;
     private javax.swing.JCheckBox chkYellow;
     private javax.swing.JLabel lblListenerPort;
@@ -176,7 +176,7 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
 
     public void setAnnotationProperty(FilterAnnotationProperty filterProp) {
         this.txtLiistenerPort.setText(filterProp.getListenerPort() > -1 ? Integer.toString(filterProp.getListenerPort()) : "");
-        this.chkShowOnlyComment.setSelected(filterProp.getShowOnlyComment());
+        this.chkShowOnlyNotes.setSelected(filterProp.getShowOnlyComment());
         this.chkShowOnlyHighlight.setSelected(filterProp.getShowOnlyHighlightColors());
         this.setHighlightColors(filterProp.getHighlightColors());
         this.chkShowOnlyHighlightActionPerformed(null);
@@ -184,7 +184,7 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
 
     public FilterAnnotationProperty getAnnotationProperty(FilterAnnotationProperty annotation) {
         annotation.setListenerPort(ConvertUtil.parseIntDefault(this.txtLiistenerPort.getText(), -1));
-        annotation.setShowOnlyComment(this.chkShowOnlyComment.isSelected());
+        annotation.setShowOnlyComment(this.chkShowOnlyNotes.isSelected());
         annotation.setShowOnlyHighlightColors(this.chkShowOnlyHighlight.isSelected());
         annotation.setHighlightColors(this.getHighlightColors());
         return annotation;

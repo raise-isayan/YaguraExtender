@@ -44,6 +44,7 @@ import extension.burp.IBurpTab;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import java.util.List;
+import yagura.model.ResultFilter;
 
 /**
  *
@@ -78,7 +79,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         btnSearch = new javax.swing.JButton();
         chkRegExp = new javax.swing.JCheckBox();
         chkIgnoreCase = new javax.swing.JCheckBox();
-        chkComment = new javax.swing.JCheckBox();
+        chkNotes = new javax.swing.JCheckBox();
         pnlSearchEnc = new javax.swing.JPanel();
         rdoRepEnc_8859_1 = new javax.swing.JRadioButton();
         rdoRepEnc_AutoRecognise = new javax.swing.JRadioButton();
@@ -123,11 +124,11 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        chkComment.setSelected(true);
-        chkComment.setText("notes");
-        chkComment.addChangeListener(new javax.swing.event.ChangeListener() {
+        chkNotes.setSelected(true);
+        chkNotes.setText("notes");
+        chkNotes.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkCommentStateChanged(evt);
+                chkNotesStateChanged(evt);
             }
         });
 
@@ -245,7 +246,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                         .addGap(2, 2, 2)
                         .addComponent(pnlRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(chkComment)
+                        .addComponent(chkNotes)
                         .addGap(103, 103, 103))
                     .addComponent(txtSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -276,7 +277,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlSearchLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addComponent(chkComment))
+                        .addComponent(chkNotes))
                     .addGroup(pnlSearchLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(pnlSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -587,9 +588,9 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }//GEN-LAST:event_rdoRepEnc_AutoRecogniseStateChanged
 
-    private void chkCommentStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkCommentStateChanged
+    private void chkNotesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkNotesStateChanged
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
-    }//GEN-LAST:event_chkCommentStateChanged
+    }//GEN-LAST:event_chkNotesStateChanged
 
     private void chkIgnoreCaseStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkIgnoreCaseStateChanged
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
@@ -611,8 +612,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
-    private javax.swing.JCheckBox chkComment;
     private javax.swing.JCheckBox chkIgnoreCase;
+    private javax.swing.JCheckBox chkNotes;
     private javax.swing.JCheckBox chkRegExp;
     private javax.swing.JCheckBox chkRequestBody;
     private javax.swing.JCheckBox chkRequestHeader;
@@ -774,8 +775,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                             }
                         }
                     }
-                    if (searchProp.isComment() && item.getComment() != null) {
-                        m = p.matcher(item.getComment());
+                    if (searchProp.isNotes() && item.getNotes() != null) {
+                        m = p.matcher(item.getNotes());
                         if (m.find()) {
                             find = true;
                             break;
@@ -842,8 +843,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         FilterProperty filterProp = this.getProperty().getFilterProperty();
         this.tableResult.getSelectionModel().clearSelection();
         TableModel model = this.tableResult.getModel();
-        TableRowSorter<TableModel> sorter = new ResultFilterDlg.PropertyRowSorter<>(model);
-        sorter.setRowFilter(new ResultFilterDlg.PropertyRowHttpFilter(filterProp));
+        TableRowSorter<TableModel> sorter = new ResultFilter.PropertyRowSorter<>(model);
+        sorter.setRowFilter(new ResultFilter.PropertyRowHttpFilter(filterProp));
         this.tableResult.setRowSorter(sorter);
         firePropertyChange(JSearchProperty.JSEARCH_FILTER_PROPERTY, null, this.getProperty());
     }
@@ -863,7 +864,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.chkResponseHeader.setSelected(searchProp.isResponseHeader());
         this.chkResponseBody.setSelected(searchProp.isResponseBody());
 
-        this.chkComment.setSelected(searchProp.isComment());
+        this.chkNotes.setSelected(searchProp.isNotes());
 
         this.resultFilterDlg.setProperty(searchProp.getFilterProperty());
 
@@ -883,7 +884,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         searchProp.setResponseHeader(this.chkResponseHeader.isSelected());
         searchProp.setResponseBody(this.chkResponseBody.isSelected());
 
-        searchProp.setComment(this.chkComment.isSelected());
+        searchProp.setNotes(this.chkNotes.isSelected());
 
         searchProp.setFilterProperty(this.resultFilterDlg.getProperty());
         return searchProp;

@@ -43,9 +43,9 @@
             <Property name="axis" type="int" value="3"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JCheckBox" name="chkShowOnlyComment">
+            <Component class="javax.swing.JCheckBox" name="chkShowOnlyNotes">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Show only comment"/>
+                <Property name="text" type="java.lang.String" value="Show only notes"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JCheckBox" name="chkShowOnlyHighlight">

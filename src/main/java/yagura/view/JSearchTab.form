@@ -38,7 +38,7 @@
                           <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                           <Component id="pnlRequest1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="chkComment" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkNotes" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
                       </Group>
                       <Component id="txtSearch" max="32767" attributes="0"/>
@@ -78,7 +78,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
-                          <Component id="chkComment" min="-2" max="-2" attributes="0"/>
+                          <Component id="chkNotes" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -139,13 +139,13 @@
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkIgnoreCaseStateChanged"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="chkComment">
+        <Component class="javax.swing.JCheckBox" name="chkNotes">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="notes"/>
           </Properties>
           <Events>
-            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkCommentStateChanged"/>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkNotesStateChanged"/>
           </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="pnlSearchEnc">

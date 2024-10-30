@@ -44,7 +44,7 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
     private byte[] response = new byte[0];
     private String url;
     private short statusCode = 0;
-    private String comment = "";
+    private String notes = "";
     private MessageHighlightColor color = MessageHighlightColor.WHITE;
     private String memo = "";
     private int listenerPort = -1;
@@ -190,20 +190,20 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
         }
     }
 
-    public String getComment() {
+    public String getNotes() {
         if (this.httpRequestResponse != null) {
             return this.httpRequestResponse.annotations().notes();
         } else {
-            return this.comment;
+            return this.notes;
         }
     }
 
-    public void setComment(String comment) {
+    public void setNotes(String notes) {
         if (this.httpRequestResponse != null) {
-//            this.httpRequestResponse.annotations().withNotes(comment);
-            this.httpRequestResponse.annotations().setNotes(comment);
+//            this.httpRequestResponse.annotations().withNotes(notes);
+            this.httpRequestResponse.annotations().setNotes(notes);
         } else {
-            this.comment = comment;
+            this.notes = notes;
         }
     }
 

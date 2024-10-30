@@ -1,26 +1,9 @@
 package yagura.view;
 
-import burp.api.montoya.http.message.params.HttpParameterType;
-import burp.api.montoya.proxy.ProxyHttpRequestResponse;
-import burp.api.montoya.proxy.ProxyWebSocketMessage;
-import burp.api.montoya.websocket.Direction;
-import extension.burp.BurpExtensionImpl;
-import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
-import extension.burp.MessageHighlightColor;
-import extension.helpers.StringUtil;
 import extension.view.base.CustomDialog;
-import java.net.HttpURLConnection;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -209,8 +192,7 @@ public class ResultFilterDlg extends CustomDialog {
         FilterProperty filter = this.getProperty();
         if (this.isHttpProtocalType()) {
             this.pnlFilterHttp.ConverToBambda(filter);
-        }
-        else {
+        } else {
             this.pnlFilterWebSocket.ConverToBambda(filter);
         }
     }//GEN-LAST:event_btnConvertBambdaActionPerformed
@@ -218,8 +200,7 @@ public class ResultFilterDlg extends CustomDialog {
     private void btnImportBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportBambdaActionPerformed
         if (this.isHttpProtocalType()) {
             this.pnlFilterHttp.ImportBambda(getFilterCategory());
-        }
-        else {
+        } else {
             this.pnlFilterWebSocket.ImportBambda(getFilterCategory());
         }
     }//GEN-LAST:event_btnImportBambdaActionPerformed
@@ -284,12 +265,12 @@ public class ResultFilterDlg extends CustomDialog {
     public void setProperty(FilterProperty filterProp) {
         setProtocalType(filterProp.getFilterCategory());
         switch (filterProp.getFilterCategory()) {
-        case HTTP:
-            this.pnlFilterHttp.setProperty(filterProp);
-            break;
-        case WEBSOCKET:
-            this.pnlFilterWebSocket.setProperty(filterProp);
-            break;
+            case HTTP:
+                this.pnlFilterHttp.setProperty(filterProp);
+                break;
+            case WEBSOCKET:
+                this.pnlFilterWebSocket.setProperty(filterProp);
+                break;
         }
     }
 
@@ -307,12 +288,12 @@ public class ResultFilterDlg extends CustomDialog {
 
     private void setProtocalType(FilterProperty.FilterCategory filterCategory) {
         switch (filterCategory) {
-        case HTTP:
-            this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("HTTP"));
-            break;
-        case WEBSOCKET:
-            this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("WebSocket"));
-            break;
+            case HTTP:
+                this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("HTTP"));
+                break;
+            case WEBSOCKET:
+                this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("WebSocket"));
+                break;
         }
     }
 
@@ -341,8 +322,7 @@ public class ResultFilterDlg extends CustomDialog {
     public void setSearchMode(boolean mode) {
         if (mode) {
             this.tabbeProtocol.remove(this.pnlFilterWebSocket);
-        }
-        else {
+        } else {
             if (this.tabbeProtocol.indexOfTab("WebSocket") > -1) {
                 this.tabbeProtocol.addTab("WebSocket", this.pnlFilterWebSocket);
             }
@@ -358,260 +338,6 @@ public class ResultFilterDlg extends CustomDialog {
         getContentPane().remove(this.pnlName);
         if (edit) {
             getContentPane().add(this.pnlName, java.awt.BorderLayout.NORTH);
-        }
-    }
-
-    public static class PropertyRowHttpFilter extends RowFilter<Object, Object> {
-
-        private final FilterProperty filterProp;
-
-        public PropertyRowHttpFilter(FilterProperty filterProp) {
-            this.filterProp = filterProp;
-        }
-
-        @Override
-        public boolean include(RowFilter.Entry<? extends Object, ? extends Object> entry) {
-            boolean allFilter = false;
-            try {
-                ProxyHttpRequestResponse item = (ProxyHttpRequestResponse) entry.getValue(0);
-                boolean showOnlyScopFilter = true;
-                // Show only in-scope items
-                if (this.filterProp.isShowOnlyScopeItems()) {
-                    showOnlyScopFilter = BurpExtensionImpl.helpers().isInScope(item.request().url());
-                }
-                // Hide items without responses
-                boolean hideItemsWithoutResponses = true;
-                if (this.filterProp.isHideItemsWithoutResponses()) {
-                    hideItemsWithoutResponses = (item.response() != null);
-                }
-                // chkShowOnlyParameterizedRequests
-                boolean parameterizedRequests = true;
-                if (this.filterProp.isShowOnlyParameterizedRequests()) {
-                    parameterizedRequests = item.request().hasParameters(HttpParameterType.URL) || item.request().hasParameters(HttpParameterType.BODY);
-                }
-                // Show only edited message
-                boolean editedMessage = true;
-                if (this.filterProp.isShowOnlyEditedMessage()) {
-                    editedMessage = item.edited();
-                }
-
-                // Status Filter
-                boolean statusFilter = false;
-                if (showOnlyScopFilter) {
-                    // Response Status がない場合は無条件で含める
-                    if (!item.hasResponse()) {
-                        statusFilter = true;
-                    } else {
-                        if (item.response().statusCode() == 0) {
-                            statusFilter = true;
-                        }
-                        if (this.filterProp.getStat2xx() && (HttpURLConnection.HTTP_OK <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_MULT_CHOICE)) {
-                            statusFilter = true;
-                        }
-                        if (this.filterProp.getStat3xx() && (HttpURLConnection.HTTP_MULT_CHOICE <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_BAD_REQUEST)) {
-                            statusFilter = true;
-                        }
-                        if (this.filterProp.getStat4xx() && (HttpURLConnection.HTTP_BAD_REQUEST <= item.response().statusCode() && item.response().statusCode() < HttpURLConnection.HTTP_INTERNAL_ERROR)) {
-                            statusFilter = true;
-                        }
-                        if (this.filterProp.getStat5xx() && (HttpURLConnection.HTTP_INTERNAL_ERROR <= item.response().statusCode() && item.response().statusCode() < 600)) {
-                            statusFilter = true;
-                        }
-                    }
-                }
-                // Highlight Color
-                boolean colorFilter = true;
-                if (statusFilter && showOnlyScopFilter) {
-                    // cololr
-                    if (this.filterProp.getShowOnlyHighlightColors()) {
-                        EnumSet<MessageHighlightColor> colors = this.filterProp.getHighlightColors();
-                        MessageHighlightColor hc = MessageHighlightColor.valueOf(item.annotations().highlightColor());
-                        colorFilter = colors.contains(hc);
-                    }
-                }
-                // Comment Filter
-                boolean commentFilter = true;
-                if (statusFilter && showOnlyScopFilter) {
-                    // comment
-                    if (this.filterProp.getShowOnlyComment()) {
-                        commentFilter = (item.annotations().hasNotes());
-                    }
-                }
-                boolean matchFilter = true;
-                if (statusFilter && showOnlyScopFilter && colorFilter) {
-                    // showOnly Filter
-                    if (this.filterProp.getShowOnly()) {
-                        Pattern patternShowOnly = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getShowOnlyExtension()));
-                        Matcher matchShowOnly = patternShowOnly.matcher(item.request().pathWithoutQuery());
-                        if (!matchShowOnly.find()) {
-                            matchFilter = false;
-                        }
-                    } else {
-                        // Hide Filter
-                        if (this.filterProp.getHide()) {
-                            Pattern patternHide = Pattern.compile(BurpUtil.parseFilterPattern(this.filterProp.getHideExtension()));
-                            Matcher matchHide = patternHide.matcher(item.request().pathWithoutQuery());
-                            if (matchHide.find()) {
-                                matchFilter = false;
-                            }
-                        }
-                    }
-                }
-                // request method
-                boolean requestMethod = true;
-                if (!this.filterProp.getMethod().isEmpty()) {
-                    requestMethod = item.request().method().equals(this.filterProp.getMethod().toUpperCase());
-                }
-                // request path
-                boolean requestURL = true;
-                if (!this.filterProp.getPath().isEmpty()) {
-                    requestURL = item.request().path().contains(this.filterProp.getPath());
-                }
-                // request
-                boolean request = true;
-                if (!this.filterProp.getRequest().isEmpty()) {
-                    if (this.filterProp.isRequestRegex()) {
-                        request = item.request().contains(Pattern.compile(this.filterProp.getRequest(), this.filterProp.isRequestIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
-                    } else {
-                        request = item.request().contains(this.filterProp.getRequest(), this.filterProp.isRequestIgnoreCase());
-                    }
-                }
-                // response
-                boolean response = true;
-                if (!this.filterProp.getResponse().isEmpty()) {
-                    if (item.hasResponse()) {
-                        if (this.filterProp.isResponseRegex()) {
-                            response = item.response().contains(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase());
-                        } else {
-                            response = item.response().contains(Pattern.compile(this.filterProp.getResponse(), this.filterProp.isResponseIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
-                        }
-                    }
-                }
-                // ListenerPort
-                boolean listenerPort = true;
-                if (this.filterProp.getListenerPort() > -1) {
-                    listenerPort = this.filterProp.getListenerPort() == item.listenerPort();
-                }
-                // 条件のAND
-                allFilter = (statusFilter && colorFilter && commentFilter && matchFilter && showOnlyScopFilter && hideItemsWithoutResponses && parameterizedRequests && editedMessage && requestMethod && requestURL && request && response && listenerPort);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-            return allFilter;
-        }
-
-    }
-
-    public static class PropertyRowWebSocetFilter extends RowFilter<Object, Object> {
-
-        private final FilterProperty filterProp;
-
-        public PropertyRowWebSocetFilter(FilterProperty filterProp) {
-            this.filterProp = filterProp;
-        }
-
-        @Override
-        public boolean include(RowFilter.Entry<? extends Object, ? extends Object> entry) {
-            boolean allFilter = false;
-            try {
-                ProxyWebSocketMessage item = (ProxyWebSocketMessage) entry.getValue(0);
-                boolean showOnlyScopFilter = true;
-                // Show only in-scope items
-                if (this.filterProp.isShowOnlyScopeItems()) {
-                    showOnlyScopFilter = BurpExtensionImpl.helpers().isInScope(item.upgradeRequest().url());
-                }
-                // Hide Incoming Message
-                boolean hideIncomingMessage = true;
-                if (this.filterProp.isHideIncomingMessage()) {
-                    hideIncomingMessage = (item.direction() != Direction.SERVER_TO_CLIENT);
-                }
-                // Hide Outgoing Message
-                boolean hideOutgoingMessage = true;
-                if (this.filterProp.isHideOutgoingMessage()) {
-                    hideOutgoingMessage = (item.direction() != Direction.CLIENT_TO_SERVER);
-                }
-                // ShowOnlyEditedMessage
-                boolean showOnlyEditedMessage = true;
-                if (this.filterProp.isShowOnlyEditedMessage()) {
-                    showOnlyEditedMessage = (item.editedPayload() != null);
-                }
-
-                // Highlight Color
-                boolean colorFilter = true;
-                if (showOnlyScopFilter) {
-                    // cololr
-                    if (this.filterProp.getShowOnlyHighlightColors()) {
-                        EnumSet<MessageHighlightColor> colors = this.filterProp.getHighlightColors();
-                        MessageHighlightColor hc = MessageHighlightColor.valueOf(item.annotations().highlightColor());
-                        colorFilter = colors.contains(hc);
-                    }
-                }
-                // Comment Filter
-                boolean commentFilter = true;
-                if (showOnlyScopFilter) {
-                    // comment
-                    if (this.filterProp.getShowOnlyComment()) {
-                        commentFilter = (item.annotations().hasNotes());
-                    }
-                }
-                // message
-                boolean message = true;
-                if (!this.filterProp.getRequest().isEmpty()) {
-                    if (this.filterProp.isRequestRegex()) {
-                        message = item.contains(Pattern.compile(this.filterProp.getMessage(), this.filterProp.isMessageIgnoreCase() ? Pattern.DOTALL : Pattern.DOTALL | Pattern.CASE_INSENSITIVE));
-                    } else {
-                        message = item.contains(this.filterProp.getMessage(), this.filterProp.isMessageIgnoreCase());
-                    }
-                }
-                // ListenerPort
-                boolean listenerPort = true;
-                if (this.filterProp.getListenerPort() > -1) {
-                    listenerPort = this.filterProp.getListenerPort() == item.listenerPort();
-                }
-                // 条件のAND
-                allFilter = (colorFilter && commentFilter && showOnlyScopFilter && hideIncomingMessage && hideOutgoingMessage && showOnlyEditedMessage && message && message && listenerPort);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-            return allFilter;
-        }
-
-    }
-
-    public static class PropertyRowSorter<M extends TableModel> extends TableRowSorter<M> {
-
-        public PropertyRowSorter(M model) {
-            super(model);
-        }
-
-        private final NumberComparator numberComparator = new NumberComparator();
-
-        @Override
-        public Comparator<?> getComparator(int column) {
-            if (column == 1) {
-                return numberComparator;
-            } else {
-                return super.getComparator(column);
-            }
-        }
-    }
-
-    private static class NumberComparator implements Comparator {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public int compare(Object o1, Object o2) {
-            try {
-                int parseIntA = Integer.parseInt(o1.toString());
-                int parseIntB = Integer.parseInt(o2.toString());
-                return parseIntA - parseIntB;
-            } catch (NumberFormatException e) {
-                if (o1 instanceof Comparator comparator) {
-                    return comparator.compare(o1, o2);
-                } else {
-                    return StringUtil.compareToString(o1.toString(), o2.toString());
-                }
-            }
         }
     }
 

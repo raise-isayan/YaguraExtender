@@ -102,7 +102,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                     }
                     break;
                 case 7: // comment
-                    value = msg.getComment();
+                    value = msg.getNotes();
                     break;
                 case 8: // listener port
                     value = msg.getListenerPort();
@@ -140,7 +140,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
                 case 6: // length
                     break;
                 case 7: // commment
-                    msg.setComment((String) value);
+                    msg.setNotes((String) value);
                     break;
                 case 8: // listener port
                     break;

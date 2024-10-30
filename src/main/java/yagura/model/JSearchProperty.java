@@ -115,20 +115,20 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
     }
 
     @Expose
-    private boolean comment = true;
+    private boolean notes = true;
 
     /**
-     * @return the comment
+     * @return the notes
      */
-    public boolean isComment() {
-        return comment;
+    public boolean isNotes() {
+        return notes;
     }
 
     /**
-     * @param comment the comment to set
+     * @param notes the notes to set
      */
-    public void setComment(boolean comment) {
-        this.comment = comment;
+    public void setNotes(boolean notes) {
+        this.notes = notes;
     }
 
     @Expose
@@ -155,7 +155,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
         this.setRequestBody(property.isRequestBody());
         this.setResponseHeader(property.isResponseHeader());
         this.setResponseBody(property.isResponseBody());
-        this.setComment(property.isComment());
+        this.setNotes(property.isNotes());
         this.setSmartMatch(property.isSmartMatch());
         this.setRegexp(property.isRegexp());
         this.setIgnoreCase(property.isIgnoreCase());

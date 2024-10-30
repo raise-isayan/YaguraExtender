@@ -168,8 +168,6 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtMethod" alignment="0" min="-2" pref="162" max="-2" attributes="0"/>
-                                      <Component id="txtPath" alignment="0" min="-2" pref="358" max="-2" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="txtResponse" min="-2" pref="358" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
@@ -183,6 +181,10 @@
                                           <Component id="chkReqRegExp" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="chkReqIgnoreCase" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="txtMethod" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="txtPath" alignment="0" pref="358" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace pref="99" max="32767" attributes="0"/>
