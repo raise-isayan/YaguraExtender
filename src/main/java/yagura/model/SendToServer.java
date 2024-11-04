@@ -55,6 +55,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -75,9 +76,11 @@ import okhttp.socks.SocksProxyAuthInterceptor;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import yagura.model.HttpExtendProperty.HttpProtocol;
 
 /**
  *
@@ -108,7 +111,6 @@ public class SendToServer extends SendToMenuItem {
             sendToServerUseOkHttpClient(messageInfo, extendProp);
         } else {
             sendToServerUseBurpClient(messageInfo, extendProp);
-            //sendToServerUseHttpClient(messageInfo, extendProp);
         }
     }
 
@@ -118,7 +120,7 @@ public class SendToServer extends SendToMenuItem {
             public void run() {
                 try (ByteArrayOutputStream ostm = new ByteArrayOutputStream()) {
                     URL tagetURL = new URL(getTarget());
-                    outPostHeader(ostm, tagetURL);
+                    outPostHeader(ostm, tagetURL, extendProp.getHttpExtendProperty().getHttpProtocol());
                     String boundary = HttpUtil.generateBoundary();
                     ostm.write(StringUtil.getBytesRaw(String.format("Content-Type: %s", "multipart/form-data;boundary=" + boundary) + StringUtil.NEW_LINE));
                     try (ByteArrayOutputStream bodyStream = new ByteArrayOutputStream()) {
@@ -566,6 +568,12 @@ public class SendToServer extends SendToMenuItem {
                     sslContext.init(keyManagers, trustManagers, null);
 
                     OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+                    // protocol
+                    if (extendConnectionProp.getHttpProtocol().equals(HttpProtocol.HTTP_1_1)) {
+                        clientBuilder = clientBuilder.protocols(Arrays.asList(Protocol.HTTP_1_1));
+                    } else if (extendConnectionProp.getHttpProtocol().equals(HttpProtocol.HTTP_2)) {
+                        clientBuilder = clientBuilder.protocols(Arrays.asList(Protocol.HTTP_2));
+                    }
                     // timeout
                     int timeout = extendConnectionProp.getTimeout();
                     clientBuilder = clientBuilder.connectTimeout(timeout, TimeUnit.SECONDS).readTimeout(timeout, TimeUnit.SECONDS).writeTimeout(timeout, TimeUnit.SECONDS);
@@ -623,10 +631,17 @@ public class SendToServer extends SendToMenuItem {
         this.threadExecutor.submit(sendTo);
     }
 
-    protected void outPostHeader(OutputStream out, URL tagetURL) throws IOException, Exception {
+    protected void outPostHeader(OutputStream out, URL tagetURL, HttpExtendProperty.HttpProtocol httpProtocol) throws IOException, Exception {
         HttpTarget httpService = new HttpTarget(tagetURL);
         String target = tagetURL.getFile().isEmpty() ? "/" : tagetURL.getFile();
-        out.write(StringUtil.getBytesRaw(String.format("POST %s HTTP/1.1", target) + HttpUtil.LINE_TERMINATE));
+        // protocol
+        String httpMode = "HTTP/1.1";
+        if (httpProtocol.equals(HttpProtocol.HTTP_1_1)) {
+            httpMode = "HTTP/1.1";
+        } else if (httpProtocol.equals(HttpProtocol.HTTP_2)) {
+            httpMode = "HTTP/2";
+        }
+        out.write(StringUtil.getBytesRaw(String.format("POST %s %s", target, httpMode) + HttpUtil.LINE_TERMINATE));
         out.write(StringUtil.getBytesRaw(String.format("Host: %s", HttpUtil.buildHost(httpService.getHost(), httpService.getPort(), httpService.secure())) + HttpUtil.LINE_TERMINATE));
         out.write(StringUtil.getBytesRaw(String.format("User-Agent: %s", "Java-http-client/BurpSuite") + HttpUtil.LINE_TERMINATE));
     }
@@ -696,9 +711,7 @@ public class SendToServer extends SendToMenuItem {
                     HttpUtil.outMultipartBinary(boundary, out, "response", dummyResponse.toByteArray().getBytes());
                 }
             }
-
         }
-
         HttpUtil.outMultipartFinish(boundary, out);
     }
 

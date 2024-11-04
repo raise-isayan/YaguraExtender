@@ -16,6 +16,10 @@ public class HttpExtendProperty {
         BURP, CUSTOM
     };
 
+    public enum HttpProtocol {
+        AUTO, HTTP_1_1, HTTP_2
+    };
+
     public enum AuthorizationType {
         NONE, BASIC, DIGEST
     };
@@ -23,6 +27,8 @@ public class HttpExtendProperty {
     private HttpClientType httpClientType = HttpClientType.BURP;
 
     private AuthorizationType authorizationType = AuthorizationType.NONE;
+
+    private HttpProtocol httpProtocol = HttpProtocol.AUTO;
 
     private int timeout = 120;
 
@@ -51,6 +57,14 @@ public class HttpExtendProperty {
      */
     public void setHttpClientType(HttpClientType httpClientType) {
         this.httpClientType = httpClientType;
+    }
+
+    public HttpProtocol getHttpProtocol() {
+        return this.httpProtocol;
+    }
+
+    public void setHttpProtocol(HttpProtocol httpProtocol) {
+        this.httpProtocol = httpProtocol;
     }
 
     public int getTimeout() {
@@ -245,6 +259,7 @@ public class HttpExtendProperty {
 
     public void setProperty(HttpExtendProperty property) {
         this.httpClientType = property.httpClientType;
+        this.httpProtocol = property.httpProtocol;
 
         this.timeout = property.timeout;
         this.authorizationType = property.authorizationType;
@@ -263,6 +278,7 @@ public class HttpExtendProperty {
 
     public void setProperties(Properties prop) {
         this.httpClientType = HttpClientType.valueOf(prop.getProperty("useHttpClient", HttpClientType.BURP.name()));
+        this.httpProtocol = HttpProtocol.valueOf(prop.getProperty("httpProtocol", HttpProtocol.AUTO.name()));
 
         this.timeout = ConvertUtil.parseIntDefault(prop.getProperty("timeout"), 120);
 
@@ -283,6 +299,7 @@ public class HttpExtendProperty {
     public Properties getProperties() {
         Properties prop = new Properties();
         prop.setProperty("useHttpClient", this.httpClientType.name());
+        prop.setProperty("httpProtocol", this.httpProtocol.name());
 
         prop.setProperty("timeout", StringUtil.toString(this.timeout));
 

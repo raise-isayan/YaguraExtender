@@ -48,8 +48,8 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
         chkGray = new javax.swing.JCheckBox();
         pnlBottom = new javax.swing.JPanel();
         pnlListenerPort = new javax.swing.JPanel();
-        txtLiistenerPort = new javax.swing.JTextField();
         lblListenerPort = new javax.swing.JLabel();
+        txtLiistenerPort = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -111,28 +111,11 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
         pnlBottom.setLayout(new java.awt.BorderLayout());
 
         pnlListenerPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by listener "));
+        pnlListenerPort.setLayout(new java.awt.BorderLayout());
 
         lblListenerPort.setText("Port");
-
-        javax.swing.GroupLayout pnlListenerPortLayout = new javax.swing.GroupLayout(pnlListenerPort);
-        pnlListenerPort.setLayout(pnlListenerPortLayout);
-        pnlListenerPortLayout.setHorizontalGroup(
-            pnlListenerPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlListenerPortLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblListenerPort, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtLiistenerPort, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
-        );
-        pnlListenerPortLayout.setVerticalGroup(
-            pnlListenerPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlListenerPortLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlListenerPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblListenerPort)
-                    .addComponent(txtLiistenerPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        pnlListenerPort.add(lblListenerPort, java.awt.BorderLayout.WEST);
+        pnlListenerPort.add(txtLiistenerPort, java.awt.BorderLayout.CENTER);
 
         pnlBottom.add(pnlListenerPort, java.awt.BorderLayout.SOUTH);
 

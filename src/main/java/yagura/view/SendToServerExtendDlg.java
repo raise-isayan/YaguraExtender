@@ -47,15 +47,21 @@ public class SendToServerExtendDlg extends CustomDialog {
         btnGrpReqNumber = new javax.swing.ButtonGroup();
         btnGrpReqName = new javax.swing.ButtonGroup();
         btnGrpReqNameHistoryCommentType = new javax.swing.ButtonGroup();
-        rdoReqCommentHistoryCommentType = new javax.swing.ButtonGroup();
+        rdoGrpReqCommentHistoryCommentType = new javax.swing.ButtonGroup();
+        rdoGrpHttpProtocol = new javax.swing.ButtonGroup();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
         tabbetSendToExtend = new javax.swing.JTabbedPane();
         pnlConnections = new javax.swing.JPanel();
         pnlUseClient = new javax.swing.JPanel();
-        rdoCustomClient = new javax.swing.JRadioButton();
+        pnlHttpClient = new javax.swing.JPanel();
         rdoBurpClient = new javax.swing.JRadioButton();
+        rdoCustomClient = new javax.swing.JRadioButton();
+        pnlHttpProtocol = new javax.swing.JPanel();
+        rdoHttpProtocolAuto = new javax.swing.JRadioButton();
+        rdoHttpProtocol1 = new javax.swing.JRadioButton();
+        rdoHttpProtocol2 = new javax.swing.JRadioButton();
         pnlUseCustomClient = new javax.swing.JPanel();
         pnlTimeout = new javax.swing.JPanel();
         spnTimeout = new javax.swing.JSpinner();
@@ -154,6 +160,11 @@ public class SendToServerExtendDlg extends CustomDialog {
 
         pnlConnections.setLayout(new java.awt.BorderLayout());
 
+        pnlUseClient.setLayout(new java.awt.BorderLayout());
+
+        btnGrpHttpClientType.add(rdoBurpClient);
+        rdoBurpClient.setText("Use Burp http client (with burp settings)");
+
         btnGrpHttpClientType.add(rdoCustomClient);
         rdoCustomClient.setSelected(true);
         rdoCustomClient.setText("Use Custom http client");
@@ -163,29 +174,46 @@ public class SendToServerExtendDlg extends CustomDialog {
             }
         });
 
-        btnGrpHttpClientType.add(rdoBurpClient);
-        rdoBurpClient.setText("Use Burp http client (with burp settings)");
-
-        javax.swing.GroupLayout pnlUseClientLayout = new javax.swing.GroupLayout(pnlUseClient);
-        pnlUseClient.setLayout(pnlUseClientLayout);
-        pnlUseClientLayout.setHorizontalGroup(
-            pnlUseClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlUseClientLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlHttpClientLayout = new javax.swing.GroupLayout(pnlHttpClient);
+        pnlHttpClient.setLayout(pnlHttpClientLayout);
+        pnlHttpClientLayout.setHorizontalGroup(
+            pnlHttpClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlHttpClientLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlUseClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlHttpClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(rdoBurpClient)
                     .addComponent(rdoCustomClient))
-                .addContainerGap(333, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
-        pnlUseClientLayout.setVerticalGroup(
-            pnlUseClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlUseClientLayout.createSequentialGroup()
+        pnlHttpClientLayout.setVerticalGroup(
+            pnlHttpClientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlHttpClientLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(rdoBurpClient)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoCustomClient)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
+
+        pnlUseClient.add(pnlHttpClient, java.awt.BorderLayout.CENTER);
+
+        pnlHttpProtocol.setBorder(javax.swing.BorderFactory.createTitledBorder("Protocol"));
+        pnlHttpProtocol.setLayout(new java.awt.GridLayout(1, 3));
+
+        rdoGrpHttpProtocol.add(rdoHttpProtocolAuto);
+        rdoHttpProtocolAuto.setSelected(true);
+        rdoHttpProtocolAuto.setText("Auto");
+        pnlHttpProtocol.add(rdoHttpProtocolAuto);
+
+        rdoGrpHttpProtocol.add(rdoHttpProtocol1);
+        rdoHttpProtocol1.setText("HTTP/1.1");
+        pnlHttpProtocol.add(rdoHttpProtocol1);
+
+        rdoGrpHttpProtocol.add(rdoHttpProtocol2);
+        rdoHttpProtocol2.setText("HTTP/2");
+        pnlHttpProtocol.add(rdoHttpProtocol2);
+
+        pnlUseClient.add(pnlHttpProtocol, java.awt.BorderLayout.EAST);
 
         pnlConnections.add(pnlUseClient, java.awt.BorderLayout.NORTH);
 
@@ -498,13 +526,13 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        rdoReqCommentHistoryCommentType.add(rdoReqCommentAllLine);
+        rdoGrpReqCommentHistoryCommentType.add(rdoReqCommentAllLine);
         rdoReqCommentAllLine.setText("all line");
 
-        rdoReqCommentHistoryCommentType.add(rdoReqCommentFirstLine);
+        rdoGrpReqCommentHistoryCommentType.add(rdoReqCommentFirstLine);
         rdoReqCommentFirstLine.setText("first line");
 
-        rdoReqCommentHistoryCommentType.add(rdoReqCommentSecondLine);
+        rdoGrpReqCommentHistoryCommentType.add(rdoReqCommentSecondLine);
         rdoReqCommentSecondLine.setSelected(true);
         rdoReqCommentSecondLine.setText("after second line");
 
@@ -533,11 +561,6 @@ public class SendToServerExtendDlg extends CustomDialog {
         );
 
         chkDummyResponse.setText("use dummy response if response is null");
-        chkDummyResponse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chkDummyResponseActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlSendToOverrideLayout = new javax.swing.GroupLayout(pnlSendToOverride);
         pnlSendToOverride.setLayout(pnlSendToOverrideLayout);
@@ -594,7 +617,7 @@ public class SendToServerExtendDlg extends CustomDialog {
                 .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chkDummyResponse)
-                .addContainerGap(300, Short.MAX_VALUE))
+                .addContainerGap(365, Short.MAX_VALUE))
         );
 
         chkOverrideSendToParameter.setText("override sendto parameter");
@@ -669,10 +692,6 @@ public class SendToServerExtendDlg extends CustomDialog {
         SwingUtil.setContainerEnable(this.pnlSendToOverride, this.chkOverrideSendToParameter.isSelected());
     }//GEN-LAST:event_chkOverrideSendToParameterStateChanged
 
-    private void chkDummyResponseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkDummyResponseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chkDummyResponseActionPerformed
-
     private final ImportCertificatetDlg importCertificatetDlg = new ImportCertificatetDlg(null, true);
 
     private final CertificateItem certProp = new CertificateItem();
@@ -743,6 +762,8 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JPanel pnlCustom;
     private javax.swing.JPanel pnlCustomAuthorization;
     private javax.swing.JPanel pnlCustomProxy;
+    private javax.swing.JPanel pnlHttpClient;
+    private javax.swing.JPanel pnlHttpProtocol;
     private javax.swing.JPanel pnlReqCommentLineGrp;
     private javax.swing.JPanel pnlReqNameLineGrp;
     private javax.swing.JPanel pnlSendToOverride;
@@ -754,10 +775,14 @@ public class SendToServerExtendDlg extends CustomDialog {
     private javax.swing.JPanel pnlUseCustomClient;
     private javax.swing.JRadioButton rdoBurpClient;
     private javax.swing.JRadioButton rdoCustomClient;
+    private javax.swing.ButtonGroup rdoGrpHttpProtocol;
+    private javax.swing.ButtonGroup rdoGrpReqCommentHistoryCommentType;
+    private javax.swing.JRadioButton rdoHttpProtocol1;
+    private javax.swing.JRadioButton rdoHttpProtocol2;
+    private javax.swing.JRadioButton rdoHttpProtocolAuto;
     private javax.swing.JRadioButton rdoReqCommentAllLine;
     private javax.swing.JRadioButton rdoReqCommentFirstLine;
     private javax.swing.JRadioButton rdoReqCommentHistoryComment;
-    private javax.swing.ButtonGroup rdoReqCommentHistoryCommentType;
     private javax.swing.JRadioButton rdoReqCommentResponseTitle;
     private javax.swing.JRadioButton rdoReqCommentSecondLine;
     private javax.swing.JRadioButton rdoReqNameAllLine;
@@ -837,6 +862,16 @@ public class SendToServerExtendDlg extends CustomDialog {
         return this.rdoCustomClient.isSelected() ? HttpExtendProperty.HttpClientType.CUSTOM : HttpExtendProperty.HttpClientType.BURP;
     }
 
+    public HttpExtendProperty.HttpProtocol getHttpProtocol() {
+        HttpExtendProperty.HttpProtocol httpProtocol = HttpExtendProperty.HttpProtocol.AUTO;
+        if (this.rdoHttpProtocol1.isSelected()) {
+            httpProtocol = HttpExtendProperty.HttpProtocol.HTTP_1_1;
+        } else if (this.rdoHttpProtocol2.isSelected()) {
+            httpProtocol = HttpExtendProperty.HttpProtocol.HTTP_2;
+        }
+        return httpProtocol;
+    }
+
     public void setProperty(SendToExtendProperty prop) {
         this.setProperty(prop.getSendToParameterProperty());
         this.setProperty(prop.getHttpExtendProperty());
@@ -894,8 +929,24 @@ public class SendToServerExtendDlg extends CustomDialog {
     public void setProperty(HttpExtendProperty prop) {
         HttpExtendProperty.HttpClientType httpClientType = prop.getHttpClientType();
         HttpExtendProperty.AuthorizationType authorizationType = prop.getAuthorizationType();
+        HttpExtendProperty.HttpProtocol httpProtocol = prop.getHttpProtocol();
 
-        this.rdoBurpClient.setSelected(HttpExtendProperty.HttpClientType.BURP.equals(httpClientType));
+        if (HttpExtendProperty.HttpClientType.CUSTOM.equals(httpClientType)) {
+            this.rdoCustomClient.setSelected(true);
+        } else {
+            this.rdoBurpClient.setSelected(true);
+        }
+        switch (httpProtocol) {
+            case HTTP_1_1:
+                this.rdoHttpProtocol1.setSelected(true);
+                break;
+            case HTTP_2:
+                this.rdoHttpProtocol2.setSelected(true);
+                break;
+            default:
+                this.rdoHttpProtocolAuto.setSelected(true);
+                break;
+        }
 
         this.spnTimeout.setValue(prop.getTimeout());
 
@@ -918,11 +969,6 @@ public class SendToServerExtendDlg extends CustomDialog {
         this.txtProxyUser.setText(proxyUser);
         this.txtProxyPasswd.setText(proxyPasswd);
         this.chkIgnoreValidateCertification.setSelected(ignoreValidateCertification);
-        if (HttpExtendProperty.HttpClientType.CUSTOM.equals(httpClientType)) {
-            this.rdoCustomClient.setSelected(true);
-        } else {
-            this.rdoBurpClient.setSelected(true);
-        }
 
         this.clearItem();
         this.chkClientCertififate.setSelected(prop.isUseClientCertificate());
@@ -966,6 +1012,7 @@ public class SendToServerExtendDlg extends CustomDialog {
     public HttpExtendProperty getHttpExtendProperty() {
         HttpExtendProperty prop = new HttpExtendProperty();
         prop.setHttpClientType(this.getHttpClientType());
+        prop.setHttpProtocol(this.getHttpProtocol());
 
         prop.setTimeout((int) this.spnTimeout.getValue());
 

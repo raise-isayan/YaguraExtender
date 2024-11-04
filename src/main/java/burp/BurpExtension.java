@@ -231,8 +231,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.extension().registerUnloadingHandler(this);
 
             // init
-            menuHandler.setYaguraSelectEncode(option.getYaguraProperty().getSelectEncoding());
-            menuHandler.setYaguraEncodeType(option.getYaguraProperty().getEncodeType());
+            this.menuHandler.setYaguraSelectEncode(option.getYaguraProperty().getSelectEncoding());
+            this.menuHandler.setYaguraEncodeType(option.getYaguraProperty().getEncodeType());
 
         });
 
@@ -443,7 +443,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.tabbetOption.extensionUnloaded();
         this.autoResponderHandler.extensionUnloaded();
         if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
-            burpFrame.removeWindowListener(windowPopupListener);
+            burpFrame.removeWindowListener(this.windowPopupListener);
         }
         ThemeUI.removePropertyChangeListener();
         try {

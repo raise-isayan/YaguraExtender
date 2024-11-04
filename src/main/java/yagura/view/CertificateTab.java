@@ -336,13 +336,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         pnlListenPortLayout.setHorizontalGroup(
             pnlListenPortLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlListenPortLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(lblListenPort)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(spnListenPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnProvidedServer)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(btnCopy)
                 .addContainerGap())
         );
