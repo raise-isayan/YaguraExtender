@@ -2,6 +2,7 @@ package extend.util.external;
 
 import extend.util.external.TransUtil.EncodePattern;
 import extension.helpers.ConvertUtil;
+import extension.helpers.DateUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.SmartCodec;
 import extension.helpers.StringUtil;
@@ -770,7 +771,7 @@ public class TransUtilTest {
         cl.setTime(dateZone);
         System.out.println("Calendar.toDate: " + cl.getTime());
         System.out.println("Calendar.get: " + cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH) + " " + cl.get(Calendar.HOUR) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND));
-        cl.setTimeZone(TimeZone.getTimeZone("GMT"));
+        cl.setTimeZone(TimeZone.getTimeZone(DateUtil.ZONE_OFFSET_GMT));
         System.out.println("Calendar.toDate: " + cl.getTime());
         System.out.println("Calendar.get: " + cl.get(Calendar.YEAR) + "-" + cl.get(Calendar.MONTH) + "-" + cl.get(Calendar.DAY_OF_MONTH) + " " + cl.get(Calendar.HOUR) + ":" + cl.get(Calendar.MINUTE) + ":" + cl.get(Calendar.SECOND));
         Calendar clz = Calendar.getInstance(TimeZone.getTimeZone(ZoneOffset.UTC));

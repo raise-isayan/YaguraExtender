@@ -117,11 +117,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
             }
         });
         tableParams.getTableHeader().setReorderingAllowed(false);
-        tableParams.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tableParamsKeyTyped(evt);
-            }
-        });
         scrollParams.setViewportView(tableParams);
         if (tableParams.getColumnModel().getColumnCount() > 0) {
             tableParams.getColumnModel().getColumn(0).setResizable(false);
@@ -256,10 +251,6 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
         index = this.modelParams.moveDn(index);
         this.tableParams.getSelectionModel().setSelectionInterval(index, index);
     }//GEN-LAST:event_btnDownActionPerformed
-
-    private void tableParamsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableParamsKeyTyped
-        SwingUtil.systemClipboardCopy(CustomTableModel.tableCopy(tableParams, true));
-    }//GEN-LAST:event_tableParamsKeyTyped
 
     private void btnDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecodeActionPerformed
         toggleDecode = this.btnDecode.isSelected();

@@ -219,7 +219,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
             mnuComparer.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    sendToDecoder(StringUtil.getBytesRaw(selectText));
+                    sendToComparer(StringUtil.getBytesRaw(selectText));
                 }
             });
             popSendToMenu.add(mnuComparer);
@@ -301,8 +301,10 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public void sendToRepeater(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
-            HttpRequest httpRequest = messageItem.get(0).request();
-            this.api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
+            if (!messageItem.isEmpty()) {
+                HttpRequest httpRequest = messageItem.get(0).request();
+                this.api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
+            }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -311,8 +313,10 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public void sendToIntruder(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
-            HttpRequest httpRequest = messageItem.get(0).request();
-            this.api.intruder().sendToIntruder(httpRequest);
+            if (!messageItem.isEmpty()) {
+                HttpRequest httpRequest = messageItem.get(0).request();
+                this.api.intruder().sendToIntruder(httpRequest);
+            }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -321,12 +325,40 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public void sendToOrganizer(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
-            HttpRequestResponse httpRequestResponse = messageItem.get(0);
-            if (!httpRequestResponse.hasResponse()) {
-                this.api.organizer().sendToOrganizer(httpRequestResponse.request());
+            if (!messageItem.isEmpty()) {
+                HttpRequestResponse httpRequestResponse = messageItem.get(0);
+                if (!httpRequestResponse.hasResponse()) {
+                    this.api.organizer().sendToOrganizer(httpRequestResponse.request());
+                }
+                else {
+                    this.api.organizer().sendToOrganizer(httpRequestResponse);
+                }
             }
-            else {
-                this.api.organizer().sendToOrganizer(httpRequestResponse);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public void sendToCompareRequest(SendToMessage message) {
+        try {
+            List<HttpRequestResponse> messageItem = message.getSelectedMessages();
+            if (!messageItem.isEmpty()) {
+                HttpRequestResponse httpRequestResponse = messageItem.get(0);
+                this.api.comparer().sendToComparer(httpRequestResponse.request().toByteArray());
+            }
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public void sendToCompareResponse(SendToMessage message) {
+        try {
+            List<HttpRequestResponse> messageItem = message.getSelectedMessages();
+            if (!messageItem.isEmpty()) {
+                HttpRequestResponse httpRequestResponse = messageItem.get(0);
+                if (httpRequestResponse.hasResponse()) {
+                    this.api.comparer().sendToComparer(httpRequestResponse.response().toByteArray());
+                }
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -336,13 +368,14 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public void sendTo(SendToMessage message) {
         try {
             List<HttpRequestResponse> messageItem = message.getSelectedMessages();
-            HttpRequest httpRequest = messageItem.get(0).request();
-            this.api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
+            if (!messageItem.isEmpty()) {
+                HttpRequest httpRequest = messageItem.get(0).request();
+                this.api.repeater().sendToRepeater(httpRequest, "v" + this.repeternum++);
+            }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-
 
     public void sendToDecoder(byte[] message) {
         try {

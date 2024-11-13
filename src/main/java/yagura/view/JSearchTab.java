@@ -304,6 +304,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
         pnlResult.setLayout(new java.awt.BorderLayout());
 
+        pnlResultView.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         pnlResultView.setPreferredSize(new java.awt.Dimension(100, 20));
         pnlResultView.setLayout(new java.awt.BorderLayout());
 
@@ -419,6 +420,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
             return component;
         }
     };
+
     private final BasicComboBoxRenderer colorComboBoxRenderer = new BasicComboBoxRenderer() {
 
         @Override
@@ -676,6 +678,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
             }
         };
     }
+
     private volatile boolean querying = false;
     private volatile boolean cancel = false;
 

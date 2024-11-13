@@ -448,6 +448,10 @@ This can be set if the server is checked.
 * Use Custom Proxy Settings
 ** Use your own HTTP client for sending SendTo.
 
+.Protocol
+
+{nbsp}{nbsp}{nbsp}{nbsp}Specifies the HTTP protocol.
+
 .Timeout
 
 Connection/Read/Write::

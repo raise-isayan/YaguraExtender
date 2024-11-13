@@ -967,7 +967,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
                 if (isCsrfTimeDelay) {
                     onClick = String.format(" onClick=\"submitPoC(%d);\"", new Object[]{timeOutValue});
                 }
-                formAction.append(String.format("<input type=\"button\" value=\"Submit\" %s>", onClick)).append(HttpUtil.LINE_TERMINATE);
+                formAction.append(String.format("<input type=\"submit\" value=\"Submit\" %s>", onClick)).append(HttpUtil.LINE_TERMINATE);
             }
             formAction.append("</form>").append(HttpUtil.LINE_TERMINATE);
             formAction.append("<!-- end form -->").append(HttpUtil.LINE_TERMINATE);
@@ -1280,7 +1280,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             }
 
             if (!csrfAutoSubmit) {
-                buff.append(String.format("<input type=\"button\" value=\"Submit\" %s>", autoSubmit)).append(HttpUtil.LINE_TERMINATE);
+                buff.append(String.format("<input type=\"submit\" value=\"Submit\" %s>", autoSubmit)).append(HttpUtil.LINE_TERMINATE);
             }
 
             buff.append("</body></html>").append(HttpUtil.LINE_TERMINATE);

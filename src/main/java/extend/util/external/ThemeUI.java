@@ -1,17 +1,15 @@
 package extend.util.external;
 
+import extension.view.base.NamedColor;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.awt.Window;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
@@ -71,15 +69,25 @@ public class ThemeUI {
         table.setBackground(UIManager.getColor("Burp.actionPanelBackground"));
     }
 
-    public static void changeCaptionColor(Component c, Color color) {
-        UIManager.put("activeCaption", new ColorUIResource(color));
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Window w = SwingUtilities.getWindowAncestor(c);
-                SwingUtilities.updateComponentTreeUI(w);
-            }
-        });
+    public static void changeTitleBarBackgroundColor(JFrame frame, Color backColor) {
+        changeTitleBarColor(frame, NamedColor.getTextColor(backColor), backColor);
+    }
+
+    public static void changeTitleBarColor(JFrame frame, Color foreColor, Color backColor) {
+        if (backColor != null) {
+            frame.getRootPane().putClientProperty("JRootPane.titleBarBackground", backColor);
+        }
+        else {
+            frame.getRootPane().putClientProperty("JRootPane.titleBarBackground", UIManager.getColor("InternalFrame.activeTitleBackground"));
+        }
+
+        if (foreColor != null) {
+            frame.getRootPane().putClientProperty("JRootPane.titleBarForeground", foreColor);
+        }
+        else {
+            frame.getRootPane().putClientProperty("JRootPane.titleBarForeground", UIManager.getColor("InternalFrame.activeTitleForeground"));
+        }
+        SwingUtilities.updateComponentTreeUI(frame);
     }
 
 }

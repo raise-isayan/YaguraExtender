@@ -438,6 +438,10 @@ image:images/custom_sendto_server_connection.png[SendToItem編集 SendTo Connect
 * Use Custom Proxy Settings
 ** SendToの送信に独自のHTTPクライアントを利用します。
 
+.Protocol
+
+　　HTTPのプロトコルを指定します。
+
 .Timeout
 
 Connection/Read/Write::

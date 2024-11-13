@@ -408,7 +408,7 @@ public class SendToServer extends SendToMenuItem {
 
     protected String newDummyRespose() {
         final String DUMMY_RESPOSE = "HTTP/1.1 202 Accepted" + HttpUtil.LINE_TERMINATE +
-            "Date: " + DateUtil.valueOfHttpDate(ZonedDateTime.of(LocalDateTime.now(), ZoneId.of("GMT"))) + HttpUtil.LINE_TERMINATE +
+            "Date: " + DateUtil.valueOfHttpDate(ZonedDateTime.of(LocalDateTime.now(), DateUtil.ZONE_OFFSET_GMT)) + HttpUtil.LINE_TERMINATE +
             "Server: Yagura-Dummy-Response" + HttpUtil.LINE_TERMINATE +
             "Content-Length: 0" + HttpUtil.LINE_TERMINATE + HttpUtil.LINE_TERMINATE;
         return DUMMY_RESPOSE;

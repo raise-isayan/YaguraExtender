@@ -31,7 +31,7 @@ public class ResultView extends HttpMessageItem implements ObjectTableMapping {
     }
 
     private final String[] columns = new String[]{
-        "Data", "#", "host", "method", "URL", "status", "length", "comment","listen port"
+        "Data", "#", "host", "method", "URL", "status", "length", "notes","listen port"
     };
 
     public ObjectTableColumn getColumn() {
