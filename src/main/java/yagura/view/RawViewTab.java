@@ -3,6 +3,7 @@ package yagura.view;
 import burp.BurpExtension;
 import burp.api.montoya.core.ByteArray;
 import burp.api.montoya.core.ToolType;
+import burp.api.montoya.http.message.ContentType;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -229,19 +230,36 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
     }
 
     public static String getSyntaxEditingStyle(String mimeType) {
+        String style = SyntaxConstants.SYNTAX_STYLE_HTML;
         if (mimeType != null) {
-            return MIME_MAP.getOrDefault(mimeType.toLowerCase(), SyntaxConstants.SYNTAX_STYLE_HTML);
-        } else {
-            return SyntaxConstants.SYNTAX_STYLE_HTML;
+            style = MIME_MAP.getOrDefault(mimeType.toLowerCase(), SyntaxConstants.SYNTAX_STYLE_HTML);
         }
+        return style;
     }
 
     public static String getSyntaxEditingStyle(MimeType mimeType) {
+        String style = SyntaxConstants.SYNTAX_STYLE_HTML;
         if (mimeType != null) {
-            return MIME_MAP.getOrDefault(mimeType, SyntaxConstants.SYNTAX_STYLE_HTML);
-        } else {
-            return SyntaxConstants.SYNTAX_STYLE_HTML;
+            style = MIME_MAP.getOrDefault(mimeType, SyntaxConstants.SYNTAX_STYLE_HTML);
         }
+        return style;
+    }
+
+    public static String getSyntaxEditingStyle(ContentType contentType) {
+        String style = SyntaxConstants.SYNTAX_STYLE_HTML;
+        if (contentType != null) {
+            switch (contentType) {
+            case JSON:
+                style = SyntaxConstants.SYNTAX_STYLE_JSON;
+                break;
+            case XML:
+                style = SyntaxConstants.SYNTAX_STYLE_XML;
+                break;
+            default:
+                break;
+            }
+        }
+        return style;
     }
 
     public void clearView() {
@@ -270,6 +288,8 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
             if (this.isRequest) {
                 HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
                 guessCharset = wrapRequest.getGuessCharset(StandardCharsets.UTF_8.name());
+                ContentType contentType = wrapRequest.contentType();
+                this.txtURaw.setSyntaxEditingStyle(getSyntaxEditingStyle(contentType));
             } else {
                 HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
                 guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());

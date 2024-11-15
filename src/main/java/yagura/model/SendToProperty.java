@@ -16,7 +16,11 @@ public class SendToProperty implements IPropertyConfig {
     public final static String SENDTO_PROPERTY = "sendToProperty";
 
     public enum SendToMenuPlace {
-        DEFAULT("Default"), TOP_LEVEL("Top Level");
+        DEFAULT("Default"),
+        TOP_LEVEL("Top Level");
+//        TOP_EXPAND("Top Expand");
+//        EXTENSIONS_LEVEL("Extensions Level");
+//        EXTENSIONS_EXPAND("Extensions Expand");
 
         final String ident;
 

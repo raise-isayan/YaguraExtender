@@ -95,7 +95,7 @@ public class PopupMessage extends javax.swing.JPanel {
             @Override
             public void run() {
                 lblTimer.setText(String.format("%d sec. to popup auto-close", count));
-                if (count < 0) {
+                if (count <= 0) {
                     popup.hide();
                     tm.cancel();
                 }
