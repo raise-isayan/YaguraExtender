@@ -39,7 +39,7 @@ import java.util.EnumSet;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
 import yagura.model.ResultView;
-import yagura.model.UniversalViewProperty.UniversalView;
+import yagura.model.UniversalViewProperty.MessageView;
 import extension.burp.IBurpTab;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
@@ -484,7 +484,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
 
         this.pnlView.add(this.tabMessageView, BorderLayout.CENTER);
         this.tabMessageView.setVisible(false);
-        this.tabMessageView.setMessageView(EnumSet.of(UniversalView.JRAW));
+        this.tabMessageView.setMessageView(EnumSet.of(MessageView.JRAW));
 
         this.modelSearch = new DefaultObjectTableModel<>(this.tableResult.getModel());
         this.modelSearch.setCellEditable(true);

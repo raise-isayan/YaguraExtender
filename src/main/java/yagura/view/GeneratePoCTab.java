@@ -62,7 +62,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtGeneratorPoC);
+            ThemeUI.applyStyleTheme(txtGeneratorPoC);
         }
     };
 
@@ -1330,10 +1330,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             return false;
         }
         try {
-            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            final BurpExtension extenderImpl = BurpExtension.getInstance();
+            UniversalViewProperty viewProperty = extenderImpl.getProperty().getUniversalViewProperty();
+            EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
             this.setLineWrap(viewProperty.isLineWrap());
-            if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+            if (!view.contains(UniversalViewProperty.MessageView.GENERATE_POC)) {
                 return false;
             }
             // Burp v2023.4.1 以降の謎挙動に対応

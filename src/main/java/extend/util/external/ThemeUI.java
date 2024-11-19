@@ -40,7 +40,7 @@ public class ThemeUI {
         }
     }
 
-    public static void changeStyleTheme(RSyntaxTextArea textArea) {
+    public static void applyStyleTheme(RSyntaxTextArea textArea) {
         if (textArea == null) {
             return;
         }
@@ -63,17 +63,17 @@ public class ThemeUI {
         });
     }
 
-    public static void changeStyleTheme(JTable table) {
+    public static void applyStyleTheme(JTable table) {
         table.setGridColor(UIManager.getColor("Table.gridColor"));
         table.setForeground(UIManager.getColor("Button.default.foreground"));
         table.setBackground(UIManager.getColor("Burp.actionPanelBackground"));
     }
 
-    public static void changeTitleBarBackgroundColor(JFrame frame, Color backColor) {
-        changeTitleBarColor(frame, NamedColor.getTextColor(backColor), backColor);
+    public static void applyTitleBarBackgroundColor(JFrame frame, Color backColor) {
+        applyTitleBarColor(frame, NamedColor.getTextColor(backColor), backColor);
     }
 
-    public static void changeTitleBarColor(JFrame frame, Color foreColor, Color backColor) {
+    public static void applyTitleBarColor(JFrame frame, Color foreColor, Color backColor) {
         if (backColor != null) {
             frame.getRootPane().putClientProperty("JRootPane.titleBarBackground", backColor);
         }

@@ -43,12 +43,12 @@ public class OptionProperty implements IOptionProperty {
     @Expose
     private final UniversalViewProperty universalViewProperty = new UniversalViewProperty();
 
-    public UniversalViewProperty getEncodingProperty() {
+    public UniversalViewProperty getUniversalViewProperty() {
         return this.universalViewProperty;
     }
 
-    public void setEncodingProperty(UniversalViewProperty encodingProperty) {
-        this.universalViewProperty.setProperty(encodingProperty);
+    public void setUniversalViewProperty(UniversalViewProperty universalViewProperty) {
+        this.universalViewProperty.setProperty(universalViewProperty);
     }
 
     /**

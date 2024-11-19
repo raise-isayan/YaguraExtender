@@ -74,8 +74,8 @@ public class UniversalViewPropertyTest {
     public void testParseEnum() {
         System.out.println("parseEnum");
         String s = "GENERATE_POC";
-        UniversalViewProperty.UniversalView expResult = UniversalViewProperty.UniversalView.GENERATE_POC;
-        UniversalViewProperty.UniversalView result = UniversalViewProperty.UniversalView.parseEnum(s);
+        UniversalViewProperty.MessageView expResult = UniversalViewProperty.MessageView.GENERATE_POC;
+        UniversalViewProperty.MessageView result = UniversalViewProperty.MessageView.parseEnum(s);
         assertEquals(expResult, result);
     }
 
@@ -86,8 +86,8 @@ public class UniversalViewPropertyTest {
     public void testParseEnumSet() {
         System.out.println("parseEnumSet");
         String s = "[\"GENERATE_POC\",\"HTML_COMMENT\",\"JSON\"]";
-        EnumSet<UniversalViewProperty.UniversalView> expResult = EnumSet.of(UniversalViewProperty.UniversalView.GENERATE_POC, UniversalViewProperty.UniversalView.HTML_COMMENT, UniversalViewProperty.UniversalView.JSON);
-        EnumSet<UniversalViewProperty.UniversalView> result = UniversalViewProperty.UniversalView.parseEnumSet(s);
+        EnumSet<UniversalViewProperty.MessageView> expResult = EnumSet.of(UniversalViewProperty.MessageView.GENERATE_POC, UniversalViewProperty.MessageView.HTML_COMMENT, UniversalViewProperty.MessageView.JSON);
+        EnumSet<UniversalViewProperty.MessageView> result = UniversalViewProperty.MessageView.parseEnumSet(s);
         assertEquals(expResult, result);
     }
 

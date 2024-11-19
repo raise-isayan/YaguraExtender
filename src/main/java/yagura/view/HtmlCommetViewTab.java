@@ -36,7 +36,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtHtmlComment);
+            ThemeUI.applyStyleTheme(txtHtmlComment);
         }
     };
 
@@ -218,10 +218,10 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
             if (wrapResponse.hasHttpResponse()) {
                 return false;
             }
-            UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
-            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+            UniversalViewProperty viewProperty = extenderImpl.getProperty().getUniversalViewProperty();
+            EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
             this.setLineWrap(viewProperty.isLineWrap());
-            if (!view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT)) {
+            if (!view.contains(UniversalViewProperty.MessageView.HTML_COMMENT)) {
                 return false;
             }
 

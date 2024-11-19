@@ -78,8 +78,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtOutputRaw);
-            ThemeUI.changeStyleTheme(txtOutputFormat);
+            ThemeUI.applyStyleTheme(txtOutputRaw);
+            ThemeUI.applyStyleTheme(txtOutputFormat);
         }
     };
 

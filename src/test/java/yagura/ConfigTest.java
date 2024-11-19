@@ -39,7 +39,7 @@ import yagura.model.MatchReplaceGroup;
 import yagura.model.MatchReplaceItem;
 import yagura.model.MatchReplaceProperty;
 import yagura.model.OptionProperty;
-import yagura.model.UniversalViewProperty.UniversalView;
+import yagura.model.UniversalViewProperty.MessageView;
 
 /**
  *
@@ -212,8 +212,8 @@ public class ConfigTest {
         if (fi.exists()) {
             JsonUtil.loadFromJson(fi, config);
             option.setProperty(config);
-            assertEquals(5, option.getEncodingProperty().getEncodingList().size());
-            assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
+            assertEquals(5, option.getUniversalViewProperty().getEncodingList().size());
+            assertEquals(EnumSet.of(MessageView.JRAW, MessageView.GENERATE_POC, MessageView.HTML_COMMENT, MessageView.JSON), option.getUniversalViewProperty().getMessageView());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceMap().size());
             assertEquals(null, option.getMatchReplaceProperty().getReplaceSelectedGroup(option.getMatchReplaceProperty().getSelectedName()));
@@ -242,8 +242,8 @@ public class ConfigTest {
             Map<String, String> config = option.loadConfigSetting();
             JsonUtil.loadFromJson(fi, config);
             option.setProperty(config);
-            assertEquals(5, option.getEncodingProperty().getEncodingList().size());
-            assertEquals(EnumSet.of(UniversalView.JRAW, UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON), option.getEncodingProperty().getMessageView());
+            assertEquals(5, option.getUniversalViewProperty().getEncodingList().size());
+            assertEquals(EnumSet.of(MessageView.JRAW, MessageView.GENERATE_POC, MessageView.HTML_COMMENT, MessageView.JSON), option.getUniversalViewProperty().getMessageView());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceNameList().size());
             assertEquals(1, option.getMatchReplaceProperty().getReplaceMap().size());
             assertEquals(null, option.getMatchReplaceProperty().getReplaceSelectedGroup(option.getMatchReplaceProperty().getSelectedName()));

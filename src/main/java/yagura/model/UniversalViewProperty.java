@@ -18,7 +18,7 @@ import java.util.SortedMap;
  */
 public class UniversalViewProperty implements IPropertyConfig {
 
-    public final static String CJK_VIEW_PROPERTY = "universalViewProperty";
+    public final static String UNIVERSAL_VIEW_PROPERTY = "universalViewProperty";
 
     /**
      * https://l0.cm/encodings/table/
@@ -160,18 +160,18 @@ public class UniversalViewProperty implements IPropertyConfig {
         return this.encodingList;
     }
 
-    public enum UniversalView {
+    public enum MessageView {
         GENERATE_POC, HTML_COMMENT, JSON, JSONP, JWT, VIEW_STATE, JRAW, JPARAM;
 
-        public static UniversalView parseEnum(String s) {
+        public static MessageView parseEnum(String s) {
             String value = s.toUpperCase();
-            return Enum.valueOf(UniversalView.class, value);
+            return Enum.valueOf(MessageView.class, value);
         }
 
-        public static EnumSet<UniversalView> parseEnumSet(String s) {
-            EnumSet<UniversalView> universal = EnumSet.noneOf(UniversalView.class);
+        public static EnumSet<MessageView> parseEnumSet(String s) {
+            EnumSet<MessageView> universal = EnumSet.noneOf(MessageView.class);
             if (!s.startsWith("[") && s.endsWith("]")) {
-                throw new IllegalArgumentException("No enum constant " + UniversalView.class.getCanonicalName() + "." + s);
+                throw new IllegalArgumentException("No enum constant " + MessageView.class.getCanonicalName() + "." + s);
             }
             String content = s.substring(1, s.length() - 1).trim();
             if (content.isEmpty()) {
@@ -193,14 +193,29 @@ public class UniversalViewProperty implements IPropertyConfig {
     };
 
     @Expose
-    private EnumSet<UniversalView> mesageView = EnumSet.of(UniversalView.GENERATE_POC, UniversalView.HTML_COMMENT, UniversalView.JSON, UniversalView.JSONP);
+    private EnumSet<MessageView> mesageView = EnumSet.of(MessageView.GENERATE_POC, MessageView.HTML_COMMENT, MessageView.JSON, MessageView.JSONP);
 
-    public EnumSet<UniversalView> getMessageView() {
+    public EnumSet<MessageView> getMessageView() {
         return mesageView;
     }
 
-    public void setMessageView(EnumSet<UniversalView> view) {
+    public void setMessageView(EnumSet<MessageView> view) {
         this.mesageView = view;
+    }
+
+    public enum BurpView {
+        TOOL_BAR;
+    }
+
+    @Expose
+    private EnumSet<BurpView> burpView = EnumSet.of(BurpView.TOOL_BAR);
+
+    public EnumSet<BurpView> getBurpView() {
+        return burpView;
+    }
+
+    public void setBurpView(EnumSet<BurpView> view) {
+        this.burpView = view;
     }
 
     public void setProperty(UniversalViewProperty property) {
@@ -209,11 +224,12 @@ public class UniversalViewProperty implements IPropertyConfig {
         this.setMessageView(property.getMessageView());
         this.setDispayMaxLength(property.getDispayMaxLength());
         this.setLineWrap(property.isLineWrap());
+        this.setBurpView(property.getBurpView());
     }
 
     @Override
     public String getSettingName() {
-        return CJK_VIEW_PROPERTY;
+        return UNIVERSAL_VIEW_PROPERTY;
     }
 
     @Override

@@ -161,9 +161,9 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
 
     public boolean isEnabledJson(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
         BurpExtension extenderImpl = BurpExtension.getInstance();
-        UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-        if (!view.contains(UniversalViewProperty.UniversalView.JSON)) {
+        UniversalViewProperty viewProperty = extenderImpl.getProperty().getUniversalViewProperty();
+        EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
+        if (!view.contains(UniversalViewProperty.MessageView.JSON)) {
             return false;
         }
         // Burp v2023.4.1 以降の謎挙動に対応
@@ -202,9 +202,9 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
 
     public boolean isEnabledJsonp(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
         BurpExtension extenderImpl = BurpExtension.getInstance();
-        UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = extenderImpl.getProperty().getEncodingProperty().getMessageView();
-        if (!view.contains(UniversalViewProperty.UniversalView.JSONP)) {
+        UniversalViewProperty viewProperty = extenderImpl.getProperty().getUniversalViewProperty();
+        EnumSet<UniversalViewProperty.MessageView> view = extenderImpl.getProperty().getUniversalViewProperty().getMessageView();
+        if (!view.contains(UniversalViewProperty.MessageView.JSONP)) {
             return false;
         }
         // Burp v2023.4.1 以降の謎挙動に対応

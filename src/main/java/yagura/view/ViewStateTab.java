@@ -348,9 +348,9 @@ public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab 
             return false;
         }
         try {
-            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-            if (!view.contains(UniversalViewProperty.UniversalView.VIEW_STATE)) {
+            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getUniversalViewProperty();
+            EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
+            if (!view.contains(UniversalViewProperty.MessageView.VIEW_STATE)) {
                 return false;
             }
             // Burp v2023.4.1 以降の謎挙動に対応

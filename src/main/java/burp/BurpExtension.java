@@ -53,6 +53,9 @@ import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.MatchItem;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.util.EnumSet;
 import javax.swing.JMenuItem;
 import yagura.Config;
 import yagura.Version;
@@ -73,6 +76,8 @@ import yagura.handler.WebSocketHander;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
+import yagura.model.UniversalViewProperty.BurpView;
+import yagura.view.BurpToolBar;
 import yagura.view.GeneratePoCTabEditor;
 import yagura.view.GenerateWebsocktPoCEditor;
 import yagura.view.HtmlCommetViewTabEditor;
@@ -110,6 +115,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     private boolean isTemporaryProject = false;
 
+    private BurpToolBar toolbar;
     private final PopupMessage popupMessage = new PopupMessage(null);
 
     public BurpExtension() {
@@ -197,7 +203,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
 
-        registerTemporaryProject();
+        this.registerTemporaryProject();
 
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));
@@ -233,6 +239,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             // init
             this.menuHandler.setYaguraSelectEncode(option.getYaguraProperty().getSelectEncoding());
             this.menuHandler.setYaguraEncodeType(option.getYaguraProperty().getEncodeType());
+
+            if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
+                this.toolbar = new BurpToolBar(api);
+                this.applyUniversalProperty();
+            }
 
         });
 
@@ -312,7 +323,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     public List<String> getSelectEncodingList() {
         String defaultCharset = HttpUtil.normalizeCharset(StringUtil.DEFAULT_ENCODING);
         List<String> list = new ArrayList<>();
-        list.addAll(this.option.getEncodingProperty().getEncodingList());
+        list.addAll(this.option.getUniversalViewProperty().getEncodingList());
         // リストにない場合追加
         BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api());
         if (BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent().equals(burpCharset.getMode()) && burpCharset.getCharacterSet() != null && !list.contains(burpCharset.getCharacterSet())) {
@@ -348,10 +359,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         return new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if (UniversalViewProperty.CJK_VIEW_PROPERTY.equals(evt.getPropertyName())) {
-                    option.setEncodingProperty(tabbetOption.getEncodingProperty());
+                if (UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY.equals(evt.getPropertyName())) {
+                    option.setUniversalViewProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
 ////                    menuHandler.updateUI();
+                    applyUniversalProperty();
                     applyOptionProperty();
                 } else if (MatchReplaceProperty.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchReplaceProperty(tabbetOption.getMatchReplaceProperty());
@@ -409,6 +421,23 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         };
     }
 
+    public void applyUniversalProperty() {
+        if (this.toolbar == null) {
+            return;
+        }
+        EnumSet<BurpView> burpView = option.getUniversalViewProperty().getBurpView();
+        if (burpView.contains(BurpView.TOOL_BAR)) {
+            api().userInterface().applyThemeToComponent(this.toolbar);
+            Frame frame = BurpUtil.suiteFrame();
+            frame.add(this.toolbar, BorderLayout.NORTH);
+        }
+        else {
+            Frame frame = BurpUtil.suiteFrame();
+            this.toolbar.setFlotingBar(false);
+            frame.remove(this.toolbar);
+        }
+    }
+
     public void applyOptionProperty() {
         try {
             Map<String, String> config = this.option.getProperty();
@@ -444,6 +473,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.autoResponderHandler.extensionUnloaded();
         if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
             burpFrame.removeWindowListener(this.windowPopupListener);
+        }
+        if (this.toolbar != null) {
+            Frame frame = BurpUtil.suiteFrame();
+            this.toolbar.setFlotingBar(false);
+            frame.remove(this.toolbar);
         }
         ThemeUI.removePropertyChangeListener();
         try {

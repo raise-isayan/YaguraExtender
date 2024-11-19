@@ -52,7 +52,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtURaw);
+            ThemeUI.applyStyleTheme(txtURaw);
         }
     };
 
@@ -317,9 +317,9 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
 
         try {
             // "This message is too large to display"
-            UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
-            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-            if (!view.contains(UniversalViewProperty.UniversalView.JRAW)) {
+            UniversalViewProperty viewProperty = extenderImpl.getProperty().getUniversalViewProperty();
+            EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
+            if (!view.contains(UniversalViewProperty.MessageView.JRAW)) {
                 return false;
             }
 

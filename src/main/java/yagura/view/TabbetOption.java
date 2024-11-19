@@ -73,7 +73,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
 //        this.addTab("RapidFire", this.tabRapidFireTab);
         this.addTab(this.tabVersion.getTabCaption(), this.tabVersion);
 
-        this.tabUniversalView.addPropertyChangeListener(UniversalViewProperty.CJK_VIEW_PROPERTY, this);
+        this.tabUniversalView.addPropertyChangeListener(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MatchReplaceProperty.MATCHREPLACE_PROPERTY, this);
         this.tabMatchAlert.addPropertyChangeListener(MatchAlertProperty.MATCHALERT_PROPERTY, this);
         this.tabAutoResponder.addPropertyChangeListener(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, this);
@@ -112,7 +112,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     }
 
     public void setProperty(OptionProperty property) {
-        this.setEncodingProperty(property.getEncodingProperty());
+        this.setEncodingProperty(property.getUniversalViewProperty());
         this.setLoggingProperty(property.getLoggingProperty());
         this.setMatchReplaceProperty(property.getMatchReplaceProperty());
         this.setAutoResponderProperty(property.getAutoResponderProperty());
@@ -123,7 +123,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         this.setJTransCoderProperty(property.getJTransCoderProperty());
         // common
         this.setDebugMode(property.getDebugMode());
-        this.setJTransCoderProperty(property.getEncodingProperty());
+        this.setJTransCoderProperty(property.getUniversalViewProperty());
     }
 
     public AutoMockServer getMockServer() {
@@ -139,11 +139,11 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     }
 
     public void setEncodingProperty(UniversalViewProperty encProperty) {
-        this.tabUniversalView.setEncodingProperty(encProperty);
+        this.tabUniversalView.setUniversalViewProperty(encProperty);
     }
 
     public UniversalViewProperty getEncodingProperty() {
-        return this.tabUniversalView.getEncodingProperty();
+        return this.tabUniversalView.getUniversalViewProperty();
     }
 
     public void setMatchReplaceProperty(MatchReplaceProperty matchReplaceProperty) {

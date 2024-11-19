@@ -469,8 +469,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
             return false;
         }
         try {
-            EnumSet<UniversalViewProperty.UniversalView> view = extenderImpl.getProperty().getEncodingProperty().getMessageView();
-            if (!view.contains(UniversalViewProperty.UniversalView.JPARAM)) {
+            EnumSet<UniversalViewProperty.MessageView> view = extenderImpl.getProperty().getUniversalViewProperty().getMessageView();
+            if (!view.contains(UniversalViewProperty.MessageView.JPARAM)) {
                 return false;
             }
             // Burp v2023.4.1 以降の謎挙動に対応
@@ -479,8 +479,8 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
                 return true;
             }
             HttpRequestWapper warapRequest = new HttpRequestWapper(httpRequestResponse.request());
-            if (warapRequest.toByteArray().length() > extenderImpl.getProperty().getEncodingProperty().getDispayMaxLength()
-                    && extenderImpl.getProperty().getEncodingProperty().getDispayMaxLength() != 0) {
+            if (warapRequest.toByteArray().length() > extenderImpl.getProperty().getUniversalViewProperty().getDispayMaxLength()
+                    && extenderImpl.getProperty().getUniversalViewProperty().getDispayMaxLength() != 0) {
                 return false;
             }
             boolean enabled = warapRequest.hasParameters();

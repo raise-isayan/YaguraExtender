@@ -10,7 +10,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import yagura.model.UniversalViewProperty.UniversalView;
+import yagura.model.UniversalViewProperty.MessageView;
 
 /**
  *
@@ -107,13 +107,13 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
         this.tabViewState.setFont(font);
     }
 
-    private final EnumSet<UniversalView> mesageView = EnumSet.noneOf(UniversalView.class);
+    private final EnumSet<MessageView> mesageView = EnumSet.noneOf(MessageView.class);
 
-    public EnumSet<UniversalView> getMessageView() {
+    public EnumSet<MessageView> getMessageView() {
         return mesageView;
     }
 
-    public void setMessageView(EnumSet<UniversalView> view) {
+    public void setMessageView(EnumSet<MessageView> view) {
         this.mesageView.clear();
         this.mesageView.addAll(view);
     }
@@ -203,27 +203,27 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     public void isEnabledFor(HttpRequestResponse httpRequestResponse, boolean isMessageRequest) {
         if (isMessageRequest) {
             this.tabbetRequestView.removeAll();
-            if (this.tabRequestRawView.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JRAW)) {
+            if (this.tabRequestRawView.isEnabledFor(httpRequestResponse) || mesageView.contains(MessageView.JRAW)) {
                 this.tabbetRequestView.addTab("Raw", this.tabRequestRawView);
             }
-            if (this.tabRequestJSONViewTab.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JSON)) {
+            if (this.tabRequestJSONViewTab.isEnabledFor(httpRequestResponse) || mesageView.contains(MessageView.JSON)) {
                 this.tabbetRequestView.addTab(this.tabRequestJSONViewTab.caption(), this.tabRequestJSONViewTab);
             }
-            if (this.tabGeneratePoC.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.GENERATE_POC)) {
+            if (this.tabGeneratePoC.isEnabledFor(httpRequestResponse) || mesageView.contains(MessageView.GENERATE_POC)) {
                 this.tabbetRequestView.addTab(this.tabGeneratePoC.caption(), this.tabGeneratePoC);
             }
-            if (this.tabViewState.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.VIEW_STATE)) {
+            if (this.tabViewState.isEnabledFor(httpRequestResponse) || mesageView.contains(MessageView.VIEW_STATE)) {
                 this.tabbetRequestView.addTab(this.tabViewState.caption(), this.tabViewState);
             }
         } else {
             this.tabbetResponseView.removeAll();
-            if (this.tabResponseRawView.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JRAW)) {
+            if (this.tabResponseRawView.isEnabledFor(httpRequestResponse) || mesageView.contains(MessageView.JRAW)) {
                 this.tabbetResponseView.addTab("Raw", this.tabResponseRawView);
             }
-            if (this.tabResponseJSONViewTab.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.JSON)) {
+            if (this.tabResponseJSONViewTab.isEnabledFor(httpRequestResponse) || mesageView.contains(MessageView.JSON)) {
                 this.tabbetResponseView.addTab(this.tabResponseJSONViewTab.caption(), this.tabResponseJSONViewTab);
             }
-            if (this.tabHtmlComment.isEnabledFor(httpRequestResponse) || mesageView.contains(UniversalView.HTML_COMMENT)) {
+            if (this.tabHtmlComment.isEnabledFor(httpRequestResponse) || mesageView.contains(MessageView.HTML_COMMENT)) {
                 this.tabbetResponseView.addTab(this.tabHtmlComment.caption(), this.tabHtmlComment);
             }
         }

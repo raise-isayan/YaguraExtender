@@ -48,9 +48,9 @@ public class JWTViewTab extends javax.swing.JPanel implements IBurpMessageTab {
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtHeaderJSON);
-            ThemeUI.changeStyleTheme(txtPayloadJSON);
-            ThemeUI.changeStyleTheme(txtSignatureSign);
+            ThemeUI.applyStyleTheme(txtHeaderJSON);
+            ThemeUI.applyStyleTheme(txtPayloadJSON);
+            ThemeUI.applyStyleTheme(txtSignatureSign);
         }
     };
 
@@ -292,9 +292,9 @@ public class JWTViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         }
         boolean find = false;
         try {
-            UniversalViewProperty viewProperty = extenderImpl.getProperty().getEncodingProperty();
-            EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
-            if (!view.contains(UniversalViewProperty.UniversalView.JWT)) {
+            UniversalViewProperty viewProperty = extenderImpl.getProperty().getUniversalViewProperty();
+            EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
+            if (!view.contains(UniversalViewProperty.MessageView.JWT)) {
                 return false;
             }
             // Burp v2023.4.1 以降の謎挙動に対応

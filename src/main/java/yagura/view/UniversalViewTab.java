@@ -5,6 +5,8 @@
  */
 package yagura.view;
 
+import burp.BurpExtension;
+import extension.burp.BurpConfig;
 import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
 import yagura.model.UniversalViewProperty;
@@ -50,6 +52,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private void initComponents() {
 
         popEncodeMenu = new javax.swing.JPopupMenu();
+        tabUniversalView = new javax.swing.JTabbedPane();
         tabEncoding = new javax.swing.JPanel();
         pnlCenter = new javax.swing.JPanel();
         lblSelect = new javax.swing.JLabel();
@@ -77,11 +80,13 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         chkJSONP = new javax.swing.JCheckBox();
         chkViewState = new javax.swing.JCheckBox();
         chklineWrap = new javax.swing.JCheckBox();
+        tabBurpView = new javax.swing.JPanel();
+        chkBurpSuiteToolBar = new javax.swing.JCheckBox();
 
         setName("Encoding"); // NOI18N
         setPreferredSize(new java.awt.Dimension(600, 450));
         setRequestFocusEnabled(false);
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
+        setLayout(new java.awt.BorderLayout());
 
         tabEncoding.setPreferredSize(new java.awt.Dimension(550, 300));
         tabEncoding.setLayout(new java.awt.BorderLayout());
@@ -220,7 +225,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnReset)))
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         tabEncoding.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -350,17 +355,45 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDispayMaxLength)
                     .addComponent(spnDispayMaxLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 275, Short.MAX_VALUE))
+                .addGap(0, 240, Short.MAX_VALUE))
         );
 
         tabEncoding.add(tabMessageView, java.awt.BorderLayout.EAST);
 
-        add(tabEncoding);
+        tabUniversalView.addTab("CJK View", tabEncoding);
+
+        chkBurpSuiteToolBar.setText("Burp sute Toolbar");
+        chkBurpSuiteToolBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkBurpSuiteToolBarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout tabBurpViewLayout = new javax.swing.GroupLayout(tabBurpView);
+        tabBurpView.setLayout(tabBurpViewLayout);
+        tabBurpViewLayout.setHorizontalGroup(
+            tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabBurpViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkBurpSuiteToolBar)
+                .addContainerGap(705, Short.MAX_VALUE))
+        );
+        tabBurpViewLayout.setVerticalGroup(
+            tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabBurpViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(chkBurpSuiteToolBar)
+                .addContainerGap(389, Short.MAX_VALUE))
+        );
+
+        tabUniversalView.addTab("Burp View", tabBurpView);
+
+        add(tabUniversalView, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
     public String getTabCaption() {
-        return "CJK View";
+        return "Universal View";
     }
 
     @Override
@@ -399,35 +432,40 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
 
         });
         this.listSelect.setModel(this.modelSelect);
+
+        if (!BurpConfig.isSupportApi(BurpExtension.api(), BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
+            this.chkBurpSuiteToolBar.setEnabled(false);
+        }
+
     }
 
     private void btnEncRightArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncRightArrawActionPerformed
         this.moveItemList(this.listTarget, this.listSelect);
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
 }//GEN-LAST:event_btnEncRightArrawActionPerformed
 
     private void btnEncLerftArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncLerftArrawActionPerformed
         this.moveItemList(this.listSelect, this.listTarget);
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
 }//GEN-LAST:event_btnEncLerftArrawActionPerformed
 
     private void popActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popActionPerformed
         int index = this.modelSelect.moveUp(this.listSelect.getSelectedIndex());
         this.listSelect.setSelectedIndex(index);
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
 }//GEN-LAST:event_popActionPerformed
 
     private void btnEncDownArrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncDownArrawActionPerformed
         int index = this.modelSelect.moveDown(this.listSelect.getSelectedIndex());
         this.listSelect.setSelectedIndex(index);
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
 }//GEN-LAST:event_btnEncDownArrawActionPerformed
 
     private void chkClipboardAutoDecodeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkClipboardAutoDecodeStateChanged
     }//GEN-LAST:event_chkClipboardAutoDecodeStateChanged
 
     private void chkClipboardAutoDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkClipboardAutoDecodeActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkClipboardAutoDecodeActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -443,47 +481,47 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         } else if (encoding.equals("Other")) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.US));
         }
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void chkUniversalParamsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniversalParamsActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkUniversalParamsActionPerformed
 
     private void chkUniversalRawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUniversalRawActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkUniversalRawActionPerformed
 
     private void chkJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJSONActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkJSONActionPerformed
 
     private void chkHTMLCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkHTMLCommentActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkHTMLCommentActionPerformed
 
     private void chkGeneratePoCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkGeneratePoCActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkGeneratePoCActionPerformed
 
     private void chkJWTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJWTActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkJWTActionPerformed
 
     private void spnDispayMaxLengthStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnDispayMaxLengthStateChanged
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_spnDispayMaxLengthStateChanged
 
     private void chkJSONPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJSONPActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkJSONPActionPerformed
 
     private void chkViewStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkViewStateActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkViewStateActionPerformed
 
     private void chklineWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chklineWrapActionPerformed
-        this.firePropertyChange(UniversalViewProperty.CJK_VIEW_PROPERTY, null, this.getEncodingProperty());
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chklineWrapActionPerformed
 
     private void listSelectValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listSelectValueChanged
@@ -493,11 +531,16 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         }
     }//GEN-LAST:event_listSelectValueChanged
 
+    private void chkBurpSuiteToolBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkBurpSuiteToolBarActionPerformed
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
+    }//GEN-LAST:event_chkBurpSuiteToolBarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;
     private javax.swing.JButton btnEncLerftArraw;
     private javax.swing.JButton btnEncRightArraw;
     private javax.swing.JButton btnReset;
+    private javax.swing.JCheckBox chkBurpSuiteToolBar;
     private javax.swing.JCheckBox chkClipboardAutoDecode;
     private javax.swing.JCheckBox chkGeneratePoC;
     private javax.swing.JCheckBox chkHTMLComment;
@@ -520,8 +563,10 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JScrollPane scrollSelect;
     private javax.swing.JScrollPane scrollTarget;
     private javax.swing.JSpinner spnDispayMaxLength;
+    private javax.swing.JPanel tabBurpView;
     private javax.swing.JPanel tabEncoding;
     private javax.swing.JPanel tabMessageView;
+    private javax.swing.JTabbedPane tabUniversalView;
     // End of variables declaration//GEN-END:variables
 
     private void renewPopup() {
@@ -580,21 +625,23 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         }
     }
 
-    public void setEncodingProperty(UniversalViewProperty property) {
+    public void setUniversalViewProperty(UniversalViewProperty property) {
         this.setClipboardAutoDecode(property.getClipbordAutoDecode());
         this.setEncodingList(property.getEncodingList());
         this.setMessageView(property.getMessageView());
         this.setDispayMaxLength(property.getDispayMaxLength());
         this.chklineWrap.setSelected(property.isLineWrap());
+        this.setBurpView(property.getBurpView());
     }
 
-    public UniversalViewProperty getEncodingProperty() {
+    public UniversalViewProperty getUniversalViewProperty() {
         UniversalViewProperty property = new UniversalViewProperty();
         property.setClipbordAutoDecode(this.getClipboardAutoDecode());
         property.setEncodingList(this.getEncodingList());
         property.setMessageView(this.getMessageView());
         property.setDispayMaxLength(this.getDispayMaxLength());
         property.setLineWrap(this.chklineWrap.isSelected());
+        property.setBurpView(this.getBurpView());
         return property;
     }
 
@@ -611,42 +658,42 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         }
     }
 
-    private void setMessageView(EnumSet<UniversalViewProperty.UniversalView> view) {
-        this.chkGeneratePoC.setSelected(view.contains(UniversalViewProperty.UniversalView.GENERATE_POC));
-        this.chkHTMLComment.setSelected(view.contains(UniversalViewProperty.UniversalView.HTML_COMMENT));
-        this.chkJSON.setSelected(view.contains(UniversalViewProperty.UniversalView.JSON));
-        this.chkJSONP.setSelected(view.contains(UniversalViewProperty.UniversalView.JSONP));
-        this.chkJWT.setSelected(view.contains(UniversalViewProperty.UniversalView.JWT));
-        this.chkViewState.setSelected(view.contains(UniversalViewProperty.UniversalView.VIEW_STATE));
-        this.chkUniversalRaw.setSelected(view.contains(UniversalViewProperty.UniversalView.JRAW));
-        this.chkUniversalParams.setSelected(view.contains(UniversalViewProperty.UniversalView.JPARAM));
+    private void setMessageView(EnumSet<UniversalViewProperty.MessageView> view) {
+        this.chkGeneratePoC.setSelected(view.contains(UniversalViewProperty.MessageView.GENERATE_POC));
+        this.chkHTMLComment.setSelected(view.contains(UniversalViewProperty.MessageView.HTML_COMMENT));
+        this.chkJSON.setSelected(view.contains(UniversalViewProperty.MessageView.JSON));
+        this.chkJSONP.setSelected(view.contains(UniversalViewProperty.MessageView.JSONP));
+        this.chkJWT.setSelected(view.contains(UniversalViewProperty.MessageView.JWT));
+        this.chkViewState.setSelected(view.contains(UniversalViewProperty.MessageView.VIEW_STATE));
+        this.chkUniversalRaw.setSelected(view.contains(UniversalViewProperty.MessageView.JRAW));
+        this.chkUniversalParams.setSelected(view.contains(UniversalViewProperty.MessageView.JPARAM));
     }
 
-    private EnumSet<UniversalViewProperty.UniversalView> getMessageView() {
-        EnumSet<UniversalViewProperty.UniversalView> view = EnumSet.noneOf(UniversalViewProperty.UniversalView.class);
+    private EnumSet<UniversalViewProperty.MessageView> getMessageView() {
+        EnumSet<UniversalViewProperty.MessageView> view = EnumSet.noneOf(UniversalViewProperty.MessageView.class);
         if (this.chkGeneratePoC.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.GENERATE_POC);
+            view.add(UniversalViewProperty.MessageView.GENERATE_POC);
         }
         if (this.chkHTMLComment.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.HTML_COMMENT);
+            view.add(UniversalViewProperty.MessageView.HTML_COMMENT);
         }
         if (this.chkJSON.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.JSON);
+            view.add(UniversalViewProperty.MessageView.JSON);
         }
         if (this.chkJSONP.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.JSONP);
+            view.add(UniversalViewProperty.MessageView.JSONP);
         }
         if (this.chkJWT.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.JWT);
+            view.add(UniversalViewProperty.MessageView.JWT);
         }
         if (this.chkViewState.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.VIEW_STATE);
+            view.add(UniversalViewProperty.MessageView.VIEW_STATE);
         }
         if (this.chkUniversalRaw.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.JRAW);
+            view.add(UniversalViewProperty.MessageView.JRAW);
         }
         if (this.chkUniversalParams.isSelected()) {
-            view.add(UniversalViewProperty.UniversalView.JPARAM);
+            view.add(UniversalViewProperty.MessageView.JPARAM);
         }
         return view;
     }
@@ -657,6 +704,18 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
 
     public int getDispayMaxLength() {
         return (int) this.spnDispayMaxLength.getModel().getValue();
+    }
+
+    private void setBurpView(EnumSet<UniversalViewProperty.BurpView> view) {
+        this.chkBurpSuiteToolBar.setSelected(view.contains(UniversalViewProperty.BurpView.TOOL_BAR));
+    }
+
+    private EnumSet<UniversalViewProperty.BurpView> getBurpView() {
+        EnumSet<UniversalViewProperty.BurpView> view = EnumSet.noneOf(UniversalViewProperty.BurpView.class);
+        if (this.chkBurpSuiteToolBar.isSelected()) {
+            view.add(UniversalViewProperty.BurpView.TOOL_BAR);
+        }
+        return view;
     }
 
 }

@@ -47,7 +47,7 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtGeneratorPoC);
+            ThemeUI.applyStyleTheme(txtGeneratorPoC);
         }
     };
 
@@ -489,10 +489,10 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
         if (webSocketMessage == null) {
             return false;
         }
-        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getEncodingProperty();
-        EnumSet<UniversalViewProperty.UniversalView> view = viewProperty.getMessageView();
+        UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getUniversalViewProperty();
+        EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
         this.setLineWrap(viewProperty.isLineWrap());
-        if (!view.contains(UniversalViewProperty.UniversalView.GENERATE_POC)) {
+        if (!view.contains(UniversalViewProperty.MessageView.GENERATE_POC)) {
             return false;
         }
         return (webSocketMessage.direction() == Direction.CLIENT_TO_SERVER);

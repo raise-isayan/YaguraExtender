@@ -52,7 +52,7 @@ public class JSONView extends javax.swing.JPanel {
     final PropertyChangeListener listener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.changeStyleTheme(txtJSON);
+            ThemeUI.applyStyleTheme(txtJSON);
         }
     };
 

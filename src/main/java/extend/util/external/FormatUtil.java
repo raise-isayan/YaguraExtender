@@ -17,6 +17,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -66,20 +67,29 @@ public class FormatUtil {
     }
 
     public static String prettyXml(String xmlString, boolean pretty) throws IOException {
-        StringWriter sw = new StringWriter();
-        Transformer transformer;
+        String result = "";
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document = docBuilder.parse(new InputSource(new StringReader(xmlString)));
-            transformer = TransformerFactory.newInstance()
-                    .newTransformer();
+            result = prettyXml(document, pretty);
+        } catch (ParserConfigurationException | SAXException  ex) {
+            throw new IOException(ex);
+        }
+        return result;
+    }
+
+    public static String prettyXml(Node root, boolean pretty) throws IOException {
+        StringWriter sw = new StringWriter();
+        Transformer transformer;
+        try {
+            transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, pretty ? "yes" : "no");
-            transformer.transform(new DOMSource(document),
+            transformer.transform(new DOMSource(root),
                     new StreamResult(sw));
         } catch (TransformerConfigurationException ex) {
             throw new IOException(ex);
-        } catch (ParserConfigurationException | SAXException | TransformerException ex) {
+        } catch (TransformerException ex) {
             throw new IOException(ex);
         }
         return sw.toString();
