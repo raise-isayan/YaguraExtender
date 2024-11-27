@@ -1,12 +1,15 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
+import extend.util.external.gson.XMatchItemAdapter;
 import extension.view.base.MatchItem;
 
 /**
  *
  * @author isayan
  */
+@JsonAdapter(XMatchItemAdapter.class)
 public class AutoResponderItem extends MatchItem {
 
     public static final String TYPE_AUTO_RESPONDER = "auto responder";

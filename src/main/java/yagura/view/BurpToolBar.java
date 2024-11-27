@@ -4,8 +4,11 @@ import burp.api.montoya.MontoyaApi;
 import java.util.Timer;
 import java.util.TimerTask;
 import burp.api.montoya.ui.Theme;
+import extend.util.external.BrowserUtil;
+import extension.burp.BurpConfig;
+import java.io.File;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicToolBarUI;
-
 
 /**
  *
@@ -36,6 +39,10 @@ public class BurpToolBar extends javax.swing.JPanel {
 
         toolBar = new javax.swing.JToolBar();
         tglIntercept = new javax.swing.JToggleButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        btnOpenBrowser = new javax.swing.JButton();
+        cmbProfile = new javax.swing.JComboBox<>();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -47,9 +54,9 @@ public class BurpToolBar extends javax.swing.JPanel {
         tglIntercept.setText("Intercept off");
         tglIntercept.setFocusable(false);
         tglIntercept.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        tglIntercept.setMaximumSize(new java.awt.Dimension(150, 30));
-        tglIntercept.setMinimumSize(new java.awt.Dimension(150, 30));
-        tglIntercept.setPreferredSize(new java.awt.Dimension(150, 30));
+        tglIntercept.setMaximumSize(new java.awt.Dimension(150, 28));
+        tglIntercept.setMinimumSize(new java.awt.Dimension(150, 28));
+        tglIntercept.setPreferredSize(new java.awt.Dimension(150, 28));
         tglIntercept.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/tick.png"))); // NOI18N
         tglIntercept.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -64,6 +71,40 @@ public class BurpToolBar extends javax.swing.JPanel {
         toolBar.add(tglIntercept);
         tglIntercept.getAccessibleContext().setAccessibleDescription("");
 
+        toolBar.add(jSeparator1);
+
+        btnOpenBrowser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/world_go.png"))); // NOI18N
+        btnOpenBrowser.setText("Open Browser");
+        btnOpenBrowser.setFocusable(false);
+        btnOpenBrowser.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnOpenBrowser.setMaximumSize(new java.awt.Dimension(150, 28));
+        btnOpenBrowser.setMinimumSize(new java.awt.Dimension(150, 28));
+        btnOpenBrowser.setName(""); // NOI18N
+        btnOpenBrowser.setPreferredSize(new java.awt.Dimension(150, 28));
+        btnOpenBrowser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenBrowserActionPerformed(evt);
+            }
+        });
+        toolBar.add(btnOpenBrowser);
+
+        cmbProfile.setMaximumSize(new java.awt.Dimension(200, 28));
+        cmbProfile.setMinimumSize(new java.awt.Dimension(60, 28));
+        cmbProfile.setName(""); // NOI18N
+        cmbProfile.setOpaque(true);
+        cmbProfile.setPreferredSize(new java.awt.Dimension(120, 28));
+        cmbProfile.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                cmbProfilePopupMenuWillBecomeVisible(evt);
+            }
+        });
+        toolBar.add(cmbProfile);
+        toolBar.add(jSeparator2);
+
         add(toolBar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -73,7 +114,7 @@ public class BurpToolBar extends javax.swing.JPanel {
     private final javax.swing.ImageIcon inspector_on_light = new javax.swing.ImageIcon(getClass().getResource("/resources/Media/svg/light/switch-on.svg"));
     private final javax.swing.ImageIcon inspector_off_light = new javax.swing.ImageIcon(getClass().getResource("/resources/Media/svg/light/switch-off.svg"));
 
-    private final Timer timer = new Timer(); // 今回追加する処理
+    private final Timer timer = new Timer();
     private final TimerTask task = new TimerTask() {
         public void run() {
             boolean interceptEnabled = api.proxy().isInterceptEnabled();
@@ -91,9 +132,17 @@ public class BurpToolBar extends javax.swing.JPanel {
 //    };
 
     private void customizeComponents() {
-//        applyStyleTheme(api.userInterface().currentTheme());
-//        ThemeUI.addPropertyChangeListener(listener);
+        this.renewProfile();
         this.timer.schedule(this.task, 0, this.interval_time);
+    }
+
+    public void renewProfile() {
+        File [] profiles = BrowserUtil.getUserProfile();
+        this.cmbProfile.removeAllItems();
+        this.cmbProfile.addItem("Default");
+        for (File p : profiles) {
+            this.cmbProfile.addItem(p.getName());
+        }
     }
 
     private void tglInterceptStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tglInterceptStateChanged
@@ -113,7 +162,26 @@ public class BurpToolBar extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tglInterceptActionPerformed
 
+    private void btnOpenBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBrowserActionPerformed
+        String profile = (String)this.cmbProfile.getSelectedItem();
+        BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
+        if (listener != null) {
+            BrowserUtil.openBrowser((profile == null) ? "Default" : profile, listener.getListenerPort());
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "fail Open Browser");
+        }
+    }//GEN-LAST:event_btnOpenBrowserActionPerformed
+
+    private void cmbProfilePopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_cmbProfilePopupMenuWillBecomeVisible
+        this.renewProfile();
+    }//GEN-LAST:event_cmbProfilePopupMenuWillBecomeVisible
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOpenBrowser;
+    private javax.swing.JComboBox<String> cmbProfile;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToggleButton tglIntercept;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables

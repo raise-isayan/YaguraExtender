@@ -2,6 +2,8 @@ package yagura.model;
 
 import burp.api.montoya.websocket.Direction;
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
+import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.ProtocolType;
 import extension.helpers.ConvertUtil;
 import extension.helpers.MatchUtil;
@@ -12,6 +14,7 @@ import extension.view.base.MatchItem;
 /**
  * @author isayan
  */
+@JsonAdapter(XMatchItemAdapter.class)
 public class MatchReplaceItem extends MatchItem {
 
     public MatchReplaceItem() {

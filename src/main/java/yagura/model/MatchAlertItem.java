@@ -1,6 +1,8 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.JsonAdapter;
+import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.Confidence;
 import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
  *
  * @author isayan
  */
+@JsonAdapter(XMatchItemAdapter.class)
 public class MatchAlertItem extends MatchItem {
 
     private static final String[] MESSAGE_TYPE = new String[]{"request", "response"};

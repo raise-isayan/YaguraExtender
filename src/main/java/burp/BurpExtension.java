@@ -145,7 +145,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
+        // JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
 
     private final WindowListener windowPopupListener = new WindowAdapter() {
