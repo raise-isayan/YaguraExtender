@@ -461,10 +461,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_yaguraタブ">3. Yaguraタブ</a>
 <ul class="sectlevel2">
-<li><a href="#_cjk_viewタブ">3.1. CJK Viewタブ</a>
-<ul class="sectlevel3">
-<li><a href="#_cjk_view">3.1.1. CJK View</a></li>
+<li><a href="#_universal_viewタブ">3.1. Universal Viewタブ</a>
+<ul class="sectlevel4">
+<li><a href="#_cjk_view">CJK View</a></li>
 <li><a href="#_cjk_message_view">3.1.2. CJK Message View</a></li>
+<li><a href="#_burp_view_タブ">3.1.3. Burp View タブ</a></li>
 </ul>
 </li>
 <li><a href="#_matchreplaceタブ">3.2. MatchReplaceタブ</a>
@@ -760,7 +761,9 @@ Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの�
 <h2 id="_yaguraタブ">3. Yaguraタブ</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_cjk_viewタブ">3.1. CJK Viewタブ</h3>
+<h3 id="_universal_viewタブ">3.1. Universal Viewタブ</h3>
+<div class="sect4">
+<h5 id="_cjk_view">CJK View</h5>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_encoding.png" alt="CJK Viewタブ"></span></p>
 </div>
@@ -768,8 +771,6 @@ Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの�
 <p>いわゆるCJK(中国語、日本語、韓国語)に対応するための設定を行うタブです。
 使用頻度の高い Encoding を選択することができます。ここで選択した値は、JTransCoderまたはJSONビューの表示画面で選択できるエンコードです。</p>
 </div>
-<div class="sect3">
-<h4 id="_cjk_view">3.1.1. CJK View</h4>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Target</dt>
@@ -847,6 +848,17 @@ Burpの [User Interface] &#8594; [Inspector and Message Editor] の Charsetsの�
 <dt class="hdlist1">[Display max length]</dt>
 <dd>
 <p>Viewを表示する最大のサイズを設定します。リクエストまたはレスポンスのサイズが非常に大きい場合、応答しなくなる可能性があります。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_burp_view_タブ">3.1.3. Burp View タブ</h4>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[Burp suite ToolBar] チェックボックス</dt>
+<dd>
+<p>Burp suite ツールバーの表示</p>
 </dd>
 </dl>
 </div>
@@ -2978,7 +2990,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <div id="footer">
 <div id="footer-text">
 Version v3.1.5.0<br>
-Last updated 2024-11-05 06:28:30 +0900
+Last updated 2024-11-27 20:50:05 +0900
 </div>
 </div>
 </body>

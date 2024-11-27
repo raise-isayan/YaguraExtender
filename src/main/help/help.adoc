@@ -117,14 +117,14 @@ It is equivalent to switching Charsets in Burp's [User Interface] -> [Inspector 
 
 == Yagura tab
 
-=== CJK View tab
+=== Universal View tab
+
+==== CJK View tab
 
 image:images/custom_encoding.png[CJK View tab]
 
 Use this tab to configure CJK (Chinese, Japanese, Korean). 
 You can select the most frequently used encoding. The value selected here is the encoding that can be selected on the display screen of JTransCoder or JSON view.
-
-==== CJK View
 
 Target::
     A list of all encodings available in Java will be displayed.
@@ -180,6 +180,12 @@ Select::
 
 [Display max length]::
     Sets the maximum size of the View to be displayed. If the size of the request or response is very large, it may stop responding.
+
+==== Burp View tab
+
+[Burp suite ToolBar] check box::
+
+  Show Burp suite Toolbar
 
 === MatchReplace tab
 

@@ -116,14 +116,15 @@ Burpの [User Interface] -> [Inspector and Message Editor] の Charsetsの切り
 
 == Yaguraタブ
 
-=== CJK Viewタブ
+=== Universal Viewタブ
+
+===== CJK View
 
 image:images/custom_encoding.png[CJK Viewタブ]
 
 いわゆるCJK(中国語、日本語、韓国語)に対応するための設定を行うタブです。
 使用頻度の高い Encoding を選択することができます。ここで選択した値は、JTransCoderまたはJSONビューの表示画面で選択できるエンコードです。
 
-==== CJK View
 
 Target::
     Javaで利用可能なすべてのエンコーディングリスト一覧が表示されます。
@@ -179,6 +180,12 @@ Select::
 
 [Display max length]::
     Viewを表示する最大のサイズを設定します。リクエストまたはレスポンスのサイズが非常に大きい場合、応答しなくなる可能性があります。
+
+==== Burp View タブ
+
+[Burp suite ToolBar] チェックボックス::
+
+  Burp suite ツールバーの表示
 
 === MatchReplaceタブ
 
