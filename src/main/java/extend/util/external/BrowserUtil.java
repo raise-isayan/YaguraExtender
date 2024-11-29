@@ -4,6 +4,7 @@ import extension.burp.BurpVersion;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ import javax.swing.JOptionPane;
 public class BrowserUtil {
 
     private final static Logger logger = Logger.getLogger(BrowserUtil.class.getName());
+
+    private final static String CHROMIUM_EXTENSIONS = "/Browser/ChromiumExtension";
 
     private final static String CHROMIUM_PROPERTIES = "/chromium.properties";
 
@@ -103,6 +106,11 @@ public class BrowserUtil {
         return dir.resolve(path);
     }
 
+    public static boolean existsBrowseExtensionDirectory() {
+        File dir = getBrowseExtensionDirectory().toFile();
+        return dir.exists();
+    }
+
     public static Path getBrowsePath() {
         String chromeExec = "";
         BurpVersion.OSType os = BurpVersion.getOSType();
@@ -173,6 +181,13 @@ public class BrowserUtil {
         }
         chromeExecAndArg.addAll(CHROME_ARGS);
         return chromeExecAndArg;
+    }
+
+    public static void copyBrowserExtension() {
+        URL url = BrowserUtil.class.getResource(CHROMIUM_EXTENSIONS);
+        if (!existsBrowseExtensionDirectory()) {
+
+        }
     }
 
     public static File[] getUserProfile() {

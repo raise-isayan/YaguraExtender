@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.api.montoya.collaborator.HttpDetails;
 import burp.api.montoya.core.ToolType;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -10,6 +9,7 @@ import burp.api.montoya.proxy.websocket.ProxyWebSocketCreation;
 import burp.api.montoya.websocket.BinaryMessage;
 import burp.api.montoya.websocket.TextMessage;
 import burp.api.montoya.websocket.WebSocketCreated;
+import extend.util.external.ZipUtil;
 import extension.burp.BurpUtil;
 import extension.burp.HttpTarget;
 import extension.helpers.ConvertUtil;
@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -93,23 +94,9 @@ public class Logging implements Closeable {
         };
     }
 
-    protected static FileSystem openZip(Path zipPath) throws IOException {
-        Map<String, String> env = Map.of(
-                "create", "true",
-                "compressionMethod", "DEFLATED"
-        );
-        try {
-            URI zipUri = new URI("jar:file", zipPath.toUri().getPath(), null);
-            // Create FileSystem
-            return FileSystems.newFileSystem(zipUri, env);
-        } catch (URISyntaxException ex) {
-            throw new IOException(ex);
-        }
-    }
-
     protected FileSystem openFileSystem(Path filePath) throws IOException, URISyntaxException {
         if (getLoggingProperty().isCompress()) {
-            return openZip(filePath);
+            return ZipUtil.openZip(filePath);
         } else {
             return null;
         }

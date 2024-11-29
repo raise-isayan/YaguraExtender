@@ -1,12 +1,18 @@
 package yagura.view;
 
+import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import java.util.Timer;
 import java.util.TimerTask;
 import burp.api.montoya.ui.Theme;
 import extend.util.external.BrowserUtil;
+import extend.util.external.ZipUtil;
 import extension.burp.BurpConfig;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
@@ -15,6 +21,7 @@ import javax.swing.plaf.basic.BasicToolBarUI;
  * @author isayan
  */
 public class BurpToolBar extends javax.swing.JPanel {
+    private final static Logger logger = Logger.getLogger(BurpToolBar.class.getName());
 
     private final MontoyaApi api;
 
@@ -163,6 +170,18 @@ public class BurpToolBar extends javax.swing.JPanel {
     }//GEN-LAST:event_tglInterceptActionPerformed
 
     private void btnOpenBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBrowserActionPerformed
+        if (!BrowserUtil.existsBrowseExtensionDirectory()) {
+            try {
+                File browserExtensions = BrowserUtil.getBrowseExtensionDirectory().toFile();
+                browserExtensions.mkdir();
+                URL burpJarUrl = BurpExtension.class.getResource("/");
+                String burpJar = ZipUtil.getBaseJar(burpJarUrl);
+                ZipUtil.decompressZip(new File(burpJar), browserExtensions, "resources/Browser/ChromiumExtension");
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+
         String profile = (String)this.cmbProfile.getSelectedItem();
         BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
         if (listener != null) {

@@ -183,6 +183,8 @@ Select::
 
 ==== Burp View タブ
 
+image:images/custom_burpview.png[Burp View tab]
+
 [Burp suite ToolBar] チェックボックス::
 
   Burp suite ツールバーの表示

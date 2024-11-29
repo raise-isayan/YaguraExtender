@@ -41,8 +41,11 @@ import java.awt.event.WindowListener;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JFrame;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.util.EnumSet;
+import javax.swing.JMenuItem;
 import extend.util.external.ThemeUI;
-import extend.util.external.gson.XMatchItemAdapter;
 import extension.burp.BurpConfig;
 import extension.burp.BurpExtensionImpl;
 import extension.burp.BurpUtil;
@@ -52,11 +55,6 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
-import extension.view.base.MatchItem;
-import java.awt.BorderLayout;
-import java.awt.Frame;
-import java.util.EnumSet;
-import javax.swing.JMenuItem;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -196,6 +194,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             BurpVersion.showUnsupporttDlg(burpVersion, Version.getInstance().getProjectName());
             throw new UnsupportedOperationException("Unsupported burp version");
         }
+
         if (DEBUG) {
             api.logging().logToOutput("name:" + burpVersion.getProductName());
             api.logging().logToOutput("major:" + burpVersion.getMajor());

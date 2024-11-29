@@ -183,6 +183,8 @@ Select::
 
 ==== Burp View tab
 
+image:images/custom_burpview.png[Burp View tab]
+
 [Burp suite ToolBar] check box::
 
   Show Burp suite Toolbar
