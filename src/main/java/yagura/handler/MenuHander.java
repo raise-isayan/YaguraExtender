@@ -524,16 +524,16 @@ public class MenuHander {
         yaguraExtensionMenu.setText("Extension (X)");
         yaguraExtensionMenu.setMnemonic(KeyEvent.VK_X);
 
-        JMenuItem yaguraPasteIncludeTargetScopeMenu = createMenuItem("Paste include Target scope(multi-line)", KeyEvent.VK_I, includeTargetScopeAction);
+        JMenuItem yaguraPasteIncludeTargetScopeMenu = createMenuItem("Paste include Target scope (multi-line)", KeyEvent.VK_I, includeTargetScopeAction);
         yaguraExtensionMenu.add(yaguraPasteIncludeTargetScopeMenu);
 
-        JMenuItem yaguraPasteIncludeHostScopeMenu = createMenuItem("Paste include Top URL Target scope(multi-line)", KeyEvent.VK_H, includeTopURLTargetScopeAction);
-        yaguraExtensionMenu.add(yaguraPasteIncludeHostScopeMenu);
+        JMenuItem yaguraPasteIncludeTopUrlScopeMenu = createMenuItem("Paste Top URL into include Target scope (multi-line)", KeyEvent.VK_H, includeTopURLTargetScopeAction);
+        yaguraExtensionMenu.add(yaguraPasteIncludeTopUrlScopeMenu);
 
-        JMenuItem yaguraPasteExludeTargetScopeMenu = createMenuItem("Paste exclude Target scope(multi-line)", KeyEvent.VK_E, excludeTargetScopeAction);
+        JMenuItem yaguraPasteExludeTargetScopeMenu = createMenuItem("Paste exclude Target scope (multi-line)", KeyEvent.VK_E, excludeTargetScopeAction);
         yaguraExtensionMenu.add(yaguraPasteExludeTargetScopeMenu);
 
-        JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through(multi-line)", KeyEvent.VK_P, sslPassThroughAction);
+        JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through (multi-line)", KeyEvent.VK_P, sslPassThroughAction);
         yaguraExtensionMenu.add(yaguraPasteSSLPassThroughMenu);
         yaguraMenu.add(yaguraExtensionMenu);
 

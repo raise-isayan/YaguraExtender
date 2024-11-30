@@ -97,16 +97,16 @@ Result FilterタブでBambda modeを切り換えるためのタブを作成す�
 
 選択した拡張機能を実行します。
 
-  Paste include Target scope(multi-line)::
+  Paste include Target scope (multi-line)::
     クリップボードに設定された、複数行のURLをTarget Scopeの Include in scope に追加します。
 
-  Paste include Top URL Target scope(multi-line)::
+  Paste Top URL into include Target scope (multi-line)::
     クリップボードに設定された、複数行のTop URLをTarget Scopeの Include in scope に追加します。
 
-  Paste exclude Target scope(multi-line)::
+  Paste exclude Target scope (multi-line)::
     クリップボードに設定された、複数行のURLをTarget Scopeの Exclude from scope に追加します。
 
-  Paste SSL pass through(multi-line)::
+  Paste SSL pass through (multi-line)::
     クリップボードに設定された、複数行のURLをTarget Scopeの SSL pass through に追加します。
 
 === Burp Charsets
@@ -187,7 +187,9 @@ image:images/custom_burpview.png[Burp View tab]
 
 [Burp suite ToolBar] チェックボックス::
 
-  Burp suite ツールバーの表示
+  Burp suite ツールバーの表示します。
+
+image:images/burp_toolbar.png[Burp ToolBar]
 
 === MatchReplaceタブ
 

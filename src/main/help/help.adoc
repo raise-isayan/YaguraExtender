@@ -98,16 +98,16 @@ You can create a tab to switch Bambda mode in the Result Filter tab.
 
 Run the selected extension.
 
-  Paste include Target scope(multi-line)::
+  Paste include Target scope (multi-line)::
     Add a multi-line URL set on the clipboard to the Target Scope Include in scope.
 
-  Paste include Top URL Target scope(multi-line)::
+  Paste Top URL into include Target scope (multi-line)::
     Add a multi-line Top URL set on the clipboard to the Target Scope Include in scope.
 
-  Paste exclude Target scope(multi-line)::
+  Paste exclude Target scope (multi-line)::
     Add a multi-line URL set on the clipboard to the Target Scope Exclude in scope.
 
-  Paste SSL pass through(multi-line)::
+  Paste SSL pass through (multi-line)::
     Add a multi-line URL set on the clipboard to the SSL pass through.
 
 === Burp Charsets
@@ -188,6 +188,8 @@ image:images/custom_burpview.png[Burp View tab]
 [Burp suite ToolBar] check box::
 
   Show Burp suite Toolbar
+
+image:images/burp_toolbar.png[Burp ToolBar]
 
 === MatchReplace tab
 

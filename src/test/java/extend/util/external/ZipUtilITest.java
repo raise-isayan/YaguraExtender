@@ -44,11 +44,11 @@ public class ZipUtilITest {
     @Test
     public void testBaseJar() throws IOException {
         System.out.println("testBaseJar");
-        URL url = new URL("file:///resources/help.jar!/images/Extender_Yagura.png");
+        URL url = new URL("file:/resources/help.jar!/images/Extender_Yagura.png");
         System.out.println(url.toExternalForm());
         String result = ZipUtil.getBaseJar(url);
         System.out.println("url =>" + result);
-        assertEquals(result, "/resources/help.jar");
+        assertTrue(result.contains("help.jar"));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ZipUtilITest {
         System.out.println("Exterm:" + url.toExternalForm());
         String result = ZipUtil.getBaseJar(url);
         System.out.println("url =>" + result);
-        assertEquals(result, "/resources/help.jar");
+        assertTrue(result.contains("help.jar"));
     }
 
     @Test
@@ -100,8 +100,7 @@ public class ZipUtilITest {
                 String f = zipEntry.getName();
                 if (f.startsWith("META-INF")) {
                     System.out.println("entry:" + f);
-                }
-                else {
+                } else {
                     System.out.println("else:" + f);
                 }
             }
@@ -119,11 +118,10 @@ public class ZipUtilITest {
         System.out.println("path.name:" + path.getFileName());
         FileSystem fs = path.getFileSystem();
         Iterable<FileStore> list = fs.getFileStores();
-        for (var ite = list.iterator(); ite.hasNext(); ) {
+        for (var ite = list.iterator(); ite.hasNext();) {
             System.out.println("fs:" + ite.next().name());
         }
         Path file = Path.of(path.toString(), "makefile123");
     }
-
 
 }

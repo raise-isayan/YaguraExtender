@@ -6,14 +6,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 import burp.api.montoya.ui.Theme;
 import extend.util.external.BrowserUtil;
-import extend.util.external.ZipUtil;
 import extension.burp.BurpConfig;
+import extension.burp.BurpUtil;
+import extension.helpers.ConvertUtil;
+import extension.helpers.FileUtil;
+import extension.helpers.StringUtil;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 /**
@@ -21,12 +25,14 @@ import javax.swing.plaf.basic.BasicToolBarUI;
  * @author isayan
  */
 public class BurpToolBar extends javax.swing.JPanel {
+
     private final static Logger logger = Logger.getLogger(BurpToolBar.class.getName());
 
     private final MontoyaApi api;
 
     /**
      * Creates new form NewJPanel
+     *
      * @param api
      */
     public BurpToolBar(final MontoyaApi api) {
@@ -44,12 +50,67 @@ public class BurpToolBar extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupSetting = new javax.swing.JPopupMenu();
+        mnuUserSettings = new javax.swing.JMenu();
+        mnuLoadUserSettings = new javax.swing.JMenuItem();
+        mnuSaveUserSettings = new javax.swing.JMenuItem();
+        mnuProjectSettings = new javax.swing.JMenu();
+        mnuLoadProjectSettings = new javax.swing.JMenuItem();
+        saveSaveProjectSettings = new javax.swing.JMenuItem();
         toolBar = new javax.swing.JToolBar();
         tglIntercept = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnOpenBrowser = new javax.swing.JButton();
         cmbProfile = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JToolBar.Separator();
+        btnWrapTabLayout = new javax.swing.JButton();
+        btnScrollTabLayout = new javax.swing.JButton();
+        btnSetting = new javax.swing.JButton();
+
+        mnuUserSettings.setText("User Settings");
+        mnuUserSettings.setToolTipText("");
+
+        mnuLoadUserSettings.setText("Load user settings");
+        mnuLoadUserSettings.setToolTipText("");
+        mnuLoadUserSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuLoadUserSettingsActionPerformed(evt);
+            }
+        });
+        mnuUserSettings.add(mnuLoadUserSettings);
+
+        mnuSaveUserSettings.setText("Save user settings");
+        mnuSaveUserSettings.setToolTipText("");
+        mnuSaveUserSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSaveUserSettingsActionPerformed(evt);
+            }
+        });
+        mnuUserSettings.add(mnuSaveUserSettings);
+
+        popupSetting.add(mnuUserSettings);
+
+        mnuProjectSettings.setText("Project Settings");
+        mnuProjectSettings.setToolTipText("");
+
+        mnuLoadProjectSettings.setText("Load project settings");
+        mnuLoadProjectSettings.setToolTipText("");
+        mnuLoadProjectSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuLoadProjectSettingsActionPerformed(evt);
+            }
+        });
+        mnuProjectSettings.add(mnuLoadProjectSettings);
+
+        saveSaveProjectSettings.setText("Save project settings");
+        saveSaveProjectSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveSaveProjectSettingsActionPerformed(evt);
+            }
+        });
+        mnuProjectSettings.add(saveSaveProjectSettings);
+
+        popupSetting.add(mnuProjectSettings);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -98,8 +159,7 @@ public class BurpToolBar extends javax.swing.JPanel {
         cmbProfile.setMaximumSize(new java.awt.Dimension(200, 28));
         cmbProfile.setMinimumSize(new java.awt.Dimension(60, 28));
         cmbProfile.setName(""); // NOI18N
-        cmbProfile.setOpaque(true);
-        cmbProfile.setPreferredSize(new java.awt.Dimension(120, 28));
+        cmbProfile.setPreferredSize(new java.awt.Dimension(100, 28));
         cmbProfile.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -111,6 +171,42 @@ public class BurpToolBar extends javax.swing.JPanel {
         });
         toolBar.add(cmbProfile);
         toolBar.add(jSeparator2);
+
+        btnWrapTabLayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/application_side_expand.png"))); // NOI18N
+        btnWrapTabLayout.setToolTipText("wrap tab layout");
+        btnWrapTabLayout.setFocusable(false);
+        btnWrapTabLayout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnWrapTabLayout.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnWrapTabLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWrapTabLayoutActionPerformed(evt);
+            }
+        });
+        toolBar.add(btnWrapTabLayout);
+
+        btnScrollTabLayout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/application_side_contract.png"))); // NOI18N
+        btnScrollTabLayout.setToolTipText("scroll tab layout");
+        btnScrollTabLayout.setFocusable(false);
+        btnScrollTabLayout.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnScrollTabLayout.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnScrollTabLayout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnScrollTabLayoutActionPerformed(evt);
+            }
+        });
+        toolBar.add(btnScrollTabLayout);
+
+        btnSetting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_wrench.png"))); // NOI18N
+        btnSetting.setToolTipText("burp settings");
+        btnSetting.setFocusable(false);
+        btnSetting.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSetting.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSetting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSettingActionPerformed(evt);
+            }
+        });
+        toolBar.add(btnSetting);
 
         add(toolBar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -137,16 +233,15 @@ public class BurpToolBar extends javax.swing.JPanel {
 //            applyStyleTheme(api.userInterface().currentTheme());
 //        }
 //    };
-
     private void customizeComponents() {
         this.renewProfile();
         this.timer.schedule(this.task, 0, this.interval_time);
     }
 
     public void renewProfile() {
-        File [] profiles = BrowserUtil.getUserProfile();
+        File[] profiles = BrowserUtil.getUserProfile();
         this.cmbProfile.removeAllItems();
-        this.cmbProfile.addItem("Default");
+        this.cmbProfile.addItem(BrowserUtil.PROFILE_DEFAULT);
         for (File p : profiles) {
             this.cmbProfile.addItem(p.getName());
         }
@@ -162,33 +257,24 @@ public class BurpToolBar extends javax.swing.JPanel {
         if (interceptEnabled != isIntercept()) {
             if (interceptEnabled) {
                 api.proxy().disableIntercept();
-            }
-            else {
+            } else {
                 api.proxy().enableIntercept();
             }
         }
     }//GEN-LAST:event_tglInterceptActionPerformed
 
     private void btnOpenBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBrowserActionPerformed
-        if (!BrowserUtil.existsBrowseExtensionDirectory()) {
-            try {
-                File browserExtensions = BrowserUtil.getBrowseExtensionDirectory().toFile();
-                browserExtensions.mkdir();
-                URL burpJarUrl = BurpExtension.class.getResource("/");
-                String burpJar = ZipUtil.getBaseJar(burpJarUrl);
-                ZipUtil.decompressZip(new File(burpJar), browserExtensions, "resources/Browser/ChromiumExtension");
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
+        try {
+            BrowserUtil.copyBrowserExtension();
+            String profile = (String) this.cmbProfile.getSelectedItem();
+            BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
+            if (listener != null) {
+                BrowserUtil.openBrowser((profile == null) ? BrowserUtil.PROFILE_DEFAULT : profile, listener.getListenerPort());
+            } else {
+                JOptionPane.showMessageDialog(null, "fail Open Browser");
             }
-        }
-
-        String profile = (String)this.cmbProfile.getSelectedItem();
-        BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
-        if (listener != null) {
-            BrowserUtil.openBrowser((profile == null) ? "Default" : profile, listener.getListenerPort());
-        }
-        else {
-            JOptionPane.showMessageDialog(null, "fail Open Browser");
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }//GEN-LAST:event_btnOpenBrowserActionPerformed
 
@@ -196,29 +282,113 @@ public class BurpToolBar extends javax.swing.JPanel {
         this.renewProfile();
     }//GEN-LAST:event_cmbProfilePopupMenuWillBecomeVisible
 
+    private void btnWrapTabLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWrapTabLayoutActionPerformed
+        JTabbedPane tab = BurpUtil.suiteTabbedPane();
+        tab.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+    }//GEN-LAST:event_btnWrapTabLayoutActionPerformed
+
+    private void btnScrollTabLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScrollTabLayoutActionPerformed
+        JTabbedPane tab = BurpUtil.suiteTabbedPane();
+        tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    }//GEN-LAST:event_btnScrollTabLayoutActionPerformed
+
+    private void btnSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingActionPerformed
+        this.popupSetting.show(this, this.btnSetting.getX()+this.btnSetting.getWidth(), this.btnSetting.getY());
+    }//GEN-LAST:event_btnSettingActionPerformed
+
+    private File userSetting;
+    private File projectSetting;
+
+    private void mnuLoadUserSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoadUserSettingsActionPerformed
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.setCurrentDirectory(this.userSetting);
+        int selected = filechooser.showSaveDialog(this);
+        if (selected == JFileChooser.APPROVE_OPTION) {
+            File file = filechooser.getSelectedFile();
+            this.userSetting = file.getParentFile();
+            this.api.burpSuite().importUserOptionsFromJson(file.getAbsolutePath());
+        }
+    }//GEN-LAST:event_mnuLoadUserSettingsActionPerformed
+
+    private void mnuSaveUserSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveUserSettingsActionPerformed
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.setCurrentDirectory(this.userSetting);
+        int selected = filechooser.showOpenDialog(this);
+        if (selected == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = filechooser.getSelectedFile();
+                this.userSetting = file.getParentFile();
+                String config = this.api.burpSuite().exportUserOptionsAsJson();
+                FileUtil.bytesToFile(StringUtil.getBytesUTF8(config), file);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "User Settings", JOptionPane.OK_OPTION);
+            }
+        }
+    }//GEN-LAST:event_mnuSaveUserSettingsActionPerformed
+
+    private void mnuLoadProjectSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoadProjectSettingsActionPerformed
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.setCurrentDirectory(this.projectSetting);
+        int selected = filechooser.showSaveDialog(this);
+        if (selected == JFileChooser.APPROVE_OPTION) {
+            File file = filechooser.getSelectedFile();
+            this.projectSetting = file.getParentFile();
+            this.api.burpSuite().importProjectOptionsFromJson(file.getAbsolutePath());
+        }
+    }//GEN-LAST:event_mnuLoadProjectSettingsActionPerformed
+
+    private void saveSaveProjectSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSaveProjectSettingsActionPerformed
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.setCurrentDirectory(this.projectSetting);
+        int selected = filechooser.showOpenDialog(this);
+        if (selected == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = filechooser.getSelectedFile();
+                this.projectSetting = file.getParentFile();
+                String config = this.api.burpSuite().exportProjectOptionsAsJson();
+                FileUtil.bytesToFile(StringUtil.getBytesUTF8(config), file);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Project Settings", JOptionPane.OK_OPTION);
+            }
+        }
+    }//GEN-LAST:event_saveSaveProjectSettingsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpenBrowser;
+    private javax.swing.JButton btnScrollTabLayout;
+    private javax.swing.JButton btnSetting;
+    private javax.swing.JButton btnWrapTabLayout;
     private javax.swing.JComboBox<String> cmbProfile;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JMenuItem mnuLoadProjectSettings;
+    private javax.swing.JMenuItem mnuLoadUserSettings;
+    private javax.swing.JMenu mnuProjectSettings;
+    private javax.swing.JMenuItem mnuSaveUserSettings;
+    private javax.swing.JMenu mnuUserSettings;
+    private javax.swing.JPopupMenu popupSetting;
+    private javax.swing.JMenuItem saveSaveProjectSettings;
     private javax.swing.JToggleButton tglIntercept;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 
     public void applyStyleTheme(Theme theme) {
         switch (theme) {
-        case DARK:
-            this.tglIntercept.setIcon(inspector_off_dark);
-            this.tglIntercept.setSelectedIcon(inspector_on_dark);
-            break;
-        case LIGHT:
-            this.tglIntercept.setIcon(inspector_off_light);
-            this.tglIntercept.setSelectedIcon(inspector_on_light);
-            break;
+            case DARK:
+                this.tglIntercept.setIcon(inspector_off_dark);
+                this.tglIntercept.setSelectedIcon(inspector_on_dark);
+                break;
+            case LIGHT:
+                this.tglIntercept.setIcon(inspector_off_light);
+                this.tglIntercept.setSelectedIcon(inspector_on_light);
+                break;
         }
         this.tglIntercept.updateUI();
     }
-
 
     public void setIntercept(boolean interceptEnabled) {
         this.tglIntercept.setSelected(interceptEnabled);
@@ -243,5 +413,4 @@ public class BurpToolBar extends javax.swing.JPanel {
 //    public int getIntervalTime() {
 //        return this.interval_time;
 //    }
-
 }

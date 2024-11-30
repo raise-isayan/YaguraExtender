@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -21,7 +23,9 @@ public class BrowserUtil {
 
     private final static Logger logger = Logger.getLogger(BrowserUtil.class.getName());
 
-    private final static String CHROMIUM_EXTENSIONS = "/Browser/ChromiumExtension";
+    public final static String PROFILE_DEFAULT = "Default";
+
+    private final static String CHROMIUM_EXTENSIONS = "resources/Browser/ChromiumExtension";
 
     private final static String CHROMIUM_PROPERTIES = "/chromium.properties";
 
@@ -130,48 +134,47 @@ public class BrowserUtil {
         return dir.resolve(path);
     }
 
-
     public static List<String> getBrowserExecAndArgs(String profile, int port) {
         // chrome://version/ から情報取得
         final List<String> CHROME_ARGS = List.of(
-            "--disable-ipc-flooding-protection",
-            "--disable-xss-auditor",
-            "--disable-bundled-ppapi-flash",
-            "--disable-plugins-discovery",
-            "--disable-default-apps",
-            "--disable-prerender-local-predictor",
-            "--disable-sync",
-            "--disable-breakpad",
-            "--disable-crash-reporter",
-            "--disable-prerender-local-predictor",
-            "--disk-cache-size=0",
-            "--disable-settings-window",
-            "--disable-notifications",
-            "--disable-speech-api",
-            "--disable-file-system",
-            "--disable-presentation-api",
-            "--disable-permissions-api",
-            "--disable-new-zip-unpacker",
-            "--disable-media-session-api",
-            "--no-experiments",
-            "--no-events",
-            "--no-first-run",
-            "--no-default-browser-check",
-            "--no-pings",
-            "--no-service-autorun",
-            "--media-cache-size=0",
-            "--use-fake-device-for-media-stream",
-            "--dbus-stub",
-            "--disable-background-networking",
-            "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
-            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.127 Safari/537.36",
-            "--ignore-certificate-errors",
-            String.format("--proxy-server=localhost:%d", port),
-            "--proxy-bypass-list=<-loopback>",
-            String.format("--profile-directory=%s", profile),
-            String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
-            String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
-            "chrome://newtab"
+                "--disable-ipc-flooding-protection",
+                "--disable-xss-auditor",
+                "--disable-bundled-ppapi-flash",
+                "--disable-plugins-discovery",
+                "--disable-default-apps",
+                "--disable-prerender-local-predictor",
+                "--disable-sync",
+                "--disable-breakpad",
+                "--disable-crash-reporter",
+                "--disable-prerender-local-predictor",
+                "--disk-cache-size=0",
+                "--disable-settings-window",
+                "--disable-notifications",
+                "--disable-speech-api",
+                "--disable-file-system",
+                "--disable-presentation-api",
+                "--disable-permissions-api",
+                "--disable-new-zip-unpacker",
+                "--disable-media-session-api",
+                "--no-experiments",
+                "--no-events",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--no-pings",
+                "--no-service-autorun",
+                "--media-cache-size=0",
+                "--use-fake-device-for-media-stream",
+                "--dbus-stub",
+                "--disable-background-networking",
+                "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
+                "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.127 Safari/537.36",
+                "--ignore-certificate-errors",
+                String.format("--proxy-server=localhost:%d", port),
+                "--proxy-bypass-list=<-loopback>",
+                String.format("--profile-directory=%s", profile),
+                String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
+                String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
+                "chrome://newtab"
         );
         BurpVersion.OSType os = BurpVersion.getOSType();
         List<String> chromeExecAndArg = new ArrayList<>();
@@ -183,23 +186,36 @@ public class BrowserUtil {
         return chromeExecAndArg;
     }
 
-    public static void copyBrowserExtension() {
-        URL url = BrowserUtil.class.getResource(CHROMIUM_EXTENSIONS);
+    public static void copyBrowserExtension() throws IOException {
         if (!existsBrowseExtensionDirectory()) {
-
+            File browserExtensions = getBrowseExtensionDirectory().toFile();
+            browserExtensions.mkdir();
+            URL burpJarUrl = BrowserUtil.class.getResource("/");
+            String burpJar = ZipUtil.getBaseJar(burpJarUrl);
+            ZipUtil.decompressZip(new File(burpJar), browserExtensions, CHROMIUM_EXTENSIONS);
         }
     }
 
     public static File[] getUserProfile() {
         File file = getBrowseUserDataDirectory().toFile();
-        File[] list = file.listFiles(new FileFilter() {
+        File[] profiles = file.listFiles(new FileFilter() {
 
             @Override
             public boolean accept(File pathname) {
-                return pathname.isDirectory() && pathname.getName().startsWith("Profile");
+                return pathname.isDirectory() && pathname.getName().startsWith("Profile ");
+            }
+
+        });
+        profiles = (profiles == null) ? new File[]{} : profiles;
+        Arrays.sort(profiles, new Comparator<File>() {
+            @Override
+            public int compare(File f1, File f2) {
+                int p1 = Integer.parseInt(f1.getName().substring("Profile ".length()));
+                int p2 = Integer.parseInt(f2.getName().substring("Profile ".length()));
+                return p1 - p2;
             }
         });
-        return (list == null) ? new File[] {} : list;
+        return profiles;
     }
 
     public static void openBrowser(String profile, int port) {
