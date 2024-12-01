@@ -51,12 +51,11 @@ public class BurpToolBar extends javax.swing.JPanel {
     private void initComponents() {
 
         popupSetting = new javax.swing.JPopupMenu();
-        mnuUserSettings = new javax.swing.JMenu();
+        mnuLoadProjectSettings = new javax.swing.JMenuItem();
+        mnuSaveProjectSettings = new javax.swing.JMenuItem();
+        jSeparator0 = new javax.swing.JPopupMenu.Separator();
         mnuLoadUserSettings = new javax.swing.JMenuItem();
         mnuSaveUserSettings = new javax.swing.JMenuItem();
-        mnuProjectSettings = new javax.swing.JMenu();
-        mnuLoadProjectSettings = new javax.swing.JMenuItem();
-        saveSaveProjectSettings = new javax.swing.JMenuItem();
         toolBar = new javax.swing.JToolBar();
         tglIntercept = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
@@ -67,8 +66,23 @@ public class BurpToolBar extends javax.swing.JPanel {
         btnScrollTabLayout = new javax.swing.JButton();
         btnSetting = new javax.swing.JButton();
 
-        mnuUserSettings.setText("User Settings");
-        mnuUserSettings.setToolTipText("");
+        mnuLoadProjectSettings.setText("Load project settings");
+        mnuLoadProjectSettings.setToolTipText("");
+        mnuLoadProjectSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuLoadProjectSettingsActionPerformed(evt);
+            }
+        });
+        popupSetting.add(mnuLoadProjectSettings);
+
+        mnuSaveProjectSettings.setText("Save project settings");
+        mnuSaveProjectSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuSaveProjectSettingsActionPerformed(evt);
+            }
+        });
+        popupSetting.add(mnuSaveProjectSettings);
+        popupSetting.add(jSeparator0);
 
         mnuLoadUserSettings.setText("Load user settings");
         mnuLoadUserSettings.setToolTipText("");
@@ -77,7 +91,7 @@ public class BurpToolBar extends javax.swing.JPanel {
                 mnuLoadUserSettingsActionPerformed(evt);
             }
         });
-        mnuUserSettings.add(mnuLoadUserSettings);
+        popupSetting.add(mnuLoadUserSettings);
 
         mnuSaveUserSettings.setText("Save user settings");
         mnuSaveUserSettings.setToolTipText("");
@@ -86,31 +100,7 @@ public class BurpToolBar extends javax.swing.JPanel {
                 mnuSaveUserSettingsActionPerformed(evt);
             }
         });
-        mnuUserSettings.add(mnuSaveUserSettings);
-
-        popupSetting.add(mnuUserSettings);
-
-        mnuProjectSettings.setText("Project Settings");
-        mnuProjectSettings.setToolTipText("");
-
-        mnuLoadProjectSettings.setText("Load project settings");
-        mnuLoadProjectSettings.setToolTipText("");
-        mnuLoadProjectSettings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuLoadProjectSettingsActionPerformed(evt);
-            }
-        });
-        mnuProjectSettings.add(mnuLoadProjectSettings);
-
-        saveSaveProjectSettings.setText("Save project settings");
-        saveSaveProjectSettings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveSaveProjectSettingsActionPerformed(evt);
-            }
-        });
-        mnuProjectSettings.add(saveSaveProjectSettings);
-
-        popupSetting.add(mnuProjectSettings);
+        popupSetting.add(mnuSaveUserSettings);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -293,7 +283,7 @@ public class BurpToolBar extends javax.swing.JPanel {
     }//GEN-LAST:event_btnScrollTabLayoutActionPerformed
 
     private void btnSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingActionPerformed
-        this.popupSetting.show(this, this.btnSetting.getX()+this.btnSetting.getWidth(), this.btnSetting.getY());
+        this.popupSetting.show(this, this.btnSetting.getX(), this.btnSetting.getY()+this.btnSetting.getHeight());
     }//GEN-LAST:event_btnSettingActionPerformed
 
     private File userSetting;
@@ -302,23 +292,35 @@ public class BurpToolBar extends javax.swing.JPanel {
     private void mnuLoadUserSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoadUserSettingsActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BurpConfig.BURP_CONFIG_FILTER);
         filechooser.setCurrentDirectory(this.userSetting);
-        int selected = filechooser.showSaveDialog(this);
+        int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
-            File file = filechooser.getSelectedFile();
-            this.userSetting = file.getParentFile();
-            this.api.burpSuite().importUserOptionsFromJson(file.getAbsolutePath());
+            try {
+                File file = filechooser.getSelectedFile();
+                this.userSetting = file.getParentFile();
+                String config = StringUtil.getStringUTF8(FileUtil.bytesFromFile(file.getAbsoluteFile()));
+                this.api.burpSuite().importUserOptionsFromJson(config);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "User Settings", JOptionPane.OK_OPTION);
+            }
         }
     }//GEN-LAST:event_mnuLoadUserSettingsActionPerformed
 
     private void mnuSaveUserSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveUserSettingsActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BurpConfig.BURP_CONFIG_FILTER);
         filechooser.setCurrentDirectory(this.userSetting);
-        int selected = filechooser.showOpenDialog(this);
+        int selected = filechooser.showSaveDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = filechooser.getSelectedFile();
+                if (!BurpConfig.BURP_CONFIG_FILTER.accept(file)) {
+                    file = new File(file.getAbsolutePath() + ".json");
+                }
                 this.userSetting = file.getParentFile();
                 String config = this.api.burpSuite().exportUserOptionsAsJson();
                 FileUtil.bytesToFile(StringUtil.getBytesUTF8(config), file);
@@ -331,23 +333,35 @@ public class BurpToolBar extends javax.swing.JPanel {
     private void mnuLoadProjectSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuLoadProjectSettingsActionPerformed
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.setCurrentDirectory(this.projectSetting);
-        int selected = filechooser.showSaveDialog(this);
-        if (selected == JFileChooser.APPROVE_OPTION) {
-            File file = filechooser.getSelectedFile();
-            this.projectSetting = file.getParentFile();
-            this.api.burpSuite().importProjectOptionsFromJson(file.getAbsolutePath());
-        }
-    }//GEN-LAST:event_mnuLoadProjectSettingsActionPerformed
-
-    private void saveSaveProjectSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSaveProjectSettingsActionPerformed
-        JFileChooser filechooser = new JFileChooser();
-        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BurpConfig.BURP_CONFIG_FILTER);
         filechooser.setCurrentDirectory(this.projectSetting);
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = filechooser.getSelectedFile();
+                this.projectSetting = file.getParentFile();
+                String config = StringUtil.getStringUTF8(FileUtil.bytesFromFile(file.getAbsoluteFile()));
+                this.api.burpSuite().importProjectOptionsFromJson(config);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Project Settings", JOptionPane.OK_OPTION);
+            }
+        }
+    }//GEN-LAST:event_mnuLoadProjectSettingsActionPerformed
+
+    private void mnuSaveProjectSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSaveProjectSettingsActionPerformed
+        JFileChooser filechooser = new JFileChooser();
+        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BurpConfig.BURP_CONFIG_FILTER);
+        filechooser.setCurrentDirectory(this.projectSetting);
+        int selected = filechooser.showSaveDialog(this);
+        if (selected == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = filechooser.getSelectedFile();
+                if (!BurpConfig.BURP_CONFIG_FILTER.accept(file)) {
+                    file = new File(file.getAbsolutePath() + ".json");
+                }
                 this.projectSetting = file.getParentFile();
                 String config = this.api.burpSuite().exportProjectOptionsAsJson();
                 FileUtil.bytesToFile(StringUtil.getBytesUTF8(config), file);
@@ -355,7 +369,7 @@ public class BurpToolBar extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Project Settings", JOptionPane.OK_OPTION);
             }
         }
-    }//GEN-LAST:event_saveSaveProjectSettingsActionPerformed
+    }//GEN-LAST:event_mnuSaveProjectSettingsActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOpenBrowser;
@@ -363,15 +377,14 @@ public class BurpToolBar extends javax.swing.JPanel {
     private javax.swing.JButton btnSetting;
     private javax.swing.JButton btnWrapTabLayout;
     private javax.swing.JComboBox<String> cmbProfile;
+    private javax.swing.JPopupMenu.Separator jSeparator0;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JMenuItem mnuLoadProjectSettings;
     private javax.swing.JMenuItem mnuLoadUserSettings;
-    private javax.swing.JMenu mnuProjectSettings;
+    private javax.swing.JMenuItem mnuSaveProjectSettings;
     private javax.swing.JMenuItem mnuSaveUserSettings;
-    private javax.swing.JMenu mnuUserSettings;
     private javax.swing.JPopupMenu popupSetting;
-    private javax.swing.JMenuItem saveSaveProjectSettings;
     private javax.swing.JToggleButton tglIntercept;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables

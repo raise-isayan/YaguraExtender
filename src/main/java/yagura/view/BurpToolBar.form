@@ -8,57 +8,43 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="mnuUserSettings">
+        <MenuItem class="javax.swing.JMenuItem" name="mnuLoadProjectSettings">
           <Properties>
-            <Property name="text" type="java.lang.String" value="User Settings"/>
+            <Property name="text" type="java.lang.String" value="Load project settings"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuLoadUserSettings">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Load user settings"/>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuLoadUserSettingsActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuSaveUserSettings">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Save user settings"/>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuSaveUserSettingsActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="mnuProjectSettings">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuLoadProjectSettingsActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="mnuSaveProjectSettings">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Project Settings"/>
+            <Property name="text" type="java.lang.String" value="Save project settings"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuSaveProjectSettingsActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator0">
+        </Component>
+        <MenuItem class="javax.swing.JMenuItem" name="mnuLoadUserSettings">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Load user settings"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuLoadProjectSettings">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Load project settings"/>
-                <Property name="toolTipText" type="java.lang.String" value=""/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuLoadProjectSettingsActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="saveSaveProjectSettings">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Save project settings"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveSaveProjectSettingsActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuLoadUserSettingsActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="mnuSaveUserSettings">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Save user settings"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuSaveUserSettingsActionPerformed"/>
+          </Events>
+        </MenuItem>
       </SubComponents>
     </Container>
   </NonVisualComponents>

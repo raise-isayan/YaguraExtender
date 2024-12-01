@@ -1,6 +1,7 @@
 package yagura.view;
 
 import burp.BurpExtension;
+import extension.burp.BurpConfig;
 import extension.view.layout.VerticalFlowLayout;
 import yagura.Version;
 import java.awt.Component;
@@ -118,16 +119,14 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(TabbetOption.VERSION_PROPERTY, null, this);
     }//GEN-LAST:event_chkDebugModeStateChanged
 
-    private final static FileFilter BURP_CONFIG_FILTER = new FileNameExtensionFilter("burp config File(*.json)", "json");
-
     private File currentConigDirectory = null;
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
         File file = null;
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
-        filechooser.setFileFilter(BURP_CONFIG_FILTER);
+        filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BurpConfig.BURP_CONFIG_FILTER);
         if (this.currentConigDirectory != null) {
             filechooser.setCurrentDirectory(this.currentConigDirectory);
         }
@@ -151,8 +150,8 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         File file = null;
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.addChoosableFileFilter(BURP_CONFIG_FILTER);
-        filechooser.setFileFilter(BURP_CONFIG_FILTER);
+        filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
+        filechooser.setFileFilter(BurpConfig.BURP_CONFIG_FILTER);
         if (file != null && file.exists()) {
             filechooser.setSelectedFile(file);
         } else {
@@ -162,7 +161,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
                 file = filechooser.getSelectedFile();
-                if (!BURP_CONFIG_FILTER.accept(file)) {
+                if (!BurpConfig.BURP_CONFIG_FILTER.accept(file)) {
                     file = new File(file.getAbsolutePath() + ".json");
                 }
                 OptionProperty option = BurpExtension.getInstance().getProperty();
