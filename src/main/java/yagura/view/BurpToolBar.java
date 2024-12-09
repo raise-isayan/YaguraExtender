@@ -5,7 +5,7 @@ import burp.api.montoya.MontoyaApi;
 import java.util.Timer;
 import java.util.TimerTask;
 import burp.api.montoya.ui.Theme;
-import extend.util.external.BrowserUtil;
+import extend.util.external.BurpBrowser;
 import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
 import extension.helpers.ConvertUtil;
@@ -30,6 +30,8 @@ public class BurpToolBar extends javax.swing.JPanel {
 
     private final MontoyaApi api;
 
+    private final BurpBrowser browser;
+
     /**
      * Creates new form NewJPanel
      *
@@ -37,6 +39,7 @@ public class BurpToolBar extends javax.swing.JPanel {
      */
     public BurpToolBar(final MontoyaApi api) {
         this.api = api;
+        this.browser = BurpBrowser.getInstance(api);
         initComponents();
         customizeComponents();
     }
@@ -229,9 +232,9 @@ public class BurpToolBar extends javax.swing.JPanel {
     }
 
     public void renewProfile() {
-        File[] profiles = BrowserUtil.getUserProfile();
+        File[] profiles = this.browser.getUserProfile();
         this.cmbProfile.removeAllItems();
-        this.cmbProfile.addItem(BrowserUtil.PROFILE_DEFAULT);
+        this.cmbProfile.addItem(BurpBrowser.PROFILE_DEFAULT);
         for (File p : profiles) {
             this.cmbProfile.addItem(p.getName());
         }
@@ -255,11 +258,11 @@ public class BurpToolBar extends javax.swing.JPanel {
 
     private void btnOpenBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBrowserActionPerformed
         try {
-            BrowserUtil.copyBrowserExtension();
+            BurpBrowser.copyBrowserExtension();
             String profile = (String) this.cmbProfile.getSelectedItem();
             BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
             if (listener != null) {
-                BrowserUtil.openBrowser((profile == null) ? BrowserUtil.PROFILE_DEFAULT : profile, listener.getListenerPort());
+                browser.openBrowser((profile == null) ? BurpBrowser.PROFILE_DEFAULT : profile, listener.getListenerPort());
             } else {
                 JOptionPane.showMessageDialog(null, "fail Open Browser");
             }

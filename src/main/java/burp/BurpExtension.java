@@ -202,6 +202,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
 
+        BurpConfig.EmbeddedBrowser browserConfig = BurpConfig.getEmbeddedBrowser(api);
+
         this.registerTemporaryProject();
 
         Version version = Version.getInstance();

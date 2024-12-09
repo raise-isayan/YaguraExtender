@@ -1,6 +1,9 @@
 package extend.util.external;
 
+import burp.api.montoya.MontoyaApi;
+import extension.burp.BurpConfig;
 import extension.burp.BurpVersion;
+import extension.helpers.StringUtil;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -19,9 +22,9 @@ import javax.swing.JOptionPane;
  *
  * @author isayan
  */
-public class BrowserUtil {
+public class BurpBrowser {
 
-    private final static Logger logger = Logger.getLogger(BrowserUtil.class.getName());
+    private final static Logger logger = Logger.getLogger(BurpBrowser.class.getName());
 
     public final static String PROFILE_DEFAULT = "Default";
 
@@ -33,13 +36,20 @@ public class BrowserUtil {
 
     static {
         try {
-            chromium_prop.load(BrowserUtil.class.getResourceAsStream(CHROMIUM_PROPERTIES));
+            chromium_prop.load(BurpBrowser.class.getResourceAsStream(CHROMIUM_PROPERTIES));
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
-    private BrowserUtil() {
+    private final MontoyaApi api;
+
+    private BurpBrowser(final MontoyaApi api) {
+        this.api = api;
+    }
+
+    public static BurpBrowser getInstance(final MontoyaApi api) {
+        return new BurpBrowser(api);
     }
 
     public static String getOSArc() {
@@ -98,9 +108,13 @@ public class BrowserUtil {
         return Path.of(home, burpDir);
     }
 
-    public static Path getBrowseUserDataDirectory() {
+    public Path getBrowseUserDataDirectory() {
         Path dir = getBrowseDirectoryPath();
         Path path = Path.of("pre-wired-browser");
+        BurpConfig.EmbeddedBrowser browserConfig = BurpConfig.getEmbeddedBrowser(api);
+        if (browserConfig.isAllowSavingBrowserSettings() && !StringUtil.isNullOrEmpty(browserConfig.getBrowserDataDirectory())) {
+            path = Path.of(browserConfig.getBrowserDataDirectory());
+        }
         return dir.resolve(path);
     }
 
@@ -134,7 +148,17 @@ public class BrowserUtil {
         return dir.resolve(path);
     }
 
-    public static List<String> getBrowserExecAndArgs(String profile, int port) {
+    public static void copyBrowserExtension() throws IOException {
+        if (!existsBrowseExtensionDirectory()) {
+            File browserExtensions = getBrowseExtensionDirectory().toFile();
+            browserExtensions.mkdir();
+            URL burpJarUrl = BurpBrowser.class.getResource("/");
+            String burpJar = ZipUtil.getBaseJar(burpJarUrl);
+            ZipUtil.decompressZip(new File(burpJar), browserExtensions, CHROMIUM_EXTENSIONS);
+        }
+    }
+
+    public List<String> getBrowserExecAndArgs(String profile, int port) {
         // chrome://version/ から情報取得
         final List<String> CHROME_ARGS = List.of(
                 "--disable-ipc-flooding-protection",
@@ -186,17 +210,7 @@ public class BrowserUtil {
         return chromeExecAndArg;
     }
 
-    public static void copyBrowserExtension() throws IOException {
-        if (!existsBrowseExtensionDirectory()) {
-            File browserExtensions = getBrowseExtensionDirectory().toFile();
-            browserExtensions.mkdir();
-            URL burpJarUrl = BrowserUtil.class.getResource("/");
-            String burpJar = ZipUtil.getBaseJar(burpJarUrl);
-            ZipUtil.decompressZip(new File(burpJar), browserExtensions, CHROMIUM_EXTENSIONS);
-        }
-    }
-
-    public static File[] getUserProfile() {
+    public File[] getUserProfile() {
         File file = getBrowseUserDataDirectory().toFile();
         File[] profiles = file.listFiles(new FileFilter() {
 
@@ -218,7 +232,7 @@ public class BrowserUtil {
         return profiles;
     }
 
-    public static void openBrowser(String profile, int port) {
+    public void openBrowser(String profile, int port) {
         try {
             List<String> chromeExeAndArg = getBrowserExecAndArgs(profile, port);
             ProcessBuilder process = new ProcessBuilder(chromeExeAndArg);
