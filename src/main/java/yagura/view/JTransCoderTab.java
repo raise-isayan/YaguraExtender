@@ -2,6 +2,7 @@ package yagura.view;
 
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import extend.util.external.BouncyUtil;
+import extend.util.external.CodecUtil;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -62,6 +63,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import yagura.model.JTransCoderProperty;
 import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
+import extension.helpers.DateUtil;
 import extension.helpers.SmartCodec;
 import org.apache.commons.codec.DecoderException;
 
@@ -341,13 +343,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void setConverterZoneDateTime(long java_serial_time) {
         ZoneId zoneId = getSelectZoneId();
         LocalDateTime ldtm = LocalDateTime.ofInstant(Instant.ofEpochMilli(java_serial_time), zoneId);
-        this.spnZoneDateTime.setValue(TransUtil.toZoneWithDate(ldtm, zoneId));
+        this.spnZoneDateTime.setValue(DateUtil.toZoneWithDate(ldtm, zoneId));
     }
 
     private ZonedDateTime getConverterZoneDateTime() {
         Date date = this.getConverterDateTime();
         ZoneId zoneId = getSelectZoneId();
-        ZonedDateTime zdtm = TransUtil.toZoneWithZoneDate(date, zoneId);
+        ZonedDateTime zdtm = DateUtil.toZoneWithZoneDate(date, zoneId);
         return zdtm;
     }
 
@@ -3660,7 +3662,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnMurmurHash2_32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash2_32ActionPerformed
         try {
-            String inputText = Long.toString(TransUtil.toMurmurHash2_32(getInputText(), this.getSelectEncode()));
+            String inputText = Long.toString(CodecUtil.toMurmurHash2_32(getInputText(), this.getSelectEncode()));
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -3669,7 +3671,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnMurmurHash2_64ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMurmurHash2_64ActionPerformed
         try {
-            String inputText = Long.toString(TransUtil.toMurmurHash2_64(getInputText(), this.getSelectEncode()));
+            String inputText = Long.toString(CodecUtil.toMurmurHash2_64(getInputText(), this.getSelectEncode()));
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);

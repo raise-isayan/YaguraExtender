@@ -95,9 +95,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
     compileOnly 'org.bouncycastle:bcprov-jdk18on:1.78.1'
 
-    // https://mvnrepository.com/artifact/org.brotli/dec
-    compileOnly 'org.brotli:dec:0.1.2'
-
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 

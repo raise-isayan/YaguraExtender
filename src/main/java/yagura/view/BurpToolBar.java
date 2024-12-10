@@ -234,7 +234,7 @@ public class BurpToolBar extends javax.swing.JPanel {
     public void renewProfile() {
         File[] profiles = this.browser.getUserProfile();
         this.cmbProfile.removeAllItems();
-        this.cmbProfile.addItem(BurpBrowser.PROFILE_DEFAULT);
+        this.cmbProfile.addItem(BurpBrowser.BROWSER_PROFILE_DEFAULT);
         for (File p : profiles) {
             this.cmbProfile.addItem(p.getName());
         }
@@ -262,7 +262,7 @@ public class BurpToolBar extends javax.swing.JPanel {
             String profile = (String) this.cmbProfile.getSelectedItem();
             BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
             if (listener != null) {
-                browser.openBrowser((profile == null) ? BurpBrowser.PROFILE_DEFAULT : profile, listener.getListenerPort());
+                browser.openBrowser((profile == null) ? BurpBrowser.BROWSER_PROFILE_DEFAULT : profile, listener.getListenerPort());
             } else {
                 JOptionPane.showMessageDialog(null, "fail Open Browser");
             }
