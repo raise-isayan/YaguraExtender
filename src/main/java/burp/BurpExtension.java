@@ -48,6 +48,7 @@ import javax.swing.JMenuItem;
 import extend.util.external.ThemeUI;
 import extension.burp.BurpConfig;
 import extension.burp.BurpExtensionImpl;
+import static extension.burp.BurpExtensionImpl.api;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
 import extension.burp.IBurpTab;
@@ -116,15 +117,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private BurpToolBar toolbar;
     private final PopupMessage popupMessage = new PopupMessage(null);
 
-    public BurpExtension() {
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        });
-    }
-
     static {
         try (ByteArrayOutputStream bout = new ByteArrayOutputStream()) {
             Properties prop = new Properties();
@@ -145,6 +137,22 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
         // JsonUtil.registerTypeHierarchyAdapter(MatchItem.class, new XMatchItemAdapter());
     }
+
+    public BurpExtension() {
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        });
+    }
+
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            api().userInterface().applyThemeToComponent(popupMessage);
+        }
+    };
 
     private final WindowListener windowPopupListener = new WindowAdapter() {
         @Override
@@ -202,9 +210,9 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
 
-        BurpConfig.EmbeddedBrowser browserConfig = BurpConfig.getEmbeddedBrowser(api);
-
         this.registerTemporaryProject();
+
+        ThemeUI.addPropertyChangeListener(listener);
 
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));

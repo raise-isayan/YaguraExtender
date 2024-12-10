@@ -1,6 +1,8 @@
 package yagura.view;
 
 import extension.burp.BurpUtil;
+import extension.view.base.NamedColor;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -80,6 +82,8 @@ public class PopupMessage extends javax.swing.JPanel {
     private Popup createPopup() {
         Frame suiteFrame = BurpUtil.suiteFrame();
         Dimension fitSize = this.getPreferredSize();
+        lblMessage.setForeground(NamedColor.getTextColor(this.getBackground()));
+        lblTimer.setForeground(NamedColor.getTextColor(this.getBackground()));
         final Popup popup = PopupFactory.getSharedInstance().getPopup(suiteFrame, this, suiteFrame.getX() + (suiteFrame.getWidth() / 2) - (fitSize.width / 2), suiteFrame.getY() + (suiteFrame.getHeight() / 2) - (fitSize.height / 2));
         return popup;
     }

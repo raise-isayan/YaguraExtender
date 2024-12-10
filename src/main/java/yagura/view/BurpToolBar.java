@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,9 +7,9 @@ import burp.api.montoya.ui.Theme;
 import extend.util.external.BurpBrowser;
 import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
-import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -149,10 +148,10 @@ public class BurpToolBar extends javax.swing.JPanel {
         });
         toolBar.add(btnOpenBrowser);
 
-        cmbProfile.setMaximumSize(new java.awt.Dimension(200, 28));
+        cmbProfile.setMaximumSize(new java.awt.Dimension(120, 28));
         cmbProfile.setMinimumSize(new java.awt.Dimension(60, 28));
         cmbProfile.setName(""); // NOI18N
-        cmbProfile.setPreferredSize(new java.awt.Dimension(100, 28));
+        cmbProfile.setPreferredSize(new java.awt.Dimension(120, 28));
         cmbProfile.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -220,12 +219,6 @@ public class BurpToolBar extends javax.swing.JPanel {
         }
     };
 
-//    final PropertyChangeListener listener = new PropertyChangeListener() {
-//        @Override
-//        public void propertyChange(PropertyChangeEvent evt) {
-//            applyStyleTheme(api.userInterface().currentTheme());
-//        }
-//    };
     private void customizeComponents() {
         this.renewProfile();
         this.timer.schedule(this.task, 0, this.interval_time);
@@ -286,7 +279,8 @@ public class BurpToolBar extends javax.swing.JPanel {
     }//GEN-LAST:event_btnScrollTabLayoutActionPerformed
 
     private void btnSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingActionPerformed
-        this.popupSetting.show(this, this.btnSetting.getX(), this.btnSetting.getY()+this.btnSetting.getHeight());
+        Point pt = this.btnSetting.getLocation();
+        this.popupSetting.show(this.toolBar, pt.x, pt.y + this.btnSetting.getHeight());
     }//GEN-LAST:event_btnSettingActionPerformed
 
     private File userSetting;
@@ -417,7 +411,7 @@ public class BurpToolBar extends javax.swing.JPanel {
     private int interval_time = 500;
 
     public void setFlotingBar(boolean floating) {
-        if (toolBar.getUI() instanceof BasicToolBarUI ui) {
+        if (this.toolBar.getUI() instanceof BasicToolBarUI ui) {
             ui.setFloating(floating, null);
         }
     }
