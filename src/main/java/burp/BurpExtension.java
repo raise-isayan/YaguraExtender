@@ -223,8 +223,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         // Logging
         try {
             this.logging.setLoggingProperty(this.option.getLoggingProperty());
-            File file = this.logging.mkLog();
-            this.logging.open(file);
+            if (this.logging.getLoggingProperty().isAutoLogging()) {
+                File file = this.logging.mkLog();
+                this.logging.open(file);
+            }
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }

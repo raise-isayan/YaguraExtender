@@ -33,11 +33,11 @@ public class BurpBrowser {
 
     public final static String BROWSER_PROFILE_DEFAULT = "Default";
 
-    public final static String CHROMIUM_BROWSER = "burpbrowser";
+    private final static String CHROMIUM_BROWSER = "burpbrowser";
 
-    public final static String CHROMIUM_BROWSER_EXTENSIONS = "burp-chromium-extension";
+    private final static String CHROMIUM_BROWSER_EXTENSION = "burp-chromium-extension";
 
-    private final static String BURP_CHROMIUM_EXTENSIONS = "resources/Browser/ChromiumExtension";
+    private final static String BURP_CHROMIUM_EXTENSION = "resources/Browser/ChromiumExtension";
 
     private final static String BURP_CHROMIUM_PROPERTIES = "/chromium.properties";
 
@@ -166,7 +166,7 @@ public class BurpBrowser {
 
     public static Path getBrowseExtensionDirectory() {
         Path dir = getBurpSuiteDirectoryPath();
-        Path path = Path.of(CHROMIUM_BROWSER_EXTENSIONS);
+        Path path = Path.of(CHROMIUM_BROWSER_EXTENSION);
         return dir.resolve(path);
     }
 
@@ -200,7 +200,7 @@ public class BurpBrowser {
             browserExtensions.mkdir();
             URL burpJarUrl = BurpBrowser.class.getResource("/");
             String burpJar = getBaseJar(burpJarUrl);
-            ZipUtil.decompressZip(new File(burpJar), browserExtensions, BURP_CHROMIUM_EXTENSIONS);
+            ZipUtil.decompressZip(new File(burpJar), browserExtensions, BURP_CHROMIUM_EXTENSION);
         }
     }
 
