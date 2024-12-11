@@ -10,6 +10,7 @@ import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.UIManager;
 
 /**
  *
@@ -82,8 +83,8 @@ public class PopupMessage extends javax.swing.JPanel {
     private Popup createPopup() {
         Frame suiteFrame = BurpUtil.suiteFrame();
         Dimension fitSize = this.getPreferredSize();
-        lblMessage.setForeground(NamedColor.getTextColor(this.getBackground()));
-        lblTimer.setForeground(NamedColor.getTextColor(this.getBackground()));
+        lblMessage.setForeground(UIManager.getColor("TextField.foreground"));
+        lblTimer.setForeground(UIManager.getColor("TextField.foreground"));
         final Popup popup = PopupFactory.getSharedInstance().getPopup(suiteFrame, this, suiteFrame.getX() + (suiteFrame.getWidth() / 2) - (fitSize.width / 2), suiteFrame.getY() + (suiteFrame.getHeight() / 2) - (fitSize.height / 2));
         return popup;
     }
