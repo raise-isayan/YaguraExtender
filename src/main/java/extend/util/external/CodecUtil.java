@@ -2,6 +2,13 @@ package extend.util.external;
 
 import extension.helpers.StringUtil;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import org.apache.commons.codec.binary.Base16;
+import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Base64;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;
@@ -735,5 +742,315 @@ public class CodecUtil {
         return MurmurHash2.hash64(binary, binary.length);
     }
 
+    public static boolean isBase64Encoded(String value) {
+        return Base64.isBase64(value);
+    }
+
+    public static String toBase64Encode(String src, Charset charset) {
+        return toBase64Encode(src, charset, true);
+    }
+
+    public static String toBase64Encode(String src, Charset charset, boolean padding, int lineLength, String lineSeparator) {
+        final Base64 b64 = new Base64.Builder().setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        if (padding) {
+            byte bytes[] = b64.encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(b64.encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64Encode(String src, Charset charset, boolean padding) {
+        if (padding) {
+            byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(Base64.encodeBase64(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase64Encode(src, charset, true);
+    }
+
+    public static String toBase64Encode(String src, String charset, boolean padding, int lineLength, String lineSeparator)
+            throws UnsupportedEncodingException {
+        final Base64 b64 = new Base64.Builder().setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        if (padding) {
+            byte bytes[] = b64.encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(b64.encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64Encode(String src, String charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(Base64.encodeBase64(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64Encode(byte[] src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase64Encode(src, true);
+    }
+
+    public static String toBase64Encode(byte[] src, boolean padding, int lineLength, String lineSeparator) {
+        final Base64 b64 = new Base64.Builder().setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        if (padding) {
+            byte bytes[] = b64.encode(src);
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(b64.encode(src));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64Encode(byte[] src, boolean padding) {
+        if (padding) {
+            byte bytes[] = Base64.encodeBase64(src);
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(Base64.encodeBase64(src));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64Decode(String str, Charset charset) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static String toBase64Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = Base64.decodeBase64(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static byte[] toBase64Decode(String str) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return bytes;
+    }
+
+    public static String toBase64URLSafeEncode(String src, Charset charset) {
+        byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset), false, true);
+        return StringUtil.getBytesRawString(bytes);
+    }
+
+    public static String toBase64URLSafeEncode(String src, Charset charset, boolean padding, int lineLength, String lineSeparator) {
+        final Base64 b64 = new Base64.Builder().setUrlSafe(true).setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        if (padding) {
+            byte bytes[] = b64.encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(b64.encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64URLSafeEncode(String src, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset), false, true);
+        return StringUtil.getBytesRawString(bytes);
+    }
+
+    public static String toBase64URLSafeEncode(String src, String charset, boolean padding, int lineLength, String lineSeparator)
+            throws UnsupportedEncodingException {
+        final Base64 b64 = new Base64.Builder().setUrlSafe(true).setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        if (padding) {
+            byte bytes[] = b64.encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(b64.encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64URLSafeEncode(byte[] src) {
+        byte bytes[] = Base64.encodeBase64(src, false, true);
+        return StringUtil.getBytesRawString(bytes);
+    }
+
+    public static String toBase64URLSafeEncode(byte[] src, boolean padding, int lineLength, String lineSeparator)
+            throws UnsupportedEncodingException {
+        final Base64 b64 = new Base64.Builder().setUrlSafe(true).setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        if (padding) {
+            byte bytes[] = b64.encode(src);
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(b64.encode(src));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase64URLSafeDecode(String str, Charset charset) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static String toBase64URLSafeDecode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = Base64.decodeBase64(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static byte[] toBase64URLSafeDecode(String str) {
+        byte bytes[] = Base64.decodeBase64(str);
+        return bytes;
+    }
+
+    public static String toBase32Encode(String src, Charset charset) {
+        return toBase32Encode(src, charset, true);
+    }
+
+    public static String toBase32Encode(String src, Charset charset, boolean padding) {
+        if (padding) {
+            byte bytes[] = toBase32Encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(toBase32Encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase32Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase32Encode(src, charset, true);
+    }
+
+    public static String toBase32Encode(String src, String charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes[] = toBase32Encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(toBase32Encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase32Encode(byte[] src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase32Encode(src, true);
+    }
+
+    public static String toBase32Encode(byte[] src, boolean padding) {
+        if (padding) {
+            byte bytes[] = toBase32Encode(src);
+            return StringUtil.getBytesRawString(bytes);
+        } else {
+            byte bytes[] = removePadding(toBase32Encode(src));
+            return StringUtil.getBytesRawString(bytes);
+        }
+    }
+
+    public static String toBase32Decode(String str, Charset charset) {
+        byte bytes[] = toBase32Decode(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static String toBase32Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = toBase32Decode(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static byte[] toBase32Decode(String str) {
+        final Base32 b32 = new Base32();
+        return b32.decode(str);
+    }
+
+    private static byte[] toBase32Encode(byte[] bytes) {
+        final Base32 b32 = new Base32();
+        return b32.encode(bytes);
+    }
+
+    public static String toBase16Encode(String src, Charset charset) {
+        return toBase16Encode(src, charset, true);
+    }
+
+    public static String toBase16Encode(String src, Charset charset, boolean padding) {
+        if (padding) {
+            byte bytes[] = toBase16encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getStringRaw(bytes);
+        } else {
+            byte bytes[] = removePadding(toBase16encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getStringRaw(bytes);
+        }
+    }
+
+    public static String toBase16Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase16Encode(src, charset, true);
+    }
+
+    public static String toBase16Encode(String src, String charset, boolean padding)
+            throws UnsupportedEncodingException {
+        if (padding) {
+            byte bytes[] = toBase16encode(StringUtil.getBytesCharset(src, charset));
+            return StringUtil.getStringRaw(bytes);
+        } else {
+            byte bytes[] = removePadding(toBase16encode(StringUtil.getBytesCharset(src, charset)));
+            return StringUtil.getStringRaw(bytes);
+        }
+    }
+
+    public static String toBase16Encode(byte[] src, String charset)
+            throws UnsupportedEncodingException {
+        return toBase32Encode(src, true);
+    }
+
+    public static String toBase16Encode(byte[] src, boolean padding) {
+        if (padding) {
+            byte bytes[] = toBase16encode(src);
+            return StringUtil.getStringRaw(bytes);
+        } else {
+            byte bytes[] = toBase16encode(src);
+            return StringUtil.getStringRaw(bytes);
+        }
+    }
+
+    public static String toBase16Decode(String str, Charset charset) {
+        byte bytes[] = toBase16encode(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static String toBase16Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        byte bytes[] = toBase16encode(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static byte[] toBase16Decode(String str) {
+        byte bytes[] = toBase16encode(str);
+        return bytes;
+    }
+
+    private static byte[] toBase16encode(byte[] bytes) {
+        final Base16 b16 = new Base16();
+        return b16.encode(bytes);
+    }
+
+    private static byte[] toBase16encode(String str) {
+        final Base16 b16 = new Base16();
+        return b16.decode(str);
+    }
+
+    private static byte[] removePadding(byte[] vaule) {
+        int len = vaule.length;
+        while (len > 0 && vaule[len - 1] == (byte) '=') {
+            len--;
+        }
+        return Arrays.copyOf(vaule, len);
+    }
 
 }

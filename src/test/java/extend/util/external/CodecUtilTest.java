@@ -1,7 +1,12 @@
 package extend.util.external;
 
 import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.binary.Base64;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -116,6 +121,92 @@ public class CodecUtilTest {
         byte[] hash = new byte[64];
         hasher.doFinalize(hash);
         System.out.println(ConvertUtil.toHexString(hash, true));
+    }
+
+    @Test
+    public void testBase64() {
+        System.out.println("testBase64");
+
+        assertEquals("!\"#$%&'()=~", CodecUtil.toBase64Decode("ISIjJCUmJygpPX4=", StandardCharsets.ISO_8859_1));
+        assertEquals("qwertyuiopASDFGHJKL", CodecUtil.toBase64Decode("cXdlcnR5dWlvcEFTREZHSEpLTA==", StandardCharsets.ISO_8859_1));
+
+        assertEquals(ConvertUtil.toBase64Encode("12345667890q", StandardCharsets.ISO_8859_1, false), CodecUtil.toBase64Encode("12345667890q", StandardCharsets.ISO_8859_1, false));
+        assertEquals(ConvertUtil.toBase64Encode("!\"#$%&'()=", StandardCharsets.ISO_8859_1, false), CodecUtil.toBase64Encode("!\"#$%&'()=", StandardCharsets.ISO_8859_1, false));
+        assertEquals(ConvertUtil.toBase64Encode("qwertyuiopASDFGHJKL", StandardCharsets.ISO_8859_1, false), CodecUtil.toBase64Encode("qwertyuiopASDFGHJKL", StandardCharsets.ISO_8859_1, false));
+
+        assertEquals("", CodecUtil.toBase64Encode("", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zg==", CodecUtil.toBase64Encode("f", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm8=", CodecUtil.toBase64Encode("fo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9v", CodecUtil.toBase64Encode("foo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9vYg==", CodecUtil.toBase64Encode("foob", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9vYmE=", CodecUtil.toBase64Encode("fooba", StandardCharsets.ISO_8859_1, true));
+        assertEquals("Zm9vYmFy", CodecUtil.toBase64Encode("foobar", StandardCharsets.ISO_8859_1, true));
+
+        assertEquals("", CodecUtil.toBase64Encode("", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zg", CodecUtil.toBase64Encode("f", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm8", CodecUtil.toBase64Encode("fo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9v", CodecUtil.toBase64Encode("foo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9vYg", CodecUtil.toBase64Encode("foob", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9vYmE", CodecUtil.toBase64Encode("fooba", StandardCharsets.ISO_8859_1, false));
+        assertEquals("Zm9vYmFy", CodecUtil.toBase64Encode("foobar", StandardCharsets.ISO_8859_1, false));
+
+    }
+
+    @Test
+    public void testBaseN() {
+
+        assertEquals("", CodecUtil.toBase32Encode("", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MY======", CodecUtil.toBase32Encode("f", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXQ====", CodecUtil.toBase32Encode("fo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6===", CodecUtil.toBase32Encode("foo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6YQ=", CodecUtil.toBase32Encode("foob", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6YTB", CodecUtil.toBase32Encode("fooba", StandardCharsets.ISO_8859_1, true));
+        assertEquals("MZXW6YTBOI======", CodecUtil.toBase32Encode("foobar", StandardCharsets.ISO_8859_1, true));
+
+        assertEquals("", CodecUtil.toBase32Encode("", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MY", CodecUtil.toBase32Encode("f", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXQ", CodecUtil.toBase32Encode("fo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6", CodecUtil.toBase32Encode("foo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6YQ", CodecUtil.toBase32Encode("foob", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6YTB", CodecUtil.toBase32Encode("fooba", StandardCharsets.ISO_8859_1, false));
+        assertEquals("MZXW6YTBOI", CodecUtil.toBase32Encode("foobar", StandardCharsets.ISO_8859_1, false));
+
+        assertEquals("", CodecUtil.toBase16Encode("", StandardCharsets.ISO_8859_1, true));
+        assertEquals("66", CodecUtil.toBase16Encode("f", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F", CodecUtil.toBase16Encode("fo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F", CodecUtil.toBase16Encode("foo", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F62", CodecUtil.toBase16Encode("foob", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F6261", CodecUtil.toBase16Encode("fooba", StandardCharsets.ISO_8859_1, true));
+        assertEquals("666F6F626172", CodecUtil.toBase16Encode("foobar", StandardCharsets.ISO_8859_1, true));
+
+        assertEquals("", CodecUtil.toBase16Encode("", StandardCharsets.ISO_8859_1, false));
+        assertEquals("66", CodecUtil.toBase16Encode("f", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F", CodecUtil.toBase16Encode("fo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F", CodecUtil.toBase16Encode("foo", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F62", CodecUtil.toBase16Encode("foob", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F6261", CodecUtil.toBase16Encode("fooba", StandardCharsets.ISO_8859_1, false));
+        assertEquals("666F6F626172", CodecUtil.toBase16Encode("foobar", StandardCharsets.ISO_8859_1, false));
+
+    }
+
+    @Test
+    public void testBase64Builder() {
+        System.out.println("testBase64Builder");
+        Base64.Builder builder = new Base64.Builder();
+        {
+            Base64 b64 = builder.get();
+            System.out.println(StringUtil.getStringRaw(b64.encode(StringUtil.getBytesRaw("foob"))));
+        }
+        {
+            System.out.println("testBase64Builder-76");
+            Base64 b64 = builder.setLineLength(76).setLineSeparator((byte)'\r', (byte)'\n').get();
+            System.out.println(StringUtil.getStringRaw(b64.encode(StringUtil.getBytesRaw("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))));
+        }
+        {
+            System.out.println("testBase64Builder-76");
+            Base64 b64 = builder.setLineLength(76).setLineSeparator((byte)'\n').get();
+            System.out.println(StringUtil.getStringRaw(b64.encode(StringUtil.getBytesRaw("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))));
+        }
     }
 
 }

@@ -25,6 +25,30 @@ public class ZipUtil {
 
     private final static Logger logger = Logger.getLogger(ZipUtil.class.getName());
 
+    public static String getBaseJar(URL url) {
+        String path = url.toExternalForm();
+        try {
+            int fend = path.indexOf('!');
+            if (fend >= 0) {
+                path = path.substring(0, fend);
+            }
+            if (path.startsWith("jar:")) {
+                path = path.substring("jar:".length());
+            }
+            File file = new File(new URI(path));
+            path = file.getAbsolutePath();
+        } catch (URISyntaxException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return path;
+    }
+
+    public static Path getBaseDirectory() {
+        URL burpJarUrl = BurpBrowser.class.getResource("/");
+        File path = new File(getBaseJar(burpJarUrl));
+        return path.getParentFile().toPath();
+    }
+
     public static FileSystem openZip(Path zipPath) throws IOException {
         Map<String, String> env = Map.of(
                 "create", "true",

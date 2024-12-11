@@ -3,6 +3,7 @@ package yagura.handler;
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import extend.util.external.BouncyUtil;
+import extend.util.external.CodecUtil;
 import extend.util.external.TransUtil;
 import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
@@ -223,7 +224,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return TransUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText));
+                    return CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText));
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -236,7 +237,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return TransUtil.toBase64URLSafeEncode(selectedText, getYaguraCharset(selectedText));
+                    return CodecUtil.toBase64URLSafeEncode(selectedText, getYaguraCharset(selectedText));
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -308,7 +309,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return TransUtil.toBase64Decode(selectedText, getYaguraCharset(selectedText));
+                    return CodecUtil.toBase64Decode(selectedText, getYaguraCharset(selectedText));
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }
@@ -321,7 +322,7 @@ public class MenuHander {
             @Override
             public String translate(String allText, String selectedText) {
                 try {
-                    return TransUtil.toBase64URLSafeDecode(selectedText, getYaguraCharset(selectedText));
+                    return CodecUtil.toBase64URLSafeDecode(selectedText, getYaguraCharset(selectedText));
                 } catch (UnsupportedEncodingException ex) {
                     return selectedText;
                 }

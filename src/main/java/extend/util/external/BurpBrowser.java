@@ -3,15 +3,10 @@ package extend.util.external;
 import burp.api.montoya.MontoyaApi;
 import extension.burp.BurpConfig;
 import extension.burp.BurpVersion;
-import static extension.burp.BurpVersion.OSType.LINUX;
-import static extension.burp.BurpVersion.OSType.MAC;
-import static extension.burp.BurpVersion.OSType.WINDOWS;
 import extension.helpers.StringUtil;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -48,6 +43,8 @@ public class BurpBrowser {
             chromium_prop.load(BurpBrowser.class.getResourceAsStream(BURP_CHROMIUM_PROPERTIES));
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (java.lang.NullPointerException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 
@@ -59,30 +56,6 @@ public class BurpBrowser {
 
     public static BurpBrowser getInstance(final MontoyaApi api) {
         return new BurpBrowser(api);
-    }
-
-    public static String getBaseJar(URL url) {
-        String path = url.toExternalForm();
-        try {
-            int fend = path.indexOf('!');
-            if (fend >= 0) {
-                path = path.substring(0, fend);
-            }
-            if (path.startsWith("jar:")) {
-                path = path.substring("jar:".length());
-            }
-            File file = new File(new URI(path));
-            path = file.getAbsolutePath();
-        } catch (URISyntaxException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        }
-        return path;
-    }
-
-    public static Path getBaseDirectory() {
-        URL burpJarUrl = BurpBrowser.class.getResource("/");
-        File path = new File(getBaseJar(burpJarUrl));
-        return path.getParentFile().toPath();
     }
 
     public static String getOSArc() {
@@ -121,7 +94,7 @@ public class BurpBrowser {
     }
 
     public static Path getBrowseDirectoryPath() {
-        Path browserPath = getBaseDirectory().resolve(CHROMIUM_BROWSER);
+        Path browserPath = ZipUtil.getBaseDirectory().resolve(CHROMIUM_BROWSER);
         File browserDir = browserPath.toFile();
         if (browserDir.exists() && browserDir.list().length > 0) {
             return browserDir.toPath();
@@ -199,7 +172,7 @@ public class BurpBrowser {
             File browserExtensions = getBrowseExtensionDirectory().toFile();
             browserExtensions.mkdir();
             URL burpJarUrl = BurpBrowser.class.getResource("/");
-            String burpJar = getBaseJar(burpJarUrl);
+            String burpJar = ZipUtil.getBaseJar(burpJarUrl);
             ZipUtil.decompressZip(new File(burpJar), browserExtensions, BURP_CHROMIUM_EXTENSION);
         }
     }

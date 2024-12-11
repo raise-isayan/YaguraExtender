@@ -41,6 +41,54 @@ public class ZipUtilITest {
     public void tearDown() {
     }
 
+    @Test
+    public void testBaseJar() throws IOException {
+        System.out.println("testBaseJar");
+        URL url = new URL("file:/resources/help.jar!/images/Extender_Yagura.png");
+        System.out.println(url.toExternalForm());
+        String result = ZipUtil.getBaseJar(url);
+        System.out.println("url =>" + result);
+        assertTrue(result.contains("help.jar"));
+    }
+
+    @Test
+    public void testBaseJar2() throws IOException {
+        System.out.println("testBaseJar2");
+        URL url = new URL("jar:file:/resources/help.jar!/images/Extender_Yagura.png");
+        System.out.println("Protocol:" + url.getProtocol());
+        System.out.println("Host:" + url.getHost());
+        System.out.println("File:" + url.getFile());
+        System.out.println("Path:" + url.getPath());
+        System.out.println("UserInfo:" + url.getUserInfo());
+        System.out.println("Exterm:" + url.toExternalForm());
+        String result = ZipUtil.getBaseJar(url);
+        System.out.println("url =>" + result);
+        assertTrue(result.contains("help.jar"));
+    }
+
+    @Test
+    public void testBaseJar3() throws IOException {
+        System.out.println("testBaseJar3");
+        try {
+            URL url = new URL("file:/C:\\Windows\\Temp\\help.jar!/images/Extender_Yagura.png");
+            String result = ZipUtil.getBaseJar(url);
+            System.out.println("file =>" + result);
+        } catch (Exception ex) {
+            fail(ex);
+        }
+    }
+
+    @Test
+    public void testBaseJar4() throws IOException {
+        System.out.println("testBaseJar4");
+        try {
+            URL url = new URL("jar:file:/resources/help.jar!/images/Extender_Yagura.png");
+            String result = ZipUtil.getBaseJar(url);
+            System.out.println("file =>" + result);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @Test
     public void testDirFile() throws IOException {

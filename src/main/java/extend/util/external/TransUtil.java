@@ -16,16 +16,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -33,9 +27,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.codec.binary.Base16;
-import org.apache.commons.codec.binary.Base32;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * @author isayan
@@ -200,10 +191,6 @@ public class TransUtil {
         return null;
     }
 
-    public static boolean isBase64Encoded(String value) {
-        return Base64.isBase64(value);
-    }
-
     public static String toSmartDecode(String value) {
         return toSmartDecode(value, getSmartDecode(value), false, (String) null);
     }
@@ -342,52 +329,52 @@ public class TransUtil {
                     // Base64 encode match
                     case BASE64: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
-                        byte[] bytes = TransUtil.toBase64Decode(value);
+                        byte[] bytes = CodecUtil.toBase64Decode(value);
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = TransUtil.toBase64Decode(value, applyCharset);
+                            decode = CodecUtil.toBase64Decode(value, applyCharset);
                         } else {
-                            decode = TransUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
+                            decode = CodecUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
                         }
                     }
                     break;
                     // Base64 URLSafe
                     case BASE64_URLSAFE: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
-                        byte[] bytes = TransUtil.toBase64URLSafeDecode(value);
+                        byte[] bytes = CodecUtil.toBase64URLSafeDecode(value);
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = TransUtil.toBase64URLSafeDecode(value, applyCharset);
+                            decode = CodecUtil.toBase64URLSafeDecode(value, applyCharset);
                         } else {
-                            decode = TransUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
+                            decode = CodecUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
                         }
                     }
                     break;
                     // Base32 encode
                     case BASE32: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
-                        byte[] bytes = TransUtil.toBase32Decode(value);
+                        byte[] bytes = CodecUtil.toBase32Decode(value);
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = TransUtil.toBase32Decode(value, applyCharset);
+                            decode = CodecUtil.toBase32Decode(value, applyCharset);
                         } else {
-                            decode = TransUtil.toBase32Decode(value, StandardCharsets.ISO_8859_1);
+                            decode = CodecUtil.toBase32Decode(value, StandardCharsets.ISO_8859_1);
                         }
                     }
                     break;
                     // Base16 encode
                     case BASE16: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
-                        byte[] bytes = TransUtil.toBase16Decode(value);
+                        byte[] bytes = CodecUtil.toBase16Decode(value);
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
                         if (guessCode != null) {
                             applyCharset = guessCode;
-                            decode = TransUtil.toBase16Decode(value, applyCharset);
+                            decode = CodecUtil.toBase16Decode(value, applyCharset);
                         } else {
-                            decode = TransUtil.toBase16Decode(value, StandardCharsets.ISO_8859_1);
+                            decode = CodecUtil.toBase16Decode(value, StandardCharsets.ISO_8859_1);
                         }
                     }
                     break;
@@ -452,244 +439,6 @@ public class TransUtil {
             selectCharset.replace(0, selectCharset.length(), applyCharset);
         }
         return decode;
-    }
-
-    public static String toBase64Encode(String src, Charset charset) {
-        return toBase64Encode(src, charset, true);
-    }
-
-    public static String toBase64Encode(String src, Charset charset, boolean padding) {
-        if (padding) {
-            byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset));
-            return StringUtil.getBytesRawString(bytes);
-        } else {
-            byte bytes[] = removePadding(Base64.encodeBase64(StringUtil.getBytesCharset(src, charset)));
-            return StringUtil.getBytesRawString(bytes);
-        }
-    }
-
-    public static String toBase64Encode(String src, String charset)
-            throws UnsupportedEncodingException {
-        return toBase64Encode(src, charset, true);
-    }
-
-    public static String toBase64Encode(String src, String charset, boolean padding)
-            throws UnsupportedEncodingException {
-        if (padding) {
-            byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset));
-            return StringUtil.getBytesRawString(bytes);
-        } else {
-            byte bytes[] = removePadding(Base64.encodeBase64(StringUtil.getBytesCharset(src, charset)));
-            return StringUtil.getBytesRawString(bytes);
-        }
-    }
-
-    public static String toBase64Encode(byte[] src, String charset)
-            throws UnsupportedEncodingException {
-        return toBase64Encode(src, true);
-    }
-
-    public static String toBase64Encode(byte[] src, boolean padding) {
-        if (padding) {
-            byte bytes[] = Base64.encodeBase64(src);
-            return StringUtil.getBytesRawString(bytes);
-        } else {
-            byte bytes[] = removePadding(Base64.encodeBase64(src));
-            return StringUtil.getBytesRawString(bytes);
-        }
-    }
-
-    public static String toBase64Decode(String str, Charset charset) {
-        byte bytes[] = Base64.decodeBase64(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static String toBase64Decode(String str, String charset)
-            throws UnsupportedEncodingException {
-        byte bytes[] = Base64.decodeBase64(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static byte[] toBase64Decode(String str) {
-        byte bytes[] = Base64.decodeBase64(str);
-        return bytes;
-    }
-
-    public static String toBase64URLSafeEncode(String src, Charset charset) {
-        byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset), false, true);
-        return StringUtil.getBytesRawString(bytes);
-    }
-
-    public static String toBase64URLSafeEncode(String src, String charset)
-            throws UnsupportedEncodingException {
-        byte bytes[] = Base64.encodeBase64(StringUtil.getBytesCharset(src, charset), false, true);
-        return StringUtil.getBytesRawString(bytes);
-    }
-
-    public static String toBase64URLSafeEncode(byte[] src) {
-        byte bytes[] = Base64.encodeBase64(src, false, true);
-        return StringUtil.getBytesRawString(bytes);
-    }
-
-    public static String toBase64URLSafeDecode(String str, Charset charset) {
-        byte bytes[] = Base64.decodeBase64(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static String toBase64URLSafeDecode(String str, String charset)
-            throws UnsupportedEncodingException {
-        byte bytes[] = Base64.decodeBase64(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static byte[] toBase64URLSafeDecode(String str) {
-        byte bytes[] = Base64.decodeBase64(str);
-        return bytes;
-    }
-
-    public static String toBase32Encode(String src, Charset charset) {
-        return toBase32Encode(src, charset, true);
-    }
-
-    public static String toBase32Encode(String src, Charset charset, boolean padding) {
-        if (padding) {
-            byte bytes[] = toBase32Encode(StringUtil.getBytesCharset(src, charset));
-            return StringUtil.getBytesRawString(bytes);
-        } else {
-            byte bytes[] = removePadding(toBase32Encode(StringUtil.getBytesCharset(src, charset)));
-            return StringUtil.getBytesRawString(bytes);
-        }
-    }
-
-    public static String toBase32Encode(String src, String charset)
-            throws UnsupportedEncodingException {
-        return toBase32Encode(src, charset, true);
-    }
-
-    public static String toBase32Encode(String src, String charset, boolean padding)
-            throws UnsupportedEncodingException {
-        if (padding) {
-            byte bytes[] = toBase32Encode(StringUtil.getBytesCharset(src, charset));
-            return StringUtil.getBytesRawString(bytes);
-        } else {
-            byte bytes[] = removePadding(toBase32Encode(StringUtil.getBytesCharset(src, charset)));
-            return StringUtil.getBytesRawString(bytes);
-        }
-    }
-
-    public static String toBase32Encode(byte[] src, String charset)
-            throws UnsupportedEncodingException {
-        return toBase32Encode(src, true);
-    }
-
-    public static String toBase32Encode(byte[] src, boolean padding) {
-        if (padding) {
-            byte bytes[] = toBase32Encode(src);
-            return StringUtil.getBytesRawString(bytes);
-        } else {
-            byte bytes[] = removePadding(toBase32Encode(src));
-            return StringUtil.getBytesRawString(bytes);
-        }
-    }
-
-    public static String toBase32Decode(String str, Charset charset) {
-        byte bytes[] = toBase32Decode(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static String toBase32Decode(String str, String charset)
-            throws UnsupportedEncodingException {
-        byte bytes[] = toBase32Decode(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static byte[] toBase32Decode(String str) {
-        final Base32 b32 = new Base32();
-        return b32.decode(str);
-    }
-
-    private static byte[] toBase32Encode(byte[] bytes) {
-        final Base32 b32 = new Base32();
-        return b32.encode(bytes);
-    }
-
-    public static String toBase16Encode(String src, Charset charset) {
-        return toBase16Encode(src, charset, true);
-    }
-
-    public static String toBase16Encode(String src, Charset charset, boolean padding) {
-        if (padding) {
-            byte bytes[] = toBase16encode(StringUtil.getBytesCharset(src, charset));
-            return StringUtil.getStringRaw(bytes);
-        } else {
-            byte bytes[] = removePadding(toBase16encode(StringUtil.getBytesCharset(src, charset)));
-            return StringUtil.getStringRaw(bytes);
-        }
-    }
-
-    public static String toBase16Encode(String src, String charset)
-            throws UnsupportedEncodingException {
-        return toBase16Encode(src, charset, true);
-    }
-
-    public static String toBase16Encode(String src, String charset, boolean padding)
-            throws UnsupportedEncodingException {
-        if (padding) {
-            byte bytes[] = toBase16encode(StringUtil.getBytesCharset(src, charset));
-            return StringUtil.getStringRaw(bytes);
-        } else {
-            byte bytes[] = removePadding(toBase16encode(StringUtil.getBytesCharset(src, charset)));
-            return StringUtil.getStringRaw(bytes);
-        }
-    }
-
-    public static String toBase16Encode(byte[] src, String charset)
-            throws UnsupportedEncodingException {
-        return toBase32Encode(src, true);
-    }
-
-    public static String toBase16Encode(byte[] src, boolean padding) {
-        if (padding) {
-            byte bytes[] = toBase16encode(src);
-            return StringUtil.getStringRaw(bytes);
-        } else {
-            byte bytes[] = toBase16encode(src);
-            return StringUtil.getStringRaw(bytes);
-        }
-    }
-
-    public static String toBase16Decode(String str, Charset charset) {
-        byte bytes[] = toBase16encode(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static String toBase16Decode(String str, String charset)
-            throws UnsupportedEncodingException {
-        byte bytes[] = toBase16encode(str);
-        return StringUtil.getStringCharset(bytes, charset);
-    }
-
-    public static byte[] toBase16Decode(String str) {
-        byte bytes[] = toBase16encode(str);
-        return bytes;
-    }
-
-    private static byte[] toBase16encode(byte[] bytes) {
-        final Base16 b16 = new Base16();
-        return b16.encode(bytes);
-    }
-
-    private static byte[] toBase16encode(String str) {
-        final Base16 b16 = new Base16();
-        return b16.decode(str);
-    }
-
-    private static byte[] removePadding(byte[] vaule) {
-        int len = vaule.length;
-        while (len > 0 && vaule[len - 1] == (byte) '=') {
-            len--;
-        }
-        return Arrays.copyOf(vaule, len);
     }
 
     public static String toUTF7Encode(String str) {
