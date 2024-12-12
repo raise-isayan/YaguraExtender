@@ -118,7 +118,7 @@ Burpの [User Interface] -> [Inspector and Message Editor] の Charsetsの切り
 
 === Universal Viewタブ
 
-===== CJK View
+==== CJK View
 
 image:images/custom_encoding.png[CJK Viewタブ]
 
@@ -147,7 +147,7 @@ Select::
     クリップボード内のバイト文字列から文字コードを推測しているため、判定に失敗する場合があります。 +
     現在のバージョンではサポートされていません。
 
-==== CJK Message View
+===== CJK Message View
 
 [Cenerate PoC] チェックボックス::
     メッセージタブにCenerate PoCタブを表示するようにします。

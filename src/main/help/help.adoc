@@ -147,7 +147,7 @@ Select::
     Judgment may fail because the character code is inferred from the byte string in the clipboard. +
     Not supported in current version.
 
-==== CJK Message View
+===== CJK Message View
 
 [Cenerate PoC] check box::
     Display the "Cenerate PoC" tab in the message tab.

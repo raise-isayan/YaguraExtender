@@ -458,11 +458,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoUrlUnicode = new javax.swing.JRadioButton();
         pnlBase64 = new javax.swing.JPanel();
         rdoBase64 = new javax.swing.JRadioButton();
-        rdoBase64URLSafe = new javax.swing.JRadioButton();
-        pnlBase64Setting = new javax.swing.JPanel();
         chk76Newline = new javax.swing.JCheckBox();
         chk64Newline = new javax.swing.JCheckBox();
         chkPadding = new javax.swing.JCheckBox();
+        pnlBase64URLSafe = new javax.swing.JPanel();
+        rdoBase64URLSafe = new javax.swing.JRadioButton();
         pnlBaseN = new javax.swing.JPanel();
         rdoBase32 = new javax.swing.JRadioButton();
         rdoBase16 = new javax.swing.JRadioButton();
@@ -1131,21 +1131,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoBase64.setText("Base64");
         pnlBase64.add(rdoBase64);
 
-        rdoEncodeDecodeGrp.add(rdoBase64URLSafe);
-        rdoBase64URLSafe.setText("Base64URLSafe");
-        pnlBase64.add(rdoBase64URLSafe);
-
-        pnlEncodeDecode.add(pnlBase64);
-
-        pnlBase64Setting.setLayout(new java.awt.GridLayout(1, 0));
-
         chk76Newline.setText("76 newline");
         chk76Newline.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chk76NewlineActionPerformed(evt);
             }
         });
-        pnlBase64Setting.add(chk76Newline);
+        pnlBase64.add(chk76Newline);
 
         chk64Newline.setText("64 newline");
         chk64Newline.addActionListener(new java.awt.event.ActionListener() {
@@ -1153,13 +1145,21 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 chk64NewlineActionPerformed(evt);
             }
         });
-        pnlBase64Setting.add(chk64Newline);
+        pnlBase64.add(chk64Newline);
 
         chkPadding.setSelected(true);
         chkPadding.setText("Padding");
-        pnlBase64Setting.add(chkPadding);
+        pnlBase64.add(chkPadding);
 
-        pnlEncodeDecode.add(pnlBase64Setting);
+        pnlEncodeDecode.add(pnlBase64);
+
+        pnlBase64URLSafe.setLayout(new java.awt.GridLayout(1, 1));
+
+        rdoEncodeDecodeGrp.add(rdoBase64URLSafe);
+        rdoBase64URLSafe.setText("Base64URLSafe");
+        pnlBase64URLSafe.add(rdoBase64URLSafe);
+
+        pnlEncodeDecode.add(pnlBase64URLSafe);
 
         pnlBaseN.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -3062,17 +3062,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 }
             } else if (this.rdoBase64URLSafe.isSelected()) {
                 encode = CodecUtil.toBase64URLSafeEncode(value, this.getSelectEncode());
-                if (this.chk76Newline.isSelected()) {
-                    if (!this.chkRawMode.isSelected()) {
-                        encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 76);
-//                        encode = CodecUtil.toBase64URLSafeEncode(value, this.getSelectEncode(), this.chkPadding.isSelected(), 76, TransUtil.getNewLine(this.getSelectNewLine()));
-                    }
-                } else if (this.chk64Newline.isSelected()) {
-                    if (!this.chkRawMode.isSelected()) {
-                        encode = TransUtil.newLine(TransUtil.getNewLine(this.getSelectNewLine()), encode, 64);
-  //                      encode = CodecUtil.toBase64URLSafeEncode(value, this.getSelectEncode(), this.chkPadding.isSelected(), 64, TransUtil.getNewLine(this.getSelectNewLine()));
-                    }
-                }
             } else if (this.rdoBase32.isSelected()) {
                 encode = CodecUtil.toBase32Encode(value, this.getSelectEncode(), this.chkNPadding.isSelected());
             } else if (this.rdoBase16.isSelected()) {
@@ -4706,7 +4695,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JLabel lblZoneDate;
     private javax.swing.JLabel lblmaximum;
     private javax.swing.JPanel pnlBase64;
-    private javax.swing.JPanel pnlBase64Setting;
+    private javax.swing.JPanel pnlBase64URLSafe;
     private javax.swing.JPanel pnlBaseN;
     private javax.swing.JPanel pnlCharacter;
     private javax.swing.JPanel pnlCheckSumTrans;
