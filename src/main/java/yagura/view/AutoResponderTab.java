@@ -390,9 +390,9 @@ public class AutoResponderTab extends javax.swing.JPanel implements IBurpTab, Ex
 
     private AutoResponderItem getEditItem() {
         AutoResponderItem item = new AutoResponderItem();
-        Object editRows[] = SwingUtil.editItem(this.tableAutoResponder);
-        if (editRows != null) {
-            item = AutoResponderItem.fromObjects(editRows);
+        Object editCols[] = SwingUtil.editItem(this.tableAutoResponder);
+        if (editCols != null) {
+            item = AutoResponderItem.fromObjects(editCols);
         }
         return item;
     }

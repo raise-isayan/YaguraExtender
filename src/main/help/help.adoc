@@ -513,8 +513,8 @@ override SendTo parameter::
 use request name::
  Send with the contents specified in the reqName parameter.
  
-. history notes +
- Send comment on the proxy history.
+. annotation notes +
+ Send comment on the annotation.
 
 . response title tag +
  Send the value of the response title tag.

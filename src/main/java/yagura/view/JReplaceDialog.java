@@ -540,9 +540,9 @@ public class JReplaceDialog extends CustomDialog {
 
     private MatchReplaceItem getEditItem() {
         MatchReplaceItem item = new MatchReplaceItem();
-        Object editRows[] = SwingUtil.editItem(this.tableReplace);
-        if (editRows != null) {
-            item = MatchReplaceItem.fromObjects(editRows);
+        Object editCols[] = SwingUtil.editItem(this.tableReplace);
+        if (editCols != null) {
+            item = MatchReplaceItem.fromObjects(editCols);
         }
         return item;
     }

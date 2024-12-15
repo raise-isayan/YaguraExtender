@@ -342,9 +342,9 @@ public class MatchAlertTab extends javax.swing.JPanel implements IBurpTab {
 
     private MatchAlertItem getEditItem() {
         MatchAlertItem item = new MatchAlertItem();
-        Object editRows[] = SwingUtil.editItem(this.tableAlert);
-        if (editRows != null) {
-            item = MatchAlertItem.fromObjects(editRows);
+        Object editCols[] = SwingUtil.editItem(this.tableAlert);
+        if (editCols != null) {
+            item = MatchAlertItem.fromObjects(editCols);
         }
         return item;
     }

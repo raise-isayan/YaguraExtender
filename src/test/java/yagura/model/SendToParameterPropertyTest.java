@@ -1,5 +1,7 @@
 package yagura.model;
 
+import extension.helpers.ConvertUtil;
+import java.util.Properties;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,31 @@ public class SendToParameterPropertyTest {
 
     @AfterEach
     public void tearDown() {
+    }
+
+    @Test
+    public void testProperties() {
+        System.out.println("testProperties");
+        SendToParameterProperty sendoParam = new SendToParameterProperty();
+        sendoParam.setUseOverride(true);
+        sendoParam.setUseReqComment(true);
+        sendoParam.setUseReqName(true);
+        sendoParam.setUseReqNum(true);
+        Properties prop = sendoParam.getProperties();
+        assertEquals(true, ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useOverride"), false));
+        assertEquals(true, ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useReqComment"), false));
+        assertEquals(true, ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useReqName"), false));
+        assertEquals(true, ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useReqNum"), false));
+        prop.list(System.out);
+        {
+            SendToParameterProperty resultArgs = new SendToParameterProperty();
+            resultArgs.setProperties(prop);
+            assertEquals(true, resultArgs.isUseOverride());
+            assertEquals(true, resultArgs.isUseReqComment());
+            assertEquals(true, resultArgs.isUseReqName());
+            assertEquals(true, resultArgs.isUseReqNum());
+        }
+
     }
 
     /**

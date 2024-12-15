@@ -807,9 +807,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
     private CertificateItem getEditItem() {
         CertificateItem item = null;
-        Object editRows[] = SwingUtil.editItem(this.tableCertificate);
-        if (editRows != null) {
-            item = CertificateItem.fromObjects(editRows);
+        Object editCols[] = SwingUtil.editItem(this.tableCertificate);
+        if (editCols != null) {
+            item = CertificateItem.fromObjects(editCols);
         }
         return item;
     }

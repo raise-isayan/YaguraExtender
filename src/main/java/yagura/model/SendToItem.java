@@ -261,6 +261,12 @@ public class SendToItem extends IssueAlertFireEvent {
         }
     }
 
+    public SendToExtendProperty getSendToExtend() {
+        SendToExtendProperty prop = new SendToExtendProperty();
+        prop.setProperties(this.getExtendProperties());
+        return prop;
+    }
+
     /**
      * @return the extend
      */

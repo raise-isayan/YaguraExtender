@@ -231,6 +231,7 @@ public class BurpToolBar extends javax.swing.JPanel {
         for (File p : profiles) {
             this.cmbProfile.addItem(p.getName());
         }
+        this.cmbProfile.addItem(BurpBrowser.BROWSER_PROFILE_GUEST);
     }
 
     private void tglInterceptStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tglInterceptStateChanged

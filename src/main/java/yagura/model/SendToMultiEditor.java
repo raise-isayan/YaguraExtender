@@ -5,9 +5,12 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
 import extension.helpers.ConvertUtil;
+import extension.helpers.FileUtil;
+import extension.helpers.StringUtil;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,27 +58,50 @@ public class SendToMultiEditor extends SendToMenuItem {
     @Override
     public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
         List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
-        if (!messageInfo.isEmpty()) {
-            File[] msgFiles = new File[messageInfo.size()];
-            if (this.isReverseOrder()) {
-                for (int i = messageInfo.size() - 1; i >= 0; i--) {
-                    msgFiles[i] = tempMessageFile(messageInfo.get(i), i);
-                }
-            } else {
-                for (int i = 0; i < messageInfo.size(); i++) {
-                    msgFiles[i] = tempMessageFile(messageInfo.get(i), i);
+        try {
+            SendToArgsProperty argsProp  = this.getSendToExtend().getSendToArgsProperty();
+            if (argsProp.isUseOverride()) {
+                List<String> formatList = argsProp.getArgsList();
+                if (!formatList.isEmpty()) {
+                    List<String> argsList = new ArrayList<>();
+                    if (this.isReverseOrder()) {
+                        for (int i = messageInfo.size() - 1; i >= 0; i--) {
+                            argsList.addAll(executeArgumentFormat(messageInfo.get(i), sendToMessage.getSelectedText(), formatList.toArray(String[]::new)));
+                        }
+                    } else {
+                        for (int i = 0; i < messageInfo.size(); i++) {
+                            argsList.addAll(executeArgumentFormat(messageInfo.get(i), sendToMessage.getSelectedText(), formatList.toArray(String[]::new)));
+                        }
+                    }
+                    ConvertUtil.executeProcess(this.getTarget(), argsList);
                 }
             }
-            try {
-                String[] args = new String[msgFiles.length];
-                for (int i = 0; i < args.length; i++) {
-                    args[i] = msgFiles[i].toString();
+            else {
+                if (sendToMessage.getSelectedText() != null) {
+                    File msgFile = FileUtil.tempFile(StringUtil.getBytesRaw(sendToMessage.getSelectedText()), ".tmp");
+                    ConvertUtil.executeProcess(this.getTarget(), new String [] { msgFile.getAbsolutePath() });
                 }
-                ConvertUtil.executeFormat(this.getTarget(), args);
-            } catch (IOException ex) {
-                this.fireIssueAlertCriticalEvent(new IssueAlertEvent(this, ex.getMessage()));
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
+                else if (!messageInfo.isEmpty()) {
+                    File[] msgFiles = new File[messageInfo.size()];
+                    if (this.isReverseOrder()) {
+                        for (int i = messageInfo.size() - 1; i >= 0; i--) {
+                            msgFiles[i] = tempMessageFile(messageInfo.get(i), i);
+                        }
+                    } else {
+                        for (int i = 0; i < messageInfo.size(); i++) {
+                            msgFiles[i] = tempMessageFile(messageInfo.get(i), i);
+                        }
+                    }
+                    String[] args = new String[msgFiles.length];
+                    for (int i = 0; i < args.length; i++) {
+                        args[i] = msgFiles[i].getAbsolutePath();
+                    }
+                    ConvertUtil.executeProcess(this.getTarget(), args);
+                }
             }
+        } catch (IOException ex) {
+            this.fireIssueAlertCriticalEvent(new IssueAlertEvent(this, ex.getMessage()));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
 

@@ -1,18 +1,27 @@
 package extend.util.external;
 
 import burp.api.montoya.MontoyaApi;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
 import extension.burp.BurpConfig;
 import extension.burp.BurpVersion;
+import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
+import extension.helpers.json.JsonUtil;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +37,8 @@ public class BurpBrowser {
 
     public final static String BROWSER_PROFILE_DEFAULT = "Default";
 
+    public final static String BROWSER_PROFILE_GUEST = "Guest Profile";
+
     private final static String CHROMIUM_BROWSER = "burpbrowser";
 
     private final static String CHROMIUM_BROWSER_EXTENSION = "burp-chromium-extension";
@@ -35,6 +46,8 @@ public class BurpBrowser {
     private final static String BURP_CHROMIUM_EXTENSION = "resources/Browser/ChromiumExtension";
 
     private final static String BURP_CHROMIUM_PROPERTIES = "/chromium.properties";
+
+    private final static String BURP_CHROMIUM_STATE = "Local State";
 
     private final static Properties chromium_prop = new Properties();
 
@@ -98,8 +111,7 @@ public class BurpBrowser {
         File browserDir = browserPath.toFile();
         if (browserDir.exists() && browserDir.list().length > 0) {
             return browserDir.toPath();
-        }
-        else {
+        } else {
             Path burpPath = getBurpSuiteDirectoryPath();
             return burpPath.resolve(CHROMIUM_BROWSER);
         }
@@ -125,7 +137,6 @@ public class BurpBrowser {
         }
         return Path.of(home, burpDir);
     }
-
 
     public Path getBrowseUserDataDirectory() {
         Path dir = getBurpSuiteDirectoryPath();
@@ -180,44 +191,44 @@ public class BurpBrowser {
     public List<String> getBrowserExecAndArgs(String profile, int port) {
         // chrome://version/ から情報取得
         final List<String> CHROME_ARGS = List.of(
-                "--disable-ipc-flooding-protection",
-                "--disable-xss-auditor",
-                "--disable-bundled-ppapi-flash",
-                "--disable-plugins-discovery",
-                "--disable-default-apps",
-                "--disable-prerender-local-predictor",
-                "--disable-sync",
-                "--disable-breakpad",
-                "--disable-crash-reporter",
-                "--disable-prerender-local-predictor",
-                "--disk-cache-size=0",
-                "--disable-settings-window",
-                "--disable-notifications",
-                "--disable-speech-api",
-                "--disable-file-system",
-                "--disable-presentation-api",
-                "--disable-permissions-api",
-                "--disable-new-zip-unpacker",
-                "--disable-media-session-api",
-                "--no-experiments",
-                "--no-events",
-                "--no-first-run",
-                "--no-default-browser-check",
-                "--no-pings",
-                "--no-service-autorun",
-                "--media-cache-size=0",
-                "--use-fake-device-for-media-stream",
-                "--dbus-stub",
-                "--disable-background-networking",
-                "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
-                "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.127 Safari/537.36",
-                "--ignore-certificate-errors",
-                String.format("--proxy-server=localhost:%d", port),
-                "--proxy-bypass-list=<-loopback>",
-                String.format("--profile-directory=%s", profile),
-                String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
-                String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
-                "chrome://newtab"
+            "--disable-ipc-flooding-protection",
+            "--disable-xss-auditor",
+            "--disable-bundled-ppapi-flash",
+            "--disable-plugins-discovery",
+            "--disable-default-apps",
+            "--disable-prerender-local-predictor",
+            "--disable-sync",
+            "--disable-breakpad",
+            "--disable-crash-reporter",
+            "--disable-prerender-local-predictor",
+            "--disk-cache-size=0",
+            "--disable-settings-window",
+            "--disable-notifications",
+            "--disable-speech-api",
+            "--disable-file-system",
+            "--disable-presentation-api",
+            "--disable-permissions-api",
+            "--disable-new-zip-unpacker",
+            "--disable-media-session-api",
+            "--no-experiments",
+            "--no-events",
+            "--no-first-run",
+            "--no-default-browser-check",
+            "--no-pings",
+            "--no-service-autorun",
+            "--media-cache-size=0",
+            "--use-fake-device-for-media-stream",
+            "--dbus-stub --disable-background-networking",
+            "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
+            String.format("--proxy-server=localhost:%d", port),
+            "--proxy-bypass-list=<-loopback>",
+            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36",
+            String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
+            String.format("--profile-directory=%s", profile),
+            "--ignore-certificate-errors",
+            "--disable-features=TrackingProtection3pcd,LensOverlay",
+            String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
+            "chrome://newtab"
         );
         BurpVersion.OSType os = BurpVersion.getOSType();
         List<String> chromeExecAndArg = new ArrayList<>();
@@ -243,9 +254,14 @@ public class BurpBrowser {
         Arrays.sort(profiles, new Comparator<File>() {
             @Override
             public int compare(File f1, File f2) {
-                int p1 = Integer.parseInt(f1.getName().substring("Profile ".length()));
-                int p2 = Integer.parseInt(f2.getName().substring("Profile ".length()));
-                return p1 - p2;
+                try {
+                    int p1 = Integer.parseInt(f1.getName().substring("Profile ".length()));
+                    int p2 = Integer.parseInt(f2.getName().substring("Profile ".length()));
+                    return p1 - p2;
+                }
+                catch (NumberFormatException ex) {
+                    return f1.getName().compareTo(f2.getName());
+                }
             }
         });
         return profiles;
@@ -259,6 +275,57 @@ public class BurpBrowser {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
+    }
+
+    private Path getBrowserProfilePath() {
+        Path path = getBrowseUserDataDirectory();
+        return path.resolve("Local State");
+    }
+
+    public Map<String, BrowserProfile> getBrowserProfile() throws IOException {
+        Path path = getBrowserProfilePath();
+        return getBrowserProfile(path);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static Map<String, BrowserProfile> getBrowserProfile(final Path path) throws IOException {
+        String config = FileUtil.stringFromFile(path.toFile(), StandardCharsets.UTF_8);
+        JsonObject root_json = JsonUtil.parseJsonObject(config);
+        JsonObject profile_json = root_json.getAsJsonObject("profile").getAsJsonObject("info_cache");
+        JsonArray profile_order = root_json.getAsJsonObject("profile").getAsJsonArray("profiles_order");
+        Map<String, JsonElement> profile_map = profile_json.asMap();
+        Map<String, BrowserProfile> order_profile = new LinkedHashMap<>();
+        for (int i = 0; i < profile_order.size(); i++) {
+            JsonElement key = profile_order.get(i);
+            JsonElement profile = profile_map.get(key.getAsString());
+            BrowserProfile prowserProfile = JsonUtil.jsonFromJsonElement(profile, BrowserProfile.class, true);
+            order_profile.put(key.getAsString(), prowserProfile);
+        }
+        return order_profile;
+    }
+
+    static class BrowserProfile {
+
+        @Expose
+        private String name;
+
+        /**
+         * @return the name
+         */
+        public String getName() {
+            return name;
+        }
+
+        /**
+         * @param name the name to set
+         */
+        public void setName(String name) {
+            this.name = name;
+        }
+
     }
 
 }

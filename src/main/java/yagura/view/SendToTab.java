@@ -457,9 +457,9 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     private SendToItem getEditItem() {
         SendToItem item = new SendToItem();
-        Object editRows[] = SwingUtil.editItem(this.tableSendTo);
-        if (editRows != null) {
-            item = SendToItem.fromObjects(editRows);
+        Object editCols[] = SwingUtil.editItem(this.tableSendTo);
+        if (editCols != null) {
+            item = SendToItem.fromObjects(editCols);
         }
         return item;
     }

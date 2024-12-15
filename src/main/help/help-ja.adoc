@@ -506,8 +506,8 @@ override SendTo parameter::
 use request name::
  reqNameパラメータに指定した内容で送信します。
 
-. history notes +
- proxyのヒストリのコメントを送信します。
+. annotation notes +
+ アノテーションのコメントを送信します。
 
 . response title tag +
  レスポンスのタイトルタグの値を送信します。

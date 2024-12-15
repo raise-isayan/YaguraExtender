@@ -10,6 +10,7 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
+import java.util.EnumSet;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -286,7 +287,7 @@ public class SendToItemDlg extends CustomDialog {
 
         this.modelExtend = new DefaultComboBoxModel();
         this.cmbExtend.setModel(this.modelExtend);
-        this.btnExtendProperty.setEnabled(this.chkServer.isSelected());
+//        this.btnExtendProperty.setEnabled(this.chkServer.isSelected());
         for (SendToItem.ExtendType extType : SendToItem.ExtendType.values()) {
             this.modelExtend.addElement(extType);
         }
@@ -329,7 +330,7 @@ public class SendToItemDlg extends CustomDialog {
     }//GEN-LAST:event_btnExtendPropertyActionPerformed
 
     private void chkServerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServerStateChanged
-        this.btnExtendProperty.setEnabled(this.chkServer.isSelected());
+//        this.btnExtendProperty.setEnabled(this.chkServer.isSelected());
     }//GEN-LAST:event_chkServerStateChanged
 
     /**
@@ -482,6 +483,12 @@ public class SendToItemDlg extends CustomDialog {
         } else {
             SendToExtendProperty prop = new SendToExtendProperty();
             this.sendToServerExtendDlg.setProperty(prop);
+        }
+        if (this.chkServer.isSelected()) {
+            this.sendToServerExtendDlg.setExtendView(EnumSet.of(SendToExtendProperty.ExtendView.HTTP_EXTEND, SendToExtendProperty.ExtendView.SENDTO_PARAMETER));
+        }
+        else {
+            this.sendToServerExtendDlg.setExtendView(EnumSet.of(SendToExtendProperty.ExtendView.SENDTO_ARGS));
         }
         this.sendToServerExtendDlg.setVisible(true);
         if (this.sendToServerExtendDlg.getModalResult() == JOptionPane.OK_OPTION) {

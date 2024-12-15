@@ -2,6 +2,7 @@ package yagura.model;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import extension.helpers.FileUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
@@ -10,10 +11,15 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -93,5 +99,103 @@ public abstract class SendToMenuItem
     public abstract void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage);
 
     public abstract boolean isEnabled();
+
+    public List<String> executeArgumentFormat(HttpRequestResponse httpRequestResponse, String selectedText, String [] formats) throws MalformedURLException {
+        final List<String> argsList = new ArrayList<>();
+        try {
+            for (int i = 0; i < formats.length; i++) {
+                StringBuilder buff = new StringBuilder();
+                URL url = new URL(httpRequestResponse.request().url());
+                Pattern p = Pattern.compile("%([HPTUAQCMSFRN%])");
+                Matcher m = p.matcher(formats[i]);
+                while (m.find()) {
+                    String replace = m.group(0);
+                    String opt = m.group(1);
+                    switch (opt.charAt(0)) {
+                        case 'H': // %H: will be replaced with the host
+                        {
+                            replace = httpRequestResponse.httpService().host();
+                            break;
+                        }
+                        case 'P': // %P: will be replaced with the port
+                        {
+                            replace = String.valueOf(httpRequestResponse.httpService().port());
+                            break;
+                        }
+                        case 'T': // %T: will be replaced with the protocol
+                        {
+                            replace = url.getProtocol();
+                            break;
+                        }
+                        case 'U': // %U: will be replaced with the url
+                        {
+                            replace = url.toExternalForm();
+                            break;
+                        }
+                        case 'A': // %A: will be replaced with the url path
+                        {
+                            replace = url.getPath();
+                            break;
+                        }
+                        case 'Q': // %Q: will be replaced with the url query
+                        {
+                            replace = url.getQuery();
+                            break;
+                        }
+                        case 'C': // %C: will be replaced with the cookies
+                        {
+                            if (httpRequestResponse.request().hasHeader("Cookie")) {
+                                replace = httpRequestResponse.request().header("Cookie").value();
+                            }
+                            break;
+                        }
+                        case 'M': // %M: will be replaced with the HTTP-method
+                        {
+                            replace = httpRequestResponse.request().method();
+                            break;
+                        }
+                        case 'S': // %S: will be replaced with the selected text
+                        {
+                            if (selectedText != null) {
+                                replace = selectedText;
+                            }
+                            break;
+                        }
+                        case 'F': // %F: will be replaced with the path to a temporary file containing the selected text
+                        {
+                            if (selectedText != null) {
+                                File file = FileUtil.tempFile(StringUtil.getBytesRaw(selectedText), "burp");
+                                replace = file.getAbsolutePath();
+                            }
+                            break;
+                        }
+                        case 'R': // %R: will be replaced with the path to a temporary file containing the content of the focused request/response
+                        {
+                            File file = tempMessageFile(httpRequestResponse, httpRequestResponse.hashCode());
+                            replace = file.getAbsolutePath();
+                            break;
+                        }
+                        case 'N': // %N: will be replaced with the notes
+                        {
+                            File file = FileUtil.tempFile(StringUtil.getBytesUTF8(httpRequestResponse.annotations().notes()), "burp");
+                            replace = file.getAbsolutePath();
+                            break;
+                        }
+                        case '%': // escape
+                        {
+                            replace = "%";
+                            break;
+                        }
+                    }
+                    m.appendReplacement(buff, replace);
+                }
+                m.appendTail(buff);
+                argsList.add(buff.toString());
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return argsList;
+    }
 
 }

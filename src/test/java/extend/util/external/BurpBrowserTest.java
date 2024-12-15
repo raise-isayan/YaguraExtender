@@ -1,14 +1,17 @@
 package extend.util.external;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -67,5 +70,21 @@ public class BurpBrowserTest {
         System.out.println("version:" + version);
         assertEquals("131.0.6778.86", version);
     }
+
+    @Test
+    public void testBrowserProfiel() throws IOException {
+        System.out.println("testBrowserProfiel");
+        try {
+        String state_path = BurpBrowserTest.class.getResource("/resources/Local_State").getPath();
+        Map<String, BurpBrowser.BrowserProfile> profile_map = BurpBrowser.getBrowserProfile(new File(state_path).toPath());
+        for (String key : profile_map.keySet()) {
+            System.out.println("keys:" + key);
+            System.out.println("value:" + profile_map.get(key).getName());
+        }
+        } catch (Exception ex) {
+            fail(ex);
+        }
+    }
+
 
 }

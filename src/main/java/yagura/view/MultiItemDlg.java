@@ -34,6 +34,7 @@ public class MultiItemDlg extends CustomDialog {
         pnlMain = new javax.swing.JPanel();
         scrollMultiline = new javax.swing.JScrollPane();
         txtMultiLine = new javax.swing.JTextArea();
+        pnlProtocolType = new javax.swing.JPanel();
         tglHttp = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -75,14 +76,18 @@ public class MultiItemDlg extends CustomDialog {
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
 
+        pnlMain.setLayout(new java.awt.BorderLayout());
+
         txtMultiLine.setColumns(20);
         txtMultiLine.setRows(5);
         scrollMultiline.setViewportView(txtMultiLine);
+
+        pnlMain.add(scrollMultiline, java.awt.BorderLayout.CENTER);
 
         tglHttp.setSelected(true);
         tglHttp.setText("HTTP");
@@ -92,28 +97,24 @@ public class MultiItemDlg extends CustomDialog {
             }
         });
 
-        javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
-        pnlMain.setLayout(pnlMainLayout);
-        pnlMainLayout.setHorizontalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlMainLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlProtocolTypeLayout = new javax.swing.GroupLayout(pnlProtocolType);
+        pnlProtocolType.setLayout(pnlProtocolTypeLayout);
+        pnlProtocolTypeLayout.setHorizontalGroup(
+            pnlProtocolTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProtocolTypeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollMultiline, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
-                    .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(tglHttp, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(tglHttp, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(424, Short.MAX_VALUE))
         );
-        pnlMainLayout.setVerticalGroup(
-            pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
+        pnlProtocolTypeLayout.setVerticalGroup(
+            pnlProtocolTypeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlProtocolTypeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(tglHttp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollMultiline, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        pnlMain.add(pnlProtocolType, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -147,6 +148,7 @@ public class MultiItemDlg extends CustomDialog {
     private javax.swing.JButton btnOK;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlMain;
+    private javax.swing.JPanel pnlProtocolType;
     private javax.swing.JScrollPane scrollMultiline;
     private javax.swing.JToggleButton tglHttp;
     private javax.swing.JTextArea txtMultiLine;
@@ -154,4 +156,9 @@ public class MultiItemDlg extends CustomDialog {
 
     private void customizeComponents() {
     }
+
+    public void setProtocolMode(boolean mode) {
+        this.pnlProtocolType.setVisible(mode);
+    }
+
 }

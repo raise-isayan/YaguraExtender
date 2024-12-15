@@ -277,44 +277,44 @@ public class HttpExtendProperty {
     }
 
     public void setProperties(Properties prop) {
-        this.httpClientType = HttpClientType.valueOf(prop.getProperty("useHttpClient", HttpClientType.BURP.name()));
-        this.httpProtocol = HttpProtocol.valueOf(prop.getProperty("httpProtocol", HttpProtocol.AUTO.name()));
+        this.httpClientType = HttpClientType.valueOf(prop.getProperty("Connections.useHttpClient", prop.getProperty("useHttpClient", HttpClientType.BURP.name())));
+        this.httpProtocol = HttpProtocol.valueOf(prop.getProperty("Connections.httpProtocol", prop.getProperty("httpProtocol", HttpProtocol.AUTO.name())));
 
-        this.timeout = ConvertUtil.parseIntDefault(prop.getProperty("timeout"), 120);
+        this.timeout = ConvertUtil.parseIntDefault(prop.getProperty("Connections.timeout", prop.getProperty("timeout")), 120);
 
-        this.authorizationType = AuthorizationType.valueOf(prop.getProperty("authorizationType", AuthorizationType.NONE.name()));
-        this.authorizationUser = prop.getProperty("authorizationUser", "");
-        this.authorizationPasswd = prop.getProperty("authorizationPasswd", "");
+        this.authorizationType = AuthorizationType.valueOf(prop.getProperty("Connections.authorizationType", prop.getProperty("authorizationType", AuthorizationType.NONE.name())));
+        this.authorizationUser = prop.getProperty("Connections.authorizationUser", prop.getProperty("authorizationUser", ""));
+        this.authorizationPasswd = prop.getProperty("Connections.authorizationPasswd", prop.getProperty("authorizationPasswd", ""));
 
-        this.proxyProtocol = Proxy.Type.valueOf(prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name()));
-        this.proxyHost = prop.getProperty("proxyHost", "");
-        this.proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("proxyPort"), 8080);
-        this.proxyUser = prop.getProperty("proxyUser", "");
-        this.proxyPasswd = prop.getProperty("proxyPasswd", "");
+        this.proxyProtocol = Proxy.Type.valueOf(prop.getProperty("Connections.proxyProtocol", prop.getProperty("proxyProtocol", Proxy.Type.DIRECT.name())));
+        this.proxyHost = prop.getProperty("Connections.proxyHost", prop.getProperty("proxyHost", ""));
+        this.proxyPort = ConvertUtil.parseIntDefault(prop.getProperty("Connections.proxyPort", prop.getProperty("proxyPort")), 8080);
+        this.proxyUser = prop.getProperty("Connections.proxyUser", prop.getProperty("proxyUser", ""));
+        this.proxyPasswd = prop.getProperty("Connections.proxyPasswd", prop.getProperty("proxyPasswd", ""));
 
         this.clientCertificateItem.setProperties(prop);
-        this.ignoreValidateCertification = Boolean.parseBoolean(prop.getProperty("ignoreValidateCertification", StringUtil.toString(Boolean.FALSE)));
+        this.ignoreValidateCertification = Boolean.parseBoolean(prop.getProperty("Connections.ignoreValidateCertification", prop.getProperty("ignoreValidateCertification", StringUtil.toString(Boolean.FALSE))));
     }
 
     public Properties getProperties() {
         Properties prop = new Properties();
-        prop.setProperty("useHttpClient", this.httpClientType.name());
-        prop.setProperty("httpProtocol", this.httpProtocol.name());
+        prop.setProperty("Connections.useHttpClient", this.httpClientType.name());
+        prop.setProperty("Connections.httpProtocol", this.httpProtocol.name());
 
-        prop.setProperty("timeout", StringUtil.toString(this.timeout));
+        prop.setProperty("Connections.timeout", StringUtil.toString(this.timeout));
 
-        prop.setProperty("authorizationType", this.authorizationType.name());
-        prop.setProperty("authorizationUser", this.authorizationUser);
-        prop.setProperty("authorizationPasswd", this.authorizationPasswd);
+        prop.setProperty("Connections.authorizationType", this.authorizationType.name());
+        prop.setProperty("Connections.authorizationUser", this.authorizationUser);
+        prop.setProperty("Connections.authorizationPasswd", this.authorizationPasswd);
 
-        prop.setProperty("proxyProtocol", this.proxyProtocol.name());
-        prop.setProperty("proxyHost", this.proxyHost);
-        prop.setProperty("proxyPort", StringUtil.toString(this.proxyPort));
-        prop.setProperty("proxyUser", this.proxyUser);
-        prop.setProperty("proxyPasswd", this.proxyPasswd);
+        prop.setProperty("Connections.proxyProtocol", this.proxyProtocol.name());
+        prop.setProperty("Connections.proxyHost", this.proxyHost);
+        prop.setProperty("Connections.proxyPort", StringUtil.toString(this.proxyPort));
+        prop.setProperty("Connections.proxyUser", this.proxyUser);
+        prop.setProperty("Connections.proxyPasswd", this.proxyPasswd);
 
         prop.putAll(this.clientCertificateItem.getProperties());
-        prop.setProperty("ignoreValidateCertification", StringUtil.toString(this.ignoreValidateCertification));
+        prop.setProperty("Connections.ignoreValidateCertification", StringUtil.toString(this.ignoreValidateCertification));
         return prop;
     }
 
