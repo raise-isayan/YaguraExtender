@@ -489,6 +489,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             Frame frame = BurpUtil.suiteFrame();
             this.toolbar.setFlotingBar(false);
             frame.remove(this.toolbar);
+            this.toolbar.extensionUnloaded();
         }
         ThemeUI.removePropertyChangeListener();
         try {

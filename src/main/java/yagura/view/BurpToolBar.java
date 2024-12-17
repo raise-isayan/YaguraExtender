@@ -1,14 +1,15 @@
 package yagura.view;
 
 import burp.api.montoya.MontoyaApi;
-import java.util.Timer;
-import java.util.TimerTask;
+import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.ui.Theme;
 import extend.util.external.BurpBrowser;
 import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
@@ -17,13 +18,16 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JToggleButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 /**
  *
  * @author isayan
  */
-public class BurpToolBar extends javax.swing.JPanel {
+public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadingHandler {
 
     private final static Logger logger = Logger.getLogger(BurpToolBar.class.getName());
 
@@ -209,19 +213,42 @@ public class BurpToolBar extends javax.swing.JPanel {
     private final javax.swing.ImageIcon inspector_on_light = new javax.swing.ImageIcon(getClass().getResource("/resources/Media/svg/light/switch-on.svg"));
     private final javax.swing.ImageIcon inspector_off_light = new javax.swing.ImageIcon(getClass().getResource("/resources/Media/svg/light/switch-off.svg"));
 
-    private final Timer timer = new Timer();
-    private final TimerTask task = new TimerTask() {
-        public void run() {
-            boolean interceptEnabled = api.proxy().isInterceptEnabled();
-            if (interceptEnabled != isIntercept()) {
-                setIntercept(interceptEnabled);
+//    private final Timer timer = new Timer();
+//    private final TimerTask task = new TimerTask() {
+//        public void run() {
+//            boolean interceptEnabled = api.proxy().isInterceptEnabled();
+//            if (interceptEnabled != isIntercept()) {
+//                setIntercept(interceptEnabled);
+//            }
+//        }
+//    };
+
+
+    private final ChangeListener tglButtonChangeListener = new ChangeListener() {
+        @Override
+        public void stateChanged(ChangeEvent e) {
+//            boolean interceptEnabled = api.proxy().isInterceptEnabled();
+//            if (interceptEnabled != isIntercept()) {
+//                    setIntercept(interceptEnabled);
+//            }
+            if (e.getSource() instanceof JToggleButton button) {
+                if (button.isSelected() != isIntercept()) {
+                    setIntercept(button.isSelected());
+                }
             }
+
         }
+
     };
 
     private void customizeComponents() {
         this.renewProfile();
-        this.timer.schedule(this.task, 0, this.interval_time);
+        JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());
+        if (button != null) {
+            this.tglButtonChangeListener.stateChanged(new ChangeEvent(button));
+            button.addChangeListener(this.tglButtonChangeListener);
+        }
+//        this.timer.schedule(this.task, 0, this.interval_time);
     }
 
     public void renewProfile() {
@@ -424,4 +451,12 @@ public class BurpToolBar extends javax.swing.JPanel {
 //    public int getIntervalTime() {
 //        return this.interval_time;
 //    }
+
+    @Override
+    public void extensionUnloaded() {
+        JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());
+        if (button != null) {
+            button.removeChangeListener(this.tglButtonChangeListener);
+        }
+    }
 }
