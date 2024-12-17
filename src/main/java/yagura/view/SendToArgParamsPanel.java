@@ -3,6 +3,8 @@ package yagura.view;
 import extension.helpers.SwingUtil;
 import yagura.model.SendToArgsProperty;
 import extension.view.base.CustomTableModel;
+import extension.view.base.JMultilineLabel;
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,10 +42,10 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableSendToArgs = new javax.swing.JTable();
         btnEdit = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        pnlHelpNote = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(550, 600));
+        setLayout(new java.awt.BorderLayout());
 
         chkOverrideSendToArgs.setText("override send to args");
         chkOverrideSendToArgs.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -51,9 +53,10 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
                 chkOverrideSendToArgsStateChanged(evt);
             }
         });
+        add(chkOverrideSendToArgs, java.awt.BorderLayout.NORTH);
 
         pnlSendToArgs.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        pnlSendToArgs.setPreferredSize(new java.awt.Dimension(500, 500));
+        pnlSendToArgs.setPreferredSize(new java.awt.Dimension(500, 200));
 
         tableSendToArgs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -89,28 +92,16 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
             }
         });
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(12);
-        jTextArea1.setText("%H: will be replaced with the host\n%P: will be replaced with the port\n%T: will be replaced with the protocol\n%U: will be replaced with the url\n%A: will be replaced with the url path\n%Q: will be replaced with the url query\n%C: will be replaced with the cookies\n%M: will be replaced with the HTTP-method\n%S: will be replaced with the selected text\n%F: will be replaced with the path to a temporary file containing the selected text\n%R: will be replaced with the path to a temporary file containing the content of the focused request/response\n%N: will be replaced with the notes");
-        jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        jScrollPane2.setViewportView(jTextArea1);
-
         javax.swing.GroupLayout pnlSendToArgsLayout = new javax.swing.GroupLayout(pnlSendToArgs);
         pnlSendToArgs.setLayout(pnlSendToArgsLayout);
         pnlSendToArgsLayout.setHorizontalGroup(
             pnlSendToArgsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSendToArgsLayout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(pnlSendToArgsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(pnlSendToArgsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSendToArgsLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
         pnlSendToArgsLayout.setVerticalGroup(
             pnlSendToArgsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,34 +110,15 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
                 .addGroup(pnlSendToArgsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnEdit)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(248, Short.MAX_VALUE))
-            .addGroup(pnlSendToArgsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSendToArgsLayout.createSequentialGroup()
-                    .addContainerGap(314, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkOverrideSendToArgs)
-                    .addComponent(pnlSendToArgs, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(chkOverrideSendToArgs)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlSendToArgs, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        add(pnlSendToArgs, java.awt.BorderLayout.CENTER);
+
+        pnlHelpNote.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        pnlHelpNote.setPreferredSize(new java.awt.Dimension(500, 250));
+        pnlHelpNote.setLayout(new java.awt.BorderLayout());
+        add(pnlHelpNote, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -170,6 +142,20 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
         });
     }
 
+    private final String FORMAT_NOTE = "%H: will be replaced with the host\n" +
+                                        "%P: will be replaced with the port\n" +
+                                        "%T: will be replaced with the protocol\n" +
+                                        "%U: will be replaced with the url\n" +
+                                        "%A: will be replaced with the url path\n" +
+                                        "%Q: will be replaced with the url query\n" +
+                                        "%C: will be replaced with the cookies\n" +
+                                        "%M: will be replaced with the HTTP-method\n" +
+                                        "%S: will be replaced with the selected text\n" +
+                                        "%F: will be replaced with the path to a temporary file containing the selected text\n" +
+                                        "%R: will be replaced with the path to a temporary file containing the content of the focused request/response\n" +
+                                        "%N: will be replaced with the notes";
+
+
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         this.showMultiLineDlg();
     }//GEN-LAST:event_btnEditActionPerformed
@@ -183,8 +169,7 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnEdit;
     private javax.swing.JCheckBox chkOverrideSendToArgs;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JPanel pnlHelpNote;
     private javax.swing.JPanel pnlSendToArgs;
     private javax.swing.JTable tableSendToArgs;
     // End of variables declaration//GEN-END:variables
@@ -194,6 +179,9 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
     private void customizeComponents() {
         this.modelSendToArgs = new CustomTableModel(this.tableSendToArgs.getModel());
         this.tableSendToArgs.setModel(this.modelSendToArgs);
+        JMultilineLabel ml = new JMultilineLabel();
+        ml.setText(FORMAT_NOTE);
+        this.pnlHelpNote.add(ml, BorderLayout.CENTER);
     }
 
     public SendToArgsProperty getSendToOverrideProperty() {

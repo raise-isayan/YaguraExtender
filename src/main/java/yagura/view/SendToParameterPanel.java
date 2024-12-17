@@ -37,6 +37,7 @@ public class SendToParameterPanel extends javax.swing.JPanel {
         btnGrpReqName = new javax.swing.ButtonGroup();
         btnGrpReqNameHistoryNotesType = new javax.swing.ButtonGroup();
         rdoGrpReqNotesHistoryNotesType = new javax.swing.ButtonGroup();
+        chkOverrideSendToParameter = new javax.swing.JCheckBox();
         pnlSendToOverride = new javax.swing.JPanel();
         chkUseReqNotes = new javax.swing.JCheckBox();
         chkUseReqName = new javax.swing.JCheckBox();
@@ -53,7 +54,16 @@ public class SendToParameterPanel extends javax.swing.JPanel {
         rdoReqCommentFirstLine = new javax.swing.JRadioButton();
         rdoReqCommentSecondLine = new javax.swing.JRadioButton();
         chkDummyResponse = new javax.swing.JCheckBox();
-        chkOverrideSendToParameter = new javax.swing.JCheckBox();
+
+        setLayout(new java.awt.BorderLayout());
+
+        chkOverrideSendToParameter.setText("Override send to parameter");
+        chkOverrideSendToParameter.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkOverrideSendToParameterStateChanged(evt);
+            }
+        });
+        add(chkOverrideSendToParameter, java.awt.BorderLayout.NORTH);
 
         pnlSendToOverride.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -182,7 +192,7 @@ public class SendToParameterPanel extends javax.swing.JPanel {
                                 .addComponent(rdoReqCommentResponseTitle))
                             .addComponent(chkUseReqName)
                             .addComponent(chkUseReqNotes))))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         pnlSendToOverrideLayout.setVerticalGroup(
             pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,38 +215,10 @@ public class SendToParameterPanel extends javax.swing.JPanel {
                 .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(chkDummyResponse)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
-        chkOverrideSendToParameter.setText("Override send to parameter");
-        chkOverrideSendToParameter.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkOverrideSendToParameterStateChanged(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(chkOverrideSendToParameter)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(pnlSendToOverride, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(chkOverrideSendToParameter)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlSendToOverride, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        add(pnlSendToOverride, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
