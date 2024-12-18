@@ -187,7 +187,7 @@ public abstract class SendToMenuItem
                             break;
                         }
                     }
-                    m.appendReplacement(buff, replace);
+                    m.appendReplacement(buff, Matcher.quoteReplacement(replace));
                 }
                 m.appendTail(buff);
                 argsList.add(buff.toString());
