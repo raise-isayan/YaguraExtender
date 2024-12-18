@@ -451,7 +451,7 @@ image:images/custom_sendto_server_connection.png[SendToItem編集 SendTo Connect
 
 .Protocol
 
-　　HTTPのプロトコルを指定します。
+    HTTPのプロトコルを指定します。
 
 .Timeout
 
@@ -498,10 +498,10 @@ Password::
 
 SendToの送信に利用されるリクエストパラメータのカスタマイズをします。
 
-image:images/custom_sendto_server_sendtoparameter.png[SendToItem編集 SendTo Connection 設定 ダイヤログ]
+image:images/custom_sendto_server_sendtoparameter.png[SendToItem編集 SendTo Parameter 設定 ダイヤログ]
 
-override SendTo parameter::
-  SendToの送信にBurpのHTTPクライアントを利用します。
+override send to parameter::
+  SendToの送信のパラメータの送信方法を設定します。
 
 use request name::
  reqNameパラメータに指定した内容で送信します。
@@ -613,6 +613,36 @@ UTF-8
 
 現時点ではこの形式を解釈することができる（公開されている）Webアプリはありません。
 sample/sendto.php にはこの形式を受け取って表示するだけのPHPアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。
+
+===== SendTo Args 設定ダイヤログ
+
+サーバにチェックされていない場合に設定可能となります。
+
+SendToの送信に利用されるコマンドライン引数のカスタマイズをします。
+
+image:images/custom_sendto_server_sendtoargs.png[SendToItem編集 SendTo Args 設定 ダイヤログ]
+
+override send to args::
+  SendToの送信にコマンドライン引数の設定をします。
+
+Args::
+  コマンドライン引数を指定します。
+  改行で区切ることで一つのパラメータになります。
+  [Multi Edit] ボタンから一括で変更できます。
+  引数にはフォーマットパラメータを指定できます。
+
+%H:: ホストに置き換えられます。
+%P:: ポートに置き換えられます。
+%T:: プロトコルに置き換えられます。
+%U:: URL に置き換えられます。
+%A:: URL パスで置き換えられます。
+%Q:: URL Query に置き換えられます。
+%C:: クッキーに置き換えられます。
+%M:: HTTP メソッドに置き換えられます。
+%S:: 選択されたテキストに置き換えられます。
+%F:: 選択されたテキストを含む一時ファイルへのパスに置き換えられます。
+%R:: フォーカスされたリクエスト/レスポンスの内容を含む一時ファイルへのパスに置き換えられます。
+%N:: メモに置き換えられます。
 
 ==== Extendタブ
 image:images/custom_sendto_extend.png[SendToItem編集 Extend ダイヤログ]

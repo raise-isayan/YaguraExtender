@@ -1335,9 +1335,11 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 </li>
 </ul>
 </div>
-<div class="paragraph">
+<div class="literalblock">
 <div class="title">Protocol</div>
-<p>　　HTTPのプロトコルを指定します。</p>
+<div class="content">
+<pre>HTTPのプロトコルを指定します。</pre>
+</div>
 </div>
 <div class="dlist">
 <div class="title">Timeout</div>
@@ -1418,13 +1420,13 @@ serverにチェックが入ってる場合は、Target に記載されたURLに�
 <p>SendToの送信に利用されるリクエストパラメータのカスタマイズをします。</p>
 </div>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_sendto_server_sendtoparameter.png" alt="SendToItem編集 SendTo Connection 設定 ダイヤログ"></span></p>
+<p><span class="image"><img src="images/custom_sendto_server_sendtoparameter.png" alt="SendToItem編集 SendTo Parameter 設定 ダイヤログ"></span></p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">override SendTo parameter</dt>
+<dt class="hdlist1">override send to parameter</dt>
 <dd>
-<p>SendToの送信にBurpのHTTPクライアントを利用します。</p>
+<p>SendToの送信のパラメータの送信方法を設定します。</p>
 </dd>
 <dt class="hdlist1">use request name</dt>
 <dd>
@@ -1579,6 +1581,81 @@ UTF-8
 <div class="paragraph">
 <p>現時点ではこの形式を解釈することができる（公開されている）Webアプリはありません。
 sample/sendto.php にはこの形式を受け取って表示するだけのPHPアプリケーションのサンプルをおいています。実装したい場合はこちらを参考にしてください。</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_sendto_args_設定ダイヤログ">SendTo Args 設定ダイヤログ</h5>
+<div class="paragraph">
+<p>サーバにチェックされていない場合に設定可能となります。</p>
+</div>
+<div class="paragraph">
+<p>SendToの送信に利用されるコマンドライン引数のカスタマイズをします。</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_sendto_server_sendtoargs.png" alt="SendToItem編集 SendTo Args 設定 ダイヤログ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">override send to args</dt>
+<dd>
+<p>SendToの送信にコマンドライン引数の設定をします。</p>
+</dd>
+<dt class="hdlist1">Args</dt>
+<dd>
+<p>コマンドライン引数を指定します。
+改行で区切ることで一つのパラメータになります。
+[Multi Edit] ボタンから一括で変更できます。
+引数にはフォーマットパラメータを指定できます。</p>
+</dd>
+<dt class="hdlist1">%H</dt>
+<dd>
+<p>ホストに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%P</dt>
+<dd>
+<p>ポートに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%T</dt>
+<dd>
+<p>プロトコルに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%U</dt>
+<dd>
+<p>URL に置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%A</dt>
+<dd>
+<p>URL パスで置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%Q</dt>
+<dd>
+<p>URL Query に置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%C</dt>
+<dd>
+<p>クッキーに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%M</dt>
+<dd>
+<p>HTTP メソッドに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%S</dt>
+<dd>
+<p>選択されたテキストに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%F</dt>
+<dd>
+<p>選択されたテキストを含む一時ファイルへのパスに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%R</dt>
+<dd>
+<p>フォーカスされたリクエスト/レスポンスの内容を含む一時ファイルへのパスに置き換えられます。</p>
+</dd>
+<dt class="hdlist1">%N</dt>
+<dd>
+<p>メモに置き換えられます。</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>
@@ -2995,7 +3072,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <div id="footer">
 <div id="footer-text">
 Version v3.1.7.0<br>
-Last updated 2024-12-15 16:24:33 +0900
+Last updated 2024-12-18 20:44:35 +0900
 </div>
 </div>
 </body>

@@ -501,11 +501,12 @@ Password::
 .Server Certificate
  [ignore Validate Certification] checkbox:: Ignore HTTPS server certificate validation if checked
 
-===== SendTo Parameter  Configuration Dialog
+===== SendTo Parameter Configuration Dialog
 
-If checked for sending to server, Customize the request parameters used to send SendTo.
+If checked for sending to server, 
+Customize the request parameters used to send SendTo.
 
-image:images/custom_sendto_server_sendtoparameter.png[SendToItem Edit SendTo Connection Setting Dialog]
+image:images/custom_sendto_server_sendtoparameter.png[SendToItem Edit SendTo Parameter Setting Dialog]
 
 override SendTo parameter::
  Use Burp HTTP client for sending SendTo.
@@ -620,6 +621,35 @@ UTF-8
 
 At the moment, there is no (public) web application that can accept this format.
 sample/sendto.php contains a sample PHP application that only receives and displays this format. Please refer here if you want to implement.
+
+===== SendTo Args Configuration Dialog
+
+This can be set if the server is not checked.
+Customize the command line arguments used to send SendTo.
+
+image:images/custom_sendto_server_sendtoargs.png[Edit SendToItem SendTo Args Setting Dialog]
+
+override send to args::
+  Set command line arguments for SendTo send.
+
+Args::
+  Specifies command line arguments.
+  Separate them with a new line to make them a single parameter.
+  The [Multi Edit] button can be used to change them all at once.
+  The argument can be a format parameter.
+
+%H:: will be replaced with the host
+%P:: will be replaced with the port
+%T:: will be replaced with the protocol
+%U:: will be replaced with the url
+%A:: will be replaced with the url path
+%Q:: will be replaced with the url query
+%C:: will be replaced with the cookies
+%M:: will be replaced with the HTTP-method
+%S:: will be replaced with the selected text
+%F:: will be replaced with the path to a temporary file containing the selected text
+%R:: will be replaced with the path to a temporary file containing the content of the focused request/response
+%N:: will be replaced with the notes
 
 ==== Extend tab
 image:images/custom_sendto_extend.png[SendToItem Edit Extend Dialog]
