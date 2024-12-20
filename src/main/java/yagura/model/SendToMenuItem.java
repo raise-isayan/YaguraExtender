@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public abstract class SendToMenuItem
         File file = null;
         try {
             HttpRequestWapper wrapRequest = new HttpRequestWapper(messageInfo.request());
-            file = File.createTempFile(HttpUtil.getBaseName(new URL(wrapRequest.url())) + "." + index + ".", ".tmp");
+            file = File.createTempFile(HttpUtil.getBaseName(URI.create(wrapRequest.url()).toURL()) + "." + index + ".", ".tmp");
             file.deleteOnExit();
             try (BufferedOutputStream fostm = new BufferedOutputStream(new FileOutputStream(file, true))) {
                 if ((this.isRequestHeader() || this.isRequestBody()) && wrapRequest.hasHttpRequest()) {

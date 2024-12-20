@@ -47,6 +47,7 @@ import javax.swing.event.MenuListener;
 import yagura.model.ITranslateAction;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty.SendToMenuPlace;
+import yagura.view.ResultFilterDlg;
 
 /**
  *
@@ -72,9 +73,6 @@ public class MenuHander {
     private final static String USE_BURP_CHARSETS = "Use Burp Charsets";
 
     private String yaguraCharset = StandardCharsets.UTF_8.name();
-
-    private final javax.swing.ImageIcon image_http = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/page_white_world.png"));
-    private final javax.swing.ImageIcon image_websocket = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/connect.png"));
 
     public MenuHander(MontoyaApi api) {
         this.api = api;
@@ -957,11 +955,15 @@ public class MenuHander {
     private void updateResultFilterUI(JMenu yaguraResultFilterMenu) {
         yaguraResultFilterMenu.removeAll();
         final Map<String, FilterProperty> filterMap = extenderImpl.getProperty().getResultFilterProperty().getFilterMap();
-        for (String name : filterMap.keySet()) {
-            JMenuItem chkResultFilterItem = new JMenuItem();
-            chkResultFilterItem.setText(name);
-            chkResultFilterItem.addActionListener(this.resultFilterModeAction);
-            yaguraResultFilterMenu.add(chkResultFilterItem);
+        for (Map.Entry<String, FilterProperty> entry : filterMap.entrySet()) {
+            String name = entry.getKey();
+            FilterProperty filter = entry.getValue();            
+            JMenuItem mnuResultFilterItem = new JMenuItem();
+            mnuResultFilterItem.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));
+            
+            mnuResultFilterItem.setText(name);
+            mnuResultFilterItem.addActionListener(this.resultFilterModeAction);
+            yaguraResultFilterMenu.add(mnuResultFilterItem);
             // this.menuBurpResultFilterGroup.add(chkResultFilterItem);
         }
     }

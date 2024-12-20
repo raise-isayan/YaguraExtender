@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -133,7 +134,7 @@ public class SendToExtend extends SendToMenuItem {
         try {
             JFileChooser filechooser = new JFileChooser();
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            File chooseFile = new File(this.currentDirectory.getParentFile(), HttpUtil.getBaseName(new URL(messageItem.request().url())));
+            File chooseFile = new File(this.currentDirectory.getParentFile(), HttpUtil.getBaseName(URI.create(messageItem.request().url()).toURL()));
             filechooser.setSelectedFile(chooseFile);
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {
@@ -170,7 +171,7 @@ public class SendToExtend extends SendToMenuItem {
         try {
             JFileChooser filechooser = new JFileChooser();
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            File chooseFile = new File(this.currentDirectory.getParentFile(), HttpUtil.getBaseName(new URL(messageItem.request().url())));
+            File chooseFile = new File(this.currentDirectory.getParentFile(), HttpUtil.getBaseName(URI.create(messageItem.request().url()).toURL()));
             filechooser.setSelectedFile(chooseFile);
             int selected = filechooser.showSaveDialog(null);
             if (selected == JFileChooser.APPROVE_OPTION) {

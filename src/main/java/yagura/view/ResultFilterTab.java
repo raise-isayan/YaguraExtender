@@ -28,6 +28,7 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(ResultFilterTab.class.getName());
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
+    
     /**
      * Creates new form ResultFilter
      */
@@ -146,9 +147,6 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private final javax.swing.ImageIcon image_http = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/page_white_world.png"));
-    private final javax.swing.ImageIcon image_websocket = new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/connect.png"));
-
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         // ResultFilterTab Tab
@@ -162,11 +160,11 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
                 FilterProperty filter = filterMap.get(name);
                 if (filter != null) {
                     if (filter.getFilterCategory() == FilterProperty.FilterCategory.HTTP) {
-                        l.setIcon(image_http);
+                        l.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));
                         l.setIconTextGap(2);
                     }
                     else {
-                        l.setIcon(image_websocket);
+                        l.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));
                         l.setIconTextGap(2);
                     }
                 }
@@ -270,6 +268,7 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
         return name;
     }
 
+    
     @SuppressWarnings("unchecked")
     private void showResultFilterDlg(boolean editMode) {
         this.filterDlg.setLocationRelativeTo(this);

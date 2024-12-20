@@ -1,7 +1,11 @@
 package yagura.view;
 
+import extension.helpers.ConvertUtil;
+import extension.helpers.StringUtil;
 import extension.view.base.CustomDialog;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -178,4 +182,20 @@ public class HotKeyDlg extends CustomDialog {
     private javax.swing.JPanel pnlMain;
     private javax.swing.JTextField txtKey;
     // End of variables declaration//GEN-END:variables
+
+    public KeyStroke getHotKey() {
+        int modifiers = 0;
+        if (this.chkControl.isSelected()) {
+            modifiers |= KeyEvent.CTRL_DOWN_MASK;
+        }
+        if (this.chkShift.isSelected()) {
+            modifiers |= KeyEvent.SHIFT_DOWN_MASK;
+        }
+        if (this.chkAlt.isSelected()) {
+            modifiers |= KeyEvent.ALT_GRAPH_DOWN_MASK;
+        }        
+        return KeyStroke.getKeyStroke(ConvertUtil.parseIntDefault(this.txtKey.getText(), -1), modifiers);
+    }    
+
+
 }

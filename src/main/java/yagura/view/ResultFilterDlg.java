@@ -14,6 +14,10 @@ public class ResultFilterDlg extends CustomDialog {
     private final static Logger logger = Logger.getLogger(ResultFilterDlg.class.getName());
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
+    private final static javax.swing.ImageIcon image_http = new javax.swing.ImageIcon(ResultFilterDlg.class.getResource("/yagura/resources/page_white_world.png"));
+    private final static javax.swing.ImageIcon image_websocket = new javax.swing.ImageIcon(ResultFilterDlg.class.getResource("/yagura/resources/connect.png"));
+    private final static javax.swing.ImageIcon image_site_map = new javax.swing.ImageIcon(ResultFilterDlg.class.getResource("/yagura/resources/site_vmap.png"));
+    
     /**
      * Creates new form ResultFilterDlg
      */
@@ -166,6 +170,18 @@ public class ResultFilterDlg extends CustomDialog {
         });
     }
 
+    public static javax.swing.ImageIcon getCategoryIcon(FilterProperty.FilterCategory category) {
+        switch (category)  {
+            case HTTP:
+                return image_http;
+            case WEBSOCKET:
+                return image_websocket;
+            case SITE_MAP:
+                return image_site_map;
+        }
+        return null;
+    }
+    
     private void tabbetHttpFilterStateChanged(javax.swing.event.ChangeEvent evt) {
         this.btnConvertBambda.setVisible(this.pnlFilterHttp.isFilterModeSettings());
     }
