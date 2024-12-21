@@ -1,9 +1,7 @@
 package yagura.view;
 
 import extension.burp.FilterAnnotationProperty;
-import extension.burp.FilterProperty;
 import extension.burp.MessageHighlightColor;
-import extension.helpers.ConvertUtil;
 import extension.helpers.SwingUtil;
 import extension.view.layout.VerticalFlowLayout;
 import java.util.EnumSet;
@@ -47,9 +45,6 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
         chkMagenta = new javax.swing.JCheckBox();
         chkGray = new javax.swing.JCheckBox();
         pnlBottom = new javax.swing.JPanel();
-        pnlListenerPort = new javax.swing.JPanel();
-        lblListenerPort = new javax.swing.JLabel();
-        txtLiistenerPort = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -109,16 +104,6 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
         pnlAnnotations.add(pnlHighlightColor, java.awt.BorderLayout.CENTER);
 
         pnlBottom.setLayout(new java.awt.BorderLayout());
-
-        pnlListenerPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by listener "));
-        pnlListenerPort.setLayout(new java.awt.BorderLayout());
-
-        lblListenerPort.setText("Port");
-        pnlListenerPort.add(lblListenerPort, java.awt.BorderLayout.WEST);
-        pnlListenerPort.add(txtLiistenerPort, java.awt.BorderLayout.CENTER);
-
-        pnlBottom.add(pnlListenerPort, java.awt.BorderLayout.SOUTH);
-
         pnlAnnotations.add(pnlBottom, java.awt.BorderLayout.SOUTH);
 
         add(pnlAnnotations, java.awt.BorderLayout.CENTER);
@@ -148,17 +133,13 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkShowOnlyNotes;
     private javax.swing.JCheckBox chkWhite;
     private javax.swing.JCheckBox chkYellow;
-    private javax.swing.JLabel lblListenerPort;
     private javax.swing.JPanel pnlAnnotation;
     private javax.swing.JPanel pnlAnnotations;
     private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlHighlightColor;
-    private javax.swing.JPanel pnlListenerPort;
-    private javax.swing.JTextField txtLiistenerPort;
     // End of variables declaration//GEN-END:variables
 
     public void setAnnotationProperty(FilterAnnotationProperty filterProp) {
-        this.txtLiistenerPort.setText(filterProp.getListenerPort() > -1 ? Integer.toString(filterProp.getListenerPort()) : "");
         this.chkShowOnlyNotes.setSelected(filterProp.getShowOnlyComment());
         this.chkShowOnlyHighlight.setSelected(filterProp.getShowOnlyHighlightColors());
         this.setHighlightColors(filterProp.getHighlightColors());
@@ -166,7 +147,6 @@ public class FilterAnnotationPanel extends javax.swing.JPanel {
     }
 
     public FilterAnnotationProperty getAnnotationProperty(FilterAnnotationProperty annotation) {
-        annotation.setListenerPort(ConvertUtil.parseIntDefault(this.txtLiistenerPort.getText(), -1));
         annotation.setShowOnlyComment(this.chkShowOnlyNotes.isSelected());
         annotation.setShowOnlyHighlightColors(this.chkShowOnlyHighlight.isSelected());
         annotation.setHighlightColors(this.getHighlightColors());

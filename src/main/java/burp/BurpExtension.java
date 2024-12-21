@@ -51,6 +51,7 @@ import extension.burp.BurpExtensionImpl;
 import static extension.burp.BurpExtensionImpl.api;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
+import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
@@ -183,17 +184,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
     }
 
-    /**
-     * 古い Montoya API ではメソッド名をあやまっており ここにくる場合は必ず古いバージョン
-     *
-     * @param api
-     *
-     */
-    public void initialise(MontoyaApi api) {
-        BurpVersion burp_version = BurpUtil.suiteVersion();
-        BurpVersion.showUnsupporttDlg(burp_version, Version.getInstance().getProjectName());
-    }
-
     @Override
     public void initialize(MontoyaApi api) {
         super.initialize(api);
@@ -209,7 +199,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("minor:" + burpVersion.getMinor());
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
-
+        
         this.registerTemporaryProject();
 
         ThemeUI.addPropertyChangeListener(listener);

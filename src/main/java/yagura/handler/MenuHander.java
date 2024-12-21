@@ -953,16 +953,20 @@ public class MenuHander {
      * Result Filter
      */
     private void updateResultFilterUI(JMenu yaguraResultFilterMenu) {
+        boolean supportBanmbaSiteMap = BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_BAMBDA_SITEMAP);
+
         yaguraResultFilterMenu.removeAll();
         final Map<String, FilterProperty> filterMap = extenderImpl.getProperty().getResultFilterProperty().getFilterMap();
         for (Map.Entry<String, FilterProperty> entry : filterMap.entrySet()) {
             String name = entry.getKey();
             FilterProperty filter = entry.getValue();            
             JMenuItem mnuResultFilterItem = new JMenuItem();
-            mnuResultFilterItem.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));
-            
-            mnuResultFilterItem.setText(name);
+            mnuResultFilterItem.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));            
+            mnuResultFilterItem.setText(name);            
             mnuResultFilterItem.addActionListener(this.resultFilterModeAction);
+            if (filter.getFilterCategory() == FilterProperty.FilterCategory.SITE_MAP) {
+                mnuResultFilterItem.setEnabled(supportBanmbaSiteMap);
+            }            
             yaguraResultFilterMenu.add(mnuResultFilterItem);
             // this.menuBurpResultFilterGroup.add(chkResultFilterItem);
         }

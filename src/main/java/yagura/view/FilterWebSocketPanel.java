@@ -4,6 +4,7 @@ import burp.BurpExtension;
 import extension.burp.BurpConfig;
 import extension.burp.FilterProperty;
 import extension.burp.FilterWebSocketProperty;
+import extension.helpers.ConvertUtil;
 import extension.view.base.JavaSyntaxDocument;
 import extension.view.layout.VerticalFlowLayout;
 import javax.swing.text.Document;
@@ -35,7 +36,10 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
 
         tabbetFilter = new javax.swing.JTabbedPane();
         pnlSettings = new javax.swing.JPanel();
-        pnlColum = new javax.swing.JPanel();
+        pnlEast = new javax.swing.JPanel();
+        pnlListenerPort = new javax.swing.JPanel();
+        lblListenerPort = new javax.swing.JLabel();
+        txtLiistenerPort = new javax.swing.JTextField();
         pnlCenter = new javax.swing.JPanel();
         pnlFilterByRequest = new javax.swing.JPanel();
         chkShowOnlyinscopeItem = new javax.swing.JCheckBox();
@@ -52,12 +56,25 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
 
         pnlSettings.setLayout(new java.awt.BorderLayout());
 
-        pnlColum.setLayout(new java.awt.BorderLayout());
-        pnlSettings.add(pnlColum, java.awt.BorderLayout.EAST);
+        pnlEast.setLayout(new java.awt.BorderLayout());
+
+        pnlListenerPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by listener "));
+        pnlListenerPort.setLayout(new java.awt.BorderLayout());
+
+        lblListenerPort.setText("Port");
+        pnlListenerPort.add(lblListenerPort, java.awt.BorderLayout.WEST);
+        pnlListenerPort.add(txtLiistenerPort, java.awt.BorderLayout.CENTER);
+
+        pnlEast.add(pnlListenerPort, java.awt.BorderLayout.SOUTH);
+
+        pnlSettings.add(pnlEast, java.awt.BorderLayout.EAST);
 
         pnlCenter.setLayout(new java.awt.BorderLayout());
 
         pnlFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
+        pnlFilterByRequest.setMaximumSize(new java.awt.Dimension(172, 100));
+        pnlFilterByRequest.setMinimumSize(new java.awt.Dimension(172, 100));
+        pnlFilterByRequest.setPreferredSize(new java.awt.Dimension(172, 100));
         pnlFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlFilterByRequest, javax.swing.BoxLayout.Y_AXIS));
 
         chkShowOnlyinscopeItem.setText("Show only in-scope items");
@@ -96,7 +113,7 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
                 .addComponent(chkMsgRegExp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkMsgIgnoreCase)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         pnlWebsocketFilterSearchItemLayout.setVerticalGroup(
             pnlWebsocketFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,13 +143,16 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkMsgRegExp;
     private javax.swing.JCheckBox chkShowOnlyEditedMessage;
     private javax.swing.JCheckBox chkShowOnlyinscopeItem;
+    private javax.swing.JLabel lblListenerPort;
     private javax.swing.JLabel lblMessage;
     private javax.swing.JPanel pnlCenter;
-    private javax.swing.JPanel pnlColum;
+    private javax.swing.JPanel pnlEast;
     private javax.swing.JPanel pnlFilterByRequest;
+    private javax.swing.JPanel pnlListenerPort;
     private javax.swing.JPanel pnlSettings;
     private javax.swing.JPanel pnlWebsocketFilterSearchItem;
     private javax.swing.JTabbedPane tabbetFilter;
+    private javax.swing.JTextField txtLiistenerPort;
     private javax.swing.JTextField txtMessage;
     // End of variables declaration//GEN-END:variables
 
@@ -161,7 +181,7 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         this.tabbetFilter.addTab("Bambda", this.pnlBambda);
 
         this.pnlFilterByRequest.setLayout(new VerticalFlowLayout());
-        this.pnlColum.add(this.pnlAnnotation, java.awt.BorderLayout.CENTER);
+        this.pnlEast.add(this.pnlAnnotation, java.awt.BorderLayout.CENTER);
 
     }
 
@@ -213,6 +233,8 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         this.chkMsgIgnoreCase.setSelected(filterProp.isMessageIgnoreCase());
         this.txtBambda.setText(filterProp.getBambdaQuery());
 
+        this.txtLiistenerPort.setText(filterProp.getListenerPort() > -1 ? Integer.toString(filterProp.getListenerPort()) : "");
+        
         this.pnlAnnotation.setAnnotationProperty(filterProp);
     }
 
@@ -229,6 +251,8 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         filterProp.setHideOutgoingMessage(this.chkHideOutgoingMessage.isSelected());
         filterProp.setShowOnlyEditedMessage(this.chkShowOnlyEditedMessage.isSelected());
 
+        filterProp.setListenerPort(ConvertUtil.parseIntDefault(this.txtLiistenerPort.getText(), -1));
+        
         this.pnlAnnotation.getAnnotationProperty(filterProp);
 
         filterProp.setMessage(this.txtMessage.getText());

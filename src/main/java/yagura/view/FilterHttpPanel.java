@@ -4,6 +4,7 @@ import burp.BurpExtension;
 import extension.burp.BurpConfig;
 import extension.burp.FilterHTTPProperty;
 import extension.burp.FilterProperty;
+import extension.helpers.ConvertUtil;
 import extension.view.base.JavaSyntaxDocument;
 import extension.view.layout.VerticalFlowLayout;
 import javax.swing.text.Document;
@@ -35,180 +36,50 @@ public class FilterHttpPanel extends javax.swing.JPanel {
 
         tabbetFilter = new javax.swing.JTabbedPane();
         pnlSettings = new javax.swing.JPanel();
-        pnlColum = new javax.swing.JPanel();
+        pnlEast = new javax.swing.JPanel();
+        pnlListenerPort = new javax.swing.JPanel();
+        lblListenerPort = new javax.swing.JLabel();
+        txtLiistenerPort = new javax.swing.JTextField();
         pnlCenter = new javax.swing.JPanel();
         pnlHttp = new javax.swing.JPanel();
-        pnlHttpExtension = new javax.swing.JPanel();
-        txtHide = new javax.swing.JTextField();
-        chkHide = new javax.swing.JCheckBox();
-        chkShowOnly = new javax.swing.JCheckBox();
-        txtShowOnly = new javax.swing.JTextField();
-        pnlHttpFilterSearchItem = new javax.swing.JPanel();
-        txtMethod = new javax.swing.JTextField();
-        chkReqRegExp = new javax.swing.JCheckBox();
-        chkReqIgnoreCase = new javax.swing.JCheckBox();
-        txtRequest = new javax.swing.JTextField();
-        lblMethod = new javax.swing.JLabel();
-        txtPath = new javax.swing.JTextField();
-        lblRequest = new javax.swing.JLabel();
-        lblPath = new javax.swing.JLabel();
-        txtResponse = new javax.swing.JTextField();
-        lblResponse = new javax.swing.JLabel();
-        chkResRegExp = new javax.swing.JCheckBox();
-        chkResIgnoreCase = new javax.swing.JCheckBox();
         pnlHeader = new javax.swing.JPanel();
         pnlHttpFilterByRequest = new javax.swing.JPanel();
         chkShowOnlyinscopeItem = new javax.swing.JCheckBox();
         chkHideItemsWithoutResponses = new javax.swing.JCheckBox();
         chkShowOnlyParameterizedRequests = new javax.swing.JCheckBox();
         chkShowOnlyEditedMessage = new javax.swing.JCheckBox();
-        pnlHttpStatus = new javax.swing.JPanel();
-        chkStat2xx = new javax.swing.JCheckBox();
-        chkStat3xx = new javax.swing.JCheckBox();
-        chkStat4xx = new javax.swing.JCheckBox();
-        chkStat5xx = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.BorderLayout());
 
         pnlSettings.setLayout(new java.awt.BorderLayout());
 
-        pnlColum.setLayout(new java.awt.BorderLayout());
-        pnlSettings.add(pnlColum, java.awt.BorderLayout.EAST);
+        pnlEast.setLayout(new java.awt.BorderLayout());
+
+        pnlListenerPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by listener "));
+        pnlListenerPort.setLayout(new java.awt.BorderLayout());
+
+        lblListenerPort.setText("Port");
+        pnlListenerPort.add(lblListenerPort, java.awt.BorderLayout.WEST);
+        pnlListenerPort.add(txtLiistenerPort, java.awt.BorderLayout.CENTER);
+
+        pnlEast.add(pnlListenerPort, java.awt.BorderLayout.SOUTH);
+
+        pnlSettings.add(pnlEast, java.awt.BorderLayout.EAST);
 
         pnlCenter.setLayout(new java.awt.BorderLayout());
 
         pnlHttp.setMinimumSize(new java.awt.Dimension(217, 300));
         pnlHttp.setName(""); // NOI18N
         pnlHttp.setPreferredSize(new java.awt.Dimension(500, 300));
-        pnlHttp.setLayout(new javax.swing.BoxLayout(pnlHttp, javax.swing.BoxLayout.PAGE_AXIS));
-
-        pnlHttpExtension.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("Filter by extension")));
-
-        chkHide.setText("hide:");
-        chkHide.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chkHideStateChanged(evt);
-            }
-        });
-
-        chkShowOnly.setText("show only:");
-
-        javax.swing.GroupLayout pnlHttpExtensionLayout = new javax.swing.GroupLayout(pnlHttpExtension);
-        pnlHttpExtension.setLayout(pnlHttpExtensionLayout);
-        pnlHttpExtensionLayout.setHorizontalGroup(
-            pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHttpExtensionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(chkShowOnly, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(chkHide, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtShowOnly)
-                    .addComponent(txtHide, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(262, Short.MAX_VALUE))
-        );
-        pnlHttpExtensionLayout.setVerticalGroup(
-            pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHttpExtensionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkShowOnly)
-                    .addComponent(txtShowOnly))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlHttpExtensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtHide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkHide))
-                .addContainerGap())
-        );
-
-        pnlHttp.add(pnlHttpExtension);
-
-        pnlHttpFilterSearchItem.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by Search Item"));
-        pnlHttpFilterSearchItem.setMinimumSize(new java.awt.Dimension(663, 400));
-
-        chkReqRegExp.setSelected(true);
-        chkReqRegExp.setText("RegExp");
-
-        chkReqIgnoreCase.setText("IgnoreCase");
-
-        lblMethod.setText("Method:");
-
-        lblRequest.setText("Request:");
-
-        lblPath.setText("Path:");
-
-        lblResponse.setText("Response:");
-
-        chkResRegExp.setSelected(true);
-        chkResRegExp.setText("RegExp");
-
-        chkResIgnoreCase.setText("IgnoreCase");
-
-        javax.swing.GroupLayout pnlHttpFilterSearchItemLayout = new javax.swing.GroupLayout(pnlHttpFilterSearchItem);
-        pnlHttpFilterSearchItem.setLayout(pnlHttpFilterSearchItemLayout);
-        pnlHttpFilterSearchItemLayout.setHorizontalGroup(
-            pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlHttpFilterSearchItemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblMethod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblResponse, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(lblRequest, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlHttpFilterSearchItemLayout.createSequentialGroup()
-                        .addComponent(txtResponse, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkResRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkResIgnoreCase))
-                    .addGroup(pnlHttpFilterSearchItemLayout.createSequentialGroup()
-                        .addComponent(txtRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkReqRegExp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkReqIgnoreCase))
-                    .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtMethod, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(txtPath, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)))
-                .addContainerGap(99, Short.MAX_VALUE))
-        );
-        pnlHttpFilterSearchItemLayout.setVerticalGroup(
-            pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHttpFilterSearchItemLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtMethod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblMethod))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPath)
-                    .addComponent(txtPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRequest)
-                    .addComponent(txtRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkReqRegExp)
-                    .addComponent(chkReqIgnoreCase))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkResIgnoreCase)
-                    .addComponent(chkResRegExp)
-                    .addGroup(pnlHttpFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtResponse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblResponse)))
-                .addContainerGap())
-        );
-
-        pnlHttp.add(pnlHttpFilterSearchItem);
-
+        pnlHttp.setLayout(new java.awt.BorderLayout());
         pnlCenter.add(pnlHttp, java.awt.BorderLayout.CENTER);
 
         pnlHeader.setLayout(new java.awt.BorderLayout());
 
         pnlHttpFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
+        pnlHttpFilterByRequest.setMaximumSize(new java.awt.Dimension(212, 100));
+        pnlHttpFilterByRequest.setMinimumSize(new java.awt.Dimension(212, 100));
+        pnlHttpFilterByRequest.setPreferredSize(new java.awt.Dimension(212, 100));
         pnlHttpFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlHttpFilterByRequest, javax.swing.BoxLayout.Y_AXIS));
 
         chkShowOnlyinscopeItem.setText("Show only in-scope items");
@@ -225,27 +96,6 @@ public class FilterHttpPanel extends javax.swing.JPanel {
 
         pnlHeader.add(pnlHttpFilterByRequest, java.awt.BorderLayout.CENTER);
 
-        pnlHttpStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Status Filter"));
-        pnlHttpStatus.setMaximumSize(new java.awt.Dimension(133, 110));
-        pnlHttpStatus.setMinimumSize(new java.awt.Dimension(133, 110));
-        pnlHttpStatus.setPreferredSize(new java.awt.Dimension(200, 130));
-        pnlHttpStatus.setRequestFocusEnabled(false);
-        pnlHttpStatus.setLayout(new javax.swing.BoxLayout(pnlHttpStatus, javax.swing.BoxLayout.Y_AXIS));
-
-        chkStat2xx.setText("2xx [success]");
-        pnlHttpStatus.add(chkStat2xx);
-
-        chkStat3xx.setText("3xx [redirection]");
-        pnlHttpStatus.add(chkStat3xx);
-
-        chkStat4xx.setText("4xx [request error]");
-        pnlHttpStatus.add(chkStat4xx);
-
-        chkStat5xx.setText("5xx [server error]");
-        pnlHttpStatus.add(chkStat5xx);
-
-        pnlHeader.add(pnlHttpStatus, java.awt.BorderLayout.EAST);
-
         pnlCenter.add(pnlHeader, java.awt.BorderLayout.NORTH);
 
         pnlSettings.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -255,46 +105,22 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         add(tabbetFilter, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void chkHideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHideStateChanged
-        this.chkShowOnly.setEnabled(!this.chkHide.isSelected());
-    }//GEN-LAST:event_chkHideStateChanged
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox chkHide;
     private javax.swing.JCheckBox chkHideItemsWithoutResponses;
-    private javax.swing.JCheckBox chkReqIgnoreCase;
-    private javax.swing.JCheckBox chkReqRegExp;
-    private javax.swing.JCheckBox chkResIgnoreCase;
-    private javax.swing.JCheckBox chkResRegExp;
-    private javax.swing.JCheckBox chkShowOnly;
     private javax.swing.JCheckBox chkShowOnlyEditedMessage;
     private javax.swing.JCheckBox chkShowOnlyParameterizedRequests;
     private javax.swing.JCheckBox chkShowOnlyinscopeItem;
-    private javax.swing.JCheckBox chkStat2xx;
-    private javax.swing.JCheckBox chkStat3xx;
-    private javax.swing.JCheckBox chkStat4xx;
-    private javax.swing.JCheckBox chkStat5xx;
-    private javax.swing.JLabel lblMethod;
-    private javax.swing.JLabel lblPath;
-    private javax.swing.JLabel lblRequest;
-    private javax.swing.JLabel lblResponse;
+    private javax.swing.JLabel lblListenerPort;
     private javax.swing.JPanel pnlCenter;
-    private javax.swing.JPanel pnlColum;
+    private javax.swing.JPanel pnlEast;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlHttp;
-    private javax.swing.JPanel pnlHttpExtension;
     private javax.swing.JPanel pnlHttpFilterByRequest;
-    private javax.swing.JPanel pnlHttpFilterSearchItem;
-    private javax.swing.JPanel pnlHttpStatus;
+    private javax.swing.JPanel pnlListenerPort;
     private javax.swing.JPanel pnlSettings;
     private javax.swing.JTabbedPane tabbetFilter;
-    private javax.swing.JTextField txtHide;
-    private javax.swing.JTextField txtMethod;
-    private javax.swing.JTextField txtPath;
-    private javax.swing.JTextField txtRequest;
-    private javax.swing.JTextField txtResponse;
-    private javax.swing.JTextField txtShowOnly;
+    private javax.swing.JTextField txtLiistenerPort;
     // End of variables declaration//GEN-END:variables
 
     private final EditorKit javaStyleEditorKit = new StyledEditorKit() {
@@ -305,6 +131,7 @@ public class FilterHttpPanel extends javax.swing.JPanel {
     };
 
     private final FilterAnnotationPanel pnlAnnotation = new FilterAnnotationPanel();
+    private final FilterRequestResponsePanel pnlRequestResponse = new FilterRequestResponsePanel();
 
     private final javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
     private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
@@ -322,8 +149,8 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         this.tabbetFilter.addTab("Bambda", this.pnlBambda);
 
         this.pnlHttpFilterByRequest.setLayout(new VerticalFlowLayout());
-        this.pnlHttpStatus.setLayout(new VerticalFlowLayout());
-        this.pnlColum.add(this.pnlAnnotation, java.awt.BorderLayout.CENTER);
+        this.pnlHttp.add(this.pnlRequestResponse, java.awt.BorderLayout.CENTER);
+        this.pnlEast.add(this.pnlAnnotation, java.awt.BorderLayout.CENTER);
 
     }
 
@@ -369,24 +196,8 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         this.chkShowOnlyParameterizedRequests.setSelected(filterProp.isShowOnlyParameterizedRequests());
         this.chkShowOnlyEditedMessage.setSelected(filterProp.isShowOnlyEditedMessage());
 
-        this.chkShowOnly.setSelected(filterProp.getShowOnly());
-        this.txtShowOnly.setText(filterProp.getShowOnlyExtension());
-        this.chkHide.setSelected(filterProp.getHide());
-        this.txtHide.setText(filterProp.getHideExtension());
-
-        this.chkStat2xx.getModel().setSelected(filterProp.getStat2xx());
-        this.chkStat3xx.getModel().setSelected(filterProp.getStat3xx());
-        this.chkStat4xx.getModel().setSelected(filterProp.getStat4xx());
-        this.chkStat5xx.getModel().setSelected(filterProp.getStat5xx());
-
-        this.txtMethod.setText(filterProp.getMethod());
-        this.txtPath.setText(filterProp.getPath());
-        this.txtRequest.setText(filterProp.getRequest());
-        this.chkReqRegExp.setSelected(filterProp.isRequestRegex());
-        this.chkReqIgnoreCase.setSelected(filterProp.isRequestIgnoreCase());
-        this.txtResponse.setText(filterProp.getResponse());
-        this.chkResRegExp.setSelected(filterProp.isResponseRegex());
-        this.chkResIgnoreCase.setSelected(filterProp.isResponseIgnoreCase());
+        this.txtLiistenerPort.setText(filterProp.getListenerPort() > -1 ? Integer.toString(filterProp.getListenerPort()) : "");
+        
         this.txtBambda.setText(filterProp.getBambdaQuery());
 
         this.pnlAnnotation.setAnnotationProperty(filterProp);
@@ -405,26 +216,10 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         filterProp.setShowOnlyParameterizedRequests(this.chkShowOnlyParameterizedRequests.isSelected());
         filterProp.setShowOnlyEditedMessage(this.chkShowOnlyEditedMessage.isSelected());
 
-        filterProp.setShowOnly(this.chkShowOnly.isSelected());
-        filterProp.setShowOnlyExtension(this.txtShowOnly.getText());
-        filterProp.setHide(this.chkHide.isSelected());
-        filterProp.setHideExtension(this.txtHide.getText());
-
-        filterProp.setStat2xx(this.chkStat2xx.getModel().isSelected());
-        filterProp.setStat3xx(this.chkStat3xx.getModel().isSelected());
-        filterProp.setStat4xx(this.chkStat4xx.getModel().isSelected());
-        filterProp.setStat5xx(this.chkStat5xx.getModel().isSelected());
+        filterProp.setListenerPort(ConvertUtil.parseIntDefault(this.txtLiistenerPort.getText(), -1));
 
         this.pnlAnnotation.getAnnotationProperty(filterProp);
 
-        filterProp.setMethod(this.txtMethod.getText());
-        filterProp.setPath(this.txtPath.getText());
-        filterProp.setRequest(this.txtRequest.getText());
-        filterProp.setRequestRegex(this.chkReqRegExp.isSelected());
-        filterProp.setRequestIgnoreCase(this.chkReqIgnoreCase.isSelected());
-        filterProp.setResponse(this.txtResponse.getText());
-        filterProp.setResponseRegex(this.chkResRegExp.isSelected());
-        filterProp.setResponseIgnoreCase(this.chkResIgnoreCase.isSelected());
         filterProp.setBambda(this.txtBambda.getText());
         return filterProp;
     }

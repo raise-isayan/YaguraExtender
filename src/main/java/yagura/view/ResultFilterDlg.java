@@ -150,10 +150,12 @@ public class ResultFilterDlg extends CustomDialog {
 
     private final FilterHttpPanel pnlFilterHttp = new FilterHttpPanel();
     private final FilterWebSocketPanel pnlFilterWebSocket = new FilterWebSocketPanel();
+    private final FilterSiteMapPanel pnlFilterSiteMap = new FilterSiteMapPanel();
 
     private void customizeComponents() {
         this.tabbeProtocol.addTab("HTTP", this.pnlFilterHttp);
         this.tabbeProtocol.addTab("WebSocket", this.pnlFilterWebSocket);
+        this.tabbeProtocol.addTab("SiteMap", this.pnlFilterSiteMap);
 
         this.pnlFilterHttp.addTableChangeListener(new javax.swing.event.ChangeListener() {
             @Override
@@ -168,18 +170,29 @@ public class ResultFilterDlg extends CustomDialog {
                 tabbetWebSocetFilterStateChanged(evt);
             }
         });
+
+        this.pnlFilterSiteMap.addTableChangeListener(new javax.swing.event.ChangeListener() {
+            @Override
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabbetSiteMapFilterStateChanged(evt);
+            }
+        });
     }
 
     public static javax.swing.ImageIcon getCategoryIcon(FilterProperty.FilterCategory category) {
+        javax.swing.ImageIcon icon = null;
         switch (category)  {
             case HTTP:
-                return image_http;
+                icon = image_http;
+                break;
             case WEBSOCKET:
-                return image_websocket;
+                icon = image_websocket;
+                break;
             case SITE_MAP:
-                return image_site_map;
+                icon = image_site_map;
+                break;
         }
-        return null;
+        return icon;
     }
     
     private void tabbetHttpFilterStateChanged(javax.swing.event.ChangeEvent evt) {
@@ -190,6 +203,10 @@ public class ResultFilterDlg extends CustomDialog {
         this.btnConvertBambda.setVisible(this.pnlFilterWebSocket.isFilterModeSettings());
     }
 
+    private void tabbetSiteMapFilterStateChanged(javax.swing.event.ChangeEvent evt) {
+        this.btnConvertBambda.setVisible(this.pnlFilterSiteMap.isFilterModeSettings());
+    }
+    
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);
@@ -206,18 +223,30 @@ public class ResultFilterDlg extends CustomDialog {
 
     private void btnConvertBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertBambdaActionPerformed
         FilterProperty filter = this.getProperty();
-        if (this.isHttpProtocalType()) {
-            this.pnlFilterHttp.ConverToBambda(filter);
-        } else {
-            this.pnlFilterWebSocket.ConverToBambda(filter);
+        switch (this.getFilterCategory()) {
+            case HTTP:
+                this.pnlFilterHttp.ConverToBambda(filter);
+                break;
+            case WEBSOCKET:
+                this.pnlFilterWebSocket.ConverToBambda(filter);
+                break;
+            case SITE_MAP:                
+                this.pnlFilterSiteMap.ConverToBambda(filter);
+                break;
         }
     }//GEN-LAST:event_btnConvertBambdaActionPerformed
 
     private void btnImportBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportBambdaActionPerformed
-        if (this.isHttpProtocalType()) {
-            this.pnlFilterHttp.ImportBambda(getFilterCategory());
-        } else {
-            this.pnlFilterWebSocket.ImportBambda(getFilterCategory());
+        switch (this.getFilterCategory()) {
+            case HTTP:
+                this.pnlFilterHttp.ImportBambda(getFilterCategory());
+                break;
+            case WEBSOCKET:
+                this.pnlFilterWebSocket.ImportBambda(getFilterCategory());
+                break;
+            case SITE_MAP:                
+                this.pnlFilterSiteMap.ImportBambda(getFilterCategory());
+                break;
         }
     }//GEN-LAST:event_btnImportBambdaActionPerformed
 
@@ -287,19 +316,23 @@ public class ResultFilterDlg extends CustomDialog {
             case WEBSOCKET:
                 this.pnlFilterWebSocket.setProperty(filterProp);
                 break;
+            case SITE_MAP:                
+                this.pnlFilterSiteMap.setProperty(filterProp);
+                break;
         }
     }
 
     private FilterProperty.FilterCategory getFilterCategory() {
-        if (isHttpProtocalType()) {
-            return FilterProperty.FilterCategory.HTTP;
-        } else {
-            return FilterProperty.FilterCategory.WEBSOCKET;
+        if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("HTTP")) {
+            return FilterProperty.FilterCategory.HTTP;        
         }
-    }
-
-    private boolean isHttpProtocalType() {
-        return this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("HTTP");
+        else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("WebSocket")) {
+            return FilterProperty.FilterCategory.WEBSOCKET;        
+        }
+        else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("SiteMap")) {
+            return FilterProperty.FilterCategory.SITE_MAP;        
+        }
+        return null;
     }
 
     private void setProtocalType(FilterProperty.FilterCategory filterCategory) {
@@ -310,11 +343,25 @@ public class ResultFilterDlg extends CustomDialog {
             case WEBSOCKET:
                 this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("WebSocket"));
                 break;
+            case SITE_MAP:                
+                this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("SiteMap"));
+                break;
         }
     }
 
     public FilterProperty getProperty() {
-        FilterProperty filterProp = isHttpProtocalType() ? this.pnlFilterHttp.getProperty() : this.pnlFilterWebSocket.getProperty();
+        FilterProperty filterProp = null;
+        switch (this.getFilterCategory()) {
+            case HTTP:
+                filterProp = this.pnlFilterHttp.getProperty();
+                break;
+            case WEBSOCKET:
+                filterProp = this.pnlFilterWebSocket.getProperty();
+                break;
+            case SITE_MAP:                
+                filterProp = this.pnlFilterSiteMap.getProperty();
+                break;
+        }
         return filterProp;
     }
 
@@ -327,10 +374,10 @@ public class ResultFilterDlg extends CustomDialog {
     }
 
     public void setBambaMode(boolean bamba) {
-        if (this.isHttpProtocalType()) {
-            this.pnlFilterHttp.setBambaMode(bamba);
-            this.pnlFilterWebSocket.setBambaMode(bamba);
-        }
+        this.pnlFilterHttp.setBambaMode(bamba);
+        this.pnlFilterWebSocket.setBambaMode(bamba);
+        this.pnlFilterSiteMap.setBambaMode(bamba);
+
         this.btnConvertBambda.setVisible(bamba);
         this.btnImportBambda.setVisible(bamba);
     }
@@ -338,9 +385,13 @@ public class ResultFilterDlg extends CustomDialog {
     public void setSearchMode(boolean mode) {
         if (mode) {
             this.tabbeProtocol.remove(this.pnlFilterWebSocket);
+            this.tabbeProtocol.remove(this.pnlFilterSiteMap);
         } else {
             if (this.tabbeProtocol.indexOfTab("WebSocket") > -1) {
                 this.tabbeProtocol.addTab("WebSocket", this.pnlFilterWebSocket);
+            }
+            if (this.tabbeProtocol.indexOfTab("SiteMap") > -1) {
+                this.tabbeProtocol.addTab("SiteMap", this.pnlFilterSiteMap);
             }
         }
         this.setBambaMode(!mode);
