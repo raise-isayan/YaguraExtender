@@ -170,7 +170,7 @@ public class BurpBrowser {
                 chromeExec = "chrome";
                 break;
             case MAC:
-                chromeExec = "Chromium.app";
+                chromeExec = "Chromium.app/Contents/MacOS/Chromium";
                 break;
         }
         Path dir = getBrowseDirectoryPath();

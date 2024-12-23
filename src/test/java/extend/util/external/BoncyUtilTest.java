@@ -99,7 +99,10 @@ public class BoncyUtilTest {
             System.out.println("subjectDN:");
             X509Certificate cert = BouncyUtil.createRootCA(caKeyPair, subjectDN, 2);
             System.out.println("createCA:" + cert.getSubjectX500Principal().getName());
-            BouncyUtil.storeCertificatePem(caKeyPair.getPrivate(), cert, new File("C:\\Temp\\foo.pem.cer"));
+            File pem = File.createTempFile("pem", ".cer");
+            pem.deleteOnExit();
+            System.out.println("pem:" + pem.getAbsolutePath());
+            BouncyUtil.storeCertificatePem(caKeyPair.getPrivate(), cert, pem);
         } catch (NoSuchAlgorithmException | CertificateException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IOException ex) {

@@ -13,6 +13,7 @@ import java.awt.Container;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -325,7 +326,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             try {
                 File file = filechooser.getSelectedFile();
                 this.userSetting = file.getParentFile();
-                String config = StringUtil.getStringUTF8(FileUtil.bytesFromFile(file.getAbsoluteFile()));
+                String config = FileUtil.stringFromFile(file.getAbsoluteFile(), StandardCharsets.UTF_8);
                 this.api.burpSuite().importUserOptionsFromJson(config);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "User Settings", JOptionPane.OK_OPTION);
@@ -366,7 +367,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             try {
                 File file = filechooser.getSelectedFile();
                 this.projectSetting = file.getParentFile();
-                String config = StringUtil.getStringUTF8(FileUtil.bytesFromFile(file.getAbsoluteFile()));
+                String config = FileUtil.stringFromFile(file.getAbsoluteFile(), StandardCharsets.UTF_8);
                 this.api.burpSuite().importProjectOptionsFromJson(config);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Project Settings", JOptionPane.OK_OPTION);
