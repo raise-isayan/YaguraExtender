@@ -43,14 +43,18 @@ public final class Version extends CustomVersion {
     private final static String VERSION_INFO_FMT
             = "Product Version: %s v%s" + StringUtil.NEW_LINE
             + "Log Dir: %s" + StringUtil.NEW_LINE
-            + "Config Dir: %s";
+            + "Config Dir: %s" + StringUtil.NEW_LINE
+            + "OS name: %s / arch: %s" + StringUtil.NEW_LINE;
 
     public String getVersionInfo() {
         return String.format(VERSION_INFO_FMT,
                 getProjectName(),
                 Version.getInstance().getVersion(),
                 Config.getUserDirPath(),
-                Config.getExtensionHomeDir().getAbsoluteFile());
+                Config.getExtensionHomeDir().getAbsoluteFile(),
+                System.getProperty("os.name"),
+                System.getProperty("os.arch")
+                );
     }
 
 }

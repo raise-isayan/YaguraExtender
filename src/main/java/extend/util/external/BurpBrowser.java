@@ -230,12 +230,8 @@ public class BurpBrowser {
             String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
             "chrome://newtab"
         );
-        BurpVersion.OSType os = BurpVersion.getOSType();
         List<String> chromeExecAndArg = new ArrayList<>();
         chromeExecAndArg.add(getBrowsePath().toString());
-        if (BurpVersion.OSType.MAC == os) {
-            chromeExecAndArg.add("--args");
-        }
         chromeExecAndArg.addAll(CHROME_ARGS);
         return chromeExecAndArg;
     }
