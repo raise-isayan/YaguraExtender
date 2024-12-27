@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -188,7 +189,7 @@ public class BurpBrowser {
         }
     }
 
-    public List<String> getBrowserExecAndArgs(String profile, int port) {
+    public List<String> getBrowserExecAndArgs(String profileKey, int port) {
         // chrome://version/ から情報取得
         final List<String> CHROME_ARGS = List.of(
             "--disable-ipc-flooding-protection",
@@ -218,13 +219,14 @@ public class BurpBrowser {
             "--no-service-autorun",
             "--media-cache-size=0",
             "--use-fake-device-for-media-stream",
-            "--dbus-stub --disable-background-networking",
+            "--dbus-stub",
+            "--disable-background-networking",
             "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
             String.format("--proxy-server=localhost:%d", port),
             "--proxy-bypass-list=<-loopback>",
             "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36",
             String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
-            String.format("--profile-directory=%s", profile),
+            String.format("--profile-directory=%s", profileKey),
             "--ignore-certificate-errors",
             "--disable-features=TrackingProtection3pcd,LensOverlay",
             String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
@@ -236,7 +238,7 @@ public class BurpBrowser {
         return chromeExecAndArg;
     }
 
-    public File[] getUserProfile() {
+    public File[] getBrowserProfileDirectory() {
         File file = getBrowseUserDataDirectory().toFile();
         File[] profiles = file.listFiles(new FileFilter() {
 
@@ -263,9 +265,9 @@ public class BurpBrowser {
         return profiles;
     }
 
-    public void openBrowser(String profile, int port) {
+    public void openBrowser(String profileKey, int port) {
         try {
-            List<String> chromeExeAndArg = getBrowserExecAndArgs(profile, port);
+            List<String> chromeExeAndArg = getBrowserExecAndArgs(profileKey, port);
             ProcessBuilder process = new ProcessBuilder(chromeExeAndArg);
             process.start();
         } catch (IOException ex) {
@@ -275,35 +277,81 @@ public class BurpBrowser {
 
     private Path getBrowserProfilePath() {
         Path path = getBrowseUserDataDirectory();
-        return path.resolve("Local State");
+        return path.resolve(BURP_CHROMIUM_STATE);
     }
 
-    public Map<String, BrowserProfile> getBrowserProfile() throws IOException {
-        Path path = getBrowserProfilePath();
-        return getBrowserProfile(path);
+    public Map<String, BrowserProfile> getBrowserProfile() {
+        try {
+            Path path = getBrowserProfilePath();
+            return getBrowserProfile(path);
+        }
+        catch (IOException ex) {
+            File[] profiles = this.getBrowserProfileDirectory();
+            Map<String, BrowserProfile> order_profile = new LinkedHashMap<>();
+            for (File p : profiles) {
+                BrowserProfile profile = new BrowserProfile();
+                profile.setName(p.getName());
+                order_profile.put(p.getName(), profile);
+            }
+            return order_profile;
+        }
     }
 
     /**
      *
+     * @param path
      * @return
+     * @throws java.io.IOException
      */
-    public static Map<String, BrowserProfile> getBrowserProfile(final Path path) throws IOException {
+    protected static Map<String, BrowserProfile> getBrowserProfile(final Path path) throws IOException {
         String config = FileUtil.stringFromFile(path.toFile(), StandardCharsets.UTF_8);
         JsonObject root_json = JsonUtil.parseJsonObject(config);
-        JsonObject profile_json = root_json.getAsJsonObject("profile").getAsJsonObject("info_cache");
-        JsonArray profile_order = root_json.getAsJsonObject("profile").getAsJsonArray("profiles_order");
-        Map<String, JsonElement> profile_map = profile_json.asMap();
-        Map<String, BrowserProfile> order_profile = new LinkedHashMap<>();
-        for (int i = 0; i < profile_order.size(); i++) {
-            JsonElement key = profile_order.get(i);
-            JsonElement profile = profile_map.get(key.getAsString());
-            BrowserProfile prowserProfile = JsonUtil.jsonFromJsonElement(profile, BrowserProfile.class, true);
-            order_profile.put(key.getAsString(), prowserProfile);
+        JsonObject profile_info = root_json.getAsJsonObject("profile").getAsJsonObject("info_cache");
+        JsonArray profiles_order = root_json.getAsJsonObject("profile").getAsJsonArray("profiles_order");
+        Map<String, JsonElement> profile_map = profile_info.asMap();
+        Map<String, BrowserProfile> browser_profile = new LinkedHashMap<>();
+        for (int i = 0; i < profiles_order.size(); i++) {
+            JsonElement profile_key_json = profiles_order.get(i);
+            String profile_key = profile_key_json.getAsString();
+            if (profile_key.startsWith("Profile ")) {
+                JsonElement profile_entry = profile_map.get(profile_key);
+                BrowserProfile prowserProfile = JsonUtil.jsonFromJsonElement(profile_entry, BrowserProfile.class, true);
+                prowserProfile.setProfileKey(profile_key);
+                browser_profile.put(profile_key, prowserProfile);
+            }
         }
-        return order_profile;
+        return browser_profile;
     }
 
-    static class BrowserProfile {
+    public static class BrowserProfile {
+
+        public final static BrowserProfile DEFAULT;
+        public final static BrowserProfile GUEST;
+
+        static {
+            DEFAULT = new BrowserProfile();
+            DEFAULT.profileKey = BROWSER_PROFILE_DEFAULT;
+            DEFAULT.name = BROWSER_PROFILE_DEFAULT;
+            GUEST = new BrowserProfile();
+            GUEST.profileKey = BROWSER_PROFILE_GUEST;
+            GUEST.name = BROWSER_PROFILE_GUEST;
+        }
+
+        private String profileKey;
+
+        /**
+         * @return the profile
+         */
+        public String getProfileKey() {
+            return profileKey;
+        }
+
+        /**
+         * @param profileKey the profile to set
+         */
+        public void setProfileKey(String profileKey) {
+            this.profileKey = profileKey;
+        }
 
         @Expose
         private String name;
@@ -320,6 +368,11 @@ public class BurpBrowser {
          */
         public void setName(String name) {
             this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
         }
 
     }

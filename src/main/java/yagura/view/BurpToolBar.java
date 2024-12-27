@@ -8,14 +8,14 @@ import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
@@ -242,7 +242,10 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
 
     };
 
+    private final DefaultComboBoxModel modelProfilel = new DefaultComboBoxModel();
+
     private void customizeComponents() {
+        this.cmbProfile.setModel(this.modelProfilel);
         this.renewProfile();
         JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());
         if (button != null) {
@@ -253,13 +256,13 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     }
 
     public void renewProfile() {
-        File[] profiles = this.browser.getUserProfile();
-        this.cmbProfile.removeAllItems();
-        this.cmbProfile.addItem(BurpBrowser.BROWSER_PROFILE_DEFAULT);
-        for (File p : profiles) {
-            this.cmbProfile.addItem(p.getName());
+        this.modelProfilel.removeAllElements();
+        this.modelProfilel.addElement(BurpBrowser.BrowserProfile.DEFAULT);
+        Map<String, BurpBrowser.BrowserProfile> profiles = this.browser.getBrowserProfile();
+        for (Map.Entry<String, BurpBrowser.BrowserProfile> entry : profiles.entrySet()) {
+            this.modelProfilel.addElement(entry.getValue());
         }
-        this.cmbProfile.addItem(BurpBrowser.BROWSER_PROFILE_GUEST);
+        this.modelProfilel.addElement(BurpBrowser.BrowserProfile.GUEST);
     }
 
     private void tglInterceptStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tglInterceptStateChanged
@@ -281,10 +284,10 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private void btnOpenBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBrowserActionPerformed
         try {
             BurpBrowser.copyBrowserExtension();
-            String profile = (String) this.cmbProfile.getSelectedItem();
+            BurpBrowser.BrowserProfile profile = (BurpBrowser.BrowserProfile) this.modelProfilel.getSelectedItem();
             BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
             if (listener != null) {
-                browser.openBrowser((profile == null) ? BurpBrowser.BROWSER_PROFILE_DEFAULT : profile, listener.getListenerPort());
+                browser.openBrowser((profile == null) ? BurpBrowser.BROWSER_PROFILE_DEFAULT : profile.getProfileKey(), listener.getListenerPort());
             } else {
                 JOptionPane.showMessageDialog(null, "fail Open Browser");
             }
