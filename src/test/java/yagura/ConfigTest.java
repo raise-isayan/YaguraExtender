@@ -9,7 +9,6 @@ import extension.burp.MessageHighlightColor;
 import extension.burp.NotifyType;
 import extension.burp.TargetTool;
 import extension.helpers.FileUtil;
-import extension.helpers.StringUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.MatchItem;
 import java.io.ByteArrayOutputStream;

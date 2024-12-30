@@ -79,7 +79,7 @@ public class okHttpClientTest {
     public void setUp() {
         try {
             this.server.start();
-            Dispatcher dispatcher = new Dispatcher() {
+            final Dispatcher dispatcher = new Dispatcher() {
                 @Override
                 public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
                     if (request.getPath().equals("/test/")) {

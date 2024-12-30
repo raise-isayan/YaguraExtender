@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -55,8 +54,7 @@ public class SendToExtend extends SendToMenuItem {
         List<HttpRequestResponse> messageInfo = null;
         if (contextMenu.messageEditorRequestResponse().isPresent()) {
             messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
-        }
-        else {
+        } else {
             messageInfo = contextMenu.selectedRequestResponses();
         }
         if (messageInfo != null) {
@@ -165,7 +163,6 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
-
     private void saveAsMessageBody(SendToItem.MessageType messageType, SendToMessage sendToMessage) {
         final HttpRequestResponse messageItem = sendToMessage.getSelectedMessages().get(0);
         try {
@@ -256,7 +253,7 @@ public class SendToExtend extends SendToMenuItem {
                 break;
             }
             case MESSAGE_INFO_COPY:
-               enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
                         || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)

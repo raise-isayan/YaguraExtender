@@ -56,9 +56,11 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         pnlEast.setLayout(new java.awt.BorderLayout());
 
         pnlListenerPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by listener "));
+        pnlListenerPort.setMinimumSize(new java.awt.Dimension(100, 45));
+        pnlListenerPort.setPreferredSize(new java.awt.Dimension(100, 45));
         pnlListenerPort.setLayout(new java.awt.BorderLayout());
 
-        lblListenerPort.setText("Port");
+        lblListenerPort.setText("Port:");
         pnlListenerPort.add(lblListenerPort, java.awt.BorderLayout.WEST);
         pnlListenerPort.add(txtLiistenerPort, java.awt.BorderLayout.CENTER);
 
@@ -77,9 +79,9 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         pnlHeader.setLayout(new java.awt.BorderLayout());
 
         pnlHttpFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
-        pnlHttpFilterByRequest.setMaximumSize(new java.awt.Dimension(212, 100));
-        pnlHttpFilterByRequest.setMinimumSize(new java.awt.Dimension(212, 100));
-        pnlHttpFilterByRequest.setPreferredSize(new java.awt.Dimension(212, 100));
+        pnlHttpFilterByRequest.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        pnlHttpFilterByRequest.setMinimumSize(new java.awt.Dimension(200, 150));
+        pnlHttpFilterByRequest.setPreferredSize(new java.awt.Dimension(200, 150));
         pnlHttpFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlHttpFilterByRequest, javax.swing.BoxLayout.Y_AXIS));
 
         chkShowOnlyinscopeItem.setText("Show only in-scope items");

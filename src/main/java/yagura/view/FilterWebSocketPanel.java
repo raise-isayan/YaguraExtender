@@ -56,12 +56,15 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
 
         pnlSettings.setLayout(new java.awt.BorderLayout());
 
+        pnlEast.setMinimumSize(new java.awt.Dimension(100, 45));
+        pnlEast.setPreferredSize(new java.awt.Dimension(100, 45));
+        pnlEast.setVerifyInputWhenFocusTarget(false);
         pnlEast.setLayout(new java.awt.BorderLayout());
 
         pnlListenerPort.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by listener "));
         pnlListenerPort.setLayout(new java.awt.BorderLayout());
 
-        lblListenerPort.setText("Port");
+        lblListenerPort.setText("Port:");
         pnlListenerPort.add(lblListenerPort, java.awt.BorderLayout.WEST);
         pnlListenerPort.add(txtLiistenerPort, java.awt.BorderLayout.CENTER);
 
@@ -72,9 +75,9 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
         pnlCenter.setLayout(new java.awt.BorderLayout());
 
         pnlFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
-        pnlFilterByRequest.setMaximumSize(new java.awt.Dimension(172, 100));
-        pnlFilterByRequest.setMinimumSize(new java.awt.Dimension(172, 100));
-        pnlFilterByRequest.setPreferredSize(new java.awt.Dimension(172, 100));
+        pnlFilterByRequest.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        pnlFilterByRequest.setMinimumSize(new java.awt.Dimension(200, 150));
+        pnlFilterByRequest.setPreferredSize(new java.awt.Dimension(200, 150));
         pnlFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlFilterByRequest, javax.swing.BoxLayout.Y_AXIS));
 
         chkShowOnlyinscopeItem.setText("Show only in-scope items");
@@ -113,7 +116,7 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
                 .addComponent(chkMsgRegExp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkMsgIgnoreCase)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         pnlWebsocketFilterSearchItemLayout.setVerticalGroup(
             pnlWebsocketFilterSearchItemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

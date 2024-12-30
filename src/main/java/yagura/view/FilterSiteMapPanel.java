@@ -53,9 +53,9 @@ public class FilterSiteMapPanel extends javax.swing.JPanel {
         pnlHeader.setLayout(new java.awt.BorderLayout());
 
         pnlHttpFilterByRequest.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter by request type"));
-        pnlHttpFilterByRequest.setMaximumSize(new java.awt.Dimension(212, 150));
-        pnlHttpFilterByRequest.setMinimumSize(new java.awt.Dimension(212, 100));
-        pnlHttpFilterByRequest.setPreferredSize(new java.awt.Dimension(212, 150));
+        pnlHttpFilterByRequest.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        pnlHttpFilterByRequest.setMinimumSize(new java.awt.Dimension(200, 150));
+        pnlHttpFilterByRequest.setPreferredSize(new java.awt.Dimension(200, 150));
         pnlHttpFilterByRequest.setLayout(new javax.swing.BoxLayout(pnlHttpFilterByRequest, javax.swing.BoxLayout.Y_AXIS));
 
         chkShowOnlyinscopeItem.setText("Show only in-scope items");

@@ -48,10 +48,8 @@ import javax.swing.JMenuItem;
 import extend.util.external.ThemeUI;
 import extension.burp.BurpConfig;
 import extension.burp.BurpExtensionImpl;
-import static extension.burp.BurpExtensionImpl.api;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
-import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
@@ -290,6 +288,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.setSendToMenu(new SendToMenu(api, this.option.getSendToProperty()));
         this.registerContextMenu = api.userInterface().registerContextMenuItemsProvider(this.getSendToMenu());
         final Registration registerContextMenuItemsProvider = api.userInterface().registerContextMenuItemsProvider(new ContextMenuItemsProvider() {
+            @Override
             public List<Component> provideMenuItems(ContextMenuEvent event) {
                 List<Component> menuList = new ArrayList<>();
                 JMenuItem item = new JMenuItem();

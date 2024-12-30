@@ -1,5 +1,6 @@
 package yagura.view;
 
+import extension.burp.BurpVersion;
 import extension.helpers.SwingUtil;
 import yagura.model.SendToArgsProperty;
 import extension.view.base.CustomTableModel;
@@ -37,7 +38,9 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlArgs = new javax.swing.JPanel();
         chkOverrideSendToArgs = new javax.swing.JCheckBox();
+        chkMacOpenCommand = new javax.swing.JCheckBox();
         pnlSendToArgs = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableSendToArgs = new javax.swing.JTable();
@@ -47,13 +50,20 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(550, 600));
         setLayout(new java.awt.BorderLayout());
 
+        pnlArgs.setLayout(new javax.swing.BoxLayout(pnlArgs, javax.swing.BoxLayout.Y_AXIS));
+
         chkOverrideSendToArgs.setText("override send to args");
         chkOverrideSendToArgs.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chkOverrideSendToArgsStateChanged(evt);
             }
         });
-        add(chkOverrideSendToArgs, java.awt.BorderLayout.NORTH);
+        pnlArgs.add(chkOverrideSendToArgs);
+
+        chkMacOpenCommand.setText("Mac Open Command");
+        pnlArgs.add(chkMacOpenCommand);
+
+        add(pnlArgs, java.awt.BorderLayout.NORTH);
 
         pnlSendToArgs.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         pnlSendToArgs.setPreferredSize(new java.awt.Dimension(500, 200));
@@ -108,14 +118,15 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
             .addGroup(pnlSendToArgsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlSendToArgsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEdit)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlSendToArgsLayout.createSequentialGroup()
+                        .addComponent(btnEdit)
+                        .addGap(0, 274, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         add(pnlSendToArgs, java.awt.BorderLayout.CENTER);
 
-        pnlHelpNote.setMaximumSize(new java.awt.Dimension(32767, 32767));
         pnlHelpNote.setPreferredSize(new java.awt.Dimension(500, 250));
         pnlHelpNote.setLayout(new java.awt.BorderLayout());
         add(pnlHelpNote, java.awt.BorderLayout.SOUTH);
@@ -167,8 +178,10 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEdit;
+    private javax.swing.JCheckBox chkMacOpenCommand;
     private javax.swing.JCheckBox chkOverrideSendToArgs;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel pnlArgs;
     private javax.swing.JPanel pnlHelpNote;
     private javax.swing.JPanel pnlSendToArgs;
     private javax.swing.JTable tableSendToArgs;
@@ -181,12 +194,14 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
         this.tableSendToArgs.setModel(this.modelSendToArgs);
         JMultilineLabel ml = new JMultilineLabel();
         ml.setText(FORMAT_NOTE);
+        this.chkMacOpenCommand.setEnabled(BurpVersion.getOSType() == BurpVersion.OSType.MAC);
         this.pnlHelpNote.add(ml, BorderLayout.CENTER);
     }
 
     public SendToArgsProperty getSendToOverrideProperty() {
         SendToArgsProperty prop = new SendToArgsProperty();
         prop.setUseOverride(this.chkOverrideSendToArgs.isSelected());
+        prop.setUseMacOpenCommand(this.chkMacOpenCommand.isSelected());
         List<String> argsList = this.getEditItemList();
         prop.setArgsList(argsList);
         return prop;
@@ -194,6 +209,7 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
 
     public void setProperty(SendToArgsProperty prop) {
         this.chkOverrideSendToArgs.setSelected(prop.isUseOverride());
+        this.chkMacOpenCommand.setSelected(prop.isUseMacOpenCommand());
         this.setEditItemList(prop.getArgsList());
     }
 
@@ -249,6 +265,5 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-
 
 }

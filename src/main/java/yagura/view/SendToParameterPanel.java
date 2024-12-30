@@ -37,6 +37,7 @@ public class SendToParameterPanel extends javax.swing.JPanel {
         btnGrpReqName = new javax.swing.ButtonGroup();
         btnGrpReqNameHistoryNotesType = new javax.swing.ButtonGroup();
         rdoGrpReqNotesHistoryNotesType = new javax.swing.ButtonGroup();
+        pnlParameter = new javax.swing.JPanel();
         chkOverrideSendToParameter = new javax.swing.JCheckBox();
         pnlSendToOverride = new javax.swing.JPanel();
         chkUseReqNotes = new javax.swing.JCheckBox();
@@ -57,13 +58,17 @@ public class SendToParameterPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
+        pnlParameter.setLayout(new javax.swing.BoxLayout(pnlParameter, javax.swing.BoxLayout.Y_AXIS));
+
         chkOverrideSendToParameter.setText("Override send to parameter");
         chkOverrideSendToParameter.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 chkOverrideSendToParameterStateChanged(evt);
             }
         });
-        add(chkOverrideSendToParameter, java.awt.BorderLayout.NORTH);
+        pnlParameter.add(chkOverrideSendToParameter);
+
+        add(pnlParameter, java.awt.BorderLayout.NORTH);
 
         pnlSendToOverride.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -192,7 +197,7 @@ public class SendToParameterPanel extends javax.swing.JPanel {
                                 .addComponent(rdoReqCommentResponseTitle))
                             .addComponent(chkUseReqName)
                             .addComponent(chkUseReqNotes))))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlSendToOverrideLayout.setVerticalGroup(
             pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,7 +220,7 @@ public class SendToParameterPanel extends javax.swing.JPanel {
                 .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(chkDummyResponse)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(pnlSendToOverride, java.awt.BorderLayout.CENTER);
@@ -261,6 +266,7 @@ public class SendToParameterPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox chkOverrideSendToParameter;
     private javax.swing.JCheckBox chkUseReqName;
     private javax.swing.JCheckBox chkUseReqNotes;
+    private javax.swing.JPanel pnlParameter;
     private javax.swing.JPanel pnlReqCommentLineGrp;
     private javax.swing.JPanel pnlReqNameLineGrp;
     private javax.swing.JPanel pnlSendToOverride;

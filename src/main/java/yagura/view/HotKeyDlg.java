@@ -1,7 +1,6 @@
 package yagura.view;
 
 import extension.helpers.ConvertUtil;
-import extension.helpers.StringUtil;
 import extension.view.base.CustomDialog;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;

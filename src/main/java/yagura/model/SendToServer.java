@@ -53,7 +53,6 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Base64;
@@ -407,10 +406,10 @@ public class SendToServer extends SendToMenuItem {
     }
 
     protected String newDummyRespose() {
-        final String DUMMY_RESPOSE = "HTTP/1.1 202 Accepted" + HttpUtil.LINE_TERMINATE +
-            "Date: " + DateUtil.valueOfHttpDate(ZonedDateTime.of(LocalDateTime.now(), DateUtil.ZONE_OFFSET_GMT)) + HttpUtil.LINE_TERMINATE +
-            "Server: Yagura-Dummy-Response" + HttpUtil.LINE_TERMINATE +
-            "Content-Length: 0" + HttpUtil.LINE_TERMINATE + HttpUtil.LINE_TERMINATE;
+        final String DUMMY_RESPOSE = "HTTP/1.1 202 Accepted" + HttpUtil.LINE_TERMINATE
+                + "Date: " + DateUtil.valueOfHttpDate(ZonedDateTime.of(LocalDateTime.now(), DateUtil.ZONE_OFFSET_GMT)) + HttpUtil.LINE_TERMINATE
+                + "Server: Yagura-Dummy-Response" + HttpUtil.LINE_TERMINATE
+                + "Content-Length: 0" + HttpUtil.LINE_TERMINATE + HttpUtil.LINE_TERMINATE;
         return DUMMY_RESPOSE;
     }
 
@@ -476,8 +475,7 @@ public class SendToServer extends SendToMenuItem {
                         if (guessCharset != null) {
                             multipartBuilder.addFormDataPart("encoding", guessCharset);
                         }
-                    }
-                    else {
+                    } else {
                         if (extendSendToParameterProp.isUseOverride() && extendSendToParameterProp.isUseDummyResponse()) {
                             burp.api.montoya.http.message.responses.HttpResponse dummyResponse = burp.api.montoya.http.message.responses.HttpResponse.httpResponse(newDummyRespose());
                             multipartBuilder.addFormDataPart("response", "response", RequestBody.create(dummyResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
@@ -704,8 +702,7 @@ public class SendToServer extends SendToMenuItem {
                 if (guessCharset != null) {
                     HttpUtil.outMultipartText(boundary, out, "encoding", guessCharset);
                 }
-            }
-            else {
+            } else {
                 if (extendSendToParameterProp.isUseOverride() && extendSendToParameterProp.isUseDummyResponse()) {
                     burp.api.montoya.http.message.responses.HttpResponse dummyResponse = burp.api.montoya.http.message.responses.HttpResponse.httpResponse(newDummyRespose());
                     HttpUtil.outMultipartBinary(boundary, out, "response", dummyResponse.toByteArray().getBytes());

@@ -4,6 +4,7 @@ import extension.burp.IssueAlertEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationType;
+import extension.burp.BurpVersion;
 import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
@@ -48,7 +49,6 @@ public class SendToMultiEditor extends SendToMenuItem {
             List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
             sendToEvent(messageInfo);
         }
-
     }
 
     public void sendToEvent(List<HttpRequestResponse> messageInfo) {
@@ -73,13 +73,13 @@ public class SendToMultiEditor extends SendToMenuItem {
                             argsList.addAll(executeArgumentFormat(messageInfo.get(i), sendToMessage.getSelectedText(), formatList.toArray(String[]::new)));
                         }
                     }
-                    ConvertUtil.executeProcess(this.getTarget(), argsList);
+                    executeProcess(this.getTarget(), argsList);
                 }
             }
             else {
                 if (sendToMessage.getSelectedText() != null) {
                     File msgFile = FileUtil.tempFile(StringUtil.getBytesRaw(sendToMessage.getSelectedText()), ".tmp");
-                    ConvertUtil.executeProcess(this.getTarget(), new String [] { msgFile.getAbsolutePath() });
+                    executeProcess(this.getTarget(), List.of(msgFile.getAbsolutePath()));
                 }
                 else if (!messageInfo.isEmpty()) {
                     File[] msgFiles = new File[messageInfo.size()];
@@ -92,16 +92,27 @@ public class SendToMultiEditor extends SendToMenuItem {
                             msgFiles[i] = tempMessageFile(messageInfo.get(i), i);
                         }
                     }
-                    String[] args = new String[msgFiles.length];
-                    for (int i = 0; i < args.length; i++) {
-                        args[i] = msgFiles[i].getAbsolutePath();
+                    List<String> argsList = new ArrayList<>();
+                    for (int i = 0; i < msgFiles.length; i++) {
+                        argsList.add(msgFiles[i].getAbsolutePath());
                     }
-                    ConvertUtil.executeProcess(this.getTarget(), args);
+                    executeProcess(this.getTarget(), argsList);
                 }
             }
         } catch (IOException ex) {
             this.fireIssueAlertCriticalEvent(new IssueAlertEvent(this, ex.getMessage()));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    public Process executeProcess(String target, final List<String> argsList) throws IOException {
+        BurpVersion.OSType osType = BurpVersion.getOSType();
+        SendToArgsProperty argsProp = this.getSendToExtend().getSendToArgsProperty();
+        if (BurpVersion.OSType.MAC == osType && argsProp.isUseMacOpenCommand()) {
+            return ConvertUtil.executeProcess(BurpVersion.OSType.MAC, target, argsList);
+        }
+        else {
+            return ConvertUtil.executeProcess(target, argsList);
         }
     }
 

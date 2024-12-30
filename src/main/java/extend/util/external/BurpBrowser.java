@@ -1,6 +1,5 @@
 package extend.util.external;
 
-import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -55,9 +54,7 @@ public class BurpBrowser {
     static {
         try {
             chromium_prop.load(BurpBrowser.class.getResourceAsStream(BURP_CHROMIUM_PROPERTIES));
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (java.lang.NullPointerException ex) {
+        } catch (IOException | java.lang.NullPointerException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }

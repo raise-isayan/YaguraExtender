@@ -450,8 +450,7 @@ image:images/custom_sendto_server_connection.png[SendToItem編集 SendTo Connect
 ** SendToの送信に独自のHTTPクライアントを利用します。
 
 .Protocol
-
-    HTTPのプロトコルを指定します。
+　HTTPのプロトコルを指定します。
 
 .Timeout
 
