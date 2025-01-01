@@ -102,7 +102,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
      */
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
-    private boolean DEBUG = false;
+    private boolean DEBUG = true;
 
     private MenuHander menuHandler;
     private ProxyHander proxyHandler;
@@ -182,6 +182,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
     }
 
+    // Professional / Community 2024.2.1.3 build:28102 BuldNumber:20240201003028102
+
     @Override
     public void initialize(MontoyaApi api) {
         super.initialize(api);
@@ -197,7 +199,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("minor:" + burpVersion.getMinor());
             api.logging().logToOutput("build:" + burpVersion.getBuild());
         }
-        
+
         this.registerTemporaryProject();
 
         ThemeUI.addPropertyChangeListener(listener);
