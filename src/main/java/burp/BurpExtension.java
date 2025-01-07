@@ -102,7 +102,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
      */
     protected static final String LOGGING_PROPERTIES = "/yagura/resources/" + Config.getLoggingPropertyName();
 
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
 
     private MenuHander menuHandler;
     private ProxyHander proxyHandler;
@@ -187,6 +187,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     @Override
     public void initialize(MontoyaApi api) {
         super.initialize(api);
+
         BurpVersion burpVersion = this.getBurpVersion();
         if (BurpVersion.isUnsupportVersion(burpVersion)) {
             BurpVersion.showUnsupporttDlg(burpVersion, Version.getInstance().getProjectName());
@@ -194,10 +195,12 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
 
         if (DEBUG) {
-            api.logging().logToOutput("name:" + burpVersion.getProductName());
-            api.logging().logToOutput("major:" + burpVersion.getMajor());
-            api.logging().logToOutput("minor:" + burpVersion.getMinor());
-            api.logging().logToOutput("build:" + burpVersion.getBuild());
+            burp.api.montoya.core.Version version = api().burpSuite().version();
+            api.logging().logToOutput("name:" + version.name());
+            api.logging().logToOutput("major:" + version.major());
+            api.logging().logToOutput("minor:" + version.minor());
+            api.logging().logToOutput("build:" + version.build());
+            api.logging().logToOutput("buildNumber:" + version.buildNumber());
         }
 
         this.registerTemporaryProject();

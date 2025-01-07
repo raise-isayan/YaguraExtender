@@ -18,12 +18,8 @@ Please download the stable release version from the following.
 
 Please use the following versions
 
-* Burp suite v2023.1.2 or less than
-  * YagraExtender v2.2.14.0 or less than
-
-* Burp suite v2023.1.2 or above
-  * YagraExtender v3.0.0 or above (beta version)
-  * YagraExtension v2.2.14.0 or less (currently available)
+* Burp suite v2024.2.1.3 or above
+  * BurpExtensionCommons v3.2.5 or above
 
 ## help
 
@@ -42,17 +38,17 @@ gradlew release
 ### Java
 * JRE (JDK) 17 (Open JDK is recommended) (https://openjdk.java.net/)
 
-### Burp suite
-* v2023.1.2 or higher (http://www.portswigger.net/burp/)
+### Burp Suite
+* v2024.2.1.3 or higher (http://www.portswigger.net/burp/)
 
 ### Development environment
-* NetBeans 22 (https://netbeans.apache.org/)
+* NetBeans 24 (https://netbeans.apache.org/)
 * Gradle 7.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
 ## Required library
 Building requires a [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) library.
-* BurpExtensionCommons v3.2.x
+* BurpExtensionCommons v3.2.5.x
 
 ## Use Library
 * Apache common codec (https://commons.apache.org/proper/commons-codec/)

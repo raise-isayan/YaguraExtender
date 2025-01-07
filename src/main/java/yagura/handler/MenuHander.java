@@ -2,7 +2,7 @@ package yagura.handler;
 
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
-import extend.util.external.BouncyUtil;
+import extension.helpers.BouncyUtil;
 import extend.util.external.CodecUtil;
 import extend.util.external.TransUtil;
 import extension.burp.BurpConfig;
@@ -959,14 +959,14 @@ public class MenuHander {
         final Map<String, FilterProperty> filterMap = extenderImpl.getProperty().getResultFilterProperty().getFilterMap();
         for (Map.Entry<String, FilterProperty> entry : filterMap.entrySet()) {
             String name = entry.getKey();
-            FilterProperty filter = entry.getValue();            
+            FilterProperty filter = entry.getValue();
             JMenuItem mnuResultFilterItem = new JMenuItem();
-            mnuResultFilterItem.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));            
-            mnuResultFilterItem.setText(name);            
+            mnuResultFilterItem.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));
+            mnuResultFilterItem.setText(name);
             mnuResultFilterItem.addActionListener(this.resultFilterModeAction);
             if (filter.getFilterCategory() == FilterProperty.FilterCategory.SITE_MAP) {
                 mnuResultFilterItem.setEnabled(supportBanmbaSiteMap);
-            }            
+            }
             yaguraResultFilterMenu.add(mnuResultFilterItem);
             // this.menuBurpResultFilterGroup.add(chkResultFilterItem);
         }

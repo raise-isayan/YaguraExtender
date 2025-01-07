@@ -1,4 +1,4 @@
-Burp suite 拡張 YaguraExtension
+Burp Suite 拡張 YaguraExtension
 =============
 
 Language/[English](Readme.md)
@@ -19,12 +19,8 @@ Burp Suiteにはアジアの文字エンコーディングの利用に欠点が�
 
 利用するバージョンは以下のものをご利用ください
 
-* Burp suite v2023.1.2 より前のバージョン
-   * YagraExtender v2.2.14.0 以前
-
-* Burp suite v2023.1.2 より後のバージョン
-   * YagraExtender v3.0.0 以降(ベータ版)
-   * YagraExtension v2.2.14.0 以前(現時点で利用可)
+* Burp Suite v2024.2.1.3 より後のバージョン
+   * BurpExtensionCommons v3.2.5 以降
 
 ## ヘルプ
 利用方法等の詳細なヘルプは、help ディレクトリの help.html を参照してください。
@@ -42,17 +38,17 @@ gradlew release
 ### Java
 * JRE(JDK) 17 (Open JDK を推奨)(https://openjdk.java.net/)
 
-### Burp suite
+### Burp Suite
 * v2023.1.2以上 (http://www.portswigger.net/burp/)
 
 ### 開発環境
-* NetBeans 22 (https://netbeans.apache.org/)
+* NetBeans 24 (https://netbeans.apache.org/)
 * Gradle 7.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
 ## 必須ライブラリ
 ビルドには別途 [BurpExtensionCommons](https://github.com/raise-isayan/BurpExtensionCommons) のライブラリを必要とします。
-* BurpExtensionCommons v3.2.x
+* BurpExtensionCommons v3.2.5.x
 
 ### 利用ライブラリ
 

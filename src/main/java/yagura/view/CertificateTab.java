@@ -2,7 +2,7 @@ package yagura.view;
 
 import burp.BurpPreferences;
 import extension.helpers.CertUtil;
-import extend.util.external.BouncyUtil;
+import extension.helpers.BouncyUtil;
 import extension.burp.IBurpTab;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;

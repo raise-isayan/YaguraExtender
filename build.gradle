@@ -90,6 +90,7 @@ task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
 }
 
 dependencies {
+
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
     compileOnly 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
@@ -135,11 +136,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation 'org.mockito:mockito-core:5.4.0'
-
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on
-    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
-    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
 }
 
 tasks.named('test') {

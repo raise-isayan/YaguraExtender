@@ -1,7 +1,7 @@
 package yagura.view;
 
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
-import extend.util.external.BouncyUtil;
+import extension.helpers.BouncyUtil;
 import extend.util.external.CodecUtil;
 import extend.util.external.TransUtil;
 import java.awt.BorderLayout;
