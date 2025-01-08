@@ -74,27 +74,32 @@ public class BurpBrowser {
         BurpVersion.OSType os = BurpVersion.getOSType();
         BurpVersion.ArcType arc = BurpVersion.getArchType();
         switch (os) {
-            case WINDOWS:
+            case WINDOWS: {
                 os_arc = "win";
                 break;
-            case LINUX:
+            }
+            case LINUX: {
                 os_arc = "linux";
                 break;
-            case MAC:
+            }
+            case MAC: {
                 os_arc = "macos";
                 break;
+            }
         }
         switch (arc) {
-            case AMD64:
+            case AMD64: {
                 if (os == BurpVersion.OSType.MAC) {
                     os_arc += "x64";
                 } else {
                     os_arc += "64";
                 }
                 break;
-            case ARM64:
+            }
+            case ARM64: {
                 os_arc += "arm64";
                 break;
+            }
         }
         return os_arc;
     }
@@ -120,18 +125,21 @@ public class BurpBrowser {
         String burpDir = "";
         BurpVersion.OSType os = BurpVersion.getOSType();
         switch (os) {
-            case WINDOWS:
+            case WINDOWS: {
                 home = System.getenv("APPDATA");
                 burpDir = "BurpSuite";
                 break;
-            case LINUX:
+            }
+            case LINUX: {
                 home = System.getenv("HOME");
                 burpDir = ".BurpSuite";
                 break;
-            case MAC:
+            }
+            case MAC: {
                 home = System.getenv("HOME");
                 burpDir = ".BurpSuite";
                 break;
+            }
         }
         return Path.of(home, burpDir);
     }
@@ -161,15 +169,18 @@ public class BurpBrowser {
         String chromeExec = "";
         BurpVersion.OSType os = BurpVersion.getOSType();
         switch (os) {
-            case WINDOWS:
+            case WINDOWS: {
                 chromeExec = "chrome.exe";
                 break;
-            case LINUX:
+            }
+            case LINUX: {
                 chromeExec = "chrome";
                 break;
-            case MAC:
+            }
+            case MAC: {
                 chromeExec = "Chromium.app/Contents/MacOS/Chromium";
                 break;
+            }
         }
         Path dir = getBrowseDirectoryPath();
         Path path = Path.of(getBrowserVersion(), chromeExec);

@@ -373,6 +373,7 @@ public class TransUtil {
                         } else {
                             decode = CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), StandardCharsets.ISO_8859_1);
                         }
+                        break;
                     }
                     // Base32 encode
                     case BASE32: {
@@ -584,23 +585,27 @@ public class TransUtil {
         ByteArrayOutputStream byte_array = new ByteArrayOutputStream();
         for (char c : input_array) {
             switch (bytes) {
-                case 4:
+                case 4: {
                     byte_array.write((byte) (0xff & ((byte) 0xf0)));
                     byte_array.write((byte) (0xff & ((byte) 0x80)));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | ((c & 0x7f) >> 6)))));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | (c & 0x3f)))));
                     break;
-                case 3:
+                }
+                case 3: {
                     byte_array.write((byte) (0xff & ((byte) 0xe0)));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | ((c & 0x7f) >> 6)))));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | (c & 0x3f)))));
                     break;
-                case 2:
+                }
+                case 2: {
                     byte_array.write((byte) (0xff & ((byte) (0xc0 | ((c & 0x7f) >> 6)))));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | (c & 0x3f)))));
                     break;
-                default:
+                }
+                default: {
                     throw new IllegalArgumentException("UTF-8 byte :" + bytes);
+                }
             }
         }
         return byte_array.toByteArray();
