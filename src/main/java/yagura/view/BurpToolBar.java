@@ -214,24 +214,9 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private final javax.swing.ImageIcon inspector_on_light = new javax.swing.ImageIcon(getClass().getResource("/resources/Media/svg/light/switch-on.svg"));
     private final javax.swing.ImageIcon inspector_off_light = new javax.swing.ImageIcon(getClass().getResource("/resources/Media/svg/light/switch-off.svg"));
 
-//    private final Timer timer = new Timer();
-//    private final TimerTask task = new TimerTask() {
-//        public void run() {
-//            boolean interceptEnabled = api.proxy().isInterceptEnabled();
-//            if (interceptEnabled != isIntercept()) {
-//                setIntercept(interceptEnabled);
-//            }
-//        }
-//    };
-
-
     private final ChangeListener tglButtonChangeListener = new ChangeListener() {
         @Override
         public void stateChanged(ChangeEvent e) {
-//            boolean interceptEnabled = api.proxy().isInterceptEnabled();
-//            if (interceptEnabled != isIntercept()) {
-//                    setIntercept(interceptEnabled);
-//            }
             if (e.getSource() instanceof JToggleButton button) {
                 if (button.isSelected() != isIntercept()) {
                     setIntercept(button.isSelected());
@@ -255,6 +240,16 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
 //        this.timer.schedule(this.task, 0, this.interval_time);
     }
 
+    public boolean isInterceptEnabled() {
+        JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());
+        if (button != null) {
+            return button.isSelected();
+        }
+        else {
+            return api.proxy().isInterceptEnabled();
+        }
+    }
+
     public void renewProfile() {
         this.modelProfilel.removeAllElements();
         this.modelProfilel.addElement(BurpBrowser.BrowserProfile.DEFAULT);
@@ -271,7 +266,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     }//GEN-LAST:event_tglInterceptStateChanged
 
     private void tglInterceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglInterceptActionPerformed
-        boolean interceptEnabled = api.proxy().isInterceptEnabled();
+        boolean interceptEnabled = isInterceptEnabled();
         if (interceptEnabled != isIntercept()) {
             if (interceptEnabled) {
                 api.proxy().disableIntercept();
