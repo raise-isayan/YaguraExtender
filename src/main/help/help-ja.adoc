@@ -48,6 +48,7 @@ IntercepterやRepeterにてYaguraのEncode/Decodeの各種変換機能を呼び�
   * Unicode(JSON)
   * Base64
   * Base64URLSafe
+  * Base64 + URL
   * Html
   * JSON with Meta
   
@@ -61,6 +62,7 @@ IntercepterやRepeterにてYaguraのEncode/Decodeの各種変換機能を呼び�
   * Unicode(JSON)
   * Base64
   * Base64URLSafe
+  * Base64 + URL
   * Html
   * JSON with Meta
 
@@ -906,6 +908,9 @@ Padding::
 
 Base64URLSafe::
     Base64 URLSafe形式のエンコード、デコードを行います。
+
+Base64 + URLS::
+    Base64 + URL形式のエンコード、デコードを行います。
 
 Base32::
     Base32形式のエンコード、デコードを行います。

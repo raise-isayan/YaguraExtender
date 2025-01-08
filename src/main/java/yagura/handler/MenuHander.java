@@ -91,7 +91,7 @@ public class MenuHander {
                     }
                 });
             }
-
+//
             @Override
             public void menuDeselected(MenuEvent e) {
             }
@@ -105,6 +105,7 @@ public class MenuHander {
          * Yagura Charsets
          */
         yaguraCharsetMenu.setText("Yagura Charsets (Y)");
+
         yaguraCharsetMenu.setMnemonic(KeyEvent.VK_Y);
 
         // updateYaguraCharsetUI(this.yaguraCharsetMenu);
@@ -244,6 +245,20 @@ public class MenuHander {
 
         yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
 
+        JMenuItem yaguraEncoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, new ITranslateAction() {
+            @Override
+            public String translate(String allText, String selectedText) {
+                try {
+                    return SmartCodec.toUrlEncode(CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText)), StandardCharsets.US_ASCII, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+                } catch (UnsupportedEncodingException ex) {
+                    return selectedText;
+                }
+            }
+        });
+
+        yaguraEncoderMenu.add(yaguraEncoderBase64andUrlMenu);
+
+
         JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
             @Override
             public String translate(String allText, String selectedText) {
@@ -328,6 +343,19 @@ public class MenuHander {
         });
 
         yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
+
+        JMenuItem yaguraDecoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, new ITranslateAction() {
+            @Override
+            public String translate(String allText, String selectedText) {
+                try {
+                    return CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(selectedText, StandardCharsets.US_ASCII), getYaguraCharset(selectedText));
+                } catch (UnsupportedEncodingException ex) {
+                    return selectedText;
+                }
+            }
+        });
+
+        yaguraDecoderMenu.add(yaguraDecoderBase64andUrlMenu);
 
         JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
 

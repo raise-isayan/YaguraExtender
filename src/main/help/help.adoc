@@ -49,6 +49,7 @@ The following conversions are supported
   * Unicode(JSON)
   * Base64
   * Base64URLSafe
+  * Base64 + URL
   * Html
   * JSON with Meta
   
@@ -62,6 +63,7 @@ The following conversions are supported
   * Unicode(JSON)
   * Base64
   * Base64URLSafe
+  * Base64 + URL
   * Html
   * JSON with Meta
 
@@ -915,6 +917,9 @@ Padding::
 
 Base64URLSafe::
     Encodes and decodes Base64 URLSafe format.
+
+Base64 + URLS::
+    Encodes and decodes Base64 and URL format.
 
 Base32::
     Encodes and decodes Base32 format.

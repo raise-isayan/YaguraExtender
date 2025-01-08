@@ -81,25 +81,31 @@ public class TransUtil {
     };
 
     public static Pattern getEncodeTypePattern(EncodeType type) {
+        Pattern pattern = SmartCodec.ENCODE_PATTERN_ALL;
         switch (type) {
             case ALL:
-                return SmartCodec.ENCODE_PATTERN_ALL;
+                pattern = SmartCodec.ENCODE_PATTERN_ALL;
+                break;
             case ALPHANUM:
-                return SmartCodec.ENCODE_PATTERN_ALPHANUM;
+                pattern = SmartCodec.ENCODE_PATTERN_ALPHANUM;
+                break;
             case STANDARD:
-                return SmartCodec.ENCODE_PATTERN_STANDARD;
+                pattern = SmartCodec.ENCODE_PATTERN_STANDARD;
+                break;
             case LIGHT:
-                return SmartCodec.ENCODE_PATTERN_LIGHT;
+                pattern = SmartCodec.ENCODE_PATTERN_LIGHT;
+                break;
             case BURP_LIKE:
-                return SmartCodec.ENCODE_PATTERN_BURP;
+                pattern = SmartCodec.ENCODE_PATTERN_BURP;
+                break;
             default:
                 break;
         }
-        return SmartCodec.ENCODE_PATTERN_ALL;
+        return pattern;
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX,
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
@@ -219,9 +225,10 @@ public class TransUtil {
             } else {
                 // URL encode match
                 switch (encodePattern) {
-                    case NONE:
+                    case NONE: {
                         decode = value;
                         break;
+                    }
                     case URL_STANDARD: {
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(SmartCodec.toUrlDecode(value, StandardCharsets.ISO_8859_1))) : charset;
                         if (guessCode != null) {
@@ -230,20 +237,23 @@ public class TransUtil {
                         } else {
                             decode = SmartCodec.toUrlDecode(value, StandardCharsets.ISO_8859_1);
                         }
+                        break;
                     }
-                    break;
                     // URL Unicode
-                    case URL_UNICODE:
+                    case URL_UNICODE: {
                         decode = SmartCodec.toUnicodeUrlDecode(value);
                         break;
+                    }
                     // Unicode
-                    case UNICODE:
+                    case UNICODE: {
                         decode = SmartCodec.toUnicodeDecode(value);
                         break;
+                    }
                     // Unicode2
-                    case UNICODE2:
+                    case UNICODE2: {
                         decode = SmartCodec.toUnocodeDecode(value, Pattern.quote("$"));
                         break;
+                    }
                     // Byte Hex
                     case BYTE_HEX: {
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
@@ -297,8 +307,8 @@ public class TransUtil {
                         } else {
                             decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
+                        break;
                     }
-                    break;
                     // uuencode
 //                    case UUENCODE:
 //                        {
@@ -320,12 +330,13 @@ public class TransUtil {
                         } else {
                             decode = toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1);
                         }
+                        break;
                     }
-                    break;
                     // Punycode
-                    case PUNYCODE:
+                    case PUNYCODE: {
                         decode = ConvertUtil.toPunycodeDecode(value);
                         break;
+                    }
                     // Base64 encode match
                     case BASE64: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
@@ -337,8 +348,8 @@ public class TransUtil {
                         } else {
                             decode = CodecUtil.toBase64Decode(value, StandardCharsets.ISO_8859_1);
                         }
+                        break;
                     }
-                    break;
                     // Base64 URLSafe
                     case BASE64_URLSAFE: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
@@ -350,8 +361,19 @@ public class TransUtil {
                         } else {
                             decode = CodecUtil.toBase64URLSafeDecode(value, StandardCharsets.ISO_8859_1);
                         }
+                        break;
                     }
-                    break;
+                    // Base64 URLSafe
+                    case BASE64_AND_URL: {
+                        byte[] bytes = CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII));
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), applyCharset);
+                        } else {
+                            decode = CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), StandardCharsets.ISO_8859_1);
+                        }
+                    }
                     // Base32 encode
                     case BASE32: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
@@ -363,8 +385,8 @@ public class TransUtil {
                         } else {
                             decode = CodecUtil.toBase32Decode(value, StandardCharsets.ISO_8859_1);
                         }
+                        break;
                     }
-                    break;
                     // Base16 encode
                     case BASE16: {
                         value = value.replaceAll("[\r\n]", ""); // 改行削除
@@ -376,15 +398,17 @@ public class TransUtil {
                         } else {
                             decode = CodecUtil.toBase16Decode(value, StandardCharsets.ISO_8859_1);
                         }
+                        break;
                     }
-                    break;
                     // Html decode
-                    case HTML:
+                    case HTML: {
                         decode = SmartCodec.toHtmlDecode(value, SmartCodec.ENCODE_PATTERN_ALL);
                         break;
-                    case HTML_UNICODE:
+                    }
+                    case HTML_UNICODE: {
                         decode = SmartCodec.toHtmlUnicodeDecode(value, SmartCodec.ENCODE_PATTERN_ALL);
                         break;
+                    }
                     case HTML_BYTE: {
                         String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(SmartCodec.toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
                         if (guessCode != null) {
@@ -393,42 +417,52 @@ public class TransUtil {
                         } else {
                             decode = SmartCodec.toHtmlDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
+                        break;
                     }
-                    break;
                     // Gzip
-                    case GZIP:
+                    case GZIP: {
                         decode = StringUtil.getBytesRawString(ConvertUtil.decompressGzip(StringUtil.getBytesCharset(value, charset)));
                         break;
+                    }
                     // ZLIB
-                    case ZLIB:
+                    case ZLIB: {
                         decode = StringUtil.getBytesRawString(ConvertUtil.decompressZlib(StringUtil.getBytesCharset(value, charset)));
                         break;
+                    }
                     // ZLIB_NOWRAP
-                    case ZLIB_NOWRAP:
+                    case ZLIB_NOWRAP: {
                         decode = StringUtil.getBytesRawString(ConvertUtil.decompressZlib(StringUtil.getBytesCharset(value, charset), true));
                         break;
+                    }
                     // UTF7
-                    case UTF7:
+                    case UTF7: {
                         decode = TransUtil.toUTF7Decode(value);
                         break;
+                    }
                     // UTF8 ILL
-                    case UTF8_ILL:
+                    case UTF8_ILL: {
                         // nothing
                         break;
-                    case C_LANG:
+                    }
+                    case C_LANG: {
                         decode = ConvertUtil.decodeCLangQuote(value, metaChar);
                         break;
-                    case JSON:
+                    }
+                    case JSON: {
                         decode = ConvertUtil.decodeJsonLiteral(value, metaChar);
                         break;
-                    case SQL_LANG:
+                    }
+                    case SQL_LANG: {
                         decode = ConvertUtil.decodeSQLangQuote(value, metaChar);
                         break;
-                    case REGEX:
+                    }
+                    case REGEX: {
                         decode = ConvertUtil.toRegexDecode(value, metaChar);
                         break;
-                    default:
+                    }
+                    default: {
                         break;
+                    }
                 }
             }
 

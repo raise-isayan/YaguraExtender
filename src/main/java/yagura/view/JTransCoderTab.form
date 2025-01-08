@@ -825,6 +825,14 @@
                                 <Property name="text" type="java.lang.String" value="Base64URLSafe"/>
                               </Properties>
                             </Component>
+                            <Component class="javax.swing.JRadioButton" name="rdoBase64andURL">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="rdoEncodeDecodeGrp"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="Base64 + URL"/>
+                              </Properties>
+                            </Component>
                           </SubComponents>
                         </Container>
                         <Container class="javax.swing.JPanel" name="pnlBaseN">
