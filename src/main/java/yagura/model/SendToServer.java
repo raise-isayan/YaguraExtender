@@ -492,12 +492,14 @@ public class SendToServer extends SendToMenuItem {
                     String authorizationPasswd = extendConnectionProp.getAuthorizationPasswd();
                     okhttp3.Authenticator authenticator = null;
                     switch (authorizationType) {
-                        case BASIC:
+                        case BASIC: {
                             authenticator = new BasicAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
                             break;
-                        case DIGEST:
+                        }
+                        case DIGEST: {
                             authenticator = new DigestAuthenticator(new com.burgstaller.okhttp.digest.Credentials(authorizationUser, authorizationPasswd));
                             break;
+                        }
                     }
 
                     // Proxy

@@ -225,13 +225,14 @@ public class SendToExtend extends SendToMenuItem {
                         || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             }
-            case REQUEST_BODY_TO_FILE:
+            case REQUEST_BODY_TO_FILE: {
                 enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
                         || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
                         || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
+            }
             case RESPONSE_BODY_TO_FILE: {
                 enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
                         || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
@@ -252,7 +253,7 @@ public class SendToExtend extends SendToMenuItem {
                         || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
             }
-            case MESSAGE_INFO_COPY:
+            case MESSAGE_INFO_COPY: {
                 enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
                         || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
@@ -261,6 +262,7 @@ public class SendToExtend extends SendToMenuItem {
                         || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
                         || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
                 break;
+            }
             case ADD_HOST_TO_INCLUDE_SCOPE:
             case ADD_HOST_TO_EXCLUDE_SCOPE:
             case ADD_TO_EXCLUDE_SCOPE: {

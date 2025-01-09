@@ -416,14 +416,16 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
 
     public void applyStyleTheme(Theme theme) {
         switch (theme) {
-            case DARK:
+            case DARK: {
                 this.tglIntercept.setIcon(inspector_off_dark);
                 this.tglIntercept.setSelectedIcon(inspector_on_dark);
                 break;
-            case LIGHT:
+            }
+            case LIGHT: {
                 this.tglIntercept.setIcon(inspector_off_light);
                 this.tglIntercept.setSelectedIcon(inspector_on_light);
                 break;
+            }
         }
         this.tglIntercept.updateUI();
     }

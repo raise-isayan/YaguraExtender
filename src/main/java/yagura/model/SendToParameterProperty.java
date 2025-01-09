@@ -242,10 +242,11 @@ public class SendToParameterProperty {
     public static String getParameter(SendToParameterProperty.SendToParameterType type, HttpRequestResponse messageInfo) {
         String value = null;
         switch (type) {
-            case HISTORY_COMMENT:
+            case HISTORY_COMMENT: {
                 value = messageInfo.annotations().notes();
                 break;
-            case RESPONSE_TITLE:
+            }
+            case RESPONSE_TITLE: {
                 if (messageInfo.response() != null) {
                     try {
                         HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
@@ -262,8 +263,10 @@ public class SendToParameterProperty {
                     }
                 }
                 break;
-            case HISTORY_NUMBER:
+            }
+            case HISTORY_NUMBER: {
                 break;
+            }
         }
         return value;
     }
@@ -275,14 +278,17 @@ public class SendToParameterProperty {
         Matcher m = LINE_PART.matcher(part);
         if (m.find()) {
             switch (commentLineType) {
-                case FIRST_LINE:
+                case FIRST_LINE: {
                     part = m.group(1);
                     break;
-                case SECOND_LINE:
+                }
+                case SECOND_LINE: {
                     part = m.group(2);
                     break;
-                default:
+                }
+                default: {
                     break;
+                }
             }
         }
         return part;

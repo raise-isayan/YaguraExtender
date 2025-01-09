@@ -569,15 +569,18 @@ public class ConnectionsPanel extends javax.swing.JPanel {
             this.rdoBurpClient.setSelected(true);
         }
         switch (httpProtocol) {
-            case HTTP_1_1:
+            case HTTP_1_1: {
                 this.rdoHttpProtocol1.setSelected(true);
                 break;
-            case HTTP_2:
+            }
+            case HTTP_2: {
                 this.rdoHttpProtocol2.setSelected(true);
                 break;
-            default:
+            }
+            default: {
                 this.rdoHttpProtocolAuto.setSelected(true);
                 break;
+            }
         }
 
         this.spnTimeout.setValue(prop.getTimeout());

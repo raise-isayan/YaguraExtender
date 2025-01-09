@@ -297,15 +297,18 @@ public class SendToParameterPanel extends javax.swing.JPanel {
         }
 
         switch (prop.getReqNameLineType()) {
-            case FIRST_LINE:
+            case FIRST_LINE: {
                 this.rdoReqNameFirstLine.setSelected(true);
                 break;
-            case SECOND_LINE:
+            }
+            case SECOND_LINE: {
                 this.rdoReqNameSecondLine.setSelected(true);
                 break;
-            default:
+            }
+            default: {
                 this.rdoReqNameAllLine.setSelected(true);
                 break;
+            }
         }
 
         this.chkUseReqNotes.setSelected(prop.isUseReqComment());

@@ -53,14 +53,14 @@ public class HotKeyDlg extends CustomDialog {
             .addGroup(pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addComponent(chkControl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkShift)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkAlt))
-                    .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(235, Short.MAX_VALUE))
+                        .addComponent(chkAlt)))
+                .addContainerGap(294, Short.MAX_VALUE))
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,7 +72,7 @@ public class HotKeyDlg extends CustomDialog {
                     .addComponent(chkAlt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -98,7 +98,7 @@ public class HotKeyDlg extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(203, Short.MAX_VALUE)
+                .addContainerGap(353, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,6 +182,20 @@ public class HotKeyDlg extends CustomDialog {
     private javax.swing.JTextField txtKey;
     // End of variables declaration//GEN-END:variables
 
+    public void setHotKey(KeyStroke ks) {
+        int modifiers = ks.getModifiers();
+        if ((modifiers &= KeyEvent.CTRL_DOWN_MASK) == KeyEvent.CTRL_DOWN_MASK) {
+            this.chkControl.setSelected(true);
+        }
+        if ((modifiers &= KeyEvent.SHIFT_DOWN_MASK) == KeyEvent.SHIFT_DOWN_MASK) {
+            this.chkShift.setSelected(true);
+        }
+        if ((modifiers &= KeyEvent.ALT_GRAPH_DOWN_MASK) == KeyEvent.ALT_GRAPH_DOWN_MASK) {
+            this.chkAlt.setSelected(true);
+        }
+        this.txtKey.setText(String.valueOf(ks.getKeyChar()));
+    }
+
     public KeyStroke getHotKey() {
         int modifiers = 0;
         if (this.chkControl.isSelected()) {
@@ -192,9 +206,9 @@ public class HotKeyDlg extends CustomDialog {
         }
         if (this.chkAlt.isSelected()) {
             modifiers |= KeyEvent.ALT_GRAPH_DOWN_MASK;
-        }        
+        }
         return KeyStroke.getKeyStroke(ConvertUtil.parseIntDefault(this.txtKey.getText(), -1), modifiers);
-    }    
+    }
 
 
 }
