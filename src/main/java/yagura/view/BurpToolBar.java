@@ -153,8 +153,9 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         });
         toolBar.add(btnOpenBrowser);
 
-        cmbProfile.setMaximumSize(new java.awt.Dimension(120, 28));
-        cmbProfile.setMinimumSize(new java.awt.Dimension(60, 28));
+        cmbProfile.setLightWeightPopupEnabled(false);
+        cmbProfile.setMaximumSize(new java.awt.Dimension(180, 28));
+        cmbProfile.setMinimumSize(new java.awt.Dimension(80, 28));
         cmbProfile.setName(""); // NOI18N
         cmbProfile.setPreferredSize(new java.awt.Dimension(120, 28));
         cmbProfile.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {

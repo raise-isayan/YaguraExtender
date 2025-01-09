@@ -20,7 +20,7 @@ public class MatchReplaceProperty implements IPropertyConfig {
 
     public final static String MATCHREPLACE_PROPERTY = "matchReplaceProperty";
 
-    @Expose
+    // 保存から除外
     private String selectedName = "";
 
     /**

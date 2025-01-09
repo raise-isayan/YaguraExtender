@@ -3,7 +3,9 @@ package burp;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.core.Registration;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
+import burp.api.montoya.http.message.Cookie;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.sessions.CookieJar;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.editor.extension.EditorCreationContext;
@@ -55,6 +57,8 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -309,6 +313,12 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
         api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
+
+    }
+
+    public List<Cookie> getCookies(Predicate<? super Cookie> filter) {
+        CookieJar cookieJar = api().http().cookieJar();
+        return cookieJar.cookies().stream().filter(filter).collect(Collectors.toList());
     }
 
     /**
