@@ -310,7 +310,7 @@ public class Logging implements Closeable {
     protected void writeMessage(OutputStream ostm, HttpRequestResponse messageInfo) throws IOException {
         try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + HttpTarget.toURLString(messageInfo.request().httpService()) + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + "[" + messageInfo.request().httpService().ipAddress() + "]" + " " + HttpTarget.toURLString(messageInfo.request().httpService()) + " " + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
             if (messageInfo.request() != null) {
                 fostm.write(messageInfo.request().toByteArray().getBytes());
@@ -380,7 +380,7 @@ public class Logging implements Closeable {
     protected void writeWebSocektTextMessage(OutputStream ostm, HttpRequest upgradeRequest, TextMessage textMessage) throws IOException {
         try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + textMessage.direction().name() + " " + upgradeRequest.url() + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + textMessage.direction().name() + " " + "[" + upgradeRequest.httpService().ipAddress() + "]" + " " + upgradeRequest.url() + " " +  HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw(textMessage.payload() + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
@@ -390,7 +390,7 @@ public class Logging implements Closeable {
     protected void writeWebSocektBinayMessage(OutputStream ostm, HttpRequest upgradeRequest, BinaryMessage binaryMessage) throws IOException {
         try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + binaryMessage.direction().name() + " " + upgradeRequest.url() + HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + binaryMessage.direction().name() + " " +  "[" + upgradeRequest.httpService().ipAddress() + "]" + " " + upgradeRequest.url() + " " +  HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
             fostm.write(binaryMessage.payload().getBytes());
             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
