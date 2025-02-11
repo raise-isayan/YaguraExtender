@@ -10,6 +10,8 @@ import extension.view.layout.VerticalFlowLayout;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
+import javax.tools.Diagnostic;
+import yagura.dynamic.BambdaTemplete;
 
 /**
  *
@@ -135,20 +137,22 @@ public class FilterHttpPanel extends javax.swing.JPanel {
     private final FilterAnnotationPanel pnlAnnotation = new FilterAnnotationPanel();
     private final FilterRequestResponsePanel pnlRequestResponse = new FilterRequestResponsePanel();
 
-    private final javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
-    private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
-    private final javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
+    private final FilterBambdaPanel pnlFilterBambda = new FilterBambdaPanel();
+
+//    private final javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
+//    private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
+//    private final javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
 
     private void customizeComponents() {
-        this.scrollBabda.setViewportView(this.txtBambda);
+//        this.scrollBabda.setViewportView(this.txtBambda);
+//        this.txtBambda.setEditorKitForContentType("text/java", this.javaStyleEditorKit);
+//        this.txtBambda.setContentType("text/java");
 
-        this.txtBambda.setEditorKitForContentType("text/java", this.javaStyleEditorKit);
-        this.txtBambda.setContentType("text/java");
-
-        this.pnlBambda.setLayout(new java.awt.BorderLayout());
-        this.scrollBabda.setViewportView(this.txtBambda);
-        this.pnlBambda.add(scrollBabda, java.awt.BorderLayout.CENTER);
-        this.tabbetFilter.addTab("Bambda", this.pnlBambda);
+//        this.pnlBambda.setLayout(new java.awt.BorderLayout());
+//        this.scrollBabda.setViewportView(this.txtBambda);
+//        this.pnlBambda.add(scrollBabda, java.awt.BorderLayout.CENTER);
+        this.pnlFilterBambda.setFilterCategory(FilterProperty.FilterCategory.HTTP);
+        this.tabbetFilter.addTab("Bambda", this.pnlFilterBambda);
 
         this.pnlHttpFilterByRequest.setLayout(new VerticalFlowLayout());
         this.pnlHttp.add(this.pnlRequestResponse, java.awt.BorderLayout.CENTER);
@@ -170,19 +174,23 @@ public class FilterHttpPanel extends javax.swing.JPanel {
 
     public void ConverToBambda(FilterProperty filter) {
         this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
-        this.txtBambda.setText(filter.build());
+//        this.txtBambda.setText(filter.build());
+        this.pnlFilterBambda.setCode(filter.build());
     }
 
     public void ImportBambda(FilterProperty.FilterCategory filterCategory) {
         String bambda = BurpConfig.getBambda(BurpExtension.api(), filterCategory);
         this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
-        this.txtBambda.setText(bambda);
+//        this.txtBambda.setText(bambda);
+        this.pnlFilterBambda.setCode(bambda);
     }
 
     public void setBambaMode(boolean bamba) {
-        this.tabbetFilter.remove(this.pnlBambda);
+//        this.tabbetFilter.remove(this.pnlBambda);
+        this.tabbetFilter.remove(this.pnlFilterBambda);
         if (bamba) {
-            this.tabbetFilter.addTab("Bambda", this.pnlBambda);
+//            this.tabbetFilter.addTab("Bambda", this.pnlBambda);
+            this.tabbetFilter.addTab("Bambda", this.pnlFilterBambda);
             this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Settings"));
         }
     }
@@ -199,8 +207,9 @@ public class FilterHttpPanel extends javax.swing.JPanel {
         this.chkShowOnlyEditedMessage.setSelected(filterProp.isShowOnlyEditedMessage());
 
         this.txtLiistenerPort.setText(filterProp.getListenerPort() > -1 ? Integer.toString(filterProp.getListenerPort()) : "");
-        
-        this.txtBambda.setText(filterProp.getBambdaQuery());
+
+//        this.txtBambda.setText(filterProp.getBambdaQuery());
+        this.pnlFilterBambda.setCode(filterProp.getBambdaQuery());
 
         this.pnlAnnotation.setAnnotationProperty(filterProp);
     }
@@ -222,8 +231,20 @@ public class FilterHttpPanel extends javax.swing.JPanel {
 
         this.pnlAnnotation.getAnnotationProperty(filterProp);
 
-        filterProp.setBambda(this.txtBambda.getText());
+//        filterProp.setBambda(this.txtBambda.getText());
+        filterProp.setBambda(this.pnlFilterBambda.getCode());
         return filterProp;
+    }
+
+    public boolean comple() {
+        BambdaTemplete templete = this.pnlFilterBambda.source();
+        this.pnlFilterBambda.compile(templete);
+        Diagnostic report = this.pnlFilterBambda.getReport();
+        return (report == null);
+    }
+
+    public void clearReport() {
+        this.pnlFilterBambda.clearReport();
     }
 
 }

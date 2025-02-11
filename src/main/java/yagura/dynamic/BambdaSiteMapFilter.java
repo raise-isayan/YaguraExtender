@@ -1,7 +1,7 @@
 package yagura.dynamic;
 
 import burp.api.montoya.sitemap.SiteMapNode;
-import javax.swing.text.Utilities;
+import burp.api.montoya.utilities.Utilities;
 
 /**
  *

@@ -1,7 +1,7 @@
 package yagura.dynamic;
 
 import burp.api.montoya.proxy.ProxyWebSocketMessage;
-import javax.swing.text.Utilities;
+import burp.api.montoya.utilities.Utilities;
 
 /**
  *
@@ -9,6 +9,6 @@ import javax.swing.text.Utilities;
  */
 public interface BambdaWebSocketFilter {
 
-    public boolean matches(ProxyWebSocketMessage requestRespose, Utilities utilities);
+    public boolean matches(ProxyWebSocketMessage message, Utilities utilities);
 
 }

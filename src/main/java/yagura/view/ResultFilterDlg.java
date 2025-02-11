@@ -17,7 +17,7 @@ public class ResultFilterDlg extends CustomDialog {
     private final static javax.swing.ImageIcon image_http = new javax.swing.ImageIcon(ResultFilterDlg.class.getResource("/yagura/resources/page_white_world.png"));
     private final static javax.swing.ImageIcon image_websocket = new javax.swing.ImageIcon(ResultFilterDlg.class.getResource("/yagura/resources/connect.png"));
     private final static javax.swing.ImageIcon image_site_map = new javax.swing.ImageIcon(ResultFilterDlg.class.getResource("/yagura/resources/site_vmap.png"));
-    
+
     /**
      * Creates new form ResultFilterDlg
      */
@@ -194,7 +194,7 @@ public class ResultFilterDlg extends CustomDialog {
         }
         return icon;
     }
-    
+
     private void tabbetHttpFilterStateChanged(javax.swing.event.ChangeEvent evt) {
         this.btnConvertBambda.setVisible(this.pnlFilterHttp.isFilterModeSettings());
     }
@@ -206,15 +206,18 @@ public class ResultFilterDlg extends CustomDialog {
     private void tabbetSiteMapFilterStateChanged(javax.swing.event.ChangeEvent evt) {
         this.btnConvertBambda.setVisible(this.pnlFilterSiteMap.isFilterModeSettings());
     }
-    
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        this.clearRerpot();
         if (this.getEditMode() && this.getFilterName().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.resultfilter.ok.name.empty"), "ResultFilter", JOptionPane.INFORMATION_MESSAGE);
+        } else if (!this.comple()) {
+            // コンパイルエラー
         } else {
             this.setModalResult(JOptionPane.OK_OPTION);
             this.closeDialog(null);
@@ -230,7 +233,7 @@ public class ResultFilterDlg extends CustomDialog {
             case WEBSOCKET:
                 this.pnlFilterWebSocket.ConverToBambda(filter);
                 break;
-            case SITE_MAP:                
+            case SITE_MAP:
                 this.pnlFilterSiteMap.ConverToBambda(filter);
                 break;
         }
@@ -244,7 +247,7 @@ public class ResultFilterDlg extends CustomDialog {
             case WEBSOCKET:
                 this.pnlFilterWebSocket.ImportBambda(getFilterCategory());
                 break;
-            case SITE_MAP:                
+            case SITE_MAP:
                 this.pnlFilterSiteMap.ImportBambda(getFilterCategory());
                 break;
         }
@@ -307,6 +310,36 @@ public class ResultFilterDlg extends CustomDialog {
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 
+    private synchronized void clearRerpot() {
+        switch (this.getFilterCategory()) {
+            case HTTP:
+                this.pnlFilterHttp.clearReport();
+                break;
+            case WEBSOCKET:
+                this.pnlFilterWebSocket.clearReport();
+                break;
+            case SITE_MAP:
+                this.pnlFilterSiteMap.clearReport();
+                break;
+        }
+    }
+
+    public synchronized boolean comple() {
+        boolean report = false;
+        switch (this.getFilterCategory()) {
+            case HTTP:
+                report = this.pnlFilterHttp.comple();
+                break;
+            case WEBSOCKET:
+                report = this.pnlFilterWebSocket.comple();
+                break;
+            case SITE_MAP:
+                report = this.pnlFilterSiteMap.comple();
+                break;
+        }
+        return report;
+    }
+
     public void setProperty(FilterProperty filterProp) {
         setProtocalType(filterProp.getFilterCategory());
         switch (filterProp.getFilterCategory()) {
@@ -316,7 +349,7 @@ public class ResultFilterDlg extends CustomDialog {
             case WEBSOCKET:
                 this.pnlFilterWebSocket.setProperty(filterProp);
                 break;
-            case SITE_MAP:                
+            case SITE_MAP:
                 this.pnlFilterSiteMap.setProperty(filterProp);
                 break;
         }
@@ -324,13 +357,13 @@ public class ResultFilterDlg extends CustomDialog {
 
     private FilterProperty.FilterCategory getFilterCategory() {
         if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("HTTP")) {
-            return FilterProperty.FilterCategory.HTTP;        
+            return FilterProperty.FilterCategory.HTTP;
         }
         else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("WebSocket")) {
-            return FilterProperty.FilterCategory.WEBSOCKET;        
+            return FilterProperty.FilterCategory.WEBSOCKET;
         }
         else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("SiteMap")) {
-            return FilterProperty.FilterCategory.SITE_MAP;        
+            return FilterProperty.FilterCategory.SITE_MAP;
         }
         return null;
     }
@@ -343,7 +376,7 @@ public class ResultFilterDlg extends CustomDialog {
             case WEBSOCKET:
                 this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("WebSocket"));
                 break;
-            case SITE_MAP:                
+            case SITE_MAP:
                 this.tabbeProtocol.setSelectedIndex(this.tabbeProtocol.indexOfTab("SiteMap"));
                 break;
         }
@@ -358,7 +391,7 @@ public class ResultFilterDlg extends CustomDialog {
             case WEBSOCKET:
                 filterProp = this.pnlFilterWebSocket.getProperty();
                 break;
-            case SITE_MAP:                
+            case SITE_MAP:
                 filterProp = this.pnlFilterSiteMap.getProperty();
                 break;
         }
@@ -407,5 +440,6 @@ public class ResultFilterDlg extends CustomDialog {
             getContentPane().add(this.pnlName, java.awt.BorderLayout.NORTH);
         }
     }
+
 
 }

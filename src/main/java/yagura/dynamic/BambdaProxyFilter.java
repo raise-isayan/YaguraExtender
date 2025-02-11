@@ -1,7 +1,7 @@
 package yagura.dynamic;
 
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
-import javax.swing.text.Utilities;
+import burp.api.montoya.utilities.Utilities;
 
 /**
  *
@@ -9,6 +9,6 @@ import javax.swing.text.Utilities;
  */
 public interface BambdaProxyFilter {
 
-    public boolean matches(ProxyHttpRequestResponse requestRespose, Utilities utilities);
+    public boolean matches(ProxyHttpRequestResponse requestResponse, Utilities utilities);
 
 }
