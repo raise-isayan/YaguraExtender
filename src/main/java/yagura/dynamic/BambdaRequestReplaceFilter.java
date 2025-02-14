@@ -8,7 +8,7 @@ import burp.api.montoya.utilities.Utilities;
  *
  * @author isayan
  */
-public interface BambdaRequestReplaceFilter {
+public interface BambdaRequestReplaceFilter extends BambdaFilter {
 
     public HttpRequest replace(ProxyHttpRequestResponse requestResponse, Utilities utilities);
 

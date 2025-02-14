@@ -1,6 +1,9 @@
 package yagura.view;
 
 import extension.burp.FilterProperty;
+import static extension.burp.FilterProperty.FilterCategory.HTTP;
+import static extension.burp.FilterProperty.FilterCategory.SITE_MAP;
+import static extension.burp.FilterProperty.FilterCategory.WEBSOCKET;
 import extension.view.base.CustomDialog;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -43,6 +46,7 @@ public class ResultFilterDlg extends CustomDialog {
         btnOK = new javax.swing.JButton();
         btnConvertBambda = new javax.swing.JButton();
         btnImportBambda = new javax.swing.JButton();
+        btnCompileBambda = new javax.swing.JButton();
         pnlName = new javax.swing.JPanel();
         lblName = new javax.swing.JLabel();
         txtName = new javax.swing.JTextField();
@@ -91,6 +95,13 @@ public class ResultFilterDlg extends CustomDialog {
             }
         });
 
+        btnCompileBambda.setText("Compile Bambda");
+        btnCompileBambda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCompileBambdaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlApplyLayout = new javax.swing.GroupLayout(pnlApply);
         pnlApply.setLayout(pnlApplyLayout);
         pnlApplyLayout.setHorizontalGroup(
@@ -100,7 +111,9 @@ public class ResultFilterDlg extends CustomDialog {
                 .addComponent(btnConvertBambda)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnImportBambda)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 457, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCompileBambda)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 332, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -114,7 +127,8 @@ public class ResultFilterDlg extends CustomDialog {
                     .addComponent(btnCancel)
                     .addComponent(btnOK)
                     .addComponent(btnConvertBambda)
-                    .addComponent(btnImportBambda))
+                    .addComponent(btnImportBambda)
+                    .addComponent(btnCompileBambda))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -197,14 +211,17 @@ public class ResultFilterDlg extends CustomDialog {
 
     private void tabbetHttpFilterStateChanged(javax.swing.event.ChangeEvent evt) {
         this.btnConvertBambda.setVisible(this.pnlFilterHttp.isFilterModeSettings());
+        this.btnCompileBambda.setVisible(this.pnlFilterHttp.isFilterModeBambda());
     }
 
     private void tabbetWebSocetFilterStateChanged(javax.swing.event.ChangeEvent evt) {
         this.btnConvertBambda.setVisible(this.pnlFilterWebSocket.isFilterModeSettings());
+        this.btnCompileBambda.setVisible(this.pnlFilterWebSocket.isFilterModeBambda());
     }
 
     private void tabbetSiteMapFilterStateChanged(javax.swing.event.ChangeEvent evt) {
         this.btnConvertBambda.setVisible(this.pnlFilterSiteMap.isFilterModeSettings());
+        this.btnCompileBambda.setVisible(this.pnlFilterSiteMap.isFilterModeBambda());
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -213,11 +230,8 @@ public class ResultFilterDlg extends CustomDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
-        this.clearRerpot();
         if (this.getEditMode() && this.getFilterName().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, BUNDLE.getString("view.resultfilter.ok.name.empty"), "ResultFilter", JOptionPane.INFORMATION_MESSAGE);
-        } else if (!this.comple()) {
-            // コンパイルエラー
         } else {
             this.setModalResult(JOptionPane.OK_OPTION);
             this.closeDialog(null);
@@ -225,33 +239,22 @@ public class ResultFilterDlg extends CustomDialog {
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void btnConvertBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertBambdaActionPerformed
-        FilterProperty filter = this.getProperty();
-        switch (this.getFilterCategory()) {
-            case HTTP:
-                this.pnlFilterHttp.ConverToBambda(filter);
-                break;
-            case WEBSOCKET:
-                this.pnlFilterWebSocket.ConverToBambda(filter);
-                break;
-            case SITE_MAP:
-                this.pnlFilterSiteMap.ConverToBambda(filter);
-                break;
-        }
+        this.converToBambda(this.getFilterCategory(), this.getProperty());
     }//GEN-LAST:event_btnConvertBambdaActionPerformed
 
     private void btnImportBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportBambdaActionPerformed
-        switch (this.getFilterCategory()) {
-            case HTTP:
-                this.pnlFilterHttp.ImportBambda(getFilterCategory());
-                break;
-            case WEBSOCKET:
-                this.pnlFilterWebSocket.ImportBambda(getFilterCategory());
-                break;
-            case SITE_MAP:
-                this.pnlFilterSiteMap.ImportBambda(getFilterCategory());
-                break;
-        }
+        this.importBambda(this.getFilterCategory());
     }//GEN-LAST:event_btnImportBambdaActionPerformed
+
+    private void btnCompileBambdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompileBambdaActionPerformed
+        this.clearRerpot();
+        if (!this.comple()) {
+            this.setBambdaDividerClose(this.getFilterCategory(), true);
+        }
+        else {
+            this.setBambdaDividerClose(this.getFilterCategory(), false);
+        }
+    }//GEN-LAST:event_btnCompileBambdaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -299,6 +302,7 @@ public class ResultFilterDlg extends CustomDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnCompileBambda;
     private javax.swing.JButton btnConvertBambda;
     private javax.swing.JButton btnImportBambda;
     private javax.swing.JButton btnOK;
@@ -354,6 +358,49 @@ public class ResultFilterDlg extends CustomDialog {
                 break;
         }
     }
+
+    private void converToBambda(FilterProperty.FilterCategory filterCategory, FilterProperty filter) {
+        switch (filterCategory) {
+            case HTTP:
+                this.pnlFilterHttp.converToBambda(filter);
+                break;
+            case WEBSOCKET:
+                this.pnlFilterWebSocket.converToBambda(filter);
+                break;
+            case SITE_MAP:
+                this.pnlFilterSiteMap.converToBambda(filter);
+                break;
+        }
+    }
+
+    private void importBambda(FilterProperty.FilterCategory filterCategory) {
+        switch (filterCategory) {
+            case HTTP:
+                this.pnlFilterHttp.importBambda(filterCategory);
+                break;
+            case WEBSOCKET:
+                this.pnlFilterWebSocket.importBambda(filterCategory);
+                break;
+            case SITE_MAP:
+                this.pnlFilterSiteMap.importBambda(filterCategory);
+                break;
+        }
+    }
+
+    private void setBambdaDividerClose(FilterProperty.FilterCategory filterCategory, boolean visible) {
+        switch (filterCategory) {
+            case HTTP:
+                this.pnlFilterHttp.setBambdaDividerClose(visible);
+                break;
+            case WEBSOCKET:
+                this.pnlFilterWebSocket.setBambdaDividerClose(visible);
+                break;
+            case SITE_MAP:
+                this.pnlFilterSiteMap.setBambdaDividerClose(visible);
+                break;
+        }
+    }
+
 
     private FilterProperty.FilterCategory getFilterCategory() {
         if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("HTTP")) {

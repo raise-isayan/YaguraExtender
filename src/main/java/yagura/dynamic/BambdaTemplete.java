@@ -1,11 +1,11 @@
 package yagura.dynamic;
 
 import extension.burp.FilterProperty;
-import static extension.burp.FilterProperty.FilterCategory.HTTP;
-import static extension.burp.FilterProperty.FilterCategory.REQUEST_REPLACE;
-import static extension.burp.FilterProperty.FilterCategory.RESPONSE_REPLACE;
-import static extension.burp.FilterProperty.FilterCategory.SITE_MAP;
-import static extension.burp.FilterProperty.FilterCategory.WEBSOCKET;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.tools.Diagnostic;
+import javax.tools.DiagnosticListener;
 
 /**
  *
@@ -13,10 +13,18 @@ import static extension.burp.FilterProperty.FilterCategory.WEBSOCKET;
  */
 public class BambdaTemplete {
 
-    public String BAMBDA_DEFAULT = "return true;";
+    private final static Logger logger = Logger.getLogger(BambdaTemplete.class.getName());
+
+    public final static String BAMBDA_DEFAULT = "return true;";
 
     private final static String PROXY_FILTER_FMT
             = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
             public class %s implements yagura.dynamic.BambdaProxyFilter {
                 public boolean matches(burp.api.montoya.proxy.ProxyHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -26,6 +34,12 @@ public class BambdaTemplete {
 
     private final static String WEBSOCKET_FILTER_FMT
             = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
             public class %s implements yagura.dynamic.BambdaWebSocketFilter {
                 public boolean matches(burp.api.montoya.proxy.ProxyWebSocketMessage message, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -35,8 +49,14 @@ public class BambdaTemplete {
 
     private final static String SITEMAP_FILTER_FMT
             = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
             public class %s implements yagura.dynamic.BambdaSiteMapFilter {
-                public boolean matches(burp.api.montoya.sitemap.SiteMapNode node, burp.api.montoya.utilities.Utilities utilities) {
+               public boolean matches(burp.api.montoya.sitemap.SiteMapNode node, burp.api.montoya.utilities.Utilities utilities) {
                     %s
                 }
             }
@@ -44,6 +64,11 @@ public class BambdaTemplete {
 
     private final static String LOGGER_CAPTURE_FILTER_FMT
             = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
             public class %s implements yagura.dynamic.BambdaLoggerCaptureFilter {
                 public boolean matches(burp.api.montoya.logger.LoggerCaptureHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -53,6 +78,12 @@ public class BambdaTemplete {
 
     private final static String LOGGER_HTTP_FILTER_FMT
             = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
             public class %s implements yagura.dynamic.BambdaLoggerHttpFilter {
                 public boolean matches(burp.api.montoya.proxy.LoggerHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -62,6 +93,12 @@ public class BambdaTemplete {
 
     private final static String REQUESWT_REPLACE_FILTER_FMT
             = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
             public class %s implements yagura.dynamic.BambdaRequestReplaceFilter {
                 public burp.api.montoya.http.message.requests.HttpRequest replace(burp.api.montoya.proxy.ProxyHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -71,6 +108,12 @@ public class BambdaTemplete {
 
     private final static String RESPONSE_REPLACE_FILTER_FMT
             = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
             public class %s implements yagura.dynamic.BambdaRequestReplaceFilter {
                 public burp.api.montoya.http.message.responses.HttpResponse replace(burp.api.montoya.proxy.ProxyHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -138,28 +181,62 @@ public class BambdaTemplete {
         BambdaTemplete templete = null;
         switch (category) {
             case HTTP:
-                templete = new BambdaTemplete(functionName, String.format(PROXY_FILTER_FMT, functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(PROXY_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
                 break;
             case WEBSOCKET:
-                templete = new BambdaTemplete(functionName, String.format(WEBSOCKET_FILTER_FMT, functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(WEBSOCKET_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
                 break;
             case SITE_MAP:
-                templete = new BambdaTemplete(functionName, String.format(SITEMAP_FILTER_FMT, functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(SITEMAP_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
                 break;
             case LOGGER_CAPTURE:
-                templete = new BambdaTemplete(functionName, String.format(LOGGER_CAPTURE_FILTER_FMT, functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(LOGGER_CAPTURE_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
                 break;
             case LOGGER_DISPLAY:
-                templete = new BambdaTemplete(functionName, String.format(LOGGER_HTTP_FILTER_FMT, functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(LOGGER_HTTP_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
                 break;
             case REQUEST_REPLACE:
-                templete = new BambdaTemplete(functionName, String.format(REQUESWT_REPLACE_FILTER_FMT, functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(REQUESWT_REPLACE_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
                 break;
             case RESPONSE_REPLACE:
-                templete = new BambdaTemplete(functionName, String.format(RESPONSE_REPLACE_FILTER_FMT, functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(RESPONSE_REPLACE_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
                 break;
         }
         return templete;
+    }
+
+    private final SimpleJavaCompilerEngine engine = new SimpleJavaCompilerEngine();
+
+    public BambdaFilter getBambaFilter(BambdaTemplete templete) {
+        Object inst = null;
+        try {
+            DiagnosticListener listener = new DiagnosticListener() {
+                @Override
+                public void report(Diagnostic diagnostic) {
+
+                }
+            };
+            Class defineClass = this.engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+            inst = defineClass.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (InstantiationException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (IllegalAccessException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (IllegalArgumentException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (InvocationTargetException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        if (inst instanceof BambdaFilter filter) {
+            return filter;
+        }
+        else {
+            return null;
+        }
     }
 
     private final String functionName;

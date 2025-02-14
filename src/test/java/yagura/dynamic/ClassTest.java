@@ -90,16 +90,32 @@ public class ClassTest {
             engine.compile(templete.getFunctionName(), templete.getContent(), listener);
         }
         {
-        BambdaTemplete templete = BambdaTemplete.create("testWEBSOCET", "return true;", FilterProperty.FilterCategory.WEBSOCKET);
-        System.out.println("Source:\r\n" + templete.getContent());
-        engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+            BambdaTemplete templete = BambdaTemplete.create("testWEBSOCET", "return true;", FilterProperty.FilterCategory.WEBSOCKET);
+            System.out.println("Source:\r\n" + templete.getContent());
+            engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+        }
+        {
+            BambdaTemplete templete = BambdaTemplete.create("testSITEMAP", "return true;", FilterProperty.FilterCategory.SITE_MAP);
+            System.out.println("Source:\r\n" + templete.getContent());
+            engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+        }
     }
-    {
-        BambdaTemplete templete = BambdaTemplete.create("testSITEMAP", "return true;", FilterProperty.FilterCategory.SITE_MAP);
-        System.out.println("Source:\r\n" + templete.getContent());
-        engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+
+    @Test
+    public void testImport() {
+        System.out.println("testImport");
+        SimpleJavaCompilerEngine engine = new SimpleJavaCompilerEngine();
+        {
+            BambdaTemplete templete = BambdaTemplete.create("testHTTP", "return requestResponse.request().isInScope();", FilterProperty.FilterCategory.HTTP);
+            System.out.println("Source:\r\n" + templete.getContent());
+            engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+        }
+        {
+            BambdaTemplete templete = BambdaTemplete.create("testHTTP", "return StatusCodeClass.CLASS_2XX_SUCCESS.contains(200);", FilterProperty.FilterCategory.HTTP);
+            System.out.println("Source:\r\n" + templete.getContent());
+            engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+        }
     }
-}
 
     @Test
     public void testClass() {

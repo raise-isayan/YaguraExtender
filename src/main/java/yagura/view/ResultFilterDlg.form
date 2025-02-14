@@ -80,7 +80,9 @@
                   <Component id="btnConvertBambda" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnImportBambda" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="457" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnCompileBambda" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="332" max="32767" attributes="0"/>
                   <Component id="btnOK" min="-2" pref="84" max="-2" attributes="1"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnCancel" min="-2" pref="95" max="-2" attributes="1"/>
@@ -97,6 +99,7 @@
                       <Component id="btnOK" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnConvertBambda" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnImportBambda" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnCompileBambda" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="14" max="32767" attributes="0"/>
               </Group>
@@ -137,6 +140,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnImportBambdaActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnCompileBambda">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Compile Bambda"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCompileBambdaActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

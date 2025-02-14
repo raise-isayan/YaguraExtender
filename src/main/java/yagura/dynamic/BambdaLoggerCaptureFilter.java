@@ -7,7 +7,7 @@ import burp.api.montoya.utilities.Utilities;
  *
  * @author isayan
  */
-public interface BambdaLoggerCaptureFilter {
+public interface BambdaLoggerCaptureFilter extends BambdaFilter {
 
     public boolean matches(LoggerCaptureHttpRequestResponse requestResponse, Utilities utilities);
 

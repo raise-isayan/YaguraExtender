@@ -144,17 +144,20 @@ public class FilterSiteMapPanel extends javax.swing.JPanel {
         this.tabbetFilter.removeChangeListener(listener);
     }
 
-
     public boolean isFilterModeSettings() {
         return this.tabbetFilter.getSelectedIndex() == this.tabbetFilter.indexOfTab("Settings");
     }
 
-    public void ConverToBambda(FilterProperty filter) {
+    public boolean isFilterModeBambda() {
+        return this.tabbetFilter.getSelectedIndex() == this.tabbetFilter.indexOfTab("Bambda");
+    }
+
+    public void converToBambda(FilterProperty filter) {
         this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
         this.pnlFilterBambda.setCode(filter.build());
     }
 
-    public void ImportBambda(FilterProperty.FilterCategory filterCategory) {
+    public void importBambda(FilterProperty.FilterCategory filterCategory) {
         String bambda = BurpConfig.getBambda(BurpExtension.api(), filterCategory);
         this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Bambda"));
         this.pnlFilterBambda.setCode(bambda);
@@ -181,6 +184,7 @@ public class FilterSiteMapPanel extends javax.swing.JPanel {
         this.pnlFilterBambda.setCode(filterProp.getBambdaQuery());
 
         this.pnlAnnotation.setAnnotationProperty(filterProp);
+        this.pnlRequestResponse.setProperty(filterProp);
     }
 
     public FilterProperty getProperty() {
@@ -196,6 +200,7 @@ public class FilterSiteMapPanel extends javax.swing.JPanel {
         filterProp.setShowOnlyParameterizedRequests(this.chkShowOnlyParameterizedRequests.isSelected());
 
         this.pnlAnnotation.getAnnotationProperty(filterProp);
+        this.pnlRequestResponse.getRequestResponseProperty(filterProp);
 
         filterProp.setBambda(this.pnlFilterBambda.getCode());
         return filterProp;
@@ -205,11 +210,15 @@ public class FilterSiteMapPanel extends javax.swing.JPanel {
         BambdaTemplete templete = this.pnlFilterBambda.source();
         this.pnlFilterBambda.compile(templete);
         Diagnostic report = this.pnlFilterBambda.getReport();
-        return (report == null);
+        return (report != null);
     }
 
     public void clearReport() {
         this.pnlFilterBambda.clearReport();
+    }
+
+    public void setBambdaDividerClose(boolean visible) {
+        this.pnlFilterBambda.setBambdaDividerClose(visible);
     }
 
 }

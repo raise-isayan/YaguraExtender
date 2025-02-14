@@ -7,7 +7,7 @@ import burp.api.montoya.utilities.Utilities;
  *
  * @author isayan
  */
-public interface BambdaProxyFilter {
+public interface BambdaProxyFilter extends BambdaFilter {
 
     public boolean matches(ProxyHttpRequestResponse requestResponse, Utilities utilities);
 

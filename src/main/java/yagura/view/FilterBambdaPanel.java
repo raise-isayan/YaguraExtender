@@ -1,11 +1,13 @@
 package yagura.view;
 
 import burp.BurpExtension;
+import extend.util.external.BasicSplitPaneDividerWapper;
 import extension.burp.FilterProperty;
 import extension.helpers.StringUtil;
 import extension.view.base.JavaSyntaxDocument;
 import java.util.List;
 import java.util.Locale;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
@@ -78,6 +80,8 @@ public class FilterBambdaPanel extends javax.swing.JPanel {
         }
     };
 
+    private BasicSplitPaneDividerWapper basicSplitDivUI = null;
+
     private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
     private final javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
 
@@ -88,6 +92,11 @@ public class FilterBambdaPanel extends javax.swing.JPanel {
         this.splitComple.setTopComponent(this.scrollBabda);
         this.splitComple.setOneTouchExpandable(true);
         this.setFilterCategory(FilterProperty.FilterCategory.HTTP);
+        this.setCode(BambdaTemplete.BAMBDA_DEFAULT);
+        if (this.splitComple.getUI() instanceof BasicSplitPaneUI basicSplitUI) {
+            this.basicSplitDivUI = new BasicSplitPaneDividerWapper(basicSplitUI);
+            this.basicSplitDivUI.getRightBotton().doClick();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -141,7 +150,6 @@ public class FilterBambdaPanel extends javax.swing.JPanel {
         this.lblFunction.setText(BambdaTemplete.getFunctionMessage(this.filterCategory));
         this.lblErrorMessage.setText("");
         this.txtErrorMessage.setText("");
-        this.splitComple.setDividerLocation(this.getPreferredSize().height);
     }
 
     public void setCode(String code) {
@@ -160,6 +168,18 @@ public class FilterBambdaPanel extends javax.swing.JPanel {
     public Class compile(BambdaTemplete templete) {
         this.engine.setExtensionClassLoactions(List.of(BurpExtension.api().extension().filename()));
         return this.engine.compile(templete.getFunctionName(), templete.getContent(), listener);
+    }
+
+    public void setBambdaDividerClose(boolean visible) {
+        if (this.basicSplitDivUI != null) {
+            if (visible) {
+                this.basicSplitDivUI.getLeftBotton().doClick();
+                this.splitComple.setDividerLocation(100);
+            }
+            else {
+                this.basicSplitDivUI.getRightBotton().doClick();
+            }
+        }
     }
 
 }
