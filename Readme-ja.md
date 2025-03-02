@@ -39,7 +39,7 @@ gradlew release
 * JRE(JDK) 17 (Open JDK を推奨)(https://openjdk.java.net/)
 
 ### Burp Suite
-* v2023.1.2以上 (http://www.portswigger.net/burp/)
+* Burp Suite v2024.2.1.3 以上 (http://www.portswigger.net/burp/)
 
 ### 開発環境
 * NetBeans 24 (https://netbeans.apache.org/)

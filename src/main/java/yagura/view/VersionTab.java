@@ -133,9 +133,9 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
             try {
                 file = filechooser.getSelectedFile();
                 OptionProperty option = BurpExtension.getInstance().getProperty();
-                Map<String, String> config = option.loadConfigSetting();
+                Map<String, String> config = option.getProperty();
                 JsonUtil.loadFromJson(file, config);
-                option.saveConfigSetting(config);
+                option.setProperty(config);
                 this.currentConigDirectory = file.getParentFile();
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -163,7 +163,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
                     file = new File(file.getAbsolutePath() + ".json");
                 }
                 OptionProperty option = BurpExtension.getInstance().getProperty();
-                Map<String, String> config = option.loadConfigSetting();
+                Map<String, String> config = option.getProperty();
                 JsonUtil.saveToJson(file, config);
                 this.currentConigDirectory = file.getParentFile();
             } catch (IOException ex) {
