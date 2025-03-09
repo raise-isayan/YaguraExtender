@@ -1234,7 +1234,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                         <Property name="columns" type="int" value="3"/>
-                        <Property name="rows" type="int" value="21"/>
+                        <Property name="rows" type="int" value="24"/>
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="btnHashMd2">
@@ -1349,124 +1349,124 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSha3_512ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSHAKE128">
+                        <Component class="javax.swing.JButton" name="btnHashSHAKE128">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SHAKE128"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSHAKE128ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSHAKE128ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSHAKE256">
+                        <Component class="javax.swing.JButton" name="btnHashSHAKE256">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SHAKE256"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSHAKE256ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSHAKE256ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN256_128">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN256_128">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-256-128"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN256_128ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN256_128ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN256_160">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN256_160">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-256-160"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN256_160ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN256_160ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN256_224">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN256_224">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-256-224"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN256_224ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN256_224ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN256_256">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN256_256">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-256-256"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN256_256ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN256_256ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN512_128">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN512_128">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-512-128"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN512_128ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN512_128ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN512_160">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN512_160">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-512-160"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN512_160ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN512_160ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN512_224">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN512_224">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-512-224"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN512_224ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN512_224ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN512_256">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN512_256">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-512-256"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN512_256ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN512_256ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN512_384">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN512_384">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-512-384"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN512_384ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN512_384ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN512_512">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN512_512">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-512-512"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN512_512ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN512_512ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN1024_384">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN1024_384">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-1024-384"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN1024_384ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN1024_384ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN1024_512">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN1024_512">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-1024-512"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN1024_512ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN1024_512ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSKEIN1024_1024">
+                        <Component class="javax.swing.JButton" name="btnHashSKEIN1024_1024">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="SKEIN-1024-1024"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSKEIN1024_1024ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashSKEIN1024_1024ActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="btnHashKECCAK224">
@@ -1731,6 +1731,78 @@
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashTUPLEHASH256_512ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashISAP">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="ISAP"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashISAPActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashAscon">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="AsconHash"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashAsconActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashAsconA">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="AsconHashA"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashAsconAActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashAsconXof">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="AsconXof"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashAsconXofActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashAsconXofA">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="AsconXofA"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashAsconXofAActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashESCH256">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="ESCH256"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashESCH256ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashESCH384">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="ESCH384"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashESCH384ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashPhotonBeetle">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="PhotonBeetle"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashPhotonBeetleActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnHashXoodyak">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Xoodyak"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashXoodyakActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>

@@ -522,21 +522,21 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashSha3_256 = new javax.swing.JButton();
         btnHashSha3_384 = new javax.swing.JButton();
         btnHashSha3_512 = new javax.swing.JButton();
-        btnSHAKE128 = new javax.swing.JButton();
-        btnSHAKE256 = new javax.swing.JButton();
-        btnSKEIN256_128 = new javax.swing.JButton();
-        btnSKEIN256_160 = new javax.swing.JButton();
-        btnSKEIN256_224 = new javax.swing.JButton();
-        btnSKEIN256_256 = new javax.swing.JButton();
-        btnSKEIN512_128 = new javax.swing.JButton();
-        btnSKEIN512_160 = new javax.swing.JButton();
-        btnSKEIN512_224 = new javax.swing.JButton();
-        btnSKEIN512_256 = new javax.swing.JButton();
-        btnSKEIN512_384 = new javax.swing.JButton();
-        btnSKEIN512_512 = new javax.swing.JButton();
-        btnSKEIN1024_384 = new javax.swing.JButton();
-        btnSKEIN1024_512 = new javax.swing.JButton();
-        btnSKEIN1024_1024 = new javax.swing.JButton();
+        btnHashSHAKE128 = new javax.swing.JButton();
+        btnHashSHAKE256 = new javax.swing.JButton();
+        btnHashSKEIN256_128 = new javax.swing.JButton();
+        btnHashSKEIN256_160 = new javax.swing.JButton();
+        btnHashSKEIN256_224 = new javax.swing.JButton();
+        btnHashSKEIN256_256 = new javax.swing.JButton();
+        btnHashSKEIN512_128 = new javax.swing.JButton();
+        btnHashSKEIN512_160 = new javax.swing.JButton();
+        btnHashSKEIN512_224 = new javax.swing.JButton();
+        btnHashSKEIN512_256 = new javax.swing.JButton();
+        btnHashSKEIN512_384 = new javax.swing.JButton();
+        btnHashSKEIN512_512 = new javax.swing.JButton();
+        btnHashSKEIN1024_384 = new javax.swing.JButton();
+        btnHashSKEIN1024_512 = new javax.swing.JButton();
+        btnHashSKEIN1024_1024 = new javax.swing.JButton();
         btnHashKECCAK224 = new javax.swing.JButton();
         btnHashKECCAK256 = new javax.swing.JButton();
         btnHashKECCAK288 = new javax.swing.JButton();
@@ -570,6 +570,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashSM3 = new javax.swing.JButton();
         btnHashTUPLEHASH128_256 = new javax.swing.JButton();
         btnHashTUPLEHASH256_512 = new javax.swing.JButton();
+        btnHashISAP = new javax.swing.JButton();
+        btnHashAscon = new javax.swing.JButton();
+        btnHashAsconA = new javax.swing.JButton();
+        btnHashAsconXof = new javax.swing.JButton();
+        btnHashAsconXofA = new javax.swing.JButton();
+        btnHashESCH256 = new javax.swing.JButton();
+        btnHashESCH384 = new javax.swing.JButton();
+        btnHashPhotonBeetle = new javax.swing.JButton();
+        btnHashXoodyak = new javax.swing.JButton();
         pnlCheckSumTrans = new javax.swing.JPanel();
         btnCRC32 = new javax.swing.JButton();
         btnCRC32C = new javax.swing.JButton();
@@ -1360,7 +1369,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlHashCheckSum.setLayout(new javax.swing.BoxLayout(pnlHashCheckSum, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(21, 3));
+        pnlHashTrans.setLayout(new java.awt.GridLayout(24, 3));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -1474,125 +1483,125 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlHashTrans.add(btnHashSha3_512);
 
-        btnSHAKE128.setText("SHAKE128");
-        btnSHAKE128.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSHAKE128.setText("SHAKE128");
+        btnHashSHAKE128.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSHAKE128ActionPerformed(evt);
+                btnHashSHAKE128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSHAKE128);
+        pnlHashTrans.add(btnHashSHAKE128);
 
-        btnSHAKE256.setText("SHAKE256");
-        btnSHAKE256.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSHAKE256.setText("SHAKE256");
+        btnHashSHAKE256.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSHAKE256ActionPerformed(evt);
+                btnHashSHAKE256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSHAKE256);
+        pnlHashTrans.add(btnHashSHAKE256);
 
-        btnSKEIN256_128.setText("SKEIN-256-128");
-        btnSKEIN256_128.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN256_128.setText("SKEIN-256-128");
+        btnHashSKEIN256_128.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN256_128ActionPerformed(evt);
+                btnHashSKEIN256_128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN256_128);
+        pnlHashTrans.add(btnHashSKEIN256_128);
 
-        btnSKEIN256_160.setText("SKEIN-256-160");
-        btnSKEIN256_160.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN256_160.setText("SKEIN-256-160");
+        btnHashSKEIN256_160.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN256_160ActionPerformed(evt);
+                btnHashSKEIN256_160ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN256_160);
+        pnlHashTrans.add(btnHashSKEIN256_160);
 
-        btnSKEIN256_224.setText("SKEIN-256-224");
-        btnSKEIN256_224.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN256_224.setText("SKEIN-256-224");
+        btnHashSKEIN256_224.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN256_224ActionPerformed(evt);
+                btnHashSKEIN256_224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN256_224);
+        pnlHashTrans.add(btnHashSKEIN256_224);
 
-        btnSKEIN256_256.setText("SKEIN-256-256");
-        btnSKEIN256_256.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN256_256.setText("SKEIN-256-256");
+        btnHashSKEIN256_256.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN256_256ActionPerformed(evt);
+                btnHashSKEIN256_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN256_256);
+        pnlHashTrans.add(btnHashSKEIN256_256);
 
-        btnSKEIN512_128.setText("SKEIN-512-128");
-        btnSKEIN512_128.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN512_128.setText("SKEIN-512-128");
+        btnHashSKEIN512_128.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN512_128ActionPerformed(evt);
+                btnHashSKEIN512_128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN512_128);
+        pnlHashTrans.add(btnHashSKEIN512_128);
 
-        btnSKEIN512_160.setText("SKEIN-512-160");
-        btnSKEIN512_160.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN512_160.setText("SKEIN-512-160");
+        btnHashSKEIN512_160.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN512_160ActionPerformed(evt);
+                btnHashSKEIN512_160ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN512_160);
+        pnlHashTrans.add(btnHashSKEIN512_160);
 
-        btnSKEIN512_224.setText("SKEIN-512-224");
-        btnSKEIN512_224.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN512_224.setText("SKEIN-512-224");
+        btnHashSKEIN512_224.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN512_224ActionPerformed(evt);
+                btnHashSKEIN512_224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN512_224);
+        pnlHashTrans.add(btnHashSKEIN512_224);
 
-        btnSKEIN512_256.setText("SKEIN-512-256");
-        btnSKEIN512_256.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN512_256.setText("SKEIN-512-256");
+        btnHashSKEIN512_256.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN512_256ActionPerformed(evt);
+                btnHashSKEIN512_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN512_256);
+        pnlHashTrans.add(btnHashSKEIN512_256);
 
-        btnSKEIN512_384.setText("SKEIN-512-384");
-        btnSKEIN512_384.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN512_384.setText("SKEIN-512-384");
+        btnHashSKEIN512_384.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN512_384ActionPerformed(evt);
+                btnHashSKEIN512_384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN512_384);
+        pnlHashTrans.add(btnHashSKEIN512_384);
 
-        btnSKEIN512_512.setText("SKEIN-512-512");
-        btnSKEIN512_512.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN512_512.setText("SKEIN-512-512");
+        btnHashSKEIN512_512.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN512_512ActionPerformed(evt);
+                btnHashSKEIN512_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN512_512);
+        pnlHashTrans.add(btnHashSKEIN512_512);
 
-        btnSKEIN1024_384.setText("SKEIN-1024-384");
-        btnSKEIN1024_384.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN1024_384.setText("SKEIN-1024-384");
+        btnHashSKEIN1024_384.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN1024_384ActionPerformed(evt);
+                btnHashSKEIN1024_384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN1024_384);
+        pnlHashTrans.add(btnHashSKEIN1024_384);
 
-        btnSKEIN1024_512.setText("SKEIN-1024-512");
-        btnSKEIN1024_512.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN1024_512.setText("SKEIN-1024-512");
+        btnHashSKEIN1024_512.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN1024_512ActionPerformed(evt);
+                btnHashSKEIN1024_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN1024_512);
+        pnlHashTrans.add(btnHashSKEIN1024_512);
 
-        btnSKEIN1024_1024.setText("SKEIN-1024-1024");
-        btnSKEIN1024_1024.addActionListener(new java.awt.event.ActionListener() {
+        btnHashSKEIN1024_1024.setText("SKEIN-1024-1024");
+        btnHashSKEIN1024_1024.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSKEIN1024_1024ActionPerformed(evt);
+                btnHashSKEIN1024_1024ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnSKEIN1024_1024);
+        pnlHashTrans.add(btnHashSKEIN1024_1024);
 
         btnHashKECCAK224.setText("KECCAK-224");
         btnHashKECCAK224.addActionListener(new java.awt.event.ActionListener() {
@@ -1857,6 +1866,78 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlHashTrans.add(btnHashTUPLEHASH256_512);
+
+        btnHashISAP.setText("ISAP");
+        btnHashISAP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashISAPActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashISAP);
+
+        btnHashAscon.setText("AsconHash");
+        btnHashAscon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashAsconActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashAscon);
+
+        btnHashAsconA.setText("AsconHashA");
+        btnHashAsconA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashAsconAActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashAsconA);
+
+        btnHashAsconXof.setText("AsconXof");
+        btnHashAsconXof.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashAsconXofActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashAsconXof);
+
+        btnHashAsconXofA.setText("AsconXofA");
+        btnHashAsconXofA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashAsconXofAActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashAsconXofA);
+
+        btnHashESCH256.setText("ESCH256");
+        btnHashESCH256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashESCH256ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashESCH256);
+
+        btnHashESCH384.setText("ESCH384");
+        btnHashESCH384.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashESCH384ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashESCH384);
+
+        btnHashPhotonBeetle.setText("PhotonBeetle");
+        btnHashPhotonBeetle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashPhotonBeetleActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashPhotonBeetle);
+
+        btnHashXoodyak.setText("Xoodyak");
+        btnHashXoodyak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashXoodyakActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashXoodyak);
 
         pnlHashCheckSum.add(pnlHashTrans);
 
@@ -3948,7 +4029,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnHashWHIRLPOOLActionPerformed
 
-    private void btnSHAKE128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSHAKE128ActionPerformed
+    private void btnHashSHAKE128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSHAKE128ActionPerformed
         try {
             String inputText = BouncyUtil.toSHAKE128Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -3957,9 +4038,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSHAKE128ActionPerformed
+    }//GEN-LAST:event_btnHashSHAKE128ActionPerformed
 
-    private void btnSHAKE256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSHAKE256ActionPerformed
+    private void btnHashSHAKE256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSHAKE256ActionPerformed
         try {
             String inputText = BouncyUtil.toSHAKE256um(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -3968,7 +4049,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSHAKE256ActionPerformed
+    }//GEN-LAST:event_btnHashSHAKE256ActionPerformed
 
     private void btnHashSM3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSM3ActionPerformed
         try {
@@ -3981,7 +4062,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnHashSM3ActionPerformed
 
-    private void btnSKEIN256_128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_128ActionPerformed
+    private void btnHashSKEIN256_128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN256_128ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN256_128Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -3990,9 +4071,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN256_128ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN256_128ActionPerformed
 
-    private void btnSKEIN256_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_160ActionPerformed
+    private void btnHashSKEIN256_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN256_160ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN256_160Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4001,9 +4082,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN256_160ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN256_160ActionPerformed
 
-    private void btnSKEIN256_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_224ActionPerformed
+    private void btnHashSKEIN256_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN256_224ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN256_224Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4012,9 +4093,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN256_224ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN256_224ActionPerformed
 
-    private void btnSKEIN256_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN256_256ActionPerformed
+    private void btnHashSKEIN256_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN256_256ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN256_256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4023,9 +4104,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN256_256ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN256_256ActionPerformed
 
-    private void btnSKEIN512_128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_128ActionPerformed
+    private void btnHashSKEIN512_128ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN512_128ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN512_128Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4034,9 +4115,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN512_128ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN512_128ActionPerformed
 
-    private void btnSKEIN512_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_160ActionPerformed
+    private void btnHashSKEIN512_160ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN512_160ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN512_160Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4045,9 +4126,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN512_160ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN512_160ActionPerformed
 
-    private void btnSKEIN512_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_224ActionPerformed
+    private void btnHashSKEIN512_224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN512_224ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN512_224Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4056,9 +4137,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN512_224ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN512_224ActionPerformed
 
-    private void btnSKEIN512_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_256ActionPerformed
+    private void btnHashSKEIN512_256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN512_256ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN512_256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4067,9 +4148,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN512_256ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN512_256ActionPerformed
 
-    private void btnSKEIN512_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_384ActionPerformed
+    private void btnHashSKEIN512_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN512_384ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN512_384Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4078,9 +4159,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN512_384ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN512_384ActionPerformed
 
-    private void btnSKEIN512_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN512_512ActionPerformed
+    private void btnHashSKEIN512_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN512_512ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN512_512Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4089,9 +4170,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN512_512ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN512_512ActionPerformed
 
-    private void btnSKEIN1024_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN1024_384ActionPerformed
+    private void btnHashSKEIN1024_384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN1024_384ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN1024_384Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4100,9 +4181,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN1024_384ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN1024_384ActionPerformed
 
-    private void btnSKEIN1024_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN1024_512ActionPerformed
+    private void btnHashSKEIN1024_512ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN1024_512ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN1024_512Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4111,9 +4192,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN1024_512ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN1024_512ActionPerformed
 
-    private void btnSKEIN1024_1024ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSKEIN1024_1024ActionPerformed
+    private void btnHashSKEIN1024_1024ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSKEIN1024_1024ActionPerformed
         try {
             String inputText = BouncyUtil.toSKEIN1024_1024Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
@@ -4122,7 +4203,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }//GEN-LAST:event_btnSKEIN1024_1024ActionPerformed
+    }//GEN-LAST:event_btnHashSKEIN1024_1024ActionPerformed
 
     private void btnHashKECCAK224ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashKECCAK224ActionPerformed
         try {
@@ -4519,6 +4600,105 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDotDecBIPActionPerformed
 
+    private void btnHashISAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashISAPActionPerformed
+        try {
+            String inputText = BouncyUtil.toISAPSum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashISAPActionPerformed
+
+    private void btnHashAsconActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashAsconActionPerformed
+        try {
+            String inputText = BouncyUtil.toAsconHash(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashAsconActionPerformed
+
+    private void btnHashAsconAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashAsconAActionPerformed
+        try {
+            String inputText = BouncyUtil.toAsconHashA(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashAsconAActionPerformed
+
+    private void btnHashAsconXofActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashAsconXofActionPerformed
+        try {
+            String inputText = BouncyUtil.toAsconXof(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashAsconXofActionPerformed
+
+    private void btnHashAsconXofAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashAsconXofAActionPerformed
+        try {
+            String inputText = BouncyUtil.toAsconXofA(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashAsconXofAActionPerformed
+
+    private void btnHashESCH256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashESCH256ActionPerformed
+        try {
+            String inputText = BouncyUtil.toESCH256Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashESCH256ActionPerformed
+
+    private void btnHashESCH384ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashESCH384ActionPerformed
+        try {
+            String inputText = BouncyUtil.toESCH384Sum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashESCH384ActionPerformed
+
+    private void btnHashPhotonBeetleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashPhotonBeetleActionPerformed
+        try {
+            String inputText = BouncyUtil.toPhotonBeetleSum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashPhotonBeetleActionPerformed
+
+    private void btnHashXoodyakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashXoodyakActionPerformed
+        try {
+            String inputText = BouncyUtil.toXoodyakSum(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashXoodyakActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4558,6 +4738,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnGenerate;
     private javax.swing.ButtonGroup btnGrpEncodeType;
     private javax.swing.ButtonGroup btnGrpNewLine;
+    private javax.swing.JButton btnHashAscon;
+    private javax.swing.JButton btnHashAsconA;
+    private javax.swing.JButton btnHashAsconXof;
+    private javax.swing.JButton btnHashAsconXofA;
     private javax.swing.JButton btnHashBLAKE2B_160;
     private javax.swing.JButton btnHashBLAKE2B_256;
     private javax.swing.JButton btnHashBLAKE2B_384;
@@ -4570,11 +4754,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashDSTU7564_256;
     private javax.swing.JButton btnHashDSTU7564_384;
     private javax.swing.JButton btnHashDSTU7564_512;
+    private javax.swing.JButton btnHashESCH256;
+    private javax.swing.JButton btnHashESCH384;
     private javax.swing.JButton btnHashGOST3411;
     private javax.swing.JButton btnHashGOST3411_2012_256;
     private javax.swing.JButton btnHashGOST3411_2012_512;
     private javax.swing.JButton btnHashHARAKA256;
     private javax.swing.JButton btnHashHARAKA512;
+    private javax.swing.JButton btnHashISAP;
     private javax.swing.JButton btnHashKECCAK224;
     private javax.swing.JButton btnHashKECCAK256;
     private javax.swing.JButton btnHashKECCAK288;
@@ -4585,10 +4772,26 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashMd5;
     private javax.swing.JButton btnHashPARALLELHASH128_256;
     private javax.swing.JButton btnHashPARALLELHASH256_512;
+    private javax.swing.JButton btnHashPhotonBeetle;
     private javax.swing.JButton btnHashRIPEMD128;
     private javax.swing.JButton btnHashRIPEMD129;
     private javax.swing.JButton btnHashRIPEMD256;
     private javax.swing.JButton btnHashRIPEMD320;
+    private javax.swing.JButton btnHashSHAKE128;
+    private javax.swing.JButton btnHashSHAKE256;
+    private javax.swing.JButton btnHashSKEIN1024_1024;
+    private javax.swing.JButton btnHashSKEIN1024_384;
+    private javax.swing.JButton btnHashSKEIN1024_512;
+    private javax.swing.JButton btnHashSKEIN256_128;
+    private javax.swing.JButton btnHashSKEIN256_160;
+    private javax.swing.JButton btnHashSKEIN256_224;
+    private javax.swing.JButton btnHashSKEIN256_256;
+    private javax.swing.JButton btnHashSKEIN512_128;
+    private javax.swing.JButton btnHashSKEIN512_160;
+    private javax.swing.JButton btnHashSKEIN512_224;
+    private javax.swing.JButton btnHashSKEIN512_256;
+    private javax.swing.JButton btnHashSKEIN512_384;
+    private javax.swing.JButton btnHashSKEIN512_512;
     private javax.swing.JButton btnHashSM3;
     private javax.swing.JButton btnHashSha1;
     private javax.swing.JButton btnHashSha224;
@@ -4605,6 +4808,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashTUPLEHASH256_512;
     private javax.swing.JButton btnHashTiger;
     private javax.swing.JButton btnHashWHIRLPOOL;
+    private javax.swing.JButton btnHashXoodyak;
     private javax.swing.JButton btnHexCopy;
     private javax.swing.JButton btnHexIP;
     private javax.swing.JButton btnIPv4ToUnicode;
@@ -4621,21 +4825,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnOutputToInput;
     private javax.swing.JButton btnOutputfile;
     private javax.swing.JButton btnRadix32Copy;
-    private javax.swing.JButton btnSHAKE128;
-    private javax.swing.JButton btnSHAKE256;
-    private javax.swing.JButton btnSKEIN1024_1024;
-    private javax.swing.JButton btnSKEIN1024_384;
-    private javax.swing.JButton btnSKEIN1024_512;
-    private javax.swing.JButton btnSKEIN256_128;
-    private javax.swing.JButton btnSKEIN256_160;
-    private javax.swing.JButton btnSKEIN256_224;
-    private javax.swing.JButton btnSKEIN256_256;
-    private javax.swing.JButton btnSKEIN512_128;
-    private javax.swing.JButton btnSKEIN512_160;
-    private javax.swing.JButton btnSKEIN512_224;
-    private javax.swing.JButton btnSKEIN512_256;
-    private javax.swing.JButton btnSKEIN512_384;
-    private javax.swing.JButton btnSKEIN512_512;
     private javax.swing.JButton btnSavetoFile;
     private javax.swing.JButton btnSmartDecode;
     private javax.swing.JButton btnSmartFormat;

@@ -1122,7 +1122,6 @@ HARAKA-256::
 HARAKA-512::
    Calculate hash with HARAKA-512
 
-
 RIPEMD128::
     Calculate hash with RIPEMD128
 
@@ -1200,6 +1199,45 @@ WHIRLPOOL::
 
 SM3::
    Calculate hash with SM3
+
+PARALLEL128-256::
+   Calculate hash with PARALLELHASH128-256
+
+PARALLEL256-512::
+   Calculate hash with PARALLELHASH256-512
+
+TUPLE128-256::
+   Calculate hash with TUPLEHASH128-256
+
+TUPLE256-512::
+   Calculate hash with TUPLEHASH256-512
+
+ISAP::
+   Calculate hash with ISAP
+
+AsconHash::
+   Calculate hash with AsconHash
+
+AsconHashA::
+   Calculate hash with AsconHashA
+
+AsconXof::
+   Calculate hash with AsconXof
+
+AsconXofA::
+   Calculate hash with AsconXofA
+
+ESCH256::
+   Calculate hash with ESCH256
+
+ESCH384::
+   Calculate hash with ESCH384
+
+PhotonBeetle::
+   Calculate hash with PhotonBeetle
+
+Xoodyak::
+   Calculate hash with Xoodyak
 
 CRC32::
     Calculate checksum by crc32

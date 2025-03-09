@@ -1191,6 +1191,33 @@ TUPLE128-256::
 TUPLE256-512::
    TUPLEHASH256-512によるハッシュを計算します。
 
+ISAP::
+   ISAPによるハッシュを計算します。
+
+AsconHash::
+   AsconHashによるハッシュを計算します。
+
+AsconHashA::
+   AsconHashAによるハッシュを計算します。
+
+AsconXof::
+   AsconXofによるハッシュを計算します。
+
+AsconXofA::
+   AsconXofAによるハッシュを計算します。
+
+ESCH256::
+   ESCH256によるハッシュを計算します。
+
+ESCH384::
+   ESCH384によるハッシュを計算します。
+
+PhotonBeetle::
+   PhotonBeetleによるハッシュを計算します。
+
+Xoodyak::
+   Xoodyakによるハッシュを計算します。
+
 CRC32::
     crc32によるチェックサムを計算します。
 
