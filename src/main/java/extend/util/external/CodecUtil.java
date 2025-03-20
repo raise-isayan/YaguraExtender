@@ -12,6 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;
+import org.apache.commons.codec.digest.XXHash32;
 
 /**
  * Apache Common Codec Util
@@ -672,6 +673,31 @@ public class CodecUtil {
         } else {
             return SHA3_384_HASH.digestAsHex(StringUtil.getBytesCharset(str, charset));
         }
+    }
+
+    /**
+     * XXHash32値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toXXHash32(String str, String charset) throws UnsupportedEncodingException {
+        return toXXHash32(str.getBytes(charset));
+    }
+
+    /**
+     * XXHash32値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toXXHash32(byte[] binary) {
+        XXHash32 crc = new XXHash32();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
     }
 
     /**

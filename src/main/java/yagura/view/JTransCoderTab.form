@@ -1861,6 +1861,14 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash2_64ActionPerformed"/>
                           </Events>
                         </Component>
+                        <Component class="javax.swing.JButton" name="btnXXHash32">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="xxHash32"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXXHash32ActionPerformed"/>
+                          </Events>
+                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import javax.swing.DropMode;
 import javax.swing.JOptionPane;
-import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -261,7 +260,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
 
-    private final TransferHandler handler = new TableRowTransferHandler();
+//    private final TransferHandler handler = new TableRowTransferHandler();
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
@@ -296,11 +295,10 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
-        this.tableSendTo.setTransferHandler(handler);
-        this.tableSendTo.setDropMode(DropMode.INSERT_ROWS);
         this.tableSendTo.setDragEnabled(true);
+        this.tableSendTo.setDropMode(DropMode.INSERT_ROWS);
+        this.tableSendTo.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        this.tableSendTo.setTransferHandler(new TableRowTransferHandler());
         this.tableSendTo.setFillsViewportHeight(true);
 
         // selected

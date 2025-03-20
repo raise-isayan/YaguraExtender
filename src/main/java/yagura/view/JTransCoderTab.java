@@ -585,6 +585,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnAdler32 = new javax.swing.JButton();
         btnMurmurHash2_32 = new javax.swing.JButton();
         btnMurmurHash2_64 = new javax.swing.JButton();
+        btnXXHash32 = new javax.swing.JButton();
         tabGenerator = new javax.swing.JPanel();
         splitGenerator = new javax.swing.JSplitPane();
         scrollGenerate = new javax.swing.JScrollPane();
@@ -1983,6 +1984,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlCheckSumTrans.add(btnMurmurHash2_64);
+
+        btnXXHash32.setText("xxHash32");
+        btnXXHash32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXXHash32ActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnXXHash32);
 
         pnlHashCheckSum.add(pnlCheckSumTrans);
 
@@ -4699,6 +4708,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnHashXoodyakActionPerformed
 
+    private void btnXXHash32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXXHash32ActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toXXHash32(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnXXHash32ActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4830,6 +4848,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnSmartFormat;
     private javax.swing.JButton btnSmartMatch;
     private javax.swing.JButton btnUnixtimeCopy;
+    private javax.swing.JButton btnXXHash32;
     private javax.swing.JButton btnZoneDateCopy;
     private javax.swing.JCheckBox chk64Newline;
     private javax.swing.JCheckBox chk76Newline;

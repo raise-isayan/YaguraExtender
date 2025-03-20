@@ -206,4 +206,12 @@ public class CodecUtilTest {
         }
     }
 
+    @Test
+    public void testToXXHash32() {
+        System.out.println("testToXXHash32");
+        System.out.println(CodecUtil.toXXHash32(StringUtil.getBytesRaw("test")));
+        System.out.println(CodecUtil.toXXHash32(StringUtil.getBytesRaw("test")));
+    }
+
+
 }
