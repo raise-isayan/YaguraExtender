@@ -1,6 +1,7 @@
 package yagura.view;
 
 import extension.burp.BurpUtil;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -69,7 +70,21 @@ public class PopupMessage extends javax.swing.JPanel {
         this.lblMessage.setText(message);
     }
 
+    public Color geBackColor() {
+        return this.getBackground();
+    }
+
+    public void seBackColor(Color bkColor) {
+        this.setBackground(bkColor);
+    }
+
     public void show(String message, int delay) {
+        this.setMessage(message);
+        this.show(delay);
+    }
+
+    public void show(String message, Color bkColor, int delay) {
+        this.seBackColor(bkColor);
         this.setMessage(message);
         this.show(delay);
     }
@@ -81,8 +96,8 @@ public class PopupMessage extends javax.swing.JPanel {
     private Popup createPopup() {
         Frame suiteFrame = BurpUtil.suiteFrame();
         Dimension fitSize = this.getPreferredSize();
-        lblMessage.setForeground(UIManager.getColor("TextField.foreground"));
-        lblTimer.setForeground(UIManager.getColor("TextField.foreground"));
+        this.lblMessage.setForeground(UIManager.getColor("TextField.foreground"));
+        this.lblTimer.setForeground(UIManager.getColor("TextField.foreground"));
         final Popup popup = PopupFactory.getSharedInstance().getPopup(suiteFrame, this, suiteFrame.getX() + (suiteFrame.getWidth() / 2) - (fitSize.width / 2), suiteFrame.getY() + (suiteFrame.getHeight() / 2) - (fitSize.height / 2));
         return popup;
     }
