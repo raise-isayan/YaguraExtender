@@ -472,7 +472,13 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="chkBurpSuiteToolBar" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                              <Component id="chkToolBarFloatable" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="chkBurpSuiteToolBar" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace pref="705" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -482,7 +488,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chkBurpSuiteToolBar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="389" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="chkToolBarFloatable" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="363" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -493,7 +501,16 @@
                 <Property name="text" type="java.lang.String" value="Burp sute Toolbar"/>
               </Properties>
               <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkBurpSuiteToolBarStateChanged"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkBurpSuiteToolBarActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="chkToolBarFloatable">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Floatable"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkToolBarFloatableActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

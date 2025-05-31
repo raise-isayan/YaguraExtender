@@ -218,6 +218,21 @@ public class UniversalViewProperty implements IPropertyConfig {
         this.burpView = view;
     }
 
+    public enum BurpToolBar {
+        FLOATABLE;
+    }
+
+    @Expose
+    private EnumSet<BurpToolBar> burpToolBar = EnumSet.of(BurpToolBar.FLOATABLE);
+
+    public EnumSet<BurpToolBar> getBurpToolBar() {
+        return burpToolBar;
+    }
+
+    public void setBurpToolBar(EnumSet<BurpToolBar> burpToolBar) {
+        this.burpToolBar = burpToolBar;
+    }
+
     public void setProperty(UniversalViewProperty property) {
         this.setClipbordAutoDecode(property.getClipbordAutoDecode());
         this.setEncodingList(property.getEncodingList());
@@ -225,6 +240,7 @@ public class UniversalViewProperty implements IPropertyConfig {
         this.setDispayMaxLength(property.getDispayMaxLength());
         this.setLineWrap(property.isLineWrap());
         this.setBurpView(property.getBurpView());
+        this.setBurpToolBar(property.getBurpToolBar());
     }
 
     @Override

@@ -440,6 +440,14 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
 
     private int interval_time = 500;
 
+    public void setFloatable(boolean floating) {
+        this.toolBar.setFloatable(floating);
+    }
+
+    public boolean getFloatable() {
+        return this.toolBar.isFloatable();
+    }
+
     public void setFlotingBar(boolean floating) {
         if (this.toolBar.getUI() instanceof BasicToolBarUI ui) {
             ui.setFloating(floating, null);

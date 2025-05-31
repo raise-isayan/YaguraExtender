@@ -82,6 +82,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         chklineWrap = new javax.swing.JCheckBox();
         tabBurpView = new javax.swing.JPanel();
         chkBurpSuiteToolBar = new javax.swing.JCheckBox();
+        chkToolBarFloatable = new javax.swing.JCheckBox();
 
         setName("Encoding"); // NOI18N
         setPreferredSize(new java.awt.Dimension(600, 450));
@@ -363,9 +364,21 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         tabUniversalView.addTab("CJK View", tabEncoding);
 
         chkBurpSuiteToolBar.setText("Burp sute Toolbar");
+        chkBurpSuiteToolBar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chkBurpSuiteToolBarStateChanged(evt);
+            }
+        });
         chkBurpSuiteToolBar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chkBurpSuiteToolBarActionPerformed(evt);
+            }
+        });
+
+        chkToolBarFloatable.setText("Floatable");
+        chkToolBarFloatable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkToolBarFloatableActionPerformed(evt);
             }
         });
 
@@ -375,7 +388,11 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabBurpViewLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chkBurpSuiteToolBar)
+                .addGroup(tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabBurpViewLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(chkToolBarFloatable))
+                    .addComponent(chkBurpSuiteToolBar))
                 .addContainerGap(705, Short.MAX_VALUE))
         );
         tabBurpViewLayout.setVerticalGroup(
@@ -383,7 +400,9 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(tabBurpViewLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(chkBurpSuiteToolBar)
-                .addContainerGap(389, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkToolBarFloatable)
+                .addContainerGap(363, Short.MAX_VALUE))
         );
 
         tabUniversalView.addTab("Burp View", tabBurpView);
@@ -535,6 +554,14 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkBurpSuiteToolBarActionPerformed
 
+    private void chkBurpSuiteToolBarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkBurpSuiteToolBarStateChanged
+        this.chkToolBarFloatable.setEnabled(this.chkBurpSuiteToolBar.isSelected());
+    }//GEN-LAST:event_chkBurpSuiteToolBarStateChanged
+
+    private void chkToolBarFloatableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkToolBarFloatableActionPerformed
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
+    }//GEN-LAST:event_chkToolBarFloatableActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;
     private javax.swing.JButton btnEncLerftArraw;
@@ -547,6 +574,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JCheckBox chkJSON;
     private javax.swing.JCheckBox chkJSONP;
     private javax.swing.JCheckBox chkJWT;
+    private javax.swing.JCheckBox chkToolBarFloatable;
     private javax.swing.JCheckBox chkUniversalParams;
     private javax.swing.JCheckBox chkUniversalRaw;
     private javax.swing.JCheckBox chkViewState;
@@ -632,6 +660,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         this.setDispayMaxLength(property.getDispayMaxLength());
         this.chklineWrap.setSelected(property.isLineWrap());
         this.setBurpView(property.getBurpView());
+        this.setBurpToolBar(property.getBurpToolBar());
     }
 
     public UniversalViewProperty getUniversalViewProperty() {
@@ -642,6 +671,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         property.setDispayMaxLength(this.getDispayMaxLength());
         property.setLineWrap(this.chklineWrap.isSelected());
         property.setBurpView(this.getBurpView());
+        property.setBurpToolBar(this.getBurpToolBar());
         return property;
     }
 
@@ -718,4 +748,15 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         return view;
     }
 
+    private void setBurpToolBar(EnumSet<UniversalViewProperty.BurpToolBar> toolBar) {
+        this.chkToolBarFloatable.setSelected(toolBar.contains(UniversalViewProperty.BurpToolBar.FLOATABLE));
+    }
+
+    private EnumSet<UniversalViewProperty.BurpToolBar> getBurpToolBar() {
+        EnumSet<UniversalViewProperty.BurpToolBar> toolBar = EnumSet.noneOf(UniversalViewProperty.BurpToolBar.class);
+        if (this.chkToolBarFloatable.isSelected()) {
+            toolBar.add(UniversalViewProperty.BurpToolBar.FLOATABLE);
+        }
+        return toolBar;
+    }
 }

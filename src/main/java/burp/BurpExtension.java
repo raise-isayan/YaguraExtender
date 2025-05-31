@@ -78,7 +78,6 @@ import yagura.handler.WebSocketHander;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
-import yagura.model.UniversalViewProperty.BurpView;
 import yagura.view.BurpToolBar;
 import yagura.view.GeneratePoCTabEditor;
 import yagura.view.GenerateWebsocktPoCEditor;
@@ -440,14 +439,20 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         if (this.toolbar == null) {
             return;
         }
-        EnumSet<BurpView> burpView = option.getUniversalViewProperty().getBurpView();
-        if (burpView.contains(BurpView.TOOL_BAR)) {
+        UniversalViewProperty property = option.getUniversalViewProperty();
+        EnumSet<UniversalViewProperty.BurpView> burpView = property.getBurpView();
+        EnumSet<UniversalViewProperty.BurpToolBar> burpToolBar = property.getBurpToolBar();
+        if (burpView.contains(UniversalViewProperty.BurpView.TOOL_BAR)) {
             api().userInterface().applyThemeToComponent(this.toolbar);
             Frame frame = BurpUtil.suiteFrame();
+            this.toolbar.setFloatable(burpToolBar.contains(UniversalViewProperty.BurpToolBar.FLOATABLE));
+            //this.toolbar.setFloatable(false);
             frame.add(this.toolbar, BorderLayout.NORTH);
         }
         else {
             Frame frame = BurpUtil.suiteFrame();
+            this.toolbar.setFloatable(burpToolBar.contains(UniversalViewProperty.BurpToolBar.FLOATABLE));
+            //this.toolbar.setFloatable(false);
             this.toolbar.setFlotingBar(false);
             frame.remove(this.toolbar);
         }
