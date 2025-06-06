@@ -1,6 +1,6 @@
 package yagura.view;
 
-import extension.helpers.ConvertUtil;
+import extension.burp.BurpConfig;
 import extension.view.base.CustomDialog;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -30,9 +30,7 @@ public class HotKeyDlg extends CustomDialog {
     private void initComponents() {
 
         pnlMain = new javax.swing.JPanel();
-        chkAlt = new javax.swing.JCheckBox();
-        chkControl = new javax.swing.JCheckBox();
-        chkShift = new javax.swing.JCheckBox();
+        lblHotkeyHint = new javax.swing.JLabel();
         txtKey = new javax.swing.JTextField();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
@@ -40,11 +38,13 @@ public class HotKeyDlg extends CustomDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        chkAlt.setText("Alt");
+        lblHotkeyHint.setText("Press the key you want to set as a hotkey.");
 
-        chkControl.setText("Control");
-
-        chkShift.setText("Shift");
+        txtKey.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtKeyKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
@@ -53,23 +53,17 @@ public class HotKeyDlg extends CustomDialog {
             .addGroup(pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlMainLayout.createSequentialGroup()
-                        .addComponent(chkControl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkShift)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkAlt)))
-                .addContainerGap(294, Short.MAX_VALUE))
+                        .addComponent(lblHotkeyHint, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 288, Short.MAX_VALUE))
+                    .addComponent(txtKey))
+                .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMainLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkControl)
-                    .addComponent(chkShift)
-                    .addComponent(chkAlt))
+                .addGap(10, 10, 10)
+                .addComponent(lblHotkeyHint)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(100, Short.MAX_VALUE))
@@ -129,6 +123,16 @@ public class HotKeyDlg extends CustomDialog {
         this.closeDialog(null);
     }//GEN-LAST:event_btnOKActionPerformed
 
+    private KeyStroke hotKeyStroke = null;
+
+    private void txtKeyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeyKeyReleased
+        if (evt.getModifiersEx() != 0 && (evt.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && evt.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
+            this.setHotKey(KeyStroke.getKeyStroke(evt.getKeyCode(), evt.getModifiersEx()));
+        } else if (evt.getKeyChar() == KeyEvent.VK_BACK_SPACE || evt.getKeyChar() == KeyEvent.VK_DELETE) {
+            this.setHotKey(null);
+        }
+    }//GEN-LAST:event_txtKeyKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -174,41 +178,24 @@ public class HotKeyDlg extends CustomDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
-    private javax.swing.JCheckBox chkAlt;
-    private javax.swing.JCheckBox chkControl;
-    private javax.swing.JCheckBox chkShift;
+    private javax.swing.JLabel lblHotkeyHint;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JTextField txtKey;
     // End of variables declaration//GEN-END:variables
 
     public void setHotKey(KeyStroke ks) {
-        int modifiers = ks.getModifiers();
-        if ((modifiers &= KeyEvent.CTRL_DOWN_MASK) == KeyEvent.CTRL_DOWN_MASK) {
-            this.chkControl.setSelected(true);
+        if (ks != null) {
+            this.hotKeyStroke = ks;
+            this.txtKey.setText(BurpConfig.Hotkey.toHotkeyText(this.hotKeyStroke));
+        } else {
+            this.hotKeyStroke = null;
+            this.txtKey.setText("");
         }
-        if ((modifiers &= KeyEvent.SHIFT_DOWN_MASK) == KeyEvent.SHIFT_DOWN_MASK) {
-            this.chkShift.setSelected(true);
-        }
-        if ((modifiers &= KeyEvent.ALT_GRAPH_DOWN_MASK) == KeyEvent.ALT_GRAPH_DOWN_MASK) {
-            this.chkAlt.setSelected(true);
-        }
-        this.txtKey.setText(String.valueOf(ks.getKeyChar()));
     }
 
     public KeyStroke getHotKey() {
-        int modifiers = 0;
-        if (this.chkControl.isSelected()) {
-            modifiers |= KeyEvent.CTRL_DOWN_MASK;
-        }
-        if (this.chkShift.isSelected()) {
-            modifiers |= KeyEvent.SHIFT_DOWN_MASK;
-        }
-        if (this.chkAlt.isSelected()) {
-            modifiers |= KeyEvent.ALT_GRAPH_DOWN_MASK;
-        }
-        return KeyStroke.getKeyStroke(ConvertUtil.parseIntDefault(this.txtKey.getText(), -1), modifiers);
+        return this.hotKeyStroke;
     }
-
 
 }

@@ -33,31 +33,24 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="txtKey" min="-2" pref="250" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="chkControl" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="chkShift" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="chkAlt" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblHotkeyHint" min="-2" pref="250" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="288" max="32767" attributes="0"/>
                       </Group>
+                      <Component id="txtKey" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="294" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="chkControl" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="chkShift" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="chkAlt" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                  <Component id="lblHotkeyHint" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="txtKey" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="100" max="32767" attributes="0"/>
@@ -66,22 +59,15 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JCheckBox" name="chkAlt">
+        <Component class="javax.swing.JLabel" name="lblHotkeyHint">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Alt"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chkControl">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Control"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JCheckBox" name="chkShift">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Shift"/>
+            <Property name="text" type="java.lang.String" value="Press the key you want to set as a hotkey."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtKey">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtKeyKeyReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
