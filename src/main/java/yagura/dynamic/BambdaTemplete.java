@@ -25,6 +25,7 @@ public class BambdaTemplete {
             import burp.api.montoya.http.message.params.*;
             import burp.api.montoya.http.message.requests.*;
             import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.utilities.*;
             public class %s implements yagura.dynamic.BambdaProxyFilter {
                 public boolean matches(burp.api.montoya.proxy.ProxyHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -40,6 +41,7 @@ public class BambdaTemplete {
             import burp.api.montoya.http.message.params.*;
             import burp.api.montoya.http.message.requests.*;
             import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.utilities.*;
             public class %s implements yagura.dynamic.BambdaWebSocketFilter {
                 public boolean matches(burp.api.montoya.proxy.ProxyWebSocketMessage message, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -55,6 +57,7 @@ public class BambdaTemplete {
             import burp.api.montoya.http.message.params.*;
             import burp.api.montoya.http.message.requests.*;
             import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.utilities.*;
             public class %s implements yagura.dynamic.BambdaSiteMapFilter {
                public boolean matches(burp.api.montoya.sitemap.SiteMapNode node, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -69,6 +72,7 @@ public class BambdaTemplete {
             import burp.api.montoya.http.message.params.*;
             import burp.api.montoya.http.message.requests.*;
             import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.utilities.*;
             public class %s implements yagura.dynamic.BambdaLoggerCaptureFilter {
                 public boolean matches(burp.api.montoya.logger.LoggerCaptureHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -83,7 +87,8 @@ public class BambdaTemplete {
             import burp.api.montoya.http.message.*;
             import burp.api.montoya.http.message.params.*;
             import burp.api.montoya.http.message.requests.*;
-            import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.http.message.responses.*
+            import burp.api.montoya.utilities.*;
             public class %s implements yagura.dynamic.BambdaLoggerHttpFilter {
                 public boolean matches(burp.api.montoya.proxy.LoggerHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -99,6 +104,7 @@ public class BambdaTemplete {
             import burp.api.montoya.http.message.params.*;
             import burp.api.montoya.http.message.requests.*;
             import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.utilities.*;
             public class %s implements yagura.dynamic.BambdaRequestReplaceFilter {
                 public burp.api.montoya.http.message.requests.HttpRequest replace(burp.api.montoya.proxy.ProxyHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s
@@ -114,6 +120,7 @@ public class BambdaTemplete {
             import burp.api.montoya.http.message.params.*;
             import burp.api.montoya.http.message.requests.*;
             import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.utilities.*;
             public class %s implements yagura.dynamic.BambdaRequestReplaceFilter {
                 public burp.api.montoya.http.message.responses.HttpResponse replace(burp.api.montoya.proxy.ProxyHttpRequestResponse requestResponse, burp.api.montoya.utilities.Utilities utilities) {
                     %s

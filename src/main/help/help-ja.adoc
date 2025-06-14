@@ -191,6 +191,9 @@ image:images/custom_burpview.png[Burp View tab]
 
   Burp suite ツールバーの表示します。
 
+[Floatable] チェックボックス::
+  Burp suite ツールバーをフローティング可能にします。
+
 image:images/burp_toolbar.png[Burp ToolBar]
 
 === MatchReplaceタブ

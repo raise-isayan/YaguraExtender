@@ -191,6 +191,9 @@ image:images/custom_burpview.png[Burp View tab]
 
   Show Burp suite Toolbar
 
+[Floatable] check box::
+  Enable floating Burp suite Toolbar. 
+
 image:images/burp_toolbar.png[Burp ToolBar]
 
 === MatchReplace tab
