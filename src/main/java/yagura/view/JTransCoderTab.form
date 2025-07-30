@@ -1818,7 +1818,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                         <Property name="columns" type="int" value="3"/>
-                        <Property name="rows" type="int" value="2"/>
+                        <Property name="rows" type="int" value="3"/>
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="btnCRC32">
@@ -1847,7 +1847,7 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="btnMurmurHash2_32">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="MurmurHash2/32"/>
+                            <Property name="text" type="java.lang.String" value="Murmur2/32"/>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash2_32ActionPerformed"/>
@@ -1855,7 +1855,7 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="btnMurmurHash2_64">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="MurmurHash2/64"/>
+                            <Property name="text" type="java.lang.String" value="Murmur2/64"/>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash2_64ActionPerformed"/>
@@ -1867,6 +1867,22 @@
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXXHash32ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnMurmurHash3_32x86">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Murmur3/32x86"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash3_32x86ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnMurmurHash3_128x64">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Murmur3/128x64"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash3_128x64ActionPerformed"/>
                           </Events>
                         </Component>
                       </SubComponents>

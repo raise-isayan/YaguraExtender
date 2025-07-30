@@ -1,5 +1,6 @@
 package yagura.view;
 
+import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.ui.Theme;

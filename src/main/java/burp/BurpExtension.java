@@ -171,8 +171,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private void registerTemporaryProject() {
         // MainFrame閉じる処理
         if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
-           this.isTemporaryProject = BurpUtil.isTemporaryProject();
-           synchronized(JFrame.class) {
+            this.isTemporaryProject = BurpUtil.isTemporaryProject();
+            synchronized (JFrame.class) {
                 //burpFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                 WindowListener[] wl = burpFrame.getWindowListeners();
                 for (WindowListener l : wl) {
@@ -187,7 +187,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     // Professional / Community 2024.2.1.3 build:28102 BuldNumber:20240201003028102
-
     @Override
     public void initialize(MontoyaApi api) {
         super.initialize(api);
@@ -377,7 +376,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 if (UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setUniversalViewProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
-////                    menuHandler.updateUI();
+                    ////                    menuHandler.updateUI();
                     applyUniversalProperty();
                     applyOptionProperty();
                 } else if (MatchReplaceProperty.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {
@@ -414,7 +413,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     applyOptionProperty();
                 } else if (ResultFilterProperty.RESULT_FILTER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setResultFilterProperty(tabbetOption.getResultFilterProperty());
-////                    menuHandler.updateUI();
+                    ////                    menuHandler.updateUI();
                     applyOptionProperty();
                 } else if (AutoResponderProperty.AUTO_RESPONDER_PROPERTY.equals(evt.getPropertyName())) {
                     option.setAutoResponderProperty(tabbetOption.getAutoResponderProperty());
@@ -447,13 +446,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api().userInterface().applyThemeToComponent(this.toolbar);
             Frame frame = BurpUtil.suiteFrame();
             this.toolbar.setFloatable(burpToolBar.contains(UniversalViewProperty.BurpToolBar.FLOATABLE));
-            //this.toolbar.setFloatable(false);
             frame.add(this.toolbar, BorderLayout.NORTH);
-        }
-        else {
+        } else {
             Frame frame = BurpUtil.suiteFrame();
             this.toolbar.setFloatable(burpToolBar.contains(UniversalViewProperty.BurpToolBar.FLOATABLE));
-            //this.toolbar.setFloatable(false);
             this.toolbar.setFlotingBar(false);
             frame.remove(this.toolbar);
         }

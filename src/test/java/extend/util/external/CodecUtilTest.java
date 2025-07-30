@@ -213,5 +213,22 @@ public class CodecUtilTest {
         System.out.println(CodecUtil.toXXHash32(StringUtil.getBytesRaw("test")));
     }
 
+    @Test
+    public void testMurmurHash2() {
+        System.out.println("testMurmurHash2");
+        System.out.println("toMurmurHash2_32:" + CodecUtil.toMurmurHash2_32(StringUtil.getBytesRaw("test")));
+        System.out.println("toMurmurHash2_32:" + CodecUtil.toMurmurHash2_32("test"));
+        System.out.println("toMurmurHash2_64:" + CodecUtil.toMurmurHash2_64(StringUtil.getBytesRaw("test")));
+        System.out.println("toMurmurHash2_64:" + CodecUtil.toMurmurHash2_64("test"));
+    }
+
+    @Test
+    public void testMurmurHash3() {
+        System.out.println("testMurmurHash3");
+        System.out.println("toMurmurHash3_32x86:" + CodecUtil.toMurmurHash3_32x86(StringUtil.getBytesRaw("test")));
+        System.out.println("toMurmurHash3_32x86:" + CodecUtil.toMurmurHash3_32x86("test"));
+        System.out.println("toMurmurHash3_128x64:" + CodecUtil.toMurmurHash3_128x64(StringUtil.getBytesRaw("test")));
+        System.out.println("toMurmurHash3_128x64:" + CodecUtil.toMurmurHash3_128x64("test"));
+    }
 
 }

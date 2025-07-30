@@ -2,6 +2,8 @@ package extend.util.external;
 
 import extension.helpers.StringUtil;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -12,6 +14,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;
+import org.apache.commons.codec.digest.MurmurHash3;
 import org.apache.commons.codec.digest.XXHash32;
 
 /**
@@ -721,7 +724,7 @@ public class CodecUtil {
     }
 
     /**
-     * MurmurHash値の取得
+     * MurmurHash2値の取得
      *
      * @param str 対象文字列
      * @param charset エンコーディング
@@ -735,7 +738,7 @@ public class CodecUtil {
     }
 
     /**
-     * MurmurHash値の取得
+     * MurmurHash2値の取得
      *
      * @param binary 対象バイト
      * @return ハッシュ値
@@ -745,7 +748,7 @@ public class CodecUtil {
     }
 
     /**
-     * MurmurHash値の取得
+     * MurmurHash2値の取得
      *
      * @param str 対象文字列
      * @return ハッシュ値
@@ -755,7 +758,7 @@ public class CodecUtil {
     }
 
     /**
-     * MurmurHash値の取得
+     * MurmurHash2値の取得
      *
      * @param str 対象文字列
      * @param charset エンコーディング
@@ -766,6 +769,77 @@ public class CodecUtil {
             throws UnsupportedEncodingException {
         byte[] binary = StringUtil.getBytesCharset(str, charset);
         return MurmurHash2.hash64(binary, binary.length);
+    }
+
+    /**
+     * MurmurHash3値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static int toMurmurHash3_32x86(byte[] binary) {
+        return MurmurHash3.hash32x86(binary);
+    }
+
+    /**
+     * MurmurHash3値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static int toMurmurHash3_32x86(String str) {
+        return toMurmurHash3_32x86(StringUtil.getBytesRaw(str));
+    }
+
+    /**
+     * MurmurHash3値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static int toMurmurHash3_32x86(String str, String charset)
+            throws UnsupportedEncodingException {
+        return toMurmurHash3_32x86(StringUtil.getBytesCharset(str, charset));
+    }
+
+
+    /**
+     * MurmurHash3値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static BigInteger toMurmurHash3_128x64(byte[] binary) {
+        long[] hash128x64 = MurmurHash3.hash128x64(binary);
+        ByteBuffer sameBuffer = ByteBuffer.allocate(16);
+        sameBuffer.putLong(hash128x64[1]);
+        sameBuffer.putLong(hash128x64[0]);
+        return new BigInteger(1, sameBuffer.array());
+    }
+
+    /**
+     * MurmurHash3値の取得
+     *
+     * @param str 対象文字列
+     * @return ハッシュ値
+     */
+    public static BigInteger toMurmurHash3_128x64(String str) {
+        return toMurmurHash3_128x64(StringUtil.getBytesRaw(str));
+    }
+
+    /**
+     * MurmurHash3値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static BigInteger toMurmurHash3_128x64(String str, String charset)
+            throws UnsupportedEncodingException {
+        return toMurmurHash3_128x64(StringUtil.getBytesCharset(str, charset));
     }
 
     public static boolean isBase64Encoded(String value) {
