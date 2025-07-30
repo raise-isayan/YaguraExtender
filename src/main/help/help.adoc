@@ -1257,6 +1257,15 @@ MurmurHash2/32::
 MurmurHash2/64::
     Calculate checksum by MurmurHash2 64bit
 
+xxHash32::
+    Calculate checksum by xxHash32
+
+Murmur3/32x86::
+    Calculate checksum by MurmurHash3 32bit
+
+Murmur3/128x64::
+    Calculate checksum by MurmurHash3 128bit
+
 ==== Generater tab
 
 The Generater has a sequence tab and a random tab.
