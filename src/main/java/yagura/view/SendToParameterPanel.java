@@ -1,10 +1,10 @@
 package yagura.view;
 
+import extend.util.external.TransUtil;
 import extension.helpers.SwingUtil;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import yagura.model.SendToParameterProperty;
-import static yagura.model.SendToParameterProperty.LinePartType.FIRST_LINE;
-import static yagura.model.SendToParameterProperty.LinePartType.SECOND_LINE;
 
 /**
  *
@@ -44,17 +44,31 @@ public class SendToParameterPanel extends javax.swing.JPanel {
         chkUseReqName = new javax.swing.JCheckBox();
         rdoReqNameResponseTitle = new javax.swing.JRadioButton();
         rdoReqNameAnnotationNotes = new javax.swing.JRadioButton();
-        rdoReqCommentAnnotationNotes = new javax.swing.JRadioButton();
-        rdoReqCommentResponseTitle = new javax.swing.JRadioButton();
+        rdoReqNotesAnnotationNotes = new javax.swing.JRadioButton();
+        rdoReqNotesResponseTitle = new javax.swing.JRadioButton();
         pnlReqNameLineGrp = new javax.swing.JPanel();
         rdoReqNameAllLine = new javax.swing.JRadioButton();
         rdoReqNameFirstLine = new javax.swing.JRadioButton();
         rdoReqNameSecondLine = new javax.swing.JRadioButton();
-        pnlReqCommentLineGrp = new javax.swing.JPanel();
-        rdoReqCommentAllLine = new javax.swing.JRadioButton();
-        rdoReqCommentFirstLine = new javax.swing.JRadioButton();
-        rdoReqCommentSecondLine = new javax.swing.JRadioButton();
+        pnlReqNotesLineGrp = new javax.swing.JPanel();
+        rdoReqNotesAllLine = new javax.swing.JRadioButton();
+        rdoReqNotesFirstLine = new javax.swing.JRadioButton();
+        rdoReqNoteSecondLine = new javax.swing.JRadioButton();
         chkDummyResponse = new javax.swing.JCheckBox();
+        rdoReqNameRequestRegex = new javax.swing.JRadioButton();
+        rdoReqNameResponseRegex = new javax.swing.JRadioButton();
+        rdoReqNotesRequestRegex = new javax.swing.JRadioButton();
+        rdoReqNotesResponseRegex = new javax.swing.JRadioButton();
+        pnlReqNameRegexGrp = new javax.swing.JPanel();
+        txtReqNameMatchPattern = new javax.swing.JTextField();
+        chkReqNameMatchIgnoreCase = new javax.swing.JCheckBox();
+        lblReqNameMatchDecodeType = new javax.swing.JLabel();
+        cmbReqNameMatchDecodeType = new javax.swing.JComboBox<>();
+        pnlReqCommentRegexGrp = new javax.swing.JPanel();
+        txtReqCommentMatchPattern = new javax.swing.JTextField();
+        chkReqCommentMatchIgnoreCase = new javax.swing.JCheckBox();
+        lblReqCommentMatchDecodeType = new javax.swing.JLabel();
+        cmbReqCommentMatchDecodeType = new javax.swing.JComboBox<>();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -78,17 +92,37 @@ public class SendToParameterPanel extends javax.swing.JPanel {
 
         btnGrpReqName.add(rdoReqNameResponseTitle);
         rdoReqNameResponseTitle.setText("response title tag");
+        rdoReqNameResponseTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNameResponseTitleActionPerformed(evt);
+            }
+        });
 
         btnGrpReqName.add(rdoReqNameAnnotationNotes);
         rdoReqNameAnnotationNotes.setSelected(true);
         rdoReqNameAnnotationNotes.setText("anotation notes");
+        rdoReqNameAnnotationNotes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNameAnnotationNotesActionPerformed(evt);
+            }
+        });
 
-        btnGrpReqNotes.add(rdoReqCommentAnnotationNotes);
-        rdoReqCommentAnnotationNotes.setSelected(true);
-        rdoReqCommentAnnotationNotes.setText("annotation notes");
+        btnGrpReqNotes.add(rdoReqNotesAnnotationNotes);
+        rdoReqNotesAnnotationNotes.setSelected(true);
+        rdoReqNotesAnnotationNotes.setText("annotation notes");
+        rdoReqNotesAnnotationNotes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNotesAnnotationNotesActionPerformed(evt);
+            }
+        });
 
-        btnGrpReqNotes.add(rdoReqCommentResponseTitle);
-        rdoReqCommentResponseTitle.setText("response title tag");
+        btnGrpReqNotes.add(rdoReqNotesResponseTitle);
+        rdoReqNotesResponseTitle.setText("response title tag");
+        rdoReqNotesResponseTitle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNotesResponseTitleActionPerformed(evt);
+            }
+        });
 
         btnGrpReqNameHistoryNotesType.add(rdoReqNameAllLine);
         rdoReqNameAllLine.setText("all line");
@@ -99,11 +133,6 @@ public class SendToParameterPanel extends javax.swing.JPanel {
 
         btnGrpReqNameHistoryNotesType.add(rdoReqNameSecondLine);
         rdoReqNameSecondLine.setText("after second line");
-        rdoReqNameSecondLine.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdoReqNameSecondLineActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlReqNameLineGrpLayout = new javax.swing.GroupLayout(pnlReqNameLineGrp);
         pnlReqNameLineGrp.setLayout(pnlReqNameLineGrpLayout);
@@ -112,9 +141,9 @@ public class SendToParameterPanel extends javax.swing.JPanel {
             .addGroup(pnlReqNameLineGrpLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(rdoReqNameAllLine)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(rdoReqNameFirstLine)
-                .addGap(52, 52, 52)
+                .addGap(18, 18, 18)
                 .addComponent(rdoReqNameSecondLine)
                 .addContainerGap())
         );
@@ -129,75 +158,193 @@ public class SendToParameterPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        rdoGrpReqNotesHistoryNotesType.add(rdoReqCommentAllLine);
-        rdoReqCommentAllLine.setText("all line");
+        rdoGrpReqNotesHistoryNotesType.add(rdoReqNotesAllLine);
+        rdoReqNotesAllLine.setText("all line");
 
-        rdoGrpReqNotesHistoryNotesType.add(rdoReqCommentFirstLine);
-        rdoReqCommentFirstLine.setText("first line");
+        rdoGrpReqNotesHistoryNotesType.add(rdoReqNotesFirstLine);
+        rdoReqNotesFirstLine.setText("first line");
 
-        rdoGrpReqNotesHistoryNotesType.add(rdoReqCommentSecondLine);
-        rdoReqCommentSecondLine.setSelected(true);
-        rdoReqCommentSecondLine.setText("after second line");
+        rdoGrpReqNotesHistoryNotesType.add(rdoReqNoteSecondLine);
+        rdoReqNoteSecondLine.setText("after second line");
 
-        javax.swing.GroupLayout pnlReqCommentLineGrpLayout = new javax.swing.GroupLayout(pnlReqCommentLineGrp);
-        pnlReqCommentLineGrp.setLayout(pnlReqCommentLineGrpLayout);
-        pnlReqCommentLineGrpLayout.setHorizontalGroup(
-            pnlReqCommentLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlReqCommentLineGrpLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlReqNotesLineGrpLayout = new javax.swing.GroupLayout(pnlReqNotesLineGrp);
+        pnlReqNotesLineGrp.setLayout(pnlReqNotesLineGrpLayout);
+        pnlReqNotesLineGrpLayout.setHorizontalGroup(
+            pnlReqNotesLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqNotesLineGrpLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(rdoReqCommentAllLine)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(rdoReqCommentFirstLine)
-                .addGap(52, 52, 52)
-                .addComponent(rdoReqCommentSecondLine)
-                .addContainerGap())
+                .addComponent(rdoReqNotesAllLine)
+                .addGap(18, 18, 18)
+                .addComponent(rdoReqNotesFirstLine)
+                .addGap(18, 18, 18)
+                .addComponent(rdoReqNoteSecondLine)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        pnlReqCommentLineGrpLayout.setVerticalGroup(
-            pnlReqCommentLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlReqCommentLineGrpLayout.createSequentialGroup()
+        pnlReqNotesLineGrpLayout.setVerticalGroup(
+            pnlReqNotesLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqNotesLineGrpLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlReqCommentLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoReqCommentAllLine)
-                    .addComponent(rdoReqCommentFirstLine)
-                    .addComponent(rdoReqCommentSecondLine))
+                .addGroup(pnlReqNotesLineGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoReqNotesAllLine)
+                    .addComponent(rdoReqNotesFirstLine)
+                    .addComponent(rdoReqNoteSecondLine))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         chkDummyResponse.setText("use dummy response if response is null");
+
+        btnGrpReqName.add(rdoReqNameRequestRegex);
+        rdoReqNameRequestRegex.setText("request regex");
+        rdoReqNameRequestRegex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNameRequestRegexActionPerformed(evt);
+            }
+        });
+
+        btnGrpReqName.add(rdoReqNameResponseRegex);
+        rdoReqNameResponseRegex.setText("response regex");
+        rdoReqNameResponseRegex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNameResponseRegexActionPerformed(evt);
+            }
+        });
+
+        btnGrpReqNotes.add(rdoReqNotesRequestRegex);
+        rdoReqNotesRequestRegex.setText("request regex");
+        rdoReqNotesRequestRegex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNotesRequestRegexActionPerformed(evt);
+            }
+        });
+
+        btnGrpReqNotes.add(rdoReqNotesResponseRegex);
+        rdoReqNotesResponseRegex.setText("response regex");
+        rdoReqNotesResponseRegex.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoReqNotesResponseRegexActionPerformed(evt);
+            }
+        });
+
+        chkReqNameMatchIgnoreCase.setText("IgnoreCase");
+
+        lblReqNameMatchDecodeType.setText("DecodeType:");
+
+        javax.swing.GroupLayout pnlReqNameRegexGrpLayout = new javax.swing.GroupLayout(pnlReqNameRegexGrp);
+        pnlReqNameRegexGrp.setLayout(pnlReqNameRegexGrpLayout);
+        pnlReqNameRegexGrpLayout.setHorizontalGroup(
+            pnlReqNameRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqNameRegexGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlReqNameRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnlReqNameRegexGrpLayout.createSequentialGroup()
+                        .addComponent(lblReqNameMatchDecodeType)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbReqNameMatchDecodeType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtReqNameMatchPattern, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkReqNameMatchIgnoreCase, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                .addGap(65, 65, 65))
+        );
+        pnlReqNameRegexGrpLayout.setVerticalGroup(
+            pnlReqNameRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqNameRegexGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlReqNameRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtReqNameMatchPattern, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkReqNameMatchIgnoreCase))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlReqNameRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblReqNameMatchDecodeType)
+                    .addComponent(cmbReqNameMatchDecodeType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        chkReqCommentMatchIgnoreCase.setText("IgnoreCase");
+
+        lblReqCommentMatchDecodeType.setText("DecodeType:");
+
+        javax.swing.GroupLayout pnlReqCommentRegexGrpLayout = new javax.swing.GroupLayout(pnlReqCommentRegexGrp);
+        pnlReqCommentRegexGrp.setLayout(pnlReqCommentRegexGrpLayout);
+        pnlReqCommentRegexGrpLayout.setHorizontalGroup(
+            pnlReqCommentRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqCommentRegexGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlReqCommentRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlReqCommentRegexGrpLayout.createSequentialGroup()
+                        .addComponent(txtReqCommentMatchPattern, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(chkReqCommentMatchIgnoreCase, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                        .addGap(65, 65, 65))
+                    .addGroup(pnlReqCommentRegexGrpLayout.createSequentialGroup()
+                        .addComponent(lblReqCommentMatchDecodeType)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbReqCommentMatchDecodeType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(210, 210, 210))))
+        );
+        pnlReqCommentRegexGrpLayout.setVerticalGroup(
+            pnlReqCommentRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlReqCommentRegexGrpLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlReqCommentRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtReqCommentMatchPattern, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkReqCommentMatchIgnoreCase))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlReqCommentRegexGrpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblReqCommentMatchDecodeType)
+                    .addComponent(cmbReqCommentMatchDecodeType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout pnlSendToOverrideLayout = new javax.swing.GroupLayout(pnlSendToOverride);
         pnlSendToOverride.setLayout(pnlSendToOverrideLayout);
         pnlSendToOverrideLayout.setHorizontalGroup(
             pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkUseReqName)
+                    .addComponent(chkUseReqNotes))
+                .addGap(378, 436, Short.MAX_VALUE))
+            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
                 .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(chkDummyResponse))
+                        .addGap(33, 33, 33)
+                        .addComponent(rdoReqNameAnnotationNotes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rdoReqNameResponseTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rdoReqNameRequestRegex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(rdoReqNameResponseRegex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
+                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlSendToOverrideLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(chkDummyResponse))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlSendToOverrideLayout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(rdoReqNotesAnnotationNotes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rdoReqNotesResponseTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rdoReqNotesRequestRegex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rdoReqNotesResponseRegex, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                .addComponent(rdoReqNameAnnotationNotes)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoReqNameResponseTitle))))
+                                .addGap(21, 21, 21)
+                                .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(pnlReqCommentRegexGrp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(pnlReqNotesLineGrp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                .addGap(51, 51, 51)
-                                .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlSendToOverrideLayout.createSequentialGroup()
-                                .addGap(21, 21, 21)
-                                .addComponent(rdoReqCommentAnnotationNotes)
-                                .addGap(18, 18, 18)
-                                .addComponent(rdoReqCommentResponseTitle))
-                            .addComponent(chkUseReqName)
-                            .addComponent(chkUseReqNotes))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(48, 48, 48)
+                        .addComponent(pnlReqNameRegexGrp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         pnlSendToOverrideLayout.setVerticalGroup(
             pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,18 +354,26 @@ public class SendToParameterPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoReqNameAnnotationNotes)
-                    .addComponent(rdoReqNameResponseTitle))
+                    .addComponent(rdoReqNameResponseTitle)
+                    .addComponent(rdoReqNameRequestRegex)
+                    .addComponent(rdoReqNameResponseRegex))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlReqNameLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlReqNameRegexGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkUseReqNotes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSendToOverrideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoReqCommentAnnotationNotes)
-                    .addComponent(rdoReqCommentResponseTitle))
+                    .addComponent(rdoReqNotesAnnotationNotes)
+                    .addComponent(rdoReqNotesResponseTitle)
+                    .addComponent(rdoReqNotesRequestRegex)
+                    .addComponent(rdoReqNotesResponseRegex))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlReqCommentLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(pnlReqNotesLineGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(pnlReqCommentRegexGrp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkDummyResponse)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -251,9 +406,37 @@ public class SendToParameterPanel extends javax.swing.JPanel {
         SwingUtil.setContainerEnable(this.pnlSendToOverride, this.chkOverrideSendToParameter.isSelected());
     }//GEN-LAST:event_chkOverrideSendToParameterStateChanged
 
-    private void rdoReqNameSecondLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNameSecondLineActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoReqNameSecondLineActionPerformed
+    private void rdoReqNameAnnotationNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNameAnnotationNotesActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqNameRegexGrp, this.rdoReqNameRequestRegex.isSelected() || this.rdoReqNameResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNameAnnotationNotesActionPerformed
+
+    private void rdoReqNameResponseTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNameResponseTitleActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqNameRegexGrp, this.rdoReqNameRequestRegex.isSelected() || this.rdoReqNameResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNameResponseTitleActionPerformed
+
+    private void rdoReqNameRequestRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNameRequestRegexActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqNameRegexGrp, this.rdoReqNameRequestRegex.isSelected() || this.rdoReqNameResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNameRequestRegexActionPerformed
+
+    private void rdoReqNameResponseRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNameResponseRegexActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqNameRegexGrp, this.rdoReqNameRequestRegex.isSelected() || this.rdoReqNameResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNameResponseRegexActionPerformed
+
+    private void rdoReqNotesAnnotationNotesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNotesAnnotationNotesActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqCommentRegexGrp, this.rdoReqNotesRequestRegex.isSelected() || this.rdoReqNotesResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNotesAnnotationNotesActionPerformed
+
+    private void rdoReqNotesResponseTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNotesResponseTitleActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqCommentRegexGrp, this.rdoReqNotesRequestRegex.isSelected() || this.rdoReqNotesResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNotesResponseTitleActionPerformed
+
+    private void rdoReqNotesRequestRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNotesRequestRegexActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqCommentRegexGrp, this.rdoReqNotesRequestRegex.isSelected() || this.rdoReqNotesResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNotesRequestRegexActionPerformed
+
+    private void rdoReqNotesResponseRegexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoReqNotesResponseRegexActionPerformed
+        SwingUtil.setContainerEnable(this.pnlReqCommentRegexGrp, this.rdoReqNotesRequestRegex.isSelected() || this.rdoReqNotesResponseRegex.isSelected());
+    }//GEN-LAST:event_rdoReqNotesResponseRegexActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -264,36 +447,73 @@ public class SendToParameterPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup btnGrpReqNumber;
     private javax.swing.JCheckBox chkDummyResponse;
     private javax.swing.JCheckBox chkOverrideSendToParameter;
+    private javax.swing.JCheckBox chkReqCommentMatchIgnoreCase;
+    private javax.swing.JCheckBox chkReqNameMatchIgnoreCase;
     private javax.swing.JCheckBox chkUseReqName;
     private javax.swing.JCheckBox chkUseReqNotes;
+    private javax.swing.JComboBox<String> cmbReqCommentMatchDecodeType;
+    private javax.swing.JComboBox<String> cmbReqNameMatchDecodeType;
+    private javax.swing.JLabel lblReqCommentMatchDecodeType;
+    private javax.swing.JLabel lblReqNameMatchDecodeType;
     private javax.swing.JPanel pnlParameter;
-    private javax.swing.JPanel pnlReqCommentLineGrp;
+    private javax.swing.JPanel pnlReqCommentRegexGrp;
     private javax.swing.JPanel pnlReqNameLineGrp;
+    private javax.swing.JPanel pnlReqNameRegexGrp;
+    private javax.swing.JPanel pnlReqNotesLineGrp;
     private javax.swing.JPanel pnlSendToOverride;
     private javax.swing.ButtonGroup rdoGrpReqNotesHistoryNotesType;
-    private javax.swing.JRadioButton rdoReqCommentAllLine;
-    private javax.swing.JRadioButton rdoReqCommentAnnotationNotes;
-    private javax.swing.JRadioButton rdoReqCommentFirstLine;
-    private javax.swing.JRadioButton rdoReqCommentResponseTitle;
-    private javax.swing.JRadioButton rdoReqCommentSecondLine;
     private javax.swing.JRadioButton rdoReqNameAllLine;
     private javax.swing.JRadioButton rdoReqNameAnnotationNotes;
     private javax.swing.JRadioButton rdoReqNameFirstLine;
+    private javax.swing.JRadioButton rdoReqNameRequestRegex;
+    private javax.swing.JRadioButton rdoReqNameResponseRegex;
     private javax.swing.JRadioButton rdoReqNameResponseTitle;
     private javax.swing.JRadioButton rdoReqNameSecondLine;
+    private javax.swing.JRadioButton rdoReqNoteSecondLine;
+    private javax.swing.JRadioButton rdoReqNotesAllLine;
+    private javax.swing.JRadioButton rdoReqNotesAnnotationNotes;
+    private javax.swing.JRadioButton rdoReqNotesFirstLine;
+    private javax.swing.JRadioButton rdoReqNotesRequestRegex;
+    private javax.swing.JRadioButton rdoReqNotesResponseRegex;
+    private javax.swing.JRadioButton rdoReqNotesResponseTitle;
+    private javax.swing.JTextField txtReqCommentMatchPattern;
+    private javax.swing.JTextField txtReqNameMatchPattern;
     // End of variables declaration//GEN-END:variables
 
     private void customizeComponents() {
-
+        String[] DECODE_TYPES = new String[]{
+            TransUtil.EncodePattern.NONE.name(),
+            TransUtil.EncodePattern.HTML.name(),
+            TransUtil.EncodePattern.URL_STANDARD.name(),
+            TransUtil.EncodePattern.URL_UNICODE.name(),
+            TransUtil.EncodePattern.BASE64.name(),
+            TransUtil.EncodePattern.BASE64_AND_URL.name(),
+            TransUtil.EncodePattern.JSON.name(),
+        };
+        this.cmbReqNameMatchDecodeType.setModel(new DefaultComboBoxModel<>(DECODE_TYPES));
+        this.cmbReqCommentMatchDecodeType.setModel(new DefaultComboBoxModel<>(DECODE_TYPES));
     }
 
     public void setProperty(SendToParameterProperty prop) {
         this.chkOverrideSendToParameter.setSelected(prop.isUseOverride());
         this.chkUseReqName.setSelected(prop.isUseReqName());
-        if (prop.getReqName() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
-            this.rdoReqNameAnnotationNotes.setSelected(true);
-        } else {
-            this.rdoReqNameResponseTitle.setSelected(true);
+        switch (prop.getReqName()) {
+            case HISTORY_COMMENT: {
+                this.rdoReqNameAnnotationNotes.setSelected(true);
+                break;
+            }
+            case RESPONSE_TITLE: {
+                this.rdoReqNameResponseTitle.setSelected(true);
+                break;
+            }
+            case REQUEST_REGEX: {
+                this.rdoReqNameRequestRegex.setSelected(true);
+                break;
+            }
+            case RESPONSE_REGEX: {
+                this.rdoReqNameResponseRegex.setSelected(true);
+                break;
+            }
         }
 
         switch (prop.getReqNameLineType()) {
@@ -312,31 +532,100 @@ public class SendToParameterPanel extends javax.swing.JPanel {
         }
 
         this.chkUseReqNotes.setSelected(prop.isUseReqComment());
-        if (prop.getReqComment() == SendToParameterProperty.SendToParameterType.HISTORY_COMMENT) {
-            this.rdoReqCommentAnnotationNotes.setSelected(true);
-        } else {
-            this.rdoReqCommentResponseTitle.setSelected(true);
+        switch (prop.getReqComment()) {
+            case HISTORY_COMMENT: {
+                this.rdoReqNotesAnnotationNotes.setSelected(true);
+                break;
+            }
+            case RESPONSE_TITLE: {
+                this.rdoReqNotesResponseTitle.setSelected(true);
+                break;
+            }
+            case REQUEST_REGEX: {
+                this.rdoReqNotesRequestRegex.setSelected(true);
+                break;
+            }
+            case RESPONSE_REGEX: {
+                this.rdoReqNotesResponseRegex.setSelected(true);
+                break;
+            }
         }
 
         switch (prop.getReqCommentLineType()) {
             case FIRST_LINE:
-                this.rdoReqCommentFirstLine.setSelected(true);
+                this.rdoReqNotesFirstLine.setSelected(true);
                 break;
             case SECOND_LINE:
-                this.rdoReqCommentSecondLine.setSelected(true);
+                this.rdoReqNoteSecondLine.setSelected(true);
                 break;
             default:
-                this.rdoReqCommentAllLine.setSelected(true);
+                this.rdoReqNotesAllLine.setSelected(true);
                 break;
         }
+
+        this.txtReqNameMatchPattern.setText(prop.getReqNameMatchPattern());
+        this.chkReqNameMatchIgnoreCase.setSelected(prop.isReqNameMatchIgnoreCase());
+
+        this.txtReqCommentMatchPattern.setText(prop.getReqCommentMatchPattern());
+        this.chkReqCommentMatchIgnoreCase.setSelected(prop.isReqCommentMatchIgnoreCase());
+
+        String reqNameDecodeType = prop.getReqNameMatchDecodeType().name();
+        this.cmbReqNameMatchDecodeType.setSelectedItem(reqNameDecodeType);
+
+        String reqNotesDecodeType = prop.getReqCommentMatchDecodeType().name();
+        this.cmbReqCommentMatchDecodeType.setSelectedItem(reqNotesDecodeType);
 
 //        this.chkUseReqNum.setSelected(prop.isUseReqNum());
 //        if (prop.getReqNum() == SendToParameterProperty.SendToParameterType.HISTORY_NUMBER) {
 //            this.rdoReqNameHistoryNumber.setSelected(true);
 //        }
-
         this.chkDummyResponse.setSelected(prop.isUseDummyResponse());
 
+        SwingUtil.setContainerEnable(this.pnlReqNameRegexGrp, this.rdoReqNameRequestRegex.isSelected() || this.rdoReqNameResponseRegex.isSelected());
+        SwingUtil.setContainerEnable(this.pnlReqCommentRegexGrp, this.rdoReqNotesRequestRegex.isSelected() || this.rdoReqNotesResponseRegex.isSelected());
+
+    }
+
+    public SendToParameterProperty.SendToParameterType getSendToOverrideReqNameParameterType() {
+        SendToParameterProperty.SendToParameterType type = SendToParameterProperty.SendToParameterType.HISTORY_COMMENT;
+        if (this.rdoReqNameAnnotationNotes.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.HISTORY_COMMENT;
+        }
+
+        if (this.rdoReqNameResponseTitle.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.RESPONSE_TITLE;
+        }
+
+        if (this.rdoReqNameRequestRegex.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.REQUEST_REGEX;
+        }
+
+        if (this.rdoReqNameResponseRegex.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.RESPONSE_REGEX;
+        }
+
+        return type;
+    }
+
+    public SendToParameterProperty.SendToParameterType getSendToOverrideReqNotesParameterType() {
+        SendToParameterProperty.SendToParameterType type = SendToParameterProperty.SendToParameterType.HISTORY_COMMENT;
+        if (this.rdoReqNotesAnnotationNotes.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.HISTORY_COMMENT;
+        }
+
+        if (this.rdoReqNotesResponseTitle.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.RESPONSE_TITLE;
+        }
+
+        if (this.rdoReqNotesRequestRegex.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.REQUEST_REGEX;
+        }
+
+        if (this.rdoReqNotesResponseRegex.isSelected()) {
+            type = SendToParameterProperty.SendToParameterType.RESPONSE_REGEX;
+        }
+
+        return type;
     }
 
     public SendToParameterProperty getSendToOverrideProperty() {
@@ -344,26 +633,44 @@ public class SendToParameterPanel extends javax.swing.JPanel {
 
         prop.setUseOverride(this.chkOverrideSendToParameter.isSelected());
         prop.setUseReqName(this.chkUseReqName.isSelected());
-        prop.setReqName(this.rdoReqNameAnnotationNotes.isSelected() ? SendToParameterProperty.SendToParameterType.HISTORY_COMMENT : SendToParameterProperty.SendToParameterType.RESPONSE_TITLE);
+        prop.setReqName(getSendToOverrideReqNameParameterType());
 
         prop.setReqNameLineType(SendToParameterProperty.LinePartType.ALL_LINE);
-        if (this.rdoReqNameFirstLine.isSelected())
+        if (this.rdoReqNameFirstLine.isSelected()) {
             prop.setReqNameLineType(SendToParameterProperty.LinePartType.FIRST_LINE);
-        if (this.rdoReqNameSecondLine.isSelected())
+        }
+        if (this.rdoReqNameSecondLine.isSelected()) {
             prop.setReqNameLineType(SendToParameterProperty.LinePartType.SECOND_LINE);
+        }
+
+        prop.setReqNameMatchPattern(this.txtReqNameMatchPattern.getText());
+        prop.setReqNameMatchIgnoreCase(this.chkReqNameMatchIgnoreCase.isSelected());
 
         prop.setUseReqComment(this.chkUseReqNotes.isSelected());
-        prop.setReqComment(this.rdoReqCommentAnnotationNotes.isSelected() ? SendToParameterProperty.SendToParameterType.HISTORY_COMMENT : SendToParameterProperty.SendToParameterType.RESPONSE_TITLE);
+        prop.setReqComment(getSendToOverrideReqNotesParameterType());
 
         prop.setReqCommentLineType(SendToParameterProperty.LinePartType.ALL_LINE);
-        if (this.rdoReqCommentFirstLine.isSelected())
+        if (this.rdoReqNotesFirstLine.isSelected()) {
             prop.setReqCommentLineType(SendToParameterProperty.LinePartType.FIRST_LINE);
-        if (this.rdoReqCommentSecondLine.isSelected())
+        }
+        if (this.rdoReqNoteSecondLine.isSelected()) {
             prop.setReqCommentLineType(SendToParameterProperty.LinePartType.SECOND_LINE);
+        }
+
+        prop.setReqNameMatchPattern(this.txtReqNameMatchPattern.getText());
+        prop.setReqNameMatchIgnoreCase(this.chkReqNameMatchIgnoreCase.isSelected());
+
+        String reqNameDecodeType = (String) this.cmbReqNameMatchDecodeType.getSelectedItem();
+        prop.setReqNameMatchDecodeType(TransUtil.EncodePattern.valueOf(reqNameDecodeType));
+
+        prop.setReqCommentMatchPattern(this.txtReqCommentMatchPattern.getText());
+        prop.setReqCommentMatchIgnoreCase(this.chkReqCommentMatchIgnoreCase.isSelected());
+
+        String reqNotesDecodeType = (String) this.cmbReqCommentMatchDecodeType.getSelectedItem();
+        prop.setReqCommentMatchDecodeType(TransUtil.EncodePattern.valueOf(reqNotesDecodeType));
 
 //        prop.setUseReqNum(this.chkUseReqNum.isSelected());
 //        prop.setReqNum(SendToParameterProperty.SendToParameterType.HISTORY_NUMBER);
-
         prop.setUseDummyResponse(this.chkDummyResponse.isSelected());
 
         return prop;

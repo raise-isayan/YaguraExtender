@@ -3,6 +3,7 @@ package yagura.model;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import extend.util.external.TransUtil;
 import extension.helpers.ConvertUtil;
+import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
 import extension.helpers.SmartCodec;
@@ -13,16 +14,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  *
  * @author isayan
  */
 public class SendToParameterProperty {
+
     private final static Logger logger = Logger.getLogger(SendToParameterProperty.class.getName());
 
     public enum SendToParameterType {
-        HISTORY_COMMENT, RESPONSE_TITLE, HISTORY_NUMBER
+        HISTORY_COMMENT, RESPONSE_TITLE, REQUEST_REGEX, RESPONSE_REGEX, HISTORY_NUMBER
     };
 
     public enum LinePartType {
@@ -46,6 +49,18 @@ public class SendToParameterProperty {
     private LinePartType reqCommentLineType = LinePartType.SECOND_LINE;
 
     private SendToParameterType reqNum = SendToParameterType.HISTORY_NUMBER;
+
+    private String reqNameMatchPattern = "";
+
+    private boolean reqNameMatchIgnoreCase = false;
+
+    private TransUtil.EncodePattern reqNameMatchDecodeType = TransUtil.EncodePattern.NONE;
+
+    private String reqCommentMatchPattern = "";
+
+    private boolean reqCommentMatchIgnoreCase = false;
+
+    private TransUtil.EncodePattern reqCommentMatchDecodeType = TransUtil.EncodePattern.NONE;
 
     private boolean useDummyResponse = false;
 
@@ -176,6 +191,103 @@ public class SendToParameterProperty {
     }
 
     /**
+     * @return the matchPattern
+     */
+    public String getReqNameMatchPattern() {
+        return reqNameMatchPattern;
+    }
+
+    /**
+     * @param reqNameMatchPattern the reqNameMatchPattern to set
+     */
+    public void setReqNameMatchPattern(String reqNameMatchPattern) {
+        this.reqNameMatchPattern = reqNameMatchPattern;
+    }
+
+    /**
+     * @return the matchIgnoreCase
+     */
+    public boolean isReqNameMatchIgnoreCase() {
+        return reqNameMatchIgnoreCase;
+    }
+
+    /**
+     * @param reqNameMatchIgnoreCase the reqNameMatchIgnoreCase to set
+     */
+    public void setReqNameMatchIgnoreCase(boolean reqNameMatchIgnoreCase) {
+        this.reqNameMatchIgnoreCase = reqNameMatchIgnoreCase;
+    }
+
+    /**
+     * @return the matchDecodeType
+     */
+    public TransUtil.EncodePattern getReqNameMatchDecodeType() {
+        return reqNameMatchDecodeType;
+    }
+
+    /**
+     * @param reqNameMatchDecodeType the reqNameMatchDecodeType to set
+     */
+    public void setReqNameMatchDecodeType(TransUtil.EncodePattern reqNameMatchDecodeType) {
+        this.reqNameMatchDecodeType = reqNameMatchDecodeType;
+    }
+
+    /**
+     * @return the reqCommentMatchPattern
+     */
+    public String getReqCommentMatchPattern() {
+        return reqCommentMatchPattern;
+    }
+
+    /**
+     * @param reqCommentMatchPattern the reqCommentMatchPattern to set
+     */
+    public void setReqCommentMatchPattern(String reqCommentMatchPattern) {
+        this.reqCommentMatchPattern = reqCommentMatchPattern;
+    }
+
+    /**
+     * @return the reqCommentMatchIgnoreCase
+     */
+    public boolean isReqCommentMatchIgnoreCase() {
+        return reqCommentMatchIgnoreCase;
+    }
+
+    /**
+     * @param reqCommentMatchIgnoreCase the reqCommentMatchIgnoreCase to set
+     */
+    public void setReqCommentMatchIgnoreCase(boolean reqCommentMatchIgnoreCase) {
+        this.reqCommentMatchIgnoreCase = reqCommentMatchIgnoreCase;
+    }
+
+    /**
+     * @return the reqCommentMatchDecodeType
+     */
+    public TransUtil.EncodePattern getReqCommentMatchDecodeType() {
+        return reqCommentMatchDecodeType;
+    }
+
+    /**
+     * @param reqCommentMatchDecodeType the reqCommentMatchDecodeType to set
+     */
+    public void setReqCommentMatchDecodeType(TransUtil.EncodePattern reqCommentMatchDecodeType) {
+        this.reqCommentMatchDecodeType = reqCommentMatchDecodeType;
+    }
+
+    public static Pattern compileRegex(String matchPattern, boolean matchIgnoreCase) {
+        Pattern newregex = null;
+        try {
+            int flags = Pattern.DOTALL;
+            if (matchIgnoreCase) {
+                flags |= Pattern.CASE_INSENSITIVE;
+            }
+            newregex = Pattern.compile(matchPattern, flags);
+        } catch (PatternSyntaxException ex) {
+        }
+        return newregex;
+    }
+
+    /**
      * @return the useDummyResponse
      */
     public boolean isUseDummyResponse() {
@@ -202,6 +314,14 @@ public class SendToParameterProperty {
         this.reqCommentLineType = property.reqCommentLineType;
         this.reqNum = property.reqNum;
 
+        this.reqNameMatchPattern = property.reqNameMatchPattern;
+        this.reqNameMatchIgnoreCase = property.reqNameMatchIgnoreCase;
+        this.reqNameMatchDecodeType = property.reqNameMatchDecodeType;
+
+        this.reqCommentMatchPattern = property.reqCommentMatchPattern;
+        this.reqCommentMatchIgnoreCase = property.reqCommentMatchIgnoreCase;
+        this.reqCommentMatchDecodeType = property.reqCommentMatchDecodeType;
+
         this.useDummyResponse = property.useDummyResponse;
     }
 
@@ -217,6 +337,14 @@ public class SendToParameterProperty {
         this.reqComment = SendToParameterType.valueOf(prop.getProperty("SendToPamareter.reqComment", SendToParameterType.HISTORY_COMMENT.name()));
         this.reqCommentLineType = LinePartType.valueOf(prop.getProperty("SendToPamareter.reqCommentLineType", LinePartType.SECOND_LINE.name()));
         this.reqNum = SendToParameterType.valueOf(prop.getProperty("SendToPamareter.reqNum", SendToParameterType.HISTORY_NUMBER.name()));
+
+        this.reqNameMatchPattern = prop.getProperty("SendToPamareter.reqNameMatchPattern");
+        this.reqNameMatchIgnoreCase =  ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.reqNameMatchIgnoreCase"), false);
+        this.reqNameMatchDecodeType = TransUtil.EncodePattern.valueOf(prop.getProperty("SendToPamareter.reqNameMatchDecodeType", TransUtil.EncodePattern.NONE.name()));
+
+        this.reqCommentMatchPattern = prop.getProperty("SendToPamareter.reqCommentMatchPattern");
+        this.reqCommentMatchIgnoreCase =  ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.reqCommentMatchIgnoreCase"), false);
+        this.reqCommentMatchDecodeType = TransUtil.EncodePattern.valueOf(prop.getProperty("SendToPamareter.reqCommentMatchDecodeType", TransUtil.EncodePattern.NONE.name()));
 
         this.useDummyResponse = ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useDummyResponse"), false);
 
@@ -235,8 +363,59 @@ public class SendToParameterProperty {
         prop.setProperty("SendToPamareter.reqComment", this.reqComment.name());
         prop.setProperty("SendToPamareter.reqCommentLineType", this.reqCommentLineType.name());
         prop.setProperty("SendToPamareter.reqNum", this.reqNum.name());
+
+        prop.setProperty("SendToPamareter.reqNameMatchPattern", this.reqNameMatchPattern);
+        prop.setProperty("SendToPamareter.reqNameMatchIgnoreCase", Boolean.toString(this.reqNameMatchIgnoreCase));
+        prop.setProperty("SendToPamareter.reqNameMatchDecodeType", this.reqNameMatchDecodeType.name());
+
+        prop.setProperty("SendToPamareter.reqCommentMatchPattern", this.reqCommentMatchPattern);
+        prop.setProperty("SendToPamareter.reqCommentMatchIgnoreCase", Boolean.toString(this.reqCommentMatchIgnoreCase));
+        prop.setProperty("SendToPamareter.reqCommentMatchDecodeType", this.reqCommentMatchDecodeType.name());
+
         prop.setProperty("SendToPamareter.useDummyResponse", Boolean.toString(this.useDummyResponse));
+
         return prop;
+    }
+
+    public static String getRequestParameter(HttpRequestResponse messageInfo, Pattern pattern, TransUtil.EncodePattern decodeType) {
+        String value = null;
+        try {
+            HttpRequestWapper wrapRequest = new HttpRequestWapper(messageInfo.request());
+            String charset = wrapRequest.getGuessCharset(StandardCharsets.UTF_8.name());
+            String message = wrapRequest.getMessageString(charset);
+            Matcher m = pattern.matcher(message);
+            if (m.find()) {
+                if (m.groupCount() > 0) {
+                    value = m.group(1);
+                    value = TransUtil.toSmartDecode(value, decodeType, false, charset);
+                }
+            }
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return value;
+    }
+
+    public static String getResponseParameter(HttpRequestResponse messageInfo, Pattern pattern, TransUtil.EncodePattern decodeType) {
+        String value = null;
+        if (messageInfo.response() == null) return value;
+        if (pattern != null) {
+            try {
+                HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());
+                String charset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
+                String message = wrapResponse.getMessageString(wrapResponse.getGuessCharset(charset));
+                Matcher m = pattern.matcher(message);
+                if (m.find()) {
+                    if (m.groupCount() > 0) {
+                        value = m.group(1);
+                        value = TransUtil.toSmartDecode(value, decodeType, false, charset);
+                    }
+                }
+            } catch (UnsupportedEncodingException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+        return value;
     }
 
     public static String getParameter(SendToParameterProperty.SendToParameterType type, HttpRequestResponse messageInfo) {
@@ -253,8 +432,8 @@ public class SendToParameterProperty {
                         String body = wrapResponse.getBodyString(wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name()), false);
                         value = HttpUtil.extractHTMLTitle(body);
                         if (value != null) {
-                            TransUtil.EncodePattern patern = TransUtil.getSmartDecode(value);
-                            if (patern == TransUtil.EncodePattern.HTML) {
+                            TransUtil.EncodePattern decodeType = TransUtil.getSmartDecode(value);
+                            if (decodeType == TransUtil.EncodePattern.HTML) {
                                 value = SmartCodec.toHtmlUnicodeDecode(value);
                             }
                         }

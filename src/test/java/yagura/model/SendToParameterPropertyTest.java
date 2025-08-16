@@ -1,5 +1,6 @@
 package yagura.model;
 
+import extend.util.external.TransUtil;
 import extension.helpers.ConvertUtil;
 import java.util.Properties;
 import org.junit.jupiter.api.AfterEach;
@@ -42,6 +43,17 @@ public class SendToParameterPropertyTest {
         sendoParam.setUseReqComment(true);
         sendoParam.setUseReqName(true);
         sendoParam.setUseReqNum(true);
+
+        sendoParam.setReqName(SendToParameterProperty.SendToParameterType.REQUEST_REGEX);
+        sendoParam.setReqNameMatchPattern("reqNamePattern");
+        sendoParam.setReqNameMatchIgnoreCase(true);
+        sendoParam.setReqNameMatchDecodeType(TransUtil.EncodePattern.HTML);
+
+        sendoParam.setReqComment(SendToParameterProperty.SendToParameterType.REQUEST_REGEX);
+        sendoParam.setReqCommentMatchPattern("reqNotePattern");
+        sendoParam.setReqCommentMatchIgnoreCase(true);
+        sendoParam.setReqCommentMatchDecodeType(TransUtil.EncodePattern.BASE64);
+
         Properties prop = sendoParam.getProperties();
         assertEquals(true, ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useOverride"), false));
         assertEquals(true, ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useReqComment"), false));

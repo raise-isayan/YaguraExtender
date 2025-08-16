@@ -14,6 +14,7 @@ import com.burgstaller.okhttp.DispatchingAuthenticator;
 import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
+import extend.util.external.TransUtil;
 import extension.burp.HttpTarget;
 import extension.helpers.DateUtil;
 import extension.helpers.HttpRequestWapper;
@@ -80,6 +81,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import yagura.model.HttpExtendProperty.HttpProtocol;
+import static yagura.model.SendToParameterProperty.SendToParameterType.REQUEST_REGEX;
+import static yagura.model.SendToParameterProperty.SendToParameterType.RESPONSE_REGEX;
 
 /**
  *
@@ -414,7 +417,7 @@ public class SendToServer extends SendToMenuItem {
     }
 
     protected void sendToServerUseOkHttpClient(HttpRequestResponse messageInfo, SendToExtendProperty extendProp) {
-        SendToParameterProperty extendSendToParameterProp = extendProp.getSendToParameterProperty();
+        SendToParameterProperty extendParameterProp = extendProp.getSendToParameterProperty();
         final HttpExtendProperty extendConnectionProp = extendProp.getHttpExtendProperty();
         final Runnable sendTo = new Runnable() {
 
@@ -432,23 +435,45 @@ public class SendToServer extends SendToMenuItem {
                             .addFormDataPart("protocol", HttpTarget.getProtocol(httpService.secure()))
                             .addFormDataPart("url", httpRequest.url());
 
-                    if (extendSendToParameterProp.isUseOverride()) {
-                        if (extendSendToParameterProp.isUseReqName()) {
-                            SendToParameterProperty.LinePartType lineType = extendSendToParameterProp.getReqNameLineType();
-                            String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                    if (extendParameterProp.isUseOverride()) {
+                        if (extendParameterProp.isUseReqName()) {
+                            SendToParameterProperty.LinePartType lineType = extendParameterProp.getReqNameLineType();
+                            String value = null;
+                            switch (extendParameterProp.getReqName()) {
+                                case REQUEST_REGEX:
+                                    value = SendToParameterProperty.getRequestParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqNameMatchPattern(), extendParameterProp.isReqNameMatchIgnoreCase()) ,extendParameterProp.getReqNameMatchDecodeType());
+                                    break;
+                                case RESPONSE_REGEX:
+                                    value = SendToParameterProperty.getResponseParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqNameMatchPattern(), extendParameterProp.isReqNameMatchIgnoreCase()) ,extendParameterProp.getReqNameMatchDecodeType());
+                                    break;
+                                default:
+                                    value = SendToParameterProperty.getParameter(extendParameterProp.getReqName(), messageInfo);
+                                    break;
+                            }
                             if (value != null) {
                                 multipartBuilder.addFormDataPart("reqName", SendToParameterProperty.extractLinePart(lineType, value));
                             }
                         }
-                        if (extendSendToParameterProp.isUseReqComment()) {
-                            SendToParameterProperty.LinePartType lineType = extendSendToParameterProp.getReqCommentLineType();
-                            String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqComment(), messageInfo);
+                        if (extendParameterProp.isUseReqComment()) {
+                            SendToParameterProperty.LinePartType lineType = extendParameterProp.getReqCommentLineType();
+                            String value = null;
+                            switch (extendParameterProp.getReqComment()) {
+                                case REQUEST_REGEX:
+                                    value = SendToParameterProperty.getRequestParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqCommentMatchPattern(), extendParameterProp.isReqCommentMatchIgnoreCase()) ,extendParameterProp.getReqCommentMatchDecodeType());
+                                    break;
+                                case RESPONSE_REGEX:
+                                    value = SendToParameterProperty.getResponseParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqCommentMatchPattern(), extendParameterProp.isReqCommentMatchIgnoreCase()) ,extendParameterProp.getReqCommentMatchDecodeType());
+                                    break;
+                                default:
+                                    value = SendToParameterProperty.getParameter(extendParameterProp.getReqName(), messageInfo);
+                                    break;
+                            }
                             if (value != null) {
                                 multipartBuilder.addFormDataPart("reqComment", SendToParameterProperty.extractLinePart(lineType, value));
                             }
                         }
-                        if (extendSendToParameterProp.isUseReqNum()) {
-                            String value = SendToParameterProperty.getParameter(extendSendToParameterProp.getReqName(), messageInfo);
+                        if (extendParameterProp.isUseReqNum()) {
+                            String value = SendToParameterProperty.getParameter(extendParameterProp.getReqName(), messageInfo);
                             if (value != null) {
                                 multipartBuilder.addFormDataPart("reqNum", value);
                             }
@@ -476,7 +501,7 @@ public class SendToServer extends SendToMenuItem {
                             multipartBuilder.addFormDataPart("encoding", guessCharset);
                         }
                     } else {
-                        if (extendSendToParameterProp.isUseOverride() && extendSendToParameterProp.isUseDummyResponse()) {
+                        if (extendParameterProp.isUseOverride() && extendParameterProp.isUseDummyResponse()) {
                             burp.api.montoya.http.message.responses.HttpResponse dummyResponse = burp.api.montoya.http.message.responses.HttpResponse.httpResponse(newDummyRespose());
                             multipartBuilder.addFormDataPart("response", "response", RequestBody.create(dummyResponse.toByteArray().getBytes(), MediaType.parse("application/json")));
                         }

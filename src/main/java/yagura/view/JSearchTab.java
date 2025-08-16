@@ -710,7 +710,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
     private static final String SEARCH_PROGRESS = "%1$.1f%%";
 
     private boolean isValidRegex(String text) {
-        int flags = 0;
+        int flags = Pattern.DOTALL;
         if (this.chkIgnoreCase.isSelected()) {
             flags |= Pattern.CASE_INSENSITIVE;
         }

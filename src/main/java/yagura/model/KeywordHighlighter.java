@@ -53,7 +53,7 @@ public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHi
     public void setHighlightKeyword(Document doc, String keyword, boolean quote, boolean ignore, Color color) {
         try {
             this.keyword = keyword;
-            int flags = 0; //Pattern.MULTILINE;
+            int flags = Pattern.DOTALL; //Pattern.MULTILINE;
             if (ignore) {
                 flags |= Pattern.CASE_INSENSITIVE;
             }

@@ -352,7 +352,7 @@ public class QuickSearchTab extends javax.swing.JPanel {
     }
 
     private boolean isValidRegex(String text) {
-        int flags = 0;
+        int flags = Pattern.DOTALL;
         if (this.mnuIgnoreCase.isSelected()) {
             flags |= Pattern.CASE_INSENSITIVE;
         }

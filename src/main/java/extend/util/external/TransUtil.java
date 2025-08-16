@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import extension.burp.NotifyType;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;
@@ -105,7 +106,13 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX,
+        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX;
+
+//        public static EncodePattern parseEnum(String s) {
+//            String value = s.toUpperCase();
+//            return Enum.valueOf(EncodePattern.class, value);
+//        }
+
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");
