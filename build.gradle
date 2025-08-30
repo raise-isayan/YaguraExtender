@@ -96,6 +96,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
     compileOnly 'org.bouncycastle:bcprov-jdk18on:1.78.1'
 
+    // https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
+    compileOnly 'com.nimbusds:nimbus-jose-jwt:10.3.1'
+
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -127,6 +130,9 @@ dependencies {
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
     testImplementation 'net.portswigger.burp.extensions:montoya-api:2025.7'
 
+    // https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
+    testImplementation 'com.nimbusds:nimbus-jose-jwt:10.3.1'
+
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
     // https://mvnrepository.com/artifact/io.github.rburgst/okhttp-digest
@@ -136,6 +142,7 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation 'org.mockito:mockito-core:5.4.0'
+
 }
 
 tasks.named('test') {

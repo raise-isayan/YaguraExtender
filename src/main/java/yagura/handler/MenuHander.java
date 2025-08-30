@@ -39,7 +39,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -545,6 +544,8 @@ public class MenuHander {
 //            updateResultFilterUI(this.yaguraResultFilterMenu);
         yaguraMenu.add(this.yaguraResultFilterMenu);
 
+//        yaguraMenu.add(burpInterceptMenu);
+
         /**
          * Yagura Extension
          */
@@ -977,6 +978,17 @@ public class MenuHander {
             }
         }
     }
+
+    /**
+     * Burp Intercept
+     */
+    private void updateInterceptUI(JMenu burpInterceptMenu) {
+        BurpConfig.InterceptClientRequests burpInterceptRequest = BurpConfig.getInterceptClientRequests(api);
+        BurpConfig.InterceptServerResponses burpInterceptResponse = BurpConfig.getInterceptServerResponses(api);
+        BurpConfig.InterceptWebSocketsMessages burpInterceptWs = BurpConfig.getInterceptWebSocketsMessages(api);
+
+    }
+
 
     /**
      * Result Filter

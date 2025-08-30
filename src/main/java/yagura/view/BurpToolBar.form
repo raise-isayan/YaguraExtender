@@ -2,7 +2,7 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
-    <Container class="javax.swing.JPopupMenu" name="popupSetting">
+    <Container class="javax.swing.JPopupMenu" name="popupBurpOption">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
@@ -47,6 +47,81 @@
         </MenuItem>
       </SubComponents>
     </Container>
+    <Container class="javax.swing.JPopupMenu" name="popupInterceptOption">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkRequestBasedRules">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Intercept requests based rules"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="autoscrolls" type="boolean" value="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuChkRequestBasedRulesActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <Menu class="javax.swing.JMenu" name="mnuRequestInterceptRules">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Request interception rules"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+        </Menu>
+        <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
+        </Component>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkResposeBasedRules">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Intercept responses based rules"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuChkResposeBasedRulesActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <Menu class="javax.swing.JMenu" name="mnuResposeInterceptRule">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Response interception rules"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+        </Menu>
+        <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
+        </Component>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkClientToServerMessages">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Intercept client-to-server messages"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuChkClientToServerMessagesActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkServerToClientMessages">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Intercept server-to-client messages"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuChkServerToClientMessagesActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkInterceptInScopeOnly">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Only intercept in-scope messages"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="actionCommand" type="java.lang.String" value="Only intercept in-scope message"/>
+            <Property name="autoscrolls" type="boolean" value="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuChkInterceptInScopeOnlyActionPerformed"/>
+          </Events>
+        </MenuItem>
+      </SubComponents>
+    </Container>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -58,7 +133,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,0,35,0,0,2,78"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,0,35,0,0,2,96"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -104,6 +179,20 @@
           <Events>
             <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tglInterceptStateChanged"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tglInterceptActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnInterceptOption">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/yagura/resources/folder_bell.png"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInterceptOptionActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator1">
@@ -185,7 +274,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnScrollTabLayoutActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnSetting">
+        <Component class="javax.swing.JButton" name="btnBurpOption">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/yagura/resources/folder_wrench.png"/>
@@ -196,7 +285,7 @@
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSettingActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBurpOptionActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

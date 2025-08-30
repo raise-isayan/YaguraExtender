@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.ui.Theme;
@@ -10,19 +9,25 @@ import extension.burp.BurpUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 /**
@@ -58,21 +63,32 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        popupSetting = new javax.swing.JPopupMenu();
+        popupBurpOption = new javax.swing.JPopupMenu();
         mnuLoadProjectSettings = new javax.swing.JMenuItem();
         mnuSaveProjectSettings = new javax.swing.JMenuItem();
         jSeparator0 = new javax.swing.JPopupMenu.Separator();
         mnuLoadUserSettings = new javax.swing.JMenuItem();
         mnuSaveUserSettings = new javax.swing.JMenuItem();
+        popupInterceptOption = new javax.swing.JPopupMenu();
+        mnuChkRequestBasedRules = new javax.swing.JCheckBoxMenuItem();
+        mnuRequestInterceptRules = new javax.swing.JMenu();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        mnuChkResposeBasedRules = new javax.swing.JCheckBoxMenuItem();
+        mnuResposeInterceptRule = new javax.swing.JMenu();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        mnuChkClientToServerMessages = new javax.swing.JCheckBoxMenuItem();
+        mnuChkServerToClientMessages = new javax.swing.JCheckBoxMenuItem();
+        mnuChkInterceptInScopeOnly = new javax.swing.JCheckBoxMenuItem();
         toolBar = new javax.swing.JToolBar();
         tglIntercept = new javax.swing.JToggleButton();
+        btnInterceptOption = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnOpenBrowser = new javax.swing.JButton();
         cmbProfile = new javax.swing.JComboBox<>();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         btnWrapTabLayout = new javax.swing.JButton();
         btnScrollTabLayout = new javax.swing.JButton();
-        btnSetting = new javax.swing.JButton();
+        btnBurpOption = new javax.swing.JButton();
 
         mnuLoadProjectSettings.setText("Load project settings");
         mnuLoadProjectSettings.setToolTipText("");
@@ -81,7 +97,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
                 mnuLoadProjectSettingsActionPerformed(evt);
             }
         });
-        popupSetting.add(mnuLoadProjectSettings);
+        popupBurpOption.add(mnuLoadProjectSettings);
 
         mnuSaveProjectSettings.setText("Save project settings");
         mnuSaveProjectSettings.addActionListener(new java.awt.event.ActionListener() {
@@ -89,8 +105,8 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
                 mnuSaveProjectSettingsActionPerformed(evt);
             }
         });
-        popupSetting.add(mnuSaveProjectSettings);
-        popupSetting.add(jSeparator0);
+        popupBurpOption.add(mnuSaveProjectSettings);
+        popupBurpOption.add(jSeparator0);
 
         mnuLoadUserSettings.setText("Load user settings");
         mnuLoadUserSettings.setToolTipText("");
@@ -99,7 +115,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
                 mnuLoadUserSettingsActionPerformed(evt);
             }
         });
-        popupSetting.add(mnuLoadUserSettings);
+        popupBurpOption.add(mnuLoadUserSettings);
 
         mnuSaveUserSettings.setText("Save user settings");
         mnuSaveUserSettings.setToolTipText("");
@@ -108,7 +124,68 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
                 mnuSaveUserSettingsActionPerformed(evt);
             }
         });
-        popupSetting.add(mnuSaveUserSettings);
+        popupBurpOption.add(mnuSaveUserSettings);
+
+        mnuChkRequestBasedRules.setSelected(true);
+        mnuChkRequestBasedRules.setText("Intercept requests based rules");
+        mnuChkRequestBasedRules.setToolTipText("");
+        mnuChkRequestBasedRules.setAutoscrolls(true);
+        mnuChkRequestBasedRules.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuChkRequestBasedRulesActionPerformed(evt);
+            }
+        });
+        popupInterceptOption.add(mnuChkRequestBasedRules);
+
+        mnuRequestInterceptRules.setText("Request interception rules");
+        mnuRequestInterceptRules.setToolTipText("");
+        popupInterceptOption.add(mnuRequestInterceptRules);
+        popupInterceptOption.add(jSeparator3);
+
+        mnuChkResposeBasedRules.setText("Intercept responses based rules");
+        mnuChkResposeBasedRules.setToolTipText("");
+        mnuChkResposeBasedRules.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuChkResposeBasedRulesActionPerformed(evt);
+            }
+        });
+        popupInterceptOption.add(mnuChkResposeBasedRules);
+
+        mnuResposeInterceptRule.setText("Response interception rules");
+        mnuResposeInterceptRule.setToolTipText("");
+        popupInterceptOption.add(mnuResposeInterceptRule);
+        popupInterceptOption.add(jSeparator4);
+
+        mnuChkClientToServerMessages.setSelected(true);
+        mnuChkClientToServerMessages.setText("Intercept client-to-server messages");
+        mnuChkClientToServerMessages.setToolTipText("");
+        mnuChkClientToServerMessages.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuChkClientToServerMessagesActionPerformed(evt);
+            }
+        });
+        popupInterceptOption.add(mnuChkClientToServerMessages);
+
+        mnuChkServerToClientMessages.setSelected(true);
+        mnuChkServerToClientMessages.setText("Intercept server-to-client messages");
+        mnuChkServerToClientMessages.setToolTipText("");
+        mnuChkServerToClientMessages.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuChkServerToClientMessagesActionPerformed(evt);
+            }
+        });
+        popupInterceptOption.add(mnuChkServerToClientMessages);
+
+        mnuChkInterceptInScopeOnly.setText("Only intercept in-scope messages");
+        mnuChkInterceptInScopeOnly.setToolTipText("");
+        mnuChkInterceptInScopeOnly.setActionCommand("Only intercept in-scope message");
+        mnuChkInterceptInScopeOnly.setAutoscrolls(true);
+        mnuChkInterceptInScopeOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuChkInterceptInScopeOnlyActionPerformed(evt);
+            }
+        });
+        popupInterceptOption.add(mnuChkInterceptInScopeOnly);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -137,6 +214,17 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         toolBar.add(tglIntercept);
         tglIntercept.getAccessibleContext().setAccessibleDescription("");
 
+        btnInterceptOption.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_bell.png"))); // NOI18N
+        btnInterceptOption.setToolTipText("");
+        btnInterceptOption.setFocusable(false);
+        btnInterceptOption.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnInterceptOption.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnInterceptOption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInterceptOptionActionPerformed(evt);
+            }
+        });
+        toolBar.add(btnInterceptOption);
         toolBar.add(jSeparator1);
 
         btnOpenBrowser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/world_go.png"))); // NOI18N
@@ -195,17 +283,17 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         });
         toolBar.add(btnScrollTabLayout);
 
-        btnSetting.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_wrench.png"))); // NOI18N
-        btnSetting.setToolTipText("burp settings");
-        btnSetting.setFocusable(false);
-        btnSetting.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSetting.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSetting.addActionListener(new java.awt.event.ActionListener() {
+        btnBurpOption.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_wrench.png"))); // NOI18N
+        btnBurpOption.setToolTipText("burp settings");
+        btnBurpOption.setFocusable(false);
+        btnBurpOption.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBurpOption.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBurpOption.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSettingActionPerformed(evt);
+                btnBurpOptionActionPerformed(evt);
             }
         });
-        toolBar.add(btnSetting);
+        toolBar.add(btnBurpOption);
 
         add(toolBar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -229,16 +317,33 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
 
     };
 
-    private final DefaultComboBoxModel modelProfilel = new DefaultComboBoxModel();
+    private final DefaultComboBoxModel modelProfile = new DefaultComboBoxModel();
 
     private void customizeComponents() {
-        this.cmbProfile.setModel(this.modelProfilel);
+        this.cmbProfile.setModel(this.modelProfile);
         this.renewProfile();
         JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());
         if (button != null) {
             this.tglButtonChangeListener.stateChanged(new ChangeEvent(button));
             button.addChangeListener(this.tglButtonChangeListener);
         }
+
+        this.popupInterceptOption.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) {
+
+            }
+        });
 //        this.timer.schedule(this.task, 0, this.interval_time);
     }
 
@@ -253,13 +358,13 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     }
 
     public void renewProfile() {
-        this.modelProfilel.removeAllElements();
-        this.modelProfilel.addElement(BurpBrowser.BrowserProfile.DEFAULT);
+        this.modelProfile.removeAllElements();
+        this.modelProfile.addElement(BurpBrowser.BrowserProfile.DEFAULT);
         Map<String, BurpBrowser.BrowserProfile> profiles = this.browser.getBrowserProfile();
         for (Map.Entry<String, BurpBrowser.BrowserProfile> entry : profiles.entrySet()) {
-            this.modelProfilel.addElement(entry.getValue());
+            this.modelProfile.addElement(entry.getValue());
         }
-        this.modelProfilel.addElement(BurpBrowser.BrowserProfile.GUEST);
+        this.modelProfile.addElement(BurpBrowser.BrowserProfile.GUEST);
     }
 
     private void tglInterceptStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tglInterceptStateChanged
@@ -281,7 +386,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private void btnOpenBrowserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenBrowserActionPerformed
         try {
             BurpBrowser.copyBrowserExtension();
-            BurpBrowser.BrowserProfile profile = (BurpBrowser.BrowserProfile) this.modelProfilel.getSelectedItem();
+            BurpBrowser.BrowserProfile profile = (BurpBrowser.BrowserProfile) this.modelProfile.getSelectedItem();
             BurpConfig.RequestListener listener = BurpConfig.openBrowserRequestListener(api, 8080);
             if (listener != null) {
                 browser.openBrowser((profile == null) ? BurpBrowser.BROWSER_PROFILE_DEFAULT : profile.getProfileKey(), listener.getListenerPort());
@@ -307,10 +412,10 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }//GEN-LAST:event_btnScrollTabLayoutActionPerformed
 
-    private void btnSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSettingActionPerformed
-        Point pt = this.btnSetting.getLocation();
-        this.popupSetting.show(this.toolBar, pt.x, pt.y + this.btnSetting.getHeight());
-    }//GEN-LAST:event_btnSettingActionPerformed
+    private void btnBurpOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBurpOptionActionPerformed
+        Point pt = this.btnBurpOption.getLocation();
+        this.popupBurpOption.show(this.toolBar, pt.x, pt.y + this.btnBurpOption.getHeight());
+    }//GEN-LAST:event_btnBurpOptionActionPerformed
 
     private File userSetting;
     private File projectSetting;
@@ -397,23 +502,150 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         }
     }//GEN-LAST:event_mnuSaveProjectSettingsActionPerformed
 
+//        Frame frame = BurpUtil.suiteFrame();
+//        JButton setting = BurpUtil.findSuiteButton("settingsButton", frame);
+//        if (setting != null) {
+//            setting.doClick();
+//        }
+
+    /**
+     * Intercept requests based on the following rules
+     * Request interception rules
+     * ---------------------------------------------------------------------
+     * Intercept responses based on the following rules
+     * Response interception rules
+     * ---------------------------------------------------------------------
+     * Intercept client-to-server messages
+     * Intercept server-to-client messages
+     * Only intercept in-scope messages
+     */
+    private void btnInterceptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInterceptOptionActionPerformed
+        this.updatePopupMenuUI();
+        Point pt = this.btnInterceptOption.getLocation();
+        this.popupInterceptOption.show(this.toolBar, pt.x, pt.y + this.btnInterceptOption.getHeight());
+    }//GEN-LAST:event_btnInterceptOptionActionPerformed
+
+    private void mnuChkRequestBasedRulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuChkRequestBasedRulesActionPerformed
+        this.yaguraInterceptAction.actionPerformed(evt);
+    }//GEN-LAST:event_mnuChkRequestBasedRulesActionPerformed
+
+    private void mnuChkResposeBasedRulesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuChkResposeBasedRulesActionPerformed
+        this.yaguraInterceptAction.actionPerformed(evt);
+    }//GEN-LAST:event_mnuChkResposeBasedRulesActionPerformed
+
+    private void mnuChkClientToServerMessagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuChkClientToServerMessagesActionPerformed
+        this.yaguraInterceptAction.actionPerformed(evt);
+    }//GEN-LAST:event_mnuChkClientToServerMessagesActionPerformed
+
+    private void mnuChkServerToClientMessagesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuChkServerToClientMessagesActionPerformed
+        this.yaguraInterceptAction.actionPerformed(evt);
+    }//GEN-LAST:event_mnuChkServerToClientMessagesActionPerformed
+
+    private void mnuChkInterceptInScopeOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuChkInterceptInScopeOnlyActionPerformed
+        this.yaguraInterceptAction.actionPerformed(evt);
+    }//GEN-LAST:event_mnuChkInterceptInScopeOnlyActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBurpOption;
+    private javax.swing.JButton btnInterceptOption;
     private javax.swing.JButton btnOpenBrowser;
     private javax.swing.JButton btnScrollTabLayout;
-    private javax.swing.JButton btnSetting;
     private javax.swing.JButton btnWrapTabLayout;
     private javax.swing.JComboBox<String> cmbProfile;
     private javax.swing.JPopupMenu.Separator jSeparator0;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JCheckBoxMenuItem mnuChkClientToServerMessages;
+    private javax.swing.JCheckBoxMenuItem mnuChkInterceptInScopeOnly;
+    private javax.swing.JCheckBoxMenuItem mnuChkRequestBasedRules;
+    private javax.swing.JCheckBoxMenuItem mnuChkResposeBasedRules;
+    private javax.swing.JCheckBoxMenuItem mnuChkServerToClientMessages;
     private javax.swing.JMenuItem mnuLoadProjectSettings;
     private javax.swing.JMenuItem mnuLoadUserSettings;
+    private javax.swing.JMenu mnuRequestInterceptRules;
+    private javax.swing.JMenu mnuResposeInterceptRule;
     private javax.swing.JMenuItem mnuSaveProjectSettings;
     private javax.swing.JMenuItem mnuSaveUserSettings;
-    private javax.swing.JPopupMenu popupSetting;
+    private javax.swing.JPopupMenu popupBurpOption;
+    private javax.swing.JPopupMenu popupInterceptOption;
     private javax.swing.JToggleButton tglIntercept;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
+
+
+    public void updatePopupMenuUI() {
+        this.updateInterceptOptionUI();
+    }
+
+    /**
+     * Intercept Based rules
+     */
+    public void updateInterceptOptionUI() {
+        BurpConfig.InterceptClientRequests requestRule = BurpConfig.getInterceptClientRequests(api);
+        this.mnuRequestInterceptRules.setSelected(requestRule.isDoIntercept());
+        this.mnuRequestInterceptRules.removeAll();
+        List<BurpConfig.InterceptRule> requestRules = requestRule.getRules();
+        for (int i = 0; i < requestRules.size(); i++) {
+            JCheckBoxMenuItem mnuRuleItem = new JCheckBoxMenuItem();
+            mnuRuleItem.setSelected(requestRules.get(i).isEnabled());
+            mnuRuleItem.setText(requestRules.get(i).toString());
+            mnuRuleItem.addActionListener(yaguraInterceptAction);
+            mnuRequestInterceptRules.add(mnuRuleItem);
+        }
+
+        BurpConfig.InterceptServerResponses responseRule = BurpConfig.getInterceptServerResponses(api);
+        this.mnuResposeInterceptRule.setSelected(responseRule.isDoIntercept());
+        this.mnuResposeInterceptRule.removeAll();
+        List<BurpConfig.InterceptRule> responseRules = responseRule.getRules();
+        for (int i = 0; i < responseRules.size(); i++) {
+            JCheckBoxMenuItem mnuRuleItem = new JCheckBoxMenuItem();
+            mnuRuleItem.setSelected(responseRules.get(i).isEnabled());
+            mnuRuleItem.setText(responseRules.get(i).toString());
+            mnuRuleItem.addActionListener(yaguraInterceptAction);
+            mnuResposeInterceptRule.add(mnuRuleItem);
+        }
+
+        BurpConfig.InterceptWebSocketsMessages wsRule = BurpConfig.getInterceptWebSocketsMessages(api);
+        this.mnuChkClientToServerMessages.setSelected(wsRule.isClientToServerMessages());
+        this.mnuChkServerToClientMessages.setSelected(wsRule.isServerToClientMessages());
+        this.mnuChkInterceptInScopeOnly.setSelected(wsRule.isInterceptInScopeOnly());
+
+    }
+
+    private final ActionListener yaguraInterceptAction = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            BurpConfig.InterceptClientRequests requestRule = BurpConfig.getInterceptClientRequests(api);
+            List<BurpConfig.InterceptRule> requestRules = requestRule.getRules();
+            requestRule.setDoIntercept(mnuChkRequestBasedRules.isSelected());
+            for (int i = 0; i < mnuRequestInterceptRules.getMenuComponentCount(); i++) {
+                if (mnuRequestInterceptRules.getMenuComponent(i) instanceof JCheckBoxMenuItem chkMenuItem) {
+                    requestRules.get(i).setEnabled(chkMenuItem.isSelected());
+                }
+            }
+            BurpConfig.configInterceptClientRequests(api, requestRule);
+
+            BurpConfig.InterceptServerResponses responseRule = BurpConfig.getInterceptServerResponses(api);
+            List<BurpConfig.InterceptRule> responseRules = responseRule.getRules();
+            responseRule.setDoIntercept(mnuChkResposeBasedRules.isSelected());
+            api.logging().logToOutput("res:" + responseRule.isDoIntercept());
+            for (int i = 0; i < mnuResposeInterceptRule.getMenuComponentCount(); i++) {
+                if (mnuResposeInterceptRule.getMenuComponent(i) instanceof JCheckBoxMenuItem chkMenuItem) {
+                   responseRules.get(i).setEnabled(chkMenuItem.isSelected());
+                }
+            }
+            BurpConfig.configInterceptServerResponses(api, responseRule);
+
+            BurpConfig.InterceptWebSocketsMessages wsRule = BurpConfig.getInterceptWebSocketsMessages(api);
+            wsRule.setClientToServerMessages(mnuChkClientToServerMessages.isSelected());
+            wsRule.setServerToClientMessages(mnuChkServerToClientMessages.isSelected());
+            wsRule.setInterceptInScopeOnly(mnuChkInterceptInScopeOnly.isSelected());
+
+            BurpConfig.configInterceptWebSocketsMessages(api, wsRule);
+        }
+    };
 
     public void applyStyleTheme(Theme theme) {
         switch (theme) {
