@@ -8,6 +8,7 @@ import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
+import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -89,6 +91,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         btnWrapTabLayout = new javax.swing.JButton();
         btnScrollTabLayout = new javax.swing.JButton();
         btnBurpOption = new javax.swing.JButton();
+        btnBurpConfig = new javax.swing.JButton();
 
         mnuLoadProjectSettings.setText("Load project settings");
         mnuLoadProjectSettings.setToolTipText("");
@@ -295,6 +298,12 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         });
         toolBar.add(btnBurpOption);
 
+        btnBurpConfig.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/cog.png"))); // NOI18N
+        btnBurpConfig.setFocusable(false);
+        btnBurpConfig.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBurpConfig.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        toolBar.add(btnBurpConfig);
+
         add(toolBar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -322,29 +331,24 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private void customizeComponents() {
         this.cmbProfile.setModel(this.modelProfile);
         this.renewProfile();
-        JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());
+        Frame frame = BurpUtil.suiteFrame();
+        JToggleButton button = BurpUtil.findSuiteIntercept(frame);
         if (button != null) {
             this.tglButtonChangeListener.stateChanged(new ChangeEvent(button));
             button.addChangeListener(this.tglButtonChangeListener);
         }
 
-        this.popupInterceptOption.addPopupMenuListener(new PopupMenuListener() {
-            @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        final JButton setting = BurpUtil.findSuiteButton("settingsButton", frame);
+        this.btnBurpConfig.setVisible(setting != null);
+        if (setting != null) {
+            this.btnBurpConfig.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setting.doClick();
+                }
+            });
 
-            }
-
-            @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-
-            }
-
-            @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
-
-            }
-        });
-//        this.timer.schedule(this.task, 0, this.interval_time);
+        }
     }
 
     public boolean isInterceptEnabled() {
@@ -502,12 +506,6 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         }
     }//GEN-LAST:event_mnuSaveProjectSettingsActionPerformed
 
-//        Frame frame = BurpUtil.suiteFrame();
-//        JButton setting = BurpUtil.findSuiteButton("settingsButton", frame);
-//        if (setting != null) {
-//            setting.doClick();
-//        }
-
     /**
      * Intercept requests based on the following rules
      * Request interception rules
@@ -546,6 +544,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     }//GEN-LAST:event_mnuChkInterceptInScopeOnlyActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBurpConfig;
     private javax.swing.JButton btnBurpOption;
     private javax.swing.JButton btnInterceptOption;
     private javax.swing.JButton btnOpenBrowser;
