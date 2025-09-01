@@ -217,7 +217,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         toolBar.add(tglIntercept);
         tglIntercept.getAccessibleContext().setAccessibleDescription("");
 
-        btnInterceptOption.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_bell.png"))); // NOI18N
+        btnInterceptOption.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_table.png"))); // NOI18N
         btnInterceptOption.setToolTipText("");
         btnInterceptOption.setFocusable(false);
         btnInterceptOption.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

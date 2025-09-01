@@ -104,7 +104,7 @@ dependencies {
 
     // standalone 利用のため
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
-    implementation 'net.portswigger.burp.extensions:montoya-api:2025.7'
+    implementation 'net.portswigger.burp.extensions:montoya-api:2025.8'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
     implementation 'commons-codec:commons-codec:1.19.0'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
@@ -128,7 +128,7 @@ dependencies {
  //   testImplementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
-    testImplementation 'net.portswigger.burp.extensions:montoya-api:2025.7'
+    testImplementation 'net.portswigger.burp.extensions:montoya-api:2025.8'
 
     // https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
     testImplementation 'com.nimbusds:nimbus-jose-jwt:10.3.1'
