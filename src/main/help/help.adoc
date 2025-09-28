@@ -103,8 +103,8 @@ Run the selected extension.
   Paste include Target scope (multi-line)::
     Add a multi-line URL set on the clipboard to the Target Scope Include in scope.
 
-  Paste Top URL into include Target scope (multi-line)::
-    Add a multi-line Top URL set on the clipboard to the Target Scope Include in scope.
+  Paste Root URL into include Target scope (multi-line)::
+    Add a multi-line Root URL set on the clipboard to the Target Scope Include in scope.
 
   Paste exclude Target scope (multi-line)::
     Add a multi-line URL set on the clipboard to the Target Scope Exclude in scope.
@@ -116,6 +116,39 @@ Run the selected extension.
 
 Changes the character code in the User settings of Burp.
 It is equivalent to switching Charsets in Burp's [User Interface] -> [Inspector and Message Editor].
+
+== Burp ToolBar
+
+Intarcept Toggle Bottn::
+
+It has the same functionality as the Intercept feature in the Proxy tab and works in conjunction with Burp core behavior.
+
+Intarcept icon::
+
+You can configure the Request interception rules, Response interception rules and WebSocket interception rules in the proxy settings.
+
+  ** Intercept requests based on the following rules
+  ** Request interception rules
+  ** Intercept responses based on the following rules
+  ** Automatically request update content length
+  ** Response interception rules
+  ** Automatically response update content length
+  ** Intercept client-to-server messages
+  ** Intercept server-to-client messages
+  ** Only intercept in-scope messages
+
+Open Browser::
+
+Launch the browser with the selected profile.
+
+Manage global settings icon::
+
+You can load and save User and Project settings.
+
+  ** Load project settings
+  ** Save project settings
+  ** Load user settings
+  ** Save user settings
 
 == Yagura tab
 

@@ -1,6 +1,5 @@
 package extend.util.external;
 
-import extension.burp.NotifyType;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.MatchUtil;

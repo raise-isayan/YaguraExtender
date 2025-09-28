@@ -14,13 +14,18 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
 import java.net.Proxy;
+import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,9 +33,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.Authenticator;
+import okhttp3.Dns;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -373,10 +380,31 @@ public class okHttpClientTest {
         //testGetSocksProxyAuthInterceptor(new okhttp.socks.SocksProxyAuthInterceptor(new PasswordAuthentication("test3", "testpass3".toCharArray())));
     }
 
+    @Test
+    public void testGetSocksProxy() {
+        System.out.println("testGetSocksProxy");
+//        String proxyHost = "127.0.0.1";
+//        int proxyPort = 1080;
+//        SocketAddress addr = InetSocketAddress.createUnresolved(proxyHost, proxyPort);
+//        Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+//        final OkHttpClient client = new OkHttpClient.Builder()
+//                .socketFactory(new SocksProxySocketFactory(proxyHost, proxyPort))
+//                .build();
+//
+//        Request request = new Request.Builder().url("http://www.example.com/").build();
+//        try (Response response = client.newCall(request).execute()) {
+//            ResponseBody body = response.body();
+//            System.out.println(body.string());
+//        } catch (IOException ex) {
+//            fail(ex.getMessage(), ex);
+//        }
+    }
+
+
     private void testGetSocksProxyAuthInterceptor(Interceptor interceptor) {
         try {
             String proxyHost = "127.0.0.1";
-            int proxyPort = 11080;
+            int proxyPort = 1080;
             SocketAddress addr = new InetSocketAddress(proxyHost, proxyPort);
             Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
 
@@ -483,4 +511,50 @@ public class okHttpClientTest {
         System.out.println("Authenticator after:" + String.valueOf(java.net.Authenticator.getDefault()));
     }
 
+    private static class SocksProxySocketFactory extends SocketFactory {
+
+        private final String proxyHost;
+        private final int proxyPort;
+
+        public SocksProxySocketFactory(String proxyHost, int proxyPort) {
+            this.proxyHost = proxyHost;
+            this.proxyPort = proxyPort;
+        }
+
+        @Override
+        public Socket createSocket() throws IOException {
+            Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyHost, proxyPort));
+            return new Socket(proxy);
+        }
+
+        @Override
+        public Socket createSocket(String host, int port) throws IOException {
+            Socket socket = createSocket();
+            socket.connect(new InetSocketAddress(host, port));
+            return socket;
+        }
+
+        @Override
+        public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException {
+            Socket socket = createSocket();
+            socket.bind(new InetSocketAddress(localHost, localPort));
+            socket.connect(new InetSocketAddress(host, port));
+            return socket;
+        }
+
+        @Override
+        public Socket createSocket(InetAddress host, int port) throws IOException {
+            Socket socket = createSocket();
+            socket.connect(new InetSocketAddress(host, port));
+            return socket;
+        }
+
+        @Override
+        public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
+            Socket socket = createSocket();
+            socket.bind(new InetSocketAddress(localAddress, localPort));
+            socket.connect(new InetSocketAddress(address, port));
+            return socket;
+        }
+    }
 }

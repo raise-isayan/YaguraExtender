@@ -102,8 +102,8 @@ Result FilterタブでBambda modeを切り換えるためのタブを作成す�
   Paste include Target scope (multi-line)::
     クリップボードに設定された、複数行のURLをTarget Scopeの Include in scope に追加します。
 
-  Paste Top URL into include Target scope (multi-line)::
-    クリップボードに設定された、複数行のTop URLをTarget Scopeの Include in scope に追加します。
+  Paste Root URL into include Target scope (multi-line)::
+    クリップボードに設定された、複数行のRoot URLをTarget Scopeの Include in scope に追加します。
 
   Paste exclude Target scope (multi-line)::
     クリップボードに設定された、複数行のURLをTarget Scopeの Exclude from scope に追加します。
@@ -115,6 +115,39 @@ Result FilterタブでBambda modeを切り換えるためのタブを作成す�
 
 BurpのUser設定の文字コードを変更します。
 Burpの [User Interface] -> [Inspector and Message Editor] の Charsetsの切り替えと同等です。
+
+== Burp ToolBar
+
+Intarcept トグルボタン::
+
+Proxy タブのIntarcept と同一の機能を持っており、Burp本体の挙動と連動します。
+
+Intarcept アイコン::
+
+Proxy settings の Request interception rules、Response interception rules、WebSocket interception rules の設定を行えます。
+
+  ** Intercept requests based on the following rules
+  ** Request interception rules
+  ** Intercept responses based on the following rules
+  ** Automatically request update content length
+  ** Response interception rules
+  ** Automatically response update content length
+  ** Intercept client-to-server messages
+  ** Intercept server-to-client messages
+  ** Only intercept in-scope messages
+
+Open Browser::
+
+選択したプロファイルでブラウザを起動します。
+
+Manage global settings アイコン::
+
+User および Projectの設定のロード、セーブを行えます。
+
+  ** Load project settings
+  ** Save project settings
+  ** Load user settings
+  ** Save user settings
 
 == Yaguraタブ
 

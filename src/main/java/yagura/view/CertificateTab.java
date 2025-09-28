@@ -17,8 +17,8 @@ import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
@@ -34,6 +34,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import yagura.Version;
 import yagura.model.CertificateItem;
 
@@ -68,15 +69,16 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnGrpCA = new javax.swing.ButtonGroup();
         btnGrpExportCertificate = new javax.swing.ButtonGroup();
         btnGrpExportIssuerCA = new javax.swing.ButtonGroup();
+        btnGrpIssuerCA = new javax.swing.ButtonGroup();
+        btnGrpExportSubjectCA = new javax.swing.ButtonGroup();
         tabGenerate = new javax.swing.JTabbedPane();
         pnlCertificateCA = new javax.swing.JPanel();
         pnlSelectCertificate = new javax.swing.JPanel();
         rdoBurpCA = new javax.swing.JRadioButton();
         rdoCustomCA = new javax.swing.JRadioButton();
         btnSelectExecute = new javax.swing.JButton();
+        lblSelectCA = new javax.swing.JLabel();
         pnlCertificateExports = new javax.swing.JPanel();
-        scrollCertificate = new javax.swing.JScrollPane();
-        tableCertificate = new javax.swing.JTable();
         pnlConvertFormat = new javax.swing.JPanel();
         rdoConvertPairPEM = new javax.swing.JRadioButton();
         rdoConvertPrivateDER = new javax.swing.JRadioButton();
@@ -93,20 +95,45 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnProvidedServer = new javax.swing.JToggleButton();
         btnCopy = new javax.swing.JButton();
         pnlGenerateCA = new javax.swing.JPanel();
-        btnExportIssuerCA = new javax.swing.JButton();
-        txtCommonName = new javax.swing.JTextField();
-        lblCommonName = new javax.swing.JLabel();
-        lblOrganizationName = new javax.swing.JLabel();
-        txtOrganizationName = new javax.swing.JTextField();
-        lblLoccalityName = new javax.swing.JLabel();
-        txtLoccalityName = new javax.swing.JTextField();
-        txtCountry = new javax.swing.JTextField();
-        lblCountry = new javax.swing.JLabel();
-        spnYear = new javax.swing.JSpinner();
-        rdoExportIssuPairPEM = new javax.swing.JRadioButton();
-        rdoExportIssuPairPKCS12 = new javax.swing.JRadioButton();
-        txtPKCS12Password = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        pnlGenerateIssuer = new javax.swing.JPanel();
+        lblIssuerYear = new javax.swing.JLabel();
+        spnIssuerYear = new javax.swing.JSpinner();
+        lblIssuerCommonName = new javax.swing.JLabel();
+        txtIssuerCommonName = new javax.swing.JTextField();
+        lblIssuerOrganizationName = new javax.swing.JLabel();
+        txtIssuerOrganizationName = new javax.swing.JTextField();
+        lblIssuerLoccalityName = new javax.swing.JLabel();
+        txtIssuerLoccalityName = new javax.swing.JTextField();
+        lblIssuerCountry = new javax.swing.JLabel();
+        txtIssuerCountry = new javax.swing.JTextField();
+        rdoIssuerExportPairPEM = new javax.swing.JRadioButton();
+        rdoIssuerExportPairPKCS12 = new javax.swing.JRadioButton();
+        txtIssuerPKCS12Password = new javax.swing.JTextField();
+        btnIssuerExportCA = new javax.swing.JButton();
+        pnlSignCA = new javax.swing.JPanel();
+        pnlSelectIssuer = new javax.swing.JPanel();
+        rdoBurpIssuerCA = new javax.swing.JRadioButton();
+        rdoCustomIssuerCA = new javax.swing.JRadioButton();
+        btnSelectIssuerExecute = new javax.swing.JButton();
+        lblSelectIsserCA = new javax.swing.JLabel();
+        pnlGenerateSubject = new javax.swing.JPanel();
+        lblSubjectYear = new javax.swing.JLabel();
+        spnSubjectYear = new javax.swing.JSpinner();
+        lblSubjectCommonName = new javax.swing.JLabel();
+        txtSubjectCommonName = new javax.swing.JTextField();
+        lblSubjectOrganizationName = new javax.swing.JLabel();
+        txtSubjectOrganizationName = new javax.swing.JTextField();
+        lblSubjectLoccalityName = new javax.swing.JLabel();
+        txtSubjectLoccalityName = new javax.swing.JTextField();
+        lblSubjectCountry = new javax.swing.JLabel();
+        txtSubjectCountry = new javax.swing.JTextField();
+        rdoSubjectExportPairPEM = new javax.swing.JRadioButton();
+        rdoSubjectExportPairPKCS12 = new javax.swing.JRadioButton();
+        txtSubjectPKCS12Password = new javax.swing.JTextField();
+        btnSubjectExportCA = new javax.swing.JButton();
+        lblSubjectCountry1 = new javax.swing.JLabel();
+        txtSubjectSAN = new javax.swing.JTextField();
+        chkUseSameCommonName = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -136,6 +163,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        lblSelectCA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout pnlSelectCertificateLayout = new javax.swing.GroupLayout(pnlSelectCertificate);
         pnlSelectCertificate.setLayout(pnlSelectCertificateLayout);
         pnlSelectCertificateLayout.setHorizontalGroup(
@@ -147,8 +176,10 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     .addGroup(pnlSelectCertificateLayout.createSequentialGroup()
                         .addComponent(rdoCustomCA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(668, Short.MAX_VALUE))
+                        .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblSelectCA, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         pnlSelectCertificateLayout.setVerticalGroup(
             pnlSelectCertificateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,46 +191,17 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     .addGroup(pnlSelectCertificateLayout.createSequentialGroup()
                         .addComponent(rdoCustomCA)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnSelectExecute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSelectExecute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblSelectCA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pnlCertificateCA.add(pnlSelectCertificate, java.awt.BorderLayout.NORTH);
 
-        tableCertificate.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "", "StoreType", "Certificate", "CertificatePasswd", "Subject"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tableCertificate.getTableHeader().setReorderingAllowed(false);
-        scrollCertificate.setViewportView(tableCertificate);
-        if (tableCertificate.getColumnModel().getColumnCount() > 0) {
-            tableCertificate.getColumnModel().getColumn(2).setResizable(false);
-            tableCertificate.getColumnModel().getColumn(2).setPreferredWidth(0);
-            tableCertificate.getColumnModel().getColumn(3).setResizable(false);
-            tableCertificate.getColumnModel().getColumn(3).setPreferredWidth(0);
-            tableCertificate.getColumnModel().getColumn(4).setResizable(false);
-        }
+        pnlCertificateExports.setLayout(new java.awt.BorderLayout());
 
         btnGrpExportCertificate.add(rdoConvertPairPEM);
+        rdoConvertPairPEM.setSelected(true);
         rdoConvertPairPEM.setText("Certificate and Private key in PEM format");
 
         btnGrpExportCertificate.add(rdoConvertPrivateDER);
@@ -230,9 +232,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(rdoConvertPrivateDER)
                     .addGroup(pnlConvertFormatLayout.createSequentialGroup()
                         .addComponent(rdoConvertPairPEM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btnExportCA)))
-                .addContainerGap())
+                .addGap(84, 483, Short.MAX_VALUE))
         );
         pnlConvertFormatLayout.setVerticalGroup(
             pnlConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -250,26 +252,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout pnlCertificateExportsLayout = new javax.swing.GroupLayout(pnlCertificateExports);
-        pnlCertificateExports.setLayout(pnlCertificateExportsLayout);
-        pnlCertificateExportsLayout.setHorizontalGroup(
-            pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertificateExportsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollCertificate)
-                    .addComponent(pnlConvertFormat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        pnlCertificateExportsLayout.setVerticalGroup(
-            pnlCertificateExportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlCertificateExportsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollCertificate, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlConvertFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        pnlCertificateExports.add(pnlConvertFormat, java.awt.BorderLayout.NORTH);
 
         pnlCertificateCA.add(pnlCertificateExports, java.awt.BorderLayout.CENTER);
 
@@ -368,104 +351,276 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         tabGenerate.addTab("CA Certificate", pnlCertificateCA);
 
-        btnExportIssuerCA.setText("Export");
-        btnExportIssuerCA.addActionListener(new java.awt.event.ActionListener() {
+        pnlGenerateCA.setLayout(new java.awt.BorderLayout());
+
+        lblIssuerYear.setText("Year:");
+
+        spnIssuerYear.setModel(new javax.swing.SpinnerNumberModel(10, 1, 99, 1));
+
+        lblIssuerCommonName.setText("Common Name (CN):");
+
+        lblIssuerOrganizationName.setText("Organization Name (O):");
+
+        lblIssuerLoccalityName.setText("Loccality Name (L):");
+
+        lblIssuerCountry.setText("Country (C):");
+
+        btnGrpExportIssuerCA.add(rdoIssuerExportPairPEM);
+        rdoIssuerExportPairPEM.setSelected(true);
+        rdoIssuerExportPairPEM.setText("Certificate and Private key in PEM format");
+
+        btnGrpExportIssuerCA.add(rdoIssuerExportPairPKCS12);
+        rdoIssuerExportPairPKCS12.setText("Certificate and Private key in PKCS#12 keystore");
+
+        btnIssuerExportCA.setText("Export");
+        btnIssuerExportCA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportIssuerCAActionPerformed(evt);
+                btnIssuerExportCAActionPerformed(evt);
             }
         });
 
-        lblCommonName.setText("Common Name (CN):");
-
-        lblOrganizationName.setText("Organization Name (O):");
-
-        lblLoccalityName.setText("Loccality Name (L):");
-
-        lblCountry.setText("Country (C):");
-
-        spnYear.setModel(new javax.swing.SpinnerNumberModel(10, 1, 20, 1));
-
-        btnGrpExportIssuerCA.add(rdoExportIssuPairPEM);
-        rdoExportIssuPairPEM.setSelected(true);
-        rdoExportIssuPairPEM.setText("Certificate and Private key in PEM format");
-
-        btnGrpExportIssuerCA.add(rdoExportIssuPairPKCS12);
-        rdoExportIssuPairPKCS12.setText("Certificate and Private key in PKCS#12 keystore");
-
-        jLabel1.setText("Year:");
-
-        javax.swing.GroupLayout pnlGenerateCALayout = new javax.swing.GroupLayout(pnlGenerateCA);
-        pnlGenerateCA.setLayout(pnlGenerateCALayout);
-        pnlGenerateCALayout.setHorizontalGroup(
-            pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateCALayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlGenerateIssuerLayout = new javax.swing.GroupLayout(pnlGenerateIssuer);
+        pnlGenerateIssuer.setLayout(pnlGenerateIssuerLayout);
+        pnlGenerateIssuerLayout.setHorizontalGroup(
+            pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateIssuerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlGenerateCALayout.createSequentialGroup()
-                        .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlGenerateCALayout.createSequentialGroup()
-                                .addComponent(rdoExportIssuPairPKCS12)
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlGenerateIssuerLayout.createSequentialGroup()
+                        .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(pnlGenerateIssuerLayout.createSequentialGroup()
+                                .addComponent(rdoIssuerExportPairPKCS12)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPKCS12Password))
-                            .addGroup(pnlGenerateCALayout.createSequentialGroup()
-                                .addComponent(rdoExportIssuPairPEM)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(txtIssuerPKCS12Password))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlGenerateIssuerLayout.createSequentialGroup()
+                                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblIssuerYear)
+                                    .addComponent(lblIssuerCommonName)
+                                    .addComponent(lblIssuerOrganizationName)
+                                    .addComponent(lblIssuerLoccalityName)
+                                    .addComponent(lblIssuerCountry))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtIssuerCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtIssuerCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtIssuerOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtIssuerLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spnIssuerYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addContainerGap(312, Short.MAX_VALUE))
+                    .addGroup(pnlGenerateIssuerLayout.createSequentialGroup()
+                        .addComponent(rdoIssuerExportPairPEM)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnIssuerExportCA)
+                        .addGap(232, 232, 232))))
+        );
+        pnlGenerateIssuerLayout.setVerticalGroup(
+            pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateIssuerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblIssuerYear)
+                    .addComponent(spnIssuerYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblIssuerCommonName)
+                    .addComponent(txtIssuerCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblIssuerOrganizationName)
+                    .addComponent(txtIssuerOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblIssuerLoccalityName)
+                    .addComponent(txtIssuerLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIssuerCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblIssuerCountry))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoIssuerExportPairPEM)
+                    .addComponent(btnIssuerExportCA))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoIssuerExportPairPKCS12)
+                    .addComponent(txtIssuerPKCS12Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(695, Short.MAX_VALUE))
+        );
+
+        pnlGenerateCA.add(pnlGenerateIssuer, java.awt.BorderLayout.PAGE_START);
+
+        tabGenerate.addTab("GenerateCA", pnlGenerateCA);
+
+        pnlSignCA.setLayout(new java.awt.BorderLayout());
+
+        btnGrpIssuerCA.add(rdoBurpIssuerCA);
+        rdoBurpIssuerCA.setSelected(true);
+        rdoBurpIssuerCA.setText("Burp suite default CA");
+
+        btnGrpIssuerCA.add(rdoCustomIssuerCA);
+        rdoCustomIssuerCA.setText("Custom CA File");
+
+        btnSelectIssuerExecute.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_image.png"))); // NOI18N
+        btnSelectIssuerExecute.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSelectIssuerExecuteActionPerformed(evt);
+            }
+        });
+
+        lblSelectIsserCA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        javax.swing.GroupLayout pnlSelectIssuerLayout = new javax.swing.GroupLayout(pnlSelectIssuer);
+        pnlSelectIssuer.setLayout(pnlSelectIssuerLayout);
+        pnlSelectIssuerLayout.setHorizontalGroup(
+            pnlSelectIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlSelectIssuerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlSelectIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlSelectIssuerLayout.createSequentialGroup()
+                        .addComponent(rdoBurpIssuerCA)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlSelectIssuerLayout.createSequentialGroup()
+                        .addComponent(rdoCustomIssuerCA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExportIssuerCA))
-                    .addGroup(pnlGenerateCALayout.createSequentialGroup()
-                        .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(lblCommonName)
-                            .addComponent(lblOrganizationName)
-                            .addComponent(lblLoccalityName)
-                            .addComponent(lblCountry))
+                        .addComponent(btnSelectIssuerExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(spnYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 306, Short.MAX_VALUE)))
+                        .addComponent(lblSelectIsserCA, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        pnlGenerateCALayout.setVerticalGroup(
-            pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateCALayout.createSequentialGroup()
+        pnlSelectIssuerLayout.setVerticalGroup(
+            pnlSelectIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSelectIssuerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(spnYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(rdoBurpIssuerCA)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCommonName)
-                    .addComponent(txtCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblOrganizationName)
-                    .addComponent(txtOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLoccalityName)
-                    .addComponent(txtLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblCountry, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoExportIssuPairPEM)
-                    .addComponent(btnExportIssuerCA))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateCALayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rdoExportIssuPairPKCS12)
-                    .addComponent(txtPKCS12Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addGroup(pnlSelectIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSelectIsserCA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlSelectIssuerLayout.createSequentialGroup()
+                        .addComponent(rdoCustomIssuerCA)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnSelectIssuerExecute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
-        tabGenerate.addTab("generateCA", pnlGenerateCA);
+        pnlSignCA.add(pnlSelectIssuer, java.awt.BorderLayout.NORTH);
 
-        add(tabGenerate, java.awt.BorderLayout.CENTER);
+        lblSubjectYear.setText("Year:");
+
+        spnSubjectYear.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
+
+        lblSubjectCommonName.setText("Common Name (CN):");
+
+        lblSubjectOrganizationName.setText("Organization Name (O):");
+
+        lblSubjectLoccalityName.setText("Loccality Name (L):");
+
+        lblSubjectCountry.setText("Country (C):");
+
+        btnGrpExportSubjectCA.add(rdoSubjectExportPairPEM);
+        rdoSubjectExportPairPEM.setSelected(true);
+        rdoSubjectExportPairPEM.setText("Certificate and Private key in PEM format");
+
+        btnGrpExportSubjectCA.add(rdoSubjectExportPairPKCS12);
+        rdoSubjectExportPairPKCS12.setText("Certificate and Private key in PKCS#12 keystore");
+
+        btnSubjectExportCA.setText("Export");
+        btnSubjectExportCA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubjectExportCAActionPerformed(evt);
+            }
+        });
+
+        lblSubjectCountry1.setText("SAN(DNS):");
+
+        chkUseSameCommonName.setText("Use the same value as the common name");
+        chkUseSameCommonName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkUseSameCommonNameActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlGenerateSubjectLayout = new javax.swing.GroupLayout(pnlGenerateSubject);
+        pnlGenerateSubject.setLayout(pnlGenerateSubjectLayout);
+        pnlGenerateSubjectLayout.setHorizontalGroup(
+            pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
+                        .addComponent(rdoSubjectExportPairPEM)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 264, Short.MAX_VALUE)
+                        .addComponent(btnSubjectExportCA)
+                        .addGap(237, 237, 237))
+                    .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
+                        .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
+                                .addComponent(rdoSubjectExportPairPKCS12)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSubjectPKCS12Password))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlGenerateSubjectLayout.createSequentialGroup()
+                                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblSubjectYear)
+                                    .addComponent(lblSubjectCommonName)
+                                    .addComponent(lblSubjectOrganizationName)
+                                    .addComponent(lblSubjectLoccalityName)
+                                    .addComponent(lblSubjectCountry))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtSubjectCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSubjectCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSubjectOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSubjectLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(spnSubjectYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtSubjectSAN, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(lblSubjectCountry1)
+                            .addComponent(chkUseSameCommonName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        pnlGenerateSubjectLayout.setVerticalGroup(
+            pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSubjectYear)
+                    .addComponent(spnSubjectYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSubjectCommonName)
+                    .addComponent(txtSubjectCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSubjectOrganizationName)
+                    .addComponent(txtSubjectOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSubjectLoccalityName)
+                    .addComponent(txtSubjectLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSubjectCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSubjectCountry))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblSubjectCountry1)
+                    .addComponent(txtSubjectSAN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkUseSameCommonName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoSubjectExportPairPEM)
+                    .addComponent(btnSubjectExportCA))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdoSubjectExportPairPKCS12)
+                    .addComponent(txtSubjectPKCS12Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(581, Short.MAX_VALUE))
+        );
+
+        pnlSignCA.add(pnlGenerateSubject, java.awt.BorderLayout.CENTER);
+
+        tabGenerate.addTab("SignCA", pnlSignCA);
+
+        add(tabGenerate, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
     private CustomTableModel modelCertificate = null;
@@ -473,33 +628,35 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private void customizeComponents() {
         this.pnlCertificateCA.setLayout(new VerticalFlowLayout());
 
-        this.modelCertificate = new CustomTableModel(this.tableCertificate.getModel());
-        this.tableCertificate.setModel(this.modelCertificate);
-        this.tableCertificate.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        this.tableCertificate.setFillsViewportHeight(true);
-
-        // selected
-        this.tableCertificate.getColumnModel().getColumn(0).setMinWidth(20);
-        this.tableCertificate.getColumnModel().getColumn(0).setPreferredWidth(20);
-        this.tableCertificate.getColumnModel().getColumn(0).setMaxWidth(30);
-
-        // StoreType
-        this.tableCertificate.getColumnModel().getColumn(1).setMinWidth(40);
-        this.tableCertificate.getColumnModel().getColumn(1).setPreferredWidth(80);
-        this.tableCertificate.getColumnModel().getColumn(1).setMaxWidth(120);
-
-        //
-        this.tableCertificate.getColumnModel().getColumn(2).setMinWidth(0);
-        this.tableCertificate.getColumnModel().getColumn(2).setPreferredWidth(0);
-        this.tableCertificate.getColumnModel().getColumn(2).setMaxWidth(0);
-
-        // password
-        this.tableCertificate.getColumnModel().getColumn(3).setMinWidth(0);
-        this.tableCertificate.getColumnModel().getColumn(3).setPreferredWidth(0);
-        this.tableCertificate.getColumnModel().getColumn(3).setMaxWidth(0);
+//        this.modelCertificate = new CustomTableModel(this.tableCertificate.getModel());
+//        this.tableCertificate.setModel(this.modelCertificate);
+//        this.tableCertificate.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+//        this.tableCertificate.setFillsViewportHeight(true);
+//
+//        // selected
+//        this.tableCertificate.getColumnModel().getColumn(0).setMinWidth(20);
+//        this.tableCertificate.getColumnModel().getColumn(0).setPreferredWidth(20);
+//        this.tableCertificate.getColumnModel().getColumn(0).setMaxWidth(30);
+//
+//        // StoreType
+//        this.tableCertificate.getColumnModel().getColumn(1).setMinWidth(40);
+//        this.tableCertificate.getColumnModel().getColumn(1).setPreferredWidth(80);
+//        this.tableCertificate.getColumnModel().getColumn(1).setMaxWidth(120);
+//
+//        //
+//        this.tableCertificate.getColumnModel().getColumn(2).setMinWidth(0);
+//        this.tableCertificate.getColumnModel().getColumn(2).setPreferredWidth(0);
+//        this.tableCertificate.getColumnModel().getColumn(2).setMaxWidth(0);
+//
+//        // password
+//        this.tableCertificate.getColumnModel().getColumn(3).setMinWidth(0);
+//        this.tableCertificate.getColumnModel().getColumn(3).setPreferredWidth(0);
+//        this.tableCertificate.getColumnModel().getColumn(3).setMaxWidth(0);
 
         //SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
         SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
+        this.txtSubjectSAN.setEnabled(!this.chkUseSameCommonName.isSelected());
+
         this.mockServer.setDispatcher(dispatcher);
     }
 
@@ -582,7 +739,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 KeyStore ks = BurpPreferences.loadCACeart();
                 mapCert = CertUtil.loadFromKeyStore(ks, BurpPreferences.getCAPassword());
             } else {
-                CertificateItem item = getEditItem();
+                CertificateItem item = this.customCA;
                 if (item == null) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.certificate.noselect"), "Certificate", JOptionPane.INFORMATION_MESSAGE);
                 } else {
@@ -603,23 +760,26 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
     private final ImportCertificatetDlg importCertificatetDlg = new ImportCertificatetDlg(null, true);
 
-    private final CertificateItem certProp = new CertificateItem();
+    private final CertificateItem customCA = new CertificateItem();
 
     private void showImportCertificatetDlg() {
         this.importCertificatetDlg.setLocationRelativeTo(this);
         this.importCertificatetDlg.setVisible(true);
         if (this.importCertificatetDlg.getModalResult() == JOptionPane.OK_OPTION) {
             CertificateItem prop = this.importCertificatetDlg.getProperty();
-            this.certProp.setProperty(prop);
-            this.setEditItem(this.certProp, false);
+            this.customCA.setProperty(prop);
+//            this.setEditItem(this.certProp, false);
+            X509Certificate cert = prop.getX509Certificate();
+            String certCN = CertUtil.getSubjectName(cert);
+            this.lblSelectCA.setText(certCN);
         }
     }
 
     private File currentCertificateDirectory = null;
 
     private void btnExportCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportCAActionPerformed
-        Map.Entry<Key, X509Certificate> cert = this.getExportCerticate();
-        if (cert != null) {
+        Map.Entry<Key, X509Certificate> caCert = this.getExportCerticate();
+        if (caCert != null) {
             try {
                 JFileChooser filechooser = new JFileChooser();
                 filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -628,13 +788,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 if (selected == JFileChooser.APPROVE_OPTION) {
                     File saveFile = filechooser.getSelectedFile();
                     if (this.rdoConvertPairPEM.isSelected()) {
-                        BouncyUtil.storeCertificatePem(cert.getKey(), cert.getValue(), saveFile);
+                        BouncyUtil.storeCertificatePem(caCert.getKey(), caCert.getValue(), saveFile);
                     } else if (this.rdoConvertCertificatePEM.isSelected()) {
-                        BouncyUtil.storeCertificatePem(cert.getValue(), saveFile);
+                        BouncyUtil.storeCertificatePem(caCert.getValue(), saveFile);
                     } else if (this.rdoConvertCertificateDER.isSelected()) {
-                        BouncyUtil.storeCertificateDer(cert.getValue(), saveFile);
+                        BouncyUtil.storeCertificateDer(caCert.getValue(), saveFile);
                     } else if (this.rdoConvertPrivateDER.isSelected()) {
-                        BouncyUtil.storeCertificateDer(cert.getKey(), saveFile);
+                        BouncyUtil.storeCertificateDer(caCert.getKey(), saveFile);
                     }
                     this.currentCertificateDirectory = saveFile.getParentFile();
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
@@ -644,7 +804,52 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
+        else {
+            JOptionPane.showMessageDialog(this, "No certificate has been selected.", "Certificate", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnExportCAActionPerformed
+
+    private final CertificateItem customIssuerCA = new CertificateItem();
+
+    private void showImportIssuerDlg() {
+        this.importCertificatetDlg.setLocationRelativeTo(this);
+        this.importCertificatetDlg.setVisible(true);
+        if (this.importCertificatetDlg.getModalResult() == JOptionPane.OK_OPTION) {
+            CertificateItem prop = this.importCertificatetDlg.getProperty();
+            this.customIssuerCA.setProperty(prop);
+            X509Certificate cert = prop.getX509Certificate();
+            String certCN = CertUtil.getSubjectName(cert);
+            this.lblSelectIsserCA.setText(certCN);
+        }
+    }
+
+    private Map.Entry<Key, X509Certificate> getIsserExportCerticate() {
+        Map.Entry<Key, X509Certificate> cert = null;
+        HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = null;
+        try {
+            if (this.rdoBurpIssuerCA.isSelected()) {
+                KeyStore ks = BurpPreferences.loadCACeart();
+                mapCert = CertUtil.loadFromKeyStore(ks, BurpPreferences.getCAPassword());
+            } else {
+                CertificateItem item = customIssuerCA;
+                if (item == null) {
+                    JOptionPane.showMessageDialog(this, BUNDLE.getString("view.certificate.noselect"), "Certificate", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    mapCert = CertUtil.loadFromKeyStore(item.getClientCertificate(), item.getClientCertificatePasswd(), item.getStoreType());
+                }
+            }
+            if (mapCert != null) {
+                for (String ailias : mapCert.keySet()) {
+                    cert = mapCert.get(ailias);
+                    break;
+                }
+            }
+        } catch (KeyStoreException | IOException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return cert;
+    }
+
 
     private void btnProvidedServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProvidedServerActionPerformed
         if (this.btnProvidedServer.isSelected()) {
@@ -679,120 +884,205 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_btnSelectExecuteActionPerformed
 
     private void rdoCustomCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCustomCAActionPerformed
-//        SwingUtil.setContainerEnable(this.pnlCertificateExports, this.rdoCustomCA.isSelected());
-        this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
+//        this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
     }//GEN-LAST:event_rdoCustomCAActionPerformed
 
     private void rdoBurpCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpCAActionPerformed
         rdoCustomCAActionPerformed(evt);
     }//GEN-LAST:event_rdoBurpCAActionPerformed
 
-    private void btnExportIssuerCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportIssuerCAActionPerformed
+    private static org.bouncycastle.asn1.x500.X500NameBuilder generateSubjectDN(String commonName, String organizationName, String loccalityName, String country) throws IllegalArgumentException {
+        org.bouncycastle.asn1.x500.X500NameBuilder subjectDN = new org.bouncycastle.asn1.x500.X500NameBuilder();
+        StringBuilder errorMessage = new StringBuilder();
+        if (!commonName.trim().isEmpty()) {
+            subjectDN.addRDN(BCStyle.CN, commonName.trim());
+        } else {
+            if (!errorMessage.isEmpty()) {
+                errorMessage.append("/");
+            }
+            errorMessage.append("CN");
+        }
+        if (!organizationName.trim().isEmpty()) {
+            subjectDN.addRDN(BCStyle.O, organizationName.trim());
+        } else {
+            if (!errorMessage.isEmpty()) {
+                errorMessage.append("/");
+            }
+            errorMessage.append("O");
+        }
+        if (!loccalityName.isEmpty()) {
+            subjectDN.addRDN(BCStyle.L, loccalityName.trim());
+        } else {
+            if (!errorMessage.isEmpty()) {
+                errorMessage.append("/");
+            }
+            errorMessage.append("L");
+        }
+        if (!country.trim().isEmpty()) {
+            subjectDN.addRDN(BCStyle.C, country.trim());
+        } else {
+            if (!errorMessage.isEmpty()) {
+                errorMessage.append("/");
+            }
+            errorMessage.append("C");
+        }
+        if (errorMessage.length() > 0) {
+            throw new IllegalArgumentException(errorMessage.toString());
+        }
+        return subjectDN;
+    }
+
+    private void btnIssuerExportCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIssuerExportCAActionPerformed
         try {
-            org.bouncycastle.asn1.x500.X500NameBuilder subjectDN = new org.bouncycastle.asn1.x500.X500NameBuilder();
-            StringBuilder errorMessage = new StringBuilder();
-            if (!this.txtCommonName.getText().trim().isEmpty()) {
-                subjectDN.addRDN(BCStyle.CN, this.txtCommonName.getText().trim());
-            }
-            else {
-                if (!errorMessage.isEmpty()) errorMessage.append("/");
-                errorMessage.append("CN");
-            }
-            if (!this.txtOrganizationName.getText().trim().isEmpty()) {
-                subjectDN.addRDN(BCStyle.O, this.txtOrganizationName.getText().trim());
-            }
-            else {
-                if (!errorMessage.isEmpty()) errorMessage.append("/");
-                errorMessage.append("O");
-            }
-            if (!this.txtLoccalityName.getText().isEmpty()) {
-                subjectDN.addRDN(BCStyle.L, this.txtLoccalityName.getText().trim());
-            }
-            else {
-               if (!errorMessage.isEmpty()) errorMessage.append("/");
-                errorMessage.append("L");
-            }
-            if (!this.txtCountry.getText().trim().isEmpty()) {
-                subjectDN.addRDN(BCStyle.C, this.txtCountry.getText().trim());
-            }
-            else {
-                if (!errorMessage.isEmpty()) errorMessage.append("/");
-                errorMessage.append("C");
-            }
-            if (errorMessage.length() > 0) {
-                JOptionPane.showMessageDialog(this, String.format("Empty is %s", errorMessage.toString()), "Certificate", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else {
-                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-                keyGen.initialize(2048);
-                KeyPair caKeyPair = keyGen.generateKeyPair();
-                X509Certificate issuerCA = BouncyUtil.createRootCA(caKeyPair, subjectDN.build(), (int)spnYear.getValue());
-                JFileChooser filechooser = new JFileChooser();
-                filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                int selected = filechooser.showSaveDialog(this);
-                if (selected == JFileChooser.APPROVE_OPTION) {
-                    File saveFile = filechooser.getSelectedFile();
-                    if (this.rdoExportIssuPairPEM.isSelected()) {
-                        BouncyUtil.storeCertificatePem(caKeyPair.getPrivate(), issuerCA, saveFile);
-                    } else if (this.rdoExportIssuPairPKCS12.isSelected()) {
-                        if (this.txtPKCS12Password.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(this, "Empty is password", "Certificate", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        else {
-                            CertUtil.storeToPKCS12(saveFile, this.txtPKCS12Password.getText(), "caCert", caKeyPair.getPrivate(), issuerCA);
-                        }
+            org.bouncycastle.asn1.x500.X500NameBuilder subjectDN = generateSubjectDN(this.txtIssuerCommonName.getText(), this.txtIssuerOrganizationName.getText(), this.txtIssuerLoccalityName.getText(), this.txtIssuerCountry.getText());
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(2048);
+            KeyPair caKeyPair = keyGen.generateKeyPair();
+            X509Certificate issuerCA = BouncyUtil.createRootCA(caKeyPair, subjectDN.build(), (int)this.spnIssuerYear.getValue());
+            JFileChooser filechooser = new JFileChooser();
+            filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int selected = filechooser.showSaveDialog(this);
+            if (selected == JFileChooser.APPROVE_OPTION) {
+                File saveFile = filechooser.getSelectedFile();
+                if (this.rdoIssuerExportPairPEM.isSelected()) {
+                    BouncyUtil.storeCertificatePem(caKeyPair.getPrivate(), issuerCA, saveFile);
+                } else if (this.rdoIssuerExportPairPKCS12.isSelected()) {
+                    if (this.txtIssuerPKCS12Password.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(this, "Empty is password", "Certificate", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        CertUtil.storeToPKCS12(saveFile, this.txtIssuerPKCS12Password.getText(), "caCert", caKeyPair.getPrivate(), issuerCA);
                     }
                 }
             }
         } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableKeyException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, String.format("Empty is %s", ex.getMessage()), "Certificate", JOptionPane.INFORMATION_MESSAGE);
         }
-    }//GEN-LAST:event_btnExportIssuerCAActionPerformed
+
+    }//GEN-LAST:event_btnIssuerExportCAActionPerformed
+
+    private void btnSubjectExportCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubjectExportCAActionPerformed
+        try {
+            org.bouncycastle.asn1.x500.X500NameBuilder subjectDN = generateSubjectDN(this.txtSubjectCommonName.getText(), this.txtSubjectOrganizationName.getText(), this.txtSubjectLoccalityName.getText(), this.txtSubjectCountry.getText());
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen.initialize(2048);
+            KeyPair subjectKeyPair = keyGen.generateKeyPair();
+
+            String hostname = this.txtSubjectCommonName.getText().trim();
+            if (!this.chkUseSameCommonName.isSelected()) {
+                hostname = this.txtSubjectSAN.getText().trim();
+            }
+
+            PKCS10CertificationRequest csr = BouncyUtil.createCsr(subjectKeyPair, subjectDN.build(), new String [] {hostname});
+            Map.Entry<Key, X509Certificate> caCert = this.getIsserExportCerticate();
+            if (caCert != null) {
+                X509Certificate signCA = BouncyUtil.signCsr(csr, caCert.getValue(), (PrivateKey)caCert.getKey(), (int)this.spnSubjectYear.getValue());
+
+                JFileChooser filechooser = new JFileChooser();
+                filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                int selected = filechooser.showSaveDialog(this);
+                if (selected == JFileChooser.APPROVE_OPTION) {
+                    File saveFile = filechooser.getSelectedFile();
+                    if (this.rdoSubjectExportPairPEM.isSelected()) {
+                        BouncyUtil.storeCertificatePem(subjectKeyPair.getPrivate(), signCA, saveFile);
+                    } else if (this.rdoSubjectExportPairPKCS12.isSelected()) {
+                        if (this.txtSubjectPKCS12Password.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(this, "Empty is password", "Certificate", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            CertUtil.storeToPKCS12(saveFile, this.txtSubjectPKCS12Password.getText(), "subjectCert", subjectKeyPair.getPrivate(), signCA);
+                        }
+                    }
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "No certificate has been selected.", "Certificate", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableKeyException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, String.format("Empty is %s", ex.getMessage()), "Certificate", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSubjectExportCAActionPerformed
+
+    private void btnSelectIssuerExecuteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectIssuerExecuteActionPerformed
+        this.showImportIssuerDlg();
+    }//GEN-LAST:event_btnSelectIssuerExecuteActionPerformed
+
+    private void chkUseSameCommonNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkUseSameCommonNameActionPerformed
+        this.txtSubjectSAN.setEnabled(!this.chkUseSameCommonName.isSelected());
+    }//GEN-LAST:event_chkUseSameCommonNameActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCopy;
     private javax.swing.JButton btnExportCA;
-    private javax.swing.JButton btnExportIssuerCA;
     private javax.swing.ButtonGroup btnGrpCA;
     private javax.swing.ButtonGroup btnGrpExportCertificate;
     private javax.swing.ButtonGroup btnGrpExportIssuerCA;
+    private javax.swing.ButtonGroup btnGrpExportSubjectCA;
     private javax.swing.ButtonGroup btnGrpFormat;
+    private javax.swing.ButtonGroup btnGrpIssuerCA;
+    private javax.swing.JButton btnIssuerExportCA;
     private javax.swing.JToggleButton btnProvidedServer;
     private javax.swing.JButton btnSelectExecute;
+    private javax.swing.JButton btnSelectIssuerExecute;
+    private javax.swing.JButton btnSubjectExportCA;
     private javax.swing.JCheckBox chkProvidedServer;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel lblCommonName;
-    private javax.swing.JLabel lblCountry;
+    private javax.swing.JCheckBox chkUseSameCommonName;
+    private javax.swing.JLabel lblIssuerCommonName;
+    private javax.swing.JLabel lblIssuerCountry;
+    private javax.swing.JLabel lblIssuerLoccalityName;
+    private javax.swing.JLabel lblIssuerOrganizationName;
+    private javax.swing.JLabel lblIssuerYear;
     private javax.swing.JLabel lblListenPort;
-    private javax.swing.JLabel lblLoccalityName;
-    private javax.swing.JLabel lblOrganizationName;
+    private javax.swing.JLabel lblSelectCA;
+    private javax.swing.JLabel lblSelectIsserCA;
+    private javax.swing.JLabel lblSubjectCommonName;
+    private javax.swing.JLabel lblSubjectCountry;
+    private javax.swing.JLabel lblSubjectCountry1;
+    private javax.swing.JLabel lblSubjectLoccalityName;
+    private javax.swing.JLabel lblSubjectOrganizationName;
+    private javax.swing.JLabel lblSubjectYear;
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlCertificateCA;
     private javax.swing.JPanel pnlCertificateExports;
     private javax.swing.JPanel pnlConvertFormat;
     private javax.swing.JPanel pnlGenerateCA;
+    private javax.swing.JPanel pnlGenerateIssuer;
+    private javax.swing.JPanel pnlGenerateSubject;
     private javax.swing.JPanel pnlListenPort;
     private javax.swing.JPanel pnlSelectCertificate;
+    private javax.swing.JPanel pnlSelectIssuer;
     private javax.swing.JPanel pnlServerCertificate;
     private javax.swing.JPanel pnlServerEnable;
+    private javax.swing.JPanel pnlSignCA;
     private javax.swing.JRadioButton rdoBurpCA;
+    private javax.swing.JRadioButton rdoBurpIssuerCA;
     private javax.swing.JRadioButton rdoConvertCertificateDER;
     private javax.swing.JRadioButton rdoConvertCertificatePEM;
     private javax.swing.JRadioButton rdoConvertPairPEM;
     private javax.swing.JRadioButton rdoConvertPrivateDER;
     private javax.swing.JRadioButton rdoCustomCA;
-    private javax.swing.JRadioButton rdoExportIssuPairPEM;
-    private javax.swing.JRadioButton rdoExportIssuPairPKCS12;
-    private javax.swing.JScrollPane scrollCertificate;
+    private javax.swing.JRadioButton rdoCustomIssuerCA;
+    private javax.swing.JRadioButton rdoIssuerExportPairPEM;
+    private javax.swing.JRadioButton rdoIssuerExportPairPKCS12;
+    private javax.swing.JRadioButton rdoSubjectExportPairPEM;
+    private javax.swing.JRadioButton rdoSubjectExportPairPKCS12;
+    private javax.swing.JSpinner spnIssuerYear;
     private javax.swing.JSpinner spnListenPort;
-    private javax.swing.JSpinner spnYear;
+    private javax.swing.JSpinner spnSubjectYear;
     private javax.swing.JTabbedPane tabGenerate;
-    private javax.swing.JTable tableCertificate;
-    private javax.swing.JTextField txtCommonName;
-    private javax.swing.JTextField txtCountry;
-    private javax.swing.JTextField txtLoccalityName;
-    private javax.swing.JTextField txtOrganizationName;
-    private javax.swing.JTextField txtPKCS12Password;
+    private javax.swing.JTextField txtIssuerCommonName;
+    private javax.swing.JTextField txtIssuerCountry;
+    private javax.swing.JTextField txtIssuerLoccalityName;
+    private javax.swing.JTextField txtIssuerOrganizationName;
+    private javax.swing.JTextField txtIssuerPKCS12Password;
+    private javax.swing.JTextField txtSubjectCommonName;
+    private javax.swing.JTextField txtSubjectCountry;
+    private javax.swing.JTextField txtSubjectLoccalityName;
+    private javax.swing.JTextField txtSubjectOrganizationName;
+    private javax.swing.JTextField txtSubjectPKCS12Password;
+    private javax.swing.JTextField txtSubjectSAN;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -805,19 +1095,19 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         return this;
     }
 
-    private CertificateItem getEditItem() {
-        CertificateItem item = null;
-        Object editCols[] = SwingUtil.editItem(this.tableCertificate);
-        if (editCols != null) {
-            item = CertificateItem.fromObjects(editCols);
-        }
-        return item;
-    }
+//    private CertificateItem getEditItem() {
+//        CertificateItem item = null;
+//        Object editCols[] = SwingUtil.editItem(this.tableCertificate);
+//        if (editCols != null) {
+//            item = CertificateItem.fromObjects(editCols);
+//        }
+//        return item;
+//    }
 
-    private void setEditItem(CertificateItem item, boolean update) {
-        Object[] rows = CertificateItem.toObjects(item);
-        SwingUtil.addOrUpdateItem(this.tableCertificate, rows, update);
-    }
+//    private void setEditItem(CertificateItem item, boolean update) {
+//        Object[] rows = CertificateItem.toObjects(item);
+//        SwingUtil.addOrUpdateItem(this.tableCertificate, rows, update);
+//    }
 
     private MockWebServer mockServer = new MockWebServer();
 

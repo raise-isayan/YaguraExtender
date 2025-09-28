@@ -1,6 +1,7 @@
 package yagura.view;
 
 import extension.burp.BurpConfig;
+import extension.burp.BurpHotKey;
 import extension.view.base.CustomDialog;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
@@ -187,7 +188,7 @@ public class HotKeyDlg extends CustomDialog {
     public void setHotKey(KeyStroke ks) {
         if (ks != null) {
             this.hotKeyStroke = ks;
-            this.txtKey.setText(BurpConfig.Hotkey.toHotkeyText(this.hotKeyStroke));
+            this.txtKey.setText(BurpHotKey.toKeyText(this.hotKeyStroke));
         } else {
             this.hotKeyStroke = null;
             this.txtKey.setText("");

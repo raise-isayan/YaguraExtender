@@ -90,7 +90,8 @@ public class JWTToken implements JsonToken {
     }
 
 //    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]){10,})(?:\\.)(ey(?:[0-9a-zA-Z_-]){2,})(?:\\.)((?:[0-9a-zA-Z_-]){30,})?");
-    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){10,})(?:\\.|%2[eE])(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){2,})(?:\\.|%2[eE])((?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){30,})?");
+//    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){10,})(?:\\.|%2[eE])(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){2,})(?:\\.|%2[eE])((?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){30,})?");
+    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){10,}?)(?:\\.|%2[eE])(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){2,}?)(?:\\.|%2[eE])((?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){30,}?)?");
 
     protected static boolean isTokenFormat(String value) {
         Matcher m = PTN_JWT.matcher(value);

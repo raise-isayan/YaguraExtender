@@ -5,12 +5,8 @@ import extension.helpers.CertUtil;
 import extension.helpers.CertUtil.StoreType;
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
@@ -95,6 +91,16 @@ public class CertificateItem {
         this.clientCertificatePasswd = clientCertificatePasswd;
     }
 
+
+    public X509Certificate getX509Certificate() {
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(this.clientCertificate, this.clientCertificatePasswd);
+        for (String key : certMap.keySet()) {
+            Map.Entry<Key, X509Certificate> cert = certMap.get(key);
+            return cert.getValue();
+        }
+        return null;
+    }
+
     public void setProperty(CertificateItem prop) {
         this.setSelected(prop.isSelected());
         this.setStoreType(prop.getStoreType());
@@ -125,15 +131,11 @@ public class CertificateItem {
     public static Object[] toObjects(CertificateItem certProp) {
         String certCN = "";
         try {
-            HashMap<String, Map.Entry<Key, X509Certificate>> mapCert = CertUtil.loadFromKeyStore(certProp.getClientCertificate(), certProp.getClientCertificatePasswd(), certProp.getStoreType());
-            if (mapCert.entrySet().iterator().hasNext()) {
-                Map.Entry<String, Map.Entry<Key, X509Certificate>> cert = mapCert.entrySet().iterator().next();
-                certCN = cert.getValue().getValue().getSubjectX500Principal().getName();
-            }
-        } catch (IOException | KeyStoreException | CertificateException | NoSuchAlgorithmException | UnrecoverableKeyException ex) {
+            X509Certificate cert = CertUtil.loadCertificate(certProp.getClientCertificate());
+            certCN = CertUtil.getSubjectName(cert);
+        } catch (CertificateException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-
         Object[] beans = new Object[5];
         beans[0] = certProp.isSelected();
         beans[1] = certProp.getStoreType().name();

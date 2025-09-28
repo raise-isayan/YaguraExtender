@@ -70,6 +70,16 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Menu>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkRequestUpdateContentLength">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Automatically request update content length"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuChkRequestUpdateContentLengthActionPerformed"/>
+          </Events>
+        </MenuItem>
         <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
         </Component>
         <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkResposeBasedRules">
@@ -87,6 +97,14 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Menu>
+        <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkResponseUpdateContentLength">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Automatically response update content length"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuChkResponseUpdateContentLengthActionPerformed"/>
+          </Events>
+        </MenuItem>
         <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
         </Component>
         <MenuItem class="javax.swing.JCheckBoxMenuItem" name="mnuChkClientToServerMessages">

@@ -28,8 +28,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToggleButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicToolBarUI;
 
 /**
@@ -74,9 +72,11 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         popupInterceptOption = new javax.swing.JPopupMenu();
         mnuChkRequestBasedRules = new javax.swing.JCheckBoxMenuItem();
         mnuRequestInterceptRules = new javax.swing.JMenu();
+        mnuChkRequestUpdateContentLength = new javax.swing.JCheckBoxMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         mnuChkResposeBasedRules = new javax.swing.JCheckBoxMenuItem();
         mnuResposeInterceptRule = new javax.swing.JMenu();
+        mnuChkResponseUpdateContentLength = new javax.swing.JCheckBoxMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         mnuChkClientToServerMessages = new javax.swing.JCheckBoxMenuItem();
         mnuChkServerToClientMessages = new javax.swing.JCheckBoxMenuItem();
@@ -143,6 +143,16 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         mnuRequestInterceptRules.setText("Request interception rules");
         mnuRequestInterceptRules.setToolTipText("");
         popupInterceptOption.add(mnuRequestInterceptRules);
+
+        mnuChkRequestUpdateContentLength.setSelected(true);
+        mnuChkRequestUpdateContentLength.setText("Automatically request update content length");
+        mnuChkRequestUpdateContentLength.setToolTipText("");
+        mnuChkRequestUpdateContentLength.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuChkRequestUpdateContentLengthActionPerformed(evt);
+            }
+        });
+        popupInterceptOption.add(mnuChkRequestUpdateContentLength);
         popupInterceptOption.add(jSeparator3);
 
         mnuChkResposeBasedRules.setText("Intercept responses based rules");
@@ -157,6 +167,14 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         mnuResposeInterceptRule.setText("Response interception rules");
         mnuResposeInterceptRule.setToolTipText("");
         popupInterceptOption.add(mnuResposeInterceptRule);
+
+        mnuChkResponseUpdateContentLength.setText("Automatically response update content length");
+        mnuChkResponseUpdateContentLength.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuChkResponseUpdateContentLengthActionPerformed(evt);
+            }
+        });
+        popupInterceptOption.add(mnuChkResponseUpdateContentLength);
         popupInterceptOption.add(jSeparator4);
 
         mnuChkClientToServerMessages.setSelected(true);
@@ -407,13 +425,13 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     }//GEN-LAST:event_cmbProfilePopupMenuWillBecomeVisible
 
     private void btnWrapTabLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWrapTabLayoutActionPerformed
-        JTabbedPane tab = BurpUtil.suiteTabbedPane();
-        tab.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+        JTabbedPane suiteTab = BurpUtil.suiteTabbedPane();
+        suiteTab.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
     }//GEN-LAST:event_btnWrapTabLayoutActionPerformed
 
     private void btnScrollTabLayoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScrollTabLayoutActionPerformed
-        JTabbedPane tab = BurpUtil.suiteTabbedPane();
-        tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        JTabbedPane suiteTab = BurpUtil.suiteTabbedPane();
+        suiteTab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }//GEN-LAST:event_btnScrollTabLayoutActionPerformed
 
     private void btnBurpOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBurpOptionActionPerformed
@@ -543,6 +561,14 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         this.yaguraInterceptAction.actionPerformed(evt);
     }//GEN-LAST:event_mnuChkInterceptInScopeOnlyActionPerformed
 
+    private void mnuChkRequestUpdateContentLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuChkRequestUpdateContentLengthActionPerformed
+        this.yaguraInterceptAction.actionPerformed(evt);
+    }//GEN-LAST:event_mnuChkRequestUpdateContentLengthActionPerformed
+
+    private void mnuChkResponseUpdateContentLengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuChkResponseUpdateContentLengthActionPerformed
+        this.yaguraInterceptAction.actionPerformed(evt);
+    }//GEN-LAST:event_mnuChkResponseUpdateContentLengthActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBurpConfig;
     private javax.swing.JButton btnBurpOption;
@@ -559,6 +585,8 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private javax.swing.JCheckBoxMenuItem mnuChkClientToServerMessages;
     private javax.swing.JCheckBoxMenuItem mnuChkInterceptInScopeOnly;
     private javax.swing.JCheckBoxMenuItem mnuChkRequestBasedRules;
+    private javax.swing.JCheckBoxMenuItem mnuChkRequestUpdateContentLength;
+    private javax.swing.JCheckBoxMenuItem mnuChkResponseUpdateContentLength;
     private javax.swing.JCheckBoxMenuItem mnuChkResposeBasedRules;
     private javax.swing.JCheckBoxMenuItem mnuChkServerToClientMessages;
     private javax.swing.JMenuItem mnuLoadProjectSettings;
@@ -593,6 +621,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             mnuRuleItem.addActionListener(yaguraInterceptAction);
             mnuRequestInterceptRules.add(mnuRuleItem);
         }
+        mnuChkRequestUpdateContentLength.setSelected(requestRule.isAutomaticallyUpdateContentLengthHeader());
 
         BurpConfig.InterceptServerResponses responseRule = BurpConfig.getInterceptServerResponses(api);
         this.mnuResposeInterceptRule.setSelected(responseRule.isDoIntercept());
@@ -605,6 +634,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             mnuRuleItem.addActionListener(yaguraInterceptAction);
             mnuResposeInterceptRule.add(mnuRuleItem);
         }
+        mnuChkResponseUpdateContentLength.setSelected(responseRule.isAutomaticallyUpdateContentLengthHeader());
 
         BurpConfig.InterceptWebSocketsMessages wsRule = BurpConfig.getInterceptWebSocketsMessages(api);
         this.mnuChkClientToServerMessages.setSelected(wsRule.isClientToServerMessages());
@@ -624,9 +654,11 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
                     requestRules.get(i).setEnabled(chkMenuItem.isSelected());
                 }
             }
+            requestRule.setAutomaticallyUpdateContentLengthHeader(mnuChkRequestUpdateContentLength.isSelected());
             BurpConfig.configInterceptClientRequests(api, requestRule);
 
             BurpConfig.InterceptServerResponses responseRule = BurpConfig.getInterceptServerResponses(api);
+            responseRule.setAutomaticallyUpdateContentLengthHeader(true);
             List<BurpConfig.InterceptRule> responseRules = responseRule.getRules();
             responseRule.setDoIntercept(mnuChkResposeBasedRules.isSelected());
             api.logging().logToOutput("res:" + responseRule.isDoIntercept());
@@ -635,6 +667,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
                    responseRules.get(i).setEnabled(chkMenuItem.isSelected());
                 }
             }
+            responseRule.setAutomaticallyUpdateContentLengthHeader(mnuChkResponseUpdateContentLength.isSelected());
             BurpConfig.configInterceptServerResponses(api, responseRule);
 
             BurpConfig.InterceptWebSocketsMessages wsRule = BurpConfig.getInterceptWebSocketsMessages(api);

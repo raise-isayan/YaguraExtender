@@ -556,7 +556,7 @@ public class MenuHander {
         JMenuItem yaguraPasteIncludeTargetScopeMenu = createMenuItem("Paste include Target scope (multi-line)", KeyEvent.VK_I, includeTargetScopeAction);
         yaguraExtensionMenu.add(yaguraPasteIncludeTargetScopeMenu);
 
-        JMenuItem yaguraPasteIncludeTopUrlScopeMenu = createMenuItem("Paste Top URL into include Target scope (multi-line)", KeyEvent.VK_H, includeTopURLTargetScopeAction);
+        JMenuItem yaguraPasteIncludeTopUrlScopeMenu = createMenuItem("Paste Root URL into include Target scope (multi-line)", KeyEvent.VK_H, includeRootURLTargetScopeAction);
         yaguraExtensionMenu.add(yaguraPasteIncludeTopUrlScopeMenu);
 
         JMenuItem yaguraPasteExludeTargetScopeMenu = createMenuItem("Paste exclude Target scope (multi-line)", KeyEvent.VK_E, excludeTargetScopeAction);
@@ -726,13 +726,13 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener includeTopURLTargetScopeAction = new ActionListener() {
+    private final ActionListener includeRootURLTargetScopeAction = new ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
                 String paste = SwingUtil.systemClipboardPaste();
-                BurpExtension.helpers().addIncludeTopURLTargetScope(paste, false);
+                BurpExtension.helpers().addIncludeRootURLTargetScope(paste, false);
                 IBurpTab tab = extenderImpl.getRootTabComponent();
                 BurpUtil.flashTab(tab, "Target");
             } catch (Exception ex) {

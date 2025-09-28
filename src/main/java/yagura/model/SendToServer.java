@@ -441,10 +441,10 @@ public class SendToServer extends SendToMenuItem {
                             String value = null;
                             switch (extendParameterProp.getReqName()) {
                                 case REQUEST_REGEX:
-                                    value = SendToParameterProperty.getRequestParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqNameMatchPattern(), extendParameterProp.isReqNameMatchIgnoreCase()) ,extendParameterProp.getReqNameMatchDecodeType());
+                                    value = SendToParameterProperty.getRequestParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqNameMatchPattern(), extendParameterProp.isReqNameMatchIgnoreCase()), extendParameterProp.getReqNameMatchDecodeType());
                                     break;
                                 case RESPONSE_REGEX:
-                                    value = SendToParameterProperty.getResponseParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqNameMatchPattern(), extendParameterProp.isReqNameMatchIgnoreCase()) ,extendParameterProp.getReqNameMatchDecodeType());
+                                    value = SendToParameterProperty.getResponseParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqNameMatchPattern(), extendParameterProp.isReqNameMatchIgnoreCase()), extendParameterProp.getReqNameMatchDecodeType());
                                     break;
                                 default:
                                     value = SendToParameterProperty.getParameter(extendParameterProp.getReqName(), messageInfo);
@@ -459,10 +459,10 @@ public class SendToServer extends SendToMenuItem {
                             String value = null;
                             switch (extendParameterProp.getReqComment()) {
                                 case REQUEST_REGEX:
-                                    value = SendToParameterProperty.getRequestParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqCommentMatchPattern(), extendParameterProp.isReqCommentMatchIgnoreCase()) ,extendParameterProp.getReqCommentMatchDecodeType());
+                                    value = SendToParameterProperty.getRequestParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqCommentMatchPattern(), extendParameterProp.isReqCommentMatchIgnoreCase()), extendParameterProp.getReqCommentMatchDecodeType());
                                     break;
                                 case RESPONSE_REGEX:
-                                    value = SendToParameterProperty.getResponseParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqCommentMatchPattern(), extendParameterProp.isReqCommentMatchIgnoreCase()) ,extendParameterProp.getReqCommentMatchDecodeType());
+                                    value = SendToParameterProperty.getResponseParameter(messageInfo, SendToParameterProperty.compileRegex(extendParameterProp.getReqCommentMatchPattern(), extendParameterProp.isReqCommentMatchIgnoreCase()), extendParameterProp.getReqCommentMatchDecodeType());
                                     break;
                                 default:
                                     value = SendToParameterProperty.getParameter(extendParameterProp.getReqName(), messageInfo);
