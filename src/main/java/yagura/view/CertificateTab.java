@@ -758,6 +758,15 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         return cert;
     }
 
+    private static X509Certificate getX509Certificate(CertificateItem prop) {
+        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(prop.getClientCertificate(), prop.getClientCertificatePasswd());
+        for (String key : certMap.keySet()) {
+            Map.Entry<Key, X509Certificate> cert = certMap.get(key);
+            return cert.getValue();
+        }
+        return null;
+    }
+
     private final ImportCertificatetDlg importCertificatetDlg = new ImportCertificatetDlg(null, true);
 
     private final CertificateItem customCA = new CertificateItem();
@@ -769,7 +778,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             CertificateItem prop = this.importCertificatetDlg.getProperty();
             this.customCA.setProperty(prop);
 //            this.setEditItem(this.certProp, false);
-            X509Certificate cert = prop.getX509Certificate();
+            X509Certificate cert = getX509Certificate(prop);
             String certCN = CertUtil.getSubjectName(cert);
             this.lblSelectCA.setText(certCN);
         }
@@ -817,7 +826,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         if (this.importCertificatetDlg.getModalResult() == JOptionPane.OK_OPTION) {
             CertificateItem prop = this.importCertificatetDlg.getProperty();
             this.customIssuerCA.setProperty(prop);
-            X509Certificate cert = prop.getX509Certificate();
+            X509Certificate cert = getX509Certificate(prop);
             String certCN = CertUtil.getSubjectName(cert);
             this.lblSelectIsserCA.setText(certCN);
         }

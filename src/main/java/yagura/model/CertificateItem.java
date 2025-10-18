@@ -92,15 +92,6 @@ public class CertificateItem {
     }
 
 
-    public X509Certificate getX509Certificate() {
-        HashMap<String, Map.Entry<Key, X509Certificate>> certMap = CertUtil.loadFromPKCS12(this.clientCertificate, this.clientCertificatePasswd);
-        for (String key : certMap.keySet()) {
-            Map.Entry<Key, X509Certificate> cert = certMap.get(key);
-            return cert.getValue();
-        }
-        return null;
-    }
-
     public void setProperty(CertificateItem prop) {
         this.setSelected(prop.isSelected());
         this.setStoreType(prop.getStoreType());

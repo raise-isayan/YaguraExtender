@@ -1,5 +1,7 @@
 package passive;
 
+import com.nimbusds.jwt.SignedJWT;
+import extend.util.external.JWSUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.json.JsonUtil;
 import extension.helpers.StringUtil;
@@ -7,6 +9,7 @@ import extension.view.base.CaptureItem;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,18 +92,10 @@ public class JWTToken implements JsonToken {
         return null;
     }
 
-//    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]){10,})(?:\\.)(ey(?:[0-9a-zA-Z_-]){2,})(?:\\.)((?:[0-9a-zA-Z_-]){30,})?");
-//    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){10,})(?:\\.|%2[eE])(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){2,})(?:\\.|%2[eE])((?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){30,})?");
-    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){10,}?)(?:\\.|%2[eE])(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){2,}?)(?:\\.|%2[eE])((?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){30,}?)?");
+//    private final static Pattern PTN_JWT = Pattern.compile("(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){10,}?)(?:\\.|%2[eE])(ey(?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){2,}?)(?:\\.|%2[eE])((?:[0-9a-zA-Z_-]|%2[dD]|%5[fF]){30,}?)?");
 
     protected static boolean isTokenFormat(String value) {
-        Matcher m = PTN_JWT.matcher(value);
-        if (m.matches()) {
-            if (jwtInstance.parseToken(value, true) != null) {
-                return true;
-            }
-        }
-        return false;
+        return JWSUtil.isValidJWT(value);
     }
 
     @Override
@@ -119,27 +114,15 @@ public class JWTToken implements JsonToken {
         if (MatchUtil.isUrlencoded(value)) {
             value = JsonToken.decodeUrl(value);
         }
-        Matcher m = PTN_JWT.matcher(value);
-        if (m.find()) {
-            return isTokenFormat(m.group(0));
+        CaptureItem[] tokens = JWSUtil.findToken(value);
+        for (CaptureItem token : tokens) {
+            if (isTokenFormat(token.getCaptureValue())) return true;
         }
         return false;
     }
 
     public static CaptureItem[] findToken(String value) {
-        List<CaptureItem> tokens = new ArrayList<>();
-        Matcher m = PTN_JWT.matcher(value);
-        while (m.find()) {
-            String capture = m.group(0);
-            if (isTokenFormat(capture)) {
-                CaptureItem item = new CaptureItem();
-                item.setCaptureValue(capture);
-                item.setStart(m.start());
-                item.setEnd(m.end());
-                tokens.add(item);
-            }
-        }
-        return tokens.toArray(CaptureItem[]::new);
+        return JWSUtil.findToken(value);
     }
 
     @Override
@@ -159,24 +142,33 @@ public class JWTToken implements JsonToken {
         if (MatchUtil.isUrlencoded(value)) {
             value = JsonToken.decodeUrl(value);
         }
-        Matcher m = PTN_JWT.matcher(value);
+        CaptureItem[] items = null;
         boolean find = false;
         if (matches) {
-            find = m.matches();
+            find = isTokenFormat(value);
+            if (find) items = JWSUtil.findToken(value);
         } else {
-            find = m.find();
+            items = JWSUtil.findToken(value);
+            find = items.length > 0;
         }
-
-        if (find) {
-            token = new JWTToken();
-            String header = m.group(1);
-            String payload = m.group(2);
-            String signature = (m.group(3) != null) ? m.group(3) : "";
-            token.algorithm = findAlgorithm(header);
-            token.header = header;
-            token.payload = payload;
-            token.signature = signature;
-            token.signatureByte = JsonToken.decodeBase64UrlSafeByte(signature);
+        if (items != null) {
+            for (int i = 0; i < items.length; i++) {
+                try {
+                    SignedJWT jwt = SignedJWT.parse(items[i].getCaptureValue());
+                    token = new JWTToken();
+                    String header = jwt.getHeader().toBase64URL().toString();
+                    String payload = jwt.getPayload().toBase64URL().toString();
+                    String signature = jwt.getSignature().toString();
+                    token.algorithm = findAlgorithm(header);
+                    token.header = header;
+                    token.payload = payload;
+                    token.signature = signature;
+                    token.signatureByte = JsonToken.decodeBase64UrlSafeByte(signature);
+                } catch (ParseException ex) {
+                    //
+                }
+                break;
+            }
         }
         return token;
     }

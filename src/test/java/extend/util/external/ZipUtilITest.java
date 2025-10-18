@@ -42,6 +42,14 @@ public class ZipUtilITest {
     }
 
     @Test
+    public void testFileJar() throws IOException {
+        System.out.println("FileJar");
+        File file = new File("jar:file:/C:/burp/burpsuite_community_v2025.8.7.jar!/META-INF/versions/21/");
+        System.out.println("path:" + file.toString());
+        System.out.println("Parent:" + file.getParent());
+    }
+
+    @Test
     public void testBaseJar() throws IOException {
         System.out.println("testBaseJar");
         URL url = new URL("file:/resources/help.jar!/images/Extender_Yagura.png");

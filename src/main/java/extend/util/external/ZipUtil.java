@@ -43,16 +43,10 @@ public class ZipUtil {
         return path;
     }
 
-    public static Path getBaseDirectory() {
-        URL burpJarUrl = BurpBrowser.class.getResource("/");
-        File path = new File(getBaseJar(burpJarUrl));
-        return path.getParentFile().toPath();
-    }
-
     public static FileSystem openZip(Path zipPath) throws IOException {
         Map<String, String> env = Map.of(
-            "create", "true",
-            "compressionMethod", "DEFLATED"
+                "create", "true",
+                "compressionMethod", "DEFLATED"
         );
         try {
             URI zipUri = new URI("jar:file", zipPath.toUri().getPath(), null);

@@ -11,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.*;
+import com.nimbusds.jose.crypto.opts.AllowWeakRSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.*;
 import extension.helpers.StringUtil;
 import extension.helpers.json.JsonUtil;
+import extension.view.base.CaptureItem;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
@@ -28,8 +30,11 @@ import java.security.spec.ECGenParameterSpec;
 import java.text.ParseException;
 
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -59,6 +64,30 @@ public class JWSTest {
 
     @AfterEach
     public void tearDown() {
+    }
+
+    @Test
+    public void testFindToken()
+    {
+        System.out.println("testFindToken");
+        {
+            String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
+            CaptureItem[] tokens = JWSUtil.findToken(token);
+            for (CaptureItem t : tokens) {
+                System.out.println("token:" + t.getCaptureValue());
+                System.out.println("start:" + t.start());
+                System.out.println("end:" + t.end());
+            }
+        }
+        {
+            String token = "Cookie: sessionid=1234567890; token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc uid=aabbcceedd";
+            CaptureItem[] tokens = JWSUtil.findToken(token);
+            for (CaptureItem t : tokens) {
+                System.out.println("token:" + t.getCaptureValue());
+                System.out.println("start:" + t.start());
+                System.out.println("end:" + t.end());
+            }
+        }
     }
 
     @Test
@@ -232,23 +261,23 @@ public class JWSTest {
         System.out.println("testWeakHS256Alg");
         try {
             {
-                    String secret = "0";
-                    byte[] sharedSecret = secret.getBytes();
+                String secret = "0";
+                byte[] sharedSecret = secret.getBytes();
 
-                    JWTClaimsSet claims = new JWTClaimsSet.Builder()
-                            .subject("user123")
-                            .issuer("your-app")
-                            .expirationTime(new Date(new Date().getTime() + 3600 * 1000))
-                            .claim("role", "admin")
-                            .build();
+                JWTClaimsSet claims = new JWTClaimsSet.Builder()
+                        .subject("user123")
+                        .issuer("your-app")
+                        .expirationTime(new Date(new Date().getTime() + 3600 * 1000))
+                        .claim("role", "admin")
+                        .build();
 
-                    JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
-                    SignedJWT signedJWT = new SignedJWT(header, claims);
-                    WeakMACSigner signer = new WeakMACSigner(sharedSecret);
-                    signedJWT.sign(signer);
-                    String token = signedJWT.serialize();
-                    System.out.println("Generated Weak JWT Token:");
-                    System.out.println(token);
+                JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
+                SignedJWT signedJWT = new SignedJWT(header, claims);
+                WeakMACSigner signer = new WeakMACSigner(sharedSecret);
+                signedJWT.sign(signer);
+                String token = signedJWT.serialize();
+                System.out.println("Generated Weak JWT Token:");
+                System.out.println(token);
             }
             {
                 String secret = "ddd";
@@ -301,7 +330,9 @@ public class JWSTest {
 
             SignedJWT signedJWT = new SignedJWT(header, claims);
 
-            JWSSigner signer = new RSASSASigner(privateKey, true);
+            HashSet<JWSSignerOption> opts = new HashSet();
+            opts.add(AllowWeakRSAKey.getInstance());
+            JWSSigner signer = new RSASSASigner(privateKey, opts);
             signedJWT.sign(signer);
 
             String token = signedJWT.serialize();

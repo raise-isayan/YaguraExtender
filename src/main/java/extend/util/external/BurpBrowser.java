@@ -1,10 +1,12 @@
 package extend.util.external;
 
+import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
+import static extend.util.external.ZipUtil.getBaseJar;
 import extension.burp.BurpConfig;
 import extension.burp.BurpVersion;
 import extension.helpers.FileUtil;
@@ -110,7 +112,7 @@ public class BurpBrowser {
     }
 
     public static Path getBrowseDirectoryPath() {
-        Path browserPath = ZipUtil.getBaseDirectory().resolve(CHROMIUM_BROWSER);
+        Path browserPath = getBaseDirectory().resolve(CHROMIUM_BROWSER);
         File browserDir = browserPath.toFile();
         if (browserDir.exists() && browserDir.list().length > 0) {
             return browserDir.toPath();
@@ -165,6 +167,25 @@ public class BurpBrowser {
         return dir.exists();
     }
 
+    /**
+     * JDK 24 の場合以下の値がnullになる BurpBrowser.class.getResource("/")
+    *
+     */
+    public static Path getBaseDirectory() {
+        URL burpJarUrl = BurpBrowser.class.getResource("/");
+        if (burpJarUrl != null) {
+            File path = new File(getBaseJar(burpJarUrl));
+            return path.getParentFile().toPath();
+        } else {
+            String command = System.getProperty("sun.java.command");
+            if (command != null) {
+                File execFile = new File(command);
+                return execFile.getParentFile().toPath();
+            }
+        }
+        return null;
+    }
+
     public static Path getBrowsePath() {
         String chromeExec = "";
         BurpVersion.OSType os = BurpVersion.getOSType();
@@ -200,45 +221,45 @@ public class BurpBrowser {
     public List<String> getBrowserExecAndArgs(String profileKey, int port) {
         // chrome://version/ から情報取得
         final List<String> CHROME_ARGS = List.of(
-            "--disable-ipc-flooding-protection",
-            "--disable-xss-auditor",
-            "--disable-bundled-ppapi-flash",
-            "--disable-plugins-discovery",
-            "--disable-default-apps",
-            "--disable-prerender-local-predictor",
-            "--disable-sync",
-            "--disable-breakpad",
-            "--disable-crash-reporter",
-            "--disable-prerender-local-predictor",
-            "--disk-cache-size=0",
-            "--disable-settings-window",
-            "--disable-notifications",
-            "--disable-speech-api",
-            "--disable-file-system",
-            "--disable-presentation-api",
-            "--disable-permissions-api",
-            "--disable-new-zip-unpacker",
-            "--disable-media-session-api",
-            "--no-experiments",
-            "--no-events",
-            "--no-first-run",
-            "--no-default-browser-check",
-            "--no-pings",
-            "--no-service-autorun",
-            "--media-cache-size=0",
-            "--use-fake-device-for-media-stream",
-            "--dbus-stub",
-            "--disable-background-networking",
-            "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
-            String.format("--proxy-server=localhost:%d", port),
-            "--proxy-bypass-list=<-loopback>",
-            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36",
-            String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
-            String.format("--profile-directory=%s", profileKey),
-            "--ignore-certificate-errors",
-            "--disable-features=TrackingProtection3pcd,LensOverlay",
-            String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
-            "chrome://newtab"
+                "--disable-ipc-flooding-protection",
+                "--disable-xss-auditor",
+                "--disable-bundled-ppapi-flash",
+                "--disable-plugins-discovery",
+                "--disable-default-apps",
+                "--disable-prerender-local-predictor",
+                "--disable-sync",
+                "--disable-breakpad",
+                "--disable-crash-reporter",
+                "--disable-prerender-local-predictor",
+                "--disk-cache-size=0",
+                "--disable-settings-window",
+                "--disable-notifications",
+                "--disable-speech-api",
+                "--disable-file-system",
+                "--disable-presentation-api",
+                "--disable-permissions-api",
+                "--disable-new-zip-unpacker",
+                "--disable-media-session-api",
+                "--no-experiments",
+                "--no-events",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--no-pings",
+                "--no-service-autorun",
+                "--media-cache-size=0",
+                "--use-fake-device-for-media-stream",
+                "--dbus-stub",
+                "--disable-background-networking",
+                "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
+                String.format("--proxy-server=localhost:%d", port),
+                "--proxy-bypass-list=<-loopback>",
+                "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36",
+                String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
+                String.format("--profile-directory=%s", profileKey),
+                "--ignore-certificate-errors",
+                "--disable-features=TrackingProtection3pcd,LensOverlay",
+                String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
+                "chrome://newtab"
         );
         List<String> chromeExecAndArg = new ArrayList<>();
         chromeExecAndArg.add(getBrowsePath().toString());
@@ -264,8 +285,7 @@ public class BurpBrowser {
                     int p1 = Integer.parseInt(f1.getName().substring("Profile ".length()));
                     int p2 = Integer.parseInt(f2.getName().substring("Profile ".length()));
                     return p1 - p2;
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     return f1.getName().compareTo(f2.getName());
                 }
             }
@@ -292,8 +312,7 @@ public class BurpBrowser {
         try {
             Path path = getBrowserProfilePath();
             return getBrowserProfile(path);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             File[] profiles = this.getBrowserProfileDirectory();
             Map<String, BrowserProfile> order_profile = new LinkedHashMap<>();
             for (File p : profiles) {
