@@ -15,6 +15,7 @@ import extension.helpers.json.JsonUtil;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -167,21 +168,30 @@ public class BurpBrowser {
         return dir.exists();
     }
 
+//        Properties p = System.getProperties();
+//        for (Object k : p.keySet()) {
+//            BurpExtension.helpers().outPrintln("key:" + k + " value:" + p.get(k));
+//        }
+
     /**
      * JDK 24 の場合以下の値がnullになる BurpBrowser.class.getResource("/")
-    *
-     */
+     *
+     **/
     public static Path getBaseDirectory() {
+        String exe4j = System.getProperty("exe4j.launchName");
+        if (exe4j != null) {
+            File execFile = new File(exe4j);
+            return execFile.getParentFile().toPath();
+        }
         URL burpJarUrl = BurpBrowser.class.getResource("/");
         if (burpJarUrl != null) {
             File path = new File(getBaseJar(burpJarUrl));
             return path.getParentFile().toPath();
-        } else {
-            String command = System.getProperty("sun.java.command");
-            if (command != null) {
-                File execFile = new File(command);
-                return execFile.getParentFile().toPath();
-            }
+        }
+        String command = System.getProperty("sun.java.command");
+        if (command != null) {
+            File execFile = new File(command);
+            return execFile.getParentFile().toPath();
         }
         return null;
     }
