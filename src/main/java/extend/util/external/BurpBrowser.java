@@ -178,10 +178,10 @@ public class BurpBrowser {
      *
      **/
     public static Path getBaseDirectory() {
-        String exe4j = System.getProperty("exe4j.launchName");
+        String exe4j = System.getProperty("install4j.appDir");
         if (exe4j != null) {
             File execFile = new File(exe4j);
-            return execFile.getParentFile().toPath();
+            return execFile.toPath();
         }
         URL burpJarUrl = BurpBrowser.class.getResource("/");
         if (burpJarUrl != null) {
