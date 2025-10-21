@@ -1,7 +1,7 @@
 package passive;
 
 import com.nimbusds.jwt.SignedJWT;
-import extend.util.external.JWSUtil;
+import extend.util.external.jws.JWSUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.json.JsonUtil;
 import extension.helpers.StringUtil;

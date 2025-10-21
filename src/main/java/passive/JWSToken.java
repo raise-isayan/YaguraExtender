@@ -9,9 +9,10 @@ import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.SignedJWT;
-import extend.util.external.JWSUtil;
+import extend.util.external.jws.JWSUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
+import extension.helpers.json.JsonUtil;
 import extension.view.base.CaptureItem;
 import java.text.ParseException;
 import java.util.logging.Logger;
@@ -31,13 +32,22 @@ public class JWSToken implements JsonToken {
         return jwsInstance;
     }
 
-    private JWSToken() {
+    public JWSToken() {
     }
 
+     public JWSToken(JWSToken token) {
+        this.algorithm = token.algorithm;
+        this.header = token.header;
+        this.payload = token.payload;
+        this.signature = token.signature;
+        this.signatureByte = JsonToken.decodeBase64UrlSafeByte(token.signature);
+    }
+   
     private Algorithm algorithm;
     private String header;
     private String payload;
     private String signature;
+    private byte[] signatureByte;
 
     /**
      * @return the signAlgorithm
@@ -47,7 +57,7 @@ public class JWSToken implements JsonToken {
     }
 
     @Override
-    public JsonToken parseToken(String value, boolean matches) {
+    public JWSToken parseToken(String value, boolean matches) {
         JWSToken token = null;
         if (MatchUtil.isUrlencoded(value)) {
             value = JsonToken.decodeUrl(value);
@@ -80,6 +90,21 @@ public class JWSToken implements JsonToken {
             }
         }
         return token;
+    }
+
+    public static boolean containsTokenFormat(String value) {
+        if (MatchUtil.isUrlencoded(value)) {
+            value = JsonToken.decodeUrl(value);
+        }
+        CaptureItem[] tokens = JWSUtil.findToken(value);
+        for (CaptureItem token : tokens) {
+            if (isTokenFormat(token.getCaptureValue())) return true;
+        }
+        return false;
+    }
+
+    public static CaptureItem[] findToken(String value) {
+        return JWSUtil.findToken(value);
     }
 
     @Override
@@ -163,6 +188,22 @@ public class JWSToken implements JsonToken {
             }
         }
         return false;
+    }
+
+    /**
+     * @param pretty
+     * @return the header
+     */
+    public String getHeaderJSON(boolean pretty) {
+        return JsonUtil.prettyJson(JsonToken.decodeBase64UrlSafe(this.getHeader()), pretty);
+    }
+
+    /**
+     * @param pretty
+     * @return the payload
+     */
+    public String getPayloadJSON(boolean pretty) {
+        return JsonUtil.prettyJson(JsonToken.decodeBase64UrlSafe(this.getPayload()), pretty);
     }
 
 }

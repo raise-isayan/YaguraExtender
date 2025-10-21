@@ -1,12 +1,16 @@
 package yagura.view;
 
 import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.JWTClaimsSet;
-import extension.helpers.json.JsonUtil;
+import extend.util.external.ThemeUI;
+import java.awt.SystemColor;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.ParseException;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import passive.JWSToken;
 
 /**
  *
@@ -34,16 +38,10 @@ public class JWSViewPanel extends javax.swing.JPanel {
         pnlJWT = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
         lblHeader = new javax.swing.JLabel();
-        scrollHeaderJSON = new javax.swing.JScrollPane();
-        txtHeaderJSON = new javax.swing.JEditorPane();
         pnlPayload = new javax.swing.JPanel();
         lblPayload = new javax.swing.JLabel();
-        scrollPayloadJSON = new javax.swing.JScrollPane();
-        txtPayloadJSON = new javax.swing.JEditorPane();
-        Signature = new javax.swing.JPanel();
+        pnlSignature = new javax.swing.JPanel();
         lblSignature = new javax.swing.JLabel();
-        scrollSignatureJSON = new javax.swing.JScrollPane();
-        txtSignatureSign = new javax.swing.JEditorPane();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -59,17 +57,6 @@ public class JWSViewPanel extends javax.swing.JPanel {
         lblHeader.setText("Header");
         pnlHeader.add(lblHeader, java.awt.BorderLayout.NORTH);
 
-        scrollHeaderJSON.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollHeaderJSON.setMinimumSize(new java.awt.Dimension(0, 0));
-        scrollHeaderJSON.setPreferredSize(new java.awt.Dimension(80, 21));
-
-        txtHeaderJSON.setEditable(false);
-        txtHeaderJSON.setMinimumSize(new java.awt.Dimension(0, 0));
-        txtHeaderJSON.setPreferredSize(new java.awt.Dimension(80, 19));
-        scrollHeaderJSON.setViewportView(txtHeaderJSON);
-
-        pnlHeader.add(scrollHeaderJSON, java.awt.BorderLayout.CENTER);
-
         pnlJWT.add(pnlHeader, java.awt.BorderLayout.NORTH);
 
         pnlPayload.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -79,58 +66,107 @@ public class JWSViewPanel extends javax.swing.JPanel {
         lblPayload.setText("Payload");
         pnlPayload.add(lblPayload, java.awt.BorderLayout.NORTH);
 
-        scrollPayloadJSON.setPreferredSize(new java.awt.Dimension(80, 21));
-
-        txtPayloadJSON.setEditable(false);
-        txtPayloadJSON.setMinimumSize(new java.awt.Dimension(80, 19));
-        scrollPayloadJSON.setViewportView(txtPayloadJSON);
-
-        pnlPayload.add(scrollPayloadJSON, java.awt.BorderLayout.CENTER);
-
         pnlJWT.add(pnlPayload, java.awt.BorderLayout.CENTER);
 
-        Signature.setMinimumSize(new java.awt.Dimension(0, 0));
-        Signature.setPreferredSize(new java.awt.Dimension(100, 50));
-        Signature.setLayout(new java.awt.BorderLayout());
+        pnlSignature.setMinimumSize(new java.awt.Dimension(0, 0));
+        pnlSignature.setPreferredSize(new java.awt.Dimension(100, 50));
+        pnlSignature.setLayout(new java.awt.BorderLayout());
 
         lblSignature.setText("Signature");
-        Signature.add(lblSignature, java.awt.BorderLayout.NORTH);
+        pnlSignature.add(lblSignature, java.awt.BorderLayout.NORTH);
 
-        scrollSignatureJSON.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollSignatureJSON.setMinimumSize(new java.awt.Dimension(0, 0));
-        scrollSignatureJSON.setPreferredSize(new java.awt.Dimension(80, 21));
-
-        txtSignatureSign.setEditable(false);
-        txtSignatureSign.setMinimumSize(new java.awt.Dimension(0, 0));
-        txtSignatureSign.setPreferredSize(new java.awt.Dimension(80, 19));
-        scrollSignatureJSON.setViewportView(txtSignatureSign);
-
-        Signature.add(scrollSignatureJSON, java.awt.BorderLayout.CENTER);
-
-        pnlJWT.add(Signature, java.awt.BorderLayout.SOUTH);
+        pnlJWT.add(pnlSignature, java.awt.BorderLayout.SOUTH);
 
         add(pnlJWT, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    final PropertyChangeListener listener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.applyStyleTheme(txtHeaderJSON);
+            ThemeUI.applyStyleTheme(txtPayloadJSON);
+            ThemeUI.applyStyleTheme(txtSignatureSign);
+        }
+    };
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollPayloadJSON;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;
+
+    private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
+
     private void customizeComponents() {
+        /**
+         * * UI design start **
+         */
+
+        /* Header */
+        this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
+        this.txtHeaderJSON.setWrapStyleWord(false);
+
+        this.txtHeaderJSON.setCodeFoldingEnabled(true);
+        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
+        this.txtHeaderJSON.setHighlightCurrentLine(false);
+        this.txtHeaderJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtHeaderJSON.setBackground(SystemColor.text);
+        this.txtHeaderJSON.setEditable(false);
+        this.txtHeaderJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+
+//        scrollURaw.setViewportView(txtURaw);
+        this.scrollHeaderJSON.setLineNumbersEnabled(false);
+        this.pnlHeader.add(this.scrollHeaderJSON, java.awt.BorderLayout.CENTER);
+
+        /* Payload */
+        this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
+        this.txtPayloadJSON.setWrapStyleWord(false);
+
+        this.txtPayloadJSON.setCodeFoldingEnabled(true);
+        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
+        this.txtPayloadJSON.setHighlightCurrentLine(false);
+        this.txtPayloadJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtPayloadJSON.setBackground(SystemColor.text);
+        this.txtPayloadJSON.setEditable(false);
+        this.txtPayloadJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+//        scrollURaw.setViewportView(txtURaw);
+
+        this.pnlPayload.add(this.scrollPayloadJSON, java.awt.BorderLayout.CENTER);
+
+        /* Signature */
+        this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
+        this.txtSignatureSign.setWrapStyleWord(false);
+
+        this.txtSignatureSign.setCodeFoldingEnabled(true);
+        this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
+        this.txtSignatureSign.setHighlightCurrentLine(false);
+        this.txtSignatureSign.setCurrentLineHighlightColor(SystemColor.textHighlight);
+        this.txtSignatureSign.setBackground(SystemColor.text);
+        this.txtSignatureSign.setEditable(false);
+//        scrollURaw.setViewportView(txtURaw);
+
+        this.scrollSignatureSign.setLineNumbersEnabled(false);
+
+        this.pnlSignature.add(this.scrollSignatureSign, java.awt.BorderLayout.CENTER);
+
+        this.listener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(listener);
 
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel Signature;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblPayload;
     private javax.swing.JLabel lblSignature;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlJWT;
     private javax.swing.JPanel pnlPayload;
-    private javax.swing.JScrollPane scrollHeaderJSON;
-    private javax.swing.JScrollPane scrollPayloadJSON;
-    private javax.swing.JScrollPane scrollSignatureJSON;
-    private javax.swing.JEditorPane txtHeaderJSON;
-    private javax.swing.JEditorPane txtPayloadJSON;
-    private javax.swing.JEditorPane txtSignatureSign;
+    private javax.swing.JPanel pnlSignature;
     // End of variables declaration//GEN-END:variables
 
     public boolean isEditable() {
@@ -147,7 +183,7 @@ public class JWSViewPanel extends javax.swing.JPanel {
      * @return the format
      */
     public boolean isFormat() {
-        return format;
+        return this.format;
     }
 
     /**
@@ -169,18 +205,20 @@ public class JWSViewPanel extends javax.swing.JPanel {
         return Base64URL.from(this.txtSignatureSign.getText());
     }
 
-    public void setJWS(JWSObject jwstoken) {
-        if (this.format) {
-            this.txtHeaderJSON.setText(JsonUtil.prettyJson(jwstoken.getHeader().toBase64URL().decodeToString(), true));
-            this.txtPayloadJSON.setText(JsonUtil.prettyJson(jwstoken.getPayload().toBase64URL().decodeToString(), true));
-            this.txtSignatureSign.setText(jwstoken.getSignature().toString());
-        }
-        else {
-            this.txtHeaderJSON.setText(jwstoken.getHeader().toBase64URL().decodeToString());
-            this.txtPayloadJSON.setText(jwstoken.getPayload().toBase64URL().decodeToString());
-            this.txtSignatureSign.setText(jwstoken.getSignature().toString());
-        }
+    public void setJWS(JWSToken token) {
+        setJWS(token, this.format);
     }
 
+    public void setJWS(JWSToken token, boolean format) {
+        this.txtHeaderJSON.setText(token.getHeaderJSON(format));
+        this.txtPayloadJSON.setText(token.getPayloadJSON(format));
+        this.txtSignatureSign.setText(token.getSignature());
+    }
+
+    public void setLineWrap(boolean lineWrap) {
+        this.txtHeaderJSON.setLineWrap(lineWrap);
+        this.txtPayloadJSON.setLineWrap(lineWrap);
+        this.txtSignatureSign.setLineWrap(lineWrap);
+    }
 
 }
