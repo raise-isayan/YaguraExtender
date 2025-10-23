@@ -34,7 +34,7 @@ public class WeakMACProvider extends BaseJWSProvider {
      *
      * @throws JOSEException If the algorithm is not supported.
      */
-    protected static String getJCAAlgorithmName(final JWSAlgorithm alg)
+    public static String getJCAAlgorithmName(final JWSAlgorithm alg)
             throws JOSEException {
         if (alg.equals(JWSAlgorithm.HS256)) {
             return "HMACSHA256";

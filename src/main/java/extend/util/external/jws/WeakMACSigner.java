@@ -1,6 +1,7 @@
 package extend.util.external.jws;
 
 import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.JWSVerifier;
@@ -8,8 +9,13 @@ import com.nimbusds.jose.crypto.impl.HMAC;
 import com.nimbusds.jose.jwk.OctetSequenceKey;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jose.util.StandardCharset;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import passive.JWSToken;
+import passive.JsonToken;
 
 /**
  * https://github.com/felx/nimbus-jose-jwt

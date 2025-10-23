@@ -120,7 +120,7 @@ public class JWSTest {
                 .expirationTime(new Date(new Date().getTime() + 3600 * 1000)) // 1時間後に期限切れ
                 .claim("role", "admin")
                 .build();
-        String jwt = JWSUtil.jwtAlgNone(claims.toPayload());
+        String jwt = JWSUtil.algNone(claims.toPayload());
         System.out.println("jwt:" + jwt);
     }
 

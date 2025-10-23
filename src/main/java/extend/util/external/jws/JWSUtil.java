@@ -1,6 +1,8 @@
 package extend.util.external.jws;
 
+import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -36,14 +38,37 @@ public class JWSUtil {
     private JWSUtil() {
     }
 
-    private static Payload algNoneHeader() {
+    public static JWSHeader toHeader(JWSAlgorithm alg) {
+        JWSHeader.Builder token = new JWSHeader.Builder(alg);
+        token.type(JOSEObjectType.JWT);
+        return token.build();
+    }
+
+    public static String toHeaderJSON(JWSAlgorithm alg) {
+        return toHeader(alg).toString();
+    }
+
+    private static Payload algHeader(String algo) {
         JWTClaimsSet header = new JWTClaimsSet.Builder()
-                .claim("alg", JWSAlgorithm.NONE.getName())
+                .claim("alg", algo)
+                .claim("typ", "JWT")
                 .build();
         return header.toPayload();
     }
 
-    public static String jwtAlgNone(Payload payload) {
+    private static Payload algNoneHeader() {
+        return algHeader(JWSAlgorithm.NONE.getName());
+    }
+
+    public static String algHeaderJSON(String algo) {
+        return algHeader(algo).toString();
+    }
+
+    public static String algNoneHeaderJSON() {
+        return algNoneHeader().toString();
+    }
+
+    public static String algNone(Payload payload) {
         return serialize(algNoneHeader().toBase64URL(), payload.toBase64URL());
     }
 
@@ -190,4 +215,6 @@ public class JWSUtil {
         }
         return tokens.toArray(CaptureItem[]::new);
     }
+
+
 }

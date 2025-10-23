@@ -25,7 +25,16 @@ public class AttackMACVerifier extends WeakMACProvider implements JWSVerifier {
     private final List<SecretKey> attackList;
     private final ListIterator<SecretKey> ite;
 
-    protected AttackMACVerifier(final List<SecretKey> attackList) {
+    public AttackMACVerifier(final String secretString) {
+        this(secretString.getBytes(StandardCharsets.ISO_8859_1));
+    }
+
+    public AttackMACVerifier(final byte [] secretByte) {
+        this.attackList = List.of(new SecretKeySpec(secretByte, "MAC"));
+        this.ite = attackList.listIterator();
+    }
+
+    public AttackMACVerifier(final List<SecretKey> attackList) {
         this.attackList = attackList;
         this.ite = attackList.listIterator();
     }

@@ -366,9 +366,8 @@ public class JWTToken implements JsonToken {
         JWTToken jwt = jwtInstance.parseToken(baseToken, true);
         if (jwt != null) {
             for (Algorithm alg : algHS) {
-                byte[] sign;
                 try {
-                    sign = JWTToken.sign(alg, jwt.getPayload(), publicKey);
+                    byte[] sign = JWTToken.sign(alg, jwt.getPayload(), publicKey);
                     String signature = JsonToken.encodeBase64UrlSafe(sign);
                     String result = JsonToken.encodeBase64UrlSafe(JWTToken.jwtHeader(alg)) + "." + jwt.getPayload() + "." + signature;
                     tokens.add(result);
