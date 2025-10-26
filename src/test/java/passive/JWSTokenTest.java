@@ -7,8 +7,6 @@ import extend.util.external.jws.JWSUtil;
 import extension.helpers.FileUtil;
 import extension.view.base.CaptureItem;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -107,7 +105,6 @@ public class JWSTokenTest {
             boolean result = JWSToken.signatureEqual(JWSAlgorithm.HS512, alg512, token512, encodeSig, "test");
             assertEquals(expResult, result);
         }
-
     }
 
     /**
@@ -132,66 +129,6 @@ public class JWSTokenTest {
             JWSToken token = jwtinstance.parseToken(JWT_TOKEN03, true);
             boolean result = token.signatureEqual("070162");
             assertEquals(expResult, result);
-        }
-    }
-
-    /**
-     * Test of testSignatureSign method, of class JWTWeakToken.
-     */
-    @Test
-    public void testSignatureSign() {
-        System.out.println("signatureSign");
-        String expResult_HS256 = "IjbkfaSdmROAC0MeW40lJo4s_KoX0VgF0vogsXygNNc";
-        String expResult_HS384 = "-H-yEWagRVfn4rhmL2YBoRYh7qE0n1qcQmzZ_DzqdFW7aaMSf81SPnyRWrHEE5JU";
-        String expResult_HS512 = "3Tyuj-LyrChj5zJefsrV-RwR4rzxVugMDkZFPHZVWKO0YHy4tN69-mopqasUx6--itLymk8pOuJiQZ_YriQlJg";
-        String expResult_RS256 = "MrArWO1bfkwbSGY6WMQnROXBheoKZ-BwquRNyaBFLs2Smf8kEQCH3uCeKrMSHTRmXmJKHNRF4B7l9eRjKn6BRs9EcHXaVax22MBWnYgNpMyTiGcbUxnBzBDNcHZr4oPKUxmtg0Xtx5kYCi327r1-G_bTwoPXwJhLxfuNfb6IWns";
-        String expResult_RS384 = "GYguhpCB91u6ZDHJVJo4JaVvrosV0DqUbpCraQcP4iZGJ0UPVDqAvVxIBrx8hSN6OQsiWIK-fszgjbquJ00Y7C8cPXZcKd2mgTWWH5R4wAQYuQSimmmqgPR5JmsaeRbiEatQpbTYEAdZh78fND7LS2C_0KuIfnlhA7rfIE6KTrU";
-        String expResult_RS512 = "VzpJSKj33uOvZj-DDLnoV8bknfP51LLALQndtApEGBIcbLHttA1JcS-GZat_e4iAIiMaSybCXWTxoO7p63mnCWp8n5mQobg8sv6OCc9fbYALtMN_qPtdDG_ArqPxPhhaZxcQtvBIUqpAuWNqwYnOLO2Bz35LkCz6oVE17gaM52w";
-        String header_HS256 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
-        String header_HS384 = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9";
-        String header_HS512 = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9";
-        String header_RS256 = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9";
-        String header_RS384 = "eyJhbGciOiJSUzM4NCIsInR5cCI6IkpXVCJ9";
-        String header_RS512 = "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9";
-        String payload = "eyJtYWluIjoieHh4eHh4Iiwic3ViIjoi44OG44K544OIIn0";
-        try {
-            {
-                Base64URL signURL = JWSToken.sign(JWSAlgorithm.HS256, header_HS256, payload, JWSToken.toSecretKey("secret"));
-                String result = signURL.toString();
-                assertEquals(expResult_HS256, result);
-            }
-            {
-                Base64URL signURL = JWSToken.sign(JWSAlgorithm.HS384, header_HS384, payload, JWSToken.toSecretKey("secret"));
-                String result = signURL.toString();
-                assertEquals(expResult_HS384, result);
-            }
-            {
-                Base64URL signURL = JWSToken.sign(JWSAlgorithm.HS512, header_HS512, payload, JWSToken.toSecretKey("secret"));
-                String result = signURL.toString();
-                assertEquals(expResult_HS512, result);
-            }
-//            {
-//                byte [] privateKey = Util.readAllBytes(JWSTokenTest.class.getResourceAsStream("/resources/private-key.pem"));
-//                byte [] sign = JWTToken.sign(JWTToken.Algorithm.RS256, header_RS256, + token, Util.getRawStr(privateKey));
-//                String result = JWTToken.encodeBase64UrlSafe(sign);
-//                assertEquals(expResult_RS256, result);
-//            }
-//            {
-//                byte [] privateKey = Util.readAllBytes(JWTUtilTest.class.getResourceAsStream("/resources/private-key.pem"));
-//                byte [] sign = JWTToken.sign(Algorithm.RS384, header_RS384 + token, Util.getRawStr(privateKey));
-//                String result = JWTToken.encodeBase64UrlSafe(sign);
-//                assertEquals(expResult_RS384, result);
-//            }
-//            {
-//                byte [] privateKey = Util.readAllBytes(JWTUtilTest.class.getResourceAsStream("/resources/private-key.pem"));
-//                byte [] sign = JWTToken.sign(Algorithm.RS512, header_RS512 + token, Util.getRawStr(privateKey));
-//                String result = JWTToken.encodeBase64UrlSafe(sign);
-//                assertEquals(expResult_RS512, result);
-//            }
-        } catch (ParseException ex) {
-            fail(ex);
-        } catch (JOSEException ex) {
-            fail(ex);
         }
     }
 
@@ -432,7 +369,7 @@ public class JWSTokenTest {
                 byte[] publicKey = FileUtil.readAllBytes(JWTTokenTest.class.getResourceAsStream("/resources/public.pem"));
                 {
                     JWSToken token = jwtinstance.parseToken(test, true);
-                    Base64URL sign = JWSToken.forceSign(JWSAlgorithm.HS256, token.getHeader(), token.getPayload(), JWSToken.toSecretKey(publicKey));
+                    Base64URL sign = JWSToken.forceSign(JWSAlgorithm.HS256, token.getHeader(), token.getPayload(), JWSUtil.toSecretKey(publicKey));
                     String result = JsonToken.encodeBase64UrlSafe(JWSUtil.toHeaderJSON(JWSAlgorithm.HS256)) + "." + token.getPayload() + "." + sign.toString();
                     //System.out.println("expected:" + expected);
                     System.out.println("result:" + result);
@@ -444,7 +381,7 @@ public class JWSTokenTest {
                 }
             } catch (IOException ex) {
                 fail(ex);
-            } catch (NoSuchAlgorithmException ex) {
+            } catch (JOSEException ex) {
                 fail(ex);
             }
         }

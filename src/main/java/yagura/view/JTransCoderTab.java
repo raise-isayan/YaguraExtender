@@ -77,7 +77,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             ThemeUI.applyStyleTheme(txtOutputRaw);
@@ -122,7 +122,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private final ViewStateDecoderTab viewStateDecoderTab = new ViewStateDecoderTab();
 
-    private final JWSTokenDecoderTab jwsTokenDecoderTab = new JWSTokenDecoderTab();
+    private final JWSDecoderTab jwsDecoderTab = new JWSDecoderTab();
+    private final JWSEncoderTab jwsEncoderTab = new JWSEncoderTab();
 
     final FocusListener FIRE_FOCUS = new FocusListener() {
         @Override
@@ -160,7 +161,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
 
         this.tabbetTranscoder.addTab(this.viewStateDecoderTab.getTabCaption(), this.viewStateDecoderTab);
-        this.tabbetTranscoder.addTab(this.jwsTokenDecoderTab.getTabCaption(), this.jwsTokenDecoderTab);
+        this.tabbetTranscoder.addTab(this.jwsDecoderTab.getTabCaption(), this.jwsDecoderTab);
+        this.tabbetTranscoder.addTab(this.jwsEncoderTab.getTabCaption(), this.jwsEncoderTab);
 
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtInputRaw = new javax.swing.JTextArea();
@@ -303,8 +305,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         this.doStateDecodeChange();
 
-        this.listener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(this.listener);
+        this.propertyListener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(this.propertyListener);
 
     }
 
@@ -5354,6 +5356,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     byte[] receiveFromJTransCoder() {
         return this.getOutputByte();
+    }
+
+    public void sendToJWSDecoder(String header, String payload, String signature) {
+        if (header != null) this.jwsDecoderTab.setHeaderJSON(header, true);
+        if (payload != null) this.jwsDecoderTab.setPayloadJSON(payload, true);
+        if (signature != null) this.jwsDecoderTab.setSignature(signature);
+    }
+
+    public void sendToJWSEncoder(String header, String payload, String secret) {
+        if (header != null) this.jwsEncoderTab.setHeaderJSON(header, true);
+        if (payload != null) this.jwsEncoderTab.setPayloadJSON(payload, true);
+        if (secret != null) this.jwsEncoderTab.setSecretKey(secret);
     }
 
     private String getSelectEncode() {

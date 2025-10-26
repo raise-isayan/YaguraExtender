@@ -1,15 +1,13 @@
 package yagura.view;
 
+import com.nimbusds.jose.Header;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.JWTClaimsSet;
-import extend.util.external.ThemeUI;
+import extension.helpers.json.JsonUtil;
 import java.awt.SystemColor;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import passive.JWSToken;
 
 /**
@@ -51,7 +49,7 @@ public class JWSViewPanel extends javax.swing.JPanel {
         pnlJWT.setLayout(new java.awt.BorderLayout());
 
         pnlHeader.setMinimumSize(new java.awt.Dimension(0, 0));
-        pnlHeader.setPreferredSize(new java.awt.Dimension(100, 100));
+        pnlHeader.setPreferredSize(new java.awt.Dimension(100, 120));
         pnlHeader.setLayout(new java.awt.BorderLayout());
 
         lblHeader.setText("Header");
@@ -80,23 +78,32 @@ public class JWSViewPanel extends javax.swing.JPanel {
         add(pnlJWT, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.applyStyleTheme(txtHeaderJSON);
-            ThemeUI.applyStyleTheme(txtPayloadJSON);
-            ThemeUI.applyStyleTheme(txtSignatureSign);
-        }
-    };
+//    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
+//        @Override
+//        public void propertyChange(PropertyChangeEvent evt) {
+//            ThemeUI.applyStyleTheme(txtHeaderJSON);
+//            ThemeUI.applyStyleTheme(txtPayloadJSON);
+//            ThemeUI.applyStyleTheme(txtSignatureSign);
+//        }
+//    };
 
-    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
+//
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollPayloadJSON;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;
+//
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
 
-    private org.fife.ui.rtextarea.RTextScrollPane scrollPayloadJSON;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;
+    private javax.swing.JScrollPane scrollHeaderJSON;
+    private javax.swing.JTextArea txtHeaderJSON;
 
-    private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
+    private javax.swing.JScrollPane scrollPayloadJSON;
+    private javax.swing.JTextArea txtPayloadJSON;
+
+    private javax.swing.JScrollPane scrollSignatureSign;
+    private javax.swing.JTextArea txtSignatureSign;
 
     private void customizeComponents() {
         /**
@@ -104,57 +111,62 @@ public class JWSViewPanel extends javax.swing.JPanel {
          */
 
         /* Header */
-        this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-        this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
+        //this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        //this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
+        this.txtHeaderJSON = new javax.swing.JTextArea();
+        this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
         this.txtHeaderJSON.setWrapStyleWord(false);
-
-        this.txtHeaderJSON.setCodeFoldingEnabled(true);
-        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
-        this.txtHeaderJSON.setHighlightCurrentLine(false);
-        this.txtHeaderJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+//        this.txtHeaderJSON.setCodeFoldingEnabled(true);
+//        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
+//        this.txtHeaderJSON.setHighlightCurrentLine(false);
+//        this.txtHeaderJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtHeaderJSON.setBackground(SystemColor.text);
         this.txtHeaderJSON.setEditable(false);
-        this.txtHeaderJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+//        this.txtHeaderJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 
 //        scrollURaw.setViewportView(txtURaw);
-        this.scrollHeaderJSON.setLineNumbersEnabled(false);
+//        this.scrollHeaderJSON.setLineNumbersEnabled(false);
         this.pnlHeader.add(this.scrollHeaderJSON, java.awt.BorderLayout.CENTER);
 
         /* Payload */
-        this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-        this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
+        //this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        //this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
+        this.txtPayloadJSON = new javax.swing.JTextArea();
+        this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
         this.txtPayloadJSON.setWrapStyleWord(false);
-
-        this.txtPayloadJSON.setCodeFoldingEnabled(true);
-        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
-        this.txtPayloadJSON.setHighlightCurrentLine(false);
-        this.txtPayloadJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+//        this.txtPayloadJSON.setCodeFoldingEnabled(true);
+//        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
+//        this.txtPayloadJSON.setHighlightCurrentLine(false);
+//        this.txtPayloadJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtPayloadJSON.setBackground(SystemColor.text);
         this.txtPayloadJSON.setEditable(false);
-        this.txtPayloadJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+//        this.txtPayloadJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+
 //        scrollURaw.setViewportView(txtURaw);
 
         this.pnlPayload.add(this.scrollPayloadJSON, java.awt.BorderLayout.CENTER);
 
         /* Signature */
-        this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-        this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
+        //this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        //this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
+        this.txtSignatureSign = new javax.swing.JTextArea();
+        this.scrollSignatureSign = new javax.swing.JScrollPane(this.txtSignatureSign);
         this.txtSignatureSign.setWrapStyleWord(false);
 
-        this.txtSignatureSign.setCodeFoldingEnabled(true);
-        this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
-        this.txtSignatureSign.setHighlightCurrentLine(false);
-        this.txtSignatureSign.setCurrentLineHighlightColor(SystemColor.textHighlight);
+//        this.txtSignatureSign.setCodeFoldingEnabled(true);
+//        this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
+//        this.txtSignatureSign.setHighlightCurrentLine(false);
+//        this.txtSignatureSign.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtSignatureSign.setBackground(SystemColor.text);
         this.txtSignatureSign.setEditable(false);
 //        scrollURaw.setViewportView(txtURaw);
 
-        this.scrollSignatureSign.setLineNumbersEnabled(false);
+//        this.scrollSignatureSign.setLineNumbersEnabled(false);
 
         this.pnlSignature.add(this.scrollSignatureSign, java.awt.BorderLayout.CENTER);
 
-        this.listener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(listener);
+//        this.propertyListener.propertyChange(null);
+//        ThemeUI.addPropertyChangeListener(propertyListener);
 
     }
 
@@ -168,14 +180,6 @@ public class JWSViewPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlPayload;
     private javax.swing.JPanel pnlSignature;
     // End of variables declaration//GEN-END:variables
-
-    public boolean isEditable() {
-        return this.txtPayloadJSON.isEditable();
-    }
-
-    public void setEditable(boolean editable) {
-        this.txtPayloadJSON.setEditable(editable);
-    }
 
     private boolean format = true;
 
@@ -197,16 +201,42 @@ public class JWSViewPanel extends javax.swing.JPanel {
         return JWSHeader.parse(this.txtHeaderJSON.getText());
     }
 
+    public void setHeader(String value) {
+        this.txtHeaderJSON.setText(value);
+    }
+
+    public void setHeaderJSON(String value, boolean pretty) {
+        this.txtHeaderJSON.setText(JsonUtil.prettyJson(value, true));
+    }
+
     public Payload getPayload() throws ParseException {
         return JWTClaimsSet.parse(this.txtPayloadJSON.getText()).toPayload();
+    }
+
+    public void setPayload(String value) {
+        this.txtPayloadJSON.setText(value);
+    }
+    
+    public void setPayloadJSON(String value, boolean pretty) {
+        this.txtPayloadJSON.setText(JsonUtil.prettyJson(value, true));
     }
 
     public Base64URL getSignature() throws ParseException {
         return Base64URL.from(this.txtSignatureSign.getText());
     }
 
+    public void setSignature(String value) {
+        this.txtSignatureSign.setText(value);
+    }
+
+    public void clearJWS() {
+        this.txtHeaderJSON.setText("");
+        this.txtPayloadJSON.setText("");
+        this.txtSignatureSign.setText("");
+    }
+
     public void setJWS(JWSToken token) {
-        setJWS(token, this.format);
+        this.setJWS(token, this.format);
     }
 
     public void setJWS(JWSToken token, boolean format) {

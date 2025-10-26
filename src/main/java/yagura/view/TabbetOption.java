@@ -242,9 +242,18 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         return this.tabJTransCoder.receiveFromJTransCoder();
     }
 
+    public void sendToJWSDecoder(String header, String payload, String signature) {
+        this.tabJTransCoder.sendToJWSDecoder(header, payload, signature);
+    }
+
+    public void sendToJWSEncoder(String header, String payload, String secret) {
+        this.tabJTransCoder.sendToJWSEncoder(header, payload, secret);
+    }
+
     @Override
     public void extensionUnloaded() {
         this.tabJTransCoder.extensionUnloaded();
     }
+
 
 }

@@ -59,7 +59,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             ThemeUI.applyStyleTheme(txtGeneratorPoC);
@@ -113,8 +113,8 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 //        this.txtGeneratorPoC.setContentType("text/html");
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
-        this.listener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(listener);
+        this.propertyListener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(propertyListener);
 
     }
 

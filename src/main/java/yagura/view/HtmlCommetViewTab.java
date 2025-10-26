@@ -33,7 +33,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
 
     private final static Logger logger = Logger.getLogger(HtmlCommetViewTab.class.getName());
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             ThemeUI.applyStyleTheme(txtHtmlComment);
@@ -83,8 +83,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
 //        this.txtHtmlComment.setContentType("text/html");
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
-        this.listener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(listener);
+        this.propertyListener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(propertyListener);
 
     }
 

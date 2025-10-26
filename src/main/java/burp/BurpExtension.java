@@ -149,7 +149,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         });
     }
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             api().userInterface().applyThemeToComponent(popupMessage);
@@ -208,7 +208,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
         this.registerTemporaryProject();
 
-        ThemeUI.addPropertyChangeListener(listener);
+        ThemeUI.addPropertyChangeListener(propertyListener);
 
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));
@@ -482,6 +482,14 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     public byte[] receiveFromClipbord(String encoding) throws UnsupportedEncodingException {
         String clipbord = SwingUtil.systemClipboardPaste();
         return StringUtil.getBytesCharset(clipbord, encoding);
+    }
+
+    public void sendToJWSDecoder(String header, String payload, String signature) {
+        this.tabbetOption.sendToJWSDecoder(header, payload, signature);
+    }
+
+    public void sendToJWSEncoder(String header, String payload, String secret) {
+        this.tabbetOption.sendToJWSEncoder(header, payload, secret);
     }
 
     @Override

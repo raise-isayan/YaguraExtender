@@ -49,7 +49,7 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
 
     private final static Logger logger = Logger.getLogger(RawViewTab.class.getName());
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             ThemeUI.applyStyleTheme(txtURaw);
@@ -138,8 +138,8 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
 
         this.add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
-        this.listener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(this.listener);
+        this.propertyListener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(this.propertyListener);
     }
 
     private final java.awt.event.ItemListener encodingItemStateChanged = new java.awt.event.ItemListener() {

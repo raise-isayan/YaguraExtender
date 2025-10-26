@@ -411,41 +411,37 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                      <Group type="102" attributes="0">
-                                          <Component id="rdoIssuerExportPairPKCS12" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtIssuerPKCS12Password" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lblIssuerYear" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblIssuerCommonName" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblIssuerOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblIssuerLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblIssuerCountry" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="txtIssuerCommonName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="txtIssuerCountry" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="txtIssuerOrganizationName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="txtIssuerLoccalityName" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="spnIssuerYear" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblIssuerYear" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIssuerCommonName" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIssuerOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIssuerLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblIssuerCountry" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="312" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtIssuerCommonName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerCountry" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerOrganizationName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerLoccalityName" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="spnIssuerYear" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="rdoIssuerExportPairPEM" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="btnIssuerExportCA" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="232" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="rdoIssuerExportPairPKCS12" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rdoIssuerExportPairPEM" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="btnIssuerExportCA" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerPKCS12Password" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
+                          <EmptySpace pref="312" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -674,44 +670,43 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="rdoSubjectExportPairPEM" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="264" max="32767" attributes="0"/>
-                                  <Component id="btnSubjectExportCA" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="237" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <Component id="rdoSubjectExportPairPKCS12" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="txtSubjectPKCS12Password" max="32767" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lblSubjectYear" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblSubjectCommonName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblSubjectOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblSubjectLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblSubjectCountry" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="txtSubjectCommonName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="txtSubjectCountry" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="txtSubjectOrganizationName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="txtSubjectLoccalityName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                              <Component id="spnSubjectYear" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                                              <Component id="txtSubjectSAN" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <Component id="lblSubjectCountry1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="chkUseSameCommonName" alignment="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblSubjectYear" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblSubjectCommonName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblSubjectOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblSubjectLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblSubjectCountry" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txtSubjectCommonName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtSubjectCountry" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtSubjectOrganizationName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtSubjectLoccalityName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="spnSubjectYear" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Component id="txtSubjectSAN" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Component id="lblSubjectCountry1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkUseSameCommonName" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="rdoSubjectExportPairPKCS12" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="rdoSubjectExportPairPEM" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="btnSubjectExportCA" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                      </Group>
+                                      <Component id="txtSubjectPKCS12Password" max="32767" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

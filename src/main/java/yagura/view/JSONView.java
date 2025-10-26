@@ -49,7 +49,7 @@ public class JSONView extends javax.swing.JPanel {
         customizeComponents();
     }
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             ThemeUI.applyStyleTheme(txtJSON);
@@ -155,8 +155,8 @@ public class JSONView extends javax.swing.JPanel {
         renderer.setLeafIcon(emptyIcon);
         this.modelJSON = (DefaultTreeModel) this.treeJSON.getModel();
 
-        this.listener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(listener);
+        this.propertyListener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(propertyListener);
 
     }
 

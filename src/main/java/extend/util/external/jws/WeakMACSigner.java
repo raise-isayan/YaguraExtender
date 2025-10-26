@@ -101,7 +101,8 @@ public class WeakMACSigner extends WeakMACProvider implements JWSSigner, JWSVeri
     public Base64URL sign(final JWSHeader header, final byte[] signingInput)
             throws JOSEException {
         String jcaAlg = getJCAAlgorithmName(header.getAlgorithm());
-        byte[] hmac = HMAC.compute(jcaAlg, getSecretKey(), signingInput, getJCAContext().getProvider());
+        //byte[] hmac = HMAC.compute(jcaAlg, getSecretKey(), signingInput, getJCAContext().getProvider());
+        byte[] hmac = HMAC.compute(jcaAlg, this.getSecret(), signingInput, getJCAContext().getProvider());
         return Base64URL.encode(hmac);
     }
 
@@ -111,7 +112,8 @@ public class WeakMACSigner extends WeakMACProvider implements JWSSigner, JWSVeri
             final Base64URL signature)
             throws JOSEException {
         String jcaAlg = getJCAAlgorithmName(header.getAlgorithm());
-        byte[] hmac = HMAC.compute(jcaAlg, getSecretKey(), signedContent, getJCAContext().getProvider());
+        //byte[] hmac = HMAC.compute(jcaAlg, getSecretKey(), signingInput, getJCAContext().getProvider());
+        byte[] hmac = HMAC.compute(jcaAlg, this.getSecret(), signedContent, getJCAContext().getProvider());
         Base64URL expectedSignature = Base64URL.encode(hmac);
         return (expectedSignature.equals(signature));
     }

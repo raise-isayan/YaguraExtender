@@ -1,17 +1,35 @@
 package extend.util.external.jws;
 
+import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObjectType;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.JWSSignerOption;
 import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.crypto.ECDSASigner;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.crypto.opts.AllowWeakRSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import extension.helpers.BouncyUtil;
+import static extension.helpers.BouncyUtil.loadPrivateKeyFromPem;
+import extension.helpers.CertUtil;
+import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
+import java.security.PrivateKey;
+import java.security.interfaces.ECPrivateKey;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import org.bouncycastle.openssl.PEMException;
 
 /**
  */
@@ -214,6 +232,70 @@ public class JWSUtil {
             }
         }
         return tokens.toArray(CaptureItem[]::new);
+    }
+
+    public static SecretKey toSecretKey(String secret) {
+        return new SecretKeySpec(StringUtil.getBytesRaw(secret), "MAC");
+    }
+
+    public static SecretKey toSecretKey(byte[] secret) {
+        return new SecretKeySpec(secret, "MAC");
+    }
+
+    public static PrivateKey toPrivateKey(String pemData) throws PEMException {
+        return BouncyUtil.loadPrivateKeyFromPem(pemData);
+    }
+
+    public static ECPrivateKey toECPrivateKey(String pemData) throws PEMException {
+        return BouncyUtil.loadECPrivateKeyFromPem(pemData);
+    }
+
+    public static JWSObject sign(JWSAlgorithm algo, String header, String payload, SecretKey secretKey) throws ParseException, JOSEException {
+        return sign(algo, Base64URL.from(header), Base64URL.from(payload), secretKey);
+    }
+
+    protected static JWSObject sign(JWSAlgorithm algo, Base64URL header, Base64URL payload, SecretKey secretKey) throws ParseException, JOSEException {
+        return sign(algo, JWSHeader.parse(header), new Payload(payload), secretKey);
+    }
+
+    public static JWSObject sign(JWSAlgorithm algo, JWSHeader header, Payload payload, SecretKey secretKey) throws JOSEException {
+        if (MACSigner.SUPPORTED_ALGORITHMS.contains(algo)) {
+            WeakMACSigner signer = new WeakMACSigner(secretKey);
+            JWSObject token = new JWSObject(header, payload);
+            token.sign(signer);
+            return token;
+        }
+        throw new IllegalArgumentException("Not support:" + algo.getName());
+    }
+
+    protected static JWSObject sign(JWSAlgorithm algo, Base64URL header, Base64URL payload, PrivateKey secretKey) throws ParseException, JOSEException {
+        return sign(algo, JWSHeader.parse(header), new Payload(payload), secretKey);
+    }
+
+    public static JWSObject sign(JWSAlgorithm algo, JWSHeader header, Payload payload, PrivateKey secretKey) throws JOSEException {
+        if (RSASSASigner.SUPPORTED_ALGORITHMS.contains(algo)) {
+            HashSet<JWSSignerOption> opts = new HashSet();
+            opts.add(AllowWeakRSAKey.getInstance());
+            JWSSigner signer = new RSASSASigner(secretKey, opts);
+            JWSObject token = new JWSObject(header, payload);
+            token.sign(signer);
+            return token;
+        }
+        throw new IllegalArgumentException("Not support:" + algo.getName());
+    }
+
+    protected static JWSObject sign(JWSAlgorithm algo, Base64URL header, Base64URL payload, ECPrivateKey secretKey) throws ParseException, JOSEException {
+        return sign(algo, JWSHeader.parse(header), new Payload(payload), secretKey);
+    }
+
+    public static JWSObject sign(JWSAlgorithm algo, JWSHeader header, Payload payload, ECPrivateKey secretKey) throws JOSEException {
+        if (ECDSASigner.SUPPORTED_ALGORITHMS.contains(algo)) {
+            ECDSASigner signer = new ECDSASigner(secretKey);
+            JWSObject token = new JWSObject(header, payload);
+            token.sign(signer);
+            return token;
+        }
+        throw new IllegalArgumentException("Not support:" + algo.getName());
     }
 
 

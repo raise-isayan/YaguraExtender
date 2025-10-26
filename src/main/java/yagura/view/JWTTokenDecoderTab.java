@@ -63,6 +63,8 @@ public class JWTTokenDecoderTab extends javax.swing.JPanel implements IBurpTab {
         txtJWTToken.setColumns(20);
         txtJWTToken.setLineWrap(true);
         txtJWTToken.setRows(5);
+        txtJWTToken.setPreferredSize(new java.awt.Dimension(212, 80));
+        txtJWTToken.setRequestFocusEnabled(false);
         jScrollPane1.setViewportView(txtJWTToken);
 
         btnDecode1.setText("Decode");

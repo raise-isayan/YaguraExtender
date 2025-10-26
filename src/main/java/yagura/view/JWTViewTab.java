@@ -7,15 +7,12 @@ import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
-import extend.util.external.ThemeUI;
 import extension.burp.IBurpMessageTab;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.SystemColor;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -24,7 +21,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import passive.JWTToken;
 import yagura.model.UniversalViewProperty;
 
@@ -45,25 +41,35 @@ public class JWTViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         customizeComponents();
     }
 
-    final PropertyChangeListener listener = new PropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            ThemeUI.applyStyleTheme(txtHeaderJSON);
-            ThemeUI.applyStyleTheme(txtPayloadJSON);
-            ThemeUI.applyStyleTheme(txtSignatureSign);
-        }
-    };
+//    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
+//        @Override
+//        public void propertyChange(PropertyChangeEvent evt) {
+//            ThemeUI.applyStyleTheme(txtHeaderJSON);
+//            ThemeUI.applyStyleTheme(txtPayloadJSON);
+//            ThemeUI.applyStyleTheme(txtSignatureSign);
+//        }
+//    };
 
 //    private final JSONView jsonHeaderView = new JSONView();
 //    private final JSONView jsonPayloadView = new JSONView();
-    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
 
-    private org.fife.ui.rtextarea.RTextScrollPane scrollPayloadJSON;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
+//
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollPayloadJSON;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtPayloadJSON;
+//
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
 
-    private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
+    private javax.swing.JScrollPane scrollHeaderJSON;
+    private javax.swing.JTextArea txtHeaderJSON;
+
+    private javax.swing.JScrollPane scrollPayloadJSON;
+    private javax.swing.JTextArea txtPayloadJSON;
+
+    private javax.swing.JScrollPane scrollSignatureSign;
+    private javax.swing.JTextArea txtSignatureSign;
 
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
@@ -73,52 +79,58 @@ public class JWTViewTab extends javax.swing.JPanel implements IBurpMessageTab {
          */
 
         /* Header */
-        this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-        this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
-        this.txtHeaderJSON.setWrapStyleWord(false);
+      //this.txtHeaderJSON = new javax.swing.JTextArea();
+      //this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
+      this.txtHeaderJSON = new javax.swing.JTextArea();
+      this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
+      this.txtHeaderJSON.setWrapStyleWord(false);
 
-        this.txtHeaderJSON.setCodeFoldingEnabled(true);
-        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
-        this.txtHeaderJSON.setHighlightCurrentLine(false);
-        this.txtHeaderJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+//        this.txtHeaderJSON.setCodeFoldingEnabled(true);
+//        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
+//        this.txtHeaderJSON.setHighlightCurrentLine(false);
+//        this.txtHeaderJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtHeaderJSON.setBackground(SystemColor.text);
         this.txtHeaderJSON.setEditable(false);
-        this.txtHeaderJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+//        this.txtHeaderJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 
 //        scrollURaw.setViewportView(txtURaw);
-        this.scrollHeaderJSON.setLineNumbersEnabled(false);
+//        this.scrollHeaderJSON.setLineNumbersEnabled(false);
         this.pnlHeader.add(this.scrollHeaderJSON, java.awt.BorderLayout.CENTER);
 
         /* Payload */
-        this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-        this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
+        //this.txtPayloadJSON = new javax.swing.JTextArea();
+        //this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
+        this.txtPayloadJSON = new javax.swing.JTextArea();
+        this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
         this.txtPayloadJSON.setWrapStyleWord(false);
 
-        this.txtPayloadJSON.setCodeFoldingEnabled(true);
-        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
-        this.txtPayloadJSON.setHighlightCurrentLine(false);
-        this.txtPayloadJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
+//        this.txtPayloadJSON.setCodeFoldingEnabled(true);
+//        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
+//        this.txtPayloadJSON.setHighlightCurrentLine(false);
+//        this.txtPayloadJSON.setCurrentLineHighlightColor(SystemColor.textHighlight);
         this.txtPayloadJSON.setBackground(SystemColor.text);
         this.txtPayloadJSON.setEditable(false);
-        this.txtPayloadJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+//        this.txtPayloadJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 //        scrollURaw.setViewportView(txtURaw);
 
         this.pnlPayload.add(this.scrollPayloadJSON, java.awt.BorderLayout.CENTER);
 
         /* Signature */
-        this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-        this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
+        //this.txtSignatureSign = new javax.swing.JTextArea();
+        //this.scrollSignatureSign = new javax.swing.JScrollPane(this.txtSignatureSign);
+        this.txtSignatureSign = new javax.swing.JTextArea();
+        this.scrollSignatureSign = new javax.swing.JScrollPane(this.txtSignatureSign);
         this.txtSignatureSign.setWrapStyleWord(false);
 
-        this.txtSignatureSign.setCodeFoldingEnabled(true);
-        this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
-        this.txtSignatureSign.setHighlightCurrentLine(false);
-        this.txtSignatureSign.setCurrentLineHighlightColor(SystemColor.textHighlight);
-        this.txtSignatureSign.setBackground(SystemColor.text);
-        this.txtSignatureSign.setEditable(false);
+//        this.txtSignatureSign.setCodeFoldingEnabled(true);
+//        this.txtSignatureSign.setClearWhitespaceLinesEnabled(true);
+//        this.txtSignatureSign.setHighlightCurrentLine(false);
+//        this.txtSignatureSign.setCurrentLineHighlightColor(SystemColor.textHighlight);
+//        this.txtSignatureSign.setBackground(SystemColor.text);
+//        this.txtSignatureSign.setEditable(false);
 //        scrollURaw.setViewportView(txtURaw);
 
-        this.scrollSignatureSign.setLineNumbersEnabled(false);
+//        this.scrollSignatureSign.setLineNumbersEnabled(false);
 
         this.pnlSignature.add(this.scrollSignatureSign, java.awt.BorderLayout.CENTER);
 
@@ -131,8 +143,8 @@ public class JWTViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 //        this.txtPayloadJSON.setEditable(false);
 //        this.txtPayloadJSON.setEditorKitForContentType("text/json", this.jsonStyleEditorKit);
 //        this.txtPayloadJSON.setContentType("text/json");
-        this.listener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(listener);
+//        this.propertyListener.propertyChange(null);
+//        ThemeUI.addPropertyChangeListener(propertyListener);
 
     }
 

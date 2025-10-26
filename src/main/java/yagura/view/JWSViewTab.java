@@ -29,7 +29,7 @@ import yagura.model.UniversalViewProperty;
 public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     private final static Logger logger = Logger.getLogger(JWSViewTab.class.getName());
-    private JWSToken jwsinstance = new JWSToken();
+    private final JWSToken jwsinstance = new JWSToken();
 
     private final Map<String, JWSToken> tokenMap = Collections.synchronizedMap(new HashMap<>());
 
@@ -46,7 +46,6 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
     private void customizeComponents() {
         this.pnlJWS.add(this.panelJWSView, java.awt.BorderLayout.CENTER);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,9 +126,9 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
     }//GEN-LAST:event_cmbParamItemStateChanged
 
     private void btnCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyActionPerformed
-        String key = (String) this.cmbParam.getSelectedItem();
-        if (key != null) {
-            SwingUtil.systemClipboardCopy(key);
+        String token = (String) this.cmbParam.getSelectedItem();
+        if (token != null) {
+            SwingUtil.systemClipboardCopy(token);
         }
     }//GEN-LAST:event_btnCopyActionPerformed
 

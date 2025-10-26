@@ -4,8 +4,14 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.JWSSignerOption;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.crypto.ECDSASigner;
+import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.crypto.opts.AllowWeakRSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.SignedJWT;
 import extend.util.external.jws.JWSUtil;
@@ -18,10 +24,12 @@ import extension.helpers.json.JsonUtil;
 import extension.view.base.CaptureItem;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.interfaces.ECPrivateKey;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -182,11 +190,11 @@ public class JWSToken implements JsonToken {
     }
 
     public static boolean signatureEqual(JWSAlgorithm algo, String header, String payload, String signature, String secret) {
-        return signatureEqual(algo, Base64URL.from(header), Base64URL.from(payload), Base64URL.from(signature), toSecretKey(secret));
+        return signatureEqual(algo, Base64URL.from(header), Base64URL.from(payload), Base64URL.from(signature), JWSUtil.toSecretKey(secret));
     }
 
     protected static boolean signatureEqual(JWSAlgorithm algo, Base64URL header, Base64URL payload, final Base64URL signature, final byte[] secret) {
-        return signatureEqual(algo, header, payload, signature, toSecretKey(secret));
+        return signatureEqual(algo, header, payload, signature, JWSUtil.toSecretKey(secret));
     }
 
     protected static boolean signatureEqual(JWSAlgorithm algo, Base64URL header, Base64URL payload, final Base64URL signature, final SecretKey secretKey) {
@@ -220,33 +228,9 @@ public class JWSToken implements JsonToken {
         return JsonUtil.prettyJson(JsonToken.decodeBase64UrlSafe(this.getPayload()), pretty);
     }
 
-    public static SecretKey toSecretKey(String secret) {
-        return new SecretKeySpec(StringUtil.getBytesRaw(secret), "MAC");
-    }
-
-    public static SecretKey toSecretKey(byte[] secret) {
-        return new SecretKeySpec(secret, "MAC");
-    }
-
-    public static Base64URL sign(JWSAlgorithm algo, String header, String payload, SecretKey secretKey) throws ParseException, JOSEException {
-        return sign(algo, Base64URL.from(header), Base64URL.from(payload), secretKey);
-    }
-
-    public static Base64URL sign(JWSAlgorithm algo, Base64URL header, Base64URL payload, SecretKey secretKey) throws ParseException, JOSEException {
-        if (algo.equals(JWSAlgorithm.HS256)
-                || algo.equals(JWSAlgorithm.HS384)
-                || algo.equals(JWSAlgorithm.HS512)) {
-            WeakMACSigner signer = new WeakMACSigner(secretKey);
-            JWSObject token = new JWSObject(JWSHeader.parse(header), new Payload(payload));
-            token.sign(signer);
-            return token.getSignature();
-        }
-        throw new IllegalArgumentException("Not support:" + algo.getName());
-    }
-
     private final static JWSAlgorithm[] algHS = {JWSAlgorithm.HS256, JWSAlgorithm.HS384, JWSAlgorithm.HS512};
 
-    public static Base64URL forceSign(JWSAlgorithm algo, String header, final String payload, SecretKey secretKey) throws NoSuchAlgorithmException {
+    protected static Base64URL forceSign(JWSAlgorithm algo, String header, final String payload, SecretKey secretKey) throws JOSEException {
         try {
             if (algo.equals(JWSAlgorithm.HS256)
                     || algo.equals(JWSAlgorithm.HS384)
@@ -258,24 +242,20 @@ public class JWSToken implements JsonToken {
                 final byte[] mac_bytes = mac.doFinal(StringUtil.getBytesRaw(data));
                 return Base64URL.encode(mac_bytes);
             }
-        } catch (JOSEException | InvalidKeyException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (NoSuchAlgorithmException | InvalidKeyException ex) {
+            throw new JOSEException(ex);
         }
-        throw new NoSuchAlgorithmException(algo.getName());
+        throw new IllegalArgumentException("Not support:" + algo.getName());
     }
 
-    public static String[] generatePublicToHashToken(String baseToken, byte[] publicKey) {
+    public static String[] generatePublicToHashToken(String baseToken, byte[] publicKey) throws JOSEException {
         final List<String> tokens = new ArrayList<>();
         JWSToken jws = jwsInstance.parseToken(baseToken, true);
         if (jws != null) {
             for (JWSAlgorithm alg : algHS) {
-                try {
-                    Base64URL signURL = JWSToken.forceSign(alg, jws.header, jws.payload, JWSToken.toSecretKey(publicKey));
-                    String result = JsonToken.encodeBase64UrlSafe(JWSUtil.toHeaderJSON(alg)) + "." + jws.getPayload() + "." + signURL.toString();
-                    tokens.add(result);
-                } catch (NoSuchAlgorithmException ex) {
-                    logger.log(Level.SEVERE, ex.getMessage(), ex);
-                }
+                Base64URL signURL = JWSToken.forceSign(alg, jws.header, jws.payload, JWSUtil.toSecretKey(publicKey));
+                String result = JsonToken.encodeBase64UrlSafe(JWSUtil.toHeaderJSON(alg)) + "." + jws.getPayload() + "." + signURL.toString();
+                tokens.add(result);
             }
         }
         return tokens.toArray(String[]::new);
