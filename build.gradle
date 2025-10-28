@@ -124,6 +124,11 @@ dependencies {
     // Unit Test
 
     // Use JUnit Jupiter for testing.
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
+    testCompileOnly 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
+    // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
+    testCompileOnly 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.5'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.5'

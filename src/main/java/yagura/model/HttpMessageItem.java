@@ -543,4 +543,9 @@ public class HttpMessageItem implements ProxyHttpRequestResponse {
     public TimingData timingData() {
         return httpRequestResponse.timingData();
     }
+
+    @Override
+    public int id() {
+        return httpRequestResponse.id();
+    }
 }

@@ -36,7 +36,6 @@ import java.util.ListIterator;
 import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import passive.JWSToken;
 
 /**
  *
@@ -485,5 +484,7 @@ public class JWSUtilTest {
             fail(ex);
         }
     }
+
+
 
 }
