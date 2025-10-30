@@ -16,6 +16,8 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="btnGrpAlgorithm">
     </Component>
+    <Component class="javax.swing.ButtonGroup" name="btnGrpExportKeyPair">
+    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -168,8 +170,9 @@
                                   <Component id="rdoConvertCertificatePEM" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="rdoConvertPrivateDER" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                       <Component id="rdoConvertPairPEM" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="btnExportCA" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -180,12 +183,18 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="btnExportCA" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="rdoConvertPairPEM" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnExportCA" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="rdoConvertPairPEM" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="rdoConvertCertificatePEM" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="rdoConvertCertificateDER" min="-2" max="-2" attributes="0"/>
@@ -202,6 +211,7 @@
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                           <ComponentRef name="btnGrpExportCertificate"/>
                         </Property>
+                        <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="Certificate and Private key in PEM format"/>
                       </Properties>
                     </Component>
@@ -956,7 +966,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="rdoConvertKeyPairPEM" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnExportKeyPair" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="84" max="32767" attributes="0"/>
                       </Group>
@@ -979,7 +989,7 @@
                 <Component class="javax.swing.JRadioButton" name="rdoConvertKeyPairPEM">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                      <ComponentRef name="btnGrpExportCertificate"/>
+                      <ComponentRef name="btnGrpExportKeyPair"/>
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="KeyPair in PEM format"/>

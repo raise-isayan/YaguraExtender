@@ -22,6 +22,7 @@ import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
 import java.security.PrivateKey;
 import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -246,8 +247,12 @@ public class JWSUtil {
         return BouncyUtil.loadPrivateKeyFromPem(pemData);
     }
 
+    public static RSAPrivateKey toRSAPrivateKey(String pemData) throws PEMException {
+        return (RSAPrivateKey)BouncyUtil.loadPrivateKeyFromPem(pemData);
+    }
+
     public static ECPrivateKey toECPrivateKey(String pemData) throws PEMException {
-        return BouncyUtil.loadECPrivateKeyFromPem(pemData);
+        return (ECPrivateKey)BouncyUtil.loadPrivateKeyFromPem(pemData);
     }
 
     public static JWSObject sign(JWSAlgorithm algo, String header, String payload, SecretKey secretKey) throws ParseException, JOSEException {
