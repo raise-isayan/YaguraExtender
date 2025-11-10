@@ -76,7 +76,7 @@ public class TransUtilTest {
             System.out.println(String.format("%s", new Object[]{encodeHex}));
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            fail(ex.getMessage());
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -177,7 +177,7 @@ public class TransUtilTest {
             assertEquals("あいうえお", TransUtil.toSmartDecode("%U3042%U3044%U3046%U3048%U304A"));
         } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            fail(ex.getMessage());
+            fail(ex.getMessage(), ex);
         }
 
     }
@@ -308,7 +308,7 @@ public class TransUtilTest {
             byte o[] = new byte[]{(byte) 0202, (byte) 0240, (byte) 0202, (byte) 0242, (byte) 0202, (byte) 0244, (byte) 0202, (byte) 0246, (byte) 0202, (byte) 0250, (byte) 012};
             assertEquals(new String(o, StandardCharsets.ISO_8859_1), TransUtil.toByteDecode("\\202\\240\\202\\242\\202\\244\\202\\246\\202\\250\\12", StandardCharsets.ISO_8859_1.name()));
         } catch (UnsupportedEncodingException ex) {
-            fail();
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -325,7 +325,7 @@ public class TransUtilTest {
             assertEquals("あいうえお", TransUtil.toByteHexDecode("e38182e38184e38186e38188e3818a", StandardCharsets.UTF_8.name()));
             assertEquals("あいうえお", TransUtil.toByteHexDecode("E38182E38184E38186E38188E3818A", StandardCharsets.UTF_8.name()));
         } catch (UnsupportedEncodingException ex) {
-            fail();
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -342,7 +342,7 @@ public class TransUtilTest {
             assertEquals("abcdef!\"#$%", TransUtil.toByteHex2Decode("abcdef\\21\\22\\23\\24\\25", "8859_1"));
             assertEquals("abcdef!\"ghi#$%jkf", TransUtil.toByteHex2Decode("\\61\\62\\63\\64\\65\\66\\21\\22\\67\\68\\69\\23\\24\\25\\6a\\6b\\66", "8859_1"));
         } catch (UnsupportedEncodingException ex) {
-            fail();
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -438,7 +438,7 @@ public class TransUtilTest {
         }
         try {
             String list[] = TransUtil.generaterList("abc%02d", 4, 11, 0);
-            fail(); // never loop
+            fail();
         } catch (Exception e) {
             assertTrue(true);
         }

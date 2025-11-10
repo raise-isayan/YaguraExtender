@@ -1,16 +1,10 @@
 package yagura.view;
 
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.crypto.ECDSASigner;
-import com.nimbusds.jose.crypto.RSASSASigner;
-import extend.util.external.jws.JWSUtil;
-import extend.util.external.jws.WeakMACSigner;
 import java.awt.Component;
 import java.util.logging.Logger;
 import extension.burp.IBurpTab;
-import java.text.ParseException;
 import java.util.Comparator;
+import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import passive.JWSToken;
 
@@ -34,7 +28,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
         customizeComponents();
     }
 
-    private final JWSAlgorithm SELECT_ALGO = new JWSAlgorithm("Select algorithm");
+    private final String SELECT_ALGO = "Select algorithm";
 
     private final DefaultComboBoxModel modelAlgo = new DefaultComboBoxModel();
 
@@ -43,13 +37,9 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
     private void customizeComponents() {
         this.txtJsonToken.setEditable(false);
         this.modelAlgo.addElement(SELECT_ALGO);
-        for (JWSAlgorithm algo : WeakMACSigner.SUPPORTED_ALGORITHMS.stream().sorted(Comparator.comparing(JWSAlgorithm::getName)).toList()) {
-            this.modelAlgo.addElement(algo);
-        }
-        for (JWSAlgorithm algo : RSASSASigner.SUPPORTED_ALGORITHMS.stream().sorted(Comparator.comparing(JWSAlgorithm::getName)).toList()) {
-            this.modelAlgo.addElement(algo);
-        }
-        for (JWSAlgorithm algo : ECDSASigner.SUPPORTED_ALGORITHMS.stream().sorted(Comparator.comparing(JWSAlgorithm::getName)).toList()) {
+
+        Set<JWSToken.Algorithm> alogs = JWSToken.getSupportAlgorithm();
+        for (JWSToken.Algorithm algo : alogs) {
             this.modelAlgo.addElement(algo);
         }
         this.cmbAlgo.setModel(this.modelAlgo);
@@ -140,6 +130,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
         pnlJTokenDecoder.add(pnlAction, java.awt.BorderLayout.LINE_END);
 
         txtJsonToken.setColumns(20);
+        txtJsonToken.setLineWrap(true);
         txtJsonToken.setRows(5);
         jScrollPane1.setViewportView(txtJsonToken);
 
@@ -157,8 +148,10 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
     private void cmbAlgoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAlgoActionPerformed
         int index = this.cmbAlgo.getSelectedIndex();
         if (index > 0) {
-            JWSAlgorithm algo = (JWSAlgorithm) this.modelAlgo.getSelectedItem();
-            this.panelJWSEdit.setHeaderJSON(JWSUtil.toHeaderJSON(algo), true);
+            if (this.modelAlgo.getSelectedItem() instanceof JWSToken.Algorithm algo) {
+                JWSToken.Header header = this.panelJWSEdit.getHeader().withAlgorithm(algo);
+                this.panelJWSEdit.setHeaderJSON(header.toJSON(true), true);
+            }
         }
     }//GEN-LAST:event_cmbAlgoActionPerformed
 
@@ -171,9 +164,9 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
     private void btnEncodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncodeActionPerformed
         try {
             this.lblTokenValid.setText("");
-            this.txtJsonToken.setText(this.panelJWSEdit.sign());
-        } catch (JOSEException ex) {
-            this.lblTokenValid.setText(BUNDLE.getString("token.invalid.token"));
+            this.txtJsonToken.setText(this.panelJWSEdit.signToken());
+        } catch (Exception ex) {
+            this.lblTokenValid.setText(ex.getMessage());
         }
     }//GEN-LAST:event_btnEncodeActionPerformed
 

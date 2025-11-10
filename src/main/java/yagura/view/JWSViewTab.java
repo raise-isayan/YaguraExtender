@@ -7,6 +7,7 @@ import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
+import extend.util.external.jws.JWSUtil;
 import extension.burp.IBurpMessageTab;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -19,7 +20,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import passive.JWSToken;
-import passive.JWTToken;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -164,7 +164,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         boolean find = false;
         List<ParsedHttpParameter> parameters = httpRequest.parameters();
         for (ParsedHttpParameter p : parameters) {
-            if (JWSToken.containsTokenFormat(p.value())) {
+            if (JWSUtil.containsTokenFormat(p.value())) {
                 if (p.type() == HttpParameterType.COOKIE) {
                     String name = p.name();
                     String value = p.value();
@@ -189,7 +189,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         }
         if (!find) {
             String body = StringUtil.getBytesRawString(httpRequest.body().getBytes());
-            if (JWSToken.containsTokenFormat(body)) {
+            if (JWSUtil.containsTokenFormat(body)) {
                 JWSToken token = jwsinstance.parseToken(body, false);
                 if (token != null) {
                     String key = "(body)";
@@ -225,7 +225,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
             this.setLineWrap(viewProperty.isLineWrap());
             List<HttpHeader> headers = httpRequest.headers();
             for (HttpHeader h : headers) {
-                if (JWTToken.containsTokenFormat(h.value())) {
+                if (JWSUtil.containsTokenFormat(h.value())) {
                     return true;
                 }
             }
@@ -240,7 +240,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
             }
             if (!find) {
                 String body = StringUtil.getStringRaw(httpRequest.body().getBytes());
-                find = JWTToken.containsTokenFormat(body);
+                find = JWSUtil.containsTokenFormat(body);
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);

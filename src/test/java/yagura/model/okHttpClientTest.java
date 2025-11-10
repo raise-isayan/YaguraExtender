@@ -98,7 +98,7 @@ public class okHttpClientTest {
             };
 //            server.setDispatcher(dispatcher);
         } catch (IOException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -107,7 +107,7 @@ public class okHttpClientTest {
         try {
             this.server.shutdown();
         } catch (IOException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -130,10 +130,10 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                fail(ex);
+                fail(ex.getMessage(), ex);
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -213,7 +213,7 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                fail(ex);
+                fail(ex.getMessage(), ex);
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
             throw new IOException(ex);
@@ -249,7 +249,7 @@ public class okHttpClientTest {
                     ResponseBody body = response.body();
                     System.out.println(body.string());
                 } catch (IOException ex) {
-                    fail(ex);
+                    fail(ex.getMessage(), ex);
                 }
             }
             {
@@ -258,11 +258,11 @@ public class okHttpClientTest {
                     ResponseBody body = response.body();
                     System.out.println(body.string());
                 } catch (IOException ex) {
-                    fail(ex);
+                    fail(ex.getMessage(), ex);
                 }
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -288,10 +288,10 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                fail(ex);
+                fail(ex.getMessage(), ex);
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -333,10 +333,10 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                fail(ex);
+                fail(ex.getMessage(), ex);
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -370,7 +370,7 @@ public class okHttpClientTest {
             ResponseBody body = response.body();
             System.out.println(body.string());
         } catch (IOException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -422,10 +422,10 @@ public class okHttpClientTest {
                 ResponseBody body = response.body();
                 System.out.println(body.string());
             } catch (IOException ex) {
-                fail(ex);
+                fail(ex.getMessage(), ex);
             }
         } catch (NoSuchAlgorithmException | KeyManagementException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -441,7 +441,7 @@ public class okHttpClientTest {
             ResponseBody body = response.body();
             System.out.println(body.string());
         } catch (IOException ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -481,7 +481,7 @@ public class okHttpClientTest {
                     currentAuthenticator = java.net.Authenticator.getDefault();
                     System.out.println("thread after:" + String.valueOf(currentAuthenticator));
                 } catch (InterruptedException ex) {
-                    fail(ex);
+                    fail(ex.getMessage(), ex);
                 }
             }
 
@@ -499,7 +499,7 @@ public class okHttpClientTest {
                         System.out.println("thread current:" + String.valueOf(currentAuthenticator));
                         Thread.sleep(100);
                     } catch (InterruptedException ex) {
-                        fail(ex);
+                        fail(ex.getMessage(), ex);
                     }
                 }
             }

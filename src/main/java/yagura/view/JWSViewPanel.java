@@ -1,14 +1,10 @@
 package yagura.view;
 
-import com.nimbusds.jose.Header;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.util.Base64URL;
-import com.nimbusds.jwt.JWTClaimsSet;
 import extension.helpers.json.JsonUtil;
 import java.awt.SystemColor;
 import java.text.ParseException;
 import passive.JWSToken;
+import passive.JsonToken;
 
 /**
  *
@@ -67,7 +63,7 @@ public class JWSViewPanel extends javax.swing.JPanel {
         pnlJWT.add(pnlPayload, java.awt.BorderLayout.CENTER);
 
         pnlSignature.setMinimumSize(new java.awt.Dimension(0, 0));
-        pnlSignature.setPreferredSize(new java.awt.Dimension(100, 50));
+        pnlSignature.setPreferredSize(new java.awt.Dimension(100, 80));
         pnlSignature.setLayout(new java.awt.BorderLayout());
 
         lblSignature.setText("Signature");
@@ -109,13 +105,14 @@ public class JWSViewPanel extends javax.swing.JPanel {
         /**
          * * UI design start **
          */
-
         /* Header */
         //this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         //this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
         this.txtHeaderJSON = new javax.swing.JTextArea();
         this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
+        this.txtHeaderJSON.setLineWrap(true);
         this.txtHeaderJSON.setWrapStyleWord(false);
+
 //        this.txtHeaderJSON.setCodeFoldingEnabled(true);
 //        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
 //        this.txtHeaderJSON.setHighlightCurrentLine(false);
@@ -133,6 +130,7 @@ public class JWSViewPanel extends javax.swing.JPanel {
         //this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
         this.txtPayloadJSON = new javax.swing.JTextArea();
         this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
+        this.txtPayloadJSON.setLineWrap(true);
         this.txtPayloadJSON.setWrapStyleWord(false);
 //        this.txtPayloadJSON.setCodeFoldingEnabled(true);
 //        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
@@ -151,6 +149,7 @@ public class JWSViewPanel extends javax.swing.JPanel {
         //this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
         this.txtSignatureSign = new javax.swing.JTextArea();
         this.scrollSignatureSign = new javax.swing.JScrollPane(this.txtSignatureSign);
+        this.txtSignatureSign.setLineWrap(true);
         this.txtSignatureSign.setWrapStyleWord(false);
 
 //        this.txtSignatureSign.setCodeFoldingEnabled(true);
@@ -197,32 +196,43 @@ public class JWSViewPanel extends javax.swing.JPanel {
         this.format = format;
     }
 
-    public JWSHeader getHeader() throws ParseException {
-        return JWSHeader.parse(this.txtHeaderJSON.getText());
+    public JWSToken.Header getHeader() {
+        String header = this.txtHeaderJSON.getText();
+        return new JWSToken.Header(JsonToken.encodeBase64UrlSafe(JsonUtil.prettyJson(header, false)));
     }
 
-    public void setHeader(String value) {
+    public String getHeaderText() {
+        return this.txtHeaderJSON.getText();
+    }
+
+    public void setHeaderText(String value) {
         this.txtHeaderJSON.setText(value);
     }
 
     public void setHeaderJSON(String value, boolean pretty) {
-        this.txtHeaderJSON.setText(JsonUtil.prettyJson(value, true));
+        this.txtHeaderJSON.setText(JsonUtil.prettyJson(value, pretty));
     }
 
-    public Payload getPayload() throws ParseException {
-        return JWTClaimsSet.parse(this.txtPayloadJSON.getText()).toPayload();
+    public JWSToken.Payload getPayload() throws ParseException {
+        String payload = this.txtPayloadJSON.getText();
+        return new JWSToken.Payload(JsonToken.encodeBase64UrlSafe(JsonUtil.prettyJson(payload, false)));
     }
 
-    public void setPayload(String value) {
+    public String getPayloadText() {
+        return this.txtPayloadJSON.getText();
+    }
+
+    public void setPayloadText(String value) {
         this.txtPayloadJSON.setText(value);
     }
-    
+
     public void setPayloadJSON(String value, boolean pretty) {
-        this.txtPayloadJSON.setText(JsonUtil.prettyJson(value, true));
+        this.txtPayloadJSON.setText(JsonUtil.prettyJson(value, pretty));
     }
 
-    public Base64URL getSignature() throws ParseException {
-        return Base64URL.from(this.txtSignatureSign.getText());
+    public JWSToken.Signature getSignature() throws ParseException {
+        String signature = this.txtSignatureSign.getText();
+        return new JWSToken.Signature(signature);
     }
 
     public void setSignature(String value) {
@@ -240,9 +250,9 @@ public class JWSViewPanel extends javax.swing.JPanel {
     }
 
     public void setJWS(JWSToken token, boolean format) {
-        this.txtHeaderJSON.setText(token.getHeaderJSON(format));
-        this.txtPayloadJSON.setText(token.getPayloadJSON(format));
-        this.txtSignatureSign.setText(token.getSignature());
+        this.txtHeaderJSON.setText(token.getHeader().toJSON(format));
+        this.txtPayloadJSON.setText(token.getPayload().toJSON(format));
+        this.txtSignatureSign.setText(token.getSignaturePart());
     }
 
     public void setLineWrap(boolean lineWrap) {

@@ -83,7 +83,7 @@ import yagura.view.GeneratePoCTabEditor;
 import yagura.view.GenerateWebsocktPoCEditor;
 import yagura.view.HtmlCommetViewTabEditor;
 import yagura.view.JSONViewTabEditor;
-import yagura.view.JWTViewTabEditor;
+import yagura.view.JWSViewTabEditor;
 import yagura.view.ParamsViewTabEditor;
 import yagura.view.PopupMessage;
 import yagura.view.RawViewTabEditor;
@@ -612,7 +612,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
             @Override
             public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-                final JWTViewTabEditor tab = new JWTViewTabEditor(editorCreationContext);
+                final JWSViewTabEditor tab = new JWSViewTabEditor(editorCreationContext);
                 return tab;
             }
         };

@@ -52,7 +52,7 @@ public class FormatUtilTest {
             System.out.println(url.getFile());
         } catch (MalformedURLException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            fail();
+            fail(ex.getMessage(), ex);
         }
         try {
             System.out.println("URL");
@@ -62,7 +62,7 @@ public class FormatUtilTest {
             System.out.println(url.getPort());
         } catch (MalformedURLException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            fail();
+            fail(ex.getMessage(), ex);
         }
 
     }
@@ -119,7 +119,7 @@ public class FormatUtilTest {
             try {
                 FormatUtil.prettyXml(plainXML, false);
             } catch (IOException ex) {
-                fail();
+                fail(ex.getMessage(), ex);
             }
         }
 
@@ -132,7 +132,7 @@ public class FormatUtilTest {
             try {
                 FormatUtil.prettyXml(plainXML, false);
             } catch (IOException ex) {
-                fail();
+                fail(ex.getMessage(), ex);
             }
         }
 
@@ -145,7 +145,7 @@ public class FormatUtilTest {
             try {
                 FormatUtil.prettyXml(plainXML, false);
             } catch (IOException ex) {
-                fail();
+                fail(ex.getMessage(), ex);
             }
         }
 
@@ -158,7 +158,7 @@ public class FormatUtilTest {
             try {
                 FormatUtil.prettyXml(plainXML, false);
             } catch (IOException ex) {
-                fail();
+                fail(ex.getMessage(), ex);
             }
         }
 
@@ -172,7 +172,7 @@ public class FormatUtilTest {
             try {
                 FormatUtil.prettyXml(plainXML, false);
             } catch (IOException ex) {
-                fail();
+                fail(ex.getMessage(), ex);
             }
         }
 
@@ -185,7 +185,7 @@ public class FormatUtilTest {
             try {
                 FormatUtil.prettyXml(plainXML, false);
             } catch (IOException ex) {
-                fail();
+                fail(ex.getMessage(), ex);
             }
         }
 

@@ -1,12 +1,9 @@
 package yagura.view;
 
 import burp.BurpExtension;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.Payload;
 import java.awt.Component;
 import java.util.logging.Logger;
 import extension.burp.IBurpTab;
-import java.text.ParseException;
 import passive.JWSToken;
 
 /**
@@ -154,12 +151,9 @@ public class JWSDecoderTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnSendToEncodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendToEncodeActionPerformed
-        try {
-            JWSHeader header = this.panelJWSView.getHeader();
-            Payload payload = this.panelJWSView.getPayload();
-            BurpExtension.getInstance().sendToJWSEncoder(header.toBase64URL().decodeToString(), payload.toBase64URL().decodeToString(), null);
-        } catch (ParseException ex) {
-        }
+        String header = this.panelJWSView.getHeaderText();
+        String payload = this.panelJWSView.getPayloadText();
+        BurpExtension.getInstance().sendToJWSEncoder(header, payload, null);
     }//GEN-LAST:event_btnSendToEncodeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -60,7 +60,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private final static String [] ALGORITHM = new String [] {"RSA", "DSA", "EC", "Ed25519"};
     private final static int [] RSA_KEYSIZE = new int [] {512, 1024, 2048, 3072, 4098};
     private final static int [] DSA_KEYSIZE = new int [] {512, 768, 1024, 2048, 3072};
-    private final static int [] EC_KEYSIZE = new int [] {192, 224, 256, 384, 521};
+    private final static int [] EC_KEYSIZE = new int [] {224, 256, 384, 521};
     private final static int [] ED_KEYSIZE = new int [] {256};
 
     /**

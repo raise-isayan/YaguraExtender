@@ -82,7 +82,7 @@ public class BurpBrowserTest {
             System.out.println("value:" + profile_map.get(key).getName());
         }
         } catch (Exception ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 

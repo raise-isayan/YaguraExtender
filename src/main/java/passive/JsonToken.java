@@ -2,9 +2,11 @@ package passive;
 
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
+import extension.helpers.json.JsonUtil;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.SignatureException;
 import java.util.Base64;
 
 /**
@@ -15,7 +17,7 @@ public interface JsonToken {
 
     public JsonToken parseToken(String value, boolean matches);
 
-    public boolean isValidFormat(String value);
+    public boolean isValid();
 
     public boolean isSignFormat();
 
@@ -23,11 +25,69 @@ public interface JsonToken {
 
     public String getData();
 
-    public String getPayload();
+    public Payload getPayload();
 
-    public String getSignature();
+    public Signature getSignature();
 
-    public boolean signatureEqual(final String secret);
+    public String getPayloadPart();
+
+    public String getSignaturePart();
+
+    public boolean signatureEqual(final String secret) throws SignatureException;
+
+    public static class Payload implements JsonSegment {
+
+        private String tokenPart;
+
+        public Payload(String tokenPart) {
+            this.tokenPart = tokenPart;
+        }
+
+        @Override
+        public String getPart() {
+            return this.tokenPart;
+        }
+
+        public String toJSON(boolean pretty) {
+            return JsonUtil.prettyJson(JsonToken.decodeBase64UrlSafe(this.tokenPart), pretty);
+        }
+
+        public String getsDecodeBase64Url() {
+            return JsonToken.decodeBase64UrlSafe(this.tokenPart);
+        }
+
+        public void setEncodeBase64Url(String value) {
+            this.tokenPart = JsonToken.encodeBase64UrlSafe(value);
+        }
+
+    }
+
+    public static class Signature implements JsonSegment {
+
+        private String tokenPart;
+
+        public Signature(String tokenPart) {
+            this.tokenPart = tokenPart;
+        }
+
+        @Override
+        public String getPart() {
+            return this.tokenPart;
+        }
+
+        public byte[] getsDecodeBase64Url() {
+            return JsonToken.decodeBase64UrlSafeByte(this.tokenPart);
+        }
+
+        public void setEncodeBase64Url(byte[] value) {
+            this.tokenPart = JsonToken.encodeBase64UrlSafe(value);
+        }
+
+        public boolean isEmpty() {
+            return this.tokenPart.isEmpty();
+        }
+
+    }
 
     public static String decodeUrl(String value) {
         return URLDecoder.decode(value, StandardCharsets.ISO_8859_1);

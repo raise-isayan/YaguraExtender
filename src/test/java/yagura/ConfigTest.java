@@ -91,7 +91,7 @@ public class ConfigTest {
             System.out.println(value);
         } catch (IOException | URISyntaxException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            fail(ex.getMessage());
+            fail(ex.getMessage(), ex);
         }
 
     }
@@ -114,7 +114,7 @@ public class ConfigTest {
             System.out.println(bstm.toString(StandardCharsets.ISO_8859_1.name()));
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
-            fail(ex.getMessage());
+            fail(ex.getMessage(), ex);
         }
     }
 

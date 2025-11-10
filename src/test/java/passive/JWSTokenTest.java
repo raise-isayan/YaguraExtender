@@ -1,21 +1,23 @@
 package passive;
 
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.util.Base64URL;
 import extend.util.external.jws.JWSUtil;
 import extension.helpers.FileUtil;
+import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
 import java.io.IOException;
+import java.security.SignatureException;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import passive.JWSToken.Algorithm;
 
 /**
  *
@@ -47,14 +49,16 @@ public class JWSTokenTest {
     @Test
     public void testJWTHeader() {
         {
-            String token = JWSUtil.algNoneHeaderJSON();
-            assertEquals("{\"alg\":\"none\",\"typ\":\"JWT\"}", token);
-        }
-        {
-            String token = JWSUtil.toHeaderJSON(JWSAlgorithm.HS256);
-            assertEquals("{\"typ\":\"JWT\",\"alg\":\"HS256\"}", token);
+            JWSToken.Header header = JWSToken.Header.generateAlgorithm(Algorithm.HS256);
+            assertEquals("{\"alg\":\"HS256\",\"typ\":\"JWT\"}", header.toJSON(false));
         }
     }
+
+    private final String JWT_TOKEN00 = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
+
+    private final String JWT_COOKIE00 = "Cookie: sessionid=1234567890; token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc uid=aabbcceedd";
+
+    private final String JWT_NONE01 = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJtYWluIjoieHh4eHh4Iiwic3ViIjoi44OG44K544OIIn0.";
 
     /* secret */
     private final String JWT_TOKEN01 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoieHh4eHh4Iiwic3ViIjoi44OG44K544OIIn0.IjbkfaSdmROAC0MeW40lJo4s_KoX0VgF0vogsXygNNc";
@@ -85,25 +89,62 @@ public class JWSTokenTest {
         String token384 = "eyJtYWluIjoieHh4eHh4Iiwic3ViIjoi44OG44K544OIIn0";
         String alg512 = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9";
         String token512 = "eyJtYWluIjoieHh4eHh4Iiwic3ViIjoi44OG44K544OIIn0";
+        try {
+            {
+                String encodeSig = "IjbkfaSdmROAC0MeW40lJo4s_KoX0VgF0vogsXygNNc";
+                boolean result = JWSToken.signatureEqual(JWSToken.Algorithm.HS256, alg256, token256, encodeSig, "secret");
+                assertEquals(expResult, result);
+            }
+            {
+                String encodeSig = "H96erEFQSxsDQmwLwZhZDJCd-sXyfTkDmDGKBPYmAG4";
+                boolean result = JWSToken.signatureEqual(JWSToken.Algorithm.HS256, alg256, token256, encodeSig, "test");
+                assertEquals(expResult, result);
+            }
+            {
+                String encodeSig = "Chui3Q6dauCAgh41YUveD9-S6XR29d5udoNzT7yQkPH6t4lRB-3Ue9ovzGysDSOz";
+                boolean result = JWSToken.signatureEqual(JWSToken.Algorithm.HS384, alg384, token384, encodeSig, "test");
+                assertEquals(expResult, result);
+            }
+            {
+                String encodeSig = "sx5HdJzL5IrFtZPbFnptVUvZ28qTy56vXamIy9hgB0cjc6-Zr2D5s85HSCtmQKWROseztDes9VycyPYYFUYbHA";
+                boolean result = JWSToken.signatureEqual(JWSToken.Algorithm.HS512, alg512, token512, encodeSig, "test");
+                assertEquals(expResult, result);
+            }
+        } catch (SignatureException ex) {
+            fail(ex.getMessage(), ex);
+        }
+    }
+
+    @Test
+    public void testParseToken() {
+        System.out.println("testParseToken");
         {
-            String encodeSig = "IjbkfaSdmROAC0MeW40lJo4s_KoX0VgF0vogsXygNNc";
-            boolean result = JWSToken.signatureEqual(JWSAlgorithm.HS256, alg256, token256, encodeSig, "secret");
-            assertEquals(expResult, result);
+            String[] segments = JWSUtil.splitSegment(JWT_NONE01);
+            JWSToken jwtinstance = new JWSToken();
+            JWSToken token = jwtinstance.parseToken(JWT_NONE01, true);
+            assertEquals(segments[0], token.getHeaderPart());
+            assertEquals(segments[1], token.getPayloadPart());
+            assertEquals(segments[2], token.getSignaturePart());
+
+            assertEquals(segments[0], token.getHeader().getPart());
+            assertEquals(segments[1], token.getPayload().getPart());
+            assertEquals(segments[2], token.getSignature().getPart());
+
+            assertFalse(token.isSigned());
         }
         {
-            String encodeSig = "H96erEFQSxsDQmwLwZhZDJCd-sXyfTkDmDGKBPYmAG4";
-            boolean result = JWSToken.signatureEqual(JWSAlgorithm.HS256, alg256, token256, encodeSig, "test");
-            assertEquals(expResult, result);
-        }
-        {
-            String encodeSig = "Chui3Q6dauCAgh41YUveD9-S6XR29d5udoNzT7yQkPH6t4lRB-3Ue9ovzGysDSOz";
-            boolean result = JWSToken.signatureEqual(JWSAlgorithm.HS384, alg384, token384, encodeSig, "test");
-            assertEquals(expResult, result);
-        }
-        {
-            String encodeSig = "sx5HdJzL5IrFtZPbFnptVUvZ28qTy56vXamIy9hgB0cjc6-Zr2D5s85HSCtmQKWROseztDes9VycyPYYFUYbHA";
-            boolean result = JWSToken.signatureEqual(JWSAlgorithm.HS512, alg512, token512, encodeSig, "test");
-            assertEquals(expResult, result);
+            String[] segments = JWSUtil.splitSegment(JWT_TOKEN01);
+            JWSToken jwtinstance = new JWSToken();
+            JWSToken token = jwtinstance.parseToken(JWT_TOKEN01, true);
+            assertEquals(segments[0], token.getHeaderPart());
+            assertEquals(segments[1], token.getPayloadPart());
+            assertEquals(segments[2], token.getSignaturePart());
+
+            assertEquals(segments[0], token.getHeader().getPart());
+            assertEquals(segments[1], token.getPayload().getPart());
+            assertEquals(segments[2], token.getSignature().getPart());
+
+            assertTrue(token.isSigned());
         }
     }
 
@@ -113,22 +154,36 @@ public class JWSTokenTest {
     @Test
     public void testSignatureEqual_args2() {
         System.out.println("signatureEqual_args2");
-        boolean expResult = true;
-        JWSToken jwtinstance = new JWSToken();
-        {
-            JWSToken token = jwtinstance.parseToken(JWT_TOKEN01, true);
-            boolean result = token.signatureEqual("secret");
-            assertEquals(expResult, result);
-        }
-        {
-            JWSToken token = jwtinstance.parseToken(JWT_TOKEN02, true);
-            boolean result = token.signatureEqual("brady");
-            assertEquals(expResult, result);
-        }
-        {
-            JWSToken token = jwtinstance.parseToken(JWT_TOKEN03, true);
-            boolean result = token.signatureEqual("070162");
-            assertEquals(expResult, result);
+        String JWT_TOKEN01_SIGNATURE = "IjbkfaSdmROAC0MeW40lJo4s_KoX0VgF0vogsXygNNc";
+        String JWT_TOKEN02_SIGNATURE = "bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM";
+        String JWT_TOKEN03_SIGNATURE = "2nltdvxeDLYX1pTWqadKhePWFESVIct4s9ZKcIlWlS8";
+        try {
+            boolean expResult = true;
+            JWSToken jwtinstance = new JWSToken();
+            {
+                JWSToken token = jwtinstance.parseToken(JWT_TOKEN01, true);
+                byte[] signature = token.sign("secret");
+                System.out.println("signature:" + JsonToken.encodeBase64UrlSafe(signature));
+                assertEquals(JWT_TOKEN01_SIGNATURE, JsonToken.encodeBase64UrlSafe(signature));
+                boolean result = token.signatureEqual("secret");
+                assertEquals(expResult, result);
+            }
+            {
+                JWSToken token = jwtinstance.parseToken(JWT_TOKEN02, true);
+                byte[] signature = token.sign("brady");
+                boolean result = token.signatureEqual("brady");
+                assertEquals(JWT_TOKEN02_SIGNATURE, JsonToken.encodeBase64UrlSafe(signature));
+                assertEquals(expResult, result);
+            }
+            {
+                JWSToken token = jwtinstance.parseToken(JWT_TOKEN03, true);
+                byte[] signature = token.sign("070162");
+                assertEquals(JWT_TOKEN03_SIGNATURE, JsonToken.encodeBase64UrlSafe(signature));
+                boolean result = token.signatureEqual("070162");
+                assertEquals(expResult, result);
+            }
+        } catch (SignatureException ex) {
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -170,9 +225,9 @@ public class JWSTokenTest {
             assertEquals(expResult, result);
         }
         {
-            // シグネチャなしはJWTとみなさない
+            // シグネチャなしはJWT
             String value = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.";
-            boolean expResult = false;
+            boolean expResult = true;
             boolean result = jwtinstance.isValidFormat(value);
             assertEquals(expResult, result);
         }
@@ -233,12 +288,30 @@ public class JWSTokenTest {
             String value = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.";
             JWSToken expResult = null;
             JWSToken result = jwsinstance.parseToken(value, true);
-            assertEquals(expResult, result);
+            assertNotEquals(expResult, result);
             if (result != null) {
                 System.out.println(result.getAlgorithm());
             }
-
         }
+        {
+            String value = JWT_TOKEN00;
+            JWSToken expResult = null;
+            JWSToken result = jwsinstance.parseToken(value, true);
+            assertNotEquals(expResult, result);
+        }
+        {
+            String value = JWT_COOKIE00;
+            JWSToken expResult = null;
+            JWSToken result = jwsinstance.parseToken(value, true);
+            assertEquals(expResult, result);
+        }
+        {
+            String value = JWT_COOKIE00;
+            JWSToken expResult = null;
+            JWSToken result = jwsinstance.parseToken(value, false);
+            assertNotEquals(expResult, result);
+        }
+
 //        /* URL Encode */
 //        {
 //            String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9%2eeyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ%2e5mhBHqs5%5fDTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
@@ -264,7 +337,7 @@ public class JWSTokenTest {
         {
             String value = "Auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiLjgYLjgYTjgYbjgYjjgYoifQ.I6fGHWldnjdhfOjxcs9Wtzm41dIjBiAHYl3ZAcKl4Ks";
             boolean expResult = true;
-            boolean result = JWSToken.containsTokenFormat(value);
+            boolean result = JWSUtil.containsTokenFormat(value);
             assertEquals(expResult, result);
         }
 //        /* URL Encode */
@@ -287,18 +360,18 @@ public class JWSTokenTest {
      * Test of testParseJWTObject method, of class JWTUtil.
      */
     @Test
-    public void testParseJWTObject() {
+    public void testParseJWSToken() {
         System.out.println("parseJWTObject");
-        JWTToken jwtinstance = new JWTToken();
+        JWSToken jwtinstance = new JWSToken();
         {
             String test = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
             String expResult1 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
             String expResult2 = "eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ";
             String expResult3 = "5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
-            JWTToken result = jwtinstance.parseToken(test, true);
-            assertEquals(expResult1, result.getHeader());
-            assertEquals(expResult2, result.getPayload());
-            assertEquals(expResult3, result.getSignature());
+            JWSToken result = jwtinstance.parseToken(test, true);
+            assertEquals(expResult1, result.getHeaderPart());
+            assertEquals(expResult2, result.getPayloadPart());
+            assertEquals(expResult3, result.getSignaturePart());
         }
     }
 
@@ -308,29 +381,29 @@ public class JWSTokenTest {
     @Test
     public void testParseJWTObject_json() {
         System.out.println("parseJWTObject");
-        JWTToken jwtinstance = new JWTToken();
+        JWSToken jwtinstance = new JWSToken();
         {
             String test = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
             String expResult1 = "{\n  \"alg\": \"HS256\",\n  \"typ\": \"JWT\"\n}";
             String expResult2 = "{\n  \"sub\": \"1234567890\",\n  \"name\": \"John Doe\",\n  \"iat\": 1516239022\n}";
-            JWTToken token = jwtinstance.parseToken(test, true);
+            JWSToken token = jwtinstance.parseToken(test, true);
 
             System.out.println(expResult1);
 
             System.out.println("======================");
 
-            System.out.println(token.getHeaderJSON(true));
+            System.out.println(token.getHeader().toJSON(true));
 
-            assertEquals(expResult1, token.getHeaderJSON(true));
-            assertEquals(expResult2, token.getPayloadJSON(true));
+            assertEquals(expResult1, token.getHeader().toJSON(true));
+            assertEquals(expResult2, token.getPayload().toJSON(true));
         }
         {
             String test = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiLjgYLjgYTjgYbjgYjjgYoifQ.I6fGHWldnjdhfOjxcs9Wtzm41dIjBiAHYl3ZAcKl4Ks";
             String expResult1 = "{\n  \"alg\": \"HS256\",\n  \"typ\": \"JWT\"\n}";
             String expResult2 = "{\n  \"sub\": \"あいうえお\"\n}";
-            JWTToken token = jwtinstance.parseToken(test, true);
-            assertEquals(expResult1, token.getHeaderJSON(true));
-            assertEquals(expResult2, token.getPayloadJSON(true));
+            JWSToken token = jwtinstance.parseToken(test, true);
+            assertEquals(expResult1, token.getHeader().toJSON(true));
+            assertEquals(expResult2, token.getPayload().toJSON(true));
         }
     }
 
@@ -338,7 +411,7 @@ public class JWSTokenTest {
     public void testGenerateNoneToken() {
         {
             String test = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
-            String[] tokens = JWTToken.generateNoneToken(test);
+            String[] tokens = JWSToken.generateNoneToken(test);
             for (int i = 0; i < tokens.length; i++) {
                 System.out.println("none0:" + tokens[i]);
             }
@@ -348,7 +421,7 @@ public class JWSTokenTest {
         }
         {
             String test = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTU4NTk1Mzk5OCwiZXhwIjoxNTg1OTU0MTE4LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.ebkW_7-HqAV7SzfX7m0fKEfZ1T0A4BeNjTM0fx2LYZYxi9qMT7dpsd0lNMixCbrpLD0WAdWZJXQDOjfIZd6A6AJSSSioEDmFzh8QusLxuTzaUnrRSipiWwVtyVk9YmGkyucr4hCkckbsIe-0tIOCrdNwCmah5vhYtyQ3veaFizJodHvnBnNpq4fG2cWMmke32Hp_Y62h2kUdEGrAKFC_tQDPKFTz_-mNLxCgWcuvXwqGcoHkSxIObyGyk6pHPgbvVRppM_nFrc548jmpgIzN2oRCUTHdVWxoC-CBgNNJwMZ2Sn4zmvKEceqZ0e8QO1ea7hHGY0R1LWJhuE_X1__8bw";
-            String[] tokens = JWTToken.generateNoneToken(test);
+            String[] tokens = JWSToken.generateNoneToken(test);
             for (int i = 0; i < tokens.length; i++) {
                 System.out.println("none1:" + tokens[i]);
             }
@@ -359,36 +432,56 @@ public class JWSTokenTest {
     }
 
     @Test
-    public void testGenerateHSToken() {
-        {
-            JWSToken jwtinstance = new JWSToken();
-//            String expected = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTU4NTk2Nzg3OSwiZXhwIjoxNTg1OTY3OTk5LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.UuMTEE-w3GjZ29jgU1VBXYKDN_MgWJPHjreI60OYjyY";
-            String expected = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTU4NTk2Nzg3OSwiZXhwIjoxNTg1OTY3OTk5LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.Rh5NHyMEvoYuTxEDkNMElZMCLSCC4kjD9H_mOu9i35I";
-            String test = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTU4NTk2Nzg3OSwiZXhwIjoxNTg1OTY3OTk5LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.eaA2Y_8y3tT2dznH4TZvFt-D_2FgtUDAN7kdzDhh-P84zdqdFVyI3qSGBxHHZNkplscTWnmxGJiLvRtRYKX_wevRgijvW4KeWGI6oK4BhgHfcQuL4MrI3cE7djnA8hL5_QQ16zGeNKaNSno6ZImIT1aY-PRxViwMjOGmQoIWzw7ci4TtY_uak32s7T_XYcfJY8wO8QtWIjQFLXD-IbS20U-ZF-gyPrjfpKZhdCkBjZEnvc2K1vMk36nSXnFdjdPOa_021FGfGUlYBlELmpZvu_4oGm6s93DHu1vnCfNsnQF4QmVgmrePkqXU6SoLb3vbj_IPN2KYqSOyKjCWH1nlDg";
-            try {
-                byte[] publicKey = FileUtil.readAllBytes(JWTTokenTest.class.getResourceAsStream("/resources/public.pem"));
-                {
-                    JWSToken token = jwtinstance.parseToken(test, true);
-                    Base64URL sign = JWSToken.forceSign(JWSAlgorithm.HS256, token.getHeader(), token.getPayload(), JWSUtil.toSecretKey(publicKey));
-                    String result = JsonToken.encodeBase64UrlSafe(JWSUtil.toHeaderJSON(JWSAlgorithm.HS256)) + "." + token.getPayload() + "." + sign.toString();
-                    //System.out.println("expected:" + expected);
-                    System.out.println("result:" + result);
-                    assertEquals(expected, result);
-                }
-                {
-                    String[] tokens = JWSToken.generatePublicToHashToken(test, publicKey);
-                    assertEquals(expected, tokens[0]);
-                }
-            } catch (IOException ex) {
-                fail(ex);
-            } catch (JOSEException ex) {
-                fail(ex);
+    public void testGeneratePublicToHashToken() {
+        System.out.println("testGeneratePublicToHashToken");
+        JWSToken jwtinstance = new JWSToken();
+        String expected = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTc2MjY3OTAwOSwiZXhwIjoxNzYyNjc5MTI5LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.IAAudafZXmamTqudTV7kJ3mjR29i5BExqoCoTN29e9o";
+        String test = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTc2MjY3OTAwOSwiZXhwIjoxNzYyNjc5MTI5LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.IAAudafZXmamTqudTV7kJ3mjR29i5BExqoCoTN29e9o";
+        try {
+            byte[] publicKeyPem = FileUtil.readAllBytes(JWSTokenTest.class.getResourceAsStream("/resources/public.pem"));            {
+                JWSToken except_token = jwtinstance.parseToken(test, true);
+                except_token.sign(Algorithm.HS256, StringUtil.getStringRaw(publicKeyPem));
+                String result = except_token.getToken();
+                System.out.println("result:" + except_token.getToken());
+                assertEquals(expected, result);
             }
+        } catch (IOException | SignatureException ex) {
+            fail(ex.getMessage(), ex);
         }
     }
 
-    private final static String REQ_MESSAGE_URLENCODE_TOKEN00
-            = "POST /cgi-bin/multienc.cgi?charset=Shift_JIS&mode=disp HTTP/1.1\r\n"
+    @Test
+    public void testForceSignToken() {
+//        {
+        JWSToken jwtinstance = new JWSToken();
+        String expected = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTc2MjY3MzA1OSwiZXhwIjoxNzYyNjczMTc5LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.okX7HfAFDS2pEBqEffkoS30VMKW-lkGlm25HnaPcJkRk0BQEFGkvCZc8E_4Gi7peLa_XTg1N-Ss4uO9-m-HueXzlxmwjxKstQKLGLheKcDmb8rNi11EEc_bo0R8PNT3VkACOJvPbWf2lfq-wt2PKCGjnPqoHeO7g4tBGxf-A3Srh5Bk9n94EbZfEiFLBkHkVZAbveVeF0PtfmWw1cfIVBB9YNgSnqJh3E1hSgadv4aNhXf3FeDn6l7PYhg1PR4H2VgBTbSPJHzxkq8mrMA2CUIjTLkbIMNsMhjgLdS_4sJQDPZ3D0sElCVaz7JWm9fpmZrONyBWuzMnYs0PwX8VgjQ";
+        String test = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kZW1vLnNqb2VyZGxhbmdrZW1wZXIubmxcLyIsImlhdCI6MTc2MjY3MzA1OSwiZXhwIjoxNzYyNjczMTc5LCJkYXRhIjp7ImhlbGxvIjoid29ybGQifX0.okX7HfAFDS2pEBqEffkoS30VMKW-lkGlm25HnaPcJkRk0BQEFGkvCZc8E_4Gi7peLa_XTg1N-Ss4uO9-m-HueXzlxmwjxKstQKLGLheKcDmb8rNi11EEc_bo0R8PNT3VkACOJvPbWf2lfq-wt2PKCGjnPqoHeO7g4tBGxf-A3Srh5Bk9n94EbZfEiFLBkHkVZAbveVeF0PtfmWw1cfIVBB9YNgSnqJh3E1hSgadv4aNhXf3FeDn6l7PYhg1PR4H2VgBTbSPJHzxkq8mrMA2CUIjTLkbIMNsMhjgLdS_4sJQDPZ3D0sElCVaz7JWm9fpmZrONyBWuzMnYs0PwX8VgjQ";
+        try {
+            byte[] publicKeyPem = FileUtil.readAllBytes(JWSTokenTest.class.getResourceAsStream("/resources/public.pem"));            {
+                JWSToken except_token = jwtinstance.parseToken(test, true);
+                except_token.sign(Algorithm.HS256, StringUtil.getStringRaw(publicKeyPem));
+                System.out.println("result:" + except_token.getToken());
+            }
+            {
+                JWSToken rs_token = jwtinstance.parseToken(test, true);
+                JWSToken hs_token = new JWSToken(rs_token.getHeader().withAlgorithm(Algorithm.HS256), rs_token.getPayload());
+                byte[] sign = JWSToken.sign(Algorithm.HS256, StringUtil.getStringRaw(publicKeyPem), hs_token.getData());
+                hs_token.getSignature().setEncodeBase64Url(sign);
+                String result = hs_token.getToken();
+                assertEquals(rs_token.getPayloadPart(), hs_token.getPayloadPart());
+                System.out.println("result:" + result);
+                assertEquals(expected, result);
+                String[] tokens = JWSToken.generatePublicToHashToken(test, StringUtil.getStringRaw(publicKeyPem));
+                assertEquals(expected, tokens[0]);
+            }
+        } catch (IOException ex) {
+            fail(ex.getMessage(), ex);
+        } catch (SignatureException ex) {
+            fail(ex.getMessage(), ex);
+        }
+    }
+
+    private final static String REQ_MESSAGE_URLENCODE_TOKEN00 = "POST /cgi-bin/multienc.cgi?charset=Shift_JIS&mode=disp HTTP/1.1\r\n"
             + "Host: 192.168.0.1\r\n"
             + "Content-Length: 60\r\n"
             + "Cache-Control: max-age=0\r\n"
@@ -423,11 +516,11 @@ public class JWSTokenTest {
         System.out.println("testJWTTokenNothing");
         {
             boolean expResult = false;
-            boolean result = JWSToken.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00);
+            boolean result = JWSUtil.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00);
             assertEquals(expResult, result);
         }
         {
-            CaptureItem[] token = JWSToken.findToken(REQ_MESSAGE_URLENCODE_TOKEN00);
+            CaptureItem[] token = JWSUtil.findToken(REQ_MESSAGE_URLENCODE_TOKEN00);
             assertEquals(0, token.length);
         }
     }
@@ -437,12 +530,12 @@ public class JWSTokenTest {
         System.out.println("testJWTToken");
         {
             boolean expResult = true;
-            boolean result = JWSToken.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01);
+            boolean result = JWSUtil.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01);
             assertEquals(expResult, result);
         }
         {
             String expResult = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoiYWJjZGVmIiwic3ViIjoiaG9nZSIsInllYXIiOjIwMjB9.bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM";
-            CaptureItem[] token = JWSToken.findToken(REQ_MESSAGE_URLENCODE_TOKEN01);
+            CaptureItem[] token = JWSUtil.findToken(REQ_MESSAGE_URLENCODE_TOKEN01);
             for (CaptureItem item : token) {
                 assertEquals(expResult, item.getCaptureValue());
                 System.out.println(item.getCaptureValue());
@@ -457,10 +550,10 @@ public class JWSTokenTest {
             JWSToken jwtInstance = new JWSToken();
             String expResult = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoiYWJjZGVmIiwic3ViIjoiaG9nZSIsInllYXIiOjIwMjB9.bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM";
             JWSToken result = jwtInstance.parseToken(REQ_MESSAGE_URLENCODE_TOKEN01, false);
-            assertEquals(JWSAlgorithm.HS256, result.getAlgorithm());
-            assertEquals("eyJtYWluIjoiYWJjZGVmIiwic3ViIjoiaG9nZSIsInllYXIiOjIwMjB9", result.getPayload());
-            assertEquals("bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM", result.getSignature());
-            assertEquals("{\"main\":\"abcdef\",\"sub\":\"hoge\",\"year\":2020}", result.getPayloadJSON(false));
+            assertEquals(Algorithm.HS256, result.getAlgorithm());
+            assertEquals("eyJtYWluIjoiYWJjZGVmIiwic3ViIjoiaG9nZSIsInllYXIiOjIwMjB9", result.getPayloadPart());
+            assertEquals("bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM", result.getSignaturePart());
+            assertEquals("{\"main\":\"abcdef\",\"sub\":\"hoge\",\"year\":2020}", result.getPayload().toJSON(false));
             assertEquals(expResult, result.getToken());
         }
     }

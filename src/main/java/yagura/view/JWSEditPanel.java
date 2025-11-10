@@ -1,21 +1,12 @@
 package yagura.view;
 
-import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.Payload;
-import com.nimbusds.jose.crypto.ECDSASigner;
-import com.nimbusds.jose.crypto.RSASSASigner;
-import com.nimbusds.jwt.JWTClaimsSet;
-import extend.util.external.jws.JWSUtil;
-import extend.util.external.jws.WeakMACSigner;
 import extension.helpers.json.JsonUtil;
 import java.awt.SystemColor;
-import java.text.ParseException;
+import java.security.SignatureException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.bouncycastle.openssl.PEMException;
 import passive.JWSToken;
+import passive.JsonToken;
 
 /**
  *
@@ -138,6 +129,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
         /* Header */
         this.txtHeaderJSON = new javax.swing.JTextArea();
         this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
+        this.txtHeaderJSON.setLineWrap(true);
         this.txtHeaderJSON.setWrapStyleWord(false);
 //        this.txtHeaderJSON.setCodeFoldingEnabled(true);
 //        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
@@ -155,6 +147,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
         /* Payload */
         this.txtPayloadJSON = new javax.swing.JTextArea();
         this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
+        this.txtPayloadJSON.setLineWrap(true);
         this.txtPayloadJSON.setWrapStyleWord(false);
 //        this.txtPayloadJSON.setCodeFoldingEnabled(true);
 //        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
@@ -172,6 +165,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
         /* Signature */
         this.txtSecretKey = new javax.swing.JTextArea();
         this.scrollSecretKey = new javax.swing.JScrollPane(this.txtSecretKey);
+        this.txtSecretKey.setLineWrap(true);
         this.txtSecretKey.setWrapStyleWord(false);
 
 //        this.txtSecretKey.setCodeFoldingEnabled(true);
@@ -219,30 +213,46 @@ public class JWSEditPanel extends javax.swing.JPanel {
         this.format = format;
     }
 
-    public JWSHeader getHeader() throws ParseException {
-        return JWSHeader.parse(this.txtHeaderJSON.getText());
+    public JWSToken.Header getHeader() {
+        return new JWSToken.Header(JsonToken.encodeBase64UrlSafe(getHeaderJSON(false)));
     }
 
-    public void setHeader(String value) {
+    public void getHeaderText() {
+        this.txtHeaderJSON.getText();
+    }
+
+    public void setHeaderText(String value) {
         this.txtHeaderJSON.setText(value);
     }
 
+    public String getHeaderJSON(boolean pretty) {
+        return JsonUtil.prettyJson(this.txtHeaderJSON.getText(), pretty);
+    }
+
     public void setHeaderJSON(String value, boolean pretty) {
-        this.txtHeaderJSON.setText(JsonUtil.prettyJson(value, true));
+        this.txtHeaderJSON.setText(JsonUtil.prettyJson(value, pretty));
     }
 
-    public Payload getPayload() throws ParseException {
-        return JWTClaimsSet.parse(this.txtPayloadJSON.getText()).toPayload();
+    public JWSToken.Payload getPayload() {
+        return new JWSToken.Payload(JsonToken.encodeBase64UrlSafe(getPayloadJSON(false)));
     }
 
-    public void setPayload(String value) {
-        this.txtPayloadJSON.setText(value);
+    public String getPayloadJSON(boolean pretty) {
+        return JsonUtil.prettyJson(this.txtPayloadJSON.getText(), pretty);
     }
 
     public void setPayloadJSON(String value, boolean pretty) {
-        this.txtPayloadJSON.setText(JsonUtil.prettyJson(value, true));
+        this.txtPayloadJSON.setText(JsonUtil.prettyJson(value, pretty));
     }
-    
+
+    public String getPayloadText() {
+        return this.txtPayloadJSON.getText();
+    }
+
+    public void setPayloadText(String value) {
+        this.txtPayloadJSON.setText(value);
+    }
+
     public void setSecretKey(String value) {
         this.txtSecretKey.setText(value);
     }
@@ -251,26 +261,13 @@ public class JWSEditPanel extends javax.swing.JPanel {
         return this.txtSecretKey.getText();
     }
 
-    public String sign() throws JOSEException {
-        try {
-            JWSHeader header = this.getHeader();
-            JWSObject sign = null;
-            if (WeakMACSigner.SUPPORTED_ALGORITHMS.contains(header.getAlgorithm())) {
-                sign = JWSUtil.sign(header.getAlgorithm(), this.getHeader(), this.getPayload(), JWSUtil.toSecretKey(this.getSecretKey()));
-            }
-            else if (RSASSASigner.SUPPORTED_ALGORITHMS.contains(header.getAlgorithm())) {
-                sign = JWSUtil.sign(header.getAlgorithm(), this.getHeader(), this.getPayload(), JWSUtil.toPrivateKey(this.getSecretKey()));
-            }
-            else if (ECDSASigner.SUPPORTED_ALGORITHMS.contains(header.getAlgorithm())) {
-                sign = JWSUtil.sign(header.getAlgorithm(), this.getHeader(), this.getPayload(), JWSUtil.toECPrivateKey(this.getSecretKey()));
-            }
-            if (sign != null) {
-                return sign.serialize();
-            }
-            throw new IllegalArgumentException("Not support:" + header.getAlgorithm());
-        } catch (PEMException | ParseException ex) {
-            throw new JOSEException(ex.getMessage(), ex);
-        }
+    public String signToken() throws SignatureException {
+        JWSToken.Header header = this.getHeader();
+        JWSToken.Payload payload = this.getPayload();
+        JWSToken token = new JWSToken(header, payload);
+        byte [] signature = token.sign(this.getSecretKey());
+        token.getSignature().setEncodeBase64Url(signature);;
+        return token.getToken();
     }
 
     public void setJWS(JWSToken token) {
@@ -278,9 +275,9 @@ public class JWSEditPanel extends javax.swing.JPanel {
     }
 
     public void setJWS(JWSToken token, boolean format) {
-        this.txtHeaderJSON.setText(token.getHeaderJSON(format));
-        this.txtPayloadJSON.setText(token.getPayloadJSON(format));
-        this.txtSecretKey.setText(token.getSignature());
+        this.txtHeaderJSON.setText(token.getHeader().toJSON(format));
+        this.txtPayloadJSON.setText(token.getPayload().toJSON(format));
+        this.txtSecretKey.setText(token.getSignaturePart());
     }
 
     public void setLineWrap(boolean lineWrap) {

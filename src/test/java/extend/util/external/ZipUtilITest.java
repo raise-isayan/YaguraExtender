@@ -82,7 +82,7 @@ public class ZipUtilITest {
             String result = ZipUtil.getBaseJar(url);
             System.out.println("file =>" + result);
         } catch (Exception ex) {
-            fail(ex);
+            fail(ex.getMessage(), ex);
         }
     }
 

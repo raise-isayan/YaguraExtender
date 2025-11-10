@@ -16,11 +16,11 @@ public class BasicSplitPaneDividerWapper extends BasicSplitPaneDivider {
     }
 
     public JButton getLeftBotton() {
-        return leftButton;
+        return super.leftButton;
     }
 
     public JButton getRightBotton() {
-        return rightButton;
+        return super.rightButton;
     }
 
 
