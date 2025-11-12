@@ -1,8 +1,10 @@
 package yagura.view;
 
+import com.google.gson.JsonSyntaxException;
 import java.awt.Component;
 import java.util.logging.Logger;
 import extension.burp.IBurpTab;
+import java.security.SignatureException;
 import java.util.Comparator;
 import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
@@ -85,6 +87,8 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        lblTokenValid.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
         btnEncode.setText("Encode");
         btnEncode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,32 +103,24 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlActionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblTokenValid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cmbAlgo, 0, 78, Short.MAX_VALUE))
+                    .addComponent(cmbAlgo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEncode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTokenValid, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlActionLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnEncode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                        .addComponent(btnClear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addContainerGap()))
         );
         pnlActionLayout.setVerticalGroup(
             pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlActionLayout.createSequentialGroup()
-                .addContainerGap(61, Short.MAX_VALUE)
-                .addComponent(lblTokenValid, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(btnEncode)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClear)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTokenValid, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmbAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
-            .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlActionLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(btnEncode)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(btnClear)
-                    .addContainerGap(69, Short.MAX_VALUE)))
         );
 
         pnlJTokenDecoder.add(pnlAction, java.awt.BorderLayout.LINE_END);
@@ -149,8 +145,13 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
         int index = this.cmbAlgo.getSelectedIndex();
         if (index > 0) {
             if (this.modelAlgo.getSelectedItem() instanceof JWSToken.Algorithm algo) {
-                JWSToken.Header header = this.panelJWSEdit.getHeader().withAlgorithm(algo);
-                this.panelJWSEdit.setHeaderJSON(header.toJSON(true), true);
+                if (this.panelJWSEdit.isValidHeader()) {
+                    JWSToken.Header header = this.panelJWSEdit.getHeader();
+                    this.panelJWSEdit.setHeaderText(header.withAlgorithm(algo).toJSON(true));
+                }
+                else {
+                    this.panelJWSEdit.setHeaderText(JWSToken.Header.generateAlgorithm(algo).toJSON(true));
+                }
             }
         }
     }//GEN-LAST:event_cmbAlgoActionPerformed
@@ -165,7 +166,13 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
         try {
             this.lblTokenValid.setText("");
             this.txtJsonToken.setText(this.panelJWSEdit.signToken());
-        } catch (Exception ex) {
+        } catch (JsonSyntaxException ex) {
+            this.lblTokenValid.setText(BUNDLE.getString("token.invalid.json"));
+        } catch (SignatureException ex) {
+            this.lblTokenValid.setText(BUNDLE.getString("token.invalid.token"));
+        } catch (java.lang.UnsupportedOperationException ex) {
+            this.lblTokenValid.setText(BUNDLE.getString("token.invalid.key"));
+        } catch (java.lang.IllegalArgumentException ex) {
             this.lblTokenValid.setText(ex.getMessage());
         }
     }//GEN-LAST:event_btnEncodeActionPerformed

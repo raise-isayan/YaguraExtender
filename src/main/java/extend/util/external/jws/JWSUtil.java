@@ -4,14 +4,21 @@ import extension.helpers.BouncyUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import org.bouncycastle.jcajce.interfaces.EdDSAPrivateKey;
+import org.bouncycastle.jcajce.interfaces.EdDSAPublicKey;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMException;
 
 /**
@@ -22,6 +29,14 @@ public class JWSUtil {
 
     private JWSUtil() {
 
+    }
+
+    private final static BouncyCastleProvider BC_PROVIDER_INSTANCE = new BouncyCastleProvider();
+
+    static {
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(BC_PROVIDER_INSTANCE);
+        }
     }
 
     private static boolean isValidBase64UrlSegment(char c) {
@@ -182,12 +197,32 @@ public class JWSUtil {
         return BouncyUtil.loadPrivateKeyFromPem(pemData);
     }
 
+    public static PublicKey toPublicKey(String pemData) throws PEMException {
+        return BouncyUtil.loadPublicKeyFromPem(pemData);
+    }
+
     public static RSAPrivateKey toRSAPrivateKey(String pemData) throws PEMException {
         return (RSAPrivateKey) BouncyUtil.loadPrivateKeyFromPem(pemData);
     }
 
+    public static RSAPublicKey toRSAPublicKey(String pemData) throws PEMException {
+        return (RSAPublicKey) BouncyUtil.loadPublicKeyFromPem(pemData);
+    }
+
     public static ECPrivateKey toECPrivateKey(String pemData) throws PEMException {
         return (ECPrivateKey) BouncyUtil.loadPrivateKeyFromPem(pemData);
+    }
+
+    public static ECPublicKey toECPublicKey(String pemData) throws PEMException {
+        return (ECPublicKey) BouncyUtil.loadPublicKeyFromPem(pemData);
+    }
+
+    public static EdDSAPrivateKey toEdDSAPrivateKey(String pemData) throws PEMException {
+        return (EdDSAPrivateKey) BouncyUtil.loadPrivateKeyFromPem(pemData);
+    }
+
+    public static EdDSAPublicKey toEdDSAPublicKey(String pemData) throws PEMException {
+        return (EdDSAPublicKey) BouncyUtil.loadPublicKeyFromPem(pemData);
     }
 
 }

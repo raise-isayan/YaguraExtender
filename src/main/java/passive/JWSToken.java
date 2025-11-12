@@ -7,6 +7,8 @@ import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.CaptureItem;
+import java.io.IOException;
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -14,18 +16,30 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SignatureException;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PSSParameterSpec;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.crypto.SecretKey;
+import org.bouncycastle.asn1.ASN1EncodableVector;
+import org.bouncycastle.asn1.ASN1Encoding;
+import org.bouncycastle.asn1.ASN1Integer;
+import org.bouncycastle.asn1.ASN1Primitive;
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.DERSequence;
+import org.bouncycastle.jcajce.interfaces.EdDSAPrivateKey;
+import org.bouncycastle.jcajce.interfaces.EdDSAPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMException;
 
@@ -80,34 +94,41 @@ public class JWSToken implements JsonToken {
     }
 
     public enum Algorithm {
-        NONE("", null),
-        HS256("HmacSHA256", null),
-        HS384("HmacSHA384", null),
-        HS512("HmacSHA512", null),
-        RS256("SHA256withRSA", null),
-        RS384("SHA384withRSA", null),
-        RS512("SHA512withRSA", null),
-        PS256("RSASSA-PSS", new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)),
-        PS384("RSASSA-PSS", new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384, 48, 1)),
-        PS512("RSASSA-PSS", new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512, 64, 1)),
-        ES256("SHA256withECDSA", null),
-        ES384("SHA384withECDSA", null),
-        ES512("SHA512withECDSA", null);
+        NONE("none", "", null),
+        HS256("HS256", "HmacSHA256", null),
+        HS384("HS384", "HmacSHA384", null),
+        HS512("HS512", "HmacSHA512", null),
+        RS256("RS256", "SHA256withRSA", null),
+        RS384("RS384", "SHA384withRSA", null),
+        RS512("RS512", "SHA512withRSA", null),
+        PS256("PS256", "RSASSA-PSS", new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)),
+        PS384("PS384", "RSASSA-PSS", new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384, 48, 1)),
+        PS512("PS512", "RSASSA-PSS", new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512, 64, 1)),
+        ES256("ES256", "SHA256withECDSA", null),
+        ES384("ES384", "SHA384withECDSA", null),
+        ES512("ES512", "SHA512withECDSA", null),
+        EDDSA("EdDSA", "Ed25519", null);
 
+        private final String algorithmName;
         private final String signAlgorithm;
-        private final AlgorithmParameterSpec signParams;
+        private final AlgorithmParameterSpec algorithmParameter;
 
-        Algorithm(String signAlgorithm, AlgorithmParameterSpec params) {
+        Algorithm(String algorithmName, String signAlgorithm, AlgorithmParameterSpec algorithmParameter) {
+            this.algorithmName = algorithmName;
+            this.algorithmParameter = algorithmParameter;
             this.signAlgorithm = signAlgorithm;
-            this.signParams = params;
+        }
+
+        public String getAlgorithmName() {
+            return this.algorithmName;
         }
 
         public String getSignAlgorithm() {
             return this.signAlgorithm;
         }
 
-        public AlgorithmParameterSpec getSignAlgorithmParameter() {
-            return this.signParams;
+        public AlgorithmParameterSpec getAlgorithmParameter() {
+            return this.algorithmParameter;
         }
 
         public static Algorithm parseValue(String s) {
@@ -131,6 +152,7 @@ public class JWSToken implements JsonToken {
         algos.add(Algorithm.ES256);
         algos.add(Algorithm.ES384);
         algos.add(Algorithm.ES512);
+        algos.add(Algorithm.EDDSA);
         return algos;
     }
 
@@ -162,12 +184,12 @@ public class JWSToken implements JsonToken {
         }
 
         public static Header generateAlgorithm(Algorithm algo) {
-            String token = String.format("{\"alg\":\"%s\",\"typ\":\"JWT\"}", algo.name());
+            String token = String.format("{\"alg\":\"%s\",\"typ\":\"JWT\"}", algo.getAlgorithmName());
             return new JWSToken.Header(JsonToken.encodeBase64UrlSafe(token));
         }
 
         public Header withAlgorithm(Algorithm algo) {
-            return withAlgorithm(algo.name());
+            return withAlgorithm(algo.getAlgorithmName());
         }
 
         public Header withAlgorithm(String algo) {
@@ -180,6 +202,15 @@ public class JWSToken implements JsonToken {
                 headerSecment.append(headerJSON.substring(m.end(1)));
             }
             return new Header(JsonToken.encodeBase64UrlSafe(headerSecment.toString()));
+        }
+
+        public boolean isValid() {
+            try {
+                Algorithm algo = getAlgorithm();
+                return algo != null;
+            } catch (JsonSyntaxException | IllegalArgumentException ex) {
+                return false;
+            }
         }
 
         @Override
@@ -258,7 +289,8 @@ public class JWSToken implements JsonToken {
     @Override
     public boolean isSignFormat() {
         Algorithm alg = this.header.getAlgorithm();
-        return (alg.equals(Algorithm.HS256) || alg.equals(Algorithm.HS384) || alg.equals(Algorithm.ES512));
+        Set<Algorithm> algoAll = getSupportAlgorithm();
+        return (algoAll.contains(alg));
     }
 
     @Override
@@ -352,29 +384,36 @@ public class JWSToken implements JsonToken {
         return sign(algo, secretKey, JWSToken.getData(header, payload));
     }
 
-    public static byte[] sign(Algorithm algo, String secretKey, String data) throws SignatureException {
+    public static byte[] sign(Algorithm algo, String secretKey, String message) throws SignatureException {
+        return sign(algo, secretKey, StringUtil.getBytesUTF8(message));
+    }
+
+    public static byte[] sign(Algorithm algo, String secretKey, byte[] messageBytes) throws SignatureException {
         try {
             byte[] signatureByte = new byte[]{};
             switch (algo) {
                 case HS256:
                 case HS384:
                 case HS512:
-                    signatureByte = sign(algo, JWSUtil.toSecretKey(secretKey), data);
+                    signatureByte = sign(algo, JWSUtil.toSecretKey(secretKey), messageBytes);
                     break;
                 case RS256:
                 case RS384:
                 case RS512:
-                    signatureByte = sign(algo, JWSUtil.toPrivateKey(secretKey), data);
+                    signatureByte = sign(algo, JWSUtil.toPrivateKey(secretKey), messageBytes);
                     break;
                 case PS256:
                 case PS384:
                 case PS512:
-                    signatureByte = sign(algo, JWSUtil.toPrivateKey(secretKey), data);
+                    signatureByte = sign(algo, JWSUtil.toPrivateKey(secretKey), messageBytes);
                     break;
                 case ES256:
                 case ES384:
                 case ES512:
-                    signatureByte = sign(algo, JWSUtil.toECPrivateKey(secretKey), data);
+                    signatureByte = sign(algo, JWSUtil.toECPrivateKey(secretKey), messageBytes);
+                    break;
+                case EDDSA:
+                    signatureByte = sign(algo, JWSUtil.toEdDSAPrivateKey(secretKey), messageBytes);
                     break;
             }
             return signatureByte;
@@ -384,31 +423,69 @@ public class JWSToken implements JsonToken {
     }
 
     public static byte[] sign(Algorithm algo, SecretKey secretKey, String message) throws SignatureException {
+        return sign(algo, secretKey, StringUtil.getBytesUTF8(message));
+    }
+
+    public static byte[] sign(Algorithm algo, SecretKey secretKey, byte[] messageBytes) throws SignatureException {
         byte[] signatureByte = new byte[]{};
         switch (algo) {
             case HS256:
-                signatureByte = BouncyUtil.hmacSHA256(secretKey.getEncoded(), StringUtil.getBytesUTF8(message));
+                signatureByte = BouncyUtil.hmacSHA256(secretKey.getEncoded(), messageBytes);
                 break;
             case HS384:
-                signatureByte = BouncyUtil.hmacSHA384(secretKey.getEncoded(), StringUtil.getBytesUTF8(message));
+                signatureByte = BouncyUtil.hmacSHA384(secretKey.getEncoded(), messageBytes);
                 break;
             case HS512:
-                signatureByte = BouncyUtil.hmacSHA512(secretKey.getEncoded(), StringUtil.getBytesUTF8(message));
+                signatureByte = BouncyUtil.hmacSHA512(secretKey.getEncoded(), messageBytes);
                 break;
         }
         return signatureByte;
     }
 
-    private static byte[] sign(Algorithm algo, PrivateKey secretKey, String message) throws SignatureException {
+    private static byte[] sign(Algorithm algo, PrivateKey privateKey, String message) throws SignatureException {
+        return sign(algo, privateKey, StringUtil.getBytesUTF8(message));
+    }
+
+    private static byte[] sign(Algorithm algo, PrivateKey secretKey, byte[] messageBytes) throws SignatureException {
         try {
             java.security.Signature signature = java.security.Signature.getInstance(algo.getSignAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
-            if (algo.getSignAlgorithmParameter() != null) {
-                signature.setParameter(algo.getSignAlgorithmParameter());
+            if (algo.getAlgorithmParameter() != null) {
+                signature.setParameter(algo.getAlgorithmParameter());
             }
             signature.initSign(secretKey);
-            signature.update(StringUtil.getBytesUTF8(message));
+            signature.update(messageBytes);
             return signature.sign();
         } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | InvalidAlgorithmParameterException ex) {
+            throw new SignatureException(ex.getMessage(), ex);
+        }
+    }
+
+    final static Map<Algorithm, Integer> EC_SIG_SIZE = new HashMap<>();
+
+    static {
+        EC_SIG_SIZE.put(Algorithm.ES256, 64);
+        EC_SIG_SIZE.put(Algorithm.ES384, 96);
+        EC_SIG_SIZE.put(Algorithm.ES512, 132);
+    }
+
+    private static byte[] sign(Algorithm algo, ECPrivateKey secretKey, byte[] messageBytes) throws SignatureException {
+        try {
+            java.security.Signature signature = java.security.Signature.getInstance(algo.getSignAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
+            signature.initSign(secretKey);
+            signature.update(messageBytes);
+            return derToJose(signature.sign(), EC_SIG_SIZE.get(algo));
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | IOException ex) {
+            throw new SignatureException(ex.getMessage(), ex);
+        }
+    }
+
+    private static byte[] sign(Algorithm algo, EdDSAPrivateKey secretKey, byte[] messageBytes) throws SignatureException {
+        try {
+            java.security.Signature signature = java.security.Signature.getInstance(algo.getSignAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
+            signature.initSign(secretKey);
+            signature.update(messageBytes);
+            return signature.sign();
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException  ex) {
             throw new SignatureException(ex.getMessage(), ex);
         }
     }
@@ -420,14 +497,141 @@ public class JWSToken implements JsonToken {
 
     protected static boolean signatureEqual(String header, String payload, final String signature, final String secretKey) throws SignatureException {
         JWSToken token = new JWSToken(header, payload, signature);
-        byte[] signatureByte = token.sign(secretKey);
-        return signature.equals(JsonToken.encodeBase64UrlSafe(signatureByte));
+        byte[] signatureBytes = token.sign(secretKey);
+        return signature.equals(JsonToken.encodeBase64UrlSafe(signatureBytes));
     }
 
     protected static boolean signatureEqual(Algorithm algo, String header, String payload, final String signature, final String secretKey) throws SignatureException {
         JWSToken token = new JWSToken(header, payload, signature);
         byte[] signatureByte = token.sign(algo, secretKey);
         return signature.equals(JsonToken.encodeBase64UrlSafe(signatureByte));
+    }
+
+    public boolean verify(Algorithm algo, String secretKey) throws SignatureException {
+        return verify(algo, secretKey, JsonToken.decodeBase64UrlSafeByte(this.getData()), this.getSignatureBytes());
+    }
+
+    public static boolean verify(Algorithm algo, String secretKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {
+        try {
+            boolean result = false;
+            switch (algo) {
+                case HS256:
+                case HS384:
+                case HS512:
+                    byte[] signatureByte = JWSToken.sign(algo, JWSUtil.toSecretKey(secretKey), messageBytes);
+                    String sign = JsonToken.encodeBase64UrlSafe(signatureByte);
+                    result = sign.equals(JsonToken.encodeBase64UrlSafe(signatureByte));
+                    break;
+                case RS256:
+                case RS384:
+                case RS512:
+                    result = verify(algo, JWSUtil.toPublicKey(secretKey), messageBytes, signatureBytes);
+                    break;
+                case PS256:
+                case PS384:
+                case PS512:
+                    result = verify(algo, JWSUtil.toPublicKey(secretKey), messageBytes, signatureBytes);
+                    break;
+                case ES256:
+                case ES384:
+                case ES512:
+                    result = verify(algo, JWSUtil.toECPublicKey(secretKey), messageBytes, signatureBytes);
+                    break;
+                case EDDSA:
+                    result = verify(algo, JWSUtil.toEdDSAPublicKey(secretKey), messageBytes, signatureBytes);
+                    break;
+            }
+            return result;
+        } catch (PEMException ex) {
+            throw new SignatureException(ex.getMessage(), ex);
+        }
+    }
+
+    private static boolean verify(Algorithm algo, PublicKey publicKey, String message, String signature) throws SignatureException {
+        return verify(algo, publicKey, StringUtil.getBytesUTF8(message), JsonToken.decodeBase64UrlSafeByte(signature));
+    }
+
+    private static boolean verify(Algorithm algo, PublicKey publicKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {
+        try {
+            java.security.Signature verifier = java.security.Signature.getInstance(algo.getSignAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
+            if (algo.getAlgorithmParameter() != null) {
+                verifier.setParameter(algo.getAlgorithmParameter());
+            }
+            verifier.initVerify(publicKey);
+            verifier.update(messageBytes);
+            return verifier.verify(signatureBytes);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | InvalidAlgorithmParameterException ex) {
+            throw new SignatureException(ex.getMessage(), ex);
+        }
+    }
+
+    private static boolean verify(Algorithm algo, ECPublicKey publicKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {
+        try {
+            java.security.Signature verifier = java.security.Signature.getInstance(algo.getSignAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
+            verifier.initVerify(publicKey);
+            verifier.update(messageBytes);
+            return verifier.verify(joseToDer(signatureBytes));
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException | IOException ex) {
+            throw new SignatureException(ex.getMessage(), ex);
+        }
+    }
+
+    private static boolean verify(Algorithm algo, EdDSAPublicKey publicKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {
+        try {
+            java.security.Signature verifier = java.security.Signature.getInstance(algo.getSignAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
+            verifier.initVerify(publicKey);
+            verifier.update(messageBytes);
+            return verifier.verify(signatureBytes);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException  ex) {
+            throw new SignatureException(ex.getMessage(), ex);
+        }
+    }
+
+    private static byte[] toFixedLength(byte[] src, int size) {
+        if (src.length == size) {
+            return src;
+        }
+        byte[] dst = new byte[size];
+        if (src.length > size) {
+            System.arraycopy(src, src.length - size, dst, 0, size);
+        } else {
+            System.arraycopy(src, 0, dst, size - src.length, src.length);
+        }
+        return dst;
+    }
+
+    // DER → JOSE  変換
+    public static byte[] derToJose(byte[] derSignature, int keylen) throws IOException {
+        int size = keylen / 2;
+        ASN1Sequence seq = (ASN1Sequence) ASN1Primitive.fromByteArray(derSignature);
+        BigInteger r = ((ASN1Integer) seq.getObjectAt(0)).getValue();
+        BigInteger s = ((ASN1Integer) seq.getObjectAt(1)).getValue();
+
+        byte[] rBytes = toFixedLength(r.toByteArray(), size);
+        byte[] sBytes = toFixedLength(s.toByteArray(), size);
+
+        byte[] concat = new byte[size * 2];
+        System.arraycopy(rBytes, 0, concat, 0, size);
+        System.arraycopy(sBytes, 0, concat, size, size);
+        return concat;
+    }
+
+    // JOSE → DER 変換
+    public static byte[] joseToDer(byte[] joseSignature) throws IOException {
+        int size = joseSignature.length / 2;
+        byte[] rBytes = new byte[size];
+        byte[] sBytes = new byte[size];
+        System.arraycopy(joseSignature, 0, rBytes, 0, size);
+        System.arraycopy(joseSignature, size, sBytes, 0, size);
+
+        BigInteger r = new BigInteger(1, rBytes);
+        BigInteger s = new BigInteger(1, sBytes);
+
+        ASN1EncodableVector v = new ASN1EncodableVector();
+        v.add(new ASN1Integer(r));
+        v.add(new ASN1Integer(s));
+        DERSequence seq = new DERSequence(v);
+        return seq.getEncoded(ASN1Encoding.DER);
     }
 
     private final static Algorithm[] algHS = {Algorithm.HS256, Algorithm.HS384, Algorithm.HS512};
@@ -437,8 +641,9 @@ public class JWSToken implements JsonToken {
         JWSToken jws = jwsInstance.parseToken(baseToken, true);
         if (jws != null) {
             for (Algorithm alg : algHS) {
-                byte[] sign = JWSToken.sign(alg, secretKey, jws.getHeader().withAlgorithm(alg), jws.getPayload());
-                JWSToken token = new JWSToken(jws.header.getPart(), jws.payload.getPart(), JsonToken.encodeBase64UrlSafe(sign));
+                Header hs_hader = jws.getHeader().withAlgorithm(alg);
+                byte[] sign = JWSToken.sign(alg, secretKey, hs_hader, jws.getPayload());
+                JWSToken token = new JWSToken(hs_hader, jws.payload, new JWSToken.Signature(JsonToken.encodeBase64UrlSafe(sign)));
                 tokens.add(token.getToken());
             }
         }

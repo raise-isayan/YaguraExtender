@@ -1,5 +1,6 @@
 package passive;
 
+import com.google.gson.JsonSyntaxException;
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.json.JsonUtil;
@@ -43,6 +44,15 @@ public interface JsonToken {
             this.tokenPart = tokenPart;
         }
 
+        public boolean isValid() {
+            try {
+                toJSON(false);
+                return true;
+            } catch (JsonSyntaxException | IllegalArgumentException ex) {
+                return false;
+            }
+        }
+
         @Override
         public String getPart() {
             return this.tokenPart;
@@ -68,6 +78,15 @@ public interface JsonToken {
 
         public Signature(String tokenPart) {
             this.tokenPart = tokenPart;
+        }
+
+        public boolean isValid() {
+            try {
+                getsDecodeBase64Url();
+                return true;
+            } catch (IllegalArgumentException ex) {
+                return false;
+            }
         }
 
         @Override

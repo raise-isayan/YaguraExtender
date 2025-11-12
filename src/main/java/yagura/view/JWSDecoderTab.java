@@ -45,10 +45,10 @@ public class JWSDecoderTab extends javax.swing.JPanel implements IBurpTab {
         jScrollPane = new javax.swing.JScrollPane();
         txtJsonToken = new javax.swing.JTextArea();
         pnlAction = new javax.swing.JPanel();
-        lblTokenValid = new javax.swing.JLabel();
         btnClear = new javax.swing.JButton();
         btnDecode = new javax.swing.JButton();
         btnSendToEncode = new javax.swing.JButton();
+        lblTokenValid = new javax.swing.JLabel();
         pnlToken = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -88,38 +88,33 @@ public class JWSDecoderTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        lblTokenValid.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+
         javax.swing.GroupLayout pnlActionLayout = new javax.swing.GroupLayout(pnlAction);
         pnlAction.setLayout(pnlActionLayout);
         pnlActionLayout.setHorizontalGroup(
             pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlActionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnSendToEncode, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
+                .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTokenValid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSendToEncode, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
+                    .addComponent(btnDecode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlActionLayout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnDecode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTokenValid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addContainerGap()))
         );
         pnlActionLayout.setVerticalGroup(
             pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlActionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(btnDecode)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClear)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTokenValid, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSendToEncode)
-                .addGap(50, 50, 50))
-            .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlActionLayout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(btnDecode)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(btnClear)
-                    .addGap(18, 18, 18)
-                    .addComponent(lblTokenValid)
-                    .addGap(63, 63, 63)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlJTokenDecoder.add(pnlAction, java.awt.BorderLayout.EAST);
@@ -139,7 +134,7 @@ public class JWSDecoderTab extends javax.swing.JPanel implements IBurpTab {
             this.lblTokenValid.setText("");
             this.panelJWSView.setJWS(token);
         } else {
-            this.btnClearActionPerformed(null);
+            this.panelJWSView.clearJWS();
             this.lblTokenValid.setText(BUNDLE.getString("token.invalid.token"));
         }
     }//GEN-LAST:event_btnDecodeActionPerformed

@@ -1,6 +1,8 @@
 package yagura.view;
 
+import com.google.gson.JsonSyntaxException;
 import extension.helpers.json.JsonUtil;
+import extension.view.base.JSONDocument;
 import java.awt.SystemColor;
 import java.security.SignatureException;
 import javax.swing.event.DocumentEvent;
@@ -113,10 +115,10 @@ public class JWSEditPanel extends javax.swing.JPanel {
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSecretKey;
 
     private javax.swing.JScrollPane scrollHeaderJSON;
-    private javax.swing.JTextArea txtHeaderJSON;
+    private javax.swing.JTextPane txtHeaderJSON;
 
     private javax.swing.JScrollPane scrollPayloadJSON;
-    private javax.swing.JTextArea txtPayloadJSON;
+    private javax.swing.JTextPane txtPayloadJSON;
 
     private javax.swing.JScrollPane scrollSecretKey;
     private javax.swing.JTextArea txtSecretKey;
@@ -127,10 +129,11 @@ public class JWSEditPanel extends javax.swing.JPanel {
          */
 
         /* Header */
-        this.txtHeaderJSON = new javax.swing.JTextArea();
+        this.txtHeaderJSON = new javax.swing.JTextPane();
         this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
-        this.txtHeaderJSON.setLineWrap(true);
-        this.txtHeaderJSON.setWrapStyleWord(false);
+        this.txtHeaderJSON.setStyledDocument(new JSONDocument());
+//        this.txtHeaderJSON.setLineWrap(true);
+//        this.txtHeaderJSON.setWrapStyleWord(false);
 //        this.txtHeaderJSON.setCodeFoldingEnabled(true);
 //        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
 //        this.txtHeaderJSON.setHighlightCurrentLine(false);
@@ -145,10 +148,11 @@ public class JWSEditPanel extends javax.swing.JPanel {
         this.pnlHeader.add(this.scrollHeaderJSON, java.awt.BorderLayout.CENTER);
 
         /* Payload */
-        this.txtPayloadJSON = new javax.swing.JTextArea();
+        this.txtPayloadJSON = new javax.swing.JTextPane();
         this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
-        this.txtPayloadJSON.setLineWrap(true);
-        this.txtPayloadJSON.setWrapStyleWord(false);
+        this.txtPayloadJSON.setStyledDocument(new JSONDocument());
+//        this.txtPayloadJSON.setLineWrap(true);
+//        this.txtPayloadJSON.setWrapStyleWord(false);
 //        this.txtPayloadJSON.setCodeFoldingEnabled(true);
 //        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
 //        this.txtPayloadJSON.setHighlightCurrentLine(false);
@@ -165,6 +169,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
         /* Signature */
         this.txtSecretKey = new javax.swing.JTextArea();
         this.scrollSecretKey = new javax.swing.JScrollPane(this.txtSecretKey);
+//        this.txtSecretKey.setStyledDocument(new JSONDocument());
         this.txtSecretKey.setLineWrap(true);
         this.txtSecretKey.setWrapStyleWord(false);
 
@@ -217,8 +222,8 @@ public class JWSEditPanel extends javax.swing.JPanel {
         return new JWSToken.Header(JsonToken.encodeBase64UrlSafe(getHeaderJSON(false)));
     }
 
-    public void getHeaderText() {
-        this.txtHeaderJSON.getText();
+    public String getHeaderText() {
+        return this.txtHeaderJSON.getText();
     }
 
     public void setHeaderText(String value) {
@@ -281,15 +286,33 @@ public class JWSEditPanel extends javax.swing.JPanel {
     }
 
     public void setLineWrap(boolean lineWrap) {
-        this.txtHeaderJSON.setLineWrap(lineWrap);
-        this.txtPayloadJSON.setLineWrap(lineWrap);
+//        this.txtHeaderJSON.setLineWrap(lineWrap);
+//        this.txtPayloadJSON.setLineWrap(lineWrap);
         this.txtSecretKey.setLineWrap(lineWrap);
     }
 
-    void clearJWS() {
+    public void clearJWS() {
         this.txtHeaderJSON.setText("");
         this.txtPayloadJSON.setText("");
         this.txtSecretKey.setText("");
+    }
+
+    public boolean isValidHeader() {
+        try {
+            getHeader();
+            return !getHeaderText().trim().isEmpty();
+        } catch (JsonSyntaxException | IllegalArgumentException ex) {
+            return false;
+        }
+    }
+
+    public boolean isValidPayload() {
+        try {
+            getPayload();
+            return true;
+        } catch (JsonSyntaxException | IllegalArgumentException ex) {
+            return false;
+        }
     }
 
 }

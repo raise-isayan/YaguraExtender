@@ -1,6 +1,7 @@
 package yagura.view;
 
 import extension.helpers.json.JsonUtil;
+import extension.view.base.JSONDocument;
 import java.awt.SystemColor;
 import java.text.ParseException;
 import passive.JWSToken;
@@ -93,10 +94,10 @@ public class JWSViewPanel extends javax.swing.JPanel {
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
 
     private javax.swing.JScrollPane scrollHeaderJSON;
-    private javax.swing.JTextArea txtHeaderJSON;
+    private javax.swing.JTextPane txtHeaderJSON;
 
     private javax.swing.JScrollPane scrollPayloadJSON;
-    private javax.swing.JTextArea txtPayloadJSON;
+    private javax.swing.JTextPane txtPayloadJSON;
 
     private javax.swing.JScrollPane scrollSignatureSign;
     private javax.swing.JTextArea txtSignatureSign;
@@ -108,10 +109,11 @@ public class JWSViewPanel extends javax.swing.JPanel {
         /* Header */
         //this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         //this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
-        this.txtHeaderJSON = new javax.swing.JTextArea();
+        this.txtHeaderJSON = new javax.swing.JTextPane();
         this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
-        this.txtHeaderJSON.setLineWrap(true);
-        this.txtHeaderJSON.setWrapStyleWord(false);
+//        this.txtHeaderJSON.setLineWrap(true);
+//        this.txtHeaderJSON.setWrapStyleWord(false);
+        this.txtHeaderJSON.setStyledDocument(new JSONDocument());
 
 //        this.txtHeaderJSON.setCodeFoldingEnabled(true);
 //        this.txtHeaderJSON.setClearWhitespaceLinesEnabled(true);
@@ -128,10 +130,12 @@ public class JWSViewPanel extends javax.swing.JPanel {
         /* Payload */
         //this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         //this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
-        this.txtPayloadJSON = new javax.swing.JTextArea();
+        this.txtPayloadJSON = new javax.swing.JTextPane();
         this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
-        this.txtPayloadJSON.setLineWrap(true);
-        this.txtPayloadJSON.setWrapStyleWord(false);
+//        this.txtPayloadJSON.setLineWrap(true);
+//        this.txtPayloadJSON.setWrapStyleWord(false);
+        this.txtPayloadJSON.setStyledDocument(new JSONDocument());
+
 //        this.txtPayloadJSON.setCodeFoldingEnabled(true);
 //        this.txtPayloadJSON.setClearWhitespaceLinesEnabled(true);
 //        this.txtPayloadJSON.setHighlightCurrentLine(false);
@@ -256,8 +260,8 @@ public class JWSViewPanel extends javax.swing.JPanel {
     }
 
     public void setLineWrap(boolean lineWrap) {
-        this.txtHeaderJSON.setLineWrap(lineWrap);
-        this.txtPayloadJSON.setLineWrap(lineWrap);
+//        this.txtHeaderJSON.setLineWrap(lineWrap);
+//        this.txtPayloadJSON.setLineWrap(lineWrap);
         this.txtSignatureSign.setLineWrap(lineWrap);
     }
 

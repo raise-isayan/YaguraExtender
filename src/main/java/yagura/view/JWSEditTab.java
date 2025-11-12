@@ -1,6 +1,5 @@
 package yagura.view;
 
-import extension.burp.IBurpTab;
 import extension.helpers.SwingUtil;
 import java.util.logging.Logger;
 import passive.JWSToken;
