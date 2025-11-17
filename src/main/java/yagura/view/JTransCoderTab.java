@@ -66,6 +66,7 @@ import extension.burp.IBurpTab;
 import extension.helpers.DateUtil;
 import extension.helpers.SmartCodec;
 import org.apache.commons.codec.DecoderException;
+import passive.JWSToken;
 
 /**
  *
@@ -5365,9 +5366,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }
 
     public void sendToJWSEncoder(String header, String payload, String secret) {
+        this.jwsEncoderTab.setSelectedAlgorithm(null);
         if (header != null) this.jwsEncoderTab.setHeaderJSON(header, true);
         if (payload != null) this.jwsEncoderTab.setPayloadJSON(payload, true);
         if (secret != null) this.jwsEncoderTab.setSecretKey(secret);
+        if (this.jwsEncoderTab.getHeader() != null) {
+            JWSToken.Algorithm algo = this.jwsEncoderTab.getHeader().getAlgorithm();
+            this.jwsEncoderTab.setSelectedAlgorithm(algo);
+        }
     }
 
     private String getSelectEncode() {

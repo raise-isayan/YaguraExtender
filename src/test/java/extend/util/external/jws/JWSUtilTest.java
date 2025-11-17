@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import extension.view.base.CaptureItem;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -19,9 +21,14 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.EdECPrivateKey;
+import java.security.interfaces.EdECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import org.bouncycastle.jcajce.interfaces.EdDSAPrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.util.Base64;
 import org.bouncycastle.jcajce.interfaces.EdDSAPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,19 +82,18 @@ public class JWSUtilTest {
             String pubRSAKeyKeyPath = JWSTokenTest.class.getResource("/resources/public-rsa-key.pem").getPath();
             String pemRSAKeyPublicData = FileUtil.stringFromFile(new File(pubRSAKeyKeyPath), StandardCharsets.UTF_8);
             {
-                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)JWSUtil.toRSAPrivateKey(pemRSAKeyPrivateData);
+                RSAPrivateKey rsaPrivateKey = JWSUtil.toRSAPrivateKey(pemRSAKeyPrivateData);
                 assertNotNull(rsaPrivateKey);
 
-                RSAPublicKey rsaPublicKey = (RSAPublicKey)JWSUtil.toRSAPublicKey(pemRSAKeyPublicData);
+                RSAPublicKey rsaPublicKey = JWSUtil.toRSAPublicKey(pemRSAKeyPublicData);
                 assertNotNull(rsaPublicKey);
 
-                PrivateKey privateKey = (PrivateKey)JWSUtil.toPrivateKey(pemRSAKeyPrivateData);
+                PrivateKey privateKey = JWSUtil.toPrivateKey(pemRSAKeyPrivateData);
                 assertNotNull(privateKey);
 
-                PublicKey publicKey = (PublicKey)JWSUtil.toPublicKey(pemRSAKeyPublicData);
+                PublicKey publicKey = JWSUtil.toPublicKey(pemRSAKeyPublicData);
                 assertNotNull(publicKey);
             }
-
         } catch (IOException ex) {
             fail(ex.getMessage(), ex);
         }
@@ -102,16 +108,16 @@ public class JWSUtilTest {
             String pubECKey256KeyPath = JWSTokenTest.class.getResource("/resources/public-ec256-key.pem").getPath();
             String pemECKey256PublicData = FileUtil.stringFromFile(new File(pubECKey256KeyPath), StandardCharsets.UTF_8);
             {
-                ECPrivateKey ecPrivateKey = (ECPrivateKey)JWSUtil.toECPrivateKey(pemECKey256PrivateData);
+                ECPrivateKey ecPrivateKey = JWSUtil.toECPrivateKey(pemECKey256PrivateData);
                 assertNotNull(ecPrivateKey);
 
-                ECPublicKey ecPublicKey = (ECPublicKey)JWSUtil.toECPublicKey(pemECKey256PublicData);
+                ECPublicKey ecPublicKey = JWSUtil.toECPublicKey(pemECKey256PublicData);
                 assertNotNull(ecPublicKey);
 
-                PrivateKey privateKey = (PrivateKey)JWSUtil.toPrivateKey(pemECKey256PrivateData);
+                PrivateKey privateKey = JWSUtil.toPrivateKey(pemECKey256PrivateData);
                 assertNotNull(privateKey);
 
-                PublicKey publicKey = (PublicKey)JWSUtil.toPublicKey(pemECKey256PublicData);
+                PublicKey publicKey = JWSUtil.toPublicKey(pemECKey256PublicData);
                 assertNotNull(publicKey);
             }
             String priECKey384Path = JWSTokenTest.class.getResource("/resources/private-ec384-key.pem").getPath();
@@ -119,16 +125,16 @@ public class JWSUtilTest {
             String pubECKey384KeyPath = JWSTokenTest.class.getResource("/resources/public-ec384-key.pem").getPath();
             String pemECKey384PublicData = FileUtil.stringFromFile(new File(pubECKey384KeyPath), StandardCharsets.UTF_8);
             {
-                ECPrivateKey ecPrivateKey = (ECPrivateKey)JWSUtil.toECPrivateKey(pemECKey384PrivateData);
+                ECPrivateKey ecPrivateKey = JWSUtil.toECPrivateKey(pemECKey384PrivateData);
                 assertNotNull(ecPrivateKey);
 
-                ECPublicKey ecPublicKey = (ECPublicKey)JWSUtil.toECPublicKey(pemECKey384PublicData);
+                ECPublicKey ecPublicKey = JWSUtil.toECPublicKey(pemECKey384PublicData);
                 assertNotNull(ecPublicKey);
 
-                PrivateKey privateKey = (PrivateKey)JWSUtil.toPrivateKey(pemECKey256PrivateData);
+                PrivateKey privateKey = JWSUtil.toPrivateKey(pemECKey256PrivateData);
                 assertNotNull(privateKey);
 
-                PublicKey publicKey = (PublicKey)JWSUtil.toPublicKey(pemECKey384PublicData);
+                PublicKey publicKey = JWSUtil.toPublicKey(pemECKey384PublicData);
                 assertNotNull(publicKey);
             }
             String priECKey512Path = JWSTokenTest.class.getResource("/resources/private-ec512-key.pem").getPath();
@@ -136,16 +142,16 @@ public class JWSUtilTest {
             String pubECKey512KeyPath = JWSTokenTest.class.getResource("/resources/public-ec512-key.pem").getPath();
             String pemECKey512PublicData = FileUtil.stringFromFile(new File(pubECKey512KeyPath), StandardCharsets.UTF_8);
             {
-                ECPrivateKey ecPrivateKey = (ECPrivateKey)JWSUtil.toECPrivateKey(pemECKey512PrivateData);
+                ECPrivateKey ecPrivateKey = JWSUtil.toECPrivateKey(pemECKey512PrivateData);
                 assertNotNull(ecPrivateKey);
 
-                ECPublicKey ecPublicKey = (ECPublicKey)JWSUtil.toECPublicKey(pemECKey512PublicData);
+                ECPublicKey ecPublicKey = JWSUtil.toECPublicKey(pemECKey512PublicData);
                 assertNotNull(ecPublicKey);
 
-                PrivateKey privateKey = (PrivateKey)JWSUtil.toPrivateKey(pemECKey512PrivateData);
+                PrivateKey privateKey = JWSUtil.toPrivateKey(pemECKey512PrivateData);
                 assertNotNull(privateKey);
 
-                PublicKey publicKey = (PublicKey)JWSUtil.toPublicKey(pemECKey512PublicData);
+                PublicKey publicKey = JWSUtil.toPublicKey(pemECKey512PublicData);
                 assertNotNull(publicKey);
             }
         } catch (IOException ex) {
@@ -162,18 +168,18 @@ public class JWSUtilTest {
             String pubEdDSAKeyPath = JWSTokenTest.class.getResource("/resources/public-eddsa-key.pem").getPath();
             String pemEdDSAublicData = FileUtil.stringFromFile(new File(pubEdDSAKeyPath), StandardCharsets.UTF_8);
             {
-                EdDSAPrivateKey edsaPrivateKey = JWSUtil.toEdDSAPrivateKey(pemEdDSAPrivateData);
-                assertNotNull(edsaPrivateKey);
+                EdECPrivateKey edPrivateKey = JWSUtil.toEdECPrivateKey(pemEdDSAPrivateData);
+                assertNotNull(edPrivateKey);
 
-                EdDSAPublicKey edsaPublicKey = JWSUtil.toEdDSAPublicKey(pemEdDSAublicData);
-                assertNotNull(edsaPublicKey);
+                EdECPublicKey edPublicKey = JWSUtil.toEdECPublicKey(pemEdDSAublicData);
+                assertNotNull(edPublicKey);
 
-                PrivateKey privateKey = (PrivateKey)JWSUtil.toPrivateKey(pemEdDSAPrivateData);
+                PrivateKey privateKey = JWSUtil.toPrivateKey(pemEdDSAPrivateData);
                 System.out.println("PrivateKey:" + privateKey.getClass().getName());
 
                 assertNotNull(privateKey);
 
-                PublicKey publicKey = (PublicKey)JWSUtil.toPublicKey(pemEdDSAublicData);
+                PublicKey publicKey = JWSUtil.toPublicKey(pemEdDSAublicData);
                 System.out.println("PublicKey:" + privateKey.getClass().getName());
                 assertNotNull(publicKey);
             }
@@ -245,15 +251,72 @@ public class JWSUtilTest {
     {
         System.out.println("testEdDSA");
         try {
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed25519", "BC");
-            KeyPair keyPair = keyGen.generateKeyPair();
+            {
+                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed25519", "BC");
+                keyGen.initialize(255);
+                KeyPair keyPair = keyGen.generateKeyPair();
 
-            System.out.println("Private key: " + keyPair.getPrivate());
-            System.out.println("Private class: " + keyPair.getPrivate().getClass().getName());
-            System.out.println("Public key:  " + keyPair.getPublic());
-            System.out.println("Public class: " + keyPair.getPublic().getClass().getName());
+                System.out.println("Private key: " + keyPair.getPrivate());
+                System.out.println("Private class: " + keyPair.getPrivate().getClass().getName());
+                System.out.println("Public key:  " + keyPair.getPublic());
+                System.out.println("Public class: " + keyPair.getPublic().getClass().getName());
+                if (keyPair.getPublic() instanceof EdDSAPublicKey pubKey) {
+                    System.out.println("Public format:" + pubKey.getFormat());
+                }
+            }
+            {
+                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed448", "BC");
+                keyGen.initialize(448);
+                KeyPair keyPair = keyGen.generateKeyPair();
+
+                System.out.println("Private key: " + keyPair.getPrivate());
+                System.out.println("Private class: " + keyPair.getPrivate().getClass().getName());
+                System.out.println("Public key:  " + keyPair.getPublic());
+                System.out.println("Public class: " + keyPair.getPublic().getClass().getName());
+                if (keyPair.getPublic() instanceof EdDSAPublicKey pubKey) {
+                    System.out.println("EdDSA Public format:" + pubKey.getFormat());
+                }
+                if (keyPair.getPublic() instanceof EdECPublicKey pubKey) {
+                    System.out.println("EdEC Public format:" + pubKey.getFormat());
+                }
+            }
         } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
             fail(ex.getMessage(), ex);
         }
     }
+
+    public static PrivateKey jwkToRsaPrivateKey(
+            String n, String e, String d, String p, String q, String dp, String dq, String qi
+        ) throws InvalidKeySpecException {
+        try {
+            BigInteger modulus = new BigInteger(1, Base64.getUrlDecoder().decode(n));
+            BigInteger pubExp = new BigInteger(1, Base64.getUrlDecoder().decode(e));
+            BigInteger privExp = new BigInteger(1, Base64.getUrlDecoder().decode(d));
+            BigInteger primeP = new BigInteger(1, Base64.getUrlDecoder().decode(p));
+            BigInteger primeQ = new BigInteger(1, Base64.getUrlDecoder().decode(q));
+            BigInteger primeExpP = new BigInteger(1, Base64.getUrlDecoder().decode(dp));
+            BigInteger primeExpQ = new BigInteger(1, Base64.getUrlDecoder().decode(dq));
+            BigInteger crtCoef = new BigInteger(1, Base64.getUrlDecoder().decode(qi));
+            RSAPrivateCrtKeySpec keySpec = new RSAPrivateCrtKeySpec(
+                    modulus, pubExp, privExp,
+                    primeP, primeQ, primeExpP, primeExpQ, crtCoef);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return keyFactory.generatePrivate(keySpec);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new InvalidKeySpecException(ex);
+        }
+    }
+
+    public static PublicKey jwkToRsaPublicKey(String n, String e) throws InvalidKeySpecException {
+        try {
+            BigInteger modulus = new BigInteger(1, Base64.getUrlDecoder().decode(n));
+            BigInteger exponent = new BigInteger(1, Base64.getUrlDecoder().decode(e));
+            RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, exponent);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return keyFactory.generatePublic(keySpec);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new InvalidKeySpecException(ex);
+        }
+    }
+
 }

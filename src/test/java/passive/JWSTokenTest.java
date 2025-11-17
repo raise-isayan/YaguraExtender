@@ -10,10 +10,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Security;
 import java.security.SignatureException;
+import java.util.Base64;
 import java.util.logging.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -68,7 +70,14 @@ public class JWSTokenTest {
             assertFalse(header.isValid());
         }
         {
-            System.out.println("prettyJson:" + JsonUtil.prettyJson(""));
+            JWSToken.Header header = new JWSToken.Header("eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0");
+            Algorithm algo = header.getAlgorithm();
+            assertEquals(Algorithm.NONE, algo);
+        }
+        {
+            JWSToken.Header header = new JWSToken.Header("eyJhbGciOiJIUzI1NiJ9");
+            Algorithm algo = header.getAlgorithm();
+            assertEquals(Algorithm.HS256, algo);
         }
     }
 
@@ -99,26 +108,41 @@ public class JWSTokenTest {
             {
                 String hs256_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.39jkN-bckg4fbZQEb0xHIxzYL9qI_g4c4WyzEYNHZok";
                 String token_HS256_parts[] = JWSUtil.splitSegment(hs256_token);
-                JWSToken token = new JWSToken(token_HS256_parts[0], token_HS256_parts[1], token_HS256_parts[2]);
-                byte[] signature = token.sign("secret");
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.HS256);
-                assertEquals(token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signature));
+                JWSToken sign_token = new JWSToken(token_HS256_parts[0], token_HS256_parts[1], token_HS256_parts[2]);
+                byte[] signature = sign_token.sign("secret");
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.HS256);
+                assertEquals(sign_token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signature));
+                boolean token_verify = sign_token.verify("secret");
+                assertTrue(token_verify);
+                assertEquals(token_HS256_parts[0], sign_token.getHeaderPart());
+                assertEquals(token_HS256_parts[1], sign_token.getPayloadPart());
+                assertEquals(token_HS256_parts[2], sign_token.getSignaturePart());
             }
             {
                 String hs384_token = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzMDE0M30.KW47erIop0RFkMPO0E0dLmEwkawLYypE8I2OrYb1Cl6_xxcpZa8NXPTbyU-eqtMP";
                 String token_HS384_parts[] = JWSUtil.splitSegment(hs384_token);
-                JWSToken token = new JWSToken(token_HS384_parts[0], token_HS384_parts[1], token_HS384_parts[2]);
-                byte[] signature = token.sign("secret");
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.HS384);
-                assertEquals(token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signature));
+                JWSToken sign_token = new JWSToken(token_HS384_parts[0], token_HS384_parts[1], token_HS384_parts[2]);
+                byte[] signature = sign_token.sign("secret");
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.HS384);
+                assertEquals(sign_token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signature));
+                boolean token_verify = sign_token.verify("secret");
+                assertTrue(token_verify);
+                assertEquals(token_HS384_parts[0], sign_token.getHeader().getPart());
+                assertEquals(token_HS384_parts[1], sign_token.getPayload().getPart());
+                assertEquals(token_HS384_parts[2], sign_token.getSignature().getPart());
             }
             {
                 String hs512_token = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzMDI2MX0.2Qj_ki8gJYpLJzSjHAL1wolcWdWylPCu-95B7peHobl-sMkKRR7Idbgr59IpNNNBcE_0zy3O7Z2Ln_YQsSEGlA";
                 String token_HS512_parts[] = JWSUtil.splitSegment(hs512_token);
-                JWSToken token = new JWSToken(token_HS512_parts[0], token_HS512_parts[1], token_HS512_parts[2]);
-                byte[] signature = token.sign("secret");
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.HS512);
-                assertEquals(token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signature));
+                JWSToken sign_token = new JWSToken(token_HS512_parts[0], token_HS512_parts[1], token_HS512_parts[2]);
+                byte[] signature = sign_token.sign("secret");
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.HS512);
+                assertEquals(sign_token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signature));
+                boolean token_verify = sign_token.verify("secret");
+                assertTrue(token_verify);
+                assertEquals(StringUtil.getStringUTF8(Base64.getUrlDecoder().decode(token_HS512_parts[0])), sign_token.getHeader().getsDecodeBase64Url());
+                assertEquals(StringUtil.getStringUTF8(Base64.getUrlDecoder().decode(token_HS512_parts[1])), sign_token.getPayload().getsDecodeBase64Url());
+                assertArrayEquals(Base64.getUrlDecoder().decode(token_HS512_parts[2]), sign_token.getSignature().getsDecodeBase64Url());
             }
         } catch (SignatureException ex) {
             fail(ex.getMessage(), ex);
@@ -136,29 +160,35 @@ public class JWSTokenTest {
             {
                 String rs256_token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzNTEyOX0.LYg6BJwOqvVsIczhvf3Q7V0PGb82Piita6-jHwME3RD7xR0cpDgdTxrraHw7z4APxJLQWAVH7LiVC_lRkjHiaXl5lc0AZpylXVgFcajOmon18Uk9BSq2uM2J984E9R4DC8t27IPDEruoe9vyDdJAgGCGDkNB5lTnnXErbgnaBq3jJi_frgkn0eCxXK0ZLciwsGaBRnRriNsG7yZUoLSzZQ9S9dgEE37aBMQiinXvrOd7NyXTlfH-aX7iqYL3HwSGODQmg99t0ZWjJeAM1wdSXpsqIfgnu2trC2HTR1Hkm1zoucJVwq-ZZ14TnFomZ_P1ZHVo5fJTV1_YuA6ScJkC3Q";
                 String[] token_RS256_parts = JWSUtil.splitSegment(rs256_token);
-                JWSToken token = new JWSToken(token_RS256_parts[0], token_RS256_parts[1], token_RS256_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.RS256);
-                assertEquals(token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signatureBytes));
-                assertTrue(JWSToken.verify(Algorithm.RS256, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_RS256_parts[0], token_RS256_parts[1], token_RS256_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.RS256);
+                assertEquals(sign_token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signatureBytes));
+                assertTrue(JWSToken.verify(Algorithm.RS256, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                boolean token_verify = sign_token.verify(pemPublicData);
+                assertTrue(token_verify);
             }
             {
                 String rs384_token = "eyJhbGciOiJSUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzNTEyOX0.kyJXAW73cZqGnP5RwaFEIGPx7OMGZjww5-Zml-axKXgDw5rBCOXRry4Rqh3DvvL5Ca-w8T7zD4lzqhACz9QnqxSZHhM37QuBFnzm2-KQvkoYHobOlLNzK26H7ZGh9nhVXZCavOgOzkSGSBXRlygwUF3Gszh1mh1Q0DEIvH5zLgl5u35sQzpOAJfyU3AcdCA6qyh01109YVwB4m8SHpJeF-vxeXYYaVtJ_T2FO9OfiY1MvQRc7blKoLp3io2FhnsOSO-jSMNgTyu65OavdG5VKR5DKbEcmerYV-nLdpABdSi3cvDy7G5om4SzkkIRPZPggrctK8EfcYVtL3Zbf2ns3Q";
                 String[] token_RS384_parts = JWSUtil.splitSegment(rs384_token);
-                JWSToken token = new JWSToken(token_RS384_parts[0], token_RS384_parts[1], token_RS384_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.RS384);
-                assertEquals(token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signatureBytes));
-                assertTrue(JWSToken.verify(Algorithm.RS384, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_RS384_parts[0], token_RS384_parts[1], token_RS384_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.RS384);
+                assertEquals(sign_token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signatureBytes));
+                assertTrue(JWSToken.verify(Algorithm.RS384, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                boolean token_verify = sign_token.verify(pemPublicData);
+                assertTrue(token_verify);
             }
             {
                 String rs512_token = "eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzNTEyOX0.Sh5cSSY9EdxSEY2FStRFd8ksQ1Qex3R_bz4PxTjbfu8suaV05gfhNX8rFRQyNZQJ2qrKEQOHFaeqQlx7F92sov6labpCBeu1BqIRNJ9wemlkuAGMVRnxn3WDZGPD9db9DKdU5i_1masSr0jOvSl1lXzGmZlNCYYbRb1b6ZQcHUB2hh5kAfhtqgn4wuLe7RGDWO6BYUxqBUX3zVxBb6MFAgK0XrnQmonso77rCmHDfSuRSSSUT4IUsPJ8V5tvMq1LPkgWwKizxTVCsLyHvD4j_N1lpR6oKnOPcTHF9LLc-1c3G7o4G3fgEKPKowPl_Ee3Zpl2vMpgp_1qBSblyq88CA";
                 String[] token_RS512_parts = JWSUtil.splitSegment(rs512_token);
-                JWSToken token = new JWSToken(token_RS512_parts[0], token_RS512_parts[1], token_RS512_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.RS512);
-                assertEquals(token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signatureBytes));
-                assertTrue(JWSToken.verify(Algorithm.RS512, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_RS512_parts[0], token_RS512_parts[1], token_RS512_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.RS512);
+                assertEquals(sign_token.getSignaturePart(), JsonToken.encodeBase64UrlSafe(signatureBytes));
+                assertTrue(JWSToken.verify(Algorithm.RS512, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                boolean token_verify = sign_token.verify(pemPublicData);
+                assertTrue(token_verify);
             }
         } catch (SignatureException ex) {
             fail(ex.getMessage(), ex);
@@ -178,26 +208,32 @@ public class JWSTokenTest {
             {
                 String ps256_token = "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzNTEyOX0.ZGxPdvV9SKIB7UQ1Kied45DWxHCD3EKHDmdWJe6lwMm3ux-7zVgkbwUjAFpQwcyiQHStt13qbsJVzkJOEhwwmmL3fiLgcIfl3V4nm3IPEWYZwQJqLCJ8nCgsSD5piHj8JjMypdjIsVAh6uhOvnpcfZqSTMev4li65WcnbOzzsX0hFh7ofyKZae4a3yjhhFfRFEYyrUlglWDm7UEDS1e1aQ0aDtFIsUjv5HQtXeaofy-nwuE5QEhyiIbjfEouClh2TDw4z_RHDZssKXtbQ3lug17QpyNbBZWsVKXWV0hnQOvzm7m2e4DYnlizj1848jzy4Aw2AsBaXAVvWJxlS2NZFg";
                 String[] token_PS256_parts = JWSUtil.splitSegment(ps256_token);
-                JWSToken token = new JWSToken(token_PS256_parts[0], token_PS256_parts[1], token_PS256_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.PS256);
-                assertTrue(JWSToken.verify(Algorithm.PS256, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_PS256_parts[0], token_PS256_parts[1], token_PS256_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.PS256);
+                assertTrue(JWSToken.verify(Algorithm.PS256, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                boolean token_verify = sign_token.verify(pemPublicData);
+                assertTrue(token_verify);
             }
             {
                 String ps384_token = "eyJhbGciOiJQUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzNTEyOX0.XR-ukuVuZGwuaU-KMnRaNXxC3r7EwTlCWhhLK7PfQOayFg_F62THtpPyeFlVafl5Cc_SJfcHm9X2v9MSMKyu9yQwQhYyQKytjGLbuRTs74oUjaHxkQQRgncb7HntwcaFw0gGNJIgQoG4n4d25rKo87LL6F-7y0k8PxsgF7awd6Ol1RF2ikOsRyr1bBrRvUcJP3vZ88p3zic3YcpTFsv2eo1PVKqkalM75sMRQJRbNHLTQuLcTeQ7uYz1a3MOYmmID1EixJj9Y0RwBP4x0EXCSORSuGQvkM6NuXI3HHeCUdSG4jQq13tMgT2QwILEZHoXPme-iyaE_dL0GgfqxJ1t9w";
                 String[] token_PS384_parts = JWSUtil.splitSegment(ps384_token);
-                JWSToken token = new JWSToken(token_PS384_parts[0], token_PS384_parts[1], token_PS384_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.PS384);
-                assertTrue(JWSToken.verify(Algorithm.PS384, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_PS384_parts[0], token_PS384_parts[1], token_PS384_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.PS384);
+                assertTrue(JWSToken.verify(Algorithm.PS384, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                boolean token_verify = sign_token.verify(pemPublicData);
+                assertTrue(token_verify);
             }
             {
                 String ps512_token = "eyJhbGciOiJQUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzNTEyOX0.cvkNlDG8pBIA6VoxO_78YaxSH3K6zd61QYylHdLCqF6iDa3ON5G-ww5bFko_DJSFzZkfCo1vm7YopcghjlOVMgpRBvjz9T7DS3ChHADCRHZhGgQGH71Zpl6_ksdN3iOaPYz-anK8BQpuGrcUe26IinLoKHpltgP4uI-d-O70IGvmsVo7DXgzxU6U7081GgPGGs8e1B5zrbeetncgnaCMpCGSaPt305nDqiZilDEFxqgieVaFPYMxWPX1uq6GdBfbhrngA3tpz2qDrWebzXZsN5myBNNFkRpL-j-oYulN4y6gih1OdHBfn6xt_sW6GUcuPhkrt1KKM29zD5fZsNn1cA";
                 String[] token_PS512_parts = JWSUtil.splitSegment(ps512_token);
-                JWSToken token = new JWSToken(token_PS512_parts[0], token_PS512_parts[1], token_PS512_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.PS512);
-                assertTrue(JWSToken.verify(Algorithm.PS512, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_PS512_parts[0], token_PS512_parts[1], token_PS512_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.PS512);
+                assertTrue(JWSToken.verify(Algorithm.PS512, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                boolean token_verify = sign_token.verify(pemPublicData);
+                assertTrue(token_verify);
             }
         } catch (SignatureException | IOException ex) {
             fail(ex.getMessage(), ex);
@@ -215,10 +251,13 @@ public class JWSTokenTest {
                 String pemPublicData = FileUtil.stringFromFile(new File(pubKeyPath), StandardCharsets.UTF_8);
                 String es256_token = "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2MjkzNTEyOX0.-lb1vRpGrXfx2Yp6iR1NP-KgfWtRV8V3ArPEBGF2cOnYY7xNJeJxlsrLuLorj9TUHO7KKZXSUxdA9dgyzdnicA";
                 String[] token_ES256_parts = JWSUtil.splitSegment(es256_token);
-                JWSToken token = new JWSToken(token_ES256_parts[0], token_ES256_parts[1], token_ES256_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.ES256);
-                assertTrue(JWSToken.verify(Algorithm.ES256, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_ES256_parts[0], token_ES256_parts[1], token_ES256_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.ES256);
+                assertTrue(JWSToken.verify(Algorithm.ES256, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                JWSToken verify_token = new JWSToken(sign_token.getHeader(),sign_token.getPayload(), JWSToken.Signature.valueOf(signatureBytes));
+                boolean verify = verify_token.verify(pemPublicData);
+                assertTrue(verify);
             }
             {
                 String priKeyPath = JWSTokenTest.class.getResource("/resources/private-ec384-key.pem").getPath();
@@ -227,10 +266,13 @@ public class JWSTokenTest {
                 String pemPublicData = FileUtil.stringFromFile(new File(pubKeyPath), StandardCharsets.UTF_8);
                 String es384_token = "eyJhbGciOiJFUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTc2Mjk0NjE2Nn0.ZIkwKFr__wI9lUpj6_grHAD4rLDIf8rat3t98lC9Dl4ohIHfg1qSEudWyUkDPytDvLnJmBQtqSsY9eMrnIT6REMPkZbjuOs7LrPMhWiAu89NXeqopCcCcb4Ciw_xkRB2";
                 String[] token_ES384_parts = JWSUtil.splitSegment(es384_token);
-                JWSToken token = new JWSToken(token_ES384_parts[0], token_ES384_parts[1], token_ES384_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.ES384);
-                assertTrue(JWSToken.verify(Algorithm.ES384, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_ES384_parts[0], token_ES384_parts[1], token_ES384_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.ES384);
+                assertTrue(JWSToken.verify(Algorithm.ES384, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                JWSToken verify_token = new JWSToken(sign_token.getHeader(),sign_token.getPayload(), JWSToken.Signature.valueOf(signatureBytes));
+                boolean verify = verify_token.verify(pemPublicData);
+                assertTrue(verify);
             }
             {
                 String priKeyPath = JWSTokenTest.class.getResource("/resources/private-ec512-key.pem").getPath();
@@ -239,10 +281,13 @@ public class JWSTokenTest {
                 String pemPublicData = FileUtil.stringFromFile(new File(pubKeyPath), StandardCharsets.UTF_8);
                 String es512_token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.AbyO7ctJLHB2rlFMfVl3mm2xa8bQbDHN2ZjLxb3PojfK5VNbnSlnHPmJN5gBcDN2yjNcQ1ty7Oi0AoxTTTnByqiGACi1wzY1D1pHCEhcliMr8qRl0zkTMko-Uy2XgdjjXVknqifW5bdyCAMk1fdfmA54awQPUraOFvU20a1nNWbuzt5s";
                 String[] token_ES512_parts = JWSUtil.splitSegment(es512_token);
-                JWSToken token = new JWSToken(token_ES512_parts[0], token_ES512_parts[1], token_ES512_parts[2]);
-                byte[] signatureBytes = token.sign(pemPrivateData);
-                assertEquals(token.getAlgorithm(), JWSToken.Algorithm.ES512);
-                assertTrue(JWSToken.verify(Algorithm.ES512, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+                JWSToken sign_token = new JWSToken(token_ES512_parts[0], token_ES512_parts[1], token_ES512_parts[2]);
+                byte[] signatureBytes = sign_token.sign(pemPrivateData);
+                assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.ES512);
+                assertTrue(JWSToken.verify(Algorithm.ES512, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+                JWSToken verify_token = new JWSToken(sign_token.getHeader(),sign_token.getPayload(), JWSToken.Signature.valueOf(signatureBytes));
+                boolean verify = verify_token.verify(pemPublicData);
+                assertTrue(verify);
             }
         } catch (SignatureException | IOException ex) {
             fail(ex.getMessage(), ex);
@@ -295,10 +340,13 @@ public class JWSTokenTest {
             String pemPublicData = FileUtil.stringFromFile(new File(pubKeyPath), StandardCharsets.UTF_8);
             String eddsa_token = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.JkKWCY39IdWEQttmdqR7VdsvT-_QxheW_eb0S5wr_j83ltux_JDUIXs7a3Dtn3xuqzuhetiuJrWIvy5TzimeCg";
             String[] token_EDDSA_parts = JWSUtil.splitSegment(eddsa_token);
-            JWSToken token = new JWSToken(token_EDDSA_parts[0], token_EDDSA_parts[1], token_EDDSA_parts[2]);
-            byte[] signatureBytes = token.sign(pemPrivateData);
-            assertEquals(token.getAlgorithm(), JWSToken.Algorithm.EDDSA);
-            assertTrue(JWSToken.verify(Algorithm.EDDSA, pemPublicData, StringUtil.getBytesUTF8(token.getData()), signatureBytes));
+            JWSToken sign_token = new JWSToken(token_EDDSA_parts[0], token_EDDSA_parts[1], token_EDDSA_parts[2]);
+            byte[] signatureBytes = sign_token.sign(pemPrivateData);
+            assertEquals(sign_token.getAlgorithm(), JWSToken.Algorithm.EDDSA);
+            assertTrue(JWSToken.verify(Algorithm.EDDSA, pemPublicData, StringUtil.getBytesUTF8(sign_token.getData()), signatureBytes));
+            JWSToken verify_token = new JWSToken(sign_token.getHeader(),sign_token.getPayload(), JWSToken.Signature.valueOf(signatureBytes));
+            boolean verify = verify_token.verify(pemPublicData);
+            assertTrue(verify);
         } catch (IOException | SignatureException ex) {
             fail(ex.getMessage(), ex);
         }
@@ -311,29 +359,31 @@ public class JWSTokenTest {
             System.out.println("testSign_Empty:" + Algorithm.HS256.name());
             JWSToken.Header header = JWSToken.Header.generateAlgorithm(Algorithm.HS256);
             JWSToken.Payload payload = new JWSToken.Payload("");
-            JWSToken token = new JWSToken(header, payload);
-            byte [] signature = token.sign("");
-            token.getSignature().setEncodeBase64Url(signature);;
+            JWSToken sign_token = new JWSToken(header, payload);
+            byte [] signature = sign_token.sign("");
+            sign_token.getSignature().setEncodeBase64Url(signature);;
+            fail();
         } catch (SignatureException ex) {
-            System.out.println(ex.getMessage());
+//            System.out.println(ex.getMessage());
 //            ex.printStackTrace();
         } catch (Exception ex) {
 //            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
         try {
             System.out.println("testSign_Empty:" + Algorithm.RS256.name());
             JWSToken.Header header = JWSToken.Header.generateAlgorithm(Algorithm.RS256);
             JWSToken.Payload payload = new JWSToken.Payload("");
-            JWSToken token = new JWSToken(header, payload);
-            byte [] signature = token.sign("");
-            token.getSignature().setEncodeBase64Url(signature);;
+            JWSToken sign_token = new JWSToken(header, payload);
+            byte [] signature = sign_token.sign("");
+            sign_token.getSignature().setEncodeBase64Url(signature);;
+            fail();
         } catch (SignatureException ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+//            System.out.println(ex.getMessage());
+//            ex.printStackTrace();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            ex.printStackTrace();
+//            System.out.println(ex.getMessage());
+//            ex.printStackTrace();
         }
 
     }
@@ -701,10 +751,10 @@ public class JWSTokenTest {
         try {
             byte[] publicKeyPem = FileUtil.readAllBytes(JWSTokenTest.class.getResourceAsStream("/resources/public.pem"));
             {
-                JWSToken except_token = jwtinstance.parseToken(test, true);
-                except_token.sign(Algorithm.HS256, StringUtil.getStringRaw(publicKeyPem));
-                String result = except_token.getToken();
-                System.out.println("result:" + except_token.getToken());
+                JWSToken sign_token = jwtinstance.parseToken(test, true);
+                sign_token.sign(Algorithm.HS256, StringUtil.getStringRaw(publicKeyPem));
+                String result = sign_token.getToken();
+                System.out.println("result:" + sign_token.getToken());
                 assertEquals(expected, result);
             }
         } catch (IOException | SignatureException ex) {
@@ -721,11 +771,11 @@ public class JWSTokenTest {
         try {
             byte[] publicKeyPem = FileUtil.readAllBytes(JWSTokenTest.class.getResourceAsStream("/resources/public.pem"));
             {
-                JWSToken except_token = jwtinstance.parseToken(expected, true);
-                byte sign[] = except_token.sign(Algorithm.HS256, StringUtil.getStringRaw(publicKeyPem));
-                System.out.println("hsdata:" + except_token.getData());
+                JWSToken sign_token = jwtinstance.parseToken(expected, true);
+                byte sign[] = sign_token.sign(Algorithm.HS256, StringUtil.getStringRaw(publicKeyPem));
+                System.out.println("hsdata:" + sign_token.getData());
                 System.out.println("except:" + JsonToken.encodeBase64UrlSafe(sign));
-                assertEquals(JsonToken.encodeBase64UrlSafe(sign), except_token.getSignaturePart());
+                assertEquals(JsonToken.encodeBase64UrlSafe(sign), sign_token.getSignaturePart());
             }
             {
                 JWSToken rs_token = jwtinstance.parseToken(tokentest, true);

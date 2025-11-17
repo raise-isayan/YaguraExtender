@@ -8,6 +8,8 @@ import java.security.PublicKey;
 import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.EdECPrivateKey;
+import java.security.interfaces.EdECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
@@ -16,8 +18,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import org.bouncycastle.jcajce.interfaces.EdDSAPrivateKey;
-import org.bouncycastle.jcajce.interfaces.EdDSAPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMException;
 
@@ -28,7 +28,6 @@ import org.bouncycastle.openssl.PEMException;
 public class JWSUtil {
 
     private JWSUtil() {
-
     }
 
     private final static BouncyCastleProvider BC_PROVIDER_INSTANCE = new BouncyCastleProvider();
@@ -46,7 +45,7 @@ public class JWSUtil {
 
     /**
      * 指定されたセグメントがBase64URLセーフな文字セット（A-Z, a-z, 0-9, -, _）のみで
-     * 構成され、かつBase64URLデコード可能かを確認します。
+     * 構成され、かつBase64URLデコード可能
      *
      * * @param segment JWTセグメント
      * @return 有効なBase64URLセグメントの場合 true
@@ -217,12 +216,13 @@ public class JWSUtil {
         return (ECPublicKey) BouncyUtil.loadPublicKeyFromPem(pemData);
     }
 
-    public static EdDSAPrivateKey toEdDSAPrivateKey(String pemData) throws PEMException {
-        return (EdDSAPrivateKey) BouncyUtil.loadPrivateKeyFromPem(pemData);
+    public static EdECPrivateKey toEdECPrivateKey(String pemData) throws PEMException {
+        return (EdECPrivateKey) BouncyUtil.loadPrivateKeyFromPem(pemData);
     }
 
-    public static EdDSAPublicKey toEdDSAPublicKey(String pemData) throws PEMException {
-        return (EdDSAPublicKey) BouncyUtil.loadPublicKeyFromPem(pemData);
+    public static EdECPublicKey toEdECPublicKey(String pemData) throws PEMException {
+        return (EdECPublicKey) BouncyUtil.loadPublicKeyFromPem(pemData);
     }
+
 
 }

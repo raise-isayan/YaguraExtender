@@ -106,6 +106,10 @@ public interface JsonToken {
             return this.tokenPart.isEmpty();
         }
 
+        public static Signature valueOf(byte[] tokenBytes) {
+            return new Signature(JsonToken.encodeBase64UrlSafe(tokenBytes));
+        }
+
     }
 
     public static String decodeUrl(String value) {

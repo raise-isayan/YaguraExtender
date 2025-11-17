@@ -57,11 +57,22 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     protected final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     // https://docs.oracle.com/javase/jp/11/docs/specs/security/standard-names.html#keypairgenerator-algorithms
-    private final static String [] ALGORITHM = new String [] {"RSA", "DSA", "EC", "Ed25519"};
+    private final static String [] ALGORITHM = new String [] {"RSA", "DSA", "EC", "Ed25519", "Ed448"};
+    private final static Map<String, Boolean> KEY_USE_MAP = new HashMap();
     private final static int [] RSA_KEYSIZE = new int [] {512, 1024, 2048, 3072, 4098};
     private final static int [] DSA_KEYSIZE = new int [] {512, 768, 1024, 2048, 3072};
     private final static int [] EC_KEYSIZE = new int [] {224, 256, 384, 521};
-    private final static int [] ED_KEYSIZE = new int [] {256};
+    private final static int [] ED25519_KEYSIZE = new int [] {255};
+    private final static int [] ED448_KEYSIZE = new int [] {448};
+
+    static
+    {
+        KEY_USE_MAP.put("RSA", Boolean.TRUE);
+        KEY_USE_MAP.put("DSA", Boolean.TRUE);
+        KEY_USE_MAP.put("EC", Boolean.TRUE);
+        KEY_USE_MAP.put("Ed25519", Boolean.FALSE);
+        KEY_USE_MAP.put("Ed448", Boolean.FALSE);
+    }
 
     /**
      * Creates new form Certificate
@@ -1181,7 +1192,10 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             keysize_list = EC_KEYSIZE;
         }
         else if ("Ed25519".equals(algo)) {
-            keysize_list = ED_KEYSIZE;
+            keysize_list = ED25519_KEYSIZE;
+        }
+        else if ("Ed448".equals(algo)) {
+            keysize_list = ED448_KEYSIZE;
         }
         List<AbstractButton> rdoGroup = ConvertUtil.toList(this.btnGrpAlgorithm.getElements().asIterator());
         for (int i = 0; i < rdoGroup.size(); i++) {
@@ -1339,7 +1353,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         try {
             String algo = this.getAlgorithm();
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance(algo);
-            keyGen.initialize(this.getKeySize());
+            if (KEY_USE_MAP.getOrDefault(algo, Boolean.FALSE)) {
+                keyGen.initialize(this.getKeySize());
+            }
             KeyPair keyPair = keyGen.generateKeyPair();
             return keyPair;
         } catch (NoSuchAlgorithmException ex) {

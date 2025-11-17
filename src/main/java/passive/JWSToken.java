@@ -101,9 +101,9 @@ public class JWSToken implements JsonToken {
         RS256("RS256", "SHA256withRSA", null),
         RS384("RS384", "SHA384withRSA", null),
         RS512("RS512", "SHA512withRSA", null),
-        PS256("PS256", "RSASSA-PSS", new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)),
-        PS384("PS384", "RSASSA-PSS", new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384, 48, 1)),
-        PS512("PS512", "RSASSA-PSS", new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512, 64, 1)),
+        PS256("PS256", "SHA256withRSA/PSS", new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)),
+        PS384("PS384", "SHA384withRSA/PSS", new PSSParameterSpec("SHA-384", "MGF1", MGF1ParameterSpec.SHA384, 48, 1)),
+        PS512("PS512", "SHA512withRSA/PSS", new PSSParameterSpec("SHA-512", "MGF1", MGF1ParameterSpec.SHA512, 64, 1)),
         ES256("ES256", "SHA256withECDSA", null),
         ES384("ES384", "SHA384withECDSA", null),
         ES512("ES512", "SHA512withECDSA", null),
@@ -413,7 +413,7 @@ public class JWSToken implements JsonToken {
                     signatureByte = sign(algo, JWSUtil.toECPrivateKey(secretKey), messageBytes);
                     break;
                 case EDDSA:
-                    signatureByte = sign(algo, JWSUtil.toEdDSAPrivateKey(secretKey), messageBytes);
+                    signatureByte = sign(algo, JWSUtil.toEdECPrivateKey(secretKey), messageBytes);
                     break;
             }
             return signatureByte;
@@ -485,7 +485,7 @@ public class JWSToken implements JsonToken {
             signature.initSign(secretKey);
             signature.update(messageBytes);
             return signature.sign();
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException  ex) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException ex) {
             throw new SignatureException(ex.getMessage(), ex);
         }
     }
@@ -507,8 +507,12 @@ public class JWSToken implements JsonToken {
         return signature.equals(JsonToken.encodeBase64UrlSafe(signatureByte));
     }
 
+    public boolean verify(String secretKey) throws SignatureException {
+        return verify(this.header.getAlgorithm(), secretKey, StringUtil.getBytesUTF8(this.getData()), this.getSignatureBytes());
+    }
+
     public boolean verify(Algorithm algo, String secretKey) throws SignatureException {
-        return verify(algo, secretKey, JsonToken.decodeBase64UrlSafeByte(this.getData()), this.getSignatureBytes());
+        return verify(algo, secretKey, StringUtil.getBytesUTF8(this.getData()), this.getSignatureBytes());
     }
 
     public static boolean verify(Algorithm algo, String secretKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {
@@ -538,7 +542,7 @@ public class JWSToken implements JsonToken {
                     result = verify(algo, JWSUtil.toECPublicKey(secretKey), messageBytes, signatureBytes);
                     break;
                 case EDDSA:
-                    result = verify(algo, JWSUtil.toEdDSAPublicKey(secretKey), messageBytes, signatureBytes);
+                    result = verify(algo, JWSUtil.toEdECPublicKey(secretKey), messageBytes, signatureBytes);
                     break;
             }
             return result;
@@ -547,7 +551,7 @@ public class JWSToken implements JsonToken {
         }
     }
 
-    private static boolean verify(Algorithm algo, PublicKey publicKey, String message, String signature) throws SignatureException {
+    protected static boolean verify(Algorithm algo, PublicKey publicKey, String message, String signature) throws SignatureException {
         return verify(algo, publicKey, StringUtil.getBytesUTF8(message), JsonToken.decodeBase64UrlSafeByte(signature));
     }
 
@@ -582,7 +586,7 @@ public class JWSToken implements JsonToken {
             verifier.initVerify(publicKey);
             verifier.update(messageBytes);
             return verifier.verify(signatureBytes);
-        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException  ex) {
+        } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeyException ex) {
             throw new SignatureException(ex.getMessage(), ex);
         }
     }

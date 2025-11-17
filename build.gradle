@@ -136,7 +136,7 @@ dependencies {
     testImplementation 'net.portswigger.burp.extensions:montoya-api:2025.10'
 
     // https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
-    testImplementation 'com.nimbusds:nimbus-jose-jwt:10.6'
+    testImplementation 'com.nimbusds:nimbus-jose-jwt:10.0.2'
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'

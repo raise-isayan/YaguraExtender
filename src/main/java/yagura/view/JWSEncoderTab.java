@@ -103,10 +103,10 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlActionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbAlgo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbAlgo, 0, 113, Short.MAX_VALUE)
                     .addComponent(btnEncode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTokenValid, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
+                    .addComponent(lblTokenValid, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         pnlActionLayout.setVerticalGroup(
@@ -116,10 +116,10 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
                 .addComponent(btnEncode)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnClear)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblTokenValid, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblTokenValid, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
 
@@ -199,12 +199,44 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
         return this;
     }
 
+    public void setSelectedAlgorithm(JWSToken.Algorithm algo) {
+        if (algo == null) {
+            this.cmbAlgo.setSelectedIndex(0);
+        }
+        else {
+            this.cmbAlgo.setSelectedItem(algo);
+        }
+    }
+    public JWSToken.Algorithm getSelectedAlgorithm() {
+        return (JWSToken.Algorithm)this.cmbAlgo.getSelectedItem();
+    }
+
+    public JWSToken.Header getHeader() {
+        return this.panelJWSEdit.getHeader();
+    }
+
+    public String getHeaderJSON(boolean pretty) {
+        return this.panelJWSEdit.getHeaderJSON(pretty);
+    }
+
     public void setHeaderJSON(String value, boolean pretty) {
         this.panelJWSEdit.setHeaderJSON(value, pretty);
     }
 
+    public JWSToken.Payload Payload() {
+        return this.panelJWSEdit.getPayload();
+    }
+
+    public String getPayloadJSON(boolean pretty) {
+        return this.panelJWSEdit.getPayloadJSON(pretty);
+    }
+
     public void setPayloadJSON(String value, boolean pretty) {
         this.panelJWSEdit.setPayloadJSON(value, pretty);
+    }
+
+    public String getSecretKey() {
+        return this.panelJWSEdit.getSecretKey();
     }
 
     public void setSecretKey(String value) {
