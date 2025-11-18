@@ -87,9 +87,11 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        lblTokenValid.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTokenValid.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         btnEncode.setText("Encode");
+        btnEncode.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         btnEncode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEncodeActionPerformed(evt);
@@ -103,8 +105,8 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlActionLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbAlgo, 0, 113, Short.MAX_VALUE)
-                    .addComponent(btnEncode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbAlgo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEncode, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                     .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTokenValid, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
@@ -119,7 +121,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTokenValid, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cmbAlgo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12))
         );
 

@@ -88,6 +88,7 @@ public class JWSDecoderTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        lblTokenValid.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTokenValid.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout pnlActionLayout = new javax.swing.GroupLayout(pnlAction);
@@ -107,9 +108,9 @@ public class JWSDecoderTab extends javax.swing.JPanel implements IBurpTab {
             pnlActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlActionLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnDecode, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDecode)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnClear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTokenValid, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

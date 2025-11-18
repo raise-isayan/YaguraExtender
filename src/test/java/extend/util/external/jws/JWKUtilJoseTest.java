@@ -4,22 +4,21 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.Curve;
 import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.KeyType;
 import com.nimbusds.jose.jwk.OctetKeyPair;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
+import java.security.interfaces.EdECPrivateKey;
+import java.security.interfaces.EdECPublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -56,15 +55,26 @@ public class JWKUtilJoseTest {
     public void tearDown() {
     }
 
+    private final static String JWK_RSA_KEY = "{\n" +
+        "    \"p\": \"48ROPhznQFngYuQi_y_RBcWnWLxQF4eUuTXMBalMceAG42GKWS3DE1BDTVNSHI0BhsaNIwxxiId4-TlebO-mpS2qH4wPKg9xYl4mLbPwh5-LW7_JXf_HJehGRUex1XZmPQ3q4se1C7HEOpZInfEwWSE72NSJTdtDfBg1XzG5yXk\",\n" +
+        "    \"kty\": \"RSA\",\n" +
+        "    \"q\": \"wey5aHgMXQLzmTbF731k4A5dd4dmndK7pHlGaMfUaV60lRyexqr3VZb1_d82lbbAZkQfX9MomNffk9GDOgWYOpu5RF_4ktnDHXvD--ns6_U5jX4QjdK8u58FScRtLmOwAiE3d9nSssI5KQJwQS5X0EpIQmdpHxUnRmg3OwpBBW8\",\n" +
+        "    \"d\": \"HvBuWwrhhKkA-a4Ws5JzkIkRhuT99CZ9eIRSZdbKwPa8i3JqHbdvaXuhfIMhzCICc1edOCKz1GoQi2029I3-MoA_S5Pq69YoooAUhS9j1y8WDCI3lDrroNxvD6blGw6p0xYBIAdpYl9P7QWdoAGIHp-FzT37p7-J3ET5BnD-KVxXZhXp6O-cR49Xav0M0sE4Yd8LManIj5pN-mSxgf1DwrhzLDJ9X0cKb-78ewJnKIrMfbwDZvQLMxnxLRzHETMuRszyalPQPxTkffdHlhuCYyg9UROUXzxaUDxuaT-zotMyy5X0UIpLJWfMkYtKkYT8Fdg2PePPzXkeLVjhs9j6gQ\",\n" +
+        "    \"e\": \"AQAB\",\n" +
+        "    \"use\": \"sig\",\n" +
+        "    \"qi\": \"vL7BlNaVg2ZUkj5-Zru_EO3GmwjUPXQzye3ysM0-xLw4YdtYksEhx0ANlNfG8I1dC8zerbDXyvWvpfbfxNRIKuQgtn2ly7EOpiClV_iq-rjJ5r0QGcGcMvzQbWZLgzdXEcMq662d5gGX27IU5A2pwDZmfId_Ko4g2CsRPZOaSGc\",\n" +
+        "    \"dp\": \"rOW2k1XzgZj4SXluy5IrtJr-1tBUaBgmoJWi42VJv2PVNsQzdlDTtZSHEmq-eSfc0cdlGgb3JDHadi3DbSRatya77qiuVjpU0twvVSAz5XAKJMKohG-GaFMzDKJI74aqQ4yOEkqRN2hhUiwEwch18CLXQFjORci9KLVjxniD1Nk\",\n" +
+        "    \"alg\": \"RS256\",\n" +
+        "    \"dq\": \"Dn8GoROQQQeuc_6PL0bdWo5YWE4L0rJlCndyVvTRIQtOTnM0Pz-ae5BsVQzxhKGDomFnQv-C4mIIuYEI4TZ32bG4WK8f4sJafoK49MTYzA6pvbT1wdRF_XR2rbv8OWKETrRy9AeZY3l3UmR3RbgUImLbIfOe_Q7Uv8OclVI_6As\",\n" +
+        "    \"n\": \"rImc6sQmrXOpnxYj73g57A9hakV24DSqEGuWRCovkeUbwZbc-ZX7fTDcGpbhI3WZpZmK4uU_w08NMJJv6zITLiWuWf4M4_diTTdlXVGUcgkAay5DDzc9bL6l0W0FceEWK5A2J5IRSpoaaK6ACQsn6Sm_GgxkgNqRP5UdWfdjCR92sSVGtZKpMdzZppiXMJDvIbrcIVEokwN2Am4udO99UGzUbvLJcrP_zBGoIDYj86MEDoTNhl1bjzUX6eZyzsgDCDHstOxCdqYGn3FXZGyJVepjm0dOWF5ycgHQWO6sxditpMgUt3UtdJOmuBZecZo7x5-ONbfSN4nb6VAtEja4dw\"\n" +
+        "}";
+
     @Test
-    public void testParseJWK() {
+    public void testParseJoseJWK() {
+        System.out.println("testParseJoseJWK");
         try {
-            System.out.println("testParseJWK");
-            String jsonJWK = "{\"kty\":\"RSA\",\"n\":\"ANBBzCbXZqdj1juvW3A1MShLjccs89r0bPRUr71PwknG-7nr_QuYgb5vQgjr7RZbpj9GcePsdthugvL-a7o_trgZcAFa5dTgRyHcs32719l4KC0cyNfip2WCPO7e5eY3kPrh4fT10LvzZ1WvdlrRw4AVRI6fd-fzx8s5A1bnW3gUg09VVz6lnZXp1riKWxfZgmuQD-qOOZptt9d1HrdJALao1tsEBO3S6RzZYL5GFrr0agRbtt_ux2Owju6C0_l1tGTee1mpUUOg_GIphkYvKW0ZetUZMyWDNu1MHbVTHIejNEo9YOZTcBXzJkdnNazhUxa4ODjX-Dkdj9UBcPlnVps=\",\"e\":\"AQAB\",\"d\":\"CegPW4ukjPLhVn59dYV6PKX3bRGU2gYFhsvefj1kixjlkY8Jvvr2tQXa2MzMPuOGMX1a3pI5hwsevItguX_dY72GB_J4e1td1t0GRsVgO66NDrRPU4GrH9eFqYE942kiQuTq2Dm3P7GQ6VEK6sAOsjGQzM4GKKj-iIrCP2iK_9e3-rwgjj3TcwVowir1SSVRkUI177pAdA4Qe2blS3mWtlPJrDOqKVM0QlnKcLWsQJ0D1MmgVQq91twyBemQEXyKFka4FnehlY835T-WTPGyMxhYKu9kr07wDLL4OvWNHYvv0LoqMBj_o8w3SwM4o8xSp8jiGRDmz6BAX_alJzsWnQ==\",\"p\":\"AO6JcdiuBGTTfP0gYJrz1VzutiB1b7858PCY2D_Jy5CA-ravZAvbRG5125ccMGYqkBlWrc3cdgVVEx3SILzGTsMl1QXGFMaJ8V7-L9h8CD6t0z3AtGbJXfU-FzZsim_Fyl5KBPm9I0_kgNuQBY3_tFRqmJ05Met1cgYYY9hrPJd9\",\"q\":\"AN-A3EkJEG8CpwHIzLc48o5Nxn-pAGiIRY0wyT0q7FJy-wc_rMDdO4iwmE7eOegNOpquoI5sst2ZWVXW0qy7IRChTlNcApMV63DYQShjTPdpDD4Kx_He8q8inuGfw4lQzv5EDPhShMTayKFpx5dAX6o0w1tHqlR9yIZ5usdpz3H3\",\"dp\":\"SP6oZw1BbPVG_1LkHSbWuPyXoTEuxA7gC1BKhKKk95BwqGzdqb8snrzUONa4fNszg32B7Eg1mYYiNnLx77KjsZYnLQAjpWnbAh242H-EKmIZDYGl8vpWFVEt20q1xmR5fAccpKvbXXxobkgRWxXPwjFoiFxTSWGERhc6nqSaQyU=\",\"dq\":\"ZlWDBzHOQ3XMb-W3zgCWFpAH3fXMiRA0AEShL4-SquGYjKYb_CaPlrN82Ueo7dX4ylBAlVWxxALtw37b8Viw-ANTcJmFWEFGDuIFW2-0EugXQeT_zYAOUCAi7R2QkzPbwtH3uk9WGSgvirB7QYapBq6n8AhtNcht4xyjZ6DL6ds=\",\"qi\":\"ANKXemRfZxoWIb347JQFhWjCRu7iDsFBSdlXe2fH1qRxDCwh4Wz3bj5h5P7nVHx2v7jXKkZyM2ffnIHTvulwBC3WE6keGO1TO5NAZAXdYFbQGH7DWpd3mIV8mm7f4tKUrIfD_r3LomxXBEIS04YcV_yV-p8CKEpMQrhC7xqtltgd\"}";
-            KeyPair keyPair = JWKJoseUtil.parseRSAJWK(jsonJWK);
-            assertTrue(keyPair.getPrivate() instanceof RSAPrivateKey);
-            assertTrue(keyPair.getPublic() instanceof RSAPublicKey);
-        } catch (InvalidKeySpecException ex) {
+            JWK jwk = JWK.parse(JWK_RSA_KEY);
+        } catch (ParseException ex) {
             fail(ex.getMessage(), ex);
         }
     }
@@ -76,52 +86,77 @@ public class JWKUtilJoseTest {
             {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA","BC");
                 kpg.initialize(2048);
-                KeyPair keyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKJoseUtil.toRSAJWK(keyPair);
+                KeyPair genKeyPair = kpg.generateKeyPair();
+                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
                 System.out.println("toRSAJWK:" + jsonJWK);
-
-                KeyPair keyPairPublic = new KeyPair(keyPair.getPublic(), null);
-                String jsonJWKPub = JWKJoseUtil.toRSAJWK(keyPairPublic);
-                System.out.println("toRSAJWK:" + jsonJWKPub);
-                RSAKey.Builder key = new RSAKey.Builder((RSAPublicKey) keyPair.getPublic());
-                System.out.println("buildRSA256JWK:" + key.build());
+                JWK jwk = JWK.parse(jsonJWK);
+                RSAKey rsaKey = jwk.toRSAKey();
+                KeyPair rsaKeyPair = rsaKey.toKeyPair();
+                assertTrue(rsaKeyPair.getPublic() instanceof RSAPublicKey);
+                assertTrue(rsaKeyPair.getPrivate() instanceof RSAPrivateKey);
             }
             {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC","BC");
                 kpg.initialize(256);
-                KeyPair keyPair = kpg.generateKeyPair();
-//                String jsonJWK = JWKUtil.toJWK(keyPair);
-                System.out.println("toECJWK:" + keyPair.getPrivate().getAlgorithm());
-                System.out.println("toECJWK:" + keyPair.getPublic().getAlgorithm());
-                System.out.println("toECJWK.Name:" + keyPair.getPrivate().getClass().getName());
-                KeyFactory kf = KeyFactory.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
-                ECPublicKeySpec pubSpec = kf.getKeySpec(keyPair.getPublic(), java.security.spec.ECPublicKeySpec.class);
-                System.out.println("toECJWK:" + pubSpec.getParams().getCurve().getField().getFieldSize());
-                ECKey.Builder key = new ECKey.Builder(Curve.P_256, (ECPublicKey) keyPair.getPublic());
-                System.out.println("buildEC256JWK:" + key.build());
+                KeyPair genKeyPair = kpg.generateKeyPair();
+                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                System.out.println("toEC256JWK:" + jsonJWK);
+                JWK jwk = JWK.parse(jsonJWK);
+                ECKey ecKey = jwk.toECKey();
+                KeyPair ecKeyPair = ecKey.toKeyPair();
+                assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
+                assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
             }
             {
-                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed25519","BC");
-                KeyPair keyPair = keyGen.generateKeyPair();
-                System.out.println("toEdJWK.Name:" + keyPair.getPrivate().getClass().getName());
-                System.out.println("toEdJWK:" + keyPair.getPrivate().getAlgorithm());
-                System.out.println("toEdJWK:" + keyPair.getPublic().getAlgorithm());
-                System.out.println("toEdJWK.EdECPublicKey(EC):" + (keyPair.getPublic() instanceof java.security.interfaces.EdECPublicKey));
+                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC","BC");
+                kpg.initialize(384);
+                KeyPair genKeyPair = kpg.generateKeyPair();
+                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                System.out.println("toEC384JWK:" + jsonJWK);
+                JWK jwk = JWK.parse(jsonJWK);
+                ECKey ecKey = jwk.toECKey();
+                KeyPair ecKeyPair = ecKey.toKeyPair();
+                assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
+                assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
             }
             {
-//                OctetKeyPair jwk = new OctetKeyPairGenerator(Curve.Ed25519).generate();
-
-                // 秘密鍵・公開鍵を含むJWK (private + public)
-//                System.out.println("Full JWK:");
-//                System.out.println(jwk.toJSONString());
+                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC","BC");
+                kpg.initialize(521);
+                KeyPair genKeyPair = kpg.generateKeyPair();
+                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                System.out.println("toEC512JWK:" + jsonJWK);
+                JWK jwk = JWK.parse(jsonJWK);
+                ECKey ecKey = jwk.toECKey();
+                KeyPair ecKeyPair = ecKey.toKeyPair();
+                assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
+                assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
             }
-            {
-//                OctetKeyPair jwk = new OctetKeyPairGenerator(Curve.Ed448).generate();
-                // 秘密鍵・公開鍵を含むJWK (private + public)
-//                System.out.println("Full JWK:");
-//                System.out.println(jwk.toJSONString());
+            if (OctetKeyPairGenerator.SUPPORTED_CURVES.contains(Curve.Ed25519)) {
+                KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed25519","BC");
+                KeyPair genKeyPair = kpg.generateKeyPair();
+                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                JWK jwk = JWK.parse(jsonJWK);
+                OctetKeyPair edKeyPair = jwk.toOctetKeyPair();
+                assertEquals(edKeyPair.getKeyType(),KeyType.OKP);
+                assertEquals(edKeyPair.getCurve(),Curve.Ed25519);
+            }
+            if (OctetKeyPairGenerator.SUPPORTED_CURVES.contains(Curve.Ed448)) {
+                KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed448","BC");
+                KeyPair genKeyPair = kpg.generateKeyPair();
+                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                JWK jwk = JWK.parse(jsonJWK);
+                OctetKeyPair edKeyPair = jwk.toOctetKeyPair();
+                assertEquals(edKeyPair.getKeyType(),KeyType.OKP);
+                assertEquals(edKeyPair.getCurve(),Curve.Ed448);
             }
         } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
+            ex.printStackTrace();
+            fail(ex.getMessage(), ex);
+        } catch (JOSEException ex) {
+            ex.printStackTrace();
+            fail(ex.getMessage(), ex);
+        } catch (ParseException ex) {
+            ex.printStackTrace();
             fail(ex.getMessage(), ex);
         }
     }
@@ -131,86 +166,73 @@ public class JWKUtilJoseTest {
         System.out.println("testJoseJWK");
         {
             try {
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", BouncyCastleProvider.PROVIDER_NAME);
-                kpg.initialize(2048);
-                KeyPair keyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(keyPair, false);
-                System.out.println("toRSAJWK:" + jsonJWK);
-                JWK jwk = JWK.parse(jsonJWK);
-                KeyPair rsaKey = jwk.toRSAKey().toKeyPair();
-                assertTrue(rsaKey.getPublic() instanceof RSAPublicKey);
-                assertTrue(rsaKey.getPrivate() instanceof RSAPrivateKey);
-            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException | ParseException | JOSEException ex) {
+                {
+                    KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", BouncyCastleProvider.PROVIDER_NAME);
+                    kpg.initialize(2048);
+                    KeyPair keyPair = kpg.generateKeyPair();
+                    RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey)keyPair.getPublic()).privateKey((RSAPrivateKey)keyPair.getPrivate()).build();
+                    String jsonJWK = rsaKey.toString();
+                    System.out.println("toRSAJWK:" + jsonJWK);
+                    KeyPair rsaKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    assertTrue(rsaKeyPair.getPublic() instanceof RSAPublicKey);
+                    assertTrue(rsaKeyPair.getPrivate() instanceof RSAPrivateKey);
+                }
+                {
+                    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
+                    kpg.initialize(256);
+                    KeyPair keyPair = kpg.generateKeyPair();
+                    ECKey ecKey = new ECKey.Builder(Curve.P_256, (ECPublicKey)keyPair.getPublic()).privateKey((ECPrivateKey)keyPair.getPrivate()).build();
+                    String jsonJWK = ecKey.toString();
+                    System.out.println("toEC256JWK:" + jsonJWK);
+                    KeyPair ecKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
+                    assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
+                }
+                {
+                    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
+                    kpg.initialize(384);
+                    KeyPair keyPair = kpg.generateKeyPair();
+                    ECKey ecKey = new ECKey.Builder(Curve.P_384, (ECPublicKey)keyPair.getPublic()).privateKey((ECPrivateKey)keyPair.getPrivate()).build();
+                    String jsonJWK = ecKey.toString();
+                    System.out.println("toEC384JWK:" + jsonJWK);
+                    KeyPair ecKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
+                    assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
+                }
+                {
+                    KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
+                    kpg.initialize(521);
+                    KeyPair keyPair = kpg.generateKeyPair();
+                    ECKey ecKey = new ECKey.Builder(Curve.P_521, (ECPublicKey)keyPair.getPublic()).privateKey((ECPrivateKey)keyPair.getPrivate()).build();
+                    String jsonJWK = ecKey.toString();
+                    System.out.println("toEC521JWK:" + jsonJWK);
+                    KeyPair ecKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
+                    assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
+                }
+                if (OctetKeyPairGenerator.SUPPORTED_CURVES.contains(Curve.Ed25519)) {
+                    OctetKeyPair jwk = new OctetKeyPairGenerator(Curve.Ed25519).generate();
+                    // 秘密鍵・公開鍵を含むJWK (private + public)
+                    String jsonJWK = jwk.toJSONString();
+                    System.out.println("Ed25519 JWK:" + jsonJWK);
+                    KeyPair edKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    assertTrue(edKeyPair.getPublic() instanceof EdECPublicKey);
+                    assertTrue(edKeyPair.getPrivate() instanceof EdECPrivateKey);
+                }
+                if (OctetKeyPairGenerator.SUPPORTED_CURVES.contains(Curve.Ed448)) {
+                    OctetKeyPair jwk = new OctetKeyPairGenerator(Curve.Ed448).generate();
+                  // 秘密鍵・公開鍵を含むJWK (private + public)
+                    String jsonJWK = jwk.toJSONString();
+                    System.out.println("Ed448 JWK:" + jsonJWK);
+                    KeyPair edKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    assertTrue(edKeyPair.getPublic() instanceof EdECPublicKey);
+                    assertTrue(edKeyPair.getPrivate() instanceof EdECPrivateKey);
+                }
+            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException  ex) {
+                ex.printStackTrace();
                 fail(ex.getMessage(), ex);
-            }
-            try {
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
-                kpg.initialize(256);
-                KeyPair keyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(keyPair, false);
-                System.out.println("toEC256JWK:" + jsonJWK);
-                JWK jwk = JWK.parse(jsonJWK);
-                KeyPair ecKey = jwk.toECKey().toKeyPair();
-                assertTrue(ecKey.getPublic() instanceof ECPublicKey);
-                assertTrue(ecKey.getPrivate() instanceof ECPrivateKey);
-                KeyPair keyPairPub = new KeyPair(keyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
-                System.out.println("toEC256JWK:" + jsonJWKPub);
-            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException | ParseException | JOSEException ex) {
-                fail(ex.getMessage(), ex);
-            }
-            try {
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
-                kpg.initialize(384);
-                KeyPair keyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(keyPair, false);
-                System.out.println("toEC384JWK:" + jsonJWK);
-                JWK jwk = JWK.parse(jsonJWK);
-                KeyPair ecKey = jwk.toECKey().toKeyPair();
-                assertTrue(ecKey.getPublic() instanceof ECPublicKey);
-                assertTrue(ecKey.getPrivate() instanceof ECPrivateKey);
-                KeyPair keyPairPub = new KeyPair(keyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
-                System.out.println("toEC384JWK:" + jsonJWKPub);
-            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException | ParseException | JOSEException ex) {
-                fail(ex.getMessage(), ex);
-            }
-            try {
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
-                kpg.initialize(521);
-                KeyPair keyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(keyPair, false);
-                System.out.println("toEC521JWK:" + jsonJWK);
-                JWK jwk = JWK.parse(jsonJWK);
-                KeyPair ecKey = jwk.toECKey().toKeyPair();
-                assertTrue(ecKey.getPublic() instanceof ECPublicKey);
-                assertTrue(ecKey.getPrivate() instanceof ECPrivateKey);
-                KeyPair keyPairPub = new KeyPair(keyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
-                System.out.println("toEC521JWK:" + jsonJWKPub);
-            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException | ParseException | JOSEException ex) {
-                fail(ex.getMessage(), ex);
-            }
-            try {
-                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed25519", "BC");
-                KeyPair keyPair = keyGen.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(keyPair, false);
-                System.out.println("toEd25519JWK:" + jsonJWK);
-                JWK jwk = JWK.parse(jsonJWK);
-                System.out.println("toEd25519:" + jwk.toString());
-//                OctetKeyPair edKey = jwk.toOctetKeyPair();
-//                System.out.println("toEd25519.pri:" + priKey.getAlgorithm());
-//                System.out.println("toEd25519.pub:" + pubKey.getAlgorithm());
-
-            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException | ParseException ex) {
-                fail(ex.getMessage(), ex);
-            }
-            try {
-                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed448", "BC");
-                KeyPair keyPair = keyGen.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(keyPair, false);
-                System.out.println("toEd448JWK:" + jsonJWK);
-            } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
+            } catch (JOSEException ex) {
+                ex.printStackTrace();
                 fail(ex.getMessage(), ex);
             }
         }

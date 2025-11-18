@@ -48,8 +48,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cmbAlgo" pref="113" max="32767" attributes="0"/>
-                          <Component id="btnEncode" max="32767" attributes="0"/>
+                          <Component id="cmbAlgo" max="32767" attributes="0"/>
+                          <Component id="btnEncode" pref="113" max="32767" attributes="0"/>
                           <Component id="btnClear" alignment="0" max="32767" attributes="0"/>
                           <Component id="lblTokenValid" alignment="1" max="-2" attributes="0"/>
                       </Group>
@@ -67,7 +67,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblTokenValid" min="-2" pref="22" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cmbAlgo" min="-2" pref="22" max="-2" attributes="0"/>
+                      <Component id="cmbAlgo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -97,12 +97,14 @@
             </Component>
             <Component class="javax.swing.JLabel" name="lblTokenValid">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="horizontalTextPosition" type="int" value="2"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btnEncode">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Encode"/>
+                <Property name="horizontalTextPosition" type="int" value="2"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEncodeActionPerformed"/>

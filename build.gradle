@@ -137,6 +137,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.nimbusds/nimbus-jose-jwt
     testImplementation 'com.nimbusds:nimbus-jose-jwt:10.0.2'
+    // https://mvnrepository.com/artifact/com.google.crypto.tink/tink
+    testImplementation 'com.google.crypto.tink:tink:1.19.0'
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'

@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.SignatureException;
 import java.text.ParseException;
-import java.util.Base64;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -148,7 +147,7 @@ public class JWSTokenJoseTest {
         } catch (SignatureException ex) {
             fail(ex.getMessage(), ex);
         } catch (IOException ex) {
-            System.getLogger(JWSTokenJoseTest.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
@@ -192,7 +191,7 @@ public class JWSTokenJoseTest {
         } catch (SignatureException ex) {
             fail(ex.getMessage(), ex);
         } catch (IOException ex) {
-            System.getLogger(JWSTokenJoseTest.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            fail(ex.getMessage(), ex);
         }
     }
 
