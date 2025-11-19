@@ -1,5 +1,8 @@
 package passive;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import extension.helpers.ConvertUtil;
@@ -31,6 +34,7 @@ import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.bouncycastle.asn1.edec.EdECObjectIdentifiers;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
@@ -76,6 +80,16 @@ public class JWKToken {
             bytes = Arrays.copyOfRange(bytes, 1, bytes.length);
         }
         return bytes;
+    }
+
+    private static JsonObject jsonJWKSet(List<JsonObject> jwks) {
+        JsonArray jsonArray = new JsonArray();
+        for  (JsonObject jwk : jwks) {
+            jsonArray.add(jwk);
+        }
+        JsonObject jsonKeys = new JsonObject();
+        jsonKeys.add("keys", jsonArray);
+        return jsonKeys;
     }
 
     public static interface JWKKey {
@@ -214,8 +228,7 @@ public class JWKToken {
             return rsaKey;
         }
 
-        @Override
-        public String toJWK(boolean pretty) throws InvalidKeySpecException {
+        private JsonObject toJsonObject() throws InvalidKeySpecException {
             LinkedHashMap<String, String> jwk = new LinkedHashMap<>();
             try {
                 KeyFactory kf = KeyFactory.getInstance(KEY_TYPE, BouncyCastleProvider.PROVIDER_NAME);
@@ -252,7 +265,19 @@ public class JWKToken {
             } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
                 throw new InvalidKeySpecException(ex.getMessage(), ex);
             }
-            return JsonUtil.prettyJson(jwk, pretty);
+            Gson gson = new Gson();
+            JsonElement jsonElement = gson.toJsonTree(jwk);
+            return jsonElement.getAsJsonObject();
+        }
+
+        @Override
+        public String toJWK(boolean pretty) throws InvalidKeySpecException {
+            return JsonUtil.prettyJson(toJsonObject(), pretty);
+        }
+
+        public String toJWKSet(boolean pretty) throws InvalidKeySpecException {
+            List<JsonObject> jwks = List.of(toJsonObject());
+            return JsonUtil.prettyJson(jsonJWKSet(jwks), pretty);
         }
 
     }
@@ -359,8 +384,7 @@ public class JWKToken {
             return ecKey;
         }
 
-        @Override
-        public String toJWK(boolean pretty) throws InvalidKeySpecException {
+        private JsonObject toJsonObject() throws InvalidKeySpecException {
             LinkedHashMap<String, String> jwk = new LinkedHashMap<>();
             try {
                 KeyFactory kf = KeyFactory.getInstance(KEY_TYPE, BouncyCastleProvider.PROVIDER_NAME);
@@ -394,7 +418,19 @@ public class JWKToken {
             } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
                 throw new InvalidKeySpecException(ex.getMessage(), ex);
             }
-            return JsonUtil.prettyJson(jwk, pretty);
+            Gson gson = new Gson();
+            JsonElement jsonElement = gson.toJsonTree(jwk);
+            return jsonElement.getAsJsonObject();
+        }
+
+        @Override
+        public String toJWK(boolean pretty) throws InvalidKeySpecException {
+            return JsonUtil.prettyJson(toJsonObject(), pretty);
+        }
+
+        public String toJWKSet(boolean pretty) throws InvalidKeySpecException {
+            List<JsonObject> jwks = List.of(toJsonObject());
+            return JsonUtil.prettyJson(jsonJWKSet(jwks), pretty);
         }
 
         private static String mapCurveName(int fieldSize) {
@@ -504,8 +540,7 @@ public class JWKToken {
             return edKey;
         }
 
-        @Override
-        public String toJWK(boolean pretty) throws InvalidKeySpecException {
+        private JsonObject toJsonObject() throws InvalidKeySpecException {
             LinkedHashMap<String, String> jwk = new LinkedHashMap<>();
             try {
                 EdECPublicKey edPub = (EdECPublicKey)this.keyPair.getPublic();
@@ -539,8 +574,21 @@ public class JWKToken {
             } catch (IOException ex) {
                 throw new InvalidKeySpecException(ex.getMessage(), ex);
             }
-            return JsonUtil.prettyJson(jwk, pretty);
+            Gson gson = new Gson();
+            JsonElement jsonElement = gson.toJsonTree(jwk);
+            return jsonElement.getAsJsonObject();
         }
+
+        @Override
+        public String toJWK(boolean pretty) throws InvalidKeySpecException {
+            return JsonUtil.prettyJson(toJsonObject(), pretty);
+        }
+
+        public String toJWKSet(boolean pretty) throws InvalidKeySpecException {
+            List<JsonObject> jwks = List.of(toJsonObject());
+            return JsonUtil.prettyJson(jsonJWKSet(jwks), pretty);
+        }
+
     }
 
 }

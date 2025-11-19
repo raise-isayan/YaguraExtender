@@ -30,6 +30,27 @@ public class JWKUtil {
             JWKToken.EDKey jwkKey = JWKToken.EDKey.build(keyPair);
             jwk = jwkKey.toJWK(pretty);
         }
+        if (jwk == null) {
+            throw new InvalidKeySpecException("Invalid KeyPair");
+        }
+        return jwk;
+    }
+
+    public static String toJWKSet(KeyPair keyPair, boolean pretty) throws InvalidKeySpecException {
+        String jwk = null;
+        if (keyPair.getPublic() instanceof RSAPublicKey) {
+            JWKToken.RSAKey jwkKey = JWKToken.RSAKey.build(keyPair);
+            jwk = jwkKey.toJWKSet(pretty);
+        } else if (keyPair.getPublic() instanceof ECPublicKey) {
+            JWKToken.ECKey jwkKey = JWKToken.ECKey.build(keyPair);
+            jwk = jwkKey.toJWKSet(pretty);
+        } else if (keyPair.getPublic() instanceof EdECPublicKey) {
+            JWKToken.EDKey jwkKey = JWKToken.EDKey.build(keyPair);
+            jwk = jwkKey.toJWKSet(pretty);
+        }
+        if (jwk == null) {
+            throw new InvalidKeySpecException("Invalid KeyPair");
+        }
         return jwk;
     }
 
@@ -48,10 +69,10 @@ public class JWKUtil {
             keyPair = jwkKey.toKeyPair();
         }
         if (keyPair == null) {
-            throw new InvalidKeySpecException();
+            throw new InvalidKeySpecException("Invalid KeyPair");
         }
         if (keyPair.getPublic() == null) {
-            throw new InvalidKeySpecException();
+            throw new InvalidKeySpecException("not include Public key");
         }
         return keyPair;
     }

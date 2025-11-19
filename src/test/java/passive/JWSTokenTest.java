@@ -275,9 +275,9 @@ public class JWSTokenTest {
                 assertTrue(verify);
             }
             {
-                String priKeyPath = JWSTokenTest.class.getResource("/resources/private-ec512-key.pem").getPath();
+                String priKeyPath = JWSTokenTest.class.getResource("/resources/private-ec521-key.pem").getPath();
                 String pemPrivateData = FileUtil.stringFromFile(new File(priKeyPath), StandardCharsets.UTF_8);
-                String pubKeyPath = JWSTokenTest.class.getResource("/resources/public-ec512-key.pem").getPath();
+                String pubKeyPath = JWSTokenTest.class.getResource("/resources/public-ec521-key.pem").getPath();
                 String pemPublicData = FileUtil.stringFromFile(new File(pubKeyPath), StandardCharsets.UTF_8);
                 String es512_token = "eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.AbyO7ctJLHB2rlFMfVl3mm2xa8bQbDHN2ZjLxb3PojfK5VNbnSlnHPmJN5gBcDN2yjNcQ1ty7Oi0AoxTTTnByqiGACi1wzY1D1pHCEhcliMr8qRl0zkTMko-Uy2XgdjjXVknqifW5bdyCAMk1fdfmA54awQPUraOFvU20a1nNWbuzt5s";
                 String[] token_ES512_parts = JWSUtil.splitSegment(es512_token);

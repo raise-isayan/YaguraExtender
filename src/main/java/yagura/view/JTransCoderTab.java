@@ -126,6 +126,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private final JWSDecoderTab jwsDecoderTab = new JWSDecoderTab();
     private final JWSEncoderTab jwsEncoderTab = new JWSEncoderTab();
 
+    private final JWKTab jwkTab = new JWKTab();
+
     final FocusListener FIRE_FOCUS = new FocusListener() {
         @Override
         public void focusGained(FocusEvent e) {
@@ -164,6 +166,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         this.tabbetTranscoder.addTab(this.viewStateDecoderTab.getTabCaption(), this.viewStateDecoderTab);
         this.tabbetTranscoder.addTab(this.jwsDecoderTab.getTabCaption(), this.jwsDecoderTab);
         this.tabbetTranscoder.addTab(this.jwsEncoderTab.getTabCaption(), this.jwsEncoderTab);
+        this.tabbetTranscoder.addTab(this.jwkTab.getTabCaption(), this.jwkTab);
 
 //        this.txtInputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         this.txtInputRaw = new javax.swing.JTextArea();

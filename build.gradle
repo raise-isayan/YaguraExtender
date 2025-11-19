@@ -9,7 +9,7 @@ buildscript {
 plugins {
     id 'java-library'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'  
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'org.asciidoctor.jvm.base' version '4.0.5'
     id 'org.asciidoctor.jvm.convert' version '4.0.5'
     id 'org.asciidoctor.jvm.pdf' version '4.0.5'
@@ -66,9 +66,9 @@ shadowJar {
    exclude 'META-INF/*.RSA'
    exclude 'junit/**'
 
-   classifier = null
+   archiveClassifier.set('')
    destinationDirectory = file('release')
-   archiveVersion = "v${release_version_major}"
+   archiveVersion.set("v${release_version_major}")
 }
 
 task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
@@ -127,8 +127,9 @@ dependencies {
     testImplementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.5'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+    //testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
 
  //   testImplementation fileTree(dir: 'libs', include: ['*.jar'])
 

@@ -1,10 +1,20 @@
 package yagura.view;
 
+import extend.util.external.jws.JWKUtil;
+import extension.burp.IBurpTab;
+import extension.helpers.BouncyUtil;
+import extension.helpers.json.JsonUtil;
+import java.awt.Component;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.security.KeyPair;
+import java.security.spec.InvalidKeySpecException;
+
 /**
  *
  * @author isayan
  */
-public class JWKTab extends javax.swing.JPanel {
+public class JWKTab extends javax.swing.JPanel implements IBurpTab {
 
     /**
      * Creates new form JWKTab
@@ -24,22 +34,22 @@ public class JWKTab extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlJWK = new javax.swing.JPanel();
+        pnlTarget = new javax.swing.JPanel();
         pnlAction = new javax.swing.JPanel();
         btnClear = new javax.swing.JButton();
         btnConvert = new javax.swing.JButton();
         lblTokenValid = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        jSplitPane = new javax.swing.JSplitPane();
-        jScrollTopPane = new javax.swing.JScrollPane();
-        txtTopArea = new javax.swing.JTextArea();
-        jScrollBottomPane = new javax.swing.JScrollPane();
-        txtBottomArea = new javax.swing.JTextArea();
+        jScrollPane = new javax.swing.JScrollPane();
+        txtInputKey = new javax.swing.JTextArea();
+        pnlConvert = new javax.swing.JPanel();
+        pnlJWK = new javax.swing.JPanel();
+        jTabbedPane3 = new javax.swing.JTabbedPane();
+        tabbetJWK = new javax.swing.JTabbedPane();
 
         setLayout(new java.awt.BorderLayout());
 
-        pnlJWK.setPreferredSize(new java.awt.Dimension(125, 125));
-        pnlJWK.setLayout(new java.awt.BorderLayout());
+        pnlTarget.setPreferredSize(new java.awt.Dimension(125, 125));
+        pnlTarget.setLayout(new java.awt.BorderLayout());
 
         pnlAction.setPreferredSize(new java.awt.Dimension(125, 125));
         pnlAction.setRequestFocusEnabled(false);
@@ -84,55 +94,106 @@ public class JWKTab extends javax.swing.JPanel {
                 .addGap(41, 41, 41))
         );
 
-        pnlJWK.add(pnlAction, java.awt.BorderLayout.EAST);
+        pnlTarget.add(pnlAction, java.awt.BorderLayout.EAST);
 
-        add(pnlJWK, java.awt.BorderLayout.NORTH);
+        txtInputKey.setColumns(20);
+        txtInputKey.setRows(5);
+        jScrollPane.setViewportView(txtInputKey);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        pnlTarget.add(jScrollPane, java.awt.BorderLayout.CENTER);
 
-        jSplitPane.setDividerLocation(100);
-        jSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        add(pnlTarget, java.awt.BorderLayout.NORTH);
 
-        txtTopArea.setColumns(20);
-        txtTopArea.setRows(5);
-        jScrollTopPane.setViewportView(txtTopArea);
+        pnlConvert.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pnlConvert.setLayout(new javax.swing.BoxLayout(pnlConvert, javax.swing.BoxLayout.Y_AXIS));
 
-        jSplitPane.setRightComponent(jScrollTopPane);
+        pnlJWK.setMaximumSize(new java.awt.Dimension(32767, 22));
+        pnlJWK.setMinimumSize(new java.awt.Dimension(100, 22));
+        pnlJWK.setPreferredSize(new java.awt.Dimension(765, 22));
+        pnlJWK.setLayout(new java.awt.BorderLayout());
+        pnlJWK.add(jTabbedPane3, java.awt.BorderLayout.CENTER);
 
-        txtBottomArea.setColumns(20);
-        txtBottomArea.setRows(5);
-        jScrollBottomPane.setViewportView(txtBottomArea);
+        pnlConvert.add(pnlJWK);
+        pnlConvert.add(tabbetJWK);
 
-        jSplitPane.setLeftComponent(jScrollBottomPane);
-
-        jPanel1.add(jSplitPane, java.awt.BorderLayout.CENTER);
-
-        add(jPanel1, java.awt.BorderLayout.CENTER);
+        add(pnlConvert, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void customizeComponents() {
 
     }
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+    private void clearJWK() {
         this.lblTokenValid.setText("");
+        this.tabbetJWK.removeAll();
+    }
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clearJWK();
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertActionPerformed
+        String inputKey = this.txtInputKey.getText();
+        try {
+            clearJWK();
+            KeyPair keyPair = null;
+            if (JsonUtil.isJson(inputKey)) {
+                keyPair = JWKUtil.parseJWK(inputKey);
+                StringWriter sw = new StringWriter();
+                BouncyUtil.storeKeyPairPem(keyPair, sw);
+                String pem = sw.toString();
+                appendTab("PEM", pem);
+            }
+            else {
+                keyPair = BouncyUtil.loadKeyPairFromPem(inputKey);
+                String jwk = JWKUtil.toJWK(keyPair, true);
+                appendTab("JWK", jwk);
+            }
+            if (keyPair != null) {
+                KeyPair keyPairPub = new KeyPair(keyPair.getPublic(), null);
+                String jwkPub = JWKUtil.toJWK(keyPairPub, true);
+                appendTab("JWK(Public)", jwkPub);
+                String jwkSet = JWKUtil.toJWKSet(keyPair, true);
+                appendTab("JWK(Keys)", jwkSet);
+            }
+        } catch (InvalidKeySpecException ex) {
+            this.lblTokenValid.setText("invlid key");
+        } catch (IOException ex) {
+            this.lblTokenValid.setText("invlid key");
+        }
     }//GEN-LAST:event_btnConvertActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnConvert;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollBottomPane;
-    private javax.swing.JScrollPane jScrollTopPane;
-    private javax.swing.JSplitPane jSplitPane;
+    private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JTabbedPane jTabbedPane3;
     private javax.swing.JLabel lblTokenValid;
     private javax.swing.JPanel pnlAction;
+    private javax.swing.JPanel pnlConvert;
     private javax.swing.JPanel pnlJWK;
-    private javax.swing.JTextArea txtBottomArea;
-    private javax.swing.JTextArea txtTopArea;
+    private javax.swing.JPanel pnlTarget;
+    private javax.swing.JTabbedPane tabbetJWK;
+    private javax.swing.JTextArea txtInputKey;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public String getTabCaption() {
+        return "JWK Converter";
+    }
+
+    @Override
+    public Component getUiComponent() {
+        return this;
+    }
+
+    private void appendTab(String title, String text) {
+        javax.swing.JTextArea txtConvertKey = new javax.swing.JTextArea();
+        txtConvertKey.setText(text);
+        javax.swing.JScrollPane scrollConvertPane = new javax.swing.JScrollPane();
+        scrollConvertPane.setViewportView(txtConvertKey);
+        this.tabbetJWK.addTab(title, scrollConvertPane);
+    }
+
 }

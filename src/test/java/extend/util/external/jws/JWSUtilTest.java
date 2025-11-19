@@ -73,6 +73,7 @@ public class JWSUtilTest {
     /* secret */
     private final String JWT_TOKEN01 = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoieHh4eHh4Iiwic3ViIjoi44OG44K544OIIn0.IjbkfaSdmROAC0MeW40lJo4s_KoX0VgF0vogsXygNNc";
 
+
     @Test
     public void testToRSA() {
         System.out.println("testToRSA");
@@ -137,21 +138,21 @@ public class JWSUtilTest {
                 PublicKey publicKey = JWSUtil.toPublicKey(pemECKey384PublicData);
                 assertNotNull(publicKey);
             }
-            String priECKey512Path = JWSTokenTest.class.getResource("/resources/private-ec512-key.pem").getPath();
-            String pemECKey512PrivateData = FileUtil.stringFromFile(new File(priECKey512Path), StandardCharsets.UTF_8);
-            String pubECKey512KeyPath = JWSTokenTest.class.getResource("/resources/public-ec512-key.pem").getPath();
-            String pemECKey512PublicData = FileUtil.stringFromFile(new File(pubECKey512KeyPath), StandardCharsets.UTF_8);
+            String priECKey521Path = JWSTokenTest.class.getResource("/resources/private-ec521-key.pem").getPath();
+            String pemECKey521PrivateData = FileUtil.stringFromFile(new File(priECKey521Path), StandardCharsets.UTF_8);
+            String pubECKey521KeyPath = JWSTokenTest.class.getResource("/resources/public-ec521-key.pem").getPath();
+            String pemECKey521PublicData = FileUtil.stringFromFile(new File(pubECKey521KeyPath), StandardCharsets.UTF_8);
             {
-                ECPrivateKey ecPrivateKey = JWSUtil.toECPrivateKey(pemECKey512PrivateData);
+                ECPrivateKey ecPrivateKey = JWSUtil.toECPrivateKey(pemECKey521PrivateData);
                 assertNotNull(ecPrivateKey);
 
-                ECPublicKey ecPublicKey = JWSUtil.toECPublicKey(pemECKey512PublicData);
+                ECPublicKey ecPublicKey = JWSUtil.toECPublicKey(pemECKey521PublicData);
                 assertNotNull(ecPublicKey);
 
-                PrivateKey privateKey = JWSUtil.toPrivateKey(pemECKey512PrivateData);
+                PrivateKey privateKey = JWSUtil.toPrivateKey(pemECKey521PrivateData);
                 assertNotNull(privateKey);
 
-                PublicKey publicKey = JWSUtil.toPublicKey(pemECKey512PublicData);
+                PublicKey publicKey = JWSUtil.toPublicKey(pemECKey521PublicData);
                 assertNotNull(publicKey);
             }
         } catch (IOException ex) {
