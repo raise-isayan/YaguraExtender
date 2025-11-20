@@ -190,13 +190,28 @@ public class JWSUtilTest {
         }
     }
 
+    private final static String REQ_MESSAGE_URLENCODE_TOKEN00 =
+            "POST /cgi-bin/multienc.cgi?charset=Shift_JIS&mode=disp HTTP/1.1\r\n"
+            + "Host: 192.168.0.1\r\n"
+            + "Content-Length: 60\r\n"
+            + "Cache-Control: max-age=0\r\n"
+            + "Origin: http://192.168.0.1\r\n"
+            + "Content-Type: application/x-www-form-urlencoded\r\n"
+            + "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\r\n"
+            + "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\n"
+            + "Accept-Encoding: gzip, deflate\r\n"
+            + "Accept-Language: ja,en-US;q=0.9,en;q=0.8\r\n"
+            + "Connection: close\r\n"
+            + "\r\n"
+            + "text=%82%A0%82%A2%82%A4%82%A6%82%A8&OS=win&submit=%91%97%90M\r\n";
+
     @Test
     public void testFindToken()
     {
         System.out.println("testFindToken");
         final String TOKEN_TOKEN_RESULT = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
         {
-            CaptureItem[] tokens = JWSUtil.findToken(JWT_TOKEN00);
+            CaptureItem[] tokens = JWSUtil.findTokenFormat(JWT_TOKEN00);
             for (CaptureItem t : tokens) {
                 System.out.println("token:" + t.getCaptureValue());
                 System.out.println("start:" + t.start());
@@ -206,7 +221,7 @@ public class JWSUtilTest {
             assertEquals(TOKEN_TOKEN_RESULT, tokens[0].getCaptureValue());
         }
         {
-            CaptureItem[] tokens = JWSUtil.findToken(JWT_COOKIE00);
+            CaptureItem[] tokens = JWSUtil.findTokenFormat(JWT_COOKIE00);
             for (CaptureItem t : tokens) {
                 System.out.println("token:" + t.getCaptureValue());
                 System.out.println("start:" + t.start());
@@ -215,20 +230,11 @@ public class JWSUtilTest {
             assertEquals(1, tokens.length);
             assertEquals(TOKEN_TOKEN_RESULT, tokens[0].getCaptureValue());
         }
-    }
+        {
+            CaptureItem[] token = JWSUtil.findTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00);
+            assertEquals(0, token.length);
+        }
 
-    @Test
-    public void testContainsTokenFormat()
-    {
-        System.out.println("testContainsTokenFormat");
-        {
-            String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
-            assertTrue(JWSUtil.containsTokenFormat(token));
-        }
-        {
-            String token = "Cookie: sessionid=1234567890; token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc uid=aabbcceedd";
-            assertTrue(JWSUtil.containsTokenFormat(token));
-        }
     }
 
     @Test
@@ -319,5 +325,6 @@ public class JWSUtilTest {
             throw new InvalidKeySpecException(ex);
         }
     }
+
 
 }

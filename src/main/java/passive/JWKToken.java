@@ -365,6 +365,8 @@ public class JWKToken {
                     "secp384r1";
                 case "P-521" ->
                     "secp521r1";
+                case "secp256k1" ->
+                    "secp256k1";
                 default ->
                     throw new IllegalArgumentException("Unsupported curve: " + crv);
             };

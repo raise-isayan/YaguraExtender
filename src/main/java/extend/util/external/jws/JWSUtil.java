@@ -20,6 +20,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMException;
+import passive.JWSToken;
 
 /**
  *
@@ -38,7 +39,7 @@ public class JWSUtil {
         }
     }
 
-    private static boolean isValidBase64UrlSegment(char c) {
+    private static boolean isBase64UrlSafeChar(char c) {
         return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')
                 || (c >= '0' && c <= '9') || c == '-' || c == '_';
     }
@@ -50,7 +51,7 @@ public class JWSUtil {
      * * @param segment JWTセグメント
      * @return 有効なBase64URLセグメントの場合 true
      */
-    private static boolean isValidBase64UrlSegment(String segment) {
+    private static boolean isBase64UrlSafeFormatSegment(String segment) {
         if (segment == null || segment.isEmpty()) {
             return false;
         }
@@ -58,7 +59,7 @@ public class JWSUtil {
         // Base64URLセーフな文字セットチェック
         for (int i = 0; i < segment.length(); i++) {
             char c = segment.charAt(i);
-            if (!isValidBase64UrlSegment(c)) {
+            if (!isBase64UrlSafeChar(c)) {
                 return false;
             }
         }
@@ -89,7 +90,7 @@ public class JWSUtil {
      * @param text
      * @return トークン、開始位置、終了位置を含むリスト
      */
-    public static CaptureItem[] findToken(String text) {
+    public static CaptureItem[] findTokenFormat(String text) {
         List<CaptureItem> tokens = new ArrayList<>();
         int length = text.length();
 
@@ -97,7 +98,7 @@ public class JWSUtil {
             char c = text.charAt(startIndex);
 
             // トークンはBase64URL文字以外はスキップ
-            if (!isValidBase64UrlSegment(c)) {
+            if (!isBase64UrlSafeChar(c)) {
                 continue;
             }
 
@@ -135,7 +136,7 @@ public class JWSUtil {
             for (int i = secondDotIndex + 1; i < length; i++) {
                 char nextChar = text.charAt(i);
                 // Base64URL文字以外の文字に遭遇したら、そこでトークンが終了と見なす
-                if (!isValidBase64UrlSegment(nextChar)) {
+                if (!isBase64UrlSafeChar(nextChar)) {
                     endIndex = i;
                     break;
                 }
@@ -150,9 +151,9 @@ public class JWSUtil {
             // 厳密に3セグメントであること
             if (parts.length == 3) {
                 // 各セグメントのBase64URL妥当性を検証
-                if (isValidBase64UrlSegment(parts[0]) && isValidBase64UrlSegment(parts[1])) {
+                if (isBase64UrlSafeFormatSegment(parts[0]) && isBase64UrlSafeFormatSegment(parts[1])) {
                     // 3番目のセグメントは署名
-                    if (parts[2].isEmpty() || isValidBase64UrlSegment(parts[2])) {
+                    if (parts[2].isEmpty() || isBase64UrlSafeFormatSegment(parts[2])) {
                         // 有効なJWTトークンとして結果に追加
                         CaptureItem item = new CaptureItem();
                         item.setCaptureValue(candidateToken);
@@ -164,7 +165,7 @@ public class JWSUtil {
                     }
                 }
             } else if (parts.length == 2) {
-                if (isValidBase64UrlSegment(parts[0]) && isValidBase64UrlSegment(parts[1])) {
+                if (isBase64UrlSafeFormatSegment(parts[0]) && isBase64UrlSafeFormatSegment(parts[1])) {
                     // 有効なJWTトークンとして結果に追加
                     CaptureItem item = new CaptureItem();
                     item.setCaptureValue(candidateToken);
@@ -179,10 +180,6 @@ public class JWSUtil {
         return tokens.toArray(CaptureItem[]::new);
     }
 
-    public static boolean containsTokenFormat(String value) {
-        CaptureItem[] tokens = findToken(value);
-        return tokens.length > 0;
-    }
 
     public static SecretKey toSecretKey(String secret) {
         return new SecretKeySpec(StringUtil.getBytesRaw(secret), "MAC");

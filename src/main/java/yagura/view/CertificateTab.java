@@ -934,7 +934,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     } else if (this.rdoConvertCertificateDER.isSelected()) {
                         BouncyUtil.storeCertificateDer(caCert.getValue(), saveFile);
                     } else if (this.rdoConvertPrivateDER.isSelected()) {
-                        BouncyUtil.storeCertificateDer(caCert.getKey(), saveFile);
+                        BouncyUtil.storePrivateKeyDer((PrivateKey)caCert.getKey(), saveFile);
                     }
                     this.currentCertificateDirectory = saveFile.getParentFile();
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());

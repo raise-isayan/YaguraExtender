@@ -648,7 +648,7 @@ public class JWSTokenTest {
         {
             String value = "Auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiLjgYLjgYTjgYbjgYjjgYoifQ.I6fGHWldnjdhfOjxcs9Wtzm41dIjBiAHYl3ZAcKl4Ks";
             boolean expResult = true;
-            boolean result = JWSUtil.containsTokenFormat(value);
+            boolean result = JWSToken.containsTokenFormat(value);
             assertEquals(expResult, result);
         }
 //        /* URL Encode */
@@ -801,7 +801,8 @@ public class JWSTokenTest {
         }
     }
 
-    private final static String REQ_MESSAGE_URLENCODE_TOKEN00 = "POST /cgi-bin/multienc.cgi?charset=Shift_JIS&mode=disp HTTP/1.1\r\n"
+    private final static String REQ_MESSAGE_URLENCODE_TOKEN00 =
+            "POST /cgi-bin/multienc.cgi?charset=Shift_JIS&mode=disp HTTP/1.1\r\n"
             + "Host: 192.168.0.1\r\n"
             + "Content-Length: 60\r\n"
             + "Cache-Control: max-age=0\r\n"
@@ -836,12 +837,8 @@ public class JWSTokenTest {
         System.out.println("testJWTTokenNothing");
         {
             boolean expResult = false;
-            boolean result = JWSUtil.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00);
+            boolean result = JWSToken.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00);
             assertEquals(expResult, result);
-        }
-        {
-            CaptureItem[] token = JWSUtil.findToken(REQ_MESSAGE_URLENCODE_TOKEN00);
-            assertEquals(0, token.length);
         }
     }
 
@@ -850,12 +847,12 @@ public class JWSTokenTest {
         System.out.println("testJWTToken");
         {
             boolean expResult = true;
-            boolean result = JWSUtil.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01);
+            boolean result = JWSToken.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01);
             assertEquals(expResult, result);
         }
         {
             String expResult = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoiYWJjZGVmIiwic3ViIjoiaG9nZSIsInllYXIiOjIwMjB9.bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM";
-            CaptureItem[] token = JWSUtil.findToken(REQ_MESSAGE_URLENCODE_TOKEN01);
+            CaptureItem[] token = JWSUtil.findTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01);
             for (CaptureItem item : token) {
                 assertEquals(expResult, item.getCaptureValue());
                 System.out.println(item.getCaptureValue());
@@ -875,6 +872,34 @@ public class JWSTokenTest {
             assertEquals("bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM", result.getSignaturePart());
             assertEquals("{\"main\":\"abcdef\",\"sub\":\"hoge\",\"year\":2020}", result.getPayload().toJSON(false));
             assertEquals(expResult, result.getToken());
+        }
+    }
+
+    @Test
+    public void testContainsTokenFormat()
+    {
+        System.out.println("testContainsTokenFormat");
+        {
+            String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
+            assertTrue(JWSToken.containsTokenFormat(token));
+        }
+        {
+            String token = "Cookie: sessionid=1234567890; token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc uid=aabbcceedd";
+            assertTrue(JWSToken.containsTokenFormat(token));
+        }
+    }
+
+    @Test
+    public void testContainsValidToken()
+    {
+        System.out.println("testContainsValidToken");
+        {
+            String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
+            assertTrue(JWSToken.containsValidToken(token));
+        }
+        {
+            String token = "Cookie: sessionid=1234567890; token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc uid=aabbcceedd";
+            assertTrue(JWSToken.containsValidToken(token));
         }
     }
 

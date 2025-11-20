@@ -179,11 +179,17 @@ public class JWKUtilTest {
 
     // https://mkjwk.org/
     private final static String RSA_JWK = "{\"p\":\"7vFg_eDM5mYgL0-0Eo3_chZP6myjgLRb-tQer1sDBjKyjPsc-s-vgW0Tk_SHV5Ig0-elC4gOFDj00QBsQa0pCUxpR7uL5vV8NKDVho4eeokkgsT4ntd5TnsxKFv5i1B_JVXNHXOm0p3P2qWuMHMHsXInu6ds9yN8KPzRQOdWnVU\",\"kty\":\"RSA\",\"q\":\"mZvHVFCLNw8CJjDbb6epPElXqLFI0UNpjvTxdtjWCUJBzjx4ekwDSkh4s-IKcvST6OC5e40A6LBRoxlcjJdN7QV-1YN-Ly2BIiWLKmCa0440TphZmHb9dF_h9e8alaYSX1AWOjxZ-I9B5ouQnn92dc7jyBl3grR93jd9B3sAalk\",\"d\":\"Z-SH7pInGva9ae67qR3oNGz315b-V2c5Qyo9PWG3OXntKy2GlJYxDBT_eqNkiwcohGpsr4Ko4Kw_S26cQYfR3x1mH-XZxe76m4ZOmaKFrH8-MGaoqeb0ULCCvmBMbuMg_wWRZ8MnyzObtHohENQflNgmcrmG-CQ39TsPKhT3w7MF-zln6YKFEMZvACrPqmnfKVhXPWvkodwx5phlqhpKUr7iH79hVZ_jACue-lmsMKPx-JIOy7zPQAlzZw6B2CKAeg4s329ey8MYS5nQipEh_OpvlcjP3CTN9n5NUwT8PEABW7DdHNqtVfvxoTOJ_eCjFLDkPeQDPN2sIPsvoyEJwQ\",\"e\":\"AQAB\",\"use\":\"sig\",\"qi\":\"nTfo5vvgSXGw8CMirrQwD2JNWMreLenl7ZAjI1qDwHmgXDEORXWHJmlpw6R2enusUQXvyXiz3Jyz9nvHIQa00l_URSX1oTWgSiB--vrkeU4lMZlZVUdfMRSNweT1L6ebLZ8YP5wD1-qMZmMHl3rS5xzVAzCAoexVjxAAnfmBxlg\",\"dp\":\"c7mqbSt8cbZSrjdfEoF9j8boq7Q0ODiiN8iWl_1vaIgTXB6e-YavDPNEQSt0hWA70AXoNL6PexHe2H7o76IrNtqwPtLBvnl0z5R59jJM5rIXYdJ-S4g2s2EM_OwW33d8LRvyPOpviKBwNAh8ZfDAcBvGzKcZKlUgZEWWH2Yr2AU\",\"alg\":\"RS256\",\"dq\":\"Wc6F33mnqu0PaJyv7rurah_HLE1aMV6kXHxAoCduG8OtDZK1LWs7kTaFu0WwrjzoLQMV7nIl0eUkFaNCRMBBQw4vdU2HfLWyBfDFSGVqn71IP5s65rTKwjs8tLiyZkPOAgOkuy-FupinAs8eIkyLSZ1H9zlMchJsdHskkjcLqyE\",\"n\":\"j1-pKcnYHZJxfJls4PKgrJ0VcmSp8ktzVu0f0DZGolmKnrxQcHPHC1eSzk2kVF9ILY5Dm9FBNkSXBYT8EMwr5TcsllrO9IAgfIyvTWICIR_1j9Y3ve4-mAUFX7Mfne6DIfxFodyHA94C_2U2K4T3ir32E0FPm1IT8_wDWSwSojEsg3N7qYkY5K9GkAqYzYgLSvDxqridH1UWvkiRmNBRsQMspUpylHyqp34cCK8hNXhjMY0LklAGix2nhOJwAr6H_OwAH8Ovtd9QRxAaMQxSysUuuyb4fU_Xbu4CJpB26u0PMh7b8zDFZqBbEWztE90x5v1EVPEIB_U_JAtFIUHkjQ\"}";
+    private final static String RSA_JWK_PUB = "{\"kty\":\"RSA\",\"e\":\"AQAB\",\"n\":\"j1-pKcnYHZJxfJls4PKgrJ0VcmSp8ktzVu0f0DZGolmKnrxQcHPHC1eSzk2kVF9ILY5Dm9FBNkSXBYT8EMwr5TcsllrO9IAgfIyvTWICIR_1j9Y3ve4-mAUFX7Mfne6DIfxFodyHA94C_2U2K4T3ir32E0FPm1IT8_wDWSwSojEsg3N7qYkY5K9GkAqYzYgLSvDxqridH1UWvkiRmNBRsQMspUpylHyqp34cCK8hNXhjMY0LklAGix2nhOJwAr6H_OwAH8Ovtd9QRxAaMQxSysUuuyb4fU_Xbu4CJpB26u0PMh7b8zDFZqBbEWztE90x5v1EVPEIB_U_JAtFIUHkjQ\"}";
     private final static String EC256_JWK = "{\"kty\":\"EC\",\"d\":\"JaTosU8Ah_IOlqJGj5v5NiPyy856lKl-FDKuP59-nSI\",\"use\":\"sig\",\"crv\":\"P-256\",\"x\":\"sOOb4SwbfAsMDCILgme4hwLjBqCC4_MWCNFXh62Q5lY\",\"y\":\"RN2OeR9AkUrMYHlfRsAy5VZXViA31yOkCWzwSb5NRf0\",\"alg\":\"ES256\"}";
+    private final static String EC256_JWK_PUB = "{\"kty\":\"EC\",\"use\":\"sig\",\"crv\":\"P-256\",\"x\":\"sOOb4SwbfAsMDCILgme4hwLjBqCC4_MWCNFXh62Q5lY\",\"y\":\"RN2OeR9AkUrMYHlfRsAy5VZXViA31yOkCWzwSb5NRf0\",\"alg\":\"ES256\"}";
     private final static String EC384_JWK = "{\"kty\":\"EC\",\"d\":\"RyeXpTmYnuPpL_nPq5CgGTjJs6hbtq2YzsnltC5bADj-NH_26uWoWmYUZ74JM1T5\",\"use\":\"sig\",\"crv\":\"P-384\",\"x\":\"NEqzgL_3GjfV3_7MWDHFIbplOqerH4syXj7zyqGJ6z9VyklQi2wyzgeISOxBmhkX\",\"y\":\"Jsw1m7PnUO4uFhR4Zxvhpllvg5k8wai_U0AHMzZpqtGo7jGzjK1mw9_6iv08kXHl\",\"alg\":\"ES384\"}";
+    private final static String EC384_JWK_PUB = "{\"kty\":\"EC\",\"use\":\"sig\",\"crv\":\"P-384\",\"x\":\"NEqzgL_3GjfV3_7MWDHFIbplOqerH4syXj7zyqGJ6z9VyklQi2wyzgeISOxBmhkX\",\"y\":\"Jsw1m7PnUO4uFhR4Zxvhpllvg5k8wai_U0AHMzZpqtGo7jGzjK1mw9_6iv08kXHl\",\"alg\":\"ES384\"}";
     private final static String EC521_JWK = "{\"kty\":\"EC\",\"d\":\"ABPQswPQGCOyPcmVeMYofoRq3w_sk2sV-NhOS9-PPgCJacCK4Xp3tdUNLCaG37go28zP8oB2eQ27pMxUeIJqVn7u\",\"use\":\"sig\",\"crv\":\"P-521\",\"x\":\"AP-eIKDH3m_Bleijed6Ku_y2XwMJmpDX9aIj4rDwEXj7Fa5nIKREcMcaKWlj5YHViEEGJy0pKQ6gbWjzWomufrSW\",\"y\":\"AfBZvb1OROt6f1myiraU_VzjuRvxF8jKrgE2ZmXXI4g8cOjWNkuW3yE4UmcFJgmK7xPBw3JfbNLslze5Pk82FJFg\",\"alg\":\"ES512\"}";
+    private final static String EC521_JWK_PUB = "{\"kty\":\"EC\",\"use\":\"sig\",\"crv\":\"P-521\",\"x\":\"AP-eIKDH3m_Bleijed6Ku_y2XwMJmpDX9aIj4rDwEXj7Fa5nIKREcMcaKWlj5YHViEEGJy0pKQ6gbWjzWomufrSW\",\"y\":\"AfBZvb1OROt6f1myiraU_VzjuRvxF8jKrgE2ZmXXI4g8cOjWNkuW3yE4UmcFJgmK7xPBw3JfbNLslze5Pk82FJFg\",\"alg\":\"ES512\"}";
     private final static String ED25519_JWK = "{\"kty\":\"OKP\",\"d\":\"a6sk90NMqre9LnvZXjIOdXCT5GCzJ0TWol8TOgG2AYY\",\"use\":\"sig\",\"crv\":\"Ed25519\",\"x\":\"xb4vqs8YZ2cvuGeDTKRxyZyxwxfDdAY8HAS29pbQXGg\",\"alg\":\"EdDSA\"}";
+    private final static String ED25519_JWK_PUB = "{\"kty\":\"OKP\",\"use\":\"sig\",\"crv\":\"Ed25519\",\"x\":\"xb4vqs8YZ2cvuGeDTKRxyZyxwxfDdAY8HAS29pbQXGg\",\"alg\":\"EdDSA\"}";
     private final static String ED448_JWK = "{\"kty\":\"OKP\",\"d\":\"gS4I5PLxahQZlsB306UE80DWma2GjVwvxbcxJDG0vrU\",\"use\":\"sig\",\"crv\": \"Ed25519\",\"x\": \"LXOnNl3tad9vVm-vor7d0E0z8mVtogIGteY3J05dLTg\",\"alg\": \"EdDSA\"}";
+    private final static String ED448_JWK_PUB = "{\"kty\":\"OKP\",\"use\":\"sig\",\"crv\": \"Ed25519\",\"x\": \"LXOnNl3tad9vVm-vor7d0E0z8mVtogIGteY3J05dLTg\",\"alg\": \"EdDSA\"}";
 
     @Test
     public void testParseJWK() {
@@ -194,36 +200,97 @@ public class JWKUtilTest {
                 KeyPair keyPair = JWKUtil.parseJWK(RSA_JWK);
                 assertTrue(keyPair.getPrivate() instanceof RSAPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof RSAPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toRSA_JWK:" + token);
+
+            }
+            {
+                System.out.println("parseRSA_JWK_PUB:" + RSA_JWK_PUB);
+                KeyPair keyPair = JWKUtil.parseJWK(RSA_JWK_PUB);
+                assertNull(keyPair.getPrivate());
+                assertTrue(keyPair.getPublic() instanceof RSAPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toRSA_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseEC256_JWK:" + EC256_JWK);
                 KeyPair keyPair = JWKUtil.parseJWK(EC256_JWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toEC256_JWK:" + token);
+            }
+            {
+                System.out.println("parseEC256_JWK_PUB:" + EC256_JWK_PUB);
+                KeyPair keyPair = JWKUtil.parseJWK(EC256_JWK_PUB);
+                assertNull(keyPair.getPrivate());
+                assertTrue(keyPair.getPublic() instanceof ECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toEC256_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseEC384_JWK:" + EC384_JWK);
                 KeyPair keyPair = JWKUtil.parseJWK(EC384_JWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toEC384_JWK:" + token);
+            }
+            {
+                System.out.println("parseEC384_JWK_PUB:" + EC384_JWK_PUB);
+                KeyPair keyPair = JWKUtil.parseJWK(EC384_JWK_PUB);
+                assertNull(keyPair.getPrivate());
+                assertTrue(keyPair.getPublic() instanceof ECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toEC384_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseEC521_JWK:" + EC521_JWK);
                 KeyPair keyPair = JWKUtil.parseJWK(EC521_JWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toEC521_JWK:" + token);
+            }
+            {
+                System.out.println("parseEC521_JWK_PUB:" + EC521_JWK_PUB);
+                KeyPair keyPair = JWKUtil.parseJWK(EC521_JWK_PUB);
+                assertNull(keyPair.getPrivate());
+                assertTrue(keyPair.getPublic() instanceof ECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toEC521_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseED25519_JWK:" + ED25519_JWK);
                 KeyPair keyPair = JWKUtil.parseJWK(ED25519_JWK);
                 assertTrue(keyPair.getPrivate() instanceof EdECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toED25519_JWK:" + token);
+            }
+            {
+                System.out.println("parseED25519_JWK_PUB:" + ED25519_JWK_PUB);
+                KeyPair keyPair = JWKUtil.parseJWK(ED25519_JWK_PUB);
+                assertNull(keyPair.getPrivate());
+                assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toED25519_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseED448_JWK:" + ED448_JWK);
                 KeyPair keyPair = JWKUtil.parseJWK(ED448_JWK);
                 assertTrue(keyPair.getPrivate() instanceof EdECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toED448_JWK:" + token);
+            }
+            {
+                System.out.println("parseED448_JWK_PUB:" + ED448_JWK_PUB);
+                KeyPair keyPair = JWKUtil.parseJWK(ED448_JWK_PUB);
+                assertNull(keyPair.getPrivate());
+                assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
+                String token = JWKUtil.toJWK(keyPair,false);
+                System.out.println("toED448_JWK_PUB:" + token);
             }
         } catch (InvalidKeySpecException ex) {
             ex.printStackTrace();

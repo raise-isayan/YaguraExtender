@@ -7,7 +7,6 @@ import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.ui.Selection;
-import extend.util.external.jws.JWSUtil;
 import extension.burp.IBurpMessageTab;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
@@ -63,17 +62,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
         setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout pnlJWSLayout = new javax.swing.GroupLayout(pnlJWS);
-        pnlJWS.setLayout(pnlJWSLayout);
-        pnlJWSLayout.setHorizontalGroup(
-            pnlJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 442, Short.MAX_VALUE)
-        );
-        pnlJWSLayout.setVerticalGroup(
-            pnlJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
-        );
-
+        pnlJWS.setLayout(new java.awt.BorderLayout());
         add(pnlJWS, java.awt.BorderLayout.CENTER);
 
         cmbParam.addItemListener(new java.awt.event.ItemListener() {
@@ -93,25 +82,20 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         pnlChoiceJWS.setLayout(pnlChoiceJWSLayout);
         pnlChoiceJWSLayout.setHorizontalGroup(
             pnlChoiceJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 442, Short.MAX_VALUE)
-            .addGroup(pnlChoiceJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlChoiceJWSLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(cmbParam, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, 0)
-                    .addComponent(btnCopy)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(pnlChoiceJWSLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cmbParam, 0, 408, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCopy)
+                .addContainerGap())
         );
         pnlChoiceJWSLayout.setVerticalGroup(
             pnlChoiceJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 22, Short.MAX_VALUE)
-            .addGroup(pnlChoiceJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(pnlChoiceJWSLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(pnlChoiceJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(cmbParam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnCopy))
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlChoiceJWSLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(pnlChoiceJWSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbParam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCopy)))
         );
 
         add(pnlChoiceJWS, java.awt.BorderLayout.NORTH);
@@ -143,7 +127,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     @Override
     public HttpRequestResponse getHttpRequestResponse() {
-        return httpRequestResponse;
+        return this.httpRequestResponse;
     }
 
     @Override
@@ -155,32 +139,33 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         List<HttpHeader> headers = httpRequest.headers();
         for (HttpHeader h : headers) {
             String value = h.value();
-            JWSToken token = jwsinstance.parseToken(value, false);
-            if (token != null) {
-                tokenMap.put(h.name(), token);
-                this.cmbParam.addItem(h.name());
+            if (JWSToken.containsTokenFormat(value)) {
+                JWSToken token = this.jwsinstance.parseToken(value, true);
+                if (token != null) {
+                    this.tokenMap.put(h.name(), token);
+                    this.cmbParam.addItem(h.name());
+                }
             }
         }
         boolean find = false;
         List<ParsedHttpParameter> parameters = httpRequest.parameters();
         for (ParsedHttpParameter p : parameters) {
-            if (JWSUtil.containsTokenFormat(p.value())) {
+            String name = p.name();
+            String value = p.value();
+            if (JWSToken.containsTokenFormat(value)) {
                 if (p.type() == HttpParameterType.COOKIE) {
-                    String name = p.name();
-                    String value = p.value();
                     String key = p.type().name() + " " + name;
-                    JWSToken token = jwsinstance.parseToken(value, true);
+                    JWSToken token = this.jwsinstance.parseToken(value, true);
                     if (token != null) {
-                        tokenMap.put(key, token);
+                        this.tokenMap.put(key, token);
                         this.cmbParam.addItem(key);
                     }
+
                 } else if (p.type() == HttpParameterType.URL || p.type() == HttpParameterType.BODY) {
-                    String name = p.name();
-                    String value = p.value();
                     String key = p.type().name() + " " + name;
-                    JWSToken token = jwsinstance.parseToken(value, true);
+                    JWSToken token = this.jwsinstance.parseToken(value, true);
                     if (token != null) {
-                        tokenMap.put(key, token);
+                        this.tokenMap.put(key, token);
                         this.cmbParam.addItem(key);
                         find = true;
                     }
@@ -189,11 +174,11 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         }
         if (!find) {
             String body = StringUtil.getBytesRawString(httpRequest.body().getBytes());
-            if (JWSUtil.containsTokenFormat(body)) {
-                JWSToken token = jwsinstance.parseToken(body, false);
+            if (JWSToken.containsTokenFormat(body)) {
+                JWSToken token = this.jwsinstance.parseToken(body, false);
                 if (token != null) {
                     String key = "(body)";
-                    tokenMap.put(key, token);
+                    this.tokenMap.put(key, token);
                     this.cmbParam.addItem(key);
                 }
             }
@@ -225,14 +210,16 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
             this.setLineWrap(viewProperty.isLineWrap());
             List<HttpHeader> headers = httpRequest.headers();
             for (HttpHeader h : headers) {
-                if (JWSUtil.containsTokenFormat(h.value())) {
-                    return true;
+                if (JWSToken.containsTokenFormat(h.value())) {
+                    JWSToken token = this.jwsinstance.parseToken(h.value(), true);
+                    return token != null;
                 }
             }
             List<ParsedHttpParameter> parameters = httpRequest.parameters();
             for (ParsedHttpParameter p : parameters) {
                 if (p.type() == HttpParameterType.URL || p.type() == HttpParameterType.BODY) {
-                    find = jwsinstance.isValidFormat(p.value());
+                    JWSToken token = this.jwsinstance.parseToken(p.value(), true);
+                    find = token != null;
                     if (find) {
                         break;
                     }
@@ -240,7 +227,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
             }
             if (!find) {
                 String body = StringUtil.getStringRaw(httpRequest.body().getBytes());
-                find = JWSUtil.containsTokenFormat(body);
+                find = JWSToken.containsValidToken(body);
             }
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
@@ -250,7 +237,7 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
 
     @Override
     public String caption() {
-        return "JWS";
+        return "JWT";
     }
 
     @Override

@@ -2,6 +2,7 @@ package passive;
 
 import com.google.gson.JsonSyntaxException;
 import extend.util.external.jws.JWSUtil;
+import static extend.util.external.jws.JWSUtil.findTokenFormat;
 import extension.helpers.BouncyUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
@@ -89,8 +90,7 @@ public class JWSToken implements JsonToken {
     }
 
     public boolean isValidFormat(String value) {
-        JWSToken token = parseToken(value, true);
-        return token != null;
+        return parseToken(value, true) != null;
     }
 
     public enum Algorithm {
@@ -245,7 +245,7 @@ public class JWSToken implements JsonToken {
         if (MatchUtil.isUrlencoded(value)) {
             value = JsonToken.decodeUrl(value);
         }
-        CaptureItem[] items = JWSUtil.findToken(value);
+        CaptureItem[] items = JWSUtil.findTokenFormat(value);
         boolean find = items.length > 0;
         if (find) {
             for (int i = 0; i < items.length; i++) {
@@ -267,12 +267,19 @@ public class JWSToken implements JsonToken {
         return token;
     }
 
-    public static CaptureItem[] findToken(String value) {
-        return JWSUtil.findToken(value);
+    public static boolean containsTokenFormat(String value) {
+        CaptureItem[] tokens = JWSUtil.findTokenFormat(value);
+        return tokens.length > 0;
     }
 
-    public static boolean containsTokenFormat(String value) {
-        return JWSUtil.containsTokenFormat(value);
+    public static boolean containsValidToken(String value) {
+        CaptureItem[] tokens = JWSUtil.findTokenFormat(value);
+        final JWSToken jws = new JWSToken();
+        for (int i = 0; i < tokens.length; i++) {
+            if (jws.parseToken(tokens[i].getCaptureValue(), true) != null)
+                return true;
+        }
+        return false;
     }
 
     @Override
