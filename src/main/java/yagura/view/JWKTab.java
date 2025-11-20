@@ -4,6 +4,7 @@ import extend.util.external.jws.JWKUtil;
 import extension.burp.IBurpTab;
 import extension.helpers.BouncyUtil;
 import extension.helpers.json.JsonUtil;
+import extension.view.base.JSONDocument;
 import java.awt.Component;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -23,7 +24,6 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
         initComponents();
         customizeComponents();
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -124,6 +124,7 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
     }
 
     private void clearJWK() {
+        this.txtInputKey.setText("");
         this.lblTokenValid.setText("");
         this.tabbetJWK.removeAll();
     }
@@ -142,19 +143,18 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
                 StringWriter sw = new StringWriter();
                 BouncyUtil.storeKeyPairPem(keyPair, sw);
                 String pem = sw.toString();
-                appendTab("PEM", pem);
-            }
-            else {
+                appendTab("PEM", pem, false);
+            } else {
                 keyPair = BouncyUtil.loadKeyPairFromPem(inputKey);
                 String jwk = JWKUtil.toJWK(keyPair, true);
-                appendTab("JWK", jwk);
+                appendTab("JWK", jwk, true);
             }
             if (keyPair != null) {
                 KeyPair keyPairPub = new KeyPair(keyPair.getPublic(), null);
                 String jwkPub = JWKUtil.toJWK(keyPairPub, true);
-                appendTab("JWK(Public)", jwkPub);
+                appendTab("JWK(Public)", jwkPub, true);
                 String jwkSet = JWKUtil.toJWKSet(keyPair, true);
-                appendTab("JWK(Keys)", jwkSet);
+                appendTab("JWK(Keys)", jwkSet, true);
             }
         } catch (InvalidKeySpecException ex) {
             this.lblTokenValid.setText("invlid key");
@@ -188,9 +188,13 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
         return this;
     }
 
-    private void appendTab(String title, String text) {
-        javax.swing.JTextArea txtConvertKey = new javax.swing.JTextArea();
+    private void appendTab(String title, String text, boolean json) {
+        javax.swing.JTextPane txtConvertKey = new javax.swing.JTextPane();
+        if (json) {
+            txtConvertKey.setStyledDocument(new JSONDocument());
+        }
         txtConvertKey.setText(text);
+        txtConvertKey.setEditable(false);
         javax.swing.JScrollPane scrollConvertPane = new javax.swing.JScrollPane();
         scrollConvertPane.setViewportView(txtConvertKey);
         this.tabbetJWK.addTab(title, scrollConvertPane);

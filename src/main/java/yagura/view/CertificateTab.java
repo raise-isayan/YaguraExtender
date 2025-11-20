@@ -57,16 +57,15 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     protected final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
     // https://docs.oracle.com/javase/jp/11/docs/specs/security/standard-names.html#keypairgenerator-algorithms
-    private final static String [] ALGORITHM = new String [] {"RSA", "DSA", "EC", "Ed25519", "Ed448"};
+    private final static String[] ALGORITHM = new String[]{"RSA", "DSA", "EC", "Ed25519", "Ed448"};
     private final static Map<String, Boolean> KEY_USE_MAP = new HashMap();
-    private final static int [] RSA_KEYSIZE = new int [] {512, 1024, 2048, 3072, 4098};
-    private final static int [] DSA_KEYSIZE = new int [] {512, 768, 1024, 2048, 3072};
-    private final static int [] EC_KEYSIZE = new int [] {224, 256, 384, 521};
-    private final static int [] ED25519_KEYSIZE = new int [] {255};
-    private final static int [] ED448_KEYSIZE = new int [] {448};
+    private final static int[] RSA_KEYSIZE = new int[]{512, 1024, 2048, 3072, 4098};
+    private final static int[] DSA_KEYSIZE = new int[]{512, 768, 1024, 2048, 3072};
+    private final static int[] EC_KEYSIZE = new int[]{224, 256, 384, 521};
+    private final static int[] ED25519_KEYSIZE = new int[]{255};
+    private final static int[] ED448_KEYSIZE = new int[]{448};
 
-    static
-    {
+    static {
         KEY_USE_MAP.put("RSA", Boolean.TRUE);
         KEY_USE_MAP.put("DSA", Boolean.TRUE);
         KEY_USE_MAP.put("EC", Boolean.TRUE);
@@ -269,24 +268,19 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(rdoConvertCertificatePEM)
                     .addComponent(rdoConvertPrivateDER)
                     .addGroup(pnlConvertFormatLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(rdoConvertPairPEM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnExportCA)))
-                .addGap(84, 483, Short.MAX_VALUE))
+                .addGap(84, 495, Short.MAX_VALUE))
         );
         pnlConvertFormatLayout.setVerticalGroup(
             pnlConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlConvertFormatLayout.createSequentialGroup()
-                .addGroup(pnlConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlConvertFormatLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(btnExportCA)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlConvertFormatLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(rdoConvertPairPEM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addContainerGap()
+                .addGroup(pnlConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExportCA)
+                    .addComponent(rdoConvertPairPEM))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(rdoConvertCertificatePEM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoConvertCertificateDER)
@@ -778,7 +772,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 //        this.tableCertificate.getColumnModel().getColumn(3).setMinWidth(0);
 //        this.tableCertificate.getColumnModel().getColumn(3).setPreferredWidth(0);
 //        this.tableCertificate.getColumnModel().getColumn(3).setMaxWidth(0);
-
         //SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
         SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
         this.txtSubjectSAN.setEnabled(!this.chkUseSameCommonName.isSelected());
@@ -824,7 +817,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                                     + "</html>").setResponseCode(200);
                 } else if ("/burp-keycert.pem.cer".equals(request.getPath())) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
-                    String exportCA = BouncyUtil.exportCertificatePem((PrivateKey)cert.getKey(), cert.getValue());
+                    String exportCA = BouncyUtil.exportCertificatePem((PrivateKey) cert.getKey(), cert.getValue());
                     return new MockResponse()
                             .addHeader("Content-Type", "application/octet-stream; " + "charset=utf-8")
                             .addHeader("Content-Disposition", "attachment; filename=\"burp-keycert.pem.cer\"")
@@ -838,7 +831,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                             .setBody(exportCA).setResponseCode(200);
                 } else if ("/burp-private-key.der".equals(request.getPath())) {
                     Map.Entry<Key, X509Certificate> cert = getExportCerticate();
-                    byte[] exportCA = BouncyUtil.exportPrivateKeyDer((PrivateKey)cert.getKey());
+                    byte[] exportCA = BouncyUtil.exportPrivateKeyDer((PrivateKey) cert.getKey());
                     Buffer buffer = new Buffer();
                     buffer.write(exportCA);
                     return new MockResponse()
@@ -928,13 +921,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 if (selected == JFileChooser.APPROVE_OPTION) {
                     File saveFile = filechooser.getSelectedFile();
                     if (this.rdoConvertPairPEM.isSelected()) {
-                        BouncyUtil.storeCertificatePem((PrivateKey)caCert.getKey(), caCert.getValue(), saveFile);
+                        BouncyUtil.storeCertificatePem((PrivateKey) caCert.getKey(), caCert.getValue(), saveFile);
                     } else if (this.rdoConvertCertificatePEM.isSelected()) {
                         BouncyUtil.storeCertificatePem(caCert.getValue(), saveFile);
                     } else if (this.rdoConvertCertificateDER.isSelected()) {
                         BouncyUtil.storeCertificateDer(caCert.getValue(), saveFile);
                     } else if (this.rdoConvertPrivateDER.isSelected()) {
-                        BouncyUtil.storePrivateKeyDer((PrivateKey)caCert.getKey(), saveFile);
+                        BouncyUtil.storePrivateKeyDer((PrivateKey) caCert.getKey(), saveFile);
                     }
                     this.currentCertificateDirectory = saveFile.getParentFile();
                     //String output = CertUtil.exportToPem(cert.getKey(), cert.getValue());
@@ -943,8 +936,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "No certificate has been selected.", "Certificate", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnExportCAActionPerformed
@@ -1078,7 +1070,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
             keyGen.initialize(2048);
             KeyPair caKeyPair = keyGen.generateKeyPair();
-            X509Certificate issuerCA = BouncyUtil.createRootCA(caKeyPair, subjectDN.build(), (int)this.spnIssuerYear.getValue());
+            X509Certificate issuerCA = BouncyUtil.createRootCA(caKeyPair, subjectDN.build(), (int) this.spnIssuerYear.getValue());
             JFileChooser filechooser = new JFileChooser();
             filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             int selected = filechooser.showSaveDialog(this);
@@ -1114,10 +1106,10 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 hostname = this.txtSubjectSAN.getText().trim();
             }
 
-            PKCS10CertificationRequest csr = BouncyUtil.createCsr(subjectKeyPair, subjectDN.build(), new String [] {hostname});
+            PKCS10CertificationRequest csr = BouncyUtil.createCsr(subjectKeyPair, subjectDN.build(), new String[]{hostname});
             Map.Entry<Key, X509Certificate> caCert = this.getIsserExportCerticate();
             if (caCert != null) {
-                X509Certificate signCA = BouncyUtil.signCsr(csr, caCert.getValue(), (PrivateKey)caCert.getKey(), (int)this.spnSubjectYear.getValue());
+                X509Certificate signCA = BouncyUtil.signCsr(csr, caCert.getValue(), (PrivateKey) caCert.getKey(), (int) this.spnSubjectYear.getValue());
 
                 JFileChooser filechooser = new JFileChooser();
                 filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -1134,8 +1126,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 JOptionPane.showMessageDialog(this, "No certificate has been selected.", "Certificate", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableKeyException ex) {
@@ -1173,8 +1164,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "No KeyPair has been selected.", "KeyPair", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnExportKeyPairActionPerformed
@@ -1184,17 +1174,13 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         String algo = this.getAlgorithm();
         if ("RSA".equals(algo)) {
             keysize_list = RSA_KEYSIZE;
-        }
-        else if ("DSA".equals(algo)) {
+        } else if ("DSA".equals(algo)) {
             keysize_list = DSA_KEYSIZE;
-        }
-        else if ("EC".equals(algo)) {
+        } else if ("EC".equals(algo)) {
             keysize_list = EC_KEYSIZE;
-        }
-        else if ("Ed25519".equals(algo)) {
+        } else if ("Ed25519".equals(algo)) {
             keysize_list = ED25519_KEYSIZE;
-        }
-        else if ("Ed448".equals(algo)) {
+        } else if ("Ed448".equals(algo)) {
             keysize_list = ED448_KEYSIZE;
         }
         List<AbstractButton> rdoGroup = ConvertUtil.toList(this.btnGrpAlgorithm.getElements().asIterator());
@@ -1204,7 +1190,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         this.pnlKeySize.removeAll();
         for (int i = 0; i < keysize_list.length; i++) {
             javax.swing.JRadioButton rdoKeySize = new javax.swing.JRadioButton();
-            if (i == (keysize_list.length/2)) rdoKeySize.setSelected(true);
+            if (i == (keysize_list.length / 2)) {
+                rdoKeySize.setSelected(true);
+            }
             rdoKeySize.setText(String.valueOf(keysize_list[i]));
             rdoKeySize.setActionCommand(String.valueOf(keysize_list[i]));
             this.pnlKeySize.add(rdoKeySize);
@@ -1316,12 +1304,10 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 //        }
 //        return item;
 //    }
-
 //    private void setEditItem(CertificateItem item, boolean update) {
 //        Object[] rows = CertificateItem.toObjects(item);
 //        SwingUtil.addOrUpdateItem(this.tableCertificate, rows, update);
 //    }
-
     private MockWebServer mockServer = new MockWebServer();
 
     protected void startMockServer(int port) {

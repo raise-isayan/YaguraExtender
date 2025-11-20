@@ -66,8 +66,7 @@ public class JWKToken {
             byte[] padded = new byte[sizeBytes];
             System.arraycopy(bytes, 0, padded, sizeBytes - bytes.length, bytes.length);
             bytes = padded;
-        }
-        else if (bytes.length > sizeBytes) {
+        } else if (bytes.length > sizeBytes) {
             byte[] padded = new byte[sizeBytes];
             System.arraycopy(bytes, bytes.length - sizeBytes, padded, 0, sizeBytes);
             bytes = padded;
@@ -84,16 +83,18 @@ public class JWKToken {
 
     private static JsonObject jsonJWKSet(List<JsonObject> jwks) {
         JsonArray jsonArray = new JsonArray();
-        for  (JsonObject jwk : jwks) {
+        for (JsonObject jwk : jwks) {
             jsonArray.add(jwk);
         }
         JsonObject jsonKeys = new JsonObject();
-        jsonKeys.add("keys", jsonArray);
+        jsonKeys.add(JWKKey.KEYS, jsonArray);
         return jsonKeys;
     }
 
     public static interface JWKKey {
+
         public final static String KTY = "kty";
+        public final static String KEYS = "keys";
 
         public String getKeyType();
 
@@ -106,6 +107,7 @@ public class JWKToken {
     }
 
     public static class RSAKey implements JWKKey {
+
         public final static String KEY_TYPE = "RSA";
         public final static String N = "n";
         public final static String E = "e";
@@ -150,7 +152,21 @@ public class JWKToken {
         public static RSAKey parse(String jsonJWK) throws InvalidKeySpecException {
             try {
                 JsonObject jwkObject = JsonUtil.parseJsonObject(jsonJWK);
-                if (!hasKeyType(jwkObject)) throw new InvalidKeySpecException("Invalid key spec:" + jsonJWK);
+                if (!hasKeyType(jwkObject)) {
+                    throw new InvalidKeySpecException("Invalid key spec:" + jsonJWK);
+                }
+                RSAKey rsaKey = new RSAKey(jwkObject);
+                return rsaKey;
+            } catch (JsonSyntaxException ex) {
+                throw new InvalidKeySpecException(ex);
+            }
+        }
+
+        public static RSAKey parse(JsonObject jwkObject) throws InvalidKeySpecException {
+            try {
+                if (!hasKeyType(jwkObject)) {
+                    throw new InvalidKeySpecException("Invalid key spec:" + jwkObject.toString());
+                }
                 RSAKey rsaKey = new RSAKey(jwkObject);
                 return rsaKey;
             } catch (JsonSyntaxException ex) {
@@ -283,6 +299,7 @@ public class JWKToken {
     }
 
     public static class ECKey implements JWKKey {
+
         public final static String KEY_TYPE = "EC";
         public final static String CRV = "crv";
         public final static String X = "x";
@@ -323,7 +340,21 @@ public class JWKToken {
         public static ECKey parse(String jsonJWK) throws InvalidKeySpecException {
             try {
                 JsonObject jwkObject = JsonUtil.parseJsonObject(jsonJWK);
-                if (!hasKeyType(jwkObject)) throw new InvalidKeySpecException("Invalid key spec:" + jsonJWK);
+                if (!hasKeyType(jwkObject)) {
+                    throw new InvalidKeySpecException("Invalid key spec:" + jsonJWK);
+                }
+                ECKey ecKey = new ECKey(jwkObject);
+                return ecKey;
+            } catch (JsonSyntaxException ex) {
+                throw new InvalidKeySpecException(ex);
+            }
+        }
+
+        public static ECKey parse(JsonObject jwkObject) throws InvalidKeySpecException {
+            try {
+                if (!hasKeyType(jwkObject)) {
+                    throw new InvalidKeySpecException("Invalid key spec:" + jwkObject.getAsString());
+                }
                 ECKey ecKey = new ECKey(jwkObject);
                 return ecKey;
             } catch (JsonSyntaxException ex) {
@@ -334,7 +365,7 @@ public class JWKToken {
         @Override
         public KeyPair toKeyPair() throws InvalidKeySpecException {
             try {
-  //              String kty = this.tokenJWK.get(KTY).getAsString();
+                //              String kty = this.tokenJWK.get(KTY).getAsString();
                 PublicKey pubKey = null;
                 PrivateKey priKey = null;
                 KeyFactory kf = KeyFactory.getInstance(KEY_TYPE, BouncyCastleProvider.PROVIDER_NAME);
@@ -451,6 +482,7 @@ public class JWKToken {
     }
 
     public static class EDKey implements JWKKey {
+
         public final static String KEY_TYPE = "OKP";
         public final static String CRV = "crv";
         public final static String X = "x";
@@ -490,7 +522,21 @@ public class JWKToken {
         public static EDKey parse(String jsonJWK) throws InvalidKeySpecException {
             try {
                 JsonObject jwkObject = JsonUtil.parseJsonObject(jsonJWK);
-                if (!hasKeyType(jwkObject)) throw new InvalidKeySpecException("Invalid key spec:" + jsonJWK);
+                if (!hasKeyType(jwkObject)) {
+                    throw new InvalidKeySpecException("Invalid key spec:" + jsonJWK);
+                }
+                EDKey edKey = new EDKey(jwkObject);
+                return edKey;
+            } catch (JsonSyntaxException ex) {
+                throw new InvalidKeySpecException(ex);
+            }
+        }
+
+        public static EDKey parse(JsonObject jwkObject) throws InvalidKeySpecException {
+            try {
+                if (!hasKeyType(jwkObject)) {
+                    throw new InvalidKeySpecException("Invalid key spec:" + jwkObject.getAsString());
+                }
                 EDKey edKey = new EDKey(jwkObject);
                 return edKey;
             } catch (JsonSyntaxException ex) {
@@ -513,8 +559,8 @@ public class JWKToken {
                 if (this.tokenJWK.has(D)) {
                     byte[] d = ConvertUtil.toBase64URLSafeDecode(this.tokenJWK.get(D).getAsString());
                     org.bouncycastle.asn1.pkcs.PrivateKeyInfo pki = new org.bouncycastle.asn1.pkcs.PrivateKeyInfo(
-                                    mapCurveIdentifier(curve),
-                                    new org.bouncycastle.asn1.DEROctetString(d)
+                            mapCurveIdentifier(curve),
+                            new org.bouncycastle.asn1.DEROctetString(d)
                     );
                     PKCS8EncodedKeySpec privateSpec = new PKCS8EncodedKeySpec(pki.getEncoded());
                     priKey = kf.generatePrivate(privateSpec);
@@ -545,7 +591,7 @@ public class JWKToken {
         private JsonObject toJsonObject() throws InvalidKeySpecException {
             LinkedHashMap<String, String> jwk = new LinkedHashMap<>();
             try {
-                EdECPublicKey edPub = (EdECPublicKey)this.keyPair.getPublic();
+                EdECPublicKey edPub = (EdECPublicKey) this.keyPair.getPublic();
                 String curve = edPub.getAlgorithm();
                 //KeyFactory kf = KeyFactory.getInstance(curve, BouncyCastleProvider.PROVIDER_NAME);
                 //EdECPublicKeySpec pubSpec = kf.getKeySpec(this.keyPair.getPublic(), EdECPublicKeySpec.class);
@@ -564,12 +610,10 @@ public class JWKToken {
                     if (privateKeyParam instanceof Ed25519PrivateKeyParameters edPrivate) {
                         String d = ConvertUtil.toBase64URLSafeEncode(edPrivate.getEncoded());
                         jwk.put(D, d);
-                    }
-                    else if (privateKeyParam instanceof Ed448PrivateKeyParameters edPrivate) {
+                    } else if (privateKeyParam instanceof Ed448PrivateKeyParameters edPrivate) {
                         String d = ConvertUtil.toBase64URLSafeEncode(edPrivate.getEncoded());
                         jwk.put(D, d);
-                    }
-                    else {
+                    } else {
                         throw new IllegalArgumentException("Unsupported curve: " + curve);
                     }
                 }

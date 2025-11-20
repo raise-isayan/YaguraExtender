@@ -167,7 +167,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
     private void btnEncodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncodeActionPerformed
         try {
             this.lblTokenValid.setText("");
-            this.txtJsonToken.setText(this.panelJWSEdit.signToken());
+                this.txtJsonToken.setText(this.panelJWSEdit.signToken());
         } catch (JsonSyntaxException ex) {
             this.lblTokenValid.setText(BUNDLE.getString("token.invalid.json"));
         } catch (SignatureException ex) {
