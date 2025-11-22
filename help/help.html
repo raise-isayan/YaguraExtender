@@ -516,7 +516,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_converter_tab">4.9.3. Converter tab</a></li>
 <li><a href="#_certificate_tab">4.9.4. Certificate tab</a></li>
 <li><a href="#_view_state_decoder_tab">4.9.5. View State Decoder tab</a></li>
-<li><a href="#_jwt_token_decoder_tab">4.9.6. JWT token Decoder tab</a></li>
+<li><a href="#_jwt_decoder_tab">4.9.6. JWT Decoder tab</a></li>
+<li><a href="#_jwt_encoder_tab">4.9.7. JWT Encoder tab</a></li>
+<li><a href="#_jwt_converter_tab">4.9.8. JWT Converter tab</a></li>
 </ul>
 </li>
 <li><a href="#_generate_csrf_poc">4.10. Generate CSRF PoC</a>
@@ -2667,11 +2669,11 @@ The following meta characters are available.</p>
 <p>The Generater has a sequence tab and a random tab.</p>
 </div>
 <div class="paragraph">
-<div class="title">sequence tab</div>
+<div class="title">Sequence tab</div>
 <p>The sequence tab is a simple function for generating a continuous character list.</p>
 </div>
 <div class="paragraph">
-<div class="title">sequence-Numbers tab</div>
+<div class="title">Sequence-Numbers tab</div>
 <p><span class="image"><img src="images/custom_gene_seq.png" alt="Generater tab"></span></p>
 </div>
 <div class="dlist">
@@ -2696,7 +2698,7 @@ A format string can specify only one numeric format.</p>
 </dl>
 </div>
 <div class="paragraph">
-<div class="title">sequence-Date tab</div>
+<div class="title">Sequence-Date tab</div>
 <p><span class="image"><img src="images/custom_gene_date.png" alt="Generater tab"></span></p>
 </div>
 <div class="dlist">
@@ -2732,7 +2734,7 @@ A format string can specify only one numeric format.</p>
 </dl>
 </div>
 <div class="paragraph">
-<div class="title">random tab</div>
+<div class="title">Random tab</div>
 <p>The andom tab is a simple function for generating a random character list.</p>
 </div>
 <div class="paragraph">
@@ -2765,6 +2767,40 @@ A format string can specify only one numeric format.</p>
 <p>Output the generated list to a file.</p>
 </dd>
 </dl>
+</div>
+<div class="paragraph">
+<div class="title">GenerateKeyPair Tab</div>
+<p>Generate an encryption key.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Algorithm combobox</dt>
+<dd>
+<p>Select an encryption algorithm</p>
+</dd>
+<dt class="hdlist1">KeySize</dt>
+<dd>
+<p>Select the key size</p>
+</dd>
+<dt class="hdlist1">[Generate] button</dt>
+<dd>
+<p>Generate an encryption key.</p>
+</dd>
+<dt class="hdlist1">[Export] button</dt>
+<dd>
+<p>Generate an encryption key and save it to a file.</p>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Generates an encryption key in PEM format.</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Generates an encryption key in JWK format.</pre>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -3011,7 +3047,7 @@ A format string can specify only one numeric format.</p>
 <div class="sect3">
 <h4 id="_view_state_decoder_tab">4.9.5. View State Decoder tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.png" alt="View State Decoderタブ"></span></p>
+<p><span class="image"><img src="images/custom_jtranscoder_ViewState_decoder.png" alt="View State Decoder tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -3039,7 +3075,10 @@ A format string can specify only one numeric format.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_token_decoder_tab">4.9.6. JWT token Decoder tab</h4>
+<h4 id="_jwt_decoder_tab">4.9.6. JWT Decoder tab</h4>
+<div class="paragraph">
+<p>Decode the JWT token</p>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder_JWT_decoder.png" alt="JWT token Decoder tab"></span></p>
 </div>
@@ -3048,6 +3087,18 @@ A format string can specify only one numeric format.</p>
 <dt class="hdlist1">[JWT] text area</dt>
 <dd>
 <p>Input the JWT to decode.</p>
+</dd>
+<dt class="hdlist1">[Decode] botton</dt>
+<dd>
+<p>Perform decoding</p>
+</dd>
+<dt class="hdlist1">[Clear] botton</dt>
+<dd>
+<p>all clear</p>
+</dd>
+<dt class="hdlist1">[To Encode] botton</dt>
+<dd>
+<p>Copy the decoded value to the JWT Encoder tab.</p>
 </dd>
 <dt class="hdlist1">[Header] text area</dt>
 <dd>
@@ -3060,6 +3111,72 @@ A format string can specify only one numeric format.</p>
 <dt class="hdlist1">[Signature] text area</dt>
 <dd>
 <p>Decode and display the JWT Signature.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_encoder_tab">4.9.7. JWT Encoder tab</h4>
+<div class="paragraph">
+<p>Encode the JWT token</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_jtranscoder_JWT_encoder.png" alt="JWT token Decoder tab"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JWT] text area</dt>
+<dd>
+<p>Encode and display the JWT Token.</p>
+</dd>
+<dt class="hdlist1">[Encode] botton</dt>
+<dd>
+<p>Perform encoding</p>
+</dd>
+<dt class="hdlist1">[Clear] botton</dt>
+<dd>
+<p>all clear</p>
+</dd>
+<dt class="hdlist1">[Algorithm] combobox</dt>
+<dd>
+<p>Select the JWT algorithm.</p>
+</dd>
+<dt class="hdlist1">[Header] text area</dt>
+<dd>
+<p>Input the JWT header to encode.</p>
+</dd>
+<dt class="hdlist1">[Payload] text area</dt>
+<dd>
+<p>Input the JWT payload to encode.</p>
+</dd>
+<dt class="hdlist1">[Secret] text area</dt>
+<dd>
+<p>Input the JWT secret to encode.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_converter_tab">4.9.8. JWT Converter tab</h4>
+<div class="paragraph">
+<p>Convert JWK.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_jtranscoder_JWT_converter.png" alt="JWT token Decoder tab"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JWK] text area</dt>
+<dd>
+<p>Input the JWK to be converted.</p>
+</dd>
+<dt class="hdlist1">[Convert] botton</dt>
+<dd>
+<p>Perform conversion</p>
+</dd>
+<dt class="hdlist1">[Clear] botton</dt>
+<dd>
+<p>all clear</p>
 </dd>
 </dl>
 </div>
@@ -3181,7 +3298,7 @@ This option may not work for items that contain binaries. In that case, use the 
 <div class="sect3">
 <h4 id="_jwt_tab">4.10.2. JWT tab</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_JWT.png" alt="JWT tab"></span></p>
+<p><span class="image"><img src="images/custom_JWT_decoder.png" alt="JWT tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -3232,7 +3349,7 @@ This option may not work for items that contain binaries. In that case, use the 
 <div id="footer">
 <div id="footer-text">
 Version v3.2.7.0<br>
-Last updated 2025-09-28 09:33:52 +0900
+Last updated 2025-11-22 11:16:44 +0900
 </div>
 </div>
 </body>

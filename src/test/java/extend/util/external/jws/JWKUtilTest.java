@@ -220,7 +220,7 @@ public class JWKUtilTest {
             }
             {
                 System.out.println("parseRSA_JWK_KEYS:" + RSA_JWK_KEYS);
-                List<KeyPair> keyPairs = JWKUtil.parseJWKSet(RSA_JWK_KEYS);
+                List<KeyPair> keyPairs = JWKUtil.parseJWKS(RSA_JWK_KEYS);
                 assertEquals(keyPairs.size(), 1);
                 for (int i = 0; i < keyPairs.size(); i++) {
                     assertTrue(keyPairs.get(i).getPrivate() instanceof RSAPrivateKey);
@@ -247,7 +247,7 @@ public class JWKUtilTest {
             }
             {
                 System.out.println("parseEC256_JWK_KEYS:" + EC256_JWK_KEYS);
-                List<KeyPair> keyPairs = JWKUtil.parseJWKSet(EC256_JWK_KEYS);
+                List<KeyPair> keyPairs = JWKUtil.parseJWKS(EC256_JWK_KEYS);
                 assertEquals(keyPairs.size(), 1);
                 for (int i = 0; i < keyPairs.size(); i++) {
                     assertTrue(keyPairs.get(i).getPrivate() instanceof ECPrivateKey);
@@ -306,7 +306,7 @@ public class JWKUtilTest {
             }
             {
                 System.out.println("parseED25519_JWK_KEYS:" + ED25519_JWK_KEYS);
-                List<KeyPair> keyPairs = JWKUtil.parseJWKSet(ED25519_JWK_KEYS);
+                List<KeyPair> keyPairs = JWKUtil.parseJWKS(ED25519_JWK_KEYS);
                 assertEquals(keyPairs.size(), 1);
                 for (int i = 0; i < keyPairs.size(); i++) {
                     assertTrue(keyPairs.get(i).getPrivate() instanceof EdECPrivateKey);

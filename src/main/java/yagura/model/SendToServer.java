@@ -81,8 +81,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import yagura.model.HttpExtendProperty.HttpProtocol;
-import static yagura.model.SendToParameterProperty.SendToParameterType.REQUEST_REGEX;
-import static yagura.model.SendToParameterProperty.SendToParameterType.RESPONSE_REGEX;
 
 /**
  *

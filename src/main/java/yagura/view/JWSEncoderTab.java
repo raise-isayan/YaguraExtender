@@ -149,10 +149,12 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
             if (this.modelAlgo.getSelectedItem() instanceof JWSToken.Algorithm algo) {
                 if (this.panelJWSEdit.isValidHeader()) {
                     JWSToken.Header header = this.panelJWSEdit.getHeader();
+                    //this.panelJWSEdit.setEnableBase64URL(JWSToken.SYMMETRIC_KEY.contains(header.getAlgorithm()));
                     this.panelJWSEdit.setHeaderText(header.withAlgorithm(algo).toJSON(true));
                 }
                 else {
-                    this.panelJWSEdit.setHeaderText(JWSToken.Header.generateAlgorithm(algo).toJSON(true));
+                    this.panelJWSEdit.setEnableBase64URL(JWSToken.SYMMETRIC_KEY.contains(algo));
+                    //this.panelJWSEdit.setHeaderText(JWSToken.Header.generateAlgorithm(algo).toJSON(true));
                 }
             }
         }
@@ -175,7 +177,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
         } catch (java.lang.UnsupportedOperationException ex) {
             this.lblTokenValid.setText(BUNDLE.getString("token.invalid.key"));
         } catch (java.lang.IllegalArgumentException ex) {
-            this.lblTokenValid.setText(ex.getMessage());
+            this.lblTokenValid.setText(BUNDLE.getString("token.invalid.key"));
         }
     }//GEN-LAST:event_btnEncodeActionPerformed
 
@@ -238,7 +240,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
     }
 
     public String getSecretKey() {
-        return this.panelJWSEdit.getSecretKey();
+        return this.panelJWSEdit.getSecretKeyText();
     }
 
     public void setSecretKey(String value) {

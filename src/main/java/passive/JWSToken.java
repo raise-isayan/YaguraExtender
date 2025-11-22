@@ -3,7 +3,6 @@ package passive;
 import com.google.gson.JsonSyntaxException;
 import extend.util.external.jws.JWKUtil;
 import extend.util.external.jws.JWSUtil;
-import static extend.util.external.jws.JWSUtil.findTokenFormat;
 import extension.helpers.BouncyUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
@@ -13,9 +12,9 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SignatureException;
 import java.security.interfaces.ECPrivateKey;
@@ -29,6 +28,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PSSParameterSpec;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,8 +45,6 @@ import org.bouncycastle.asn1.ASN1Integer;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.jcajce.interfaces.EdDSAPrivateKey;
-import org.bouncycastle.jcajce.interfaces.EdDSAPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMException;
 
@@ -142,6 +140,8 @@ public class JWSToken implements JsonToken {
         }
 
     };
+
+    public final static EnumSet<Algorithm> SYMMETRIC_KEY = EnumSet.of(Algorithm.HS256, Algorithm.HS384, Algorithm.HS512);
 
     public static Set<Algorithm> getSupportAlgorithm() {
         final Set<Algorithm> algos = new LinkedHashSet<>();
@@ -385,6 +385,10 @@ public class JWSToken implements JsonToken {
         return sign(this.header.getAlgorithm(), secretKey, this.getData());
     }
 
+    public byte[] sign(Key secretKey) throws SignatureException {
+        return sign(this.header.getAlgorithm(), secretKey, this.getData());
+    }
+
     public byte[] sign(Algorithm algo, String secretKey) throws SignatureException {
         return sign(algo, secretKey, this.getData());
     }
@@ -408,7 +412,7 @@ public class JWSToken implements JsonToken {
                 case HS256:
                 case HS384:
                 case HS512:
-                    signatureByte = sign(algo, JWSUtil.toSecretKey(secretKey), messageBytes);
+                        signatureByte = sign(algo, JWSUtil.toSecretKey(secretKey), messageBytes);
                     break;
                 case RS256:
                 case RS384:
@@ -465,6 +469,25 @@ public class JWSToken implements JsonToken {
         }
     }
 
+    protected static byte[] sign(Algorithm algo, Key privateKey, String message) throws SignatureException {
+        return sign(algo, privateKey, StringUtil.getBytesUTF8(message));
+    }
+
+    protected static byte[] sign(Algorithm algo, Key privateKey, byte[] messageBytes) throws SignatureException {
+        if (privateKey instanceof SecretKey secretKey) {
+            return sign(algo, secretKey, messageBytes);
+        } else if (privateKey instanceof RSAPrivateKey rsaPrivateKey) {
+            return sign(algo, rsaPrivateKey, messageBytes);
+        }
+        else if (privateKey instanceof ECPrivateKey ecPrivateKey) {
+            return sign(algo, ecPrivateKey, messageBytes);
+        }
+        else if (privateKey instanceof EdECPrivateKey edPrivateKey) {
+            return sign(algo, edPrivateKey, messageBytes);
+        }
+        throw new SignatureException("Unsupport algorithm:" + privateKey.getAlgorithm());
+    }
+
     public static byte[] sign(Algorithm algo, SecretKey secretKey, String message) throws SignatureException {
         return sign(algo, secretKey, StringUtil.getBytesUTF8(message));
     }
@@ -483,23 +506,6 @@ public class JWSToken implements JsonToken {
                 break;
         }
         return signatureByte;
-    }
-
-    private static byte[] sign(Algorithm algo, PrivateKey privateKey, String message) throws SignatureException {
-        return sign(algo, privateKey, StringUtil.getBytesUTF8(message));
-    }
-
-    private static byte[] sign(Algorithm algo, PrivateKey privateKey, byte[] messageBytes) throws SignatureException {
-        if (privateKey instanceof RSAPrivateKey rsaPrivateKey) {
-            return sign(algo, rsaPrivateKey, messageBytes);
-        }
-        else if (privateKey instanceof ECPrivateKey ecPrivateKey) {
-            return sign(algo, ecPrivateKey, messageBytes);
-        }
-        else if (privateKey instanceof EdECPrivateKey edPrivateKey) {
-            return sign(algo, edPrivateKey, messageBytes);
-        }
-        throw new SignatureException("Unsupport algorithm:" + privateKey.getAlgorithm());
     }
 
     private static byte[] sign(Algorithm algo, RSAPrivateKey secretKey, byte[] messageBytes) throws SignatureException {
@@ -605,18 +611,15 @@ public class JWSToken implements JsonToken {
         }
     }
 
-    protected static boolean verify(Algorithm algo, SecretKey secretKey, byte [] messageBytes, byte[] signatureBytes) throws SignatureException {
-        byte[] signatureByte = JWSToken.sign(algo, secretKey, messageBytes);
-        String sign = JsonToken.encodeBase64UrlSafe(signatureByte);
-        return sign.equals(JsonToken.encodeBase64UrlSafe(signatureByte));
-    }
-
-    protected static boolean verify(Algorithm algo, PublicKey publicKey, String message, String signature) throws SignatureException {
+    protected static boolean verify(Algorithm algo, Key publicKey, String message, String signature) throws SignatureException {
         return verify(algo, publicKey, StringUtil.getBytesUTF8(message), JsonToken.decodeBase64UrlSafeByte(signature));
     }
 
-    private static boolean verify(Algorithm algo, PublicKey publicKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {
-        if (publicKey instanceof RSAPublicKey rsaPublicKey) {
+    protected static boolean verify(Algorithm algo, Key publicKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {
+        if (publicKey instanceof SecretKey secretKey) {
+            return verify(algo, secretKey, messageBytes, signatureBytes);
+        }
+        else if (publicKey instanceof RSAPublicKey rsaPublicKey) {
             return verify(algo, rsaPublicKey, messageBytes, signatureBytes);
         }
         else if (publicKey instanceof ECPublicKey ecPublicKey) {
@@ -626,6 +629,16 @@ public class JWSToken implements JsonToken {
             return verify(algo, edPublicKey, messageBytes, signatureBytes);
         }
         throw new SignatureException("Unsupport algorithm:" + publicKey.getAlgorithm());
+    }
+
+    protected static boolean verify(Algorithm algo, PublicKey publicKey, String message, String signature) throws SignatureException {
+        return verify(algo, publicKey, StringUtil.getBytesUTF8(message), JsonToken.decodeBase64UrlSafeByte(signature));
+    }
+
+    protected static boolean verify(Algorithm algo, SecretKey secretKey, byte [] messageBytes, byte[] signatureBytes) throws SignatureException {
+        byte[] signatureByte = JWSToken.sign(algo, secretKey, messageBytes);
+        String sign = JsonToken.encodeBase64UrlSafe(signatureByte);
+        return sign.equals(JsonToken.encodeBase64UrlSafe(signatureByte));
     }
 
     private static boolean verify(Algorithm algo, RSAPublicKey publicKey, byte[] messageBytes, byte[] signatureBytes) throws SignatureException {

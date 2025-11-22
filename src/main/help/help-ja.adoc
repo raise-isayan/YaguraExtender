@@ -1282,11 +1282,11 @@ Murmur3/128x64::
 
 Generater には、sequenceタブとrandomタブがあります。
 
-.sequenceタブ
+.Sequenceタブ
 
-sequenceタブは連続する文字リストを生成するための簡易的な機能です。
+Sequenceタブは連続する文字リストを生成するための簡易的な機能です。
 
-.sequence-Numbersタブ
+.Sequence-Numbersタブ
 
 image:images/custom_gene_seq.png[Generaterタブ]
 
@@ -1303,7 +1303,7 @@ end::
 step::
     startからendまでの数字の増加数を指定します。
 
-.sequence-Dateタブ
+.Sequence-Dateタブ
 
 image:images/custom_gene_date.png[Generaterタブ]
 
@@ -1328,7 +1328,7 @@ step::
 [Save to file] ボタン::
   生成したリストをファイルに出力します。
 
-.randomタブ
+.Randomタブ
 
 randomタブはランダムな文字リストを生成するための簡易的な機能です。
 
@@ -1351,6 +1351,28 @@ generator count::
 
 [Save to file] ボタン::
     生成したリストをファイルに出力します。
+
+.GenerateKeyPairタブ
+
+暗号鍵を生成します。
+
+Algorithm コンボボックス:: 
+  暗号アルゴリズムを選択します
+
+KeySize::
+  鍵のサイズを選択します
+
+[Generate] ボタン::
+  暗号鍵を生成します。
+
+[Export] ボタン::
+  暗号鍵を生成してファイルに保存します。
+
+[KeyPair in PEM format] ::
+  PEM形式で暗号鍵を生成します。
+
+[KeyPair in JWK format] ::
+  JWK形式で暗号鍵を生成します。
 
 ==== Converter tab
 
@@ -1514,12 +1536,23 @@ image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
 [Clear] ボタン::
      ViewStateをクリアします。
 
-==== JWT Token Decoder タブ
+==== JWT Decoder タブ
+
+JWTトークンをデコードします。
 
 image:images/custom_jtranscoder_JWT_decoder.png[JWT Token Decoderタブ]
 
 [JWT] テキストエリア::
   デコードするJWTを入力します。
+
+[Decode] ボタン::
+  デコードを実行します。
+
+[Clear] ボタン::
+  クリアします。
+
+[To Encode] ボタン::
+  デコードした値をJWT Encoderタブにコピーします。
 
 [Header] テキストエリア::
   JWTのHeaderをデコードして表示します。
@@ -1527,8 +1560,50 @@ image:images/custom_jtranscoder_JWT_decoder.png[JWT Token Decoderタブ]
 [Payload] テキストエリア::
   JWTのPayloadをデコードして表示します。
 
-[Signature] テキストエリア::
+[Signature]テキストエリア::
   JWTのSignatureを表示します。
+
+==== JWT Encoder タブ
+
+JWTトークンをエンコードします。
+
+image:images/custom_jtranscoder_JWT_encoder.png[JWT Token Decoderタブ]
+
+[JWT] テキストエリア::
+  エンコードされたJWTが表示されます。
+
+[Encode] ボタン::
+  エンコードを実行します。
+
+[Clear] ボタン::
+  クリアします。
+
+[Algorithm] コンボボックス::
+  JWTのアルゴリズムを選択します。
+
+[Header] テキストエリア::
+ エンコードするJWTのHeaderを入力します。
+
+[Payload] テキストエリア::
+ エンコードするJWTのPayloadを入力します。
+
+[Secret]テキストエリア::
+ エンコードするJWTのSecretを入力します。
+
+==== JWT Converter タブ
+
+JWKを変換します。
+
+image:images/custom_jtranscoder_JWT_converter.png[JWT Token Decoderタブ]
+
+[JWK] テキストエリア::
+  変換するJWKを入力します。
+
+[Convert] ボタン::
+  変換を実行します。
+
+[Clear] ボタン::
+  クリアします。
 
 === Generate CSRF PoC
 
@@ -1603,7 +1678,7 @@ image:images/custom_viewstate.png[View Stateタブ]
 
 ==== JWT タブ
 
-image:images/custom_JWT.png[JWTタブ]
+image:images/custom_JWT_decoder.png[JWT tab]
 
 [JWT] コンボボックス::
   デコードするJWTを選択します。
@@ -1616,6 +1691,7 @@ image:images/custom_JWT.png[JWTタブ]
 
 [Signature ]テキストエリア::
   JWTのSignatureを表示します。
+
 
 === Version
 バージョン情報を表示します。

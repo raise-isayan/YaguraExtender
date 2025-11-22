@@ -40,17 +40,17 @@ public class JWKUtil {
         return jwk;
     }
 
-    public static String toJWKSet(KeyPair keyPair, boolean pretty) throws InvalidKeySpecException {
+    public static String toJWKS(KeyPair keyPair, boolean pretty) throws InvalidKeySpecException {
         String jwk = null;
         if (keyPair.getPublic() instanceof RSAPublicKey) {
             JWKToken.RSAKey jwkKey = JWKToken.RSAKey.build(keyPair);
-            jwk = jwkKey.toJWKSet(pretty);
+            jwk = jwkKey.toJWKS(pretty);
         } else if (keyPair.getPublic() instanceof ECPublicKey) {
             JWKToken.ECKey jwkKey = JWKToken.ECKey.build(keyPair);
-            jwk = jwkKey.toJWKSet(pretty);
+            jwk = jwkKey.toJWKS(pretty);
         } else if (keyPair.getPublic() instanceof EdECPublicKey) {
             JWKToken.EDKey jwkKey = JWKToken.EDKey.build(keyPair);
-            jwk = jwkKey.toJWKSet(pretty);
+            jwk = jwkKey.toJWKS(pretty);
         }
         if (jwk == null) {
             throw new InvalidKeySpecException("Invalid KeyPair");
@@ -85,12 +85,12 @@ public class JWKUtil {
         return keyPair;
     }
 
-    public static List<KeyPair> parseJWKSet(String jsonJWK) throws InvalidKeySpecException {
+    public static List<KeyPair> parseJWKS(String jsonJWK) throws InvalidKeySpecException {
         JsonObject jwkObject = JsonUtil.parseJsonObject(jsonJWK);
-        return parseJWKSet(jwkObject);
+        return parseJWKS(jwkObject);
     }
 
-    private static List<KeyPair> parseJWKSet(JsonObject jwkObject) throws InvalidKeySpecException {
+    private static List<KeyPair> parseJWKS(JsonObject jwkObject) throws InvalidKeySpecException {
         List<KeyPair> keyList = new ArrayList<>();
         if (jwkObject.has(JWKToken.JWKKey.KEYS)) {
             JsonElement jsonKeySet = jwkObject.get(JWKToken.JWKKey.KEYS);

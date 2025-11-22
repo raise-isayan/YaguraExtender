@@ -1,9 +1,6 @@
 package yagura.view;
 
 import extension.burp.FilterProperty;
-import static extension.burp.FilterProperty.FilterCategory.HTTP;
-import static extension.burp.FilterProperty.FilterCategory.SITE_MAP;
-import static extension.burp.FilterProperty.FilterCategory.WEBSOCKET;
 import extension.view.base.CustomDialog;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;

@@ -1,12 +1,19 @@
 package yagura.view;
 
 import com.google.gson.JsonSyntaxException;
+import extend.util.external.jws.JWSUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.JSONDocument;
 import java.awt.SystemColor;
+import java.security.Key;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SignatureException;
+import javax.crypto.SecretKey;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import org.bouncycastle.openssl.PEMException;
+import passive.JWKToken;
 import passive.JWSToken;
 import passive.JsonToken;
 
@@ -39,7 +46,9 @@ public class JWSEditPanel extends javax.swing.JPanel {
         pnlPayload = new javax.swing.JPanel();
         lblPayload = new javax.swing.JLabel();
         pnlSecret = new javax.swing.JPanel();
+        pnlSecretStatus = new javax.swing.JPanel();
         lblSecret = new javax.swing.JLabel();
+        tglBase64Url = new javax.swing.JToggleButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -70,8 +79,15 @@ public class JWSEditPanel extends javax.swing.JPanel {
         pnlSecret.setPreferredSize(new java.awt.Dimension(100, 120));
         pnlSecret.setLayout(new java.awt.BorderLayout());
 
+        pnlSecretStatus.setLayout(new java.awt.BorderLayout());
+
         lblSecret.setText("Secret");
-        pnlSecret.add(lblSecret, java.awt.BorderLayout.NORTH);
+        pnlSecretStatus.add(lblSecret, java.awt.BorderLayout.CENTER);
+
+        tglBase64Url.setText("Base64Url");
+        pnlSecretStatus.add(tglBase64Url, java.awt.BorderLayout.EAST);
+
+        pnlSecret.add(pnlSecretStatus, java.awt.BorderLayout.NORTH);
 
         pnlJWT.add(pnlSecret, java.awt.BorderLayout.SOUTH);
 
@@ -200,6 +216,8 @@ public class JWSEditPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlJWT;
     private javax.swing.JPanel pnlPayload;
     private javax.swing.JPanel pnlSecret;
+    private javax.swing.JPanel pnlSecretStatus;
+    private javax.swing.JToggleButton tglBase64Url;
     // End of variables declaration//GEN-END:variables
 
     private boolean format = true;
@@ -262,17 +280,67 @@ public class JWSEditPanel extends javax.swing.JPanel {
         this.txtSecretKey.setText(value);
     }
 
-    public String getSecretKey() {
+    public String getSecretKeyText() {
         return this.txtSecretKey.getText();
+    }
+
+    public boolean isBase64URL() {
+        return this.tglBase64Url.isSelected();
+    }
+
+    public void setBase64URL(boolean enable) {
+        this.tglBase64Url.setSelected(enable);
+    }
+
+    public boolean isEnableBase64URL() {
+        return this.tglBase64Url.isEnabled();
+    }
+
+    public void setEnableBase64URL(boolean enable) {
+        this.tglBase64Url.setEnabled(enable);
+    }
+
+    public SecretKey toSecretKey() {
+        if (this.isBase64URL()) {
+            return JWSUtil.toSecretKey(JsonToken.decodeBase64UrlSafeByte(this.getSecretKeyText()));
+        }
+        else {
+            return JWSUtil.toSecretKey(this.getSecretKeyText());
+        }
+    }
+
+    public PrivateKey toPrivateKey() throws PEMException {
+        if (this.isBase64URL()) {
+            return JWSUtil.toPrivateKey(JsonToken.decodeBase64UrlSafe(this.getSecretKeyText()));
+        }
+        else {
+            return JWSUtil.toPrivateKey(this.getSecretKeyText());
+        }
+    }
+
+    public PublicKey toPublicKey() throws PEMException {
+        return JWSUtil.toPublicKey(this.getSecretKeyText());
     }
 
     public String signToken() throws SignatureException {
         JWSToken.Header header = this.getHeader();
         JWSToken.Payload payload = this.getPayload();
-        JWSToken token = new JWSToken(header, payload);
-        byte [] signature = token.sign(this.getSecretKey());
-        token.getSignature().setEncodeBase64Url(signature);;
-        return token.getToken();
+        try {
+            if (JWSToken.SYMMETRIC_KEY.contains(header.getAlgorithm())) {
+                JWSToken token = new JWSToken(header, payload);
+                byte [] signature = token.sign(this.toSecretKey());
+                token.getSignature().setEncodeBase64Url(signature);
+                return token.getToken();
+            }
+            else {
+                JWSToken token = new JWSToken(header, payload);
+                byte [] signature = token.sign(this.toPrivateKey());
+                token.getSignature().setEncodeBase64Url(signature);
+                return token.getToken();
+            }
+        } catch (PEMException ex) {
+            throw new SignatureException(ex);
+        }
     }
 
     public void setJWS(JWSToken token) {

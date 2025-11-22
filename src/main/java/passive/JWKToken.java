@@ -25,7 +25,6 @@ import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
 import java.security.spec.ECPrivateKeySpec;
 import java.security.spec.ECPublicKeySpec;
-import java.security.spec.EdECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
@@ -81,7 +80,7 @@ public class JWKToken {
         return bytes;
     }
 
-    private static JsonObject jsonJWKSet(List<JsonObject> jwks) {
+    private static JsonObject jsonJWKS(List<JsonObject> jwks) {
         JsonArray jsonArray = new JsonArray();
         for (JsonObject jwk : jwks) {
             jsonArray.add(jwk);
@@ -92,7 +91,6 @@ public class JWKToken {
     }
 
     public static interface JWKKey {
-
         public final static String KTY = "kty";
         public final static String KEYS = "keys";
 
@@ -107,7 +105,6 @@ public class JWKToken {
     }
 
     public static class RSAKey implements JWKKey {
-
         public final static String KEY_TYPE = "RSA";
         public final static String N = "n";
         public final static String E = "e";
@@ -211,7 +208,6 @@ public class JWKToken {
         @Override
         public KeyPair toKeyPair() throws InvalidKeySpecException {
             try {
-//                String kty = this.tokenJWK.get(KTY).getAsString();
                 PublicKey pubKey = null;
                 PrivateKey priKey = null;
                 KeyFactory kf = KeyFactory.getInstance(KEY_TYPE, BouncyCastleProvider.PROVIDER_NAME);
@@ -276,7 +272,6 @@ public class JWKToken {
                         String qi = ConvertUtil.toBase64URLSafeEncode(normalize(rsaPrivateCrtKey.getCrtCoefficient().toByteArray()));
                         jwk.put(RSAKey.QI, qi);
                     }
-
                 }
             } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
                 throw new InvalidKeySpecException(ex.getMessage(), ex);
@@ -291,15 +286,14 @@ public class JWKToken {
             return JsonUtil.prettyJson(toJsonObject(), pretty);
         }
 
-        public String toJWKSet(boolean pretty) throws InvalidKeySpecException {
+        public String toJWKS(boolean pretty) throws InvalidKeySpecException {
             List<JsonObject> jwks = List.of(toJsonObject());
-            return JsonUtil.prettyJson(jsonJWKSet(jwks), pretty);
+            return JsonUtil.prettyJson(jsonJWKS(jwks), pretty);
         }
 
     }
 
     public static class ECKey implements JWKKey {
-
         public final static String KEY_TYPE = "EC";
         public final static String CRV = "crv";
         public final static String X = "x";
@@ -365,7 +359,6 @@ public class JWKToken {
         @Override
         public KeyPair toKeyPair() throws InvalidKeySpecException {
             try {
-                //              String kty = this.tokenJWK.get(KTY).getAsString();
                 PublicKey pubKey = null;
                 PrivateKey priKey = null;
                 KeyFactory kf = KeyFactory.getInstance(KEY_TYPE, BouncyCastleProvider.PROVIDER_NAME);
@@ -461,9 +454,9 @@ public class JWKToken {
             return JsonUtil.prettyJson(toJsonObject(), pretty);
         }
 
-        public String toJWKSet(boolean pretty) throws InvalidKeySpecException {
+        public String toJWKS(boolean pretty) throws InvalidKeySpecException {
             List<JsonObject> jwks = List.of(toJsonObject());
-            return JsonUtil.prettyJson(jsonJWKSet(jwks), pretty);
+            return JsonUtil.prettyJson(jsonJWKS(jwks), pretty);
         }
 
         private static String mapCurveName(int fieldSize) {
@@ -482,7 +475,6 @@ public class JWKToken {
     }
 
     public static class EDKey implements JWKKey {
-
         public final static String KEY_TYPE = "OKP";
         public final static String CRV = "crv";
         public final static String X = "x";
@@ -549,7 +541,6 @@ public class JWKToken {
             try {
                 PublicKey pubKey = null;
                 PrivateKey priKey = null;
-//                String kty = this.tokenJWK.get(KTY).getAsString();
                 String curve = this.tokenJWK.get(CRV).getAsString();
                 KeyFactory kf = KeyFactory.getInstance(curve, BouncyCastleProvider.PROVIDER_NAME);
                 byte[] x = ConvertUtil.toBase64URLSafeDecode(this.tokenJWK.get(X).getAsString());
@@ -630,9 +621,9 @@ public class JWKToken {
             return JsonUtil.prettyJson(toJsonObject(), pretty);
         }
 
-        public String toJWKSet(boolean pretty) throws InvalidKeySpecException {
+        public String toJWKS(boolean pretty) throws InvalidKeySpecException {
             List<JsonObject> jwks = List.of(toJsonObject());
-            return JsonUtil.prettyJson(jsonJWKSet(jwks), pretty);
+            return JsonUtil.prettyJson(jsonJWKS(jwks), pretty);
         }
 
     }

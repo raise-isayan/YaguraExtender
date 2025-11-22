@@ -42,8 +42,8 @@ public class CodecUtilTest {
     @Test
     public void testToMd5Sum() {
         System.out.println("toMd5Sum");
-        assertEquals("098f6bcd4621d373cade4e832627b4f6", CodecUtil.toMd5Sum("test", false));
-        assertEquals("d41d8cd98f00b204e9800998ecf8427e", CodecUtil.toMd5Sum("", false));
+        assertEquals("098f6bcd4621d373cade4e832627b4f6", CodecUtil.toMD5Sum("test", false));
+        assertEquals("d41d8cd98f00b204e9800998ecf8427e", CodecUtil.toMD5Sum("", false));
     }
 
     /**

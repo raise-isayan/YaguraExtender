@@ -1,12 +1,10 @@
 package extend.util.external;
 
-import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
-import static extend.util.external.ZipUtil.getBaseJar;
 import extension.burp.BurpConfig;
 import extension.burp.BurpVersion;
 import extension.helpers.FileUtil;
@@ -15,7 +13,6 @@ import extension.helpers.json.JsonUtil;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -185,7 +182,7 @@ public class BurpBrowser {
         }
         URL burpJarUrl = BurpBrowser.class.getResource("/");
         if (burpJarUrl != null) {
-            File path = new File(getBaseJar(burpJarUrl));
+            File path = new File(ZipUtil.getBaseJar(burpJarUrl));
             return path.getParentFile().toPath();
         }
         String command = System.getProperty("sun.java.command");

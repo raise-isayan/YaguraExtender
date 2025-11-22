@@ -516,7 +516,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_converter_tab">4.9.3. Converter tab</a></li>
 <li><a href="#_certificate_タブ">4.9.4. Certificate タブ</a></li>
 <li><a href="#_view_state_decoder_タブ">4.9.5. View State Decoder タブ</a></li>
-<li><a href="#_jwt_token_decoder_タブ">4.9.6. JWT Token Decoder タブ</a></li>
+<li><a href="#_jwt_decoder_タブ">4.9.6. JWT Decoder タブ</a></li>
+<li><a href="#_jwt_encoder_タブ">4.9.7. JWT Encoder タブ</a></li>
+<li><a href="#_jwt_converter_タブ">4.9.8. JWT Converter タブ</a></li>
 </ul>
 </li>
 <li><a href="#_generate_csrf_poc">4.10. Generate CSRF PoC</a>
@@ -2643,11 +2645,11 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <p>Generater には、sequenceタブとrandomタブがあります。</p>
 </div>
 <div class="paragraph">
-<div class="title">sequenceタブ</div>
-<p>sequenceタブは連続する文字リストを生成するための簡易的な機能です。</p>
+<div class="title">Sequenceタブ</div>
+<p>Sequenceタブは連続する文字リストを生成するための簡易的な機能です。</p>
 </div>
 <div class="paragraph">
-<div class="title">sequence-Numbersタブ</div>
+<div class="title">Sequence-Numbersタブ</div>
 <p><span class="image"><img src="images/custom_gene_seq.png" alt="Generaterタブ"></span></p>
 </div>
 <div class="dlist">
@@ -2672,7 +2674,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </dl>
 </div>
 <div class="paragraph">
-<div class="title">sequence-Dateタブ</div>
+<div class="title">Sequence-Dateタブ</div>
 <p><span class="image"><img src="images/custom_gene_date.png" alt="Generaterタブ"></span></p>
 </div>
 <div class="dlist">
@@ -2708,7 +2710,7 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </dl>
 </div>
 <div class="paragraph">
-<div class="title">randomタブ</div>
+<div class="title">Randomタブ</div>
 <p>randomタブはランダムな文字リストを生成するための簡易的な機能です。</p>
 </div>
 <div class="paragraph">
@@ -2739,6 +2741,38 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dt class="hdlist1">[Save to file] ボタン</dt>
 <dd>
 <p>生成したリストをファイルに出力します。</p>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<div class="title">GenerateKeyPairタブ</div>
+<p>暗号鍵を生成します。</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Algorithm コンボボックス</dt>
+<dd>
+<p>暗号アルゴリズムを選択します</p>
+</dd>
+<dt class="hdlist1">KeySize</dt>
+<dd>
+<p>鍵のサイズを選択します</p>
+</dd>
+<dt class="hdlist1">[Generate] ボタン</dt>
+<dd>
+<p>暗号鍵を生成します。</p>
+</dd>
+<dt class="hdlist1">[Export] ボタン</dt>
+<dd>
+<p>暗号鍵を生成してファイルに保存します。</p>
+</dd>
+<dt class="hdlist1">[KeyPair in PEM format] </dt>
+<dd>
+<p>PEM形式で暗号鍵を生成します。</p>
+</dd>
+<dt class="hdlist1">[KeyPair in JWK format] </dt>
+<dd>
+<p>JWK形式で暗号鍵を生成します。</p>
 </dd>
 </dl>
 </div>
@@ -3011,7 +3045,10 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jwt_token_decoder_タブ">4.9.6. JWT Token Decoder タブ</h4>
+<h4 id="_jwt_decoder_タブ">4.9.6. JWT Decoder タブ</h4>
+<div class="paragraph">
+<p>JWTトークンをデコードします。</p>
+</div>
 <div class="paragraph">
 <p><span class="image"><img src="images/custom_jtranscoder_JWT_decoder.png" alt="JWT Token Decoderタブ"></span></p>
 </div>
@@ -3021,6 +3058,18 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>デコードするJWTを入力します。</p>
 </dd>
+<dt class="hdlist1">[Decode] ボタン</dt>
+<dd>
+<p>デコードを実行します。</p>
+</dd>
+<dt class="hdlist1">[Clear] ボタン</dt>
+<dd>
+<p>クリアします。</p>
+</dd>
+<dt class="hdlist1">[To Encode] ボタン</dt>
+<dd>
+<p>デコードした値をJWT Encoderタブにコピーします。</p>
+</dd>
 <dt class="hdlist1">[Header] テキストエリア</dt>
 <dd>
 <p>JWTのHeaderをデコードして表示します。</p>
@@ -3029,9 +3078,75 @@ Guess にチェックすると文字コードを自動で判定してエンコ�
 <dd>
 <p>JWTのPayloadをデコードして表示します。</p>
 </dd>
-<dt class="hdlist1">[Signature] テキストエリア</dt>
+<dt class="hdlist1">[Signature]テキストエリア</dt>
 <dd>
 <p>JWTのSignatureを表示します。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_encoder_タブ">4.9.7. JWT Encoder タブ</h4>
+<div class="paragraph">
+<p>JWTトークンをエンコードします。</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_jtranscoder_JWT_encoder.png" alt="JWT Token Decoderタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JWT] テキストエリア</dt>
+<dd>
+<p>エンコードされたJWTが表示されます。</p>
+</dd>
+<dt class="hdlist1">[Encode] ボタン</dt>
+<dd>
+<p>エンコードを実行します。</p>
+</dd>
+<dt class="hdlist1">[Clear] ボタン</dt>
+<dd>
+<p>クリアします。</p>
+</dd>
+<dt class="hdlist1">[Algorithm] コンボボックス</dt>
+<dd>
+<p>JWTのアルゴリズムを選択します。</p>
+</dd>
+<dt class="hdlist1">[Header] テキストエリア</dt>
+<dd>
+<p>エンコードするJWTのHeaderを入力します。</p>
+</dd>
+<dt class="hdlist1">[Payload] テキストエリア</dt>
+<dd>
+<p>エンコードするJWTのPayloadを入力します。</p>
+</dd>
+<dt class="hdlist1">[Secret]テキストエリア</dt>
+<dd>
+<p>エンコードするJWTのSecretを入力します。</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jwt_converter_タブ">4.9.8. JWT Converter タブ</h4>
+<div class="paragraph">
+<p>JWKを変換します。</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/custom_jtranscoder_JWT_converter.png" alt="JWT Token Decoderタブ"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">[JWK] テキストエリア</dt>
+<dd>
+<p>変換するJWKを入力します。</p>
+</dd>
+<dt class="hdlist1">[Convert] ボタン</dt>
+<dd>
+<p>変換を実行します。</p>
+</dd>
+<dt class="hdlist1">[Clear] ボタン</dt>
+<dd>
+<p>クリアします。</p>
 </dd>
 </dl>
 </div>
@@ -3154,7 +3269,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <div class="sect3">
 <h4 id="_jwt_タブ">4.10.2. JWT タブ</h4>
 <div class="paragraph">
-<p><span class="image"><img src="images/custom_JWT.png" alt="JWTタブ"></span></p>
+<p><span class="image"><img src="images/custom_JWT_decoder.png" alt="JWT tab"></span></p>
 </div>
 <div class="dlist">
 <dl>
@@ -3205,7 +3320,7 @@ Bodyの内容をそのまま送信したい場合に選択します。<br>
 <div id="footer">
 <div id="footer-text">
 Version v3.2.7.0<br>
-Last updated 2025-09-28 09:34:20 +0900
+Last updated 2025-11-22 11:08:06 +0900
 </div>
 </div>
 </body>

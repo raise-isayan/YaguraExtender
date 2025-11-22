@@ -1303,11 +1303,11 @@ Murmur3/128x64::
 
 The Generater has a sequence tab and a random tab.
 
-.sequence tab
+.Sequence tab
 
 The sequence tab is a simple function for generating a continuous character list.
 
-.sequence-Numbers tab
+.Sequence-Numbers tab
 
 image:images/custom_gene_seq.png[Generater tab]
 
@@ -1324,7 +1324,7 @@ end::
 step::
     number of increments from start to end.
 
-.sequence-Date tab
+.Sequence-Date tab
 
 image:images/custom_gene_date.png[Generater tab]
 
@@ -1349,7 +1349,7 @@ step::
 [Save to file] button::
     Output the generated list to a file.
 
-.random tab
+.Random tab
 
 The andom tab is a simple function for generating a random character list.
 
@@ -1372,6 +1372,28 @@ generator count::
 
 [Save to file] button::
     Output the generated list to a file.
+
+.GenerateKeyPair Tab
+
+Generate an encryption key.
+
+Algorithm combobox::
+  Select an encryption algorithm
+  
+KeySize::
+  Select the key size
+  
+[Generate] button:: 
+  Generate an encryption key.
+  
+[Export] button:: 
+  Generate an encryption key and save it to a file.
+
+[KeyPair in PEM format]
+  Generates an encryption key in PEM format.
+
+[KeyPair in JWK format]
+  Generates an encryption key in JWK format.
 
 ==== Converter tab
 
@@ -1521,7 +1543,7 @@ image:images/custom_certificate.png[Certificate tab]
 
 ==== View State Decoder tab
 
-image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
+image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoder tab]
 
 [ViewState] text area::
   Input the ViewState to decode.
@@ -1538,12 +1560,23 @@ image:images/custom_jtranscoder_ViewState_decoder.png[View State Decoderタブ]
 [Clear] button::
     Clear ViewState.
 
-==== JWT token Decoder tab
+==== JWT Decoder tab
+
+Decode the JWT token
 
 image:images/custom_jtranscoder_JWT_decoder.png[JWT token Decoder tab]
 
 [JWT] text area::
   Input the JWT to decode.
+
+[Decode] botton::
+  Perform decoding
+
+[Clear] botton::
+  all clear
+
+[To Encode] botton::
+  Copy the decoded value to the JWT Encoder tab.
 
 [Header] text area::
   Decode and display the JWT Header.
@@ -1553,6 +1586,49 @@ image:images/custom_jtranscoder_JWT_decoder.png[JWT token Decoder tab]
 
 [Signature] text area::
   Decode and display the JWT Signature.
+
+==== JWT Encoder tab
+
+Encode the JWT token
+
+image:images/custom_jtranscoder_JWT_encoder.png[JWT token Decoder tab]
+
+[JWT] text area::
+  Encode and display the JWT Token.
+
+[Encode] botton::
+  Perform encoding
+
+[Clear] botton::
+  all clear
+
+[Algorithm] combobox::
+  Select the JWT algorithm.
+
+[Header] text area::
+  Input the JWT header to encode.
+
+[Payload] text area::
+  Input the JWT payload to encode.
+
+[Secret] text area::
+  Input the JWT secret to encode.
+
+==== JWT Converter tab
+
+Convert JWK.
+
+image:images/custom_jtranscoder_JWT_converter.png[JWT token Decoder tab]
+
+[JWK] text area::
+  Input the JWK to be converted.
+
+[Convert] botton::
+  Perform conversion
+
+[Clear] botton::
+  all clear
+
 
 === Generate CSRF PoC
 
@@ -1626,7 +1702,7 @@ image:images/custom_viewstate.png[View State  tab]
 
 ==== JWT tab
 
-image:images/custom_JWT.png[JWT tab]
+image:images/custom_JWT_decoder.png[JWT tab]
 
 [JWT] combo box::
   Select the JWT to decode.

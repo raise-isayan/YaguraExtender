@@ -153,8 +153,8 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
                 KeyPair keyPairPub = new KeyPair(keyPair.getPublic(), null);
                 String jwkPub = JWKUtil.toJWK(keyPairPub, true);
                 appendTab("JWK(Public)", jwkPub, true);
-                String jwkSet = JWKUtil.toJWKSet(keyPair, true);
-                appendTab("JWK(Keys)", jwkSet, true);
+                String jwkKeySet = JWKUtil.toJWKS(keyPair, true);
+                appendTab("JWK(Keys)", jwkKeySet, true);
             }
         } catch (InvalidKeySpecException ex) {
             this.lblTokenValid.setText("invlid key");

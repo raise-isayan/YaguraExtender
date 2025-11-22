@@ -37,7 +37,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toMd2Sum(byte[] binary, boolean upperCase) {
+    public static String toMD2Sum(byte[] binary, boolean upperCase) {
         if (upperCase) {
             return MD2_HASH.digestAsHex(binary).toUpperCase();
         } else {
@@ -52,7 +52,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toMd2Sum(String str, boolean upperCase) {
+    public static String toMD2Sum(String str, boolean upperCase) {
         if (upperCase) {
             return MD2_HASH.digestAsHex(str).toUpperCase();
         } else {
@@ -69,7 +69,7 @@ public class CodecUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toMd2Sum(String str, String charset, boolean upperCase)
+    public static String toMD2Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase) {
             return MD2_HASH.digestAsHex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
@@ -87,7 +87,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toMd5Sum(byte[] binary, boolean upperCase) {
+    public static String toMD5Sum(byte[] binary, boolean upperCase) {
         if (upperCase) {
             return MD5_HASH.digestAsHex(binary).toUpperCase();
         } else {
@@ -102,7 +102,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toMd5Sum(String str, boolean upperCase) {
+    public static String toMD5Sum(String str, boolean upperCase) {
         if (upperCase) {
             return MD5_HASH.digestAsHex(str).toUpperCase();
         } else {
@@ -119,7 +119,7 @@ public class CodecUtil {
      * @return ハッシュ値
      * @throws UnsupportedEncodingException
      */
-    public static String toMd5Sum(String str, String charset, boolean upperCase)
+    public static String toMD5Sum(String str, String charset, boolean upperCase)
             throws UnsupportedEncodingException {
         if (upperCase) {
             return MD5_HASH.digestAsHex(StringUtil.getBytesCharset(str, charset)).toUpperCase();

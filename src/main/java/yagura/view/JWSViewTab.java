@@ -140,7 +140,8 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         for (HttpHeader h : headers) {
             String value = h.value();
             if (JWSToken.containsTokenFormat(value)) {
-                JWSToken token = this.jwsinstance.parseToken(value, true);
+                // Bearer で始まるケースがあるため false 検索
+                JWSToken token = this.jwsinstance.parseToken(value, false);
                 if (token != null) {
                     this.tokenMap.put(h.name(), token);
                     this.cmbParam.addItem(h.name());
@@ -210,9 +211,14 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
             this.setLineWrap(viewProperty.isLineWrap());
             List<HttpHeader> headers = httpRequest.headers();
             for (HttpHeader h : headers) {
-                if (JWSToken.containsTokenFormat(h.value())) {
-                    JWSToken token = this.jwsinstance.parseToken(h.value(), true);
-                    return token != null;
+                // Bearer で始まるケースがあるため false 検索
+                String value = h.value();
+                if (JWSToken.containsTokenFormat(value)) {
+                    JWSToken token = this.jwsinstance.parseToken(value, false);
+                    find = token != null;
+                    if (find) {
+                        return find;
+                    }
                 }
             }
             List<ParsedHttpParameter> parameters = httpRequest.parameters();

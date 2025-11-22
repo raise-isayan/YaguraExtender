@@ -32,6 +32,7 @@ import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
+import extend.util.external.jws.JWKUtil;
 import extension.burp.BurpUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
@@ -65,8 +66,21 @@ import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.DateUtil;
 import extension.helpers.SmartCodec;
+import java.io.StringWriter;
+import java.security.InvalidParameterException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.ProviderException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultComboBoxModel;
 import org.apache.commons.codec.DecoderException;
 import passive.JWSToken;
+import static yagura.view.CertificateTab.BUNDLE;
 
 /**
  *
@@ -153,6 +167,27 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }
 
     private final CertificateTab certificateTab = new CertificateTab();
+
+    private File currentPrivateKeyDirectory = null;
+
+    private final DefaultComboBoxModel modelAlgo = new DefaultComboBoxModel();
+
+   // https://docs.oracle.com/javase/jp/11/docs/specs/security/standard-names.html#keypairgenerator-algorithms
+    private final static String[] ALGORITHM = new String[]{"RSA", "DSA", "EC", "Ed25519", "Ed448"};
+    private final static Map<String, Boolean> KEY_USE_MAP = new HashMap();
+    private final static int[] RSA_KEYSIZE = new int[]{512, 1024, 2048, 3072, 4098};
+    private final static int[] DSA_KEYSIZE = new int[]{512, 768, 1024, 2048, 3072};
+    private final static int[] EC_KEYSIZE = new int[]{224, 256, 384, 521};
+    private final static int[] ED25519_KEYSIZE = new int[]{255};
+    private final static int[] ED448_KEYSIZE = new int[]{448};
+
+    static {
+        KEY_USE_MAP.put("RSA", Boolean.TRUE);
+        KEY_USE_MAP.put("DSA", Boolean.TRUE);
+        KEY_USE_MAP.put("EC", Boolean.TRUE);
+        KEY_USE_MAP.put("Ed25519", Boolean.FALSE);
+        KEY_USE_MAP.put("Ed448", Boolean.FALSE);
+    }
 
     private void customizeComponents() {
 
@@ -312,6 +347,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         this.propertyListener.propertyChange(null);
         ThemeUI.addPropertyChangeListener(this.propertyListener);
 
+        // KeyPairGenerager
+
+        this.cmbAlgorithm.setModel(modelAlgo);
+        this.modelAlgo.addAll(List.of(ALGORITHM));
+        this.cmbAlgorithm.setSelectedIndex(0);
+
+
     }
 
     private void txtInputRawCaretUpdate(javax.swing.event.CaretEvent evt) {
@@ -406,6 +448,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoRandomCountGrp = new javax.swing.ButtonGroup();
         rdoCetificateGrp = new javax.swing.ButtonGroup();
         rdoFormatGrp = new javax.swing.ButtonGroup();
+        btnGrpAlgorithm = new javax.swing.ButtonGroup();
         tabbetTranscoder = new javax.swing.JTabbedPane();
         tabTransrator = new javax.swing.JPanel();
         pnlTranslator = new javax.swing.JPanel();
@@ -644,6 +687,20 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoCount50 = new javax.swing.JRadioButton();
         rdoCountNum = new javax.swing.JRadioButton();
         spnCountNum = new javax.swing.JSpinner();
+        pnlGenerateKey = new javax.swing.JPanel();
+        pnlKeyPairAlgorithm = new javax.swing.JPanel();
+        lbAlgorithm = new javax.swing.JLabel();
+        lblKeySize = new javax.swing.JLabel();
+        cmbAlgorithm = new javax.swing.JComboBox<>();
+        lblKeyPairValid = new javax.swing.JLabel();
+        pnlKeySize = new javax.swing.JPanel();
+        pnlKeyPairConvertFormat = new javax.swing.JPanel();
+        rdoConvertKeyPairPEM = new javax.swing.JRadioButton();
+        btnExportKeyPair = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtGenerateKeyPair = new javax.swing.JTextArea();
+        rdoConvertKeyPairJWK = new javax.swing.JRadioButton();
+        btnGenerate1 = new javax.swing.JButton();
         pnlRight = new javax.swing.JPanel();
         btnGenerate = new javax.swing.JButton();
         btnListCopy = new javax.swing.JButton();
@@ -2301,6 +2358,122 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         );
 
         tabbetGenerate.addTab("Random", tabRandom);
+
+        pnlGenerateKey.setLayout(new java.awt.BorderLayout());
+
+        lbAlgorithm.setText("Algorithm:");
+
+        lblKeySize.setText("KeySize;");
+
+        cmbAlgorithm.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbAlgorithmItemStateChanged(evt);
+            }
+        });
+
+        pnlKeySize.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        javax.swing.GroupLayout pnlKeyPairAlgorithmLayout = new javax.swing.GroupLayout(pnlKeyPairAlgorithm);
+        pnlKeyPairAlgorithm.setLayout(pnlKeyPairAlgorithmLayout);
+        pnlKeyPairAlgorithmLayout.setHorizontalGroup(
+            pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbAlgorithm)
+                    .addComponent(lblKeySize))
+                .addGap(11, 11, 11)
+                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
+                        .addComponent(cmbAlgorithm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
+                        .addContainerGap(624, Short.MAX_VALUE))
+                    .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
+                        .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+        pnlKeyPairAlgorithmLayout.setVerticalGroup(
+            pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlKeyPairAlgorithmLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lbAlgorithm)
+                        .addComponent(cmbAlgorithm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblKeyPairValid, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        pnlGenerateKey.add(pnlKeyPairAlgorithm, java.awt.BorderLayout.NORTH);
+
+        btnGrpAlgorithm.add(rdoConvertKeyPairPEM);
+        rdoConvertKeyPairPEM.setText("KeyPair in PEM format");
+
+        btnExportKeyPair.setText("Export");
+        btnExportKeyPair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportKeyPairActionPerformed(evt);
+            }
+        });
+
+        txtGenerateKeyPair.setColumns(20);
+        txtGenerateKeyPair.setRows(5);
+        jScrollPane2.setViewportView(txtGenerateKeyPair);
+
+        btnGrpAlgorithm.add(rdoConvertKeyPairJWK);
+        rdoConvertKeyPairJWK.setSelected(true);
+        rdoConvertKeyPairJWK.setText("KeyPair in JWK format");
+
+        btnGenerate1.setText("Generate");
+        btnGenerate1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerate1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlKeyPairConvertFormatLayout = new javax.swing.GroupLayout(pnlKeyPairConvertFormat);
+        pnlKeyPairConvertFormat.setLayout(pnlKeyPairConvertFormatLayout);
+        pnlKeyPairConvertFormatLayout.setHorizontalGroup(
+            pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
+                        .addGroup(pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rdoConvertKeyPairJWK)
+                            .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
+                                .addComponent(rdoConvertKeyPairPEM)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnGenerate1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnExportKeyPair)))
+                        .addGap(0, 1128, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        pnlKeyPairConvertFormatLayout.setVerticalGroup(
+            pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExportKeyPair)
+                    .addComponent(rdoConvertKeyPairPEM)
+                    .addComponent(btnGenerate1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rdoConvertKeyPairJWK)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        pnlGenerateKey.add(pnlKeyPairConvertFormat, java.awt.BorderLayout.CENTER);
+
+        tabbetGenerate.addTab("GenerateKeyPair", pnlGenerateKey);
 
         pnlTop.add(tabbetGenerate, java.awt.BorderLayout.CENTER);
 
@@ -4801,6 +4974,96 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTimezoneActionPerformed
 
+    private void cmbAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbAlgorithmItemStateChanged
+        int[] keysize_list = new int[0];
+        String algo = this.getAlgorithm();
+        if ("RSA".equals(algo)) {
+            keysize_list = RSA_KEYSIZE;
+        } else if ("DSA".equals(algo)) {
+            keysize_list = DSA_KEYSIZE;
+        } else if ("EC".equals(algo)) {
+            keysize_list = EC_KEYSIZE;
+        } else if ("Ed25519".equals(algo)) {
+            keysize_list = ED25519_KEYSIZE;
+        } else if ("Ed448".equals(algo)) {
+            keysize_list = ED448_KEYSIZE;
+        }
+        List<AbstractButton> rdoGroup = ConvertUtil.toList(this.btnGrpAlgorithm.getElements().asIterator());
+        for (int i = 0; i < rdoGroup.size(); i++) {
+            this.btnGrpAlgorithm.remove(rdoGroup.get(i));
+        }
+        this.pnlKeySize.removeAll();
+        for (int i = 0; i < keysize_list.length; i++) {
+            javax.swing.JRadioButton rdoKeySize = new javax.swing.JRadioButton();
+            if (i == (keysize_list.length / 2)) {
+                rdoKeySize.setSelected(true);
+            }
+            rdoKeySize.setText(String.valueOf(keysize_list[i]));
+            rdoKeySize.setActionCommand(String.valueOf(keysize_list[i]));
+            this.pnlKeySize.add(rdoKeySize);
+            this.btnGrpAlgorithm.add(rdoKeySize);
+        }
+        this.pnlKeySize.updateUI();
+    }//GEN-LAST:event_cmbAlgorithmItemStateChanged
+
+    private void btnExportKeyPairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportKeyPairActionPerformed
+        KeyPair exportKeyPair = this.getExportKeyPair();
+        if (exportKeyPair != null) {
+            try {
+                JFileChooser filechooser = new JFileChooser();
+                filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                filechooser.setCurrentDirectory(this.currentPrivateKeyDirectory);
+                int selected = filechooser.showSaveDialog(this);
+                if (selected == JFileChooser.APPROVE_OPTION) {
+                    File saveFile = filechooser.getSelectedFile();
+                    if (this.rdoConvertKeyPairPEM.isSelected()) {
+                        BouncyUtil.storeKeyPairPem(exportKeyPair, saveFile);
+                    }
+                    else if (this.rdoConvertKeyPairJWK.isSelected()) {
+                        String jwk_token = JWKUtil.toJWK(exportKeyPair, true);
+                        FileUtil.stringToFile(jwk_token, saveFile, StandardCharsets.UTF_8);
+                    }
+                    this.currentPrivateKeyDirectory = saveFile.getParentFile();
+                }
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            } catch (InvalidKeySpecException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No KeyPair has been selected.", "KeyPair", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnExportKeyPairActionPerformed
+
+    private void btnGenerate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerate1ActionPerformed
+        String algo = getAlgorithm();
+        if ("DSA".equals(algo) && this.rdoConvertKeyPairJWK.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Unsupport algorithm:" + algo, "KeyPair", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        KeyPair keyPair = this.getExportKeyPair();
+        if (keyPair != null) {
+            try {
+                StringWriter exportKeyPair = new StringWriter();
+                if (this.rdoConvertKeyPairPEM.isSelected()) {
+                    String key = BouncyUtil.exportKeyPairPem(keyPair);
+                    exportKeyPair.append(key);
+                }
+                else if (this.rdoConvertKeyPairJWK.isSelected()) {
+                    String jwk = JWKUtil.toJWK(keyPair, true);
+                    exportKeyPair.append(jwk);
+                }
+                this.txtGenerateKeyPair.setText(exportKeyPair.toString());
+            } catch (InvalidKeySpecException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No KeyPair has been selected.", "KeyPair", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGenerate1ActionPerformed
+
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -4837,7 +5100,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnDotTailDecCIP;
     private javax.swing.JButton btnEncode;
     private javax.swing.JButton btnExcelSerial;
+    private javax.swing.JButton btnExportKeyPair;
     private javax.swing.JButton btnGenerate;
+    private javax.swing.JButton btnGenerate1;
+    private javax.swing.ButtonGroup btnGrpAlgorithm;
     private javax.swing.ButtonGroup btnGrpEncodeType;
     private javax.swing.ButtonGroup btnGrpNewLine;
     private javax.swing.JButton btnHashAscon;
@@ -4952,6 +5218,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JCheckBox chkRawMode;
     private javax.swing.JCheckBox chkViewLineWrap;
     private javax.swing.JCheckBox chkWithByte;
+    private javax.swing.JComboBox<String> cmbAlgorithm;
     private javax.swing.JComboBox<String> cmbDateUnit;
     private javax.swing.JComboBox<String> cmbEncoding;
     private javax.swing.JComboBox<String> cmbHistory;
@@ -4962,6 +5229,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lbAlgorithm;
     private javax.swing.JLabel lblBin;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblDateEnd;
@@ -4987,6 +5256,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JLabel lblIPv4toUnicode;
     private javax.swing.JLabel lblIntIP;
     private javax.swing.JLabel lblJavaSerial;
+    private javax.swing.JLabel lblKeyPairValid;
+    private javax.swing.JLabel lblKeySize;
     private javax.swing.JLabel lblNumEnd;
     private javax.swing.JLabel lblNumFormat;
     private javax.swing.JLabel lblNumStart;
@@ -5017,6 +5288,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlEncoding;
     private javax.swing.JPanel pnlFormat;
     private javax.swing.JPanel pnlGenerate;
+    private javax.swing.JPanel pnlGenerateKey;
     private javax.swing.JPanel pnlHashCheckSum;
     private javax.swing.JPanel pnlHashTrans;
     private javax.swing.JPanel pnlHeader;
@@ -5028,6 +5300,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlInputRaw;
     private javax.swing.JPanel pnlJSHexEnc;
     private javax.swing.JPanel pnlJSUnicodeEnc;
+    private javax.swing.JPanel pnlKeyPairAlgorithm;
+    private javax.swing.JPanel pnlKeyPairConvertFormat;
+    private javax.swing.JPanel pnlKeySize;
     private javax.swing.JPanel pnlLang;
     private javax.swing.JPanel pnlMail;
     private javax.swing.JPanel pnlNewLine;
@@ -5061,6 +5336,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoCR;
     private javax.swing.JRadioButton rdoCRLF;
     private javax.swing.ButtonGroup rdoCetificateGrp;
+    private javax.swing.JRadioButton rdoConvertKeyPairJWK;
+    private javax.swing.JRadioButton rdoConvertKeyPairPEM;
     private javax.swing.JRadioButton rdoCount1;
     private javax.swing.JRadioButton rdoCount10;
     private javax.swing.JRadioButton rdoCount50;
@@ -5148,6 +5425,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JFormattedTextField txtExcelSerial;
     private javax.swing.JTextField txtExponent;
     private javax.swing.JTextArea txtGenarate;
+    private javax.swing.JTextArea txtGenerateKeyPair;
     private javax.swing.JTextField txtHex;
     private javax.swing.JTextField txtHexIP;
     private javax.swing.JTextField txtIPv4MappedIPv6;
@@ -5528,6 +5806,36 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
         return buff.toString();
     }
+
+
+    protected String getAlgorithm() {
+        return (String) this.cmbAlgorithm.getSelectedItem();
+    }
+
+    protected int getKeySize() {
+        ButtonModel model = this.btnGrpAlgorithm.getSelection();
+        return Integer.parseInt(model.getActionCommand());
+    }
+
+    private KeyPair getExportKeyPair() {
+        try {
+            String algo = this.getAlgorithm();
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance(algo);
+            if (KEY_USE_MAP.getOrDefault(algo, Boolean.FALSE)) {
+                keyGen.initialize(this.getKeySize());
+            }
+            KeyPair keyPair = keyGen.generateKeyPair();
+            return keyPair;
+        } catch (NoSuchAlgorithmException ex) {
+            this.lblKeyPairValid.setText(BUNDLE.getString("keypair.invalid.algorithm"));
+        } catch (InvalidParameterException ex) {
+            this.lblKeyPairValid.setText(BUNDLE.getString("keypair.invalid.keysize"));
+        } catch (ProviderException ex) {
+            this.lblKeyPairValid.setText(BUNDLE.getString("keypair.invalid.keysize"));
+        }
+        return null;
+    }
+
 
     public JTransCoderProperty getProperty() {
         final JTransCoderProperty transcoderProp = new JTransCoderProperty();
