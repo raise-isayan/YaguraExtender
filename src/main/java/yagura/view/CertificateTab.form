@@ -14,8 +14,6 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="btnGrpExportSubjectCA">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="btnGrpExportKeyPair">
-    </Component>
   </NonVisualComponents>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>

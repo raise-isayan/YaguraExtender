@@ -448,7 +448,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoRandomCountGrp = new javax.swing.ButtonGroup();
         rdoCetificateGrp = new javax.swing.ButtonGroup();
         rdoFormatGrp = new javax.swing.ButtonGroup();
-        btnGrpAlgorithm = new javax.swing.ButtonGroup();
+        btnGrpKeySize = new javax.swing.ButtonGroup();
+        btnGrpExportKeyPair = new javax.swing.ButtonGroup();
         tabbetTranscoder = new javax.swing.JTabbedPane();
         tabTransrator = new javax.swing.JPanel();
         pnlTranslator = new javax.swing.JPanel();
@@ -639,8 +640,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnMurmurHash3_128x64 = new javax.swing.JButton();
         tabGenerator = new javax.swing.JPanel();
         splitGenerator = new javax.swing.JSplitPane();
-        scrollGenerate = new javax.swing.JScrollPane();
-        txtGenarate = new javax.swing.JTextArea();
         pnlTop = new javax.swing.JPanel();
         tabbetGenerate = new javax.swing.JTabbedPane();
         tabSequence = new javax.swing.JPanel();
@@ -696,15 +695,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlKeySize = new javax.swing.JPanel();
         pnlKeyPairConvertFormat = new javax.swing.JPanel();
         rdoConvertKeyPairPEM = new javax.swing.JRadioButton();
-        btnExportKeyPair = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtGenerateKeyPair = new javax.swing.JTextArea();
         rdoConvertKeyPairJWK = new javax.swing.JRadioButton();
-        btnGenerate1 = new javax.swing.JButton();
         pnlRight = new javax.swing.JPanel();
         btnGenerate = new javax.swing.JButton();
-        btnListCopy = new javax.swing.JButton();
-        btnSavetoFile = new javax.swing.JButton();
+        btnGeneCopy = new javax.swing.JButton();
+        btnGeneSavetoFile = new javax.swing.JButton();
+        btnGeneClear = new javax.swing.JButton();
+        pnlBottom = new javax.swing.JPanel();
+        scrollGenerate = new javax.swing.JScrollPane();
+        txtGenarate = new javax.swing.JTextArea();
         tabTokenStrength = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtTokenList = new javax.swing.JTextArea();
@@ -2089,12 +2088,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         splitGenerator.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
-        txtGenarate.setColumns(20);
-        txtGenarate.setRows(5);
-        scrollGenerate.setViewportView(txtGenarate);
-
-        splitGenerator.setBottomComponent(scrollGenerate);
-
         pnlTop.setLayout(new java.awt.BorderLayout());
 
         tabSequence.setLayout(new java.awt.BorderLayout());
@@ -2143,7 +2136,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                             .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumStart, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnNumEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(1036, Short.MAX_VALUE))
+                .addContainerGap(1136, Short.MAX_VALUE))
         );
         pnlNumbersLayout.setVerticalGroup(
             pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2164,7 +2157,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumStep)
                     .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(832, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Numbers", pnlNumbers);
@@ -2217,7 +2210,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                                 .addGap(18, 18, 18)
                                 .addComponent(cmbDateUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(spnDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(992, Short.MAX_VALUE))
+                .addContainerGap(1092, Short.MAX_VALUE))
         );
         pnlDateLayout.setVerticalGroup(
             pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2240,7 +2233,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDateStep)
                         .addComponent(spnDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(832, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Date", pnlDate);
@@ -2343,13 +2336,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(961, Short.MAX_VALUE))
+                .addContainerGap(1061, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabRandomLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlCharacter, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addComponent(pnlCharacter, javax.swing.GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2387,8 +2380,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
                         .addComponent(cmbAlgorithm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
-                        .addContainerGap(624, Short.MAX_VALUE))
+                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
+                        .addContainerGap(674, Short.MAX_VALUE))
                     .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
                         .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -2411,30 +2404,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlGenerateKey.add(pnlKeyPairAlgorithm, java.awt.BorderLayout.NORTH);
 
-        btnGrpAlgorithm.add(rdoConvertKeyPairPEM);
+        btnGrpExportKeyPair.add(rdoConvertKeyPairPEM);
+        rdoConvertKeyPairPEM.setSelected(true);
         rdoConvertKeyPairPEM.setText("KeyPair in PEM format");
 
-        btnExportKeyPair.setText("Export");
-        btnExportKeyPair.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportKeyPairActionPerformed(evt);
-            }
-        });
-
-        txtGenerateKeyPair.setColumns(20);
-        txtGenerateKeyPair.setRows(5);
-        jScrollPane2.setViewportView(txtGenerateKeyPair);
-
-        btnGrpAlgorithm.add(rdoConvertKeyPairJWK);
-        rdoConvertKeyPairJWK.setSelected(true);
+        btnGrpExportKeyPair.add(rdoConvertKeyPairJWK);
         rdoConvertKeyPairJWK.setText("KeyPair in JWK format");
-
-        btnGenerate1.setText("Generate");
-        btnGenerate1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerate1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout pnlKeyPairConvertFormatLayout = new javax.swing.GroupLayout(pnlKeyPairConvertFormat);
         pnlKeyPairConvertFormat.setLayout(pnlKeyPairConvertFormatLayout);
@@ -2443,32 +2418,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2)
-                    .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
-                        .addGroup(pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rdoConvertKeyPairJWK)
-                            .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
-                                .addComponent(rdoConvertKeyPairPEM)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnGenerate1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnExportKeyPair)))
-                        .addGap(0, 1128, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(rdoConvertKeyPairJWK)
+                    .addComponent(rdoConvertKeyPairPEM))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlKeyPairConvertFormatLayout.setVerticalGroup(
             pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlKeyPairConvertFormatLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlKeyPairConvertFormatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExportKeyPair)
-                    .addComponent(rdoConvertKeyPairPEM)
-                    .addComponent(btnGenerate1))
+                .addComponent(rdoConvertKeyPairPEM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoConvertKeyPairJWK)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                .addContainerGap())
+                .addContainerGap(875, Short.MAX_VALUE))
         );
 
         pnlGenerateKey.add(pnlKeyPairConvertFormat, java.awt.BorderLayout.CENTER);
@@ -2477,24 +2438,31 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlTop.add(tabbetGenerate, java.awt.BorderLayout.CENTER);
 
-        btnGenerate.setText("generate");
+        btnGenerate.setText("Generate");
         btnGenerate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerateActionPerformed(evt);
             }
         });
 
-        btnListCopy.setText("List Copy");
-        btnListCopy.addActionListener(new java.awt.event.ActionListener() {
+        btnGeneCopy.setText("Output Copy");
+        btnGeneCopy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnListCopyActionPerformed(evt);
+                btnGeneCopyActionPerformed(evt);
             }
         });
 
-        btnSavetoFile.setText("Save to file");
-        btnSavetoFile.addActionListener(new java.awt.event.ActionListener() {
+        btnGeneSavetoFile.setText("Save to file");
+        btnGeneSavetoFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSavetoFileActionPerformed(evt);
+                btnGeneSavetoFileActionPerformed(evt);
+            }
+        });
+
+        btnGeneClear.setText("Clear");
+        btnGeneClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGeneClearActionPerformed(evt);
             }
         });
 
@@ -2505,9 +2473,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             .addGroup(pnlRightLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnListCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGeneCopy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGenerate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSavetoFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnGeneSavetoFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGeneClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlRightLayout.setVerticalGroup(
@@ -2515,16 +2484,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             .addGroup(pnlRightLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(btnGenerate)
-                .addGap(9, 9, 9)
-                .addComponent(btnListCopy)
-                .addGap(9, 9, 9)
-                .addComponent(btnSavetoFile)
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGeneClear)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGeneCopy)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnGeneSavetoFile)
+                .addContainerGap(897, Short.MAX_VALUE))
         );
 
         pnlTop.add(pnlRight, java.awt.BorderLayout.EAST);
 
         splitGenerator.setTopComponent(pnlTop);
+
+        pnlBottom.setLayout(new java.awt.BorderLayout());
+
+        txtGenarate.setColumns(20);
+        txtGenarate.setRows(5);
+        scrollGenerate.setViewportView(txtGenarate);
+
+        pnlBottom.add(scrollGenerate, java.awt.BorderLayout.CENTER);
+
+        splitGenerator.setBottomComponent(pnlBottom);
 
         tabGenerator.add(splitGenerator, java.awt.BorderLayout.CENTER);
 
@@ -2590,7 +2571,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnCalc)
-                                .addGap(0, 380, Short.MAX_VALUE))
+                                .addGap(0, 491, Short.MAX_VALUE))
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(671, 671, 671))
                     .addGroup(tabTokenStrengthLayout.createSequentialGroup()
@@ -2754,7 +2735,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addComponent(lblExcelSerial, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 1161, Short.MAX_VALUE)
+                    .addComponent(txtJavaSerial, javax.swing.GroupLayout.DEFAULT_SIZE, 1272, Short.MAX_VALUE)
                     .addComponent(txtUnixtime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtExcelSerial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -2913,7 +2894,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                             .addComponent(lblRadix32))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(tabBaseConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1406, Short.MAX_VALUE)
+                            .addComponent(txtBin, javax.swing.GroupLayout.DEFAULT_SIZE, 1517, Short.MAX_VALUE)
                             .addComponent(txtOct)
                             .addComponent(txtDec)
                             .addComponent(txtHex)
@@ -3192,7 +3173,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabIPFormatConverterLayout.createSequentialGroup()
                         .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDotOctBIP, javax.swing.GroupLayout.DEFAULT_SIZE, 1247, Short.MAX_VALUE)
+                            .addComponent(txtDotOctBIP, javax.swing.GroupLayout.DEFAULT_SIZE, 1358, Short.MAX_VALUE)
                             .addComponent(txtDotHexAIP)
                             .addComponent(txtDotTailDecCIP)
                             .addComponent(txtHexIP)
@@ -3832,10 +3813,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         }
                     };
                     swList.execute();
-                } catch (IllegalFormatException e) {
+                } catch (IllegalFormatException ex) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.transcoder.format.error"), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
-                } catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(this, e.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
         } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("Random")) {
@@ -3865,15 +3846,22 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 };
                 swList.execute();
             }
+        } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("GenerateKeyPair")) {
+            try {
+                txtGenarate.setText(exportKeyPairToPem());
+            }
+            catch (UnsupportedOperationException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnGenerateActionPerformed
 
-    private void btnListCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListCopyActionPerformed
+    private void btnGeneCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneCopyActionPerformed
         String s = this.txtGenarate.getText();
         SwingUtil.systemClipboardCopy(s);
-    }//GEN-LAST:event_btnListCopyActionPerformed
+    }//GEN-LAST:event_btnGeneCopyActionPerformed
 
-    private void btnSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSavetoFileActionPerformed
+    private void btnGeneSavetoFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneSavetoFileActionPerformed
         String s = this.txtGenarate.getText();
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -3888,7 +3876,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 }
             }
         }
-    }//GEN-LAST:event_btnSavetoFileActionPerformed
+    }//GEN-LAST:event_btnGeneSavetoFileActionPerformed
 
     private void btnSmartMatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSmartMatchActionPerformed
         try {
@@ -4988,9 +4976,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         } else if ("Ed448".equals(algo)) {
             keysize_list = ED448_KEYSIZE;
         }
-        List<AbstractButton> rdoGroup = ConvertUtil.toList(this.btnGrpAlgorithm.getElements().asIterator());
+        List<AbstractButton> rdoGroup = ConvertUtil.toList(this.btnGrpKeySize.getElements().asIterator());
         for (int i = 0; i < rdoGroup.size(); i++) {
-            this.btnGrpAlgorithm.remove(rdoGroup.get(i));
+            this.btnGrpKeySize.remove(rdoGroup.get(i));
         }
         this.pnlKeySize.removeAll();
         for (int i = 0; i < keysize_list.length; i++) {
@@ -5001,50 +4989,24 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             rdoKeySize.setText(String.valueOf(keysize_list[i]));
             rdoKeySize.setActionCommand(String.valueOf(keysize_list[i]));
             this.pnlKeySize.add(rdoKeySize);
-            this.btnGrpAlgorithm.add(rdoKeySize);
+            this.btnGrpKeySize.add(rdoKeySize);
         }
         this.pnlKeySize.updateUI();
     }//GEN-LAST:event_cmbAlgorithmItemStateChanged
 
-    private void btnExportKeyPairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportKeyPairActionPerformed
-        KeyPair exportKeyPair = this.getExportKeyPair();
-        if (exportKeyPair != null) {
-            try {
-                JFileChooser filechooser = new JFileChooser();
-                filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                filechooser.setCurrentDirectory(this.currentPrivateKeyDirectory);
-                int selected = filechooser.showSaveDialog(this);
-                if (selected == JFileChooser.APPROVE_OPTION) {
-                    File saveFile = filechooser.getSelectedFile();
-                    if (this.rdoConvertKeyPairPEM.isSelected()) {
-                        BouncyUtil.storeKeyPairPem(exportKeyPair, saveFile);
-                    }
-                    else if (this.rdoConvertKeyPairJWK.isSelected()) {
-                        String jwk_token = JWKUtil.toJWK(exportKeyPair, true);
-                        FileUtil.stringToFile(jwk_token, saveFile, StandardCharsets.UTF_8);
-                    }
-                    this.currentPrivateKeyDirectory = saveFile.getParentFile();
-                }
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            } catch (InvalidKeySpecException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No KeyPair has been selected.", "KeyPair", JOptionPane.INFORMATION_MESSAGE);
-        }
-    }//GEN-LAST:event_btnExportKeyPairActionPerformed
+    private void btnGeneClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneClearActionPerformed
+        this.txtGenarate.setText("");
+    }//GEN-LAST:event_btnGeneClearActionPerformed
 
-    private void btnGenerate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerate1ActionPerformed
+    public String exportKeyPairToPem() {
         String algo = getAlgorithm();
         if ("DSA".equals(algo) && this.rdoConvertKeyPairJWK.isSelected()) {
-            JOptionPane.showMessageDialog(this, "Unsupport algorithm:" + algo, "KeyPair", JOptionPane.INFORMATION_MESSAGE);
-            return;
+            throw new UnsupportedOperationException("Unsupport algorithm:" + algo);
         }
+        StringWriter exportKeyPair = new StringWriter();
         KeyPair keyPair = this.getExportKeyPair();
         if (keyPair != null) {
             try {
-                StringWriter exportKeyPair = new StringWriter();
                 if (this.rdoConvertKeyPairPEM.isSelected()) {
                     String key = BouncyUtil.exportKeyPairPem(keyPair);
                     exportKeyPair.append(key);
@@ -5053,16 +5015,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     String jwk = JWKUtil.toJWK(keyPair, true);
                     exportKeyPair.append(jwk);
                 }
-                this.txtGenerateKeyPair.setText(exportKeyPair.toString());
             } catch (InvalidKeySpecException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             } catch (IOException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "No KeyPair has been selected.", "KeyPair", JOptionPane.INFORMATION_MESSAGE);
+            throw new UnsupportedOperationException("No KeyPair has been selected.:" + algo);
         }
-    }//GEN-LAST:event_btnGenerate1ActionPerformed
+        return exportKeyPair.toString();
+    }
+
 
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
@@ -5100,11 +5063,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnDotTailDecCIP;
     private javax.swing.JButton btnEncode;
     private javax.swing.JButton btnExcelSerial;
-    private javax.swing.JButton btnExportKeyPair;
+    private javax.swing.JButton btnGeneClear;
+    private javax.swing.JButton btnGeneCopy;
+    private javax.swing.JButton btnGeneSavetoFile;
     private javax.swing.JButton btnGenerate;
-    private javax.swing.JButton btnGenerate1;
-    private javax.swing.ButtonGroup btnGrpAlgorithm;
     private javax.swing.ButtonGroup btnGrpEncodeType;
+    private javax.swing.ButtonGroup btnGrpExportKeyPair;
+    private javax.swing.ButtonGroup btnGrpKeySize;
     private javax.swing.ButtonGroup btnGrpNewLine;
     private javax.swing.JButton btnHashAscon;
     private javax.swing.JButton btnHashAsconA;
@@ -5183,7 +5148,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnInputfile;
     private javax.swing.JButton btnIntIP;
     private javax.swing.JButton btnJavaSerialCopy;
-    private javax.swing.JButton btnListCopy;
     private javax.swing.JButton btnMurmurHash2_32;
     private javax.swing.JButton btnMurmurHash2_64;
     private javax.swing.JButton btnMurmurHash3_128x64;
@@ -5195,7 +5159,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnOutputToInput;
     private javax.swing.JButton btnOutputfile;
     private javax.swing.JButton btnRadix32Copy;
-    private javax.swing.JButton btnSavetoFile;
     private javax.swing.JButton btnSmartDecode;
     private javax.swing.JButton btnSmartFormat;
     private javax.swing.JButton btnSmartMatch;
@@ -5229,7 +5192,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbAlgorithm;
     private javax.swing.JLabel lblBin;
     private javax.swing.JLabel lblDate;
@@ -5273,6 +5235,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlBase64;
     private javax.swing.JPanel pnlBase64URLSafe;
     private javax.swing.JPanel pnlBaseN;
+    private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlCharacter;
     private javax.swing.JPanel pnlCheckSumTrans;
     private javax.swing.JPanel pnlCompress;
@@ -5425,7 +5388,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JFormattedTextField txtExcelSerial;
     private javax.swing.JTextField txtExponent;
     private javax.swing.JTextArea txtGenarate;
-    private javax.swing.JTextArea txtGenerateKeyPair;
     private javax.swing.JTextField txtHex;
     private javax.swing.JTextField txtHexIP;
     private javax.swing.JTextField txtIPv4MappedIPv6;
@@ -5813,7 +5775,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }
 
     protected int getKeySize() {
-        ButtonModel model = this.btnGrpAlgorithm.getSelection();
+        ButtonModel model = this.btnGrpKeySize.getSelection();
         return Integer.parseInt(model.getActionCommand());
     }
 

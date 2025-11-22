@@ -1280,7 +1280,19 @@ Murmur3/128x64::
 
 ==== Generaterタブ
 
-Generater には、sequenceタブとrandomタブがあります。
+Generater には、SequenceタブとRandomタブ、GenerateKeyPairタブがあります。
+
+[Generate] ボタン::
+    指定した情報で生成します。
+
+[Clear] ボタン::
+    内容をクリアします。
+
+[Output Copy] ボタン::
+    生成した値をクリップボードに出力します。
+
+[Save to file] ボタン::
+    生成した値をファイルに出力します。
 
 .Sequenceタブ
 
@@ -1319,15 +1331,6 @@ end::
 step::
     startからendまでの日付の増加数を指定します。
 
-[generate] ボタン::
-  指定した情報でリストを生成します。
-
-[List Copy] ボタン::
-  生成したリストをクリップボードに出力します。
-
-[Save to file] ボタン::
-  生成したリストをファイルに出力します。
-
 .Randomタブ
 
 randomタブはランダムな文字リストを生成するための簡易的な機能です。
@@ -1343,15 +1346,6 @@ Character length::
 generator count::
     生成する個数を入力します。
 
-[generate] ボタン::
-    指定した情報でリストを生成します。
-
-[List Copy] ボタン::
-    生成したリストをクリップボードに出力します。
-
-[Save to file] ボタン::
-    生成したリストをファイルに出力します。
-
 .GenerateKeyPairタブ
 
 暗号鍵を生成します。
@@ -1361,12 +1355,6 @@ Algorithm コンボボックス::
 
 KeySize::
   鍵のサイズを選択します
-
-[Generate] ボタン::
-  暗号鍵を生成します。
-
-[Export] ボタン::
-  暗号鍵を生成してファイルに保存します。
 
 [KeyPair in PEM format] ::
   PEM形式で暗号鍵を生成します。

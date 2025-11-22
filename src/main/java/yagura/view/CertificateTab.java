@@ -84,7 +84,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnGrpExportIssuerCA = new javax.swing.ButtonGroup();
         btnGrpIssuerCA = new javax.swing.ButtonGroup();
         btnGrpExportSubjectCA = new javax.swing.ButtonGroup();
-        btnGrpExportKeyPair = new javax.swing.ButtonGroup();
         tabGenerateCA = new javax.swing.JTabbedPane();
         pnlCertificateCA = new javax.swing.JPanel();
         pnlSelectCertificate = new javax.swing.JPanel();
@@ -1035,7 +1034,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.ButtonGroup btnGrpCA;
     private javax.swing.ButtonGroup btnGrpExportCertificate;
     private javax.swing.ButtonGroup btnGrpExportIssuerCA;
-    private javax.swing.ButtonGroup btnGrpExportKeyPair;
     private javax.swing.ButtonGroup btnGrpExportSubjectCA;
     private javax.swing.ButtonGroup btnGrpFormat;
     private javax.swing.ButtonGroup btnGrpIssuerCA;

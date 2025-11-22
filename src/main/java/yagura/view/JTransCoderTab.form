@@ -18,7 +18,9 @@
     </Component>
     <Component class="javax.swing.ButtonGroup" name="rdoFormatGrp">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="btnGrpAlgorithm">
+    <Component class="javax.swing.ButtonGroup" name="btnGrpKeySize">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="btnGrpExportKeyPair">
     </Component>
   </NonVisualComponents>
   <AuxValues>
@@ -31,7 +33,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,-91,0,0,6,16"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,4,-91,0,0,6,127"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
@@ -1918,26 +1920,6 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
               <SubComponents>
-                <Container class="javax.swing.JScrollPane" name="scrollGenerate">
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
-                      <JSplitPaneConstraints position="bottom"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="txtGenarate">
-                      <Properties>
-                        <Property name="columns" type="int" value="20"/>
-                        <Property name="rows" type="int" value="5"/>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
                 <Container class="javax.swing.JPanel" name="pnlTop">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
@@ -2019,7 +2001,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="1036" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="1136" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2046,7 +2028,7 @@
                                                       <Component id="lblNumStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                       <Component id="spnNumStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <EmptySpace pref="114" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="832" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2141,7 +2123,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="992" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="1092" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2171,7 +2153,7 @@
                                                           <Component id="spnDateStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="114" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="832" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2278,7 +2260,7 @@
                                               <Component id="pnlCount" min="-2" pref="240" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <EmptySpace pref="961" max="32767" attributes="0"/>
+                                      <EmptySpace pref="1061" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2286,7 +2268,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="pnlCharacter" pref="216" max="32767" attributes="0"/>
+                                      <Component id="pnlCharacter" pref="934" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="pnlCount" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -2511,8 +2493,8 @@
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="cmbAlgorithm" min="-2" pref="130" max="-2" attributes="0"/>
                                                   <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="lblKeyPairValid" pref="620" max="32767" attributes="0"/>
-                                                  <EmptySpace pref="624" max="32767" attributes="0"/>
+                                                  <Component id="lblKeyPairValid" pref="670" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="674" max="32767" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
                                                   <Component id="pnlKeySize" max="32767" attributes="0"/>
@@ -2590,22 +2572,10 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Group type="103" groupAlignment="0" attributes="0">
-                                                      <Component id="rdoConvertKeyPairJWK" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                      <Group type="102" alignment="0" attributes="0">
-                                                          <Component id="rdoConvertKeyPairPEM" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                          <Component id="btnGenerate1" min="-2" max="-2" attributes="0"/>
-                                                          <EmptySpace max="-2" attributes="0"/>
-                                                          <Component id="btnExportKeyPair" min="-2" max="-2" attributes="0"/>
-                                                      </Group>
-                                                  </Group>
-                                                  <EmptySpace min="0" pref="1128" max="32767" attributes="0"/>
-                                              </Group>
+                                              <Component id="rdoConvertKeyPairJWK" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="rdoConvertKeyPairPEM" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
@@ -2613,16 +2583,10 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" alignment="0" attributes="0">
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="btnExportKeyPair" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="rdoConvertKeyPairPEM" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="btnGenerate1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
+                                          <Component id="rdoConvertKeyPairPEM" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="rdoConvertKeyPairJWK" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Component id="jScrollPane2" pref="137" max="32767" attributes="0"/>
-                                          <EmptySpace max="-2" attributes="0"/>
+                                          <EmptySpace pref="875" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
@@ -2631,50 +2595,19 @@
                                 <Component class="javax.swing.JRadioButton" name="rdoConvertKeyPairPEM">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="btnGrpAlgorithm"/>
+                                      <ComponentRef name="btnGrpExportKeyPair"/>
                                     </Property>
+                                    <Property name="selected" type="boolean" value="true"/>
                                     <Property name="text" type="java.lang.String" value="KeyPair in PEM format"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JButton" name="btnExportKeyPair">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Export"/>
-                                  </Properties>
-                                  <Events>
-                                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExportKeyPairActionPerformed"/>
-                                  </Events>
-                                </Component>
-                                <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-                                  <AuxValues>
-                                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                                  </AuxValues>
-
-                                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                                  <SubComponents>
-                                    <Component class="javax.swing.JTextArea" name="txtGenerateKeyPair">
-                                      <Properties>
-                                        <Property name="columns" type="int" value="20"/>
-                                        <Property name="rows" type="int" value="5"/>
-                                      </Properties>
-                                    </Component>
-                                  </SubComponents>
-                                </Container>
                                 <Component class="javax.swing.JRadioButton" name="rdoConvertKeyPairJWK">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                      <ComponentRef name="btnGrpAlgorithm"/>
+                                      <ComponentRef name="btnGrpExportKeyPair"/>
                                     </Property>
-                                    <Property name="selected" type="boolean" value="true"/>
                                     <Property name="text" type="java.lang.String" value="KeyPair in JWK format"/>
                                   </Properties>
-                                </Component>
-                                <Component class="javax.swing.JButton" name="btnGenerate1">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Generate"/>
-                                  </Properties>
-                                  <Events>
-                                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerate1ActionPerformed"/>
-                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>
@@ -2692,12 +2625,13 @@
                       <Layout>
                         <DimensionLayout dim="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="btnListCopy" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnGeneCopy" alignment="0" max="32767" attributes="0"/>
                                       <Component id="btnGenerate" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="btnSavetoFile" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnGeneSavetoFile" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="btnGeneClear" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
@@ -2708,11 +2642,13 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                                   <Component id="btnGenerate" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                                  <Component id="btnListCopy" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                                  <Component id="btnSavetoFile" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="201" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnGeneClear" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnGeneCopy" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="btnGeneSavetoFile" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace pref="897" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -2720,27 +2656,66 @@
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="btnGenerate">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="generate"/>
+                            <Property name="text" type="java.lang.String" value="Generate"/>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerateActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnListCopy">
+                        <Component class="javax.swing.JButton" name="btnGeneCopy">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="List Copy"/>
+                            <Property name="text" type="java.lang.String" value="Output Copy"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnListCopyActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGeneCopyActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JButton" name="btnSavetoFile">
+                        <Component class="javax.swing.JButton" name="btnGeneSavetoFile">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="Save to file"/>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSavetoFileActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGeneSavetoFileActionPerformed"/>
                           </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnGeneClear">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Clear"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGeneClearActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="pnlBottom">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
+                      <JSplitPaneConstraints position="bottom"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                  <SubComponents>
+                    <Container class="javax.swing.JScrollPane" name="scrollGenerate">
+                      <AuxValues>
+                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                      </AuxValues>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="Center"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                      <SubComponents>
+                        <Component class="javax.swing.JTextArea" name="txtGenarate">
+                          <Properties>
+                            <Property name="columns" type="int" value="20"/>
+                            <Property name="rows" type="int" value="5"/>
+                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -2787,7 +2762,7 @@
                                       <Component id="jLabel1" min="-2" pref="44" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="btnCalc" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="380" max="32767" attributes="0"/>
+                                      <EmptySpace min="0" pref="491" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel3" max="32767" attributes="0"/>
                               </Group>
@@ -2944,7 +2919,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtJavaSerial" alignment="0" pref="1161" max="32767" attributes="0"/>
+                              <Component id="txtJavaSerial" alignment="0" pref="1272" max="32767" attributes="0"/>
                               <Component id="txtUnixtime" max="32767" attributes="0"/>
                               <Component id="txtExcelSerial" max="32767" attributes="0"/>
                               <Component id="txtSystemZoneDate" alignment="0" max="32767" attributes="0"/>
@@ -3227,7 +3202,7 @@
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtBin" alignment="0" pref="1406" max="32767" attributes="0"/>
+                                      <Component id="txtBin" alignment="0" pref="1517" max="32767" attributes="0"/>
                                       <Component id="txtOct" alignment="0" max="32767" attributes="0"/>
                                       <Component id="txtDec" alignment="0" max="32767" attributes="0"/>
                                       <Component id="txtHex" alignment="0" max="32767" attributes="0"/>
@@ -3446,7 +3421,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtDotOctBIP" alignment="0" pref="1247" max="32767" attributes="0"/>
+                                      <Component id="txtDotOctBIP" alignment="0" pref="1358" max="32767" attributes="0"/>
                                       <Component id="txtDotHexAIP" alignment="0" max="32767" attributes="0"/>
                                       <Component id="txtDotTailDecCIP" alignment="0" max="32767" attributes="0"/>
                                       <Component id="txtHexIP" alignment="0" max="32767" attributes="0"/>

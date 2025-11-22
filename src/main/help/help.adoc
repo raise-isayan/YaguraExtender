@@ -1301,7 +1301,19 @@ Murmur3/128x64::
 
 ==== Generater tab
 
-The Generater has a sequence tab and a random tab.
+The Generater has a Sequence tab and a Random tab and GenerateKeyPair tab.
+
+[Generate] button::
+    Generates a list with the specified information.
+
+[Clear] button::
+    contain all clear
+
+[Output Copy] button::
+    Output the generated value to the clipboard.
+
+[Save to file] button::
+    Output the generated value to a file.
 
 .Sequence tab
 
@@ -1340,15 +1352,6 @@ end::
 step::
     number of increments of the date from start to end.
 
-[generate] button::
-    Generates a list with the specified information.
-
-[List Copy] button::
-    Output the generated list to the clipboard.
-
-[Save to file] button::
-    Output the generated list to a file.
-
 .Random tab
 
 The andom tab is a simple function for generating a random character list.
@@ -1364,15 +1367,6 @@ Character length::
 generator count::
     number to generate.
 
-[generate] button::
-    Generates a list with the specified information.
-
-[List Copy] button::
-    Output the generated list to the clipboard.
-
-[Save to file] button::
-    Output the generated list to a file.
-
 .GenerateKeyPair Tab
 
 Generate an encryption key.
@@ -1382,12 +1376,6 @@ Algorithm combobox::
   
 KeySize::
   Select the key size
-  
-[Generate] button:: 
-  Generate an encryption key.
-  
-[Export] button:: 
-  Generate an encryption key and save it to a file.
 
 [KeyPair in PEM format]
   Generates an encryption key in PEM format.
