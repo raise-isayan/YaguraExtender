@@ -1,9 +1,9 @@
 package yagura.view;
 
-import extend.util.external.jws.JWKUtil;
 import extension.burp.IBurpTab;
 import extension.helpers.BouncyUtil;
 import extension.helpers.json.JsonUtil;
+import extension.helpers.jws.JWKToken;
 import extension.view.base.JSONDocument;
 import java.awt.Component;
 import java.io.IOException;
@@ -139,21 +139,21 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
             clearJWK();
             KeyPair keyPair = null;
             if (JsonUtil.isJson(inputKey)) {
-                keyPair = JWKUtil.parseJWK(inputKey);
+                keyPair = JWKToken.parseJWK(inputKey);
                 StringWriter sw = new StringWriter();
                 BouncyUtil.storeKeyPairPem(keyPair, sw);
                 String pem = sw.toString();
                 appendTab("PEM", pem, false);
             } else {
                 keyPair = BouncyUtil.loadKeyPairFromPem(inputKey);
-                String jwk = JWKUtil.toJWK(keyPair, true);
+                String jwk = JWKToken.toJWK(keyPair, true);
                 appendTab("JWK", jwk, true);
             }
             if (keyPair != null) {
                 KeyPair keyPairPub = new KeyPair(keyPair.getPublic(), null);
-                String jwkPub = JWKUtil.toJWK(keyPairPub, true);
+                String jwkPub = JWKToken.toJWK(keyPairPub, true);
                 appendTab("JWK(Public)", jwkPub, true);
-                String jwkKeySet = JWKUtil.toJWKS(keyPair, true);
+                String jwkKeySet = JWKToken.toJWKS(keyPair, true);
                 appendTab("JWK(Keys)", jwkKeySet, true);
             }
         } catch (InvalidKeySpecException ex) {

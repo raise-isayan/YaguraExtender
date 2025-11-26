@@ -1,4 +1,4 @@
-package extend.util.external.jws;
+package extension.helpers.jws;
 
 import extension.helpers.BouncyUtil;
 import extension.helpers.StringUtil;
@@ -20,7 +20,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMException;
-import passive.JWSToken;
 
 /**
  *
@@ -85,7 +84,7 @@ public class JWSUtil {
     }
 
     /**
-     * テキストからJWTトークンを検索する
+     * テキストからJWSトークンを検索する
      *
      * @param text
      * @return トークン、開始位置、終了位置を含むリスト

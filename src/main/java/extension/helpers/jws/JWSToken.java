@@ -1,8 +1,6 @@
-package passive;
+package extension.helpers.jws;
 
 import com.google.gson.JsonSyntaxException;
-import extend.util.external.jws.JWKUtil;
-import extend.util.external.jws.JWSUtil;
 import extension.helpers.BouncyUtil;
 import extension.helpers.MatchUtil;
 import extension.helpers.StringUtil;
@@ -419,7 +417,7 @@ public class JWSToken implements JsonToken {
                 case RS512:
                     // JWK
                     if (JsonUtil.isJson(secretKey)) {
-                       signatureByte = sign(algo, JWKUtil.parseJWK(secretKey).getPrivate(), messageBytes);
+                       signatureByte = sign(algo, JWKToken.parseJWK(secretKey).getPrivate(), messageBytes);
                     }
                     else {
                         signatureByte = sign(algo, JWSUtil.toPrivateKey(secretKey), messageBytes);
@@ -430,7 +428,7 @@ public class JWSToken implements JsonToken {
                 case PS512:
                     // JWK
                     if (JsonUtil.isJson(secretKey)) {
-                       signatureByte = sign(algo, JWKUtil.parseJWK(secretKey).getPrivate(), messageBytes);
+                       signatureByte = sign(algo, JWKToken.parseJWK(secretKey).getPrivate(), messageBytes);
                     }
                     else {
                         signatureByte = sign(algo, JWSUtil.toPrivateKey(secretKey), messageBytes);
@@ -441,7 +439,7 @@ public class JWSToken implements JsonToken {
                 case ES512:
                     // JWK
                     if (JsonUtil.isJson(secretKey)) {
-                        signatureByte = sign(algo, (ECPrivateKey)JWKUtil.parseJWK(secretKey).getPrivate(), messageBytes);
+                        signatureByte = sign(algo, (ECPrivateKey)JWKToken.parseJWK(secretKey).getPrivate(), messageBytes);
                     }
                     else {
                         signatureByte = sign(algo, JWSUtil.toECPrivateKey(secretKey), messageBytes);
@@ -450,7 +448,7 @@ public class JWSToken implements JsonToken {
                 case EDDSA:
                     // JWK
                     if (JsonUtil.isJson(secretKey)) {
-                        signatureByte = sign(algo, (EdECPrivateKey)JWKUtil.parseJWK(secretKey).getPrivate(), messageBytes);
+                        signatureByte = sign(algo, (EdECPrivateKey)JWKToken.parseJWK(secretKey).getPrivate(), messageBytes);
                     }
                     else {
                         signatureByte = sign(algo, JWSUtil.toEdECPrivateKey(secretKey), messageBytes);
@@ -563,7 +561,7 @@ public class JWSToken implements JsonToken {
         return signature.equals(JsonToken.encodeBase64UrlSafe(signatureBytes));
     }
 
-    protected static boolean signatureEqual(Algorithm algo, String header, String payload, final String signature, final String secretKey) throws SignatureException {
+    public static boolean signatureEqual(Algorithm algo, String header, String payload, final String signature, final String secretKey) throws SignatureException {
         JWSToken token = new JWSToken(header, payload, signature);
         byte[] signatureByte = token.sign(algo, secretKey);
         return signature.equals(JsonToken.encodeBase64UrlSafe(signatureByte));

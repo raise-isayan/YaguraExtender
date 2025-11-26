@@ -8,7 +8,7 @@ import java.security.SignatureException;
 import java.util.Comparator;
 import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
-import passive.JWSToken;
+import extension.helpers.jws.JWSToken;
 
 /**
  *

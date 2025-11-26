@@ -1,4 +1,4 @@
-package passive;
+package extension.helpers.jws;
 
 /**
  *

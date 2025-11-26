@@ -1,7 +1,7 @@
 package yagura.view;
 
 import com.google.gson.JsonSyntaxException;
-import extend.util.external.jws.JWSUtil;
+import extension.helpers.jws.JWSUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.JSONDocument;
 import java.awt.SystemColor;
@@ -13,9 +13,9 @@ import javax.crypto.SecretKey;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import org.bouncycastle.openssl.PEMException;
-import passive.JWKToken;
-import passive.JWSToken;
-import passive.JsonToken;
+import extension.helpers.jws.JWKToken;
+import extension.helpers.jws.JWSToken;
+import extension.helpers.jws.JsonToken;
 
 /**
  *

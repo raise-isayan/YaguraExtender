@@ -1,4 +1,4 @@
-package passive;
+package extension.helpers.jws;
 
 import com.google.gson.JsonSyntaxException;
 import extension.helpers.ConvertUtil;

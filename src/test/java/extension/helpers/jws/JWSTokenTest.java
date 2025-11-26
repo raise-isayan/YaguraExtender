@@ -1,6 +1,8 @@
-package passive;
+package extension.helpers.jws;
 
-import extend.util.external.jws.JWSUtil;
+import extension.helpers.jws.JsonToken;
+import extension.helpers.jws.JWSToken;
+import extension.helpers.jws.JWSUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
@@ -23,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import passive.JWSToken.Algorithm;
+import extension.helpers.jws.JWSToken.Algorithm;
 
 /**
  *

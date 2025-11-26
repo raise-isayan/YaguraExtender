@@ -1,5 +1,6 @@
 package extend.util.external.jws;
 
+import extension.helpers.jws.JWSUtil;
 import extension.helpers.FileUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import passive.JWSTokenTest;
+import extension.helpers.jws.JWSTokenTest;
 
 /**
  *

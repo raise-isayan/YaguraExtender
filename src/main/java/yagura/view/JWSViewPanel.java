@@ -4,8 +4,8 @@ import extension.helpers.json.JsonUtil;
 import extension.view.base.JSONDocument;
 import java.awt.SystemColor;
 import java.text.ParseException;
-import passive.JWSToken;
-import passive.JsonToken;
+import extension.helpers.jws.JWSToken;
+import extension.helpers.jws.JsonToken;
 
 /**
  *

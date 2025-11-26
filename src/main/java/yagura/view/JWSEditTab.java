@@ -2,7 +2,7 @@ package yagura.view;
 
 import extension.helpers.SwingUtil;
 import java.util.logging.Logger;
-import passive.JWSToken;
+import extension.helpers.jws.JWSToken;
 
 /**
  *

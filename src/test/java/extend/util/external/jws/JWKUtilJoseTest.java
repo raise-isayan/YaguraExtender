@@ -8,6 +8,7 @@ import com.nimbusds.jose.jwk.KeyType;
 import com.nimbusds.jose.jwk.OctetKeyPair;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.gen.OctetKeyPairGenerator;
+import extension.helpers.jws.JWKToken;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -87,7 +88,7 @@ public class JWKUtilJoseTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA","BC");
                 kpg.initialize(2048);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toRSAJWK:" + jsonJWK);
                 JWK jwk = JWK.parse(jsonJWK);
                 RSAKey rsaKey = jwk.toRSAKey();
@@ -99,7 +100,7 @@ public class JWKUtilJoseTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC","BC");
                 kpg.initialize(256);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEC256JWK:" + jsonJWK);
                 JWK jwk = JWK.parse(jsonJWK);
                 ECKey ecKey = jwk.toECKey();
@@ -111,7 +112,7 @@ public class JWKUtilJoseTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC","BC");
                 kpg.initialize(384);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEC384JWK:" + jsonJWK);
                 JWK jwk = JWK.parse(jsonJWK);
                 ECKey ecKey = jwk.toECKey();
@@ -123,7 +124,7 @@ public class JWKUtilJoseTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC","BC");
                 kpg.initialize(521);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEC512JWK:" + jsonJWK);
                 JWK jwk = JWK.parse(jsonJWK);
                 ECKey ecKey = jwk.toECKey();
@@ -134,7 +135,7 @@ public class JWKUtilJoseTest {
             if (OctetKeyPairGenerator.SUPPORTED_CURVES.contains(Curve.Ed25519)) {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed25519","BC");
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 JWK jwk = JWK.parse(jsonJWK);
                 OctetKeyPair edKeyPair = jwk.toOctetKeyPair();
                 assertEquals(edKeyPair.getKeyType(),KeyType.OKP);
@@ -143,7 +144,7 @@ public class JWKUtilJoseTest {
             if (OctetKeyPairGenerator.SUPPORTED_CURVES.contains(Curve.Ed448)) {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("Ed448","BC");
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 JWK jwk = JWK.parse(jsonJWK);
                 OctetKeyPair edKeyPair = jwk.toOctetKeyPair();
                 assertEquals(edKeyPair.getKeyType(),KeyType.OKP);
@@ -173,7 +174,7 @@ public class JWKUtilJoseTest {
                     RSAKey rsaKey = new RSAKey.Builder((RSAPublicKey)keyPair.getPublic()).privateKey((RSAPrivateKey)keyPair.getPrivate()).build();
                     String jsonJWK = rsaKey.toString();
                     System.out.println("toRSAJWK:" + jsonJWK);
-                    KeyPair rsaKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    KeyPair rsaKeyPair = JWKToken.parseJWK(jsonJWK);
                     assertTrue(rsaKeyPair.getPublic() instanceof RSAPublicKey);
                     assertTrue(rsaKeyPair.getPrivate() instanceof RSAPrivateKey);
                 }
@@ -184,7 +185,7 @@ public class JWKUtilJoseTest {
                     ECKey ecKey = new ECKey.Builder(Curve.P_256, (ECPublicKey)keyPair.getPublic()).privateKey((ECPrivateKey)keyPair.getPrivate()).build();
                     String jsonJWK = ecKey.toString();
                     System.out.println("toEC256JWK:" + jsonJWK);
-                    KeyPair ecKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    KeyPair ecKeyPair = JWKToken.parseJWK(jsonJWK);
                     assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
                     assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
                 }
@@ -195,7 +196,7 @@ public class JWKUtilJoseTest {
                     ECKey ecKey = new ECKey.Builder(Curve.P_384, (ECPublicKey)keyPair.getPublic()).privateKey((ECPrivateKey)keyPair.getPrivate()).build();
                     String jsonJWK = ecKey.toString();
                     System.out.println("toEC384JWK:" + jsonJWK);
-                    KeyPair ecKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    KeyPair ecKeyPair = JWKToken.parseJWK(jsonJWK);
                     assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
                     assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
                 }
@@ -206,7 +207,7 @@ public class JWKUtilJoseTest {
                     ECKey ecKey = new ECKey.Builder(Curve.P_521, (ECPublicKey)keyPair.getPublic()).privateKey((ECPrivateKey)keyPair.getPrivate()).build();
                     String jsonJWK = ecKey.toString();
                     System.out.println("toEC521JWK:" + jsonJWK);
-                    KeyPair ecKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    KeyPair ecKeyPair = JWKToken.parseJWK(jsonJWK);
                     assertTrue(ecKeyPair.getPublic() instanceof ECPublicKey);
                     assertTrue(ecKeyPair.getPrivate() instanceof ECPrivateKey);
                 }
@@ -215,7 +216,7 @@ public class JWKUtilJoseTest {
                     // 秘密鍵・公開鍵を含むJWK (private + public)
                     String jsonJWK = jwk.toJSONString();
                     System.out.println("Ed25519 JWK:" + jsonJWK);
-                    KeyPair edKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    KeyPair edKeyPair = JWKToken.parseJWK(jsonJWK);
                     assertTrue(edKeyPair.getPublic() instanceof EdECPublicKey);
                     assertTrue(edKeyPair.getPrivate() instanceof EdECPrivateKey);
                 }
@@ -224,7 +225,7 @@ public class JWKUtilJoseTest {
                   // 秘密鍵・公開鍵を含むJWK (private + public)
                     String jsonJWK = jwk.toJSONString();
                     System.out.println("Ed448 JWK:" + jsonJWK);
-                    KeyPair edKeyPair = JWKUtil.parseJWK(jsonJWK);
+                    KeyPair edKeyPair = JWKToken.parseJWK(jsonJWK);
                     assertTrue(edKeyPair.getPublic() instanceof EdECPublicKey);
                     assertTrue(edKeyPair.getPrivate() instanceof EdECPrivateKey);
                 }

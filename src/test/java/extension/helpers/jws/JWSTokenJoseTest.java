@@ -1,5 +1,6 @@
-package passive;
+package extension.helpers.jws;
 
+import extension.helpers.jws.JWSToken;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.JWSSigner;
@@ -9,7 +10,7 @@ import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
-import extend.util.external.jws.JWSUtil;
+import extension.helpers.jws.JWSUtil;
 import extension.helpers.FileUtil;
 import java.io.File;
 import java.io.IOException;

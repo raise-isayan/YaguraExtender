@@ -2,6 +2,7 @@ package extend.util.external.jws;
 
 import com.google.gson.JsonElement;
 import extension.helpers.json.JsonUtil;
+import extension.helpers.jws.JWKToken;
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -68,16 +69,16 @@ public class JWKUtilTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA", BouncyCastleProvider.PROVIDER_NAME);
                 kpg.initialize(2048);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toRSAJWK:" + jsonJWK);
                 KeyPair keyPairPub = new KeyPair(genKeyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
+                String jsonJWKPub = JWKToken.toJWK(keyPairPub, false);
                 System.out.println("toRSAJWK:" + jsonJWKPub);
-                KeyPair keyPair = JWKUtil.parseJWK(jsonJWK);
+                KeyPair keyPair = JWKToken.parseJWK(jsonJWK);
                 assertTrue(keyPair.getPrivate() instanceof RSAPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof RSAPublicKey);
                 // public only
-                KeyPair keyPair2 = JWKUtil.parseJWK(jsonJWKPub);
+                KeyPair keyPair2 = JWKToken.parseJWK(jsonJWKPub);
                 assertNull(keyPair2.getPrivate());
                 assertTrue(keyPair2.getPublic() instanceof RSAPublicKey);
 
@@ -89,16 +90,16 @@ public class JWKUtilTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
                 kpg.initialize(256);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEC256JWK:" + jsonJWK);
                 KeyPair keyPairPub = new KeyPair(genKeyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
+                String jsonJWKPub = JWKToken.toJWK(keyPairPub, false);
                 System.out.println("toEC256JWK:" + jsonJWKPub);
-                KeyPair keyPair = JWKUtil.parseJWK(jsonJWK);
+                KeyPair keyPair = JWKToken.parseJWK(jsonJWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
                 // public only
-                KeyPair keyPair2 = JWKUtil.parseJWK(jsonJWKPub);
+                KeyPair keyPair2 = JWKToken.parseJWK(jsonJWKPub);
                 assertNull(keyPair2.getPrivate());
                 assertTrue(keyPair2.getPublic() instanceof ECPublicKey);
             } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
@@ -108,16 +109,16 @@ public class JWKUtilTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
                 kpg.initialize(384);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEC384JWK:" + jsonJWK);
                 KeyPair keyPairPub = new KeyPair(genKeyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
+                String jsonJWKPub = JWKToken.toJWK(keyPairPub, false);
                 System.out.println("toEC384JWK:" + jsonJWKPub);
-                KeyPair keyPair = JWKUtil.parseJWK(jsonJWK);
+                KeyPair keyPair = JWKToken.parseJWK(jsonJWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
                 // public only
-                KeyPair keyPair2 = JWKUtil.parseJWK(jsonJWKPub);
+                KeyPair keyPair2 = JWKToken.parseJWK(jsonJWKPub);
                 assertNull(keyPair2.getPrivate());
                 assertTrue(keyPair2.getPublic() instanceof ECPublicKey);
             } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
@@ -127,16 +128,16 @@ public class JWKUtilTest {
                 KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", BouncyCastleProvider.PROVIDER_NAME);
                 kpg.initialize(521);
                 KeyPair genKeyPair = kpg.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEC521JWK:" + jsonJWK);
                 KeyPair keyPairPub = new KeyPair(genKeyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
+                String jsonJWKPub = JWKToken.toJWK(keyPairPub, false);
                 System.out.println("toEC521JWK:" + jsonJWKPub);
-                KeyPair keyPair = JWKUtil.parseJWK(jsonJWK);
+                KeyPair keyPair = JWKToken.parseJWK(jsonJWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
                 // public only
-                KeyPair keyPair2 = JWKUtil.parseJWK(jsonJWKPub);
+                KeyPair keyPair2 = JWKToken.parseJWK(jsonJWKPub);
                 assertNull(keyPair2.getPrivate());
                 assertTrue(keyPair2.getPublic() instanceof ECPublicKey);
             } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
@@ -145,16 +146,16 @@ public class JWKUtilTest {
             try {
                 KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed25519", "BC");
                 KeyPair genKeyPair = keyGen.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEd25519JWK:" + jsonJWK);
                 KeyPair keyPairPub = new KeyPair(genKeyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
+                String jsonJWKPub = JWKToken.toJWK(keyPairPub, false);
                 System.out.println("toEd25519JWK:" + jsonJWKPub);
-                KeyPair keyPair = JWKUtil.parseJWK(jsonJWK);
+                KeyPair keyPair = JWKToken.parseJWK(jsonJWK);
                 assertTrue(keyPair.getPrivate() instanceof EdECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
                 // public only
-                KeyPair keyPair2 = JWKUtil.parseJWK(jsonJWKPub);
+                KeyPair keyPair2 = JWKToken.parseJWK(jsonJWKPub);
                 assertNull(keyPair2.getPrivate());
                 assertTrue(keyPair2.getPublic() instanceof EdECPublicKey);
             } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
@@ -163,16 +164,16 @@ public class JWKUtilTest {
             try {
                 KeyPairGenerator keyGen = KeyPairGenerator.getInstance("Ed448", "BC");
                 KeyPair genKeyPair = keyGen.generateKeyPair();
-                String jsonJWK = JWKUtil.toJWK(genKeyPair, false);
+                String jsonJWK = JWKToken.toJWK(genKeyPair, false);
                 System.out.println("toEd448JWK:" + jsonJWK);
                 KeyPair keyPairPub = new KeyPair(genKeyPair.getPublic(), null);
-                String jsonJWKPub = JWKUtil.toJWK(keyPairPub, false);
+                String jsonJWKPub = JWKToken.toJWK(keyPairPub, false);
                 System.out.println("toEd448JWK:" + jsonJWKPub);
-                KeyPair keyPair = JWKUtil.parseJWK(jsonJWK);
+                KeyPair keyPair = JWKToken.parseJWK(jsonJWK);
                 assertTrue(keyPair.getPrivate() instanceof EdECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
                 // public only
-                KeyPair keyPair2 = JWKUtil.parseJWK(jsonJWKPub);
+                KeyPair keyPair2 = JWKToken.parseJWK(jsonJWKPub);
                 assertNull(keyPair2.getPrivate());
                 assertTrue(keyPair2.getPublic() instanceof EdECPublicKey);
             } catch (NoSuchAlgorithmException | NoSuchProviderException | InvalidKeySpecException ex) {
@@ -204,131 +205,131 @@ public class JWKUtilTest {
         try {
             {
                 System.out.println("parseRSA_JWK:" + RSA_JWK);
-                KeyPair keyPair = JWKUtil.parseJWK(RSA_JWK);
+                KeyPair keyPair = JWKToken.parseJWK(RSA_JWK);
                 assertTrue(keyPair.getPrivate() instanceof RSAPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof RSAPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toRSA_JWK:" + token);
             }
             {
                 System.out.println("parseRSA_JWK_PUB:" + RSA_JWK_PUB);
-                KeyPair keyPair = JWKUtil.parseJWK(RSA_JWK_PUB);
+                KeyPair keyPair = JWKToken.parseJWK(RSA_JWK_PUB);
                 assertNull(keyPair.getPrivate());
                 assertTrue(keyPair.getPublic() instanceof RSAPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toRSA_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseRSA_JWK_KEYS:" + RSA_JWK_KEYS);
-                List<KeyPair> keyPairs = JWKUtil.parseJWKS(RSA_JWK_KEYS);
+                List<KeyPair> keyPairs = JWKToken.parseJWKS(RSA_JWK_KEYS);
                 assertEquals(keyPairs.size(), 1);
                 for (int i = 0; i < keyPairs.size(); i++) {
                     assertTrue(keyPairs.get(i).getPrivate() instanceof RSAPrivateKey);
                     assertTrue(keyPairs.get(i).getPublic() instanceof RSAPublicKey);
-                    String token = JWKUtil.toJWK(keyPairs.get(i),false);
+                    String token = JWKToken.toJWK(keyPairs.get(i),false);
                     System.out.println("toRSA_JWK_KEY:" + token);
                 }
             }
             {
                 System.out.println("parseEC256_JWK:" + EC256_JWK);
-                KeyPair keyPair = JWKUtil.parseJWK(EC256_JWK);
+                KeyPair keyPair = JWKToken.parseJWK(EC256_JWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toEC256_JWK:" + token);
             }
             {
                 System.out.println("parseEC256_JWK_PUB:" + EC256_JWK_PUB);
-                KeyPair keyPair = JWKUtil.parseJWK(EC256_JWK_PUB);
+                KeyPair keyPair = JWKToken.parseJWK(EC256_JWK_PUB);
                 assertNull(keyPair.getPrivate());
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toEC256_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseEC256_JWK_KEYS:" + EC256_JWK_KEYS);
-                List<KeyPair> keyPairs = JWKUtil.parseJWKS(EC256_JWK_KEYS);
+                List<KeyPair> keyPairs = JWKToken.parseJWKS(EC256_JWK_KEYS);
                 assertEquals(keyPairs.size(), 1);
                 for (int i = 0; i < keyPairs.size(); i++) {
                     assertTrue(keyPairs.get(i).getPrivate() instanceof ECPrivateKey);
                     assertTrue(keyPairs.get(i).getPublic() instanceof ECPublicKey);
-                    String token = JWKUtil.toJWK(keyPairs.get(i),false);
+                    String token = JWKToken.toJWK(keyPairs.get(i),false);
                     System.out.println("toEC256_JWK_KEY:" + token);
                 }
             }
             {
                 System.out.println("parseEC384_JWK:" + EC384_JWK);
-                KeyPair keyPair = JWKUtil.parseJWK(EC384_JWK);
+                KeyPair keyPair = JWKToken.parseJWK(EC384_JWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toEC384_JWK:" + token);
             }
             {
                 System.out.println("parseEC384_JWK_PUB:" + EC384_JWK_PUB);
-                KeyPair keyPair = JWKUtil.parseJWK(EC384_JWK_PUB);
+                KeyPair keyPair = JWKToken.parseJWK(EC384_JWK_PUB);
                 assertNull(keyPair.getPrivate());
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toEC384_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseEC521_JWK:" + EC521_JWK);
-                KeyPair keyPair = JWKUtil.parseJWK(EC521_JWK);
+                KeyPair keyPair = JWKToken.parseJWK(EC521_JWK);
                 assertTrue(keyPair.getPrivate() instanceof ECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toEC521_JWK:" + token);
             }
             {
                 System.out.println("parseEC521_JWK_PUB:" + EC521_JWK_PUB);
-                KeyPair keyPair = JWKUtil.parseJWK(EC521_JWK_PUB);
+                KeyPair keyPair = JWKToken.parseJWK(EC521_JWK_PUB);
                 assertNull(keyPair.getPrivate());
                 assertTrue(keyPair.getPublic() instanceof ECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toEC521_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseED25519_JWK:" + ED25519_JWK);
-                KeyPair keyPair = JWKUtil.parseJWK(ED25519_JWK);
+                KeyPair keyPair = JWKToken.parseJWK(ED25519_JWK);
                 assertTrue(keyPair.getPrivate() instanceof EdECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toED25519_JWK:" + token);
             }
             {
                 System.out.println("parseED25519_JWK_PUB:" + ED25519_JWK_PUB);
-                KeyPair keyPair = JWKUtil.parseJWK(ED25519_JWK_PUB);
+                KeyPair keyPair = JWKToken.parseJWK(ED25519_JWK_PUB);
                 assertNull(keyPair.getPrivate());
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toED25519_JWK_PUB:" + token);
             }
             {
                 System.out.println("parseED25519_JWK_KEYS:" + ED25519_JWK_KEYS);
-                List<KeyPair> keyPairs = JWKUtil.parseJWKS(ED25519_JWK_KEYS);
+                List<KeyPair> keyPairs = JWKToken.parseJWKS(ED25519_JWK_KEYS);
                 assertEquals(keyPairs.size(), 1);
                 for (int i = 0; i < keyPairs.size(); i++) {
                     assertTrue(keyPairs.get(i).getPrivate() instanceof EdECPrivateKey);
                     assertTrue(keyPairs.get(i).getPublic() instanceof EdECPublicKey);
-                    String token = JWKUtil.toJWK(keyPairs.get(i),false);
+                    String token = JWKToken.toJWK(keyPairs.get(i),false);
                     System.out.println("toED25519_JWK_KEY:" + token);
                 }
             }
             {
                 System.out.println("parseED448_JWK:" + ED448_JWK);
-                KeyPair keyPair = JWKUtil.parseJWK(ED448_JWK);
+                KeyPair keyPair = JWKToken.parseJWK(ED448_JWK);
                 assertTrue(keyPair.getPrivate() instanceof EdECPrivateKey);
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toED448_JWK:" + token);
             }
             {
                 System.out.println("parseED448_JWK_PUB:" + ED448_JWK_PUB);
-                KeyPair keyPair = JWKUtil.parseJWK(ED448_JWK_PUB);
+                KeyPair keyPair = JWKToken.parseJWK(ED448_JWK_PUB);
                 assertNull(keyPair.getPrivate());
                 assertTrue(keyPair.getPublic() instanceof EdECPublicKey);
-                String token = JWKUtil.toJWK(keyPair,false);
+                String token = JWKToken.toJWK(keyPair,false);
                 System.out.println("toED448_JWK_PUB:" + token);
             }
         } catch (InvalidKeySpecException ex) {

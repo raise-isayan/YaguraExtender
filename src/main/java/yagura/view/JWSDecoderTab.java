@@ -4,7 +4,7 @@ import burp.BurpExtension;
 import java.awt.Component;
 import java.util.logging.Logger;
 import extension.burp.IBurpTab;
-import passive.JWSToken;
+import extension.helpers.jws.JWSToken;
 
 /**
  *

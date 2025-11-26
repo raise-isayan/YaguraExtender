@@ -32,7 +32,6 @@ import extend.util.external.TransUtil.ConvertCase;
 import extend.util.external.TransUtil.DateUnit;
 import extend.util.external.TransUtil.EncodeType;
 import extend.util.external.TransUtil.NewLine;
-import extend.util.external.jws.JWKUtil;
 import extension.burp.BurpUtil;
 import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
@@ -66,6 +65,7 @@ import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.DateUtil;
 import extension.helpers.SmartCodec;
+import extension.helpers.jws.JWKToken;
 import java.io.StringWriter;
 import java.security.InvalidParameterException;
 import java.security.KeyPair;
@@ -79,8 +79,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import org.apache.commons.codec.DecoderException;
-import passive.JWSToken;
-import static yagura.view.CertificateTab.BUNDLE;
+import extension.helpers.jws.JWSToken;
 
 /**
  *
@@ -5012,7 +5011,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     exportKeyPair.append(key);
                 }
                 else if (this.rdoConvertKeyPairJWK.isSelected()) {
-                    String jwk = JWKUtil.toJWK(keyPair, true);
+                    String jwk = JWKToken.toJWK(keyPair, true);
                     exportKeyPair.append(jwk);
                 }
             } catch (InvalidKeySpecException ex) {
