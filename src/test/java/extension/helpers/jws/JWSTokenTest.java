@@ -1,8 +1,5 @@
 package extension.helpers.jws;
 
-import extension.helpers.jws.JsonToken;
-import extension.helpers.jws.JWSToken;
-import extension.helpers.jws.JWSUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
@@ -508,38 +505,38 @@ public class JWSTokenTest {
         {
             String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
             boolean expResult = true;
-            boolean result = jwtinstance.isValidFormat(value);
+            boolean result = jwtinstance.isValidToken(value);
             assertEquals(expResult, result);
         }
         {
             String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
             boolean expResult = false;
-            boolean result = jwtinstance.isValidFormat(value);
+            boolean result = jwtinstance.isValidToken(value);
             assertEquals(expResult, result);
         }
         {
             String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoiPj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj4-Pj8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8_Pz8iLCJzdWIiOiLjg4bjgrnjg4gifQ.X3cI5c0oMucE4ysk-hfpqn6OSjmS-xXMVhhR_FpHJMQ";
             boolean expResult = true;
-            boolean result = jwtinstance.isValidFormat(value);
+            boolean result = jwtinstance.isValidToken(value);
             assertEquals(expResult, result);
         }
         {
             String value = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.Et9HFtf9R3GEMA0IICOfFMVXY7kkTX1wr4qCyhIf58U";
             boolean expResult = true; // payload = "{}"
-            boolean result = jwtinstance.isValidFormat(value);
+            boolean result = jwtinstance.isValidToken(value);
             assertEquals(expResult, result);
         }
         {
             String value = "xeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ5mhBHqs5_DTLdINd9p5m7ZJ6XD0Xc55kIaCRY5r6HRA";
             boolean expResult = false;
-            boolean result = jwtinstance.isValidFormat(value);
+            boolean result = jwtinstance.isValidToken(value);
             assertEquals(expResult, result);
         }
         {
             // シグネチャなしはJWT
             String value = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.";
             boolean expResult = true;
-            boolean result = jwtinstance.isValidFormat(value);
+            boolean result = jwtinstance.isValidToken(value);
             assertEquals(expResult, result);
         }
 //        /* URL Encode */
@@ -833,12 +830,26 @@ public class JWSTokenTest {
             + "text=%82%A0%82%A2%82%A4%82%A6%82%A8&OS=win&submit=%91%97%90M\r\n";
 
     @Test
-    public void testJWTTokenNothing() {
-        System.out.println("testJWTTokenNothing");
+    public void testContainsValidToken() {
+        System.out.println("testContainsValidToken");
         {
             boolean expResult = false;
-            boolean result = JWSToken.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00);
+            boolean result = JWSToken.containsValidToken(REQ_MESSAGE_URLENCODE_TOKEN00);
             assertEquals(expResult, result);
+        }
+        {
+            String value = "Auth: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiLjgYLjgYTjgYbjgYjjgYoifQ.I6fGHWldnjdhfOjxcs9Wtzm41dIjBiAHYl3ZAcKl4Ks";
+            boolean expResult = true;
+            boolean result = JWSToken.containsValidToken(value);
+            assertEquals(expResult, result);
+        }
+        {
+            String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
+            assertTrue(JWSToken.containsValidToken(token));
+        }
+        {
+            String token = "Cookie: sessionid=1234567890; token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc uid=aabbcceedd";
+            assertTrue(JWSToken.containsValidToken(token));
         }
     }
 
@@ -847,12 +858,12 @@ public class JWSTokenTest {
         System.out.println("testJWTToken");
         {
             boolean expResult = true;
-            boolean result = JWSToken.containsTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01);
+            boolean result = JWSToken.containsValidToken(REQ_MESSAGE_URLENCODE_TOKEN01);
             assertEquals(expResult, result);
         }
         {
             String expResult = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYWluIjoiYWJjZGVmIiwic3ViIjoiaG9nZSIsInllYXIiOjIwMjB9.bfk79BN28BVvW6lRnITaEULZ7URDBcem4jalLOW5diM";
-            CaptureItem[] token = JWSUtil.findTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01);
+            CaptureItem[] token = JWSUtil.findTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN01, JWSUtil.INCLUDE_SIGNATURE);
             for (CaptureItem item : token) {
                 assertEquals(expResult, item.getCaptureValue());
                 System.out.println(item.getCaptureValue());
@@ -889,18 +900,5 @@ public class JWSTokenTest {
         }
     }
 
-    @Test
-    public void testContainsValidToken()
-    {
-        System.out.println("testContainsValidToken");
-        {
-            String token = "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc";
-            assertTrue(JWSToken.containsValidToken(token));
-        }
-        {
-            String token = "Cookie: sessionid=1234567890; token=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ5b3VyLWFwcCIsInN1YiI6InVzZXIxMjMiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NTU3ODMxNzV9.dqBgwLri4YJt1FIqjjT1Ljn1LWaoDvACfpX1bgSx8bc uid=aabbcceedd";
-            assertTrue(JWSToken.containsValidToken(token));
-        }
-    }
 
 }

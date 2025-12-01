@@ -91,7 +91,7 @@ public class JWSToken implements JsonToken {
         return jwsInstance;
     }
 
-    public boolean isValidFormat(String value) {
+    public boolean isValidToken(String value) {
         return parseToken(value, true) != null;
     }
 
@@ -209,12 +209,15 @@ public class JWSToken implements JsonToken {
         }
 
         public boolean isValid() {
-            try {
-                Algorithm algo = getAlgorithm();
-                return algo != null;
-            } catch (JsonSyntaxException | IllegalArgumentException ex) {
-                return false;
+            if (StringUtil.isPrintable(getsDecodeBase64Url())) {
+                try {
+                    Algorithm algo = getAlgorithm();
+                    return algo != null;
+                } catch (JsonSyntaxException | IllegalArgumentException ex) {
+                    // nothing
+                }
             }
+            return false;
         }
 
         @Override
@@ -264,15 +267,15 @@ public class JWSToken implements JsonToken {
                 jws.signature = new JsonToken.Signature(segment[2]);
                 if (jws.isValid()) {
                     token = jws;
+                    break;
                 }
-                break;
             }
         }
         return token;
     }
 
     public static boolean containsTokenFormat(String value) {
-        CaptureItem[] tokens = JWSUtil.findTokenFormat(value);
+        CaptureItem[] tokens = JWSUtil.findTokenFormat(value, JWSUtil.INCLUDE_SIGNATURE);
         return tokens.length > 0;
     }
 
@@ -288,13 +291,19 @@ public class JWSToken implements JsonToken {
 
     @Override
     public boolean isValid() {
-        try {
-            this.header.toJSON(false);
-            this.payload.toJSON(false);
-        } catch (JsonSyntaxException | IllegalArgumentException ex) {
-            return false;
+        if (this.header.isValid() && this.payload.isValid()) {
+            try {
+                this.header.toJSON(false);
+                this.payload.toJSON(false);
+                if (!this.signature.isEmpty()) {
+                    return this.signature.isValid();
+                }
+                return true;
+            } catch (JsonSyntaxException | IllegalArgumentException ex) {
+                // nothong
+            }
         }
-        return true;
+        return false;
     }
 
     @Override

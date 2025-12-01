@@ -45,12 +45,15 @@ public interface JsonToken {
         }
 
         public boolean isValid() {
-            try {
-                toJSON(false);
-                return true;
-            } catch (JsonSyntaxException | IllegalArgumentException ex) {
-                return false;
+            if (StringUtil.isPrintable(getsDecodeBase64Url())) {
+                try {
+                    toJSON(false);
+                    return true;
+                } catch (JsonSyntaxException | IllegalArgumentException ex) {
+                    // nothing
+                }
             }
+            return false;
         }
 
         @Override
@@ -129,11 +132,11 @@ public interface JsonToken {
         return Base64.getUrlDecoder().decode(value);
     }
 
-    static String decodeBase64UrlSafe(byte[] value) {
+    public static String decodeBase64UrlSafe(byte[] value) {
         return StringUtil.getStringUTF8(Base64.getUrlDecoder().decode(value));
     }
 
-    static String decodeBase64UrlSafe(String value) {
+    public static String decodeBase64UrlSafe(String value) {
         return StringUtil.getStringUTF8(decodeBase64UrlSafeByte(value));
     }
 
@@ -149,7 +152,7 @@ public interface JsonToken {
         return StringUtil.getStringUTF8(JsonToken.encodeBase64UrlSafeByte(value));
     }
 
-    static String encodeBase64UrlSafe(String value) {
+    public static String encodeBase64UrlSafe(String value) {
         return StringUtil.getStringUTF8(encodeBase64UrlSafeByte(value));
     }
 

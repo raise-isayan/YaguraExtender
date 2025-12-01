@@ -461,7 +461,7 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
                     scriptTag.append("\tmsleep(msec);").append(HttpUtil.LINE_TERMINATE);
                 }
                 String value = StringUtil.getStringCharset(payload.getBytes(), csrfEncoding);
-                if (StringUtil.isPrinterble(value)) {
+                if (StringUtil.isPrintable(value)) {
                     scriptTag.append(generateWebSocketSendFunctionCall(url, value)).append(HttpUtil.LINE_TERMINATE);
                 } else {
                     scriptTag.append(generateWebSocketSendFunctionCall(url, payload.getBytes())).append(HttpUtil.LINE_TERMINATE);

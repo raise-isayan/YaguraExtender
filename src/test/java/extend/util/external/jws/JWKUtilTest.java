@@ -3,6 +3,8 @@ package extend.util.external.jws;
 import com.google.gson.JsonElement;
 import extension.helpers.json.JsonUtil;
 import extension.helpers.jws.JWKToken;
+import extension.helpers.jws.JWSUtil;
+import extension.helpers.jws.JsonToken;
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -60,6 +62,7 @@ public class JWKUtilTest {
     @AfterEach
     public void tearDown() {
     }
+
 
     @Test
     public void testToJWK() {

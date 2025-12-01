@@ -1,4 +1,4 @@
-package extend.util.external.jws;
+package extension.helpers.jws;
 
 import extension.helpers.jws.JWSUtil;
 import extension.helpers.FileUtil;
@@ -32,11 +32,11 @@ import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 import org.bouncycastle.jcajce.interfaces.EdDSAPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import extension.helpers.jws.JWSTokenTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import extension.helpers.jws.JWSTokenTest;
 
 /**
  *
@@ -222,7 +222,7 @@ public class JWSUtilTest {
             assertEquals(TOKEN_TOKEN_RESULT, tokens[0].getCaptureValue());
         }
         {
-            CaptureItem[] tokens = JWSUtil.findTokenFormat(JWT_COOKIE00);
+            CaptureItem[] tokens = JWSUtil.findTokenFormat(JWT_TOKEN00, JWSUtil.INCLUDE_SIGNATURE);
             for (CaptureItem t : tokens) {
                 System.out.println("token:" + t.getCaptureValue());
                 System.out.println("start:" + t.start());
@@ -232,10 +232,27 @@ public class JWSUtilTest {
             assertEquals(TOKEN_TOKEN_RESULT, tokens[0].getCaptureValue());
         }
         {
-            CaptureItem[] token = JWSUtil.findTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00);
+            CaptureItem[] tokens = JWSUtil.findTokenFormat(JWT_COOKIE00, JWSUtil.INCLUDE_SIGNATURE);
+            for (CaptureItem t : tokens) {
+                System.out.println("token:" + t.getCaptureValue());
+                System.out.println("start:" + t.start());
+                System.out.println("end:" + t.end());
+            }
+            assertEquals(1, tokens.length);
+            assertEquals(TOKEN_TOKEN_RESULT, tokens[0].getCaptureValue());
+        }
+        {
+            CaptureItem[] token = JWSUtil.findTokenFormat(REQ_MESSAGE_URLENCODE_TOKEN00, JWSUtil.INCLUDE_SIGNATURE);
             assertEquals(0, token.length);
         }
-
+        {
+            CaptureItem[] token = JWSUtil.findTokenFormat(JWT_NONE01);
+            assertTrue(token.length > 0);
+        }
+        {
+            CaptureItem[] token = JWSUtil.findTokenFormat(JWT_NONE01, JWSUtil.INCLUDE_SIGNATURE);
+            assertTrue(token.length == 0);
+        }
     }
 
     @Test

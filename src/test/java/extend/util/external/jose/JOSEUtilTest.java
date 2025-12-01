@@ -6,7 +6,7 @@ import com.nimbusds.jose.crypto.opts.AllowWeakRSAKey;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jose.util.JSONObjectUtils;
 import com.nimbusds.jwt.*;
-import extend.util.external.jws.JWSUtilTest;
+import extension.helpers.jws.JWSUtilTest;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.json.JsonUtil;
