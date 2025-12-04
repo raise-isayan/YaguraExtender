@@ -149,13 +149,14 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
             if (this.modelAlgo.getSelectedItem() instanceof JWSToken.Algorithm algo) {
                 if (this.panelJWSEdit.isValidHeader()) {
                     JWSToken.Header header = this.panelJWSEdit.getHeader();
-                    //this.panelJWSEdit.setEnableBase64URL(JWSToken.SYMMETRIC_KEY.contains(header.getAlgorithm()));
                     this.panelJWSEdit.setHeaderText(header.withAlgorithm(algo).toJSON(true));
                 }
-                else {
-                    this.panelJWSEdit.setEnableBase64URL(JWSToken.SYMMETRIC_KEY.contains(algo));
-                    //this.panelJWSEdit.setHeaderText(JWSToken.Header.generateAlgorithm(algo).toJSON(true));
+                else if (this.panelJWSEdit.isEmptyHeader()) {
+                    this.panelJWSEdit.setHeaderText(JWSToken.Header.generateAlgorithm(algo).toJSON(true));
                 }
+//                else {
+//                    this.panelJWSEdit.setEnableBase64URL(JWSToken.SYMMETRIC_KEY.contains(algo));
+//                }
             }
         }
     }//GEN-LAST:event_cmbAlgoActionPerformed

@@ -365,6 +365,10 @@ public class JWSEditPanel extends javax.swing.JPanel {
         this.txtSecretKey.setText("");
     }
 
+    public boolean isEmptyHeader() {
+        return getHeaderText().trim().isEmpty();
+    }
+
     public boolean isValidHeader() {
         try {
             getHeader();

@@ -2,6 +2,7 @@ package extend.util.external;
 
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.jupiter.api.AfterAll;
@@ -40,8 +41,8 @@ public class CodecUtilTest {
      * Test of toMd5Sum method, of class TransUtil.
      */
     @Test
-    public void testToMd5Sum() {
-        System.out.println("toMd5Sum");
+    public void testToMD5Sum() {
+        System.out.println("toMD5Sum");
         assertEquals("098f6bcd4621d373cade4e832627b4f6", CodecUtil.toMD5Sum("test", false));
         assertEquals("d41d8cd98f00b204e9800998ecf8427e", CodecUtil.toMD5Sum("", false));
     }
@@ -229,6 +230,17 @@ public class CodecUtilTest {
         System.out.println("toMurmurHash3_32x86:" + CodecUtil.toMurmurHash3_32x86("test"));
         System.out.println("toMurmurHash3_128x64:" + CodecUtil.toMurmurHash3_128x64(StringUtil.getBytesRaw("test")));
         System.out.println("toMurmurHash3_128x64:" + CodecUtil.toMurmurHash3_128x64("test"));
+    }
+
+    @Test
+    public void testToCRC16Sum() {
+//        try {
+//            System.out.println("testToCRC16Sum");
+//            System.out.println(CodecUtil.toCRC16Sum(StringUtil.getBytesRaw("test")));
+//            System.out.println(CodecUtil.toCRC16Sum("test", StandardCharsets.UTF_8.name()));
+//        } catch (UnsupportedEncodingException ex) {
+//            fail(ex.getMessage(),ex);
+//        }
     }
 
 }
