@@ -1,0 +1,7 @@
+id: c2485dd0-527c-43bb-aad2-072f18c703d7
+name: HTTP history View filter ML
+function: VIEW_FILTER
+location: PROXY_HTTP_HISTORY
+source: |-
+  var aaa = false;
+  return aaa && true;

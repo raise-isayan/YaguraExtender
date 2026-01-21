@@ -66,8 +66,6 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         api.proxy().registerResponseHandler(this);
     }
 
-    private final static Pattern HTTP2_VERSION_PATTERN = Pattern.compile("(\\S+) +(\\S+) +HTTP/2\r\n");
-
     /**
      * implements HttpHandler
      *
@@ -124,7 +122,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
             modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, false, modifyHttpRequestResponse);
             return ProxyResponseReceivedAction.proxyResponseReceivedAction(modifyHttpRequestResponse.response(), modifyHttpRequestResponse.annotations(), responseResult.action());
         } else {
-            return ProxyResponseReceivedAction.continueWith(interceptedResponse, interceptedResponse.annotations());
+            return ProxyResponseReceivedAction.continueWith(responseResult.response(), responseResult.annotations());
         }
     }
 
@@ -385,6 +383,5 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         }
         return message;
     }
-
 
 }

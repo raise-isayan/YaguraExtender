@@ -75,7 +75,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
 
         this.tabUniversalView.addPropertyChangeListener(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, this);
         this.tabMatchReplace.addPropertyChangeListener(MatchReplaceProperty.MATCHREPLACE_PROPERTY, this);
-        this.tabMatchAlert.addPropertyChangeListener(MatchAlertProperty.MATCHALERT_PROPERTY, this);
+        this.tabMatchAlert.addPropertyChangeListener(MatchAlertProperty.MATCH_ALERT_PROPERTY, this);
         this.tabAutoResponder.addPropertyChangeListener(AutoResponderProperty.AUTO_RESPONDER_PROPERTY, this);
         this.tabResultFilter.addPropertyChangeListener(ResultFilterProperty.RESULT_FILTER_PROPERTY, this);
         this.tabSendTo.addPropertyChangeListener(SendToProperty.SENDTO_PROPERTY, this);

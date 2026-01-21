@@ -173,6 +173,7 @@ public class BurpBrowser {
     /**
      * JDK 24 の場合以下の値がnullになる BurpBrowser.class.getResource("/")
      *
+     * @return
      **/
     public static Path getBaseDirectory() {
         String exe4j = System.getProperty("install4j.appDir");
@@ -306,6 +307,7 @@ public class BurpBrowser {
             ProcessBuilder process = new ProcessBuilder(chromeExeAndArg);
             process.start();
         } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }

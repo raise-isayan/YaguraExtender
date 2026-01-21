@@ -408,7 +408,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                         }
                     }
                     applyOptionProperty();
-                } else if (MatchAlertProperty.MATCHALERT_PROPERTY.equals(evt.getPropertyName())) {
+                } else if (MatchAlertProperty.MATCH_ALERT_PROPERTY.equals(evt.getPropertyName())) {
                     option.setMatchAlertProperty(tabbetOption.getMatchAlertProperty());
                     applyOptionProperty();
                 } else if (ResultFilterProperty.RESULT_FILTER_PROPERTY.equals(evt.getPropertyName())) {
@@ -635,5 +635,4 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         };
 
     }
-
 }

@@ -2,6 +2,7 @@ package yagura.view;
 
 import extend.util.external.TransUtil;
 import extension.helpers.SwingUtil;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import yagura.model.SendToParameterProperty;
@@ -11,6 +12,8 @@ import yagura.model.SendToParameterProperty;
  * @author isayan
  */
 public class SendToParameterPanel extends javax.swing.JPanel {
+
+    private final static Logger logger = Logger.getLogger(SendToParameterPanel.class.getName());
 
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 

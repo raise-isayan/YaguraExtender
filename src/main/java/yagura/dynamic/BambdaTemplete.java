@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
+import javax.tools.JavaFileObject;
 
 /**
  *
@@ -128,11 +129,30 @@ public class BambdaTemplete {
             }
             """;
 
+    private final static String INTERCEPT_RECEIVE_FMT
+            = """
+            import java.util.function.*;
+            import burp.api.montoya.core.*;
+            import burp.api.montoya.http.message.*;
+            import burp.api.montoya.proxy.http.*;
+            import burp.api.montoya.http.message.params.*;
+            import burp.api.montoya.http.message.requests.*;
+            import burp.api.montoya.http.message.responses.*;
+            import burp.api.montoya.utilities.*;
+
+            public class %s implements yagura.dynamic.BambdaInterceptAction {
+                public ProxyRequestReceivedAction interceptReceived(InterceptedRequest interceptedRequest) {
+                    %s
+                }
+            }
+            """;
+
     private final static String HTTP_MESSAGE = "boolean matches(ProxyHttpRequestResponse requestResponse, Utilities utilities)";
     private final static String WEBSOCKET_MESSAGE = "boolean matches(ProxyWebSocketMessage messsage, Utilities utilities)";
     private final static String SITE_MAP_MESSAGE = "boolean matches(SiteMapNode node, Utilities utilities)";
     private final static String REQUEST_REPLACE_MESSAGE = "HttpRequest replace(ProxyHttpRequestResponse requestResponse, Utilities utilities)";
     private final static String RESPONSE_REPLACE_MESSAGE = "HttpResponse replace(ProxyHttpRequestResponse requestResponse, Utilities utilities)";
+    private final static String INTERCEPT_RECEIVE_MESSAGE = "ProxyRequestReceivedAction interceptReceived(InterceptedRequest interceptedRequest)";
 
     public static String getFunctionMessage(FilterProperty.FilterCategory filterCategory) {
         String message = "";
@@ -151,6 +171,9 @@ public class BambdaTemplete {
                 break;
             case RESPONSE_REPLACE:
                 message = RESPONSE_REPLACE_MESSAGE;
+                break;
+            case INTERCEPT_RECEIVE:
+                message = INTERCEPT_RECEIVE_MESSAGE;
                 break;
         }
         return message;
@@ -180,6 +203,9 @@ public class BambdaTemplete {
             case RESPONSE_REPLACE:
                 template = String.format("BambdaResponseReplaceFilter%s", functionName);
                 break;
+            case INTERCEPT_RECEIVE:
+                template = String.format("BambdaInterceptAction%s", functionName);
+                break;
         }
         return template;
     }
@@ -188,60 +214,53 @@ public class BambdaTemplete {
         BambdaTemplete templete = null;
         switch (category) {
             case HTTP:
-                templete = new BambdaTemplete(functionName, String.format(PROXY_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(PROXY_FILTER_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
                 break;
             case WEBSOCKET:
-                templete = new BambdaTemplete(functionName, String.format(WEBSOCKET_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(WEBSOCKET_FILTER_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
                 break;
             case SITE_MAP:
-                templete = new BambdaTemplete(functionName, String.format(SITEMAP_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(SITEMAP_FILTER_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
                 break;
             case LOGGER_CAPTURE:
-                templete = new BambdaTemplete(functionName, String.format(LOGGER_CAPTURE_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(LOGGER_CAPTURE_FILTER_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
                 break;
             case LOGGER_DISPLAY:
-                templete = new BambdaTemplete(functionName, String.format(LOGGER_HTTP_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(LOGGER_HTTP_FILTER_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
                 break;
             case REQUEST_REPLACE:
-                templete = new BambdaTemplete(functionName, String.format(REQUESWT_REPLACE_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(REQUESWT_REPLACE_FILTER_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
                 break;
             case RESPONSE_REPLACE:
-                templete = new BambdaTemplete(functionName, String.format(RESPONSE_REPLACE_FILTER_FMT.replaceAll("[\\r\\n]", " "), functionName, content));
+                templete = new BambdaTemplete(functionName, String.format(RESPONSE_REPLACE_FILTER_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
+                break;
+            case INTERCEPT_RECEIVE:
+                templete = new BambdaTemplete(functionName, String.format(INTERCEPT_RECEIVE_FMT.replaceAll("[\\r\\n]+", " "), functionName, content));
                 break;
         }
         return templete;
     }
+
+    private final DiagnosticListener<JavaFileObject> listener = new DiagnosticListener() {
+        @Override
+        public void report(Diagnostic diagnostic) {
+
+        }
+    };
 
     private final SimpleJavaCompilerEngine engine = new SimpleJavaCompilerEngine();
 
     public BambdaFilter getBambaFilter(BambdaTemplete templete) {
         Object inst = null;
         try {
-            DiagnosticListener listener = new DiagnosticListener() {
-                @Override
-                public void report(Diagnostic diagnostic) {
-
-                }
-            };
             Class defineClass = this.engine.compile(templete.getFunctionName(), templete.getContent(), listener);
             inst = defineClass.getDeclaredConstructor().newInstance();
-        } catch (NoSuchMethodException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (SecurityException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (InstantiationException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (IllegalAccessException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (IllegalArgumentException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (InvocationTargetException ex) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         if (inst instanceof BambdaFilter filter) {
             return filter;
-        }
-        else {
+        } else {
             return null;
         }
     }

@@ -1,0 +1,5 @@
+id: 091bd6e8-c605-4254-9326-3d4793a55e10
+name: HTTP history View filter SL
+function: VIEW_FILTER
+location: PROXY_HTTP_HISTORY
+source: return true;

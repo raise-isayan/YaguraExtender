@@ -1,7 +1,7 @@
 package yagura.view;
 
 import burp.BurpExtension;
-import extend.util.external.BasicSplitPaneDividerWapper;
+import extension.view.layout.BasicSplitPaneDividerWapper;
 import extension.burp.FilterProperty;
 import extension.helpers.StringUtil;
 import extension.view.base.JavaSyntaxDocument;

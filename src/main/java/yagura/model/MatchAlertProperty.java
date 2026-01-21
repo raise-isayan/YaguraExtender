@@ -13,7 +13,10 @@ import java.util.List;
  */
 public class MatchAlertProperty implements IPropertyConfig {
 
-    public final static String MATCHALERT_PROPERTY = "matchAlertProperty";
+    public final static String MATCH_ALERT_PROPERTY = "matchAlertProperty";
+
+    public MatchAlertProperty() {
+    }
 
     @Expose
     private boolean selectedMatchAlert = false;
@@ -60,7 +63,7 @@ public class MatchAlertProperty implements IPropertyConfig {
 
     @Override
     public String getSettingName() {
-        return MATCHALERT_PROPERTY;
+        return MATCH_ALERT_PROPERTY;
     }
 
     @Override

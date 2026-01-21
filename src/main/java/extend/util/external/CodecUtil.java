@@ -7,11 +7,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.zip.CRC32C;
 import org.apache.commons.codec.binary.Base16;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.Crc16;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
@@ -1154,31 +1152,5 @@ public class CodecUtil {
         }
         return Arrays.copyOf(vaule, len);
     }
-
-//    /**
-//     * CRC-16値の取得
-//     *
-//     * @param binary 対象バイト
-//     * @return ハッシュ値
-//     */
-//    public static long toCRC16Sum(byte[] binary) {
-//        Crc16.Builder crcBuild = new Crc16.Builder();
-//        crcBuild.setInit(0);
-//        Crc16 crc = crcBuild.get();
-//        crc.update(binary);
-//        return crc.getValue();
-//    }
-//
-//    /**
-//     * CRC-32C値の取得
-//     *
-//     * @param str 対象文字列
-//     * @param charset エンコーディング
-//     * @return CRC値
-//     * @throws UnsupportedEncodingException
-//     */
-//    public static long toCRC16Sum(String str, String charset) throws UnsupportedEncodingException {
-//        return toCRC16Sum(str.getBytes(charset));
-//    }
 
 }
