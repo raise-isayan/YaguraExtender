@@ -673,18 +673,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlCustom = new javax.swing.JPanel();
         chkCharacterCustom = new javax.swing.JCheckBox();
         txtCustom = new javax.swing.JTextField();
-        pnlStringLength = new javax.swing.JPanel();
-        rdoLength4 = new javax.swing.JRadioButton();
-        rdoLength8 = new javax.swing.JRadioButton();
-        rdoLength16 = new javax.swing.JRadioButton();
-        rdoLengthNum = new javax.swing.JRadioButton();
-        spnLengthNum = new javax.swing.JSpinner();
-        pnlCount = new javax.swing.JPanel();
-        rdoCount1 = new javax.swing.JRadioButton();
-        rdoCount10 = new javax.swing.JRadioButton();
-        rdoCount50 = new javax.swing.JRadioButton();
-        rdoCountNum = new javax.swing.JRadioButton();
-        spnCountNum = new javax.swing.JSpinner();
+        pnlCharacterLength = new javax.swing.JPanel();
+        rdoCharacterLength4 = new javax.swing.JRadioButton();
+        rdoCharacterLength8 = new javax.swing.JRadioButton();
+        rdoCharacterLength16 = new javax.swing.JRadioButton();
+        rdoCharacterLengthNum = new javax.swing.JRadioButton();
+        spnCharacterLengthNum = new javax.swing.JSpinner();
+        pnlGenerateCount = new javax.swing.JPanel();
+        rdoGenerateCount1 = new javax.swing.JRadioButton();
+        rdoGenerateCount10 = new javax.swing.JRadioButton();
+        rdoGenerateCount50 = new javax.swing.JRadioButton();
+        rdoGenerateCountNum = new javax.swing.JRadioButton();
+        spnGenerateCountNum = new javax.swing.JSpinner();
         pnlGenerateKey = new javax.swing.JPanel();
         pnlKeyPairAlgorithm = new javax.swing.JPanel();
         lbAlgorithm = new javax.swing.JLabel();
@@ -695,6 +695,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlKeyPairConvertFormat = new javax.swing.JPanel();
         rdoConvertKeyPairPEM = new javax.swing.JRadioButton();
         rdoConvertKeyPairJWK = new javax.swing.JRadioButton();
+        jPanel1 = new javax.swing.JPanel();
+        lblUUID = new javax.swing.JLabel();
+        cmbUUID = new javax.swing.JComboBox<>();
+        spnUUIDCountNum = new javax.swing.JSpinner();
+        lblCount = new javax.swing.JLabel();
         pnlRight = new javax.swing.JPanel();
         btnGenerate = new javax.swing.JButton();
         btnGeneCopy = new javax.swing.JButton();
@@ -2156,7 +2161,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addGroup(pnlNumbersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumStep)
                     .addComponent(spnNumStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(832, Short.MAX_VALUE))
+                .addContainerGap(838, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Numbers", pnlNumbers);
@@ -2232,7 +2237,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     .addGroup(pnlDateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblDateStep)
                         .addComponent(spnDateStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(832, Short.MAX_VALUE))
+                .addContainerGap(838, Short.MAX_VALUE))
         );
 
         tabbetSequence.addTab("Date", pnlDate);
@@ -2271,57 +2276,57 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlCharacter.add(pnlCustom);
 
-        pnlStringLength.setBorder(javax.swing.BorderFactory.createTitledBorder("Character length"));
-        pnlStringLength.setVerifyInputWhenFocusTarget(false);
-        pnlStringLength.setLayout(new javax.swing.BoxLayout(pnlStringLength, javax.swing.BoxLayout.LINE_AXIS));
+        pnlCharacterLength.setBorder(javax.swing.BorderFactory.createTitledBorder("Character length"));
+        pnlCharacterLength.setVerifyInputWhenFocusTarget(false);
+        pnlCharacterLength.setLayout(new javax.swing.BoxLayout(pnlCharacterLength, javax.swing.BoxLayout.LINE_AXIS));
 
-        rdoRandomLengthGrp.add(rdoLength4);
-        rdoLength4.setText("4");
-        rdoLength4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        pnlStringLength.add(rdoLength4);
+        rdoRandomLengthGrp.add(rdoCharacterLength4);
+        rdoCharacterLength4.setText("4");
+        rdoCharacterLength4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        pnlCharacterLength.add(rdoCharacterLength4);
 
-        rdoRandomLengthGrp.add(rdoLength8);
-        rdoLength8.setSelected(true);
-        rdoLength8.setText("8");
-        rdoLength8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        rdoLength8.setInheritsPopupMenu(true);
-        pnlStringLength.add(rdoLength8);
+        rdoRandomLengthGrp.add(rdoCharacterLength8);
+        rdoCharacterLength8.setSelected(true);
+        rdoCharacterLength8.setText("8");
+        rdoCharacterLength8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        rdoCharacterLength8.setInheritsPopupMenu(true);
+        pnlCharacterLength.add(rdoCharacterLength8);
 
-        rdoRandomLengthGrp.add(rdoLength16);
-        rdoLength16.setText("16");
-        pnlStringLength.add(rdoLength16);
+        rdoRandomLengthGrp.add(rdoCharacterLength16);
+        rdoCharacterLength16.setText("16");
+        pnlCharacterLength.add(rdoCharacterLength16);
 
-        rdoRandomLengthGrp.add(rdoLengthNum);
-        pnlStringLength.add(rdoLengthNum);
+        rdoRandomLengthGrp.add(rdoCharacterLengthNum);
+        pnlCharacterLength.add(rdoCharacterLengthNum);
 
-        spnLengthNum.setModel(new javax.swing.SpinnerNumberModel(32, 1, null, 1));
-        pnlStringLength.add(spnLengthNum);
+        spnCharacterLengthNum.setModel(new javax.swing.SpinnerNumberModel(32, 1, null, 1));
+        pnlCharacterLength.add(spnCharacterLengthNum);
 
-        pnlCount.setBorder(javax.swing.BorderFactory.createTitledBorder("Generate count"));
-        pnlCount.setVerifyInputWhenFocusTarget(false);
-        pnlCount.setLayout(new javax.swing.BoxLayout(pnlCount, javax.swing.BoxLayout.LINE_AXIS));
+        pnlGenerateCount.setBorder(javax.swing.BorderFactory.createTitledBorder("Generate count"));
+        pnlGenerateCount.setVerifyInputWhenFocusTarget(false);
+        pnlGenerateCount.setLayout(new javax.swing.BoxLayout(pnlGenerateCount, javax.swing.BoxLayout.LINE_AXIS));
 
-        rdoRandomCountGrp.add(rdoCount1);
-        rdoCount1.setText("1");
-        rdoCount1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        pnlCount.add(rdoCount1);
+        rdoRandomCountGrp.add(rdoGenerateCount1);
+        rdoGenerateCount1.setText("1");
+        rdoGenerateCount1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        pnlGenerateCount.add(rdoGenerateCount1);
 
-        rdoRandomCountGrp.add(rdoCount10);
-        rdoCount10.setSelected(true);
-        rdoCount10.setText("10");
-        rdoCount10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        rdoCount10.setInheritsPopupMenu(true);
-        pnlCount.add(rdoCount10);
+        rdoRandomCountGrp.add(rdoGenerateCount10);
+        rdoGenerateCount10.setSelected(true);
+        rdoGenerateCount10.setText("10");
+        rdoGenerateCount10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        rdoGenerateCount10.setInheritsPopupMenu(true);
+        pnlGenerateCount.add(rdoGenerateCount10);
 
-        rdoRandomCountGrp.add(rdoCount50);
-        rdoCount50.setText("50");
-        pnlCount.add(rdoCount50);
+        rdoRandomCountGrp.add(rdoGenerateCount50);
+        rdoGenerateCount50.setText("50");
+        pnlGenerateCount.add(rdoGenerateCount50);
 
-        rdoRandomCountGrp.add(rdoCountNum);
-        pnlCount.add(rdoCountNum);
+        rdoRandomCountGrp.add(rdoGenerateCountNum);
+        pnlGenerateCount.add(rdoGenerateCountNum);
 
-        spnCountNum.setModel(new javax.swing.SpinnerNumberModel(100, 1, null, 1));
-        pnlCount.add(spnCountNum);
+        spnGenerateCountNum.setModel(new javax.swing.SpinnerNumberModel(100, 1, null, 1));
+        pnlGenerateCount.add(spnGenerateCountNum);
 
         javax.swing.GroupLayout tabRandomLayout = new javax.swing.GroupLayout(tabRandom);
         tabRandom.setLayout(tabRandomLayout);
@@ -2332,20 +2337,20 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addGroup(tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnlCharacter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(tabRandomLayout.createSequentialGroup()
-                        .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pnlCharacterLength, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(pnlGenerateCount, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(1061, Short.MAX_VALUE))
         );
         tabRandomLayout.setVerticalGroup(
             tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabRandomLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlCharacter, javax.swing.GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
+                .addComponent(pnlCharacter, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabRandomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlStringLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlGenerateCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pnlCharacterLength, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -2428,12 +2433,51 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addComponent(rdoConvertKeyPairPEM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoConvertKeyPairJWK)
-                .addContainerGap(875, Short.MAX_VALUE))
+                .addContainerGap(881, Short.MAX_VALUE))
         );
 
         pnlGenerateKey.add(pnlKeyPairConvertFormat, java.awt.BorderLayout.CENTER);
 
         tabbetGenerate.addTab("GenerateKeyPair", pnlGenerateKey);
+
+        lblUUID.setText("version:");
+
+        cmbUUID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "v4" }));
+
+        spnUUIDCountNum.setModel(new javax.swing.SpinnerNumberModel(100, 1, null, 1));
+
+        lblCount.setText("count:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblUUID)
+                    .addComponent(lblCount))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spnUUIDCountNum, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbUUID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(1388, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUUID)
+                    .addComponent(cmbUUID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spnUUIDCountNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCount))
+                .addContainerGap(947, Short.MAX_VALUE))
+        );
+
+        tabbetGenerate.addTab("UUID", jPanel1);
 
         pnlTop.add(tabbetGenerate, java.awt.BorderLayout.CENTER);
 
@@ -2489,7 +2533,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addComponent(btnGeneCopy)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGeneSavetoFile)
-                .addContainerGap(897, Short.MAX_VALUE))
+                .addContainerGap(903, Short.MAX_VALUE))
         );
 
         pnlTop.add(pnlRight, java.awt.BorderLayout.EAST);
@@ -3852,7 +3896,30 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             catch (UnsupportedOperationException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
             }
-        }
+        } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("UUID")) {
+            final int count = this.getUUIDCount();
+            final int verUUID = getUUIDVersion();
+            SwingWorker swList = new SwingWorker<String, Object>() {
+                @Override
+                protected String doInBackground() throws Exception {
+                    String[] list = TransUtil.uuidv4List(count);
+                    return TransUtil.join(System.lineSeparator(), list);
+                }
+
+                protected void process(List<Object> chunks) {
+                }
+
+                protected void done() {
+                    try {
+                        txtGenarate.setText(get());
+                    } catch (InterruptedException | ExecutionException ex) {
+                        logger.log(Level.SEVERE, ex.getMessage(), ex);
+                    }
+                }
+            };
+            swList.execute();
+    }
+
     }//GEN-LAST:event_btnGenerateActionPerformed
 
     private void btnGeneCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneCopyActionPerformed
@@ -5186,13 +5253,16 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JComboBox<String> cmbHistory;
     private javax.swing.JComboBox cmbIILUTF8;
     private javax.swing.JComboBox<String> cmbTimezone;
+    private javax.swing.JComboBox<String> cmbUUID;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbAlgorithm;
     private javax.swing.JLabel lblBin;
+    private javax.swing.JLabel lblCount;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblDateEnd;
     private javax.swing.JLabel lblDateFormat;
@@ -5228,6 +5298,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JLabel lblPositionStatus;
     private javax.swing.JLabel lblRadix32;
     private javax.swing.JLabel lblTailDotDecCIP;
+    private javax.swing.JLabel lblUUID;
     private javax.swing.JLabel lblUnixtime;
     private javax.swing.JLabel lblZoneDate;
     private javax.swing.JLabel lblmaximum;
@@ -5236,11 +5307,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlBaseN;
     private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlCharacter;
+    private javax.swing.JPanel pnlCharacterLength;
     private javax.swing.JPanel pnlCheckSumTrans;
     private javax.swing.JPanel pnlCompress;
     private javax.swing.JPanel pnlConvert;
     private javax.swing.JPanel pnlConvertCase;
-    private javax.swing.JPanel pnlCount;
     private javax.swing.JPanel pnlCustom;
     private javax.swing.JPanel pnlDate;
     private javax.swing.JPanel pnlDotDecIP;
@@ -5250,6 +5321,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlEncoding;
     private javax.swing.JPanel pnlFormat;
     private javax.swing.JPanel pnlGenerate;
+    private javax.swing.JPanel pnlGenerateCount;
     private javax.swing.JPanel pnlGenerateKey;
     private javax.swing.JPanel pnlHashCheckSum;
     private javax.swing.JPanel pnlHashTrans;
@@ -5276,7 +5348,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlSelect;
     private javax.swing.JPanel pnlSelectOption;
     private javax.swing.JPanel pnlStatus;
-    private javax.swing.JPanel pnlStringLength;
     private javax.swing.JPanel pnlTop;
     private javax.swing.JPanel pnlTransAction;
     private javax.swing.JPanel pnlTranslator;
@@ -5298,14 +5369,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoCR;
     private javax.swing.JRadioButton rdoCRLF;
     private javax.swing.ButtonGroup rdoCetificateGrp;
+    private javax.swing.JRadioButton rdoCharacterLength16;
+    private javax.swing.JRadioButton rdoCharacterLength4;
+    private javax.swing.JRadioButton rdoCharacterLength8;
+    private javax.swing.JRadioButton rdoCharacterLengthNum;
     private javax.swing.JRadioButton rdoConvertKeyPairJWK;
     private javax.swing.JRadioButton rdoConvertKeyPairPEM;
-    private javax.swing.JRadioButton rdoCount1;
-    private javax.swing.JRadioButton rdoCount10;
-    private javax.swing.JRadioButton rdoCount50;
-    private javax.swing.JRadioButton rdoCountNum;
     private javax.swing.ButtonGroup rdoEncodeDecodeGrp;
     private javax.swing.ButtonGroup rdoFormatGrp;
+    private javax.swing.JRadioButton rdoGenerateCount1;
+    private javax.swing.JRadioButton rdoGenerateCount10;
+    private javax.swing.JRadioButton rdoGenerateCount50;
+    private javax.swing.JRadioButton rdoGenerateCountNum;
     private javax.swing.JRadioButton rdoGzip;
     private javax.swing.JRadioButton rdoHtml;
     private javax.swing.JRadioButton rdoHtmlByteHex;
@@ -5314,10 +5389,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoILLUTF8;
     private javax.swing.JRadioButton rdoJSON;
     private javax.swing.JRadioButton rdoLF;
-    private javax.swing.JRadioButton rdoLength16;
-    private javax.swing.JRadioButton rdoLength4;
-    private javax.swing.JRadioButton rdoLength8;
-    private javax.swing.JRadioButton rdoLengthNum;
     private javax.swing.JRadioButton rdoLigth;
     private javax.swing.JRadioButton rdoLowerCase;
     private javax.swing.JRadioButton rdoMinifyFormat;
@@ -5342,14 +5413,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JScrollPane scrollStatus;
     private javax.swing.JSplitPane splitConvert;
     private javax.swing.JSplitPane splitGenerator;
-    private javax.swing.JSpinner spnCountNum;
+    private javax.swing.JSpinner spnCharacterLengthNum;
     private javax.swing.JSpinner spnDateEnd;
     private javax.swing.JSpinner spnDateStart;
     private javax.swing.JSpinner spnDateStep;
-    private javax.swing.JSpinner spnLengthNum;
+    private javax.swing.JSpinner spnGenerateCountNum;
     private javax.swing.JSpinner spnNumEnd;
     private javax.swing.JSpinner spnNumStart;
     private javax.swing.JSpinner spnNumStep;
+    private javax.swing.JSpinner spnUUIDCountNum;
     private javax.swing.JSpinner spnZoneDateTime;
     private javax.swing.JPanel tabBaseConverter;
     private javax.swing.JPanel tabDateConverter;
@@ -5719,28 +5791,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private int getCharacterLength() {
         int len = -1;
-        if (this.rdoLength4.isSelected()) {
+        if (this.rdoCharacterLength4.isSelected()) {
             len = 4;
-        } else if (this.rdoLength8.isSelected()) {
+        } else if (this.rdoCharacterLength8.isSelected()) {
             len = 8;
-        } else if (this.rdoLength16.isSelected()) {
+        } else if (this.rdoCharacterLength16.isSelected()) {
             len = 16;
-        } else if (this.rdoLengthNum.isSelected()) {
-            len = (Integer) this.spnLengthNum.getModel().getValue();
+        } else if (this.rdoCharacterLengthNum.isSelected()) {
+            len = (Integer) this.spnCharacterLengthNum.getModel().getValue();
         }
         return len;
     }
 
     private int getGenerateCount() {
         int cnt = -1;
-        if (this.rdoCount1.isSelected()) {
+        if (this.rdoGenerateCount1.isSelected()) {
             cnt = 1;
-        } else if (this.rdoCount10.isSelected()) {
+        } else if (this.rdoGenerateCount10.isSelected()) {
             cnt = 10;
-        } else if (this.rdoCount50.isSelected()) {
+        } else if (this.rdoGenerateCount50.isSelected()) {
             cnt = 50;
-        } else if (this.rdoCountNum.isSelected()) {
-            cnt = (Integer) this.spnCountNum.getModel().getValue();
+        } else if (this.rdoGenerateCountNum.isSelected()) {
+            cnt = (Integer) this.spnGenerateCountNum.getModel().getValue();
         }
         return cnt;
     }
@@ -5797,6 +5869,20 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         return null;
     }
 
+    protected int getUUIDVersion() {
+        String ver = (String) this.cmbUUID.getSelectedItem();
+        if ("v1".equals(ver)) {
+            return 1;
+        } else if ("v4".equals(ver)) {
+            return 4;
+        }
+        return -1;
+    }
+
+    private int getUUIDCount() {
+        int cnt = (Integer) this.spnUUIDCountNum.getModel().getValue();
+        return cnt;
+    }
 
     public JTransCoderProperty getProperty() {
         final JTransCoderProperty transcoderProp = new JTransCoderProperty();

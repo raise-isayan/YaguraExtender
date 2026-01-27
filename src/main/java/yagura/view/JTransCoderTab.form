@@ -2028,7 +2028,7 @@
                                                       <Component id="lblNumStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                       <Component id="spnNumStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   </Group>
-                                                  <EmptySpace pref="832" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="838" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2153,7 +2153,7 @@
                                                           <Component id="spnDateStep" alignment="3" min="-2" max="-2" attributes="0"/>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace pref="832" max="32767" attributes="0"/>
+                                                  <EmptySpace pref="838" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                         </DimensionLayout>
@@ -2255,9 +2255,9 @@
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Component id="pnlCharacter" max="32767" attributes="0"/>
                                           <Group type="102" attributes="0">
-                                              <Component id="pnlStringLength" min="-2" pref="240" max="-2" attributes="0"/>
+                                              <Component id="pnlCharacterLength" min="-2" pref="240" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="pnlCount" min="-2" pref="240" max="-2" attributes="0"/>
+                                              <Component id="pnlGenerateCount" min="-2" pref="240" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace pref="1061" max="32767" attributes="0"/>
@@ -2268,11 +2268,11 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="pnlCharacter" pref="934" max="32767" attributes="0"/>
+                                      <Component id="pnlCharacter" pref="940" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="pnlCount" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="pnlStringLength" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="pnlGenerateCount" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="pnlCharacterLength" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -2347,7 +2347,7 @@
                                 </Container>
                               </SubComponents>
                             </Container>
-                            <Container class="javax.swing.JPanel" name="pnlStringLength">
+                            <Container class="javax.swing.JPanel" name="pnlCharacterLength">
                               <Properties>
                                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -2359,7 +2359,7 @@
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JRadioButton" name="rdoLength4">
+                                <Component class="javax.swing.JRadioButton" name="rdoCharacterLength4">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomLengthGrp"/>
@@ -2368,7 +2368,7 @@
                                     <Property name="horizontalAlignment" type="int" value="2"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rdoLength8">
+                                <Component class="javax.swing.JRadioButton" name="rdoCharacterLength8">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomLengthGrp"/>
@@ -2379,7 +2379,7 @@
                                     <Property name="inheritsPopupMenu" type="boolean" value="true"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rdoLength16">
+                                <Component class="javax.swing.JRadioButton" name="rdoCharacterLength16">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomLengthGrp"/>
@@ -2387,14 +2387,14 @@
                                     <Property name="text" type="java.lang.String" value="16"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rdoLengthNum">
+                                <Component class="javax.swing.JRadioButton" name="rdoCharacterLengthNum">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomLengthGrp"/>
                                     </Property>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JSpinner" name="spnLengthNum">
+                                <Component class="javax.swing.JSpinner" name="spnCharacterLengthNum">
                                   <Properties>
                                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                                       <SpinnerModel initial="32" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
@@ -2403,7 +2403,7 @@
                                 </Component>
                               </SubComponents>
                             </Container>
-                            <Container class="javax.swing.JPanel" name="pnlCount">
+                            <Container class="javax.swing.JPanel" name="pnlGenerateCount">
                               <Properties>
                                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -2415,7 +2415,7 @@
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JRadioButton" name="rdoCount1">
+                                <Component class="javax.swing.JRadioButton" name="rdoGenerateCount1">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomCountGrp"/>
@@ -2424,7 +2424,7 @@
                                     <Property name="horizontalAlignment" type="int" value="2"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rdoCount10">
+                                <Component class="javax.swing.JRadioButton" name="rdoGenerateCount10">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomCountGrp"/>
@@ -2435,7 +2435,7 @@
                                     <Property name="inheritsPopupMenu" type="boolean" value="true"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rdoCount50">
+                                <Component class="javax.swing.JRadioButton" name="rdoGenerateCount50">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomCountGrp"/>
@@ -2443,14 +2443,14 @@
                                     <Property name="text" type="java.lang.String" value="50"/>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JRadioButton" name="rdoCountNum">
+                                <Component class="javax.swing.JRadioButton" name="rdoGenerateCountNum">
                                   <Properties>
                                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                       <ComponentRef name="rdoRandomCountGrp"/>
                                     </Property>
                                   </Properties>
                                 </Component>
-                                <Component class="javax.swing.JSpinner" name="spnCountNum">
+                                <Component class="javax.swing.JSpinner" name="spnGenerateCountNum">
                                   <Properties>
                                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
                                       <SpinnerModel initial="100" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
@@ -2586,7 +2586,7 @@
                                           <Component id="rdoConvertKeyPairPEM" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="rdoConvertKeyPairJWK" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace pref="875" max="32767" attributes="0"/>
+                                          <EmptySpace pref="881" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>
@@ -2611,6 +2611,83 @@
                                 </Component>
                               </SubComponents>
                             </Container>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="jPanel1">
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                              <JTabbedPaneConstraints tabName="UUID">
+                                <Property name="tabTitle" type="java.lang.String" value="UUID"/>
+                              </JTabbedPaneConstraints>
+                            </Constraint>
+                          </Constraints>
+
+                          <Layout>
+                            <DimensionLayout dim="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblUUID" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblCount" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="spnUUIDCountNum" min="-2" pref="112" max="-2" attributes="0"/>
+                                          <Component id="cmbUUID" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace pref="1388" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                            </DimensionLayout>
+                            <DimensionLayout dim="1">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="lblUUID" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="cmbUUID" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="spnUUIDCountNum" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblCount" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace pref="947" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                            </DimensionLayout>
+                          </Layout>
+                          <SubComponents>
+                            <Component class="javax.swing.JLabel" name="lblUUID">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" value="version:"/>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JComboBox" name="cmbUUID">
+                              <Properties>
+                                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                                  <StringArray count="1">
+                                    <StringItem index="0" value="v4"/>
+                                  </StringArray>
+                                </Property>
+                              </Properties>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                              </AuxValues>
+                            </Component>
+                            <Component class="javax.swing.JSpinner" name="spnUUIDCountNum">
+                              <Properties>
+                                <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                  <SpinnerModel initial="100" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JLabel" name="lblCount">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" value="count:"/>
+                              </Properties>
+                            </Component>
                           </SubComponents>
                         </Container>
                       </SubComponents>
@@ -2648,7 +2725,7 @@
                                   <Component id="btnGeneCopy" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnGeneSavetoFile" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="897" max="32767" attributes="0"/>
+                                  <EmptySpace pref="903" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>

@@ -1057,6 +1057,14 @@ public class TransUtil {
         return list.toArray(String[]::new);
     }
 
+    public static String[] uuidv4List(int count) {
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            list.add(java.util.UUID.randomUUID().toString());
+        }
+        return list.toArray(String[]::new);
+    }
+
     private static final DecimalFormat FMT_HEX_POSITION = new DecimalFormat("000000"); // @jve:decl-index=0:
 
     public static void hexDump(byte[] output, PrintStream out) {
