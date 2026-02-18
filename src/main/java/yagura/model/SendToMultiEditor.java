@@ -30,7 +30,8 @@ public class SendToMultiEditor extends SendToMenuItem {
 
     @Override
     public boolean isEnabled() {
-        return (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+        return this.contextMenu != null &&
+                (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
                 || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
                 || (this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS)
                 || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)

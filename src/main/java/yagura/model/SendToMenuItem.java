@@ -56,6 +56,10 @@ public abstract class SendToMenuItem
         this.contextMenu = contextMenu;
     }
 
+    public abstract void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage);
+
+    public abstract boolean isEnabled();
+
     protected File tempMessageFile(HttpRequestResponse messageInfo, int index) {
         File file = null;
         try {
@@ -97,9 +101,9 @@ public abstract class SendToMenuItem
         return file;
     }
 
-    public abstract void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage);
-
-    public abstract boolean isEnabled();
+    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
+        menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, this.isEnabled()));
+    }
 
     public List<String> executeArgumentFormat(HttpRequestResponse httpRequestResponse, String selectedText, String [] formats) throws MalformedURLException {
         final List<String> argsList = new ArrayList<>();

@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.api.montoya.ui.hotkey.HotKey;
 import java.util.Properties;
 
 /**
@@ -11,6 +12,7 @@ public class SendToExtendProperty {
     private final HttpExtendProperty httpExtend = new HttpExtendProperty();
     private final SendToParameterProperty sendToParameter = new SendToParameterProperty();
     private final SendToArgsProperty sendToArgs = new SendToArgsProperty();
+    private final HotKeyProperty hotKey = new HotKeyProperty();
 
     public enum ExtendView {
         HTTP_EXTEND,
@@ -39,10 +41,15 @@ public class SendToExtendProperty {
         return sendToArgs;
     }
 
+    public HotKeyProperty getHotKeyProperty() {
+        return hotKey;
+    }
+
     public void setProperty(SendToExtendProperty property) {
         this.httpExtend.setProperty(property.getHttpExtendProperty());
         this.sendToParameter.setProperty(property.getSendToParameterProperty());
         this.sendToArgs.setProperty(property.getSendToArgsProperty());
+        this.hotKey.setProperty(property.getHotKeyProperty());
     }
 
     public void setProperty(HttpExtendProperty property) {
@@ -57,10 +64,15 @@ public class SendToExtendProperty {
         this.sendToArgs.setProperty(property);
     }
 
+    public void setProperty(HotKeyProperty property) {
+        this.hotKey.setProperty(property);
+    }
+
     public void setProperties(Properties prop) {
         this.httpExtend.setProperties(prop);
         this.sendToParameter.setProperties(prop);
         this.sendToArgs.setProperties(prop);
+        this.hotKey.setProperties(prop);
     }
 
     public Properties getProperties() {
@@ -68,6 +80,7 @@ public class SendToExtendProperty {
         prop.putAll(this.httpExtend.getProperties());
         prop.putAll(this.sendToParameter.getProperties());
         prop.putAll(this.sendToArgs.getProperties());
+        prop.putAll(this.hotKey.getProperties());
         return prop;
     }
 

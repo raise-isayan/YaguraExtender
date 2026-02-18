@@ -2442,7 +2442,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         lblUUID.setText("version:");
 
-        cmbUUID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "v4" }));
+        cmbUUID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4" }));
 
         spnUUIDCountNum.setModel(new javax.swing.SpinnerNumberModel(100, 1, null, 1));
 
@@ -5871,12 +5871,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     protected int getUUIDVersion() {
         String ver = (String) this.cmbUUID.getSelectedItem();
-        if ("v1".equals(ver)) {
-            return 1;
-        } else if ("v4".equals(ver)) {
-            return 4;
-        }
-        return -1;
+        return ConvertUtil.parseIntDefault(ver, 4);
     }
 
     private int getUUIDCount() {

@@ -64,6 +64,7 @@ public class SendToItem extends IssueAlertFireEvent {
         this.responseBody = item.responseBody;
         this.reverseOrder = item.reverseOrder;
         this.sendExtend = item.sendExtend;
+        this.hotKey = item.hotKey;
         this.extendProperties.clear();
         this.extendProperties.putAll(item.extendProperties);
     }
@@ -236,6 +237,23 @@ public class SendToItem extends IssueAlertFireEvent {
     }
 
     @Expose
+    private String hotKey = "";
+
+    /**
+     * @return the hotKey
+     */
+    public String getHotKey() {
+        return hotKey;
+    }
+
+    /**
+     * @param hotKey the hotKey to set
+     */
+    public void setHotKey(String hotKey) {
+        this.hotKey = hotKey;
+    }
+
+    @Expose
     private final Properties extendProperties = new Properties();
 
     public Properties getExtendProperties() {
@@ -282,7 +300,7 @@ public class SendToItem extends IssueAlertFireEvent {
     }
 
     public static Object[] toObjects(SendToItem sendTo) {
-        Object[] beans = new Object[11];
+        Object[] beans = new Object[12];
         beans[0] = sendTo.isSelected();
         beans[1] = sendTo.getCaption();
         beans[2] = sendTo.isServer();
@@ -294,6 +312,7 @@ public class SendToItem extends IssueAlertFireEvent {
         beans[8] = sendTo.isReverseOrder();
         beans[9] = sendTo.getExtendPropertiesString();
         beans[10] = sendTo.getExtend();
+        beans[11] = sendTo.getHotKey();
         return beans;
     }
 
@@ -310,6 +329,7 @@ public class SendToItem extends IssueAlertFireEvent {
         sendTo.setReverseOrder((Boolean) rows[8]);
         sendTo.setExtendPropertiesString((String) rows[9]);
         sendTo.setExtend((ExtendType) rows[10]);
+        sendTo.setHotKey((String) rows[11]);
         return sendTo;
     }
 

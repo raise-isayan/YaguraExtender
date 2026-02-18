@@ -128,14 +128,14 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
             },
             new String [] {
-                "select", "MenuCaption", "Server", "Target", "Req Header", "Req Body", "Res Header", "Res Body", "Rev Order", "HotKey", "Extend"
+                "select", "MenuCaption", "Server", "Target", "Req Header", "Req Body", "Res Header", "Res Body", "Rev Order", "ExtendProp", "Extend", "HotKey"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false, false, false, false, false, false
+                true, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -159,6 +159,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             tableSendTo.getColumnModel().getColumn(8).setResizable(false);
             tableSendTo.getColumnModel().getColumn(9).setResizable(false);
             tableSendTo.getColumnModel().getColumn(10).setResizable(false);
+            tableSendTo.getColumnModel().getColumn(11).setResizable(false);
         }
 
         chkForceSortOrder.setText("Force sort order");
@@ -237,7 +238,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
                         .addComponent(btnSendToAdd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSendToDuplicate))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -355,6 +356,11 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
         this.tableSendTo.getColumnModel().getColumn(10).setMinWidth(0);
         this.tableSendTo.getColumnModel().getColumn(10).setPreferredWidth(0);
         this.tableSendTo.getColumnModel().getColumn(10).setMaxWidth(0);
+
+        // HotKey
+        this.tableSendTo.getColumnModel().getColumn(11).setMinWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(11).setPreferredWidth(0);
+        this.tableSendTo.getColumnModel().getColumn(11).setMaxWidth(0);
 
     }
 

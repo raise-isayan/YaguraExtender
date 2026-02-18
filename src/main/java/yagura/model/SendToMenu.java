@@ -26,15 +26,14 @@ import yagura.handler.MenuHander;
  *
  * @author isayan
  */
-public class SendToMenu implements ContextMenuItemsProvider {
-
+public final class SendToMenu implements ContextMenuItemsProvider {
     private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
     private final MontoyaApi api;
     private final BurpExtension extenderImpl;
 
     private final SendToProperty property;
     private ContextMenuEvent contextMenuEvent;
-
+    private final List<HotKeyAssign> hotKeyss = new ArrayList<>();
     private final IssueAlert issueAlert;
 
     private final javax.swing.JMenu mnuSendTo = new javax.swing.JMenu();
@@ -52,7 +51,6 @@ public class SendToMenu implements ContextMenuItemsProvider {
     public List<Component> provideMenuItems(ContextMenuEvent contextMenuEvent) {
         this.contextMenuEvent = contextMenuEvent;
         this.renewMenu(this.property);
-//        changeSendToMenu();
         return this.menuList;
     }
 
@@ -95,10 +93,15 @@ public class SendToMenu implements ContextMenuItemsProvider {
         }
     }
 
+    public void renewMenu() {
+        this.renewMenu(this.property);
+    }
+
     public void renewMenu(SendToProperty property) {
         this.mnuSendTo.setText("Send To");
         this.menuList.clear();
         this.mnuSendTo.removeAll();
+        this.hotKeyss.clear();
         List<SendToItem> sendToItemList = property.getSendToItemList();
         List<javax.swing.JMenuItem> sendToList = new ArrayList<>();
         for (SendToItem item : sendToItemList) {
@@ -106,6 +109,7 @@ public class SendToMenu implements ContextMenuItemsProvider {
                 if (item.getExtend() != null) {
                     final SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
+                        // 解釈する文字コード一覧を追加
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
                         mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), sendToList.size(), item.getCaption()));
                         List<String> encodingList = extenderImpl.getSelectEncodingList();
@@ -156,6 +160,23 @@ public class SendToMenu implements ContextMenuItemsProvider {
             this.menuList.addAll(sendToList);
         }
 
+    }
+
+    public HotKeyAssign newHotKey(SendToMenuItem sendToMenuItem) {
+        HotKeyAssign hotKey = new HotKeyAssign(sendToMenuItem);
+        if (hotKey.isValidHotKey()) {
+            return hotKey;
+        }
+        else {
+            return null;
+        }
+    }
+
+    /**
+     * @return the hotKeyss
+     */
+    public List<HotKeyAssign> getHotKeys() {
+        return this.hotKeyss;
     }
 
     private final javax.swing.JPopupMenu popBurpMenu = new javax.swing.JPopupMenu();

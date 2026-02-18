@@ -14,7 +14,6 @@ import com.burgstaller.okhttp.DispatchingAuthenticator;
 import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
 import com.burgstaller.okhttp.digest.DigestAuthenticator;
-import extend.util.external.TransUtil;
 import extension.burp.HttpTarget;
 import extension.helpers.DateUtil;
 import extension.helpers.HttpRequestWapper;
@@ -96,6 +95,49 @@ public class SendToServer extends SendToMenuItem {
 
     public SendToServer(SendToItem item, ContextMenuEvent contextMenu) {
         super(item, contextMenu);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return  this.contextMenu != null &&
+                (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (contextMenu.messageEditorRequestResponse().isPresent()) {
+            List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
+            sendToEvent(messageInfo);
+        } else {
+            List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
+            sendToEvent(messageInfo);
+        }
+    }
+
+    public void sendToEvent(SendToMessage sendToMessage) {
+        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
+        sendToEvent(messageInfo);
+    }
+
+    @Override
+    public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
+        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
+        if (this.isReverseOrder()) {
+            for (int i = messageInfo.size() - 1; i >= 0; i--) {
+                sendToServer(messageInfo.get(i));
+            }
+        } else {
+            for (int i = 0; i < messageInfo.size(); i++) {
+                sendToServer(messageInfo.get(i));
+            }
+        }
     }
 
     /*
@@ -735,51 +777,6 @@ public class SendToServer extends SendToMenuItem {
             }
         }
         HttpUtil.outMultipartFinish(boundary, out);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (contextMenu.messageEditorRequestResponse().isPresent()) {
-            List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
-            sendToEvent(messageInfo);
-        } else {
-            List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
-            sendToEvent(messageInfo);
-        }
-    }
-
-    public void sendToEvent(SendToMessage sendToMessage) {
-        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
-        sendToEvent(messageInfo);
-    }
-
-    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
-        menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, this.isEnabled()));
-    }
-
-    @Override
-    public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
-        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
-        if (this.isReverseOrder()) {
-            for (int i = messageInfo.size() - 1; i >= 0; i--) {
-                sendToServer(messageInfo.get(i));
-            }
-        } else {
-            for (int i = 0; i < messageInfo.size(); i++) {
-                sendToServer(messageInfo.get(i));
-            }
-        }
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
     }
 
 }

@@ -113,6 +113,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private EditorProvider editorProvider;
     private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
+    private final List<Registration> registerHotkeys = new ArrayList<>();
 
     private boolean isTemporaryProject = false;
 
@@ -235,23 +236,23 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
 
-        SwingUtilities.invokeLater(() -> {
-            this.registerView();
-            this.menuHandler = new MenuHander(api);
-            this.proxyHandler = new ProxyHander(api);
-            this.websocektHandler = new WebSocketHander(api);
-            this.autoResponderHandler = new AutoResponderHandler(api);
-            api.extension().registerUnloadingHandler(this);
-
-            // init
-            this.menuHandler.setYaguraSelectEncode(option.getYaguraProperty().getSelectEncoding());
-            this.menuHandler.setYaguraEncodeType(option.getYaguraProperty().getEncodeType());
-
-            if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
-                this.toolbar = new BurpToolBar(api);
-                this.applyUniversalProperty();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                BurpExtension.this.registerView();
+                BurpExtension.this.menuHandler = new MenuHander(api);
+                BurpExtension.this.proxyHandler = new ProxyHander(api);
+                BurpExtension.this.websocektHandler = new WebSocketHander(api);
+                BurpExtension.this.autoResponderHandler = new AutoResponderHandler(api);
+                api.extension().registerUnloadingHandler(BurpExtension.this);
+                // init
+                BurpExtension.this.menuHandler.setYaguraSelectEncode(option.getYaguraProperty().getSelectEncoding());
+                BurpExtension.this.menuHandler.setYaguraEncodeType(option.getYaguraProperty().getEncodeType());
+                if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
+                    BurpExtension.this.toolbar = new BurpToolBar(api);
+                    BurpExtension.this.applyUniversalProperty();
+                }
             }
-
         });
 
     }
@@ -305,15 +306,30 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 MenuHander.changeContextMenuLevel(item, option.getSendToProperty().getMenuPlace());
                 return menuList;
             }
-
         });
         this.editorProvider = new EditorProvider(api);
         this.tabbetOption = new TabbetOption();
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
         api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
-
+//        this.registerHotKey();
     }
+
+//    public void registerHotKey() {
+//        final MontoyaApi api = api();
+//        // HotKey 削除
+//        for (Registration reg : this.registerHotkeys) {
+//            reg.deregister();
+//        }
+//        this.registerHotkeys.clear();
+//        SendToMenu menus = this.getSendToMenu();
+//        api.logging().logToOutput("registerHotKey:" + menus.getHotKeys().size());
+//      for (HotKeyAssign registerKey : menus.getHotKeys()) {
+//            api.logging().logToOutput(registerKey.getHotKey().name() + ":" + registerKey.getHotKey());
+//            Registration regster = api().userInterface().registerHotKeyHandler(HotKeyContext.PROXY_HTTP_HISTORY, registerKey.getHotKey(), registerKey.getHotKeyHandler());
+//            this.registerHotkeys.add(regster);
+//        }
+//    }
 
     public List<Cookie> getCookies(Predicate<? super Cookie> filter) {
         CookieJar cookieJar = api().http().cookieJar();
@@ -376,7 +392,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 if (UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY.equals(evt.getPropertyName())) {
                     option.setUniversalViewProperty(tabbetOption.getEncodingProperty());
                     tabbetOption.setJTransCoderProperty(tabbetOption.getEncodingProperty());
-                    ////                    menuHandler.updateUI();
+                    //// menuHandler.updateUI();
                     applyUniversalProperty();
                     applyOptionProperty();
                 } else if (MatchReplaceProperty.MATCHREPLACE_PROPERTY.equals(evt.getPropertyName())) {

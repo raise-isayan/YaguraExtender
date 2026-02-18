@@ -25,6 +25,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import yagura.Config;
+import static yagura.model.SendToItem.ExtendType.ADD_HOST_TO_EXCLUDE_SCOPE;
+import static yagura.model.SendToItem.ExtendType.ADD_HOST_TO_INCLUDE_SCOPE;
+import static yagura.model.SendToItem.ExtendType.ADD_TO_EXCLUDE_SCOPE;
+import static yagura.model.SendToItem.ExtendType.MESSAGE_INFO_COPY;
+import static yagura.model.SendToItem.ExtendType.PASTE_FROM_CLIPBOARD;
+import static yagura.model.SendToItem.ExtendType.PASTE_FROM_JTRANSCODER;
+import static yagura.model.SendToItem.ExtendType.REQUEST_AND_RESPONSE_TO_FILE;
+import static yagura.model.SendToItem.ExtendType.REQUEST_BODY_TO_FILE;
+import static yagura.model.SendToItem.ExtendType.RESPONSE_BODY_TO_FILE;
+import static yagura.model.SendToItem.ExtendType.SEND_TO_JTRANSCODER;
 
 /**
  *
@@ -39,15 +49,104 @@ public class SendToExtend extends SendToMenuItem {
     private static File currentDirectory = new File(Config.getUserHomePath());
     private static int repeternum = 0;
 
+    public SendToExtend(SendToItem item, ContextMenuEvent contextMenu) {
+        super(item, contextMenu);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        boolean enabled = false;
+        switch (this.getExtend()) {
+            case SEND_TO_JTRANSCODER: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+                break;
+            }
+            case REQUEST_AND_RESPONSE_TO_FILE: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+                break;
+            }
+            case REQUEST_BODY_TO_FILE: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+                break;
+            }
+            case RESPONSE_BODY_TO_FILE: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE);
+                break;
+            }
+            case PASTE_FROM_JTRANSCODER: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);
+                break;
+            }
+            case PASTE_FROM_CLIPBOARD: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+                break;
+            }
+            case MESSAGE_INFO_COPY: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+                break;
+            }
+            case ADD_HOST_TO_INCLUDE_SCOPE:
+            case ADD_HOST_TO_EXCLUDE_SCOPE:
+            case ADD_TO_EXCLUDE_SCOPE: {
+                enabled = this.contextMenu != null &&
+                        (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
+                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
+                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TREE)
+                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+                break;
+            }
+            default:
+                // ここには現状こない
+                break;
+        }
+        return enabled;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof javax.swing.JMenuItem) {
             sendToEvent(this.contextMenu);
         }
-    }
-
-    public SendToExtend(SendToItem item, ContextMenuEvent contextMenu) {
-        super(item, contextMenu);
     }
 
     public void sendToEvent(ContextMenuEvent contextMenu) {
@@ -203,84 +302,4 @@ public class SendToExtend extends SendToMenuItem {
         }
     }
 
-    @Override
-    public boolean isEnabled() {
-        boolean enabled = false;
-        switch (this.getExtend()) {
-            case SEND_TO_JTRANSCODER: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
-                break;
-            }
-            case REQUEST_AND_RESPONSE_TO_FILE: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
-                break;
-            }
-            case REQUEST_BODY_TO_FILE: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
-                break;
-            }
-            case RESPONSE_BODY_TO_FILE: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE);
-                break;
-            }
-            case PASTE_FROM_JTRANSCODER: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS);
-                break;
-            }
-            case PASTE_FROM_CLIPBOARD: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.INTRUDER_PAYLOAD_POSITIONS)
-                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
-                break;
-            }
-            case MESSAGE_INFO_COPY: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
-                break;
-            }
-            case ADD_HOST_TO_INCLUDE_SCOPE:
-            case ADD_HOST_TO_EXCLUDE_SCOPE:
-            case ADD_TO_EXCLUDE_SCOPE: {
-                enabled = (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                        || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TREE)
-                        || (this.contextMenu.invocationType() == InvocationType.SITE_MAP_TABLE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                        || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                        || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
-                break;
-            }
-            default:
-                // ここには現状こない
-                break;
-        }
-        return enabled;
-    }
 }
