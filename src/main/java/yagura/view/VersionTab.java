@@ -57,6 +57,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         txtVersion.setColumns(20);
         txtVersion.setLineWrap(true);
         txtVersion.setRows(5);
+        txtVersion.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         scrollVersion.setViewportView(txtVersion);
 
         pnlCenter.add(scrollVersion, java.awt.BorderLayout.CENTER);

@@ -1,5 +1,6 @@
 package yagura.view;
 
+import extend.util.external.ThemeUI;
 import extension.burp.IBurpTab;
 import extension.helpers.BouncyUtil;
 import extension.helpers.json.JsonUtil;
@@ -98,6 +99,7 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
 
         txtInputKey.setColumns(20);
         txtInputKey.setRows(5);
+        txtInputKey.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane.setViewportView(txtInputKey);
 
         pnlTarget.add(jScrollPane, java.awt.BorderLayout.CENTER);
@@ -136,7 +138,7 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
     private void btnConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertActionPerformed
         String inputKey = this.txtInputKey.getText();
         try {
-            clearJWK();
+//            clearJWK();
             KeyPair keyPair = null;
             if (JsonUtil.isJson(inputKey)) {
                 keyPair = JWKToken.parseJWK(inputKey);
@@ -190,6 +192,8 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
 
     private void appendTab(String title, String text, boolean json) {
         javax.swing.JTextPane txtConvertKey = new javax.swing.JTextPane();
+        txtConvertKey.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        ThemeUI.applyStyleTheme(txtConvertKey);
         if (json) {
             txtConvertKey.setStyledDocument(new JSONDocument());
         }

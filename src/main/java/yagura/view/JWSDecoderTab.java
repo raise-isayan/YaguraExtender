@@ -59,7 +59,7 @@ public class JWSDecoderTab extends javax.swing.JPanel implements IBurpTab {
         txtJsonToken.setColumns(20);
         txtJsonToken.setLineWrap(true);
         txtJsonToken.setRows(5);
-        txtJsonToken.setPreferredSize(new java.awt.Dimension(212, 80));
+        txtJsonToken.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane.setViewportView(txtJsonToken);
 
         pnlJTokenDecoder.add(jScrollPane, java.awt.BorderLayout.CENTER);

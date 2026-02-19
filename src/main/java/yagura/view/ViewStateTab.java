@@ -117,6 +117,7 @@ public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab 
 
         pnlViewState.setLayout(new java.awt.BorderLayout());
 
+        treeViewState.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         treeViewState.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         scrollViewState.setViewportView(treeViewState);
@@ -148,6 +149,7 @@ public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab 
         txtJSON.setEditable(false);
         txtJSON.setColumns(20);
         txtJSON.setRows(5);
+        txtJSON.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         scrollJSON.setViewportView(txtJSON);
 
         tabViewStateView.addTab("Raw JSON", scrollJSON);

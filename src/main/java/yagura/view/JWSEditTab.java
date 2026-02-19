@@ -69,6 +69,7 @@ public class JWSEditTab extends javax.swing.JPanel {
 
         txtJWT.setColumns(20);
         txtJWT.setRows(5);
+        txtJWT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         scrollJWT.setViewportView(txtJWT);
 
         pnlChoiceJWS.add(scrollJWT, java.awt.BorderLayout.NORTH);

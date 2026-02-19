@@ -5,7 +5,6 @@ import java.awt.Component;
 import java.util.logging.Logger;
 import extension.burp.IBurpTab;
 import java.security.SignatureException;
-import java.util.Comparator;
 import java.util.Set;
 import javax.swing.DefaultComboBoxModel;
 import extension.helpers.jws.JWSToken;
@@ -130,6 +129,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
         txtJsonToken.setColumns(20);
         txtJsonToken.setLineWrap(true);
         txtJsonToken.setRows(5);
+        txtJsonToken.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jScrollPane1.setViewportView(txtJsonToken);
 
         pnlJTokenDecoder.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -150,8 +150,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
                 if (this.panelJWSEdit.isValidHeader()) {
                     JWSToken.Header header = this.panelJWSEdit.getHeader();
                     this.panelJWSEdit.setHeaderText(header.withAlgorithm(algo).toJSON(true));
-                }
-                else if (this.panelJWSEdit.isEmptyHeader()) {
+                } else if (this.panelJWSEdit.isEmptyHeader()) {
                     this.panelJWSEdit.setHeaderText(JWSToken.Header.generateAlgorithm(algo).toJSON(true));
                 }
 //                else {
@@ -170,7 +169,7 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
     private void btnEncodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEncodeActionPerformed
         try {
             this.lblTokenValid.setText("");
-                this.txtJsonToken.setText(this.panelJWSEdit.signToken());
+            this.txtJsonToken.setText(this.panelJWSEdit.signToken());
         } catch (JsonSyntaxException ex) {
             this.lblTokenValid.setText(BUNDLE.getString("token.invalid.json"));
         } catch (SignatureException ex) {
@@ -207,13 +206,13 @@ public class JWSEncoderTab extends javax.swing.JPanel implements IBurpTab {
     public void setSelectedAlgorithm(JWSToken.Algorithm algo) {
         if (algo == null) {
             this.cmbAlgo.setSelectedIndex(0);
-        }
-        else {
+        } else {
             this.cmbAlgo.setSelectedItem(algo);
         }
     }
+
     public JWSToken.Algorithm getSelectedAlgorithm() {
-        return (JWSToken.Algorithm)this.cmbAlgo.getSelectedItem();
+        return (JWSToken.Algorithm) this.cmbAlgo.getSelectedItem();
     }
 
     public JWSToken.Header getHeader() {

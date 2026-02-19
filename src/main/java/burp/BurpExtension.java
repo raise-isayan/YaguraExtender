@@ -50,6 +50,7 @@ import javax.swing.JMenuItem;
 import extend.util.external.ThemeUI;
 import extension.burp.BurpConfig;
 import extension.burp.BurpExtensionImpl;
+import static extension.burp.BurpExtensionImpl.api;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
 import extension.burp.IBurpTab;
@@ -57,8 +58,10 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
+import java.util.Enumeration;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.swing.UIManager;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -252,6 +255,16 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     BurpExtension.this.toolbar = new BurpToolBar(api);
                     BurpExtension.this.applyUniversalProperty();
                 }
+
+//                Enumeration<Object> keys = UIManager.getDefaults().keys();
+//                while (keys.hasMoreElements()) {
+//                    api().logging().logToOutput("key:" + keys.nextElement());
+//                }
+//                UIManager.LookAndFeelInfo[] lfs = UIManager.getInstalledLookAndFeels();
+//                for (UIManager.LookAndFeelInfo lf : lfs) {
+//                    api().logging().logToOutput("lf:" + lf.getName());
+//                }
+
             }
         });
 

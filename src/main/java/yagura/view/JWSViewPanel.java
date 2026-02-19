@@ -1,11 +1,14 @@
 package yagura.view;
 
+import extend.util.external.ThemeUI;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.JSONDocument;
 import java.awt.SystemColor;
 import java.text.ParseException;
 import extension.helpers.jws.JWSToken;
 import extension.helpers.jws.JsonToken;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  *
@@ -75,14 +78,14 @@ public class JWSViewPanel extends javax.swing.JPanel {
         add(pnlJWT, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-//    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
-//        @Override
-//        public void propertyChange(PropertyChangeEvent evt) {
-//            ThemeUI.applyStyleTheme(txtHeaderJSON);
-//            ThemeUI.applyStyleTheme(txtPayloadJSON);
-//            ThemeUI.applyStyleTheme(txtSignatureSign);
-//        }
-//    };
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.applyStyleTheme(txtHeaderJSON);
+            ThemeUI.applyStyleTheme(txtPayloadJSON);
+            ThemeUI.applyStyleTheme(txtSignatureSign);
+        }
+    };
 
 //    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtHeaderJSON;
@@ -92,7 +95,6 @@ public class JWSViewPanel extends javax.swing.JPanel {
 //
 //    private org.fife.ui.rtextarea.RTextScrollPane scrollSignatureSign;
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSignatureSign;
-
     private javax.swing.JScrollPane scrollHeaderJSON;
     private javax.swing.JTextPane txtHeaderJSON;
 
@@ -110,6 +112,7 @@ public class JWSViewPanel extends javax.swing.JPanel {
         //this.txtHeaderJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         //this.scrollHeaderJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtHeaderJSON);
         this.txtHeaderJSON = new javax.swing.JTextPane();
+        this.txtHeaderJSON.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
 //        this.txtHeaderJSON.setLineWrap(true);
 //        this.txtHeaderJSON.setWrapStyleWord(false);
@@ -131,6 +134,7 @@ public class JWSViewPanel extends javax.swing.JPanel {
         //this.txtPayloadJSON = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         //this.scrollPayloadJSON = new org.fife.ui.rtextarea.RTextScrollPane(this.txtPayloadJSON);
         this.txtPayloadJSON = new javax.swing.JTextPane();
+        this.txtPayloadJSON.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
 //        this.txtPayloadJSON.setLineWrap(true);
 //        this.txtPayloadJSON.setWrapStyleWord(false);
@@ -145,13 +149,13 @@ public class JWSViewPanel extends javax.swing.JPanel {
 //        this.txtPayloadJSON.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
 
 //        scrollURaw.setViewportView(txtURaw);
-
         this.pnlPayload.add(this.scrollPayloadJSON, java.awt.BorderLayout.CENTER);
 
         /* Signature */
         //this.txtSignatureSign = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
         //this.scrollSignatureSign = new org.fife.ui.rtextarea.RTextScrollPane(this.txtSignatureSign);
         this.txtSignatureSign = new javax.swing.JTextArea();
+        this.txtSignatureSign.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         this.scrollSignatureSign = new javax.swing.JScrollPane(this.txtSignatureSign);
         this.txtSignatureSign.setLineWrap(true);
         this.txtSignatureSign.setWrapStyleWord(false);
@@ -165,14 +169,11 @@ public class JWSViewPanel extends javax.swing.JPanel {
 //        scrollURaw.setViewportView(txtURaw);
 
 //        this.scrollSignatureSign.setLineNumbersEnabled(false);
-
         this.pnlSignature.add(this.scrollSignatureSign, java.awt.BorderLayout.CENTER);
 
-//        this.propertyListener.propertyChange(null);
-//        ThemeUI.addPropertyChangeListener(propertyListener);
-
+        this.propertyListener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(propertyListener);
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel lblHeader;

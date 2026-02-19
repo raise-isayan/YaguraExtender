@@ -268,5 +268,4 @@ public class JWSViewTab extends javax.swing.JPanel implements IBurpMessageTab {
         this.panelJWSView.setLineWrap(lineWrap);
     }
 
-
 }

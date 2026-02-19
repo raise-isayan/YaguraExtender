@@ -124,6 +124,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        listMatchReplace.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         listMatchReplace.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 listMatchReplaceKeyTyped(evt);

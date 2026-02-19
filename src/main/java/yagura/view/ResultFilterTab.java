@@ -55,6 +55,7 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
         btnItemNew = new javax.swing.JButton();
         btnItemApply = new javax.swing.JButton();
 
+        listResultFilter.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         scrollMatchReplace.setViewportView(listResultFilter);
 
         btnItemDownArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_down.png"))); // NOI18N

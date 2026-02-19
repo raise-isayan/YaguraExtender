@@ -171,7 +171,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private final DefaultComboBoxModel modelAlgo = new DefaultComboBoxModel();
 
-   // https://docs.oracle.com/javase/jp/11/docs/specs/security/standard-names.html#keypairgenerator-algorithms
+    // https://docs.oracle.com/javase/jp/11/docs/specs/security/standard-names.html#keypairgenerator-algorithms
     private final static String[] ALGORITHM = new String[]{"RSA", "DSA", "EC", "Ed25519", "Ed448"};
     private final static Map<String, Boolean> KEY_USE_MAP = new HashMap();
     private final static int[] RSA_KEYSIZE = new int[]{512, 1024, 2048, 3072, 4098};
@@ -347,11 +347,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         ThemeUI.addPropertyChangeListener(this.propertyListener);
 
         // KeyPairGenerager
-
         this.cmbAlgorithm.setModel(modelAlgo);
         this.modelAlgo.addAll(List.of(ALGORITHM));
         this.cmbAlgorithm.setSelectedIndex(0);
-
 
     }
 
@@ -878,11 +876,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlStatus.add(pnlInput, java.awt.BorderLayout.NORTH);
 
         txtStatus.setEditable(false);
-        txtStatus.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         txtStatus.setColumns(20);
         txtStatus.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         txtStatus.setRows(5);
         txtStatus.setTabSize(2);
+        txtStatus.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         scrollStatus.setViewportView(txtStatus);
 
         pnlStatus.add(scrollStatus, java.awt.BorderLayout.CENTER);
@@ -3892,8 +3890,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("GenerateKeyPair")) {
             try {
                 txtGenarate.setText(exportKeyPairToPem());
-            }
-            catch (UnsupportedOperationException ex) {
+            } catch (UnsupportedOperationException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "JTranscoder", JOptionPane.INFORMATION_MESSAGE);
             }
         } else if (this.tabbetGenerate.getSelectedIndex() == this.tabbetGenerate.indexOfTab("UUID")) {
@@ -3918,7 +3915,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 }
             };
             swList.execute();
-    }
+        }
 
     }//GEN-LAST:event_btnGenerateActionPerformed
 
@@ -4850,11 +4847,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             return;
         }
         if (!(0 <= dec1 && dec1 <= 255
-            && 0 <= dec2 && dec2 <= 255
-            && 0 <= dec3 && dec3 <= 255
-            && 0 <= dec4 && dec4 <= 255)) {
-        this.lblIPValid.setText("IP addres renge Invalid");
-        return;
+                && 0 <= dec2 && dec2 <= 255
+                && 0 <= dec3 && dec3 <= 255
+                && 0 <= dec4 && dec4 <= 255)) {
+            this.lblIPValid.setText("IP addres renge Invalid");
+            return;
         }
 
         this.txtDotDecBIP.setText(IpUtil.IPv4ToDotBDec(dec1, dec2, dec3, dec4));
@@ -5076,8 +5073,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 if (this.rdoConvertKeyPairPEM.isSelected()) {
                     String key = BouncyUtil.exportKeyPairPem(keyPair);
                     exportKeyPair.append(key);
-                }
-                else if (this.rdoConvertKeyPairJWK.isSelected()) {
+                } else if (this.rdoConvertKeyPairJWK.isSelected()) {
                     String jwk = JWKToken.toJWK(keyPair, true);
                     exportKeyPair.append(jwk);
                 }
@@ -5091,7 +5087,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
         return exportKeyPair.toString();
     }
-
 
     private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
         @Override
@@ -5674,16 +5669,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }
 
     public void sendToJWSDecoder(String header, String payload, String signature) {
-        if (header != null) this.jwsDecoderTab.setHeaderJSON(header, true);
-        if (payload != null) this.jwsDecoderTab.setPayloadJSON(payload, true);
-        if (signature != null) this.jwsDecoderTab.setSignature(signature);
+        if (header != null) {
+            this.jwsDecoderTab.setHeaderJSON(header, true);
+        }
+        if (payload != null) {
+            this.jwsDecoderTab.setPayloadJSON(payload, true);
+        }
+        if (signature != null) {
+            this.jwsDecoderTab.setSignature(signature);
+        }
     }
 
     public void sendToJWSEncoder(String header, String payload, String secret) {
         this.jwsEncoderTab.setSelectedAlgorithm(null);
-        if (header != null) this.jwsEncoderTab.setHeaderJSON(header, true);
-        if (payload != null) this.jwsEncoderTab.setPayloadJSON(payload, true);
-        if (secret != null) this.jwsEncoderTab.setSecretKey(secret);
+        if (header != null) {
+            this.jwsEncoderTab.setHeaderJSON(header, true);
+        }
+        if (payload != null) {
+            this.jwsEncoderTab.setPayloadJSON(payload, true);
+        }
+        if (secret != null) {
+            this.jwsEncoderTab.setSecretKey(secret);
+        }
         if (this.jwsEncoderTab.getHeader() != null) {
             JWSToken.Algorithm algo = this.jwsEncoderTab.getHeader().getAlgorithm();
             this.jwsEncoderTab.setSelectedAlgorithm(algo);
@@ -5839,7 +5846,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
         return buff.toString();
     }
-
 
     protected String getAlgorithm() {
         return (String) this.cmbAlgorithm.getSelectedItem();

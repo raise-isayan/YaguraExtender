@@ -1,21 +1,20 @@
 package yagura.view;
 
 import com.google.gson.JsonSyntaxException;
+import extend.util.external.ThemeUI;
 import extension.helpers.jws.JWSUtil;
 import extension.helpers.json.JsonUtil;
 import extension.view.base.JSONDocument;
 import java.awt.SystemColor;
-import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SignatureException;
 import javax.crypto.SecretKey;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import org.bouncycastle.openssl.PEMException;
-import extension.helpers.jws.JWKToken;
 import extension.helpers.jws.JWSToken;
 import extension.helpers.jws.JsonToken;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  *
@@ -94,31 +93,13 @@ public class JWSEditPanel extends javax.swing.JPanel {
         add(pnlJWT, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-//    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
-//        @Override
-//        public void propertyChange(PropertyChangeEvent evt) {
-//            ThemeUI.applyStyleTheme(txtHeaderJSON);
-//            ThemeUI.applyStyleTheme(txtPayloadJSON);
-//            ThemeUI.applyStyleTheme(txtSecretKey);
-//        }
-//    };
-
-    final DocumentListener documentListener = new DocumentListener() {
+    final PropertyChangeListener propertyListener = new PropertyChangeListener() {
         @Override
-        public void insertUpdate(DocumentEvent e) {
-
+        public void propertyChange(PropertyChangeEvent evt) {
+            ThemeUI.applyStyleTheme(txtHeaderJSON);
+            ThemeUI.applyStyleTheme(txtPayloadJSON);
+            ThemeUI.applyStyleTheme(txtSecretKey);
         }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-
-        }
-
     };
 
 //    private org.fife.ui.rtextarea.RTextScrollPane scrollHeaderJSON;
@@ -129,7 +110,6 @@ public class JWSEditPanel extends javax.swing.JPanel {
 //
 //    private org.fife.ui.rtextarea.RTextScrollPane scrollSecretKey;
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtSecretKey;
-
     private javax.swing.JScrollPane scrollHeaderJSON;
     private javax.swing.JTextPane txtHeaderJSON;
 
@@ -146,6 +126,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
 
         /* Header */
         this.txtHeaderJSON = new javax.swing.JTextPane();
+        this.txtHeaderJSON.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         this.scrollHeaderJSON = new javax.swing.JScrollPane(this.txtHeaderJSON);
         this.txtHeaderJSON.setStyledDocument(new JSONDocument());
 //        this.txtHeaderJSON.setLineWrap(true);
@@ -165,6 +146,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
 
         /* Payload */
         this.txtPayloadJSON = new javax.swing.JTextPane();
+        this.txtPayloadJSON.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         this.scrollPayloadJSON = new javax.swing.JScrollPane(this.txtPayloadJSON);
         this.txtPayloadJSON.setStyledDocument(new JSONDocument());
 //        this.txtPayloadJSON.setLineWrap(true);
@@ -179,11 +161,11 @@ public class JWSEditPanel extends javax.swing.JPanel {
 //        this.txtPayloadJSON.getDocument().addDocumentListener(this.documentListener);
 
 //        scrollURaw.setViewportView(txtURaw);
-
         this.pnlPayload.add(this.scrollPayloadJSON, java.awt.BorderLayout.CENTER);
 
         /* Signature */
         this.txtSecretKey = new javax.swing.JTextArea();
+        this.txtSecretKey.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         this.scrollSecretKey = new javax.swing.JScrollPane(this.txtSecretKey);
 //        this.txtSecretKey.setStyledDocument(new JSONDocument());
         this.txtSecretKey.setLineWrap(true);
@@ -199,11 +181,10 @@ public class JWSEditPanel extends javax.swing.JPanel {
 //        scrollURaw.setViewportView(txtURaw);
 
 //        this.scrollSecretKey.setLineNumbersEnabled(false);
-
         this.pnlSecret.add(this.scrollSecretKey, java.awt.BorderLayout.CENTER);
 
-//        this.propertyListener.propertyChange(null);
-//        ThemeUI.addPropertyChangeListener(propertyListener);
+        this.propertyListener.propertyChange(null);
+        ThemeUI.addPropertyChangeListener(propertyListener);
 
     }
 
@@ -303,8 +284,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
     public SecretKey toSecretKey() {
         if (this.isBase64URL()) {
             return JWSUtil.toSecretKey(JsonToken.decodeBase64UrlSafeByte(this.getSecretKeyText()));
-        }
-        else {
+        } else {
             return JWSUtil.toSecretKey(this.getSecretKeyText());
         }
     }
@@ -312,8 +292,7 @@ public class JWSEditPanel extends javax.swing.JPanel {
     public PrivateKey toPrivateKey() throws PEMException {
         if (this.isBase64URL()) {
             return JWSUtil.toPrivateKey(JsonToken.decodeBase64UrlSafe(this.getSecretKeyText()));
-        }
-        else {
+        } else {
             return JWSUtil.toPrivateKey(this.getSecretKeyText());
         }
     }
@@ -328,13 +307,12 @@ public class JWSEditPanel extends javax.swing.JPanel {
         try {
             if (JWSToken.SYMMETRIC_KEY.contains(header.getAlgorithm())) {
                 JWSToken token = new JWSToken(header, payload);
-                byte [] signature = token.sign(this.toSecretKey());
+                byte[] signature = token.sign(this.toSecretKey());
                 token.getSignature().setEncodeBase64Url(signature);
                 return token.getToken();
-            }
-            else {
+            } else {
                 JWSToken token = new JWSToken(header, payload);
-                byte [] signature = token.sign(this.toPrivateKey());
+                byte[] signature = token.sign(this.toPrivateKey());
                 token.getSignature().setEncodeBase64Url(signature);
                 return token.getToken();
             }

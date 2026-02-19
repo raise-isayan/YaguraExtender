@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import burp.BurpExtension;
 import extension.view.base.NamedColor;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;
@@ -10,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 import org.fife.ui.rtextarea.Gutter;
@@ -40,10 +42,16 @@ public class ThemeUI {
         }
     }
 
-    public static void applyStyleTheme(RSyntaxTextArea textArea) {
+    public static Color getDefaultColor(Object key, Color defaultColor) {
+        Color color = UIManager.getColor(key);
+        return color != null ? color : defaultColor;
+    }
+
+    public static void applyStyleTheme(JTextComponent textArea) {
         if (textArea == null) {
             return;
         }
+
         SwingUtilities.invokeLater(() -> {
 //                    BurpExtender.getMontoyaApi().userInterface().applyThemeToComponent(textArea);
 //                    Gutter gutter = RSyntaxUtilities.getGutter(textArea);
@@ -51,17 +59,38 @@ public class ThemeUI {
 //                        BurpExtender.getMontoyaApi().userInterface().applyThemeToComponent(gutter);
 //                    }
 
-            textArea.setForeground(UIManager.getColor("EditorPane.foreground"));
-            textArea.setBackground(UIManager.getColor("TextField.background"));
-            textArea.setSelectedTextColor(UIManager.getColor("TextArea.selectedForeground"));
-            textArea.setSelectionColor(UIManager.getColor("TextArea.selectedBackground"));
-            Gutter gutter = RSyntaxUtilities.getGutter(textArea);
-            if (gutter != null) {
-                gutter.setBackground(UIManager.getColor("TextField.background"));
-                gutter.setLineNumberColor(UIManager.getColor("TextField.foreground"));
+            textArea.setForeground(getDefaultColor("TextArea.foreground", java.awt.SystemColor.textText));
+            textArea.setBackground(getDefaultColor("TextArea.background", java.awt.SystemColor.control));
+            textArea.setSelectedTextColor(getDefaultColor("TextArea.selectionForeground", java.awt.SystemColor.textHighlightText));
+            textArea.setSelectionColor(getDefaultColor("TextArea.selectedBackground", java.awt.SystemColor.textHighlight));
+            if (textArea instanceof RSyntaxTextArea rtextArea) {
+                Gutter gutter = RSyntaxUtilities.getGutter(rtextArea);
+                if (gutter != null) {
+                    gutter.setBackground(getDefaultColor("TextField.background", java.awt.SystemColor.control));
+                    gutter.setLineNumberColor(getDefaultColor("TextField.foreground", java.awt.SystemColor.text));
+                }
             }
         });
     }
+
+//    public static void applyStyleTheme(RSyntaxTextArea textArea) {
+//        if (textArea == null) {
+//            return;
+//        }
+//
+//        SwingUtilities.invokeLater(() -> {
+//
+//            textArea.setForeground(getDefaultColor("TextArea.foreground", java.awt.SystemColor.textText));
+//            textArea.setBackground(getDefaultColor("TextArea.background", java.awt.SystemColor.control));
+//            textArea.setSelectedTextColor(getDefaultColor("TextArea.selectionForeground", java.awt.SystemColor.textHighlightText));
+//            textArea.setSelectionColor(getDefaultColor("TextArea.selectedBackground", java.awt.SystemColor.textHighlight));
+//            Gutter gutter = RSyntaxUtilities.getGutter(textArea);
+//            if (gutter != null) {
+//                gutter.setBackground(getDefaultColor("TextField.background", java.awt.SystemColor.control));
+//                gutter.setLineNumberColor(getDefaultColor("TextField.foreground", java.awt.SystemColor.text));
+//            }
+//        });
+//    }
 
     public static void applyStyleTheme(JTable table) {
         table.setGridColor(UIManager.getColor("Table.gridColor"));

@@ -98,6 +98,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
 
         lblTarget.setText("Target:");
 
+        listTarget.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         scrollTarget.setViewportView(listTarget);
 
         btnEncRightArraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/arrow_right.png"))); // NOI18N
@@ -114,6 +115,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        listSelect.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         listSelect.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 listSelectValueChanged(evt);

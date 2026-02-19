@@ -85,6 +85,7 @@ public class MultiItemDlg extends CustomDialog {
 
         txtMultiLine.setColumns(20);
         txtMultiLine.setRows(5);
+        txtMultiLine.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         scrollMultiline.setViewportView(txtMultiLine);
 
         pnlMain.add(scrollMultiline, java.awt.BorderLayout.CENTER);
