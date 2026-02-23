@@ -12,6 +12,8 @@ if ($_GET['mode'] === 'sendto') {
 	$url = isset($_POST['url']) ? $_POST['url'] : '';
 	$request = isset($_FILES['request']['tmp_name']) ? file_get_contents($_FILES['request']['tmp_name']) : '';
 	$response = isset($_FILES['response']['tmp_name']) ? file_get_contents($_FILES['response']['tmp_name']) : '';
+	$reqName = isset($_POST['reqName']) ? $_POST['reqName'] : '';
+	$reqComment = isset($_POST['reqComment']) ? $_POST['reqComment'] : '';
 	$comment = isset($_POST['comment']) ? $_POST['comment'] : '';
 	$encoding = isset($_POST['encoding']) ? $_POST['encoding'] : '';
 
@@ -21,6 +23,8 @@ if ($_GET['mode'] === 'sendto') {
 	$_SESSION['url'] = $url;
 	$_SESSION['request'] = $request;
 	$_SESSION['response'] = $response;
+	$_SESSION['reqName'] = $reqName;
+	$_SESSION['$reqComment'] = $reqComment;
 	$_SESSION['comment'] = $comment;
 	$_SESSION['encoding'] = $encoding;
 
@@ -28,7 +32,7 @@ if ($_GET['mode'] === 'sendto') {
 
 ?>
 	<body>
-	<a href="sendto.php?mode=disp">登録内容を確認する</a>
+	<a href="sendto.php?<?=session_name()?>=<?=session_id()?>&mode=disp">登録内容を確認する</a>
 	</body>
 <?php
 } else if ($_GET['mode'] === 'disp'){
@@ -48,6 +52,9 @@ if ($_GET['mode'] === 'sendto') {
 	<p><?php echo htmlspecialchars($_SESSION['request'], ENT_QUOTES, 'UTF-8'); ?></p>
 	<hr>
 	<p><?php echo htmlspecialchars($_SESSION['response'], ENT_QUOTES, 'UTF-8'); ?></p>
+	<hr>
+	<p><?php echo htmlspecialchars($_SESSION['reqName'], ENT_QUOTES, 'UTF-8'); ?></p>
+	<p><?php echo htmlspecialchars($_SESSION['reqComment'], ENT_QUOTES, 'UTF-8'); ?></p>
 	<hr>
 	<p><?php echo htmlspecialchars($_SESSION['comment'], ENT_QUOTES, 'UTF-8'); ?></p>
 	<p><?php echo htmlspecialchars($_SESSION['encoding'], ENT_QUOTES, 'UTF-8'); ?></p>
