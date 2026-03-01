@@ -1,5 +1,6 @@
 package yagura.model;
 
+import burp.api.montoya.ui.contextmenu.ComponentEvent;
 import com.google.gson.annotations.Expose;
 import extension.burp.IssueAlertFireEvent;
 import extension.helpers.StringUtil;
@@ -332,5 +333,22 @@ public class SendToItem extends IssueAlertFireEvent {
         sendTo.setHotKey((String) rows[11]);
         return sendTo;
     }
+
+    public SendToMenuItem getSendToAction(ComponentEvent contextEvent) {
+        SendToMenuItem sendToItem = null;
+        if (this.getExtend() != null) {
+            sendToItem = new SendToExtend(this, contextEvent);
+        }
+        else {
+            if (this.isServer()) {
+                sendToItem = new SendToServer(this, contextEvent);
+            }
+            else {
+                sendToItem = new SendToMultiEditor(this, contextEvent);
+            }
+        }
+        return sendToItem;
+    }
+
 
 }

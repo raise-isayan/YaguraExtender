@@ -1,7 +1,7 @@
 package yagura.model;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.ComponentEvent;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
@@ -31,29 +31,29 @@ public abstract class SendToMenuItem
 
     private final static Logger logger = Logger.getLogger(SendToMenuItem.class.getName());
 
-    protected ContextMenuEvent contextMenu = null;
+    protected ComponentEvent contextEvent = null;
 
     public SendToMenuItem(SendToItem item) {
         super(item);
     }
 
-    public SendToMenuItem(SendToItem item, ContextMenuEvent contextMenu) {
+    public SendToMenuItem(SendToItem item, ComponentEvent contextEvent) {
         super(item);
-        this.contextMenu = contextMenu;
+        this.contextEvent = contextEvent;
     }
 
     /**
      * @return the contextMenu
      */
-    protected ContextMenuEvent getContextMenu() {
-        return contextMenu;
+    protected ComponentEvent getContextEvent() {
+        return contextEvent;
     }
 
     /**
-     * @param contextMenu the contextMenu to set
+     * @param contextEvent the ComponentEvent to set
      */
-    protected void setContextMenu(ContextMenuEvent contextMenu) {
-        this.contextMenu = contextMenu;
+    protected void setContextEvent(ComponentEvent contextEvent) {
+        this.contextEvent = contextEvent;
     }
 
     public abstract void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage);

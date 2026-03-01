@@ -7,7 +7,9 @@ import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.InvocationSource;
 import burp.api.montoya.ui.contextmenu.InvocationType;
+import burp.api.montoya.ui.contextmenu.ComponentEvent;
 import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
 import com.burgstaller.okhttp.DispatchingAuthenticator;
@@ -93,31 +95,34 @@ public class SendToServer extends SendToMenuItem {
         super(item);
     }
 
-    public SendToServer(SendToItem item, ContextMenuEvent contextMenu) {
-        super(item, contextMenu);
+    public SendToServer(SendToItem item, ComponentEvent contextEvent) {
+        super(item, contextEvent);
     }
 
     @Override
     public boolean isEnabled() {
-        return  this.contextMenu != null &&
-                (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+        if (this.contextEvent instanceof InvocationSource invocation) {
+            return (invocation.invocationType() == InvocationType.PROXY_HISTORY)
+                || (invocation.invocationType() == InvocationType.SEARCH_RESULTS)
+                || (invocation.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                || (invocation.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                || (invocation.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                || (invocation.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                || (invocation.invocationType() == null); // Orgnaizerではnull
+        }
+        return false;
     }
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (contextMenu.messageEditorRequestResponse().isPresent()) {
-            List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
-            sendToEvent(messageInfo);
-        } else {
-            List<HttpRequestResponse> messageInfo = this.contextMenu.selectedRequestResponses();
-            sendToEvent(messageInfo);
+        if (this.contextEvent instanceof ContextMenuEvent context) {
+            if (context.messageEditorRequestResponse().isPresent()) {
+                List<HttpRequestResponse> messageInfo = List.of(context.messageEditorRequestResponse().get().requestResponse());
+                sendToEvent(messageInfo);
+            } else {
+                List<HttpRequestResponse> messageInfo = context.selectedRequestResponses();
+                sendToEvent(messageInfo);
+            }
         }
     }
 

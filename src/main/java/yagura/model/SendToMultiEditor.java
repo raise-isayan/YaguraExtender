@@ -3,7 +3,9 @@ package yagura.model;
 import extension.burp.IssueAlertEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.contextmenu.InvocationSource;
 import burp.api.montoya.ui.contextmenu.InvocationType;
+import burp.api.montoya.ui.contextmenu.ComponentEvent;
 import extension.burp.BurpVersion;
 import extension.helpers.ConvertUtil;
 import extension.helpers.FileUtil;
@@ -24,31 +26,35 @@ public class SendToMultiEditor extends SendToMenuItem {
 
     private final static Logger logger = Logger.getLogger(SendToMultiEditor.class.getName());
 
-    public SendToMultiEditor(SendToItem item, ContextMenuEvent contextMenu) {
-        super(item, contextMenu);
+    public SendToMultiEditor(SendToItem item, ComponentEvent contextEvent) {
+        super(item, contextEvent);
     }
 
     @Override
     public boolean isEnabled() {
-        return this.contextMenu != null &&
-                (this.contextMenu.invocationType() == InvocationType.PROXY_HISTORY)
-                || (this.contextMenu.invocationType() == InvocationType.SEARCH_RESULTS)
-                || (this.contextMenu.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
-                || (this.contextMenu.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
-                || (this.contextMenu.invocationType() == null); // Orgnaizerではnull
+        if (this.contextEvent instanceof InvocationSource invocation) {
+            return (invocation.invocationType() == InvocationType.PROXY_HISTORY)
+                    || (invocation.invocationType() == InvocationType.SEARCH_RESULTS)
+                    || (invocation.invocationType() == InvocationType.INTRUDER_ATTACK_RESULTS)
+                    || (invocation.invocationType() == InvocationType.MESSAGE_VIEWER_REQUEST)
+                    || (invocation.invocationType() == InvocationType.MESSAGE_VIEWER_RESPONSE)
+                    || (invocation.invocationType() == InvocationType.MESSAGE_EDITOR_REQUEST)
+                    || (invocation.invocationType() == InvocationType.MESSAGE_EDITOR_RESPONSE)
+                    || (invocation.invocationType() == null); // Orgnaizerではnull
+        }
+        return false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (contextMenu.messageEditorRequestResponse().isPresent()) {
-            List<HttpRequestResponse> messageInfo = List.of(contextMenu.messageEditorRequestResponse().get().requestResponse());
-            sendToEvent(messageInfo);
-        } else {
-            List<HttpRequestResponse> messageInfo = contextMenu.selectedRequestResponses();
-            sendToEvent(messageInfo);
+        if (this.contextEvent instanceof ContextMenuEvent context) {
+            if (context.messageEditorRequestResponse().isPresent()) {
+                List<HttpRequestResponse> messageInfo = List.of(context.messageEditorRequestResponse().get().requestResponse());
+                sendToEvent(messageInfo);
+            } else {
+                List<HttpRequestResponse> messageInfo = context.selectedRequestResponses();
+                sendToEvent(messageInfo);
+            }
         }
     }
 
@@ -60,7 +66,7 @@ public class SendToMultiEditor extends SendToMenuItem {
     public void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage) {
         List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
         try {
-            SendToArgsProperty argsProp  = this.getSendToExtend().getSendToArgsProperty();
+            SendToArgsProperty argsProp = this.getSendToExtend().getSendToArgsProperty();
             if (argsProp.isUseOverride()) {
                 List<String> formatList = argsProp.getArgsList();
                 if (!formatList.isEmpty()) {
@@ -76,13 +82,11 @@ public class SendToMultiEditor extends SendToMenuItem {
                     }
                     executeProcess(this.getTarget(), argsList);
                 }
-            }
-            else {
+            } else {
                 if (sendToMessage.getSelectedText() != null) {
                     File msgFile = FileUtil.tempFile(StringUtil.getBytesRaw(sendToMessage.getSelectedText()), ".tmp");
                     executeProcess(this.getTarget(), List.of(msgFile.getAbsolutePath()));
-                }
-                else if (!messageInfo.isEmpty()) {
+                } else if (!messageInfo.isEmpty()) {
                     File[] msgFiles = new File[messageInfo.size()];
                     if (this.isReverseOrder()) {
                         for (int i = messageInfo.size() - 1; i >= 0; i--) {
@@ -111,8 +115,7 @@ public class SendToMultiEditor extends SendToMenuItem {
         SendToArgsProperty argsProp = this.getSendToExtend().getSendToArgsProperty();
         if (BurpVersion.OSType.MAC == osType && argsProp.isUseMacOpenCommand()) {
             return ConvertUtil.executeProcess(BurpVersion.OSType.MAC, target, argsList);
-        }
-        else {
+        } else {
             return ConvertUtil.executeProcess(target, argsList);
         }
     }

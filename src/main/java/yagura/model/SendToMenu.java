@@ -106,8 +106,8 @@ public final class SendToMenu implements ContextMenuItemsProvider {
         List<javax.swing.JMenuItem> sendToList = new ArrayList<>();
         for (SendToItem item : sendToItemList) {
             if (item.isSelected()) {
+                SendToMenuItem sendToItem = item.getSendToAction(this.contextMenuEvent);
                 if (item.getExtend() != null) {
-                    final SendToExtend sendToItem = new SendToExtend(item, this.contextMenuEvent);
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         // 解釈する文字コード一覧を追加
                         javax.swing.JMenu mnuItem = new javax.swing.JMenu();
@@ -134,14 +134,12 @@ public final class SendToMenu implements ContextMenuItemsProvider {
                     javax.swing.JMenuItem mnuItem = new javax.swing.JMenuItem();
                     mnuItem.setText(getMenuItemCaption(property.isForceSortOrder(), sendToList.size(), item.getCaption()));
                     if (item.isServer()) {
-                        SendToMenuItem sendToItem = new SendToServer(item, this.contextMenuEvent);
                         sendToItem.addIssueAlertListener(this.issueAlert);
                         mnuItem.addActionListener(sendToItem);
                         if (sendToItem.isEnabled()) {
                             sendToList.add(mnuItem);
                         }
                     } else {
-                        SendToMenuItem sendToItem = new SendToMultiEditor(item, this.contextMenuEvent);
                         mnuItem.addActionListener(sendToItem);
                         if (sendToItem.isEnabled()) {
                             sendToList.add(mnuItem);
