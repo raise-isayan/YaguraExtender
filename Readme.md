@@ -36,14 +36,14 @@ gradlew release
 ## Operating environment
 
 ### Java
-* JRE (JDK) 17 (Open JDK is recommended) (https://openjdk.java.net/)
+* JRE (JDK) 21 (Open JDK is recommended) (https://openjdk.java.net/)
 
 ### Burp Suite
 * v2024.2.1.3 or higher (http://www.portswigger.net/burp/)
 
 ### Development environment
-* NetBeans 24 (https://netbeans.apache.org/)
-* Gradle 7.6 (https://gradle.org/)
+* NetBeans 28 (https://netbeans.apache.org/)
+* Gradle 8.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
 ## Required library

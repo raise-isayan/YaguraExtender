@@ -1,15 +1,15 @@
 package extend.util.external;
 
 import burp.api.montoya.MontoyaApi;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.Expose;
 import extension.burp.BurpConfig;
 import extension.burp.BurpVersion;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.json.JsonUtil;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.Expose;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;

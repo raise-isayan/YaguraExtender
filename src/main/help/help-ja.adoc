@@ -1582,7 +1582,7 @@ image:images/custom_jtranscoder_JWT_encoder.png[JWT Token Decoderタブ]
 
 JWKを変換します。
 
-image:images/custom_jtranscoder_JWT_converter.png[JWT Token Decoderタブ]
+image:images/custom_jtranscoder_JWK_converter.png[JWT Token Decoderタブ]
 
 [JWK] テキストエリア::
   変換するJWKを入力します。

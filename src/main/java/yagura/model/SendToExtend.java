@@ -8,6 +8,7 @@ import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationSource;
 import burp.api.montoya.ui.contextmenu.InvocationType;
 import burp.api.montoya.ui.contextmenu.ComponentEvent;
+import burp.api.montoya.ui.hotkey.HotKeyEvent;
 import extension.burp.BurpUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
@@ -133,20 +134,6 @@ public class SendToExtend extends SendToMenuItem {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() instanceof javax.swing.JMenuItem) {
             sendToEvent(this.contextEvent);
-        }
-    }
-
-    public void sendToEvent(ComponentEvent contextEvent) {
-        if (this.contextEvent instanceof ContextMenuEvent context) {
-            List<HttpRequestResponse> messageInfo = null;
-            if (context.messageEditorRequestResponse().isPresent()) {
-                messageInfo = List.of(context.messageEditorRequestResponse().get().requestResponse());
-            } else {
-                messageInfo = context.selectedRequestResponses();
-            }
-            if (messageInfo != null) {
-                menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, true));
-            }
         }
     }
 

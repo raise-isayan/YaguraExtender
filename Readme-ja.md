@@ -36,14 +36,14 @@ gradlew release
 ## 動作環境
 
 ### Java
-* JRE(JDK) 17 (Open JDK を推奨)(https://openjdk.java.net/)
+* JRE(JDK) 21 (Open JDK を推奨)(https://openjdk.java.net/)
 
 ### Burp Suite
 * Burp Suite v2024.2.1.3 以上 (http://www.portswigger.net/burp/)
 
 ### 開発環境
-* NetBeans 24 (https://netbeans.apache.org/)
-* Gradle 7.6 (https://gradle.org/)
+* NetBeans 28 (https://netbeans.apache.org/)
+* Gradle 8.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 
 ## 必須ライブラリ

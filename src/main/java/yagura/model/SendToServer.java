@@ -115,20 +115,7 @@ public class SendToServer extends SendToMenuItem {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (this.contextEvent instanceof ContextMenuEvent context) {
-            if (context.messageEditorRequestResponse().isPresent()) {
-                List<HttpRequestResponse> messageInfo = List.of(context.messageEditorRequestResponse().get().requestResponse());
-                sendToEvent(messageInfo);
-            } else {
-                List<HttpRequestResponse> messageInfo = context.selectedRequestResponses();
-                sendToEvent(messageInfo);
-            }
-        }
-    }
-
-    public void sendToEvent(SendToMessage sendToMessage) {
-        List<HttpRequestResponse> messageInfo = sendToMessage.getSelectedMessages();
-        sendToEvent(messageInfo);
+        sendToEvent(this.contextEvent);
     }
 
     @Override

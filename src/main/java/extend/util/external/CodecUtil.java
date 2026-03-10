@@ -10,7 +10,6 @@ import java.util.Arrays;
 import org.apache.commons.codec.binary.Base16;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Base64;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;

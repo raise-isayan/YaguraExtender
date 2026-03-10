@@ -15,24 +15,23 @@ import javax.swing.KeyStroke;
  */
 public class HotKeyAssign {
 
-    private final SendToMenuItem sendToMenuItem;
+    private final SendToItem sendToItem;
     private final HotKey hotKey;
     private final HotKeyHandler hotKeyHandler;
 
-    public HotKeyAssign(SendToMenuItem sendToMenuItem) {
-        this.sendToMenuItem = sendToMenuItem;
-        this.hotKey = HotKey.hotKey(sendToMenuItem.getCaption(), sendToMenuItem.getHotKey());
+    public HotKeyAssign(SendToItem sendToItem) {
+        this.sendToItem = sendToItem;
+        this.hotKey = HotKey.hotKey(sendToItem.getCaption(), sendToItem.getHotKey());
         this.hotKeyHandler = new HotKeyHandler() {
             @Override
             public void handle(HotKeyEvent event) {
-                List<HttpRequestResponse> list = event.selectedRequestResponses();
-                sendToMenuItem.sendToEvent(list);
+                sendToItem.getSendToAction(event);
             }
         };
     }
 
     public boolean isValidHotKey() {
-        KeyStroke ks = BurpHotKey.parseKeyText(this.hotKey.hotkey());        
+        KeyStroke ks = BurpHotKey.parseKeyText(this.hotKey.hotkey());
         return (ks.getKeyCode() != KeyEvent.CHAR_UNDEFINED);
     }
 
@@ -50,8 +49,8 @@ public class HotKeyAssign {
         return this.hotKeyHandler;
     }
 
-    public SendToMenuItem getSendToMenuItem() {
-        return this.sendToMenuItem;
+    public SendToItem getSendToItem() {
+        return this.sendToItem;
     }
 
 }

@@ -1,6 +1,5 @@
 package extend.util.external;
 
-import burp.BurpExtension;
 import extension.view.base.NamedColor;
 import java.awt.Color;
 import java.beans.PropertyChangeListener;

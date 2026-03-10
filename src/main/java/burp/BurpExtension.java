@@ -47,10 +47,11 @@ import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.util.EnumSet;
 import javax.swing.JMenuItem;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import extend.util.external.ThemeUI;
 import extension.burp.BurpConfig;
 import extension.burp.BurpExtensionImpl;
-import static extension.burp.BurpExtensionImpl.api;
 import extension.burp.BurpUtil;
 import extension.burp.BurpVersion;
 import extension.burp.IBurpTab;
@@ -58,10 +59,6 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
-import java.util.Enumeration;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import javax.swing.UIManager;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -264,7 +261,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //                for (UIManager.LookAndFeelInfo lf : lfs) {
 //                    api().logging().logToOutput("lf:" + lf.getName());
 //                }
-
             }
         });
 
@@ -343,7 +339,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 //            this.registerHotkeys.add(regster);
 //        }
 //    }
-
     public List<Cookie> getCookies(Predicate<? super Cookie> filter) {
         CookieJar cookieJar = api().http().cookieJar();
         return cookieJar.cookies().stream().filter(filter).collect(Collectors.toList());

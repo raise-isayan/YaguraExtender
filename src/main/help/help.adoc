@@ -1606,7 +1606,7 @@ image:images/custom_jtranscoder_JWT_encoder.png[JWT token Decoder tab]
 
 Convert JWK.
 
-image:images/custom_jtranscoder_JWT_converter.png[JWT token Decoder tab]
+image:images/custom_jtranscoder_JWK_converter.png[JWT token Decoder tab]
 
 [JWK] text area::
   Input the JWK to be converted.

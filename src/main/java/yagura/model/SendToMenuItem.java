@@ -2,6 +2,8 @@ package yagura.model;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ComponentEvent;
+import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import burp.api.montoya.ui.hotkey.HotKeyEvent;
 import extension.helpers.FileUtil;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
@@ -56,6 +58,31 @@ public abstract class SendToMenuItem
         this.contextEvent = contextEvent;
     }
 
+    public void sendToEvent(ComponentEvent componentEvent) {
+        List<HttpRequestResponse> messageInfo = null;
+        if (componentEvent instanceof ContextMenuEvent context) {
+            if (context.messageEditorRequestResponse().isPresent()) {
+                messageInfo = List.of(context.messageEditorRequestResponse().get().requestResponse());
+            } else {
+                messageInfo = context.selectedRequestResponses();
+            }
+        }
+        else if(componentEvent instanceof HotKeyEvent context){
+            if (context.messageEditorRequestResponse().isPresent()) {
+                messageInfo = List.of(context.messageEditorRequestResponse().get().requestResponse());
+            } else {
+                messageInfo = context.selectedRequestResponses();
+            }
+        }
+        if (messageInfo != null) {
+            menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, true));
+        }
+    }
+
+    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
+        menuItemClicked(this.getCaption(), SendToMessage.newSendToMessage(messageInfo, this.isEnabled()));
+    }
+
     public abstract void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage);
 
     public abstract boolean isEnabled();
@@ -99,10 +126,6 @@ public abstract class SendToMenuItem
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
         return file;
-    }
-
-    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
-        menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, this.isEnabled()));
     }
 
     public List<String> executeArgumentFormat(HttpRequestResponse httpRequestResponse, String selectedText, String [] formats) throws MalformedURLException {
