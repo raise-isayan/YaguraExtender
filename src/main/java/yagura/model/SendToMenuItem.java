@@ -58,6 +58,10 @@ public abstract class SendToMenuItem
         this.contextEvent = contextEvent;
     }
 
+    public void sendToEvent() {
+        this.sendToEvent(this.contextEvent);
+    }
+
     public void sendToEvent(ComponentEvent componentEvent) {
         List<HttpRequestResponse> messageInfo = null;
         if (componentEvent instanceof ContextMenuEvent context) {
@@ -75,12 +79,8 @@ public abstract class SendToMenuItem
             }
         }
         if (messageInfo != null) {
-            menuItemClicked(getCaption(), SendToMessage.newSendToMessage(messageInfo, true));
+            menuItemClicked(this.getCaption(), SendToMessage.newSendToMessage(messageInfo, true));
         }
-    }
-
-    public void sendToEvent(List<HttpRequestResponse> messageInfo) {
-        menuItemClicked(this.getCaption(), SendToMessage.newSendToMessage(messageInfo, this.isEnabled()));
     }
 
     public abstract void menuItemClicked(String menuItemCaption, SendToMessage sendToMessage);

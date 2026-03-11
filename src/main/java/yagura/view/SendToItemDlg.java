@@ -1,5 +1,9 @@
 package yagura.view;
 
+import burp.BurpExtension;
+import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.ui.hotkey.HotKey;
+import extension.burp.BurpConfig;
 import extension.burp.BurpHotKey;
 import yagura.model.SendToItem;
 import java.io.File;
@@ -11,12 +15,10 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
-import java.awt.event.KeyEvent;
 import java.util.EnumSet;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.KeyStroke;
 import yagura.model.SendToExtendProperty;
 
 /**
@@ -51,6 +53,7 @@ public class SendToItemDlg extends CustomDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
+        jInternalFrame1 = new javax.swing.JInternalFrame();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -70,6 +73,8 @@ public class SendToItemDlg extends CustomDialog {
         chkReverseOrder = new javax.swing.JCheckBox();
         btnExtendProperty = new javax.swing.JButton();
         lblHotKey = new javax.swing.JLabel();
+        lblHotKeyText = new javax.swing.JLabel();
+        btnHotKeyAssign = new javax.swing.JButton();
         tabExtend = new javax.swing.JPanel();
         cmbExtend = new javax.swing.JComboBox();
 
@@ -79,6 +84,19 @@ public class SendToItemDlg extends CustomDialog {
             public String getElementAt(int i) { return strings[i]; }
         });
         jScrollPane1.setViewportView(jList1);
+
+        jInternalFrame1.setVisible(true);
+
+        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
+        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
+        jInternalFrame1Layout.setHorizontalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jInternalFrame1Layout.setVerticalGroup(
+            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -103,7 +121,7 @@ public class SendToItemDlg extends CustomDialog {
         pnlApplyLayout.setHorizontalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlApplyLayout.createSequentialGroup()
-                .addContainerGap(347, Short.MAX_VALUE)
+                .addContainerGap(377, Short.MAX_VALUE)
                 .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -206,6 +224,16 @@ public class SendToItemDlg extends CustomDialog {
 
         lblHotKey.setText("Hotkey:");
 
+        lblHotKeyText.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblHotKeyText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btnHotKeyAssign.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/folder_bell.png"))); // NOI18N
+        btnHotKeyAssign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHotKeyAssignActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabBaseLayout = new javax.swing.GroupLayout(tabBase);
         tabBase.setLayout(tabBaseLayout);
         tabBaseLayout.setHorizontalGroup(
@@ -213,15 +241,21 @@ public class SendToItemDlg extends CustomDialog {
             .addGroup(tabBaseLayout.createSequentialGroup()
                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabBaseLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkReverseOrder)
-                            .addComponent(lblHotKey))
+                            .addGroup(tabBaseLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(chkReverseOrder))
+                            .addGroup(tabBaseLayout.createSequentialGroup()
+                                .addGap(30, 30, 30)
+                                .addComponent(lblHotKey)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlResponse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 220, Short.MAX_VALUE))
+                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(tabBaseLayout.createSequentialGroup()
+                                .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(pnlResponse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE))
+                            .addComponent(lblHotKeyText, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(tabBaseLayout.createSequentialGroup()
                         .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(tabBaseLayout.createSequentialGroup()
@@ -233,39 +267,52 @@ public class SendToItemDlg extends CustomDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtMenuCaption, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbTargetLocal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cmbTargetLocal, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(6, 6, 6)
+                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabBaseLayout.createSequentialGroup()
                         .addComponent(btnSelectExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addComponent(btnExtendProperty, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExtendProperty, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnHotKeyAssign, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         tabBaseLayout.setVerticalGroup(
             tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabBaseLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblMenuCaption)
-                    .addComponent(txtMenuCaption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(tabBaseLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnExtendProperty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnSelectExecute, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnHotKeyAssign, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(tabBaseLayout.createSequentialGroup()
+                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(tabBaseLayout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(btnSelectExecute, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                            .addGroup(tabBaseLayout.createSequentialGroup()
+                                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblMenuCaption)
+                                    .addComponent(txtMenuCaption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(tabBaseLayout.createSequentialGroup()
+                                        .addGap(2, 2, 2)
+                                        .addComponent(btnExtendProperty, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                                    .addGroup(tabBaseLayout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(cmbTargetLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(chkServer))))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbTargetLocal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(chkServer))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlResponse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkReverseOrder))
-                .addGap(8, 8, 8)
-                .addComponent(lblHotKey)
-                .addContainerGap(24, Short.MAX_VALUE))
+                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(pnlResponse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(chkReverseOrder))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblHotKeyText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblHotKey, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Base", tabBase);
@@ -277,14 +324,14 @@ public class SendToItemDlg extends CustomDialog {
             .addGroup(tabExtendLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmbExtend, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(220, Short.MAX_VALUE))
         );
         tabExtendLayout.setVerticalGroup(
             tabExtendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabExtendLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmbExtend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(163, Short.MAX_VALUE))
         );
 
         tabbetSendTo.addTab("Extend", tabExtend);
@@ -316,6 +363,8 @@ public class SendToItemDlg extends CustomDialog {
         for (SendToItem.ExtendType extType : SendToItem.ExtendType.values()) {
             this.modelExtend.addElement(extType);
         }
+        MontoyaApi api = BurpExtension.api();
+        this.btnHotKeyAssign.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_HOTKEY));
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
@@ -357,6 +406,16 @@ public class SendToItemDlg extends CustomDialog {
     private void chkServerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkServerStateChanged
 //        this.btnExtendProperty.setEnabled(this.chkServer.isSelected());
     }//GEN-LAST:event_chkServerStateChanged
+
+    private void btnHotKeyAssignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHotKeyAssignActionPerformed
+        this.hotkeyDlg.setLocationRelativeTo(this);
+        this.hotkeyDlg.setHotKeyText(this.lblHotKeyText.getText());
+        this.hotkeyDlg.setVisible(true);
+        if (this.hotkeyDlg.getModalResult() == JOptionPane.OK_OPTION) {
+            this.lblHotKeyText.setText(this.hotkeyDlg.getHotKeyText());
+        }
+
+    }//GEN-LAST:event_btnHotKeyAssignActionPerformed
 
     /**
      * @param args the command line arguments
@@ -409,6 +468,7 @@ public class SendToItemDlg extends CustomDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnExtendProperty;
+    private javax.swing.JButton btnHotKeyAssign;
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnSelectExecute;
     private javax.swing.JCheckBox chkRequestBody;
@@ -419,9 +479,11 @@ public class SendToItemDlg extends CustomDialog {
     private javax.swing.JCheckBox chkServer;
     private javax.swing.JComboBox cmbExtend;
     private javax.swing.JComboBox<String> cmbTargetLocal;
+    private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblHotKey;
+    private javax.swing.JLabel lblHotKeyText;
     private javax.swing.JLabel lblMenuCaption;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlRequest;
@@ -453,7 +515,7 @@ public class SendToItemDlg extends CustomDialog {
             item.setResponseHeader(this.chkResponseHeader.isSelected());
             item.setResponseBody(this.chkResponseBody.isSelected());
             item.setReverseOrder(this.chkReverseOrder.isSelected());
-//            item.setHotKey(this.lblHotKeyText.getText());
+            item.setHotKey(this.lblHotKeyText.getText());
             item.getExtendProperties().clear();
             item.getExtendProperties().putAll(this.extendProperty);
         } else {
@@ -481,7 +543,7 @@ public class SendToItemDlg extends CustomDialog {
             this.chkResponseHeader.setSelected(item.isResponseHeader());
             this.chkResponseBody.setSelected(item.isResponseBody());
             this.chkReverseOrder.setSelected(item.isReverseOrder());
-//            this.lblHotKeyText.setText(item.getHotKey());
+            this.lblHotKeyText.setText(item.getHotKey());
             this.extendProperty.clear();
             this.extendProperty.putAll(item.getExtendProperties());
         } else {

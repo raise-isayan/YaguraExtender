@@ -1,12 +1,11 @@
 package yagura.model;
 
-import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.BurpExtension;
 import burp.api.montoya.ui.hotkey.HotKey;
 import burp.api.montoya.ui.hotkey.HotKeyEvent;
 import burp.api.montoya.ui.hotkey.HotKeyHandler;
 import extension.burp.BurpHotKey;
 import java.awt.event.KeyEvent;
-import java.util.List;
 import javax.swing.KeyStroke;
 
 /**
@@ -25,14 +24,18 @@ public class HotKeyAssign {
         this.hotKeyHandler = new HotKeyHandler() {
             @Override
             public void handle(HotKeyEvent event) {
-                sendToItem.getSendToAction(event);
+                SendToMenuItem actionMenu = sendToItem.getSendToMenuAction(event);
+                actionMenu.sendToEvent();
             }
         };
     }
 
     public boolean isValidHotKey() {
-        KeyStroke ks = BurpHotKey.parseKeyText(this.hotKey.hotkey());
-        return (ks.getKeyCode() != KeyEvent.CHAR_UNDEFINED);
+        if (this.hotKey.hotkey() != null && !this.hotKey.hotkey().isEmpty()) {
+            KeyStroke ks = BurpHotKey.parseKeyText(this.hotKey.hotkey());
+            return (ks.getKeyCode() != KeyEvent.CHAR_UNDEFINED);
+        }
+        return false;
     }
 
     /**

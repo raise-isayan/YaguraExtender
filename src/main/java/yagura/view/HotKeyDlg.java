@@ -137,9 +137,9 @@ public class HotKeyDlg extends CustomDialog {
 
     private void txtKeyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeyKeyReleased
         if (isValidHotKey(evt)) {
-            this.setHotKey(KeyStroke.getKeyStroke(evt.getKeyCode(), evt.getModifiersEx()));
+            this.setHotKeyText(BurpHotKey.toKeyText(KeyStroke.getKeyStroke(evt.getKeyCode(), evt.getModifiersEx())));
         } else if (evt.getKeyChar() == KeyEvent.VK_BACK_SPACE || evt.getKeyChar() == KeyEvent.VK_DELETE) {
-            this.setHotKey(null);
+            this.setHotKeyText(null);
         }
     }//GEN-LAST:event_txtKeyKeyReleased
 
@@ -200,18 +200,16 @@ public class HotKeyDlg extends CustomDialog {
     private javax.swing.JTextField txtKey;
     // End of variables declaration//GEN-END:variables
 
-    public void setHotKey(KeyStroke ks) {
+    public void setHotKeyText(String ks) {
         if (ks != null) {
-            this.hotKeyStroke = ks;
-            this.txtKey.setText(BurpHotKey.toKeyText(this.hotKeyStroke));
+            this.txtKey.setText(ks);
         } else {
-            this.hotKeyStroke = null;
             this.txtKey.setText("");
         }
     }
 
-    public KeyStroke getHotKey() {
-        return this.hotKeyStroke;
+    public String getHotKeyText() {
+        return this.txtKey.getText();
     }
 
 }

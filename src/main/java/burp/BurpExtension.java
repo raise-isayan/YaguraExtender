@@ -75,7 +75,9 @@ import yagura.model.MatchReplaceProperty;
 import yagura.handler.MenuHander;
 import yagura.handler.ProxyHander;
 import yagura.handler.WebSocketHander;
+import yagura.model.HotKeyAssign;
 import yagura.model.ResultFilterProperty;
+import yagura.model.SendToItem;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
 import yagura.view.BurpToolBar;
@@ -240,6 +242,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             @Override
             public void run() {
                 BurpExtension.this.registerView();
+                BurpExtension.this.registerHotKey();
                 BurpExtension.this.menuHandler = new MenuHander(api);
                 BurpExtension.this.proxyHandler = new ProxyHander(api);
                 BurpExtension.this.websocektHandler = new WebSocketHander(api);
@@ -252,15 +255,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     BurpExtension.this.toolbar = new BurpToolBar(api);
                     BurpExtension.this.applyUniversalProperty();
                 }
-
-//                Enumeration<Object> keys = UIManager.getDefaults().keys();
-//                while (keys.hasMoreElements()) {
-//                    api().logging().logToOutput("key:" + keys.nextElement());
-//                }
-//                UIManager.LookAndFeelInfo[] lfs = UIManager.getInstalledLookAndFeels();
-//                for (UIManager.LookAndFeelInfo lf : lfs) {
-//                    api().logging().logToOutput("lf:" + lf.getName());
-//                }
             }
         });
 
@@ -321,24 +315,27 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
         api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
-//        this.registerHotKey();
     }
 
-//    public void registerHotKey() {
-//        final MontoyaApi api = api();
-//        // HotKey 削除
-//        for (Registration reg : this.registerHotkeys) {
-//            reg.deregister();
-//        }
-//        this.registerHotkeys.clear();
-//        SendToMenu menus = this.getSendToMenu();
-//        api.logging().logToOutput("registerHotKey:" + menus.getHotKeys().size());
-//      for (HotKeyAssign registerKey : menus.getHotKeys()) {
-//            api.logging().logToOutput(registerKey.getHotKey().name() + ":" + registerKey.getHotKey());
-//            Registration regster = api().userInterface().registerHotKeyHandler(HotKeyContext.PROXY_HTTP_HISTORY, registerKey.getHotKey(), registerKey.getHotKeyHandler());
-//            this.registerHotkeys.add(regster);
-//        }
-//    }
+    public void registerHotKey() {
+        final MontoyaApi api = api();
+        if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_HOTKEY)) {
+            // HotKey 削除
+            for (Registration reg : this.registerHotkeys) {
+                reg.deregister();
+            }
+            this.registerHotkeys.clear();
+            List<SendToItem> itemLists = this.getProperty().getSendToProperty().getSendToItemList();
+            for (SendToItem sendToItem : itemLists) {
+                HotKeyAssign keyAssign = new HotKeyAssign(sendToItem);
+                if (keyAssign.isValidHotKey()) {
+                    Registration regster = api().userInterface().registerHotKeyHandler(keyAssign.getHotKey(), keyAssign.getHotKeyHandler());
+                    this.registerHotkeys.add(regster);
+                }
+            }
+        }
+    }
+
     public List<Cookie> getCookies(Predicate<? super Cookie> filter) {
         CookieJar cookieJar = api().http().cookieJar();
         return cookieJar.cookies().stream().filter(filter).collect(Collectors.toList());
@@ -412,6 +409,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     if (api != null) {
                         // 登録を解除すると遅いため､削除しないで再作成
                         setSendToMenu(new SendToMenu(api, option.getSendToProperty()));
+                        registerHotKey();
                     }
                     applyOptionProperty();
                 } else if (LoggingProperty.LOGGING_PROPERTY.equals(evt.getPropertyName())) {

@@ -106,7 +106,7 @@ public final class SendToMenu implements ContextMenuItemsProvider {
         List<javax.swing.JMenuItem> sendToList = new ArrayList<>();
         for (SendToItem item : sendToItemList) {
             if (item.isSelected()) {
-                SendToMenuItem sendToItem = item.getSendToAction(this.contextMenuEvent);
+                SendToMenuItem sendToItem = item.getSendToMenuAction(this.contextMenuEvent);
                 if (item.getExtend() != null) {
                     if (sendToItem.getExtend() == SendToItem.ExtendType.PASTE_FROM_CLIPBOARD) {
                         // 解釈する文字コード一覧を追加
