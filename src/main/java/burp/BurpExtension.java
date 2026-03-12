@@ -59,6 +59,7 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
+import java.util.Collections;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -115,7 +116,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private EditorProvider editorProvider;
     private AutoResponderHandler autoResponderHandler;
     private Registration registerContextMenu;
-    private final List<Registration> registerHotkeys = new ArrayList<>();
+    private final List<Registration> registerHotkeys = Collections.synchronizedList(new ArrayList<>());
 
     private boolean isTemporaryProject = false;
 

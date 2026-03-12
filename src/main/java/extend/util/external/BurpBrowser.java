@@ -258,14 +258,13 @@ public class BurpBrowser {
                 "--use-fake-device-for-media-stream",
                 "--dbus-stub",
                 "--disable-background-networking",
-                "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus",
+                "--disable-features=ChromeWhatsNewUI,HttpsUpgrades,ImageServiceObserveSyncDownloadStatus,LensOverlay,RenderDocument,SessionRestoreInfobar,TrackingProtection3pcd",
                 String.format("--proxy-server=localhost:%d", port),
                 "--proxy-bypass-list=<-loopback>",
                 "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.6778.86 Safari/537.36",
                 String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
                 String.format("--profile-directory=%s", profileKey),
                 "--ignore-certificate-errors",
-                "--disable-features=TrackingProtection3pcd,LensOverlay",
                 String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
                 "chrome://newtab"
         );
