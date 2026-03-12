@@ -169,7 +169,7 @@ public class ParamsViewModel extends DefaultObjectTableModel<ParamsView> {
                 encodeValue = SmartCodec.toUrlEncode(value, encoding, SmartCodec.ENCODE_PATTERN_BURP, false);
                 break;
             case JSON:
-                encodeValue = SmartCodec.toUnocodeEncode(value, SmartCodec.ENCODE_PATTERN_BURP, false);
+                encodeValue = SmartCodec.toUnicodeEncode(value, SmartCodec.ENCODE_PATTERN_BURP, false);
                 break;
             case XML:
                 encodeValue = SmartCodec.toHtmlUnicodeEncode(value, SmartCodec.ENCODE_PATTERN_BURP, false);

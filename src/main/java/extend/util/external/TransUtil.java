@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -201,6 +200,270 @@ public class TransUtil {
         }
 
         return null;
+    }
+
+    public static String toSmartEncode(String value, TransUtil.EncodePattern encodePattern, boolean metaChar, Pattern pattern, boolean upperCase, String selectCharset) {
+        if (selectCharset == null) {
+            throw new IllegalArgumentException("charset is not null");
+        }
+        String charset = (selectCharset.length() == 0) ? null : selectCharset;
+        String applyCharset = StandardCharsets.ISO_8859_1.name();
+        String encode = value;
+        try {
+            if (encodePattern == null) {
+                if (charset != null) {
+                    applyCharset = charset;
+                }
+                encode = StringUtil.getBytesCharsetString(value, applyCharset);
+            } else {
+                // URL encode match
+                switch (encodePattern) {
+                    case NONE: {
+                        encode = value;
+                        break;
+                    }
+                    case URL_STANDARD: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(SmartCodec.toUrlDecode(value, StandardCharsets.ISO_8859_1))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = SmartCodec.toUrlEncode(value, applyCharset, pattern, upperCase);
+                        } else {
+                            encode = SmartCodec.toUrlEncode(value, StandardCharsets.ISO_8859_1, pattern, upperCase);
+                        }
+                        break;
+                    }
+                    // URL Unicode
+                    case URL_UNICODE: {
+                        encode = SmartCodec.toUnicodeUrlEncode(value, pattern, upperCase);
+                        break;
+                    }
+                    // Unicode
+                    case UNICODE: {
+                        encode = SmartCodec.toUnicodeEncode(value, pattern, upperCase);
+                        break;
+                    }
+                    // Unicode2
+                    case UNICODE2: {
+                        encode = SmartCodec.toUnicodeEncode(value, Pattern.quote("$"), pattern, upperCase);
+                        break;
+                    }
+                    // Byte Hex
+                    case BYTE_HEX: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = toByteHexEncode(value, applyCharset, upperCase);
+                        } else {
+                            encode = toByteHexEncode(value, StandardCharsets.ISO_8859_1.name(), upperCase);
+                        }
+                        break;
+                    }
+                    // Byte Hex
+                    case BYTE_HEX1: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = toByteHex1Encode(value, applyCharset, pattern, upperCase);
+                        } else {
+                            encode = toByteHex1Encode(value, StandardCharsets.ISO_8859_1.name(), pattern, upperCase);
+                        }
+                        break;
+                    }
+                    // Byte Hex2
+                    case BYTE_HEX2: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = toByteHex2Encode(value, applyCharset, pattern, upperCase);
+                        } else {
+                            encode = toByteHex2Encode(value, StandardCharsets.ISO_8859_1.name(), pattern, upperCase);
+                        }
+                        break;
+                    }
+//                    // Byte Dec
+//                    case BYTE_DEC:
+//                        {
+//                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+//                            if (guessCode != null) {
+//                                applyCharset = guessCode;
+//                                decode = toByteDecode(value, applyCharset);
+//                            } else {
+//                                decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+//                            }
+//                        }
+//                        break;
+                    case BYTE_OCT: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = toByteOctEncode(value, applyCharset, pattern);
+                        } else {
+                            encode = toByteOctEncode(value, StandardCharsets.ISO_8859_1.name(), pattern);
+                        }
+                        break;
+                    }
+                    // uuencode
+//                    case UUENCODE:
+//                        {
+//                            String guessCode = (charset == null) ? getUniversalGuessCode(StringUtil.getBytesRaw(toUudecode(value, "8859_1"))) : charset;
+//                            if (guessCode != null) {
+//                                applyCharset = guessCode;
+//                                decode = toUudecode(value, applyCharset);
+//                            } else {
+//                                decode = toUudecode(value, StandardCharsets.ISO_8859_1.name());
+//                            }
+//                        }
+//                        break;
+                    // QuotedPrintable
+                    case QUOTEDPRINTABLE: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toUnQuotedPrintable(value, StandardCharsets.ISO_8859_1))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = toQuotedPrintable(value, applyCharset);
+                        } else {
+                            encode = toQuotedPrintable(value, StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Punycode
+                    case PUNYCODE: {
+                        encode = ConvertUtil.toPunycodeEncode(value);
+                        break;
+                    }
+                    // Base64 encode match
+                    case BASE64: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = CodecUtil.toBase64Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = CodecUtil.toBase64Encode(value, applyCharset);
+                        } else {
+                            encode = CodecUtil.toBase64Encode(value, StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Base64 URLSafe
+                    case BASE64_URLSAFE: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = CodecUtil.toBase64URLSafeDecode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = CodecUtil.toBase64URLSafeEncode(value, applyCharset);
+                        } else {
+                            encode = CodecUtil.toBase64URLSafeEncode(value, StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Base64 URLSafe
+                    case BASE64_AND_URL: {
+                        byte[] bytes = CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII));
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = CodecUtil.toBase64Encode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), applyCharset);
+                        } else {
+                            encode = CodecUtil.toBase64Encode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Base32 encode
+                    case BASE32: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = CodecUtil.toBase32Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = CodecUtil.toBase32Encode(value, applyCharset);
+                        } else {
+                            encode = CodecUtil.toBase32Encode(value, StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Base16 encode
+                    case BASE16: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = CodecUtil.toBase16Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = CodecUtil.toBase16Encode(value, applyCharset);
+                        } else {
+                            encode = CodecUtil.toBase16Encode(value, StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Html decode
+                    case HTML: {
+                        encode = HttpUtil.toHtmlEncode(value);
+                        break;
+                    }
+                    case HTML_UNICODE: {
+                        encode = SmartCodec.toHtmlUnicodeEncode(value, pattern, upperCase);
+                        break;
+                    }
+                    case HTML_BYTE: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(SmartCodec.toHtmlDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = HttpUtil.toHtmlEncode(StringUtil.getBytesCharsetString(value, applyCharset));
+                        } else {
+                            encode = HttpUtil.toHtmlEncode(StringUtil.getBytesCharsetString(value, StandardCharsets.ISO_8859_1));
+                        }
+                        break;
+                    }
+                    // Gzip
+                    case GZIP: {
+                        encode = StringUtil.getBytesRawString(ConvertUtil.compressGzip(StringUtil.getBytesCharset(value, charset)));
+                        break;
+                    }
+                    // ZLIB
+                    case ZLIB: {
+                        encode = StringUtil.getBytesRawString(ConvertUtil.compressZlib(StringUtil.getBytesCharset(value, charset)));
+                        break;
+                    }
+                    // ZLIB_NOWRAP
+                    case ZLIB_NOWRAP: {
+                        encode = StringUtil.getBytesRawString(ConvertUtil.compressZlib(StringUtil.getBytesCharset(value, charset), true));
+                        break;
+                    }
+                    // UTF7
+                    case UTF7: {
+                        encode = TransUtil.toUTF7Encode(value);
+                        break;
+                    }
+                    // UTF8 ILL
+                    case UTF8_ILL: {
+                        // nothing
+                        break;
+                    }
+                    case C_LANG: {
+                        encode = ConvertUtil.encodeCLangQuote(value, metaChar);
+                        break;
+                    }
+                    case JSON: {
+                        encode = ConvertUtil.encodeJsonLiteral(value, metaChar);
+                        break;
+                    }
+                    case SQL_LANG: {
+                        encode = ConvertUtil.encodeSQLLangQuote(value, metaChar);
+                        break;
+                    }
+                    case REGEX: {
+                        encode = ConvertUtil.toRegexEncode(value, metaChar);
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            }
+
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return encode;
     }
 
     public static String toSmartDecode(String value) {
@@ -460,7 +723,7 @@ public class TransUtil {
                         break;
                     }
                     case SQL_LANG: {
-                        decode = ConvertUtil.decodeSQLangQuote(value, metaChar);
+                        decode = ConvertUtil.decodeSQLLangQuote(value, metaChar);
                         break;
                     }
                     case REGEX: {
@@ -903,12 +1166,12 @@ public class TransUtil {
 //    public static String toQuotedPrintable(String input, String encoding) throws UnsupportedEncodingException {
 //        return toMimeUtilEncode(input, encoding, "quoted-printable");
 //    }
-    public static String toQuotedPrintable(String input, String charset) throws UnsupportedEncodingException, org.apache.commons.codec.DecoderException {
+    public static String toQuotedPrintable(String input, String charset) throws UnsupportedEncodingException {
         org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
         return codec.encode(input, charset);
     }
 
-    public static String toQuotedPrintable(String input, Charset charset) throws org.apache.commons.codec.DecoderException {
+    public static String toQuotedPrintable(String input, Charset charset) {
         org.apache.commons.codec.net.QuotedPrintableCodec codec = new org.apache.commons.codec.net.QuotedPrintableCodec();
         return codec.encode(input, charset);
     }

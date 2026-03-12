@@ -204,7 +204,7 @@ public class MenuHander {
         JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
             @Override
             public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnocodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+                return SmartCodec.toUnicodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
             }
         });
 
@@ -213,7 +213,7 @@ public class MenuHander {
         JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
             @Override
             public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnocodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+                return SmartCodec.toUnicodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
             }
         });
 

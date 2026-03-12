@@ -3388,7 +3388,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             if (this.rdoUrl.isSelected()) {
                 encode = SmartCodec.toUrlEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUrlUnicode.isSelected()) {
-                encode = SmartCodec.toUnocodeUrlEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toUnicodeUrlEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
                 if (this.rdoUpperCase.isSelected()) {
                     encode = encode.toUpperCase();
                 }
@@ -3422,9 +3422,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             } else if (this.rdoHtml.isSelected()) {
                 encode = HttpUtil.toHtmlEncode(value);
             } else if (this.rdoUnicodeHex.isSelected()) {
-                encode = SmartCodec.toUnocodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toUnicodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUnicodeHex2.isSelected()) {
-                encode = SmartCodec.toUnocodeEncode(value, "$", TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+                encode = SmartCodec.toUnicodeEncode(value, "$", TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteNoneHex.isSelected()) {
                 encode = TransUtil.toByteHexEncode(value, this.getSelectEncode(), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteXHex.isSelected()) {
@@ -3469,7 +3469,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = ConvertUtil.toRegexEncode(encode, metaChar);
             }
             this.setOutput(encode);
-        } catch (IOException | DecoderException ex) {
+        } catch (IOException ex) {
             this.setOutputText(StringUtil.getStackTraceMessage(ex));
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
