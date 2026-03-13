@@ -64,9 +64,11 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private void initComponents() {
 
         popupBurpOption = new javax.swing.JPopupMenu();
+        mnuRestoreProjectSettings = new javax.swing.JMenuItem();
         mnuLoadProjectSettings = new javax.swing.JMenuItem();
         mnuSaveProjectSettings = new javax.swing.JMenuItem();
         jSeparator0 = new javax.swing.JPopupMenu.Separator();
+        mnuRestoreUserSettings = new javax.swing.JMenuItem();
         mnuLoadUserSettings = new javax.swing.JMenuItem();
         mnuSaveUserSettings = new javax.swing.JMenuItem();
         popupInterceptOption = new javax.swing.JPopupMenu();
@@ -93,6 +95,14 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         btnBurpOption = new javax.swing.JButton();
         btnBurpConfig = new javax.swing.JButton();
 
+        mnuRestoreProjectSettings.setText("Restore Default Project");
+        mnuRestoreProjectSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRestoreProjectSettingsActionPerformed(evt);
+            }
+        });
+        popupBurpOption.add(mnuRestoreProjectSettings);
+
         mnuLoadProjectSettings.setText("Load project settings");
         mnuLoadProjectSettings.setToolTipText("");
         mnuLoadProjectSettings.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +120,14 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         });
         popupBurpOption.add(mnuSaveProjectSettings);
         popupBurpOption.add(jSeparator0);
+
+        mnuRestoreUserSettings.setText("Restore Default User");
+        mnuRestoreUserSettings.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuRestoreUserSettingsActionPerformed(evt);
+            }
+        });
+        popupBurpOption.add(mnuRestoreUserSettings);
 
         mnuLoadUserSettings.setText("Load user settings");
         mnuLoadUserSettings.setToolTipText("");
@@ -569,6 +587,30 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         this.yaguraInterceptAction.actionPerformed(evt);
     }//GEN-LAST:event_mnuChkResponseUpdateContentLengthActionPerformed
 
+    private void mnuRestoreProjectSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRestoreProjectSettingsActionPerformed
+        try {
+            int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to restore defaults for all project settings?", "Restore Defaults", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if (option == JOptionPane.YES_OPTION) {
+                String project_default_settings = BurpConfig.getRestoreProjectDefaults();
+                this.api.burpSuite().importProjectOptionsFromJson(project_default_settings);
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_mnuRestoreProjectSettingsActionPerformed
+
+    private void mnuRestoreUserSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuRestoreUserSettingsActionPerformed
+        try {
+            int option = JOptionPane.showConfirmDialog(this, "Are you sure you want to restore defaults for user settings?", "Restore Defaults", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            if (option == JOptionPane.YES_OPTION) {
+                String user_default_settings = BurpConfig.getRestoreUserDefaults();
+                this.api.burpSuite().importUserOptionsFromJson(user_default_settings);
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_mnuRestoreUserSettingsActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBurpConfig;
     private javax.swing.JButton btnBurpOption;
@@ -593,6 +635,8 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private javax.swing.JMenuItem mnuLoadUserSettings;
     private javax.swing.JMenu mnuRequestInterceptRules;
     private javax.swing.JMenu mnuResposeInterceptRule;
+    private javax.swing.JMenuItem mnuRestoreProjectSettings;
+    private javax.swing.JMenuItem mnuRestoreUserSettings;
     private javax.swing.JMenuItem mnuSaveProjectSettings;
     private javax.swing.JMenuItem mnuSaveUserSettings;
     private javax.swing.JPopupMenu popupBurpOption;

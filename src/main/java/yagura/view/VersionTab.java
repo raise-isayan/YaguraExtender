@@ -3,7 +3,6 @@ package yagura.view;
 import burp.BurpExtension;
 import extension.burp.BurpConfig;
 import extension.view.layout.VerticalFlowLayout;
-import yagura.Version;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import javax.swing.JFileChooser;
 import yagura.model.OptionProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.json.JsonUtil;
+import yagura.Version;
 
 /**
  *
@@ -121,7 +121,6 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
     private File currentConigDirectory = null;
 
     private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
-        File file = null;
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
@@ -132,7 +131,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
         int selected = filechooser.showOpenDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
-                file = filechooser.getSelectedFile();
+                File file = filechooser.getSelectedFile();
                 OptionProperty option = BurpExtension.getInstance().getProperty();
                 Map<String, String> config = option.getProperty();
                 JsonUtil.loadFromJson(file, config);
@@ -146,20 +145,15 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_btnImportActionPerformed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-        File file = null;
         JFileChooser filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         filechooser.addChoosableFileFilter(BurpConfig.BURP_CONFIG_FILTER);
         filechooser.setFileFilter(BurpConfig.BURP_CONFIG_FILTER);
-        if (file != null && file.exists()) {
-            filechooser.setSelectedFile(file);
-        } else {
-            filechooser.setCurrentDirectory(this.currentConigDirectory);
-        }
+        filechooser.setCurrentDirectory(this.currentConigDirectory);
         int selected = filechooser.showSaveDialog(this);
         if (selected == JFileChooser.APPROVE_OPTION) {
             try {
-                file = filechooser.getSelectedFile();
+                File file = filechooser.getSelectedFile();
                 if (!BurpConfig.BURP_CONFIG_FILTER.accept(file)) {
                     file = new File(file.getAbsolutePath() + ".json");
                 }

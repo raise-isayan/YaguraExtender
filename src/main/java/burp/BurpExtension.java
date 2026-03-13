@@ -63,6 +63,7 @@ import java.util.Collections;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
+import yagura.handler.HotKeyHander;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
 import yagura.model.OptionProperty;
@@ -113,10 +114,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private MenuHander menuHandler;
     private ProxyHander proxyHandler;
     private WebSocketHander websocektHandler;
+    private HotKeyHander hotkeyHandler;
     private EditorProvider editorProvider;
     private AutoResponderHandler autoResponderHandler;
+
     private Registration registerContextMenu;
-    private final List<Registration> registerHotkeys = Collections.synchronizedList(new ArrayList<>());
 
     private boolean isTemporaryProject = false;
 
@@ -243,11 +245,15 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             @Override
             public void run() {
                 BurpExtension.this.registerView();
-                BurpExtension.this.registerHotKey();
                 BurpExtension.this.menuHandler = new MenuHander(api);
                 BurpExtension.this.proxyHandler = new ProxyHander(api);
                 BurpExtension.this.websocektHandler = new WebSocketHander(api);
                 BurpExtension.this.autoResponderHandler = new AutoResponderHandler(api);
+                BurpExtension.this.hotkeyHandler = new HotKeyHander(api);
+                if (BurpExtension.this.hotkeyHandler.isSupport()) {
+                    BurpExtension.this.hotkeyHandler.deregisters();
+                    BurpExtension.this.hotkeyHandler.registers();
+                }
                 api.extension().registerUnloadingHandler(BurpExtension.this);
                 // init
                 BurpExtension.this.menuHandler.setYaguraSelectEncode(option.getYaguraProperty().getSelectEncoding());
@@ -316,25 +322,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.tabbetOption.setProperty(this.option);
         this.tabbetOption.addPropertyChangeListener(newPropertyChangeListener());
         api.userInterface().registerSuiteTab(this.tabbetOption.getTabCaption(), this.tabbetOption);
-    }
-
-    public void registerHotKey() {
-        final MontoyaApi api = api();
-        if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_HOTKEY)) {
-            // HotKey 削除
-            for (Registration reg : this.registerHotkeys) {
-                reg.deregister();
-            }
-            this.registerHotkeys.clear();
-            List<SendToItem> itemLists = this.getProperty().getSendToProperty().getSendToItemList();
-            for (SendToItem sendToItem : itemLists) {
-                HotKeyAssign keyAssign = new HotKeyAssign(sendToItem);
-                if (keyAssign.isValidHotKey()) {
-                    Registration regster = api().userInterface().registerHotKeyHandler(keyAssign.getHotKey(), keyAssign.getHotKeyHandler());
-                    this.registerHotkeys.add(regster);
-                }
-            }
-        }
     }
 
     public List<Cookie> getCookies(Predicate<? super Cookie> filter) {
@@ -410,7 +397,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                     if (api != null) {
                         // 登録を解除すると遅いため､削除しないで再作成
                         setSendToMenu(new SendToMenu(api, option.getSendToProperty()));
-                        registerHotKey();
+                        if (hotkeyHandler.isSupport()) {
+                            hotkeyHandler.deregisters();
+                            hotkeyHandler.registers();
+                                                }
                     }
                     applyOptionProperty();
                 } else if (LoggingProperty.LOGGING_PROPERTY.equals(evt.getPropertyName())) {

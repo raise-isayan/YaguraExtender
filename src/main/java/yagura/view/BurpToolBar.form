@@ -8,6 +8,14 @@
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
+        <MenuItem class="javax.swing.JMenuItem" name="mnuRestoreProjectSettings">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Restore Default Project"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuRestoreProjectSettingsActionPerformed"/>
+          </Events>
+        </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="mnuLoadProjectSettings">
           <Properties>
             <Property name="text" type="java.lang.String" value="Load project settings"/>
@@ -27,6 +35,14 @@
         </MenuItem>
         <Component class="javax.swing.JPopupMenu$Separator" name="jSeparator0">
         </Component>
+        <MenuItem class="javax.swing.JMenuItem" name="mnuRestoreUserSettings">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Restore Default User"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuRestoreUserSettingsActionPerformed"/>
+          </Events>
+        </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="mnuLoadUserSettings">
           <Properties>
             <Property name="text" type="java.lang.String" value="Load user settings"/>

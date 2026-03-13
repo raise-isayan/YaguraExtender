@@ -173,7 +173,7 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(pnlCenterLayout.createSequentialGroup()
                                 .addComponent(btnSelect)
-                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addComponent(btnRepNew))
                             .addComponent(pnlRepEnc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
