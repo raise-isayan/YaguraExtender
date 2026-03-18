@@ -62,6 +62,7 @@ import extension.helpers.json.JsonUtil;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
+import yagura.handler.EditorProvider;
 import yagura.handler.HotKeyHander;
 import yagura.model.SendToMenu;
 import yagura.view.TabbetOption;
@@ -80,16 +81,7 @@ import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty;
 import yagura.model.UniversalViewProperty;
 import yagura.view.BurpToolBar;
-import yagura.view.GeneratePoCTabEditor;
-import yagura.view.GenerateWebsocktPoCEditor;
-import yagura.view.HtmlCommetViewTabEditor;
-import yagura.view.JSONViewTabEditor;
-import yagura.view.JWSViewTabEditor;
-import yagura.view.JsCommetViewTabEditor;
-import yagura.view.ParamsViewTabEditor;
 import yagura.view.PopupMessage;
-import yagura.view.RawViewTabEditor;
-import yagura.view.ViewStateTabEditor;
 
 /**
  * @author isayan
@@ -450,16 +442,15 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         if (this.toolbar == null) {
             return;
         }
+        Frame frame = BurpUtil.suiteFrame();
         UniversalViewProperty property = option.getUniversalViewProperty();
         EnumSet<UniversalViewProperty.BurpView> burpView = property.getBurpView();
         EnumSet<UniversalViewProperty.BurpToolBar> burpToolBar = property.getBurpToolBar();
         if (burpView.contains(UniversalViewProperty.BurpView.TOOL_BAR)) {
             api().userInterface().applyThemeToComponent(this.toolbar);
-            Frame frame = BurpUtil.suiteFrame();
             this.toolbar.setFloatable(burpToolBar.contains(UniversalViewProperty.BurpToolBar.FLOATABLE));
             frame.add(this.toolbar, BorderLayout.NORTH);
         } else {
-            Frame frame = BurpUtil.suiteFrame();
             this.toolbar.setFloatable(burpToolBar.contains(UniversalViewProperty.BurpToolBar.FLOATABLE));
             this.toolbar.setFlotingBar(false);
             frame.remove(this.toolbar);
@@ -509,12 +500,11 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         this.autoResponderHandler.extensionUnloaded();
         if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
             burpFrame.removeWindowListener(this.windowPopupListener);
-        }
-        if (this.toolbar != null) {
-            Frame frame = BurpUtil.suiteFrame();
-            this.toolbar.setFlotingBar(false);
-            frame.remove(this.toolbar);
-            this.toolbar.extensionUnloaded();
+            if (this.toolbar != null) {
+                this.toolbar.setFlotingBar(false);
+                burpFrame.remove(this.toolbar);
+                this.toolbar.extensionUnloaded();
+            }
         }
         ThemeUI.removePropertyChangeListener();
         try {
@@ -522,138 +512,5 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         } catch (IOException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-    }
-
-    protected final class EditorProvider {
-
-        private final MontoyaApi api;
-
-        public EditorProvider(MontoyaApi api) {
-            this.api = api;
-            api.userInterface().registerHttpRequestEditorProvider(this.requestRawTab);
-            api.userInterface().registerHttpResponseEditorProvider(this.responseRawTab);
-            api.userInterface().registerHttpRequestEditorProvider(this.requestParamsTab);
-            api.userInterface().registerHttpRequestEditorProvider(this.requestGeneratePoCTab);
-            api.userInterface().registerHttpRequestEditorProvider(this.requestViewStateTab);
-            api.userInterface().registerHttpResponseEditorProvider(this.responseHtmlCommentViewTab);
-            api.userInterface().registerHttpResponseEditorProvider(this.responseJsCommentViewTab);
-            api.userInterface().registerHttpRequestEditorProvider(this.requestJSONTab);
-            api.userInterface().registerHttpResponseEditorProvider(this.responseJSONTab);
-            api.userInterface().registerHttpResponseEditorProvider(this.responseJSONPTab);
-            api.userInterface().registerHttpRequestEditorProvider(this.requestJwtViewTab);
-            api.userInterface().registerWebSocketMessageEditorProvider(this.requestGenerateWebSocketPoCTab);
-        }
-
-        private final HttpRequestEditorProvider requestRawTab = new HttpRequestEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-                final RawViewTabEditor tab = new RawViewTabEditor(editorCreationContext, true);
-                return tab;
-            }
-        };
-
-        private final HttpResponseEditorProvider responseRawTab = new HttpResponseEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-                final RawViewTabEditor tab = new RawViewTabEditor(editorCreationContext, false);
-                return tab;
-            }
-        };
-
-        private final HttpRequestEditorProvider requestParamsTab = new HttpRequestEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-                final ParamsViewTabEditor tab = new ParamsViewTabEditor(editorCreationContext);
-                return tab;
-            }
-        };
-
-        private final HttpRequestEditorProvider requestJSONTab = new HttpRequestEditorProvider() {
-            @Override
-            public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-                final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, true);
-                return tab;
-            }
-        };
-
-        private final HttpResponseEditorProvider responseJSONTab = new HttpResponseEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-                final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, false);
-                return tab;
-            }
-        };
-
-        private final HttpResponseEditorProvider responseJSONPTab = new HttpResponseEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-                final JSONViewTabEditor tab = new JSONViewTabEditor(editorCreationContext, false) {
-                    @Override
-                    public boolean isJsonp() {
-                        return true;
-                    }
-                };
-                return tab;
-            }
-        };
-
-        private final HttpResponseEditorProvider responseHtmlCommentViewTab = new HttpResponseEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-                final HtmlCommetViewTabEditor tab = new HtmlCommetViewTabEditor(editorCreationContext);
-                return tab;
-            }
-        };
-
-        private final HttpResponseEditorProvider responseJsCommentViewTab = new HttpResponseEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpResponseEditor provideHttpResponseEditor(EditorCreationContext editorCreationContext) {
-                final JsCommetViewTabEditor tab = new JsCommetViewTabEditor(editorCreationContext);
-                return tab;
-            }
-        };
-
-        private final HttpRequestEditorProvider requestViewStateTab = new HttpRequestEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-                final ViewStateTabEditor tab = new ViewStateTabEditor(editorCreationContext);
-                return tab;
-            }
-        };
-
-        private final HttpRequestEditorProvider requestJwtViewTab = new HttpRequestEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-                final JWSViewTabEditor tab = new JWSViewTabEditor(editorCreationContext);
-                return tab;
-            }
-        };
-
-        private final HttpRequestEditorProvider requestGeneratePoCTab = new HttpRequestEditorProvider() {
-
-            @Override
-            public ExtensionProvidedHttpRequestEditor provideHttpRequestEditor(EditorCreationContext editorCreationContext) {
-                final GeneratePoCTabEditor tab = new GeneratePoCTabEditor(editorCreationContext);
-                return tab;
-            }
-        };
-
-        private final WebSocketMessageEditorProvider requestGenerateWebSocketPoCTab = new WebSocketMessageEditorProvider() {
-            @Override
-            public ExtensionProvidedWebSocketMessageEditor provideMessageEditor(EditorCreationContext editorCreationContext) {
-                final GenerateWebsocktPoCEditor tab = new GenerateWebsocktPoCEditor(editorCreationContext);
-                return tab;
-            }
-        };
-
     }
 }

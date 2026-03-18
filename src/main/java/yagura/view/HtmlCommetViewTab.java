@@ -135,7 +135,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
                     for (int i = 0; i < comments.length; i++) {
                         comments[i] = SmartCodec.toHtmlDecode(comments[i]);
                     }
-                    return TransUtil.join("\r\n", List.of(comments));
+                    return TransUtil.join("\r\n", comments);
                 }
 
                 @Override

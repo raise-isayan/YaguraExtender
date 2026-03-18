@@ -7,6 +7,7 @@ import burp.api.montoya.ui.Selection;
 import extend.util.external.ThemeUI;
 import extend.util.external.TransUtil;
 import extension.burp.IBurpMessageTab;
+import extension.helpers.ConvertUtil;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.StringUtil;
 import extension.view.base.CaptureItem;
@@ -137,7 +138,7 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
                     final boolean uniq = quickSearchTab.getUniqCheckBox().isSelected();
                     List<String> comments = extractComments(httpRequestResponse, encoding);
                     if (uniq) {
-                        comments = comments.stream().distinct().toList();
+                        comments = ConvertUtil.toUniqList(comments);
                     }
                     return TransUtil.join("\r\n", comments);
                 }
@@ -262,7 +263,7 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
             if (encoding != null) {
                 List<String> comments = extractComments(httpRequestResponse, encoding);
                 if (uniq) {
-                    comments = comments.stream().distinct().toList();
+                    comments = ConvertUtil.toUniqList(comments);
                 }
                 return !comments.isEmpty();
             }
