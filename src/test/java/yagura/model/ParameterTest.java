@@ -33,7 +33,7 @@ public class ParameterTest {
     public void tearDown() {
     }
 
-     @Test
+    @Test
     public void testMultipartContentType() {
         System.out.println("getMultipartContentType");
 

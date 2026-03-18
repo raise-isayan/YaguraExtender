@@ -92,6 +92,7 @@ public class MenuHander {
                 });
             }
 //
+
             @Override
             public void menuDeselected(MenuEvent e) {
             }
@@ -257,7 +258,6 @@ public class MenuHander {
         });
 
         yaguraEncoderMenu.add(yaguraEncoderBase64andUrlMenu);
-
 
         JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
             @Override
@@ -545,7 +545,6 @@ public class MenuHander {
         yaguraMenu.add(this.yaguraResultFilterMenu);
 
 //        yaguraMenu.add(burpInterceptMenu);
-
         /**
          * Yagura Extension
          */
@@ -988,7 +987,6 @@ public class MenuHander {
         BurpConfig.InterceptWebSocketsMessages burpInterceptWs = BurpConfig.getInterceptWebSocketsMessages(api);
 
     }
-
 
     /**
      * Result Filter

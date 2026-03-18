@@ -391,8 +391,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());
         if (button != null) {
             return button.isSelected();
-        }
-        else {
+        } else {
             return api.proxy().isInterceptEnabled();
         }
     }
@@ -543,14 +542,13 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     }//GEN-LAST:event_mnuSaveProjectSettingsActionPerformed
 
     /**
-     * Intercept requests based on the following rules
-     * Request interception rules
+     * Intercept requests based on the following rules Request interception
+     * rules
      * ---------------------------------------------------------------------
-     * Intercept responses based on the following rules
-     * Response interception rules
+     * Intercept responses based on the following rules Response interception
+     * rules
      * ---------------------------------------------------------------------
-     * Intercept client-to-server messages
-     * Intercept server-to-client messages
+     * Intercept client-to-server messages Intercept server-to-client messages
      * Only intercept in-scope messages
      */
     private void btnInterceptOptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInterceptOptionActionPerformed
@@ -645,7 +643,6 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 
-
     public void updatePopupMenuUI() {
         this.updateInterceptOptionUI();
     }
@@ -708,7 +705,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             api.logging().logToOutput("res:" + responseRule.isDoIntercept());
             for (int i = 0; i < mnuResposeInterceptRule.getMenuComponentCount(); i++) {
                 if (mnuResposeInterceptRule.getMenuComponent(i) instanceof JCheckBoxMenuItem chkMenuItem) {
-                   responseRules.get(i).setEnabled(chkMenuItem.isSelected());
+                    responseRules.get(i).setEnabled(chkMenuItem.isSelected());
                 }
             }
             responseRule.setAutomaticallyUpdateContentLengthHeader(mnuChkResponseUpdateContentLength.isSelected());
@@ -770,7 +767,6 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
 //    public int getIntervalTime() {
 //        return this.interval_time;
 //    }
-
     @Override
     public void extensionUnloaded() {
         JToggleButton button = BurpUtil.findSuiteIntercept(BurpUtil.suiteFrame());

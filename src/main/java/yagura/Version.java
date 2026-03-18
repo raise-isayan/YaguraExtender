@@ -54,7 +54,7 @@ public final class Version extends CustomVersion {
                 Config.getExtensionHomeDir().getAbsoluteFile(),
                 System.getProperty("os.name"),
                 System.getProperty("os.arch")
-                );
+        );
     }
 
 }

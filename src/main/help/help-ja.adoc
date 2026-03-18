@@ -473,6 +473,9 @@ Target::
     リクエストの requsetまたは、responseをチェックした場合に登録したTargetに送ります。 +
     リクエストおよびレスポンスはヘッダおよびボディのいずれかの送信を選択できます。
 
+Hotkey::
+    ショートカットキーを設定します。
+
 ===== HTTP Connection 設定ダイヤログ
 
 サーバに送信する場合にチェックされている場合、SendToの送信に利用されるHTTPクライアントの設定が可能となります。
@@ -1578,7 +1581,7 @@ image:images/custom_jtranscoder_JWT_encoder.png[JWT Token Decoderタブ]
 [Secret]テキストエリア::
  エンコードするJWTのSecretを入力します。
 
-==== JWT Converter タブ
+==== JWK Converter タブ
 
 JWKを変換します。
 

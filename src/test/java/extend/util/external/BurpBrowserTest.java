@@ -75,16 +75,15 @@ public class BurpBrowserTest {
     public void testBrowserProfiel() throws IOException {
         System.out.println("testBrowserProfiel");
         try {
-        String state_path = BurpBrowserTest.class.getResource("/resources/Local_State").getPath();
-        Map<String, BurpBrowser.BrowserProfile> profile_map = BurpBrowser.getBrowserProfile(new File(state_path).toPath());
-        for (String key : profile_map.keySet()) {
-            System.out.println("keys:" + key);
-            System.out.println("value:" + profile_map.get(key).getName());
-        }
+            String state_path = BurpBrowserTest.class.getResource("/resources/Local_State").getPath();
+            Map<String, BurpBrowser.BrowserProfile> profile_map = BurpBrowser.getBrowserProfile(new File(state_path).toPath());
+            for (String key : profile_map.keySet()) {
+                System.out.println("keys:" + key);
+                System.out.println("value:" + profile_map.get(key).getName());
+            }
         } catch (Exception ex) {
             fail(ex.getMessage(), ex);
         }
     }
-
 
 }

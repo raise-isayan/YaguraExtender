@@ -491,8 +491,7 @@ public class SendToParameterPanel extends javax.swing.JPanel {
             TransUtil.EncodePattern.URL_UNICODE.name(),
             TransUtil.EncodePattern.BASE64.name(),
             TransUtil.EncodePattern.BASE64_AND_URL.name(),
-            TransUtil.EncodePattern.JSON.name(),
-        };
+            TransUtil.EncodePattern.JSON.name(),};
         this.cmbReqNameMatchDecodeType.setModel(new DefaultComboBoxModel<>(DECODE_TYPES));
         this.cmbReqCommentMatchDecodeType.setModel(new DefaultComboBoxModel<>(DECODE_TYPES));
     }

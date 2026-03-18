@@ -175,8 +175,7 @@ public class FilterBambdaPanel extends javax.swing.JPanel {
             if (visible) {
                 this.basicSplitDivUI.getLeftBotton().doClick();
                 this.splitComple.setDividerLocation(100);
-            }
-            else {
+            } else {
                 this.basicSplitDivUI.getRightBotton().doClick();
             }
         }

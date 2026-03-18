@@ -48,7 +48,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
     protected final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
-
     /**
      * Creates new form Certificate
      */
@@ -586,7 +585,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubjectOrganizationName)
                     .addComponent(txtSubjectOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubjectLoccalityName)
                     .addComponent(txtSubjectLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -971,7 +970,6 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         }
         return cert;
     }
-
 
     private static org.bouncycastle.asn1.x500.X500NameBuilder generateSubjectDN(String commonName, String organizationName, String loccalityName, String country) throws IllegalArgumentException {
         org.bouncycastle.asn1.x500.X500NameBuilder subjectDN = new org.bouncycastle.asn1.x500.X500NameBuilder();

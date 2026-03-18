@@ -255,5 +255,4 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
         this.tabJTransCoder.extensionUnloaded();
     }
 
-
 }

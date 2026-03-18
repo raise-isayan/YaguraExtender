@@ -52,7 +52,7 @@ public class BambdaFile {
                     String value = parts[1].trim();
                     token.put(key, value);
                     if (KEY_SOURCE.equals(key) && SOURCE_ML_SEP.equals(value)) {
-                        StringBuffer content = new StringBuffer();
+                        StringBuilder content = new StringBuilder();
                         while (scanner.hasNextLine()) {
                             String last = scanner.nextLine();
                             content.append(last.stripLeading());

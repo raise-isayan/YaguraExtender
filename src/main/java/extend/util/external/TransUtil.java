@@ -110,7 +110,6 @@ public class TransUtil {
 //            String value = s.toUpperCase();
 //            return Enum.valueOf(EncodePattern.class, value);
 //        }
-
     };
 
 //    private final static Pattern PTN_URLENCODE = Pattern.compile("(%[0-9a-fA-F][0-9a-fA-F]|[0-9a-zA-Z\\*_\\+\\.-])+");

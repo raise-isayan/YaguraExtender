@@ -101,7 +101,7 @@ public class CodecUtilTest {
         System.out.println(Sha2Crypt.sha256Crypt("aaa".getBytes()));
     }
 
-   @Test
+    @Test
     public void testBlake3_x32() {
         System.out.println("testBlake3");
         Blake3 hasher = Blake3.initHash();
@@ -197,12 +197,12 @@ public class CodecUtilTest {
         }
         {
             System.out.println("testBase64Builder-76");
-            Base64 b64 = builder.setLineLength(76).setLineSeparator((byte)'\r', (byte)'\n').get();
+            Base64 b64 = builder.setLineLength(76).setLineSeparator((byte) '\r', (byte) '\n').get();
             System.out.println(StringUtil.getStringRaw(b64.encode(StringUtil.getBytesRaw("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))));
         }
         {
             System.out.println("testBase64Builder-76");
-            Base64 b64 = builder.setLineLength(76).setLineSeparator((byte)'\n').get();
+            Base64 b64 = builder.setLineLength(76).setLineSeparator((byte) '\n').get();
             System.out.println(StringUtil.getStringRaw(b64.encode(StringUtil.getBytesRaw("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))));
         }
     }

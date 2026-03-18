@@ -80,6 +80,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         chkJSONP = new javax.swing.JCheckBox();
         chkViewState = new javax.swing.JCheckBox();
         chklineWrap = new javax.swing.JCheckBox();
+        chkJsComment = new javax.swing.JCheckBox();
         tabBurpView = new javax.swing.JPanel();
         chkBurpSuiteToolBar = new javax.swing.JCheckBox();
         chkToolBarFloatable = new javax.swing.JCheckBox();
@@ -203,7 +204,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlCenterLayout.createSequentialGroup()
                         .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlCenterLayout.createSequentialGroup()
-                                .addGap(8, 8, 8)
+                                .addContainerGap()
                                 .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblSelect)
                                     .addComponent(lblTarget))
@@ -228,7 +229,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addGroup(pnlCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cmbDefaultLangEncoding, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnReset)))
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
 
         tabEncoding.add(pnlCenter, java.awt.BorderLayout.CENTER);
@@ -312,6 +313,14 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        chkJsComment.setSelected(true);
+        chkJsComment.setText("JS Comment");
+        chkJsComment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkJsCommentActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabMessageViewLayout = new javax.swing.GroupLayout(tabMessageView);
         tabMessageView.setLayout(tabMessageViewLayout);
         tabMessageViewLayout.setHorizontalGroup(
@@ -323,7 +332,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(chkHTMLComment)
                     .addComponent(chkJSON)
                     .addComponent(chkJWT)
-                    .addComponent(lblDispayMaxLength))
+                    .addComponent(lblDispayMaxLength)
+                    .addComponent(chkJsComment))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(chkUniversalRaw)
@@ -346,14 +356,16 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(chkUniversalParams))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkJSON)
-                    .addComponent(chkJSONP))
+                    .addComponent(chkJSONP)
+                    .addComponent(chkJsComment))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chkJWT)
-                    .addComponent(chkViewState))
+                    .addComponent(chkViewState)
+                    .addComponent(chkJSON))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chklineWrap)
+                .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chklineWrap)
+                    .addComponent(chkJWT))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tabMessageViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDispayMaxLength)
@@ -564,6 +576,10 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkToolBarFloatableActionPerformed
 
+    private void chkJsCommentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkJsCommentActionPerformed
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
+    }//GEN-LAST:event_chkJsCommentActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;
     private javax.swing.JButton btnEncLerftArraw;
@@ -576,6 +592,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JCheckBox chkJSON;
     private javax.swing.JCheckBox chkJSONP;
     private javax.swing.JCheckBox chkJWT;
+    private javax.swing.JCheckBox chkJsComment;
     private javax.swing.JCheckBox chkToolBarFloatable;
     private javax.swing.JCheckBox chkUniversalParams;
     private javax.swing.JCheckBox chkUniversalRaw;
@@ -693,6 +710,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private void setMessageView(EnumSet<UniversalViewProperty.MessageView> view) {
         this.chkGeneratePoC.setSelected(view.contains(UniversalViewProperty.MessageView.GENERATE_POC));
         this.chkHTMLComment.setSelected(view.contains(UniversalViewProperty.MessageView.HTML_COMMENT));
+        this.chkJsComment.setSelected(view.contains(UniversalViewProperty.MessageView.JS_COMMENT));
         this.chkJSON.setSelected(view.contains(UniversalViewProperty.MessageView.JSON));
         this.chkJSONP.setSelected(view.contains(UniversalViewProperty.MessageView.JSONP));
         this.chkJWT.setSelected(view.contains(UniversalViewProperty.MessageView.JWT));
@@ -708,6 +726,9 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         }
         if (this.chkHTMLComment.isSelected()) {
             view.add(UniversalViewProperty.MessageView.HTML_COMMENT);
+        }
+        if (this.chkJsComment.isSelected()) {
+            view.add(UniversalViewProperty.MessageView.JS_COMMENT);
         }
         if (this.chkJSON.isSelected()) {
             view.add(UniversalViewProperty.MessageView.JSON);

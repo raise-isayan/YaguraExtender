@@ -70,8 +70,7 @@ public abstract class SendToMenuItem
             } else {
                 messageInfo = context.selectedRequestResponses();
             }
-        }
-        else if(componentEvent instanceof HotKeyEvent context){
+        } else if (componentEvent instanceof HotKeyEvent context) {
             if (context.messageEditorRequestResponse().isPresent()) {
                 messageInfo = List.of(context.messageEditorRequestResponse().get().requestResponse());
             } else {
@@ -128,7 +127,7 @@ public abstract class SendToMenuItem
         return file;
     }
 
-    public List<String> executeArgumentFormat(HttpRequestResponse httpRequestResponse, String selectedText, String [] formats) throws MalformedURLException {
+    public List<String> executeArgumentFormat(HttpRequestResponse httpRequestResponse, String selectedText, String[] formats) throws MalformedURLException {
         final List<String> argsList = new ArrayList<>();
         try {
             for (int i = 0; i < formats.length; i++) {

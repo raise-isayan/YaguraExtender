@@ -396,7 +396,6 @@ public class okHttpClientTest {
 //        }
     }
 
-
     private void testGetSocksProxyAuthInterceptor(Interceptor interceptor) {
         try {
             String proxyHost = "127.0.0.1";

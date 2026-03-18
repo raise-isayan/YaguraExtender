@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.api.montoya.ui.hotkey.HotKey;
 import java.util.Properties;
 
 /**

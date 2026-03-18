@@ -3,7 +3,6 @@ package yagura.view;
 import aspx.viewstate.ViewState;
 import aspx.viewstate.ViewState.Algorithm;
 import aspx.viewstate.ViewStateParser;
-import burp.BurpExtension;
 import burp.api.montoya.http.message.params.HttpParameterType;
 import burp.api.montoya.http.message.params.ParsedHttpParameter;
 import burp.api.montoya.core.ToolType;
@@ -22,7 +21,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -36,7 +34,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -117,7 +114,6 @@ public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab 
 
         pnlViewState.setLayout(new java.awt.BorderLayout());
 
-        treeViewState.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
         treeViewState.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         scrollViewState.setViewportView(treeViewState);
@@ -350,20 +346,7 @@ public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab 
             return false;
         }
         try {
-            UniversalViewProperty viewProperty = BurpExtension.getInstance().getProperty().getUniversalViewProperty();
-            EnumSet<UniversalViewProperty.MessageView> view = viewProperty.getMessageView();
-            if (!view.contains(UniversalViewProperty.MessageView.VIEW_STATE)) {
-                return false;
-            }
-            // Burp v2023.4.1 以降の謎挙動に対応
-            if (httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null) {
-                return true;
-            }
-            // パラメータ値のサイズではなく全体のサイズで判断する
             HttpRequest httpRequest = httpRequestResponse.request();
-            if (httpRequest.toByteArray().length() > viewProperty.getDispayMaxLength() && viewProperty.getDispayMaxLength() != 0) {
-                return false;
-            }
             List<ParsedHttpParameter> parameters = httpRequest.parameters();
             for (ParsedHttpParameter p : parameters) {
                 if (p.type() == HttpParameterType.BODY) {

@@ -215,7 +215,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
         }
         try {
             HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
-            if (wrapResponse.hasHttpResponse()) {
+            if (!wrapResponse.hasHttpResponse()) {
                 return false;
             }
             UniversalViewProperty viewProperty = extenderImpl.getProperty().getUniversalViewProperty();
@@ -224,13 +224,11 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
             if (!view.contains(UniversalViewProperty.MessageView.HTML_COMMENT)) {
                 return false;
             }
-
             // Burp v2023.4.1 以降の謎挙動に対応
             if ((httpRequestResponse.request() != null && httpRequestResponse.request().toByteArray().length() == 0 && httpRequestResponse.response() == null)
                     || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
                 return true;
             }
-
             boolean mimeHTMLType = false;
             MimeType mimeType = wrapResponse.inferredMimeType();
             mimeHTMLType = (mimeType == MimeType.HTML || mimeType == MimeType.XML || mimeType == MimeType.IMAGE_SVG_XML);
@@ -241,10 +239,8 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
                     String comments[] = HttpUtil.extractHTMLComments(StringUtil.getStringCharset(httpRequestResponse.response().body().getBytes(), encoding), uniq);
                     return comments.length > 0;
                 }
-                return false;
-            } else {
-                return false;
             }
+            return false;
         } catch (Exception ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;

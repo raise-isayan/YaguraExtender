@@ -9,7 +9,8 @@ public class StringJavaSourceObject extends SimpleJavaFileObject {
 
     private final static Logger logger = Logger.getLogger(StringJavaSourceObject.class.getName());
 
-    /***
+    /**
+     * 
      * クラス名
      */
     private final String className;

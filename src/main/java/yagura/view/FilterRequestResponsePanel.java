@@ -197,10 +197,10 @@ public class FilterRequestResponsePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void customizeComponents() {
-        this.pnlHttpStatus.setLayout(new VerticalFlowLayout());        
+        this.pnlHttpStatus.setLayout(new VerticalFlowLayout());
     }
-    
-    
+
+
     private void chkHideStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chkHideStateChanged
         this.chkShowOnly.setEnabled(!this.chkHide.isSelected());
     }//GEN-LAST:event_chkHideStateChanged
@@ -232,7 +232,6 @@ public class FilterRequestResponsePanel extends javax.swing.JPanel {
     private javax.swing.JTextField txtShowOnly;
     // End of variables declaration//GEN-END:variables
 
-
     public void setProperty(FilterRequestResponseProperty filterProp) {
 
         this.chkShowOnly.setSelected(filterProp.getShowOnly());
@@ -253,7 +252,7 @@ public class FilterRequestResponsePanel extends javax.swing.JPanel {
         this.txtResponse.setText(filterProp.getResponse());
         this.chkResRegExp.setSelected(filterProp.isResponseRegex());
         this.chkResIgnoreCase.setSelected(filterProp.isResponseIgnoreCase());
-        
+
     }
 
     public FilterRequestResponseProperty getRequestResponseProperty(FilterRequestResponseProperty filterProp) {
@@ -261,12 +260,12 @@ public class FilterRequestResponsePanel extends javax.swing.JPanel {
         filterProp.setShowOnlyExtension(this.txtShowOnly.getText());
         filterProp.setHide(this.chkHide.isSelected());
         filterProp.setHideExtension(this.txtHide.getText());
-        
+
         filterProp.setStat2xx(this.chkStat2xx.getModel().isSelected());
         filterProp.setStat3xx(this.chkStat3xx.getModel().isSelected());
         filterProp.setStat4xx(this.chkStat4xx.getModel().isSelected());
         filterProp.setStat5xx(this.chkStat5xx.getModel().isSelected());
-        
+
         filterProp.setMethod(this.txtMethod.getText());
         filterProp.setPath(this.txtPath.getText());
         filterProp.setRequest(this.txtRequest.getText());
@@ -277,5 +276,5 @@ public class FilterRequestResponsePanel extends javax.swing.JPanel {
         filterProp.setResponseIgnoreCase(this.chkResIgnoreCase.isSelected());
         return filterProp;
     }
-    
+
 }

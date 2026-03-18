@@ -98,6 +98,9 @@ dependencies {
 //    compileOnly 'org.bouncycastle:bcprov-jdk18on:1.81'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
 
+    // https://mvnrepository.com/artifact/org.brotli/dec
+    compileOnly 'org.brotli:dec:0.1.2'
+
     // https://github.com/raise-isayan/BurpExtensionCommons
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -108,6 +111,9 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.21.0'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.5.4'
+
+    // Source: https://mvnrepository.com/artifact/org.mozilla/rhino
+    implementation 'org.mozilla:rhino:1.9.1'
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
     implementation 'org.jsoup:jsoup:1.21.2'

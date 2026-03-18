@@ -2,9 +2,7 @@ package yagura.view;
 
 import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
-import burp.api.montoya.ui.hotkey.HotKey;
 import extension.burp.BurpConfig;
-import extension.burp.BurpHotKey;
 import yagura.model.SendToItem;
 import java.io.File;
 import java.util.List;
@@ -289,7 +287,7 @@ public class SendToItemDlg extends CustomDialog {
                         .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(tabBaseLayout.createSequentialGroup()
                                 .addGap(24, 24, 24)
-                                .addComponent(btnSelectExecute, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                                .addComponent(btnSelectExecute, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
                             .addGroup(tabBaseLayout.createSequentialGroup()
                                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(lblMenuCaption)
@@ -297,7 +295,7 @@ public class SendToItemDlg extends CustomDialog {
                                 .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(tabBaseLayout.createSequentialGroup()
                                         .addGap(2, 2, 2)
-                                        .addComponent(btnExtendProperty, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                                        .addComponent(btnExtendProperty, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
                                     .addGroup(tabBaseLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -312,7 +310,7 @@ public class SendToItemDlg extends CustomDialog {
                         .addGroup(tabBaseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblHotKeyText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblHotKey, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         tabbetSendTo.addTab("Base", tabBase);
@@ -578,8 +576,7 @@ public class SendToItemDlg extends CustomDialog {
         }
         if (this.chkServer.isSelected()) {
             this.sendToServerExtendDlg.setExtendView(EnumSet.of(SendToExtendProperty.ExtendView.HTTP_EXTEND, SendToExtendProperty.ExtendView.SENDTO_PARAMETER));
-        }
-        else {
+        } else {
             this.sendToServerExtendDlg.setExtendView(EnumSet.of(SendToExtendProperty.ExtendView.SENDTO_ARGS));
         }
         this.sendToServerExtendDlg.setVisible(true);

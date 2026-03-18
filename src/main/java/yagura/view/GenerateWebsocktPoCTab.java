@@ -342,8 +342,9 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
         return csrfParam;
     }
 
-    /***
-     * <html>
+    /**
+     *
+     * < html>
      * <head><meta http-equiv="Content-type" content="text/html; charset='UTF-8'">
      * <script type="text/javascript">
      * function submitPoC() { var ws = new WebSocket(
@@ -364,7 +365,8 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
      * <input type="button" value="submit" onclick="submitPoC();"></div>
      * <div id="message"></div>
      * </body></html>
-     ***/
+     **
+     */
     static String generateWebSocketSendFunctionCall(String url, byte[] binaly) {
         StringBuilder buff = new StringBuilder();
         buff.append("\tconst url = ").append("\"").append(ConvertUtil.encodeJsLangQuote(url)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
@@ -392,23 +394,22 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
         return buff.toString();
     }
 
-    /***
-     * <html>
+    /**
+     *
+     * < html>
      * <head><meta http-equiv="Content-type" content="text/html; charset='UTF-8'">
      * <script type="text/javascript">
-     * function submitPoC() {
-     *     var ws = new WebSocket('wss://echo.websocket.org/');
-     *     ws.addEventListener("message", (event) => {
-     *           const data = JSON.parse(event.data);
-     *           console.log("📩 Message from server:", data);
-     *     });
-     * }
+     * function submitPoC() { var ws = new
+     * WebSocket('wss://echo.websocket.org/'); ws.addEventListener("message",
+     * (event) => { const data = JSON.parse(event.data); console.log("📩 Message
+     * from server:", data); }); }
      * </script>
      * </head><body>
      * <input type="button" value="submit" onclick="submitPoC();"></div>
      * <div id="message"></div>
      * </body></html>
-     ***/
+     **
+     */
     static String generateWebSocketReceiveFunctionCall(String url) {
         StringBuilder buff = new StringBuilder();
         buff.append("\tconst url = ").append("\"").append(ConvertUtil.encodeJsLangQuote(url)).append("\"").append(";").append(HttpUtil.LINE_TERMINATE);
@@ -467,8 +468,7 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
                     scriptTag.append(generateWebSocketSendFunctionCall(url, payload.getBytes())).append(HttpUtil.LINE_TERMINATE);
                 }
                 scriptTag.append("}").append(HttpUtil.LINE_TERMINATE);
-            }
-            else {
+            } else {
                 scriptTag.append(generateWebSocketReceiveFunction());
                 String timeDelay = csrfParam.isCsrfTimeDelay() ? "msec" : "";
                 scriptTag.append(String.format("function submitPoC(%s) {", new Object[]{timeDelay})).append(HttpUtil.LINE_TERMINATE);

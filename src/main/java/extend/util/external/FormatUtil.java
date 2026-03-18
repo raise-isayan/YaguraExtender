@@ -73,7 +73,7 @@ public class FormatUtil {
             DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
             Document document = docBuilder.parse(new InputSource(new StringReader(xmlString)));
             result = prettyXml(document, pretty);
-        } catch (ParserConfigurationException | SAXException  ex) {
+        } catch (ParserConfigurationException | SAXException ex) {
             throw new IOException(ex);
         }
         return result;

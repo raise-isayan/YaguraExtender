@@ -262,12 +262,11 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
     private final SendToItemDlg sendtoItemDlg = new SendToItemDlg(null, true);
 
 //    private final TransferHandler handler = new TableRowTransferHandler();
-
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
 
         // SendTo Tab
-        this.cmbPlaceLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { SendToProperty.SendToMenuPlace.DEFAULT.toIdent(), SendToProperty.SendToMenuPlace.TOP_LEVEL.toIdent()}));
+        this.cmbPlaceLevel.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{SendToProperty.SendToMenuPlace.DEFAULT.toIdent(), SendToProperty.SendToMenuPlace.TOP_LEVEL.toIdent()}));
         this.modelSendTo = new CustomTableModel(this.tableSendTo.getModel());
         this.tableSendTo.setModel(this.modelSendTo);
 
@@ -499,14 +498,14 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
 
     public SendToProperty getSendToProperty() {
         SendToProperty sendToProperty = new SendToProperty();
-        sendToProperty.setMenuPlace(SendToProperty.SendToMenuPlace.parseEnumIdent((String)this.cmbPlaceLevel.getSelectedItem()));
+        sendToProperty.setMenuPlace(SendToProperty.SendToMenuPlace.parseEnumIdent((String) this.cmbPlaceLevel.getSelectedItem()));
         sendToProperty.setSendToItemList(this.getSendToItemList());
         sendToProperty.setSubMenu(this.chkSubmenu.isSelected());
         sendToProperty.setForceSortOrder(this.chkForceSortOrder.isSelected());
         return sendToProperty;
     }
 
-    public static void main(String [] args) {
+    public static void main(String[] args) {
         EventQueue.invokeLater(MainPanel::createAndShowGui);
     }
 
@@ -551,6 +550,5 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             frame.setVisible(true);
         }
     }
-
 
 }

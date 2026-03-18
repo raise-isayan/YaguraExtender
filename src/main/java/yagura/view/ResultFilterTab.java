@@ -28,7 +28,6 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
     private final static Logger logger = Logger.getLogger(ResultFilterTab.class.getName());
     private final static java.util.ResourceBundle BUNDLE = java.util.ResourceBundle.getBundle("yagura/resources/Resource");
 
-    
     /**
      * Creates new form ResultFilter
      */
@@ -163,8 +162,7 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
                     if (filter.getFilterCategory() == FilterProperty.FilterCategory.HTTP) {
                         l.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));
                         l.setIconTextGap(2);
-                    }
-                    else {
+                    } else {
                         l.setIcon(ResultFilterDlg.getCategoryIcon(filter.getFilterCategory()));
                         l.setIconTextGap(2);
                     }
@@ -269,7 +267,6 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
         return name;
     }
 
-    
     @SuppressWarnings("unchecked")
     private void showResultFilterDlg(boolean editMode) {
         this.filterDlg.setLocationRelativeTo(this);

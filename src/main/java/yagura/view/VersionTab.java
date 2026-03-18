@@ -96,7 +96,7 @@ public class VersionTab extends javax.swing.JPanel implements IBurpTab {
                 .addGroup(pnlConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExport)
                     .addComponent(btnImport))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
 
         pnlCenter.add(pnlConfig, java.awt.BorderLayout.NORTH);

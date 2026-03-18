@@ -1,6 +1,5 @@
 package yagura.dynamic;
 
-import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
 import extension.burp.FilterProperty;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -186,7 +185,6 @@ public class SimpleJavaCompilerEngineTest {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-
 
     @Test
     public void testClassError() {

@@ -1,6 +1,5 @@
 package yagura.model;
 
-import burp.BurpExtension;
 import burp.api.montoya.ui.hotkey.HotKey;
 import burp.api.montoya.ui.hotkey.HotKeyEvent;
 import burp.api.montoya.ui.hotkey.HotKeyHandler;

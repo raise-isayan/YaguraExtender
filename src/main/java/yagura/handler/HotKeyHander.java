@@ -4,7 +4,6 @@ import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.core.Registration;
 import extension.burp.BurpConfig;
-import static extension.burp.BurpExtensionImpl.api;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,7 +37,7 @@ public class HotKeyHander {
         for (SendToItem sendToItem : itemLists) {
             HotKeyAssign keyAssign = new HotKeyAssign(sendToItem);
             if (keyAssign.isValidHotKey()) {
-                Registration regster = api().userInterface().registerHotKeyHandler(keyAssign.getHotKey(), keyAssign.getHotKeyHandler());
+                Registration regster = api.userInterface().registerHotKeyHandler(keyAssign.getHotKey(), keyAssign.getHotKeyHandler());
                 this.registerHotkeys.add(regster);
             }
         }
@@ -49,6 +48,16 @@ public class HotKeyHander {
             reg.deregister();
         }
         this.registerHotkeys.clear();
+    }
+
+    public boolean exists(String hotkey) {
+        List<BurpConfig.Hotkey> hks = BurpConfig.getHotkey(api);
+        boolean matchs = hks.stream().anyMatch(predicate -> hotkey.equals(predicate.getHotkey()));
+        if (!matchs) {
+            List<SendToItem> itemLists = this.sendto.getSendToItemList();
+            matchs = itemLists.stream().anyMatch(predicate -> hotkey.equals(predicate.getHotKey()));
+        }
+        return matchs;
     }
 
 }

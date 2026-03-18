@@ -161,7 +161,7 @@ public class UniversalViewProperty implements IPropertyConfig {
     }
 
     public enum MessageView {
-        GENERATE_POC, HTML_COMMENT, JSON, JSONP, JWT, VIEW_STATE, JRAW, JPARAM;
+        GENERATE_POC, HTML_COMMENT, JS_COMMENT, JSON, JSONP, JWT, VIEW_STATE, JRAW, JPARAM;
 
         public static MessageView parseEnum(String s) {
             String value = s.toUpperCase();

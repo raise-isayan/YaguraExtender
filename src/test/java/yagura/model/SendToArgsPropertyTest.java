@@ -61,7 +61,7 @@ public class SendToArgsPropertyTest {
         System.out.println("testProperties");
         SendToArgsProperty sendtoArgs = new SendToArgsProperty();
         sendtoArgs.setUseOverride(true);
-        sendtoArgs.setArgsList(List.of("aaa","b\"bb","e,ee"));
+        sendtoArgs.setArgsList(List.of("aaa", "b\"bb", "e,ee"));
         Properties prop = sendtoArgs.getProperties();
         assertEquals(true, ConvertUtil.parseBooleanDefault(prop.getProperty("SendToArgs.useOverride"), false));
         assertEquals("[\"aaa\",\"b\\\"bb\",\"e,ee\"]", prop.getProperty("SendToArgs.argsList"));
@@ -79,88 +79,87 @@ public class SendToArgsPropertyTest {
 
     @Test
     public void testArgs() {
-        String [] formats = new String[] { "host=%H", "port=%P", "%T", "%U", "%A", "%Q", "%C", "%M", "%S","%F","%R","%E", "%B", "%N", "%%" } ;
-            for (int i = 0; i < formats.length; i++) {
-                StringBuilder buff = new StringBuilder();
-                Pattern p = Pattern.compile("%([HPTUAQCMSFRN%])");
-                Matcher m = p.matcher(formats[i]);
-                while (m.find()) {
-                    String opt = m.group(1);
-                    String replace = m.group(0);
-                    switch (opt.charAt(0)) {
-                        case 'H': // %H: will be replaced with the host
-                        {
-                            replace = "www.example.com";
-                            break;
-                        }
-                        case 'P': // %P: will be replaced with the port
-                        {
-                            replace = "8080";
-                            break;
-                        }
-                        case 'T': // %T: will be replaced with the protocol
-                        {
-                            replace = "https";
-                            break;
-                        }
-                        case 'U': // %U: will be replaced with the url
-                        {
-                            replace = "https://wwww.example.com/test?query";
-                            break;
-                        }
-                        case 'A': // %A: will be replaced with the url path
-                        {
-                            replace = "/test";
-                            break;
-                        }
-                        case 'Q': // %Q: will be replaced with the url query
-                        {
-                            replace = "query";
-                            break;
-                        }
-                        case 'C': // %C: will be replaced with the cookies
-                        {
-                            replace = "Cookie: test=test;";
-                            break;
-                        }
-                        case 'M': // %M: will be replaced with the HTTP-method
-                        {
-                            replace = "GET";
-                            break;
-                        }
-                        case 'S': // %S: will be replaced with the selected text
-                        {
-                            replace = "selectedtext";
-                            break;
-                        }
-                        case 'F': // %F: will be replaced with the path to a temporary file containing the selected text
-                        {
-                            replace = "selectedtext file";
-                            break;
-                        }
-                        case 'R': // %R: will be replaced with the path to a temporary file containing the content of the focused request/response
-                        {
-                            replace = "request/response";
-                            break;
-                        }
-                        case 'N': // %N: will be replaced with the notes
-                        {
-                            replace = "notes";
-                            break;
-                        }
-                        case '%': // escape
-                        {
-                            replace = "%";
-                            break;
-                        }
+        String[] formats = new String[]{"host=%H", "port=%P", "%T", "%U", "%A", "%Q", "%C", "%M", "%S", "%F", "%R", "%E", "%B", "%N", "%%"};
+        for (int i = 0; i < formats.length; i++) {
+            StringBuilder buff = new StringBuilder();
+            Pattern p = Pattern.compile("%([HPTUAQCMSFRN%])");
+            Matcher m = p.matcher(formats[i]);
+            while (m.find()) {
+                String opt = m.group(1);
+                String replace = m.group(0);
+                switch (opt.charAt(0)) {
+                    case 'H': // %H: will be replaced with the host
+                    {
+                        replace = "www.example.com";
+                        break;
                     }
-                    m.appendReplacement(buff, replace);
+                    case 'P': // %P: will be replaced with the port
+                    {
+                        replace = "8080";
+                        break;
+                    }
+                    case 'T': // %T: will be replaced with the protocol
+                    {
+                        replace = "https";
+                        break;
+                    }
+                    case 'U': // %U: will be replaced with the url
+                    {
+                        replace = "https://wwww.example.com/test?query";
+                        break;
+                    }
+                    case 'A': // %A: will be replaced with the url path
+                    {
+                        replace = "/test";
+                        break;
+                    }
+                    case 'Q': // %Q: will be replaced with the url query
+                    {
+                        replace = "query";
+                        break;
+                    }
+                    case 'C': // %C: will be replaced with the cookies
+                    {
+                        replace = "Cookie: test=test;";
+                        break;
+                    }
+                    case 'M': // %M: will be replaced with the HTTP-method
+                    {
+                        replace = "GET";
+                        break;
+                    }
+                    case 'S': // %S: will be replaced with the selected text
+                    {
+                        replace = "selectedtext";
+                        break;
+                    }
+                    case 'F': // %F: will be replaced with the path to a temporary file containing the selected text
+                    {
+                        replace = "selectedtext file";
+                        break;
+                    }
+                    case 'R': // %R: will be replaced with the path to a temporary file containing the content of the focused request/response
+                    {
+                        replace = "request/response";
+                        break;
+                    }
+                    case 'N': // %N: will be replaced with the notes
+                    {
+                        replace = "notes";
+                        break;
+                    }
+                    case '%': // escape
+                    {
+                        replace = "%";
+                        break;
+                    }
                 }
-                m.appendTail(buff);
-                System.out.println(buff.toString());
+                m.appendReplacement(buff, replace);
             }
+            m.appendTail(buff);
+            System.out.println(buff.toString());
+        }
 
     }
-
 
 }

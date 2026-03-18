@@ -90,7 +90,6 @@ public class ThemeUI {
 //            }
 //        });
 //    }
-
     public static void applyStyleTheme(JTable table) {
         table.setGridColor(UIManager.getColor("Table.gridColor"));
         table.setForeground(UIManager.getColor("Button.default.foreground"));
@@ -104,15 +103,13 @@ public class ThemeUI {
     public static void applyTitleBarColor(JFrame frame, Color foreColor, Color backColor) {
         if (backColor != null) {
             frame.getRootPane().putClientProperty("JRootPane.titleBarBackground", backColor);
-        }
-        else {
+        } else {
             frame.getRootPane().putClientProperty("JRootPane.titleBarBackground", UIManager.getColor("InternalFrame.activeTitleBackground"));
         }
 
         if (foreColor != null) {
             frame.getRootPane().putClientProperty("JRootPane.titleBarForeground", foreColor);
-        }
-        else {
+        } else {
             frame.getRootPane().putClientProperty("JRootPane.titleBarForeground", UIManager.getColor("InternalFrame.activeTitleForeground"));
         }
         SwingUtilities.updateComponentTreeUI(frame);

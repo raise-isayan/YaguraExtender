@@ -39,7 +39,7 @@ public class SendToProperty implements IPropertyConfig {
                 }
             }
             throw new IllegalArgumentException(
-                "No enum constant " + SendToMenuPlace.class.getCanonicalName() + "." + name);
+                    "No enum constant " + SendToMenuPlace.class.getCanonicalName() + "." + name);
         }
 
     };

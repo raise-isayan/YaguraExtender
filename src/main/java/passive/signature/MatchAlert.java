@@ -6,15 +6,18 @@ import burp.api.montoya.core.Marker;
 import burp.api.montoya.core.Range;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.scanner.AuditResult;
 import burp.api.montoya.scanner.ScanCheck;
 import burp.api.montoya.scanner.audit.issues.AuditIssue;
 import burp.api.montoya.scanner.audit.issues.AuditIssueConfidence;
 import burp.api.montoya.scanner.audit.issues.AuditIssueDefinition;
 import burp.api.montoya.scanner.audit.issues.AuditIssueSeverity;
+import burp.api.montoya.scanner.scancheck.PassiveScanCheck;
 import extension.helpers.HttpUtil;
 import java.util.ArrayList;
 import java.util.List;
 import extension.burp.scanner.IssueItem;
+import extension.burp.scanner.PassiveScanCheckAdapter;
 import extension.burp.scanner.ScannerCheckAdapter;
 import extension.burp.scanner.SignatureScanBase;
 import yagura.model.MatchAlertProperty;
@@ -114,8 +117,27 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
     }
 
     @Override
-    public ScanCheck passiveScanCheck() {
-        return new ScannerCheckAdapter();
+    public PassiveScanCheck passiveScanCheck() {
+        return new PassiveScanCheckAdapter(this.getIssueName()) {
+            @Override
+            public AuditResult doCheck(HttpRequestResponse baseRequestResponse) {
+                return doPassiveScanCheck(baseRequestResponse);
+            }
+        };
+    }
+
+    @Override
+    public ScanCheck scannerScanCheck() {
+        return new ScannerCheckAdapter() {
+            @Override
+            public AuditResult passiveAudit(HttpRequestResponse baseRequestResponse) {
+                return doPassiveScanCheck(baseRequestResponse);
+            }
+        };
+    }
+
+    private AuditResult doPassiveScanCheck(HttpRequestResponse baseRequestResponse) {
+        return null;
     }
 
     public List<AuditIssue> makeIssueList(boolean messageIsRequest, HttpRequestResponse baseRequestResponse, List<IssueItem> markIssueList) {

@@ -27,6 +27,7 @@ import yagura.handler.MenuHander;
  * @author isayan
  */
 public final class SendToMenu implements ContextMenuItemsProvider {
+
     private final static Logger logger = Logger.getLogger(SendToMenu.class.getName());
     private final MontoyaApi api;
     private final BurpExtension extenderImpl;
@@ -164,8 +165,7 @@ public final class SendToMenu implements ContextMenuItemsProvider {
         HotKeyAssign hotKey = new HotKeyAssign(sendToMenuItem);
         if (hotKey.isValidHotKey()) {
             return hotKey;
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -348,8 +348,7 @@ public final class SendToMenu implements ContextMenuItemsProvider {
                 HttpRequestResponse httpRequestResponse = messageItem.get(0);
                 if (!httpRequestResponse.hasResponse()) {
                     this.api.organizer().sendToOrganizer(httpRequestResponse.request());
-                }
-                else {
+                } else {
                     this.api.organizer().sendToOrganizer(httpRequestResponse);
                 }
             }

@@ -119,14 +119,14 @@ public class ResultFilterDlg extends CustomDialog {
         pnlApplyLayout.setVerticalGroup(
             pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlApplyLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addContainerGap()
                 .addGroup(pnlApplyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnOK)
                     .addComponent(btnConvertBambda)
                     .addComponent(btnImportBambda)
                     .addComponent(btnCompileBambda))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         getContentPane().add(pnlApply, java.awt.BorderLayout.SOUTH);
@@ -192,7 +192,7 @@ public class ResultFilterDlg extends CustomDialog {
 
     public static javax.swing.ImageIcon getCategoryIcon(FilterProperty.FilterCategory category) {
         javax.swing.ImageIcon icon = null;
-        switch (category)  {
+        switch (category) {
             case HTTP:
                 icon = image_http;
                 break;
@@ -247,8 +247,7 @@ public class ResultFilterDlg extends CustomDialog {
         this.clearRerpot();
         if (!this.comple()) {
             this.setBambdaDividerClose(this.getFilterCategory(), true);
-        }
-        else {
+        } else {
             this.setBambdaDividerClose(this.getFilterCategory(), false);
         }
     }//GEN-LAST:event_btnCompileBambdaActionPerformed
@@ -398,15 +397,12 @@ public class ResultFilterDlg extends CustomDialog {
         }
     }
 
-
     private FilterProperty.FilterCategory getFilterCategory() {
         if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("HTTP")) {
             return FilterProperty.FilterCategory.HTTP;
-        }
-        else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("WebSocket")) {
+        } else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("WebSocket")) {
             return FilterProperty.FilterCategory.WEBSOCKET;
-        }
-        else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("SiteMap")) {
+        } else if (this.tabbeProtocol.getSelectedIndex() == this.tabbeProtocol.indexOfTab("SiteMap")) {
             return FilterProperty.FilterCategory.SITE_MAP;
         }
         return null;
@@ -484,6 +480,5 @@ public class ResultFilterDlg extends CustomDialog {
             getContentPane().add(this.pnlName, java.awt.BorderLayout.NORTH);
         }
     }
-
 
 }

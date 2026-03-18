@@ -482,6 +482,9 @@ Target::
     It is sent to the registered Target when requset or response of the request is checked. +
     Request and response can choose to send either header or body.
 
+Hotkey::
+    Set the shortcut keys.
+
 ===== HTTP Connection Configuration Dialog
 
 If checked for sending to server, the HTTP client used to send SendTo can be configured.
@@ -1602,7 +1605,7 @@ image:images/custom_jtranscoder_JWT_encoder.png[JWT token Decoder tab]
 [Secret] text area::
   Input the JWT secret to encode.
 
-==== JWT Converter tab
+==== JWK Converter tab
 
 Convert JWK.
 

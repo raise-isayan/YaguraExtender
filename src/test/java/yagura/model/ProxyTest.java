@@ -9,8 +9,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import okhttp3.Dns;
 import okhttp3.OkHttpClient;
 import org.junit.jupiter.api.AfterAll;
@@ -51,7 +49,6 @@ public class ProxyTest {
         clientBuilder.dns(Dns.SYSTEM).build();
 
     }
-
 
     @Test
     public void testHttpClint() {

@@ -175,7 +175,6 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
 //    private final javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
 //    private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
 //    private final javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
-
     private void customizeComponents() {
 //        this.scrollBabda.setViewportView(this.txtBambda);
 //        this.txtBambda.setEditorKitForContentType("text/java", this.javaStyleEditorKit);
@@ -184,7 +183,6 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
 //        this.pnlBambda.setLayout(new java.awt.BorderLayout());
 //        this.scrollBabda.setViewportView(this.txtBambda);
 //        this.pnlBambda.add(scrollBabda, java.awt.BorderLayout.CENTER);
-
         this.pnlFilterBambda.setFilterCategory(FilterProperty.FilterCategory.WEBSOCKET);
         this.tabbetFilter.addTab("Bambda", this.pnlFilterBambda);
 
@@ -227,7 +225,6 @@ public class FilterWebSocketPanel extends javax.swing.JPanel {
             this.tabbetFilter.setSelectedIndex(this.tabbetFilter.indexOfTab("Settings"));
         }
     }
-
 
     public void setProperty(FilterWebSocketProperty filterProp) {
         if (filterProp.getFilterMode() == FilterProperty.FilterMode.SETTING) {

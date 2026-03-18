@@ -24,7 +24,6 @@ public class MatchConditionItem {
     public MatchConditionItem() {
     }
 
-
     public boolean isSelected() {
         return selected;
     }

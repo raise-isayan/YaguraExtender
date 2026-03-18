@@ -51,6 +51,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
     private boolean textModified = false;
     private boolean editable = false;
     private HttpRequestResponse httpRequestResponse;
+
     /**
      * Creates new form ParamsViewTab
      *
@@ -225,8 +226,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
     private void btnDecodeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_btnDecodeStateChanged
         if (this.btnDecode.isSelected()) {
             this.modelParams.setContentType(this.httpRequestResponse.request().contentType());
-        }
-        else {
+        } else {
             this.modelParams.setContentType(ContentType.NONE);
         }
         this.tableParams.updateUI();

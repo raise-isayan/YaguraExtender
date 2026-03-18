@@ -153,18 +153,18 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
         });
     }
 
-    private final String FORMAT_NOTE = "%H: will be replaced with the host\n" +
-                                        "%P: will be replaced with the port\n" +
-                                        "%T: will be replaced with the protocol\n" +
-                                        "%U: will be replaced with the url\n" +
-                                        "%A: will be replaced with the url path\n" +
-                                        "%Q: will be replaced with the url query\n" +
-                                        "%C: will be replaced with the cookies\n" +
-                                        "%M: will be replaced with the HTTP-method\n" +
-                                        "%S: will be replaced with the selected text\n" +
-                                        "%F: will be replaced with the path to a temporary file containing the selected text\n" +
-                                        "%R: will be replaced with the path to a temporary file containing the content of the focused request/response\n" +
-                                        "%N: will be replaced with the notes";
+    private final String FORMAT_NOTE = "%H: will be replaced with the host\n"
+            + "%P: will be replaced with the port\n"
+            + "%T: will be replaced with the protocol\n"
+            + "%U: will be replaced with the url\n"
+            + "%A: will be replaced with the url path\n"
+            + "%Q: will be replaced with the url query\n"
+            + "%C: will be replaced with the cookies\n"
+            + "%M: will be replaced with the HTTP-method\n"
+            + "%S: will be replaced with the selected text\n"
+            + "%F: will be replaced with the path to a temporary file containing the selected text\n"
+            + "%R: will be replaced with the path to a temporary file containing the content of the focused request/response\n"
+            + "%N: will be replaced with the notes";
 
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
@@ -217,13 +217,13 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
         String item = null;
         Object editCols[] = SwingUtil.editItem(this.tableSendToArgs);
         if (editCols != null) {
-            item = (String)editCols[0];
+            item = (String) editCols[0];
         }
         return item;
     }
 
     private void setEditItem(String item, boolean update) {
-        Object[] cols = new Object[] { item };
+        Object[] cols = new Object[]{item};
         SwingUtil.addOrUpdateItem(this.tableSendToArgs, cols, update);
     }
 
@@ -232,10 +232,10 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
     }
 
     private List<String> getEditItemList() {
-       List<String> argsList = new ArrayList<>();
+        List<String> argsList = new ArrayList<>();
         for (int i = 0; i < this.modelSendToArgs.getRowCount(); i++) {
             Object rows[] = this.modelSendToArgs.getRows(i);
-            argsList.add((String)rows[0]);
+            argsList.add((String) rows[0]);
         }
         return argsList;
     }
@@ -243,7 +243,7 @@ public class SendToArgParamsPanel extends javax.swing.JPanel {
     private void setEditItemList(final List<String> argsList) {
         this.modelSendToArgs.removeAll();
         for (int i = 0; i < argsList.size(); i++) {
-            Object editCols[] = new Object [] { argsList.get(i) } ;
+            Object editCols[] = new Object[]{argsList.get(i)};
             this.modelSendToArgs.addRow(editCols);
         }
     }

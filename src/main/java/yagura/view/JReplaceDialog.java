@@ -8,16 +8,13 @@ import yagura.model.MatchReplaceItem;
 import extension.view.base.CustomDialog;
 import extension.view.base.CustomTableModel;
 import extension.view.base.TableRowTransferHandler;
-import java.awt.datatransfer.DataFlavor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DropMode;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.TransferHandler;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -601,6 +598,5 @@ public class JReplaceDialog extends CustomDialog {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
-
 
 }

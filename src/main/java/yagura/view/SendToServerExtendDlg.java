@@ -128,13 +128,19 @@ public class SendToServerExtendDlg extends CustomDialog {
     public void setExtendView(EnumSet<SendToExtendProperty.ExtendView> view) {
         this.tabbetSendToExtend.removeAll();
         if (view.contains(SendToExtendProperty.ExtendView.HTTP_EXTEND)) {
-            if (this.tabbetSendToExtend.indexOfTabComponent(this.pnlConnections) < 0) this.tabbetSendToExtend.addTab("Connections", this.pnlConnections);
+            if (this.tabbetSendToExtend.indexOfTabComponent(this.pnlConnections) < 0) {
+                this.tabbetSendToExtend.addTab("Connections", this.pnlConnections);
+            }
         }
         if (view.contains(SendToExtendProperty.ExtendView.SENDTO_PARAMETER)) {
-            if (this.tabbetSendToExtend.indexOfTabComponent(this.pnlSendToParameter) < 0) this.tabbetSendToExtend.addTab("SendToParameter", this.pnlSendToParameter);
+            if (this.tabbetSendToExtend.indexOfTabComponent(this.pnlSendToParameter) < 0) {
+                this.tabbetSendToExtend.addTab("SendToParameter", this.pnlSendToParameter);
+            }
         }
         if (view.contains(SendToExtendProperty.ExtendView.SENDTO_ARGS)) {
-            if (this.tabbetSendToExtend.indexOfTabComponent(this.pnlSendToArgs) < 0) this.tabbetSendToExtend.addTab("SendToArgs", this.pnlSendToArgs);
+            if (this.tabbetSendToExtend.indexOfTabComponent(this.pnlSendToArgs) < 0) {
+                this.tabbetSendToExtend.addTab("SendToArgs", this.pnlSendToArgs);
+            }
         }
         this.pack();
     }

@@ -10,7 +10,6 @@ import extension.view.layout.VerticalFlowLayout;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledEditorKit;
-import javax.tools.Diagnostic;
 import yagura.dynamic.BambdaTemplete;
 
 /**
@@ -142,7 +141,6 @@ public class FilterHttpPanel extends javax.swing.JPanel {
 //    private final javax.swing.JPanel pnlBambda = new javax.swing.JPanel();
 //    private final javax.swing.JScrollPane scrollBabda = new javax.swing.JScrollPane();
 //    private final javax.swing.JEditorPane txtBambda = new javax.swing.JEditorPane();
-
     private void customizeComponents() {
 //        this.scrollBabda.setViewportView(this.txtBambda);
 //        this.txtBambda.setEditorKitForContentType("text/java", this.javaStyleEditorKit);

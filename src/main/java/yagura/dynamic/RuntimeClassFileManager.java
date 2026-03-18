@@ -55,6 +55,7 @@ public class RuntimeClassFileManager extends ForwardingJavaFileManager {
 
     /**
      * JavaObject。
+     *
      * @param className
      * @return
      */
@@ -64,6 +65,7 @@ public class RuntimeClassFileManager extends ForwardingJavaFileManager {
 
     /**
      * JavaObjectを削除する。
+     *
      * @param className
      */
     public void removeJavaObject(String className) {
@@ -107,6 +109,7 @@ public class RuntimeClassFileManager extends ForwardingJavaFileManager {
 
         /**
          * クラスを検索する。
+         *
          * @param name
          * @return
          */

@@ -328,7 +328,6 @@ public class Logging implements Closeable {
     //
     // WebSocket
     //
-
     public void writeWebSocketToolMessage(ToolType toolType, final WebSocketCreated webSocketCreated, TextMessage textMessage) {
         String baseLogFileName = Config.getWebSocketToolLogName(toolType.name());
         this.writeWebSocektMessage(baseLogFileName, webSocketCreated.upgradeRequest(), textMessage);
@@ -380,7 +379,7 @@ public class Logging implements Closeable {
     protected void writeWebSocektTextMessage(OutputStream ostm, HttpRequest upgradeRequest, TextMessage textMessage) throws IOException {
         try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + textMessage.direction().name() + " " + "[" + upgradeRequest.httpService().ipAddress() + "]" + " " + upgradeRequest.url() + " " +  HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + textMessage.direction().name() + " " + "[" + upgradeRequest.httpService().ipAddress() + "]" + " " + upgradeRequest.url() + " " + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw(textMessage.payload() + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
@@ -390,7 +389,7 @@ public class Logging implements Closeable {
     protected void writeWebSocektBinayMessage(OutputStream ostm, HttpRequest upgradeRequest, BinaryMessage binaryMessage) throws IOException {
         try (BufferedOutputStream fostm = new BufferedOutputStream(ostm)) {
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
-            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + binaryMessage.direction().name() + " " +  "[" + upgradeRequest.httpService().ipAddress() + "]" + " " + upgradeRequest.url() + " " +  HttpUtil.LINE_TERMINATE));
+            fostm.write(StringUtil.getBytesRaw(getLoggingProperty().getCurrentLogTimestamp() + " " + binaryMessage.direction().name() + " " + "[" + upgradeRequest.httpService().ipAddress() + "]" + " " + upgradeRequest.url() + " " + HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
             fostm.write(binaryMessage.payload().getBytes());
             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));

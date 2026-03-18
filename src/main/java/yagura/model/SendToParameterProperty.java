@@ -339,11 +339,11 @@ public class SendToParameterProperty {
         this.reqNum = SendToParameterType.valueOf(prop.getProperty("SendToPamareter.reqNum", SendToParameterType.HISTORY_NUMBER.name()));
 
         this.reqNameMatchPattern = prop.getProperty("SendToPamareter.reqNameMatchPattern");
-        this.reqNameMatchIgnoreCase =  ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.reqNameMatchIgnoreCase"), false);
+        this.reqNameMatchIgnoreCase = ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.reqNameMatchIgnoreCase"), false);
         this.reqNameMatchDecodeType = TransUtil.EncodePattern.valueOf(prop.getProperty("SendToPamareter.reqNameMatchDecodeType", TransUtil.EncodePattern.NONE.name()));
 
         this.reqCommentMatchPattern = prop.getProperty("SendToPamareter.reqCommentMatchPattern");
-        this.reqCommentMatchIgnoreCase =  ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.reqCommentMatchIgnoreCase"), false);
+        this.reqCommentMatchIgnoreCase = ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.reqCommentMatchIgnoreCase"), false);
         this.reqCommentMatchDecodeType = TransUtil.EncodePattern.valueOf(prop.getProperty("SendToPamareter.reqCommentMatchDecodeType", TransUtil.EncodePattern.NONE.name()));
 
         this.useDummyResponse = ConvertUtil.parseBooleanDefault(prop.getProperty("SendToPamareter.useDummyResponse"), false);
@@ -398,7 +398,9 @@ public class SendToParameterProperty {
 
     public static String getResponseParameter(HttpRequestResponse messageInfo, Pattern pattern, TransUtil.EncodePattern decodeType) {
         String value = null;
-        if (messageInfo.response() == null) return value;
+        if (messageInfo.response() == null) {
+            return value;
+        }
         if (pattern != null) {
             try {
                 HttpResponseWapper wrapResponse = new HttpResponseWapper(messageInfo.response());

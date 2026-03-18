@@ -43,7 +43,7 @@ public interface SendToMessage {
         return new SendToMessage() {
             @Override
             public List<HttpRequestResponse> getSelectedMessages() {
-                return List.of(editorInfo.requestResponse()) ;
+                return List.of(editorInfo.requestResponse());
             }
 
             @Override
@@ -51,8 +51,7 @@ public interface SendToMessage {
                 if (editorInfo.selectionContext() == SelectionContext.REQUEST && editorInfo.selectionOffsets().isPresent()) {
                     Range range = editorInfo.selectionOffsets().get();
                     return StringUtil.getStringCharset(editorInfo.requestResponse().request().toByteArray().getBytes(), range.startIndexInclusive(), range.endIndexExclusive() - range.startIndexInclusive(), StandardCharsets.ISO_8859_1);
-                }
-                else if (editorInfo.selectionContext() == SelectionContext.RESPONSE && editorInfo.selectionOffsets().isPresent()) {
+                } else if (editorInfo.selectionContext() == SelectionContext.RESPONSE && editorInfo.selectionOffsets().isPresent()) {
                     Range range = editorInfo.selectionOffsets().get();
                     return StringUtil.getStringCharset(editorInfo.requestResponse().response().toByteArray().getBytes(), range.startIndexInclusive(), range.endIndexExclusive() - range.startIndexInclusive(), StandardCharsets.ISO_8859_1);
                 }

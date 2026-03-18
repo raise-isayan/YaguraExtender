@@ -803,7 +803,6 @@ public class CodecUtil {
         return toMurmurHash3_32x86(StringUtil.getBytesCharset(str, charset));
     }
 
-
     /**
      * MurmurHash3値の取得
      *

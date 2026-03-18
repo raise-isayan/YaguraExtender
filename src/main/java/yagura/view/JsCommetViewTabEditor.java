@@ -11,48 +11,48 @@ import java.awt.Component;
  *
  * @author isayan
  */
-public class HtmlCommetViewTabEditor implements ExtensionProvidedHttpResponseEditor {
+public class JsCommetViewTabEditor implements ExtensionProvidedHttpResponseEditor {
 
-    private final HtmlCommetViewTab tabHtmlCommetView;
+    private final JsCommetViewTab tabJsCommetView;
 
-    public HtmlCommetViewTabEditor(EditorCreationContext editorCreationContext) {
-        this.tabHtmlCommetView = new HtmlCommetViewTab();
+    public JsCommetViewTabEditor(EditorCreationContext editorCreationContext) {
+        this.tabJsCommetView = new JsCommetViewTab();
     }
 
     @Override
     public HttpResponse getResponse() {
-        HttpRequestResponse http = this.tabHtmlCommetView.getHttpRequestResponse();
+        HttpRequestResponse http = this.tabJsCommetView.getHttpRequestResponse();
         return http.response();
     }
 
     @Override
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
-        this.tabHtmlCommetView.setRequestResponse(httpRequestResponse);
+        this.tabJsCommetView.setRequestResponse(httpRequestResponse);
     }
 
     @Override
     public boolean isEnabledFor(HttpRequestResponse httpRequestResponse) {
-        return this.tabHtmlCommetView.isEnabledFor(httpRequestResponse);
+        return this.tabJsCommetView.isEnabledFor(httpRequestResponse);
     }
 
     @Override
     public String caption() {
-        return this.tabHtmlCommetView.caption();
+        return this.tabJsCommetView.caption();
     }
 
     @Override
     public Component uiComponent() {
-        return this.tabHtmlCommetView.uiComponent();
+        return this.tabJsCommetView.uiComponent();
     }
 
     @Override
     public Selection selectedData() {
-        return this.tabHtmlCommetView.selectedData();
+        return this.tabJsCommetView.selectedData();
     }
 
     @Override
     public boolean isModified() {
-        return this.tabHtmlCommetView.isModified();
+        return this.tabJsCommetView.isModified();
     }
 
 }

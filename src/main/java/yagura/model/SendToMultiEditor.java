@@ -2,7 +2,6 @@ package yagura.model;
 
 import extension.burp.IssueAlertEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.InvocationSource;
 import burp.api.montoya.ui.contextmenu.InvocationType;
 import burp.api.montoya.ui.contextmenu.ComponentEvent;

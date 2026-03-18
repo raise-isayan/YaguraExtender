@@ -6,11 +6,8 @@ import extension.helpers.CertUtil.StoreType;
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,7 +87,6 @@ public class CertificateItem {
     public void setClientCertificatePasswd(String clientCertificatePasswd) {
         this.clientCertificatePasswd = clientCertificatePasswd;
     }
-
 
     public void setProperty(CertificateItem prop) {
         this.setSelected(prop.isSelected());

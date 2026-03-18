@@ -1,6 +1,5 @@
 package yagura.view;
 
-import extension.burp.BurpConfig;
 import extension.burp.BurpHotKey;
 import extension.view.base.CustomDialog;
 import java.awt.event.KeyEvent;
@@ -130,9 +129,9 @@ public class HotKeyDlg extends CustomDialog {
     private KeyStroke hotKeyStroke = null;
 
     private static boolean isValidHotKey(java.awt.event.KeyEvent evt) {
-        return ((evt.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) == KeyEvent.CTRL_DOWN_MASK &&
-            (evt.getModifiersEx() & (KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) != 0 &&
-             KeyEvent.VK_SPACE <= evt.getKeyCode());
+        return ((evt.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) == KeyEvent.CTRL_DOWN_MASK
+                && (evt.getModifiersEx() & (KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK | KeyEvent.ALT_DOWN_MASK)) != 0
+                && KeyEvent.VK_SPACE <= evt.getKeyCode());
     }
 
     private void txtKeyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeyKeyReleased

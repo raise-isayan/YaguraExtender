@@ -249,14 +249,14 @@ public class RawViewTab extends javax.swing.JPanel implements SendToMessage, IBu
         String style = SyntaxConstants.SYNTAX_STYLE_HTML;
         if (contentType != null) {
             switch (contentType) {
-            case JSON:
-                style = SyntaxConstants.SYNTAX_STYLE_JSON;
-                break;
-            case XML:
-                style = SyntaxConstants.SYNTAX_STYLE_XML;
-                break;
-            default:
-                break;
+                case JSON:
+                    style = SyntaxConstants.SYNTAX_STYLE_JSON;
+                    break;
+                case XML:
+                    style = SyntaxConstants.SYNTAX_STYLE_XML;
+                    break;
+                default:
+                    break;
             }
         }
         return style;

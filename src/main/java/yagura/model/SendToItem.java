@@ -1,17 +1,12 @@
 package yagura.model;
 
-import burp.BurpExtension;
-import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.contextmenu.ComponentEvent;
-import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
-import burp.api.montoya.ui.hotkey.HotKeyEvent;
 import com.google.gson.annotations.Expose;
 import extension.burp.IssueAlertFireEvent;
 import extension.helpers.StringUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -343,12 +338,10 @@ public class SendToItem extends IssueAlertFireEvent {
         SendToMenuItem sendToItem = null;
         if (this.getExtend() != null) {
             sendToItem = new SendToExtend(this, contextEvent);
-        }
-        else {
+        } else {
             if (this.isServer()) {
                 sendToItem = new SendToServer(this, contextEvent);
-            }
-            else {
+            } else {
                 sendToItem = new SendToMultiEditor(this, contextEvent);
             }
         }
