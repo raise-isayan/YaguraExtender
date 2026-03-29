@@ -8,13 +8,6 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.sessions.CookieJar;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
-import burp.api.montoya.ui.editor.extension.EditorCreationContext;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpRequestEditor;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedHttpResponseEditor;
-import burp.api.montoya.ui.editor.extension.HttpRequestEditorProvider;
-import burp.api.montoya.ui.editor.extension.HttpResponseEditorProvider;
-import burp.api.montoya.ui.editor.extension.ExtensionProvidedWebSocketMessageEditor;
-import burp.api.montoya.ui.editor.extension.WebSocketMessageEditorProvider;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -59,6 +52,7 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
+import javax.swing.JTabbedPane;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -365,7 +359,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     final OptionProperty option = new OptionProperty();
 
     public OptionProperty getProperty() {
-        return option;
+        return this.option;
     }
 
     protected PropertyChangeListener newPropertyChangeListener() {

@@ -522,7 +522,7 @@ public class GenerateWebsocktPoCTab extends javax.swing.JPanel implements Extens
         this.chkUseWss.setSelected(useSecure);
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-        encodingItemStateChanged.itemStateChanged(null);
+        this.encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
     }
 

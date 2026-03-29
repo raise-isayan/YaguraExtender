@@ -50,7 +50,7 @@ public class BambdaFile {
                 if (parts.length == 2) {
                     String key = parts[0].trim();
                     String value = parts[1].trim();
-                    token.put(key, value);
+                    this.token.put(key, value);
                     if (KEY_SOURCE.equals(key) && SOURCE_ML_SEP.equals(value)) {
                         StringBuilder content = new StringBuilder();
                         while (scanner.hasNextLine()) {
@@ -58,7 +58,7 @@ public class BambdaFile {
                             content.append(last.stripLeading());
                             content.append("\n");
                         }
-                        token.put(KEY_CONTENTS, content.toString());
+                        this.token.put(KEY_CONTENTS, content.toString());
                     }
                 }
             }

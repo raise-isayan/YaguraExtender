@@ -692,7 +692,7 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
             String queryText = this.txtSearch.getText();
             if (queryText.length() > 0) {
                 if (!isValidRegex(queryText)) {
-                    lblProgress.setText(BUNDLE.getString("view.invalid.regex"));
+                    this.lblProgress.setText(BUNDLE.getString("view.invalid.regex"));
                     return;
                 }
                 final Runnable search = new Runnable() {

@@ -78,7 +78,6 @@ import java.util.Map;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
-import org.apache.commons.codec.DecoderException;
 import extension.helpers.jws.JWSToken;
 
 /**

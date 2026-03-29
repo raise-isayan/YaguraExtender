@@ -235,8 +235,8 @@ public class MatchReplaceTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        this.btnRepEdit.setEnabled((listMatchReplace.getSelectedIndices().length > 0));
-        this.btnRepRemove.setEnabled((listMatchReplace.getSelectedIndices().length > 0));
+        this.btnRepEdit.setEnabled((this.listMatchReplace.getSelectedIndices().length > 0));
+        this.btnRepRemove.setEnabled((this.listMatchReplace.getSelectedIndices().length > 0));
 
         this.listMatchReplace.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 

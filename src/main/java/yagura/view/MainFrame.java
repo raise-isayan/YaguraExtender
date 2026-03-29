@@ -2,7 +2,6 @@ package yagura.view;
 
 import extension.helpers.json.JsonUtil;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -155,7 +154,7 @@ public class MainFrame extends javax.swing.JFrame {
     public JMenuItem createLafMenuItem(JMenu menu, LookAndFeelUI lafUI) {
         JMenuItem mi = (JRadioButtonMenuItem) menu.add(new JRadioButtonMenuItem(lafUI.getName()));
         this.lafMenuGroup.add(mi);
-        mi.addActionListener(new ActionListener() {
+        mi.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setLookAndFeel(lafUI);
@@ -226,14 +225,14 @@ public class MainFrame extends javax.swing.JFrame {
          * @return the name
          */
         public String getName() {
-            return name;
+            return this.name;
         }
 
         /**
          * @return the className
          */
         public String getClassName() {
-            return className;
+            return this.className;
         }
 
         @Override

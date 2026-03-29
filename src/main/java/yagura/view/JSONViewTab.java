@@ -70,7 +70,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
     @SuppressWarnings("unchecked")
     private void customizeComponents() {
         this.jsonView = new JSONView(isJsonp());
-        this.add(jsonView, java.awt.BorderLayout.CENTER);
+        this.add(this.jsonView, java.awt.BorderLayout.CENTER);
 
         org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtJSON = (org.fife.ui.rsyntaxtextarea.RSyntaxTextArea) this.jsonView.getTextArea();
         this.quickSearchTab.setSelectedTextArea(txtJSON);
@@ -273,7 +273,7 @@ public class JSONViewTab extends javax.swing.JPanel implements SendToMessage, IB
 
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-        encodingItemStateChanged.itemStateChanged(null);
+        this.encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
 
 //            this.setMessageEncoding(guessCharset);

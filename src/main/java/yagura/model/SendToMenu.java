@@ -12,7 +12,6 @@ import extension.burp.IssueAlert;
 import extension.helpers.StringUtil;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -252,7 +251,7 @@ public final class SendToMenu implements ContextMenuItemsProvider {
                     mnuItem.setText(item.getCaption());
                     if (item.getExtend() != null) {
                         final SendToExtend sendToItem = new SendToExtend(item, contextMenuEvent);
-                        mnuItem.addActionListener(new ActionListener() {
+                        mnuItem.addActionListener(new java.awt.event.ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 sendToItem.menuItemClicked(mnuItem.getText(), message);
@@ -263,7 +262,7 @@ public final class SendToMenu implements ContextMenuItemsProvider {
                         if (item.isServer()) {
                             final SendToMenuItem sendToItem = new SendToServer(item, contextMenuEvent);
                             sendToItem.addIssueAlertListener(this.issueAlert);
-                            mnuItem.addActionListener(new ActionListener() {
+                            mnuItem.addActionListener(new java.awt.event.ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     sendToItem.menuItemClicked(mnuItem.getText(), message);
@@ -272,7 +271,7 @@ public final class SendToMenu implements ContextMenuItemsProvider {
                             popSendToMenu.add(mnuItem);
                         } else {
                             final SendToMenuItem sendToItem = new SendToMultiEditor(item, contextMenuEvent);
-                            mnuItem.addActionListener(new ActionListener() {
+                            mnuItem.addActionListener(new java.awt.event.ActionListener() {
                                 @Override
                                 public void actionPerformed(ActionEvent e) {
                                     sendToItem.menuItemClicked(mnuItem.getText(), message);

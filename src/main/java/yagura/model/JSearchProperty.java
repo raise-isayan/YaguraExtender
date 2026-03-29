@@ -54,7 +54,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
      * @return the isRequestHeader
      */
     public boolean isRequestHeader() {
-        return requestHeader;
+        return this.requestHeader;
     }
 
     /**
@@ -71,7 +71,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
      * @return the requestBody
      */
     public boolean isRequestBody() {
-        return requestBody;
+        return this.requestBody;
     }
 
     /**
@@ -88,7 +88,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
      * @return the responseHeader
      */
     public boolean isResponseHeader() {
-        return responseHeader;
+        return this.responseHeader;
     }
 
     /**
@@ -104,7 +104,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
      * @return the responseBody
      */
     public boolean isResponseBody() {
-        return responseBody;
+        return this.responseBody;
     }
 
     /**
@@ -121,7 +121,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
      * @return the notes
      */
     public boolean isNotes() {
-        return notes;
+        return this.notes;
     }
 
     /**
@@ -138,7 +138,7 @@ public class JSearchProperty extends RegexItem implements IPropertyConfig {
      * @return the listenerPort
      */
     public int getListenerPort() {
-        return listenerPort;
+        return this.listenerPort;
     }
 
     /**

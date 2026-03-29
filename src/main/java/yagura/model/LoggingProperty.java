@@ -25,7 +25,7 @@ public class LoggingProperty implements IPropertyConfig {
      * @return the compress
      */
     public boolean isCompress() {
-        return compress;
+        return this.compress;
     }
 
     /**
@@ -175,7 +175,7 @@ public class LoggingProperty implements IPropertyConfig {
      * @return the warnClosingTemporaryProject
      */
     public boolean isWarnClosingTemporaryProject() {
-        return warnClosingTemporaryProject;
+        return this.warnClosingTemporaryProject;
     }
 
     /**
@@ -192,7 +192,7 @@ public class LoggingProperty implements IPropertyConfig {
      * @return the popupTime
      */
     public int getPopupTime() {
-        return popupTime;
+        return this.popupTime;
     }
 
     /**

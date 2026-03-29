@@ -12,6 +12,8 @@ public class MultiItemDlg extends CustomDialog {
 
     /**
      * Creates new form MatchReplaceMultiItemDlg
+     * @param parent
+     * @param modal
      */
     public MultiItemDlg(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

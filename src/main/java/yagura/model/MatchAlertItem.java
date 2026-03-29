@@ -122,7 +122,7 @@ public class MatchAlertItem extends MatchItem {
      * @return the issueName
      */
     public String getIssueName() {
-        return issueName;
+        return this.issueName;
     }
 
     /**
@@ -139,7 +139,7 @@ public class MatchAlertItem extends MatchItem {
      * @return the serverity
      */
     public Severity getSeverity() {
-        return serverity;
+        return this.serverity;
     }
 
     /**
@@ -156,7 +156,7 @@ public class MatchAlertItem extends MatchItem {
      * @return the confidence
      */
     public Confidence getConfidence() {
-        return confidence;
+        return this.confidence;
     }
 
     /**
@@ -181,7 +181,7 @@ public class MatchAlertItem extends MatchItem {
      * @return the captureGroup
      */
     public boolean isCaptureGroup() {
-        return captureGroup;
+        return this.captureGroup;
     }
 
     /**

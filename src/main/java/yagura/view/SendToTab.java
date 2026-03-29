@@ -25,6 +25,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.util.logging.Level;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -539,7 +540,7 @@ public class SendToTab extends javax.swing.JPanel implements IBurpTab {
             } catch (UnsupportedLookAndFeelException ignored) {
                 Toolkit.getDefaultToolkit().beep();
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                ex.printStackTrace();
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
                 return;
             }
             JFrame frame = new JFrame("DnDTable");

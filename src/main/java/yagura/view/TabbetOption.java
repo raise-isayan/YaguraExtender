@@ -179,7 +179,7 @@ public class TabbetOption extends javax.swing.JTabbedPane implements IBurpTab, P
     }
 
     public LoggingProperty getLoggingProperty() {
-        return tabLogging.getLoggingProperty();
+        return this.tabLogging.getLoggingProperty();
     }
 
     public MatchAlertProperty getMatchAlertProperty() {

@@ -952,7 +952,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 KeyStore ks = BurpPreferences.loadCACeart();
                 mapCert = CertUtil.loadFromKeyStore(ks, BurpPreferences.getCAPassword());
             } else {
-                CertificateItem item = customIssuerCA;
+                CertificateItem item = this.customIssuerCA;
                 if (item == null) {
                     JOptionPane.showMessageDialog(this, BUNDLE.getString("view.certificate.noselect"), "Certificate", JOptionPane.INFORMATION_MESSAGE);
                 } else {

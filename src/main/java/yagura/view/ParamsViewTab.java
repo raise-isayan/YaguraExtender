@@ -253,7 +253,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
     }//GEN-LAST:event_btnDownActionPerformed
 
     private void btnDecodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecodeActionPerformed
-        toggleDecode = this.btnDecode.isSelected();
+        this.toggleDecode = this.btnDecode.isSelected();
     }//GEN-LAST:event_btnDecodeActionPerformed
 
     private ParamsViewModel modelParams = null;

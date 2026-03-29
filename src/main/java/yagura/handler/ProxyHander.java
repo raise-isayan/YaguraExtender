@@ -82,8 +82,8 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         ToolSource toolSource = httpResponseReceived.toolSource();
         HttpRequestResponse messageInfo = HttpRequestResponse.httpRequestResponse(httpResponseReceived.initiatingRequest(), httpResponseReceived, httpResponseReceived.annotations());
         // Tool Log 出力
-        if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isToolLog()) {
-            logging.writeToolMessage(toolSource.toolType(), false, messageInfo);
+        if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isToolLog()) {
+            this.logging.writeToolMessage(toolSource.toolType(), false, messageInfo);
         }
         return ResponseReceivedAction.continueWith(httpResponseReceived, httpResponseReceived.annotations());
     }
@@ -117,7 +117,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
     @Override
     public ProxyResponseReceivedAction handleResponseReceived(InterceptedResponse interceptedResponse) {
         ProxyResponseReceivedAction responseResult = this.processProxyMessage(interceptedResponse, interceptedResponse.initiatingRequest(), interceptedResponse.annotations());
-        if (extenderImpl.getProperty().getMatchAlertProperty().isMatchAlertEnable()) {
+        if (this.extenderImpl.getProperty().getMatchAlertProperty().isMatchAlertEnable()) {
             HttpRequestResponse modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, true, HttpRequestResponse.httpRequestResponse(interceptedResponse.initiatingRequest(), responseResult.response(), responseResult.annotations()));
             modifyHttpRequestResponse = this.matchAlertMessage(ToolType.SUITE, false, modifyHttpRequestResponse);
             return ProxyResponseReceivedAction.proxyResponseReceivedAction(modifyHttpRequestResponse.response(), modifyHttpRequestResponse.annotations(), responseResult.action());
@@ -133,8 +133,8 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
     @Override
     public ProxyResponseToBeSentAction handleResponseToBeSent(InterceptedResponse interceptedResponse) {
         // autologging 出力
-        if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isProxyLog()) {
-            logging.writeProxyMessage(interceptedResponse.messageId(), interceptedResponse.initiatingRequest().httpService(), interceptedResponse.initiatingRequest(), interceptedResponse);
+        if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isProxyLog()) {
+            this.logging.writeProxyMessage(interceptedResponse.messageId(), interceptedResponse.initiatingRequest().httpService(), interceptedResponse.initiatingRequest(), interceptedResponse);
         }
         return ProxyResponseToBeSentAction.continueWith(interceptedResponse, interceptedResponse.annotations());
     }
@@ -143,7 +143,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         if (this.api != null) {
             List<ProxyHttpRequestResponse> messageInfo = this.api.proxy().history();
             for (ProxyHttpRequestResponse info : messageInfo) {
-                logging.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()));
+                this.logging.writeToolMessage(ToolType.PROXY, false, HttpRequestResponse.httpRequestResponse(info.finalRequest(), info.originalResponse(), info.annotations()));
             }
         }
     }
@@ -161,10 +161,10 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
     private ProxyRequestReceivedAction processProxyMessage(InterceptedRequest interceptedHttpRequest, Annotations annotations) {
         HttpRequest httpRequest = interceptedHttpRequest;
         // Match and Replace
-        if (extenderImpl.getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
-            MatchReplaceGroup group = extenderImpl.getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(extenderImpl.getProperty().getMatchReplaceProperty().getSelectedName());
+        if (this.extenderImpl.getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
+            MatchReplaceGroup group = this.extenderImpl.getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(extenderImpl.getProperty().getMatchReplaceProperty().getSelectedName());
             if (group != null && group.isInScopeOnly()) {
-                if (extenderImpl.helpers().isInScope(interceptedHttpRequest.url())) {
+                if (this.extenderImpl.helpers().isInScope(interceptedHttpRequest.url())) {
                     httpRequest = this.replaceProxyMessage(interceptedHttpRequest);
                 }
             } else {
@@ -188,10 +188,10 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
     private ProxyResponseReceivedAction processProxyMessage(InterceptedResponse interceptedHttpResponse, HttpRequest httpRequest, Annotations annotations) {
         HttpResponse httpResponse = interceptedHttpResponse;
         // Match and Replace
-        if (extenderImpl.getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
-            MatchReplaceGroup group = extenderImpl.getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(extenderImpl.getProperty().getMatchReplaceProperty().getSelectedName());
+        if (this.extenderImpl.getProperty().getMatchReplaceProperty().isSelectedMatchReplace()) {
+            MatchReplaceGroup group = this.extenderImpl.getProperty().getMatchReplaceProperty().getReplaceSelectedGroup(extenderImpl.getProperty().getMatchReplaceProperty().getSelectedName());
             if (group != null && group.isInScopeOnly()) {
-                if (extenderImpl.helpers().isInScope(httpRequest.url())) {
+                if (this.extenderImpl.helpers().isInScope(httpRequest.url())) {
                     httpResponse = this.replaceProxyMessage(httpResponse);
                 }
             } else {
@@ -210,7 +210,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
      */
     private HttpRequestResponse matchAlertMessage(ToolType toolType, boolean messageIsRequest, HttpRequestResponse httpRequestResponse) {
         Annotations annotations = httpRequestResponse.annotations();
-        List<MatchAlertItem> matchAlertItemList = extenderImpl.getProperty().getMatchAlertProperty().getMatchAlertItemList();
+        List<MatchAlertItem> matchAlertItemList = this.extenderImpl.getProperty().getMatchAlertProperty().getMatchAlertItemList();
         for (int i = 0; i < matchAlertItemList.size(); i++) {
             MatchAlertItem bean = matchAlertItemList.get(i);
             if (!bean.isSelected()) {
@@ -250,7 +250,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
                 }
                 if (count > 0) {
                     if (bean.getNotifyTypes().contains(NotifyType.ALERTS_TAB)) {
-                        extenderImpl.helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.request().url()), extension.burp.MessageType.INFO);
+                        this.extenderImpl.helpers().issueAlert(toolType.name(), String.format("[%s]: %d matches:%s url:%s", toolType.name(), count, bean.getMatch(), httpRequestResponse.request().url()), extension.burp.MessageType.INFO);
                     }
                     if (bean.getNotifyTypes().contains(NotifyType.TRAY_MESSAGE)) {
                         // trayMenu.displayMessage(toolName, String.format("[%s]: %d matches:%s url:%s", toolName, count, bean.getMatch(), reqInfo.getUrl().toString()), TrayIcon.MessageType.WARNING);
@@ -327,7 +327,7 @@ public class ProxyHander implements HttpHandler, ProxyRequestHandler, ProxyRespo
         String header = message.getHeader();
         String body = message.getBody();
 
-        List<MatchReplaceItem> matchReplaceList = extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList(ProtocolType.HTTP);
+        List<MatchReplaceItem> matchReplaceList = this.extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList(ProtocolType.HTTP);
         for (int i = 0; i < matchReplaceList.size(); i++) {
             MatchReplaceItem bean = matchReplaceList.get(i);
             if (!bean.isSelected()) {

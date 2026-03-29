@@ -23,7 +23,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return the encodeType
      */
     public EncodeType getEncodeType() {
-        return encodeType;
+        return this.encodeType;
     }
 
     /**
@@ -40,7 +40,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return the newLine
      */
     public NewLine getNewLine() {
-        return newLine;
+        return this.newLine;
     }
 
     /**
@@ -57,7 +57,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return the convertCase
      */
     public ConvertCase getConvertCase() {
-        return convertCase;
+        return this.convertCase;
     }
 
     /**
@@ -74,7 +74,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return the lineWrap
      */
     public boolean isLineWrap() {
-        return lineWrap;
+        return this.lineWrap;
     }
 
     /**
@@ -91,7 +91,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return the rawEncoding
      */
     public boolean isRawEncoding() {
-        return rawEncoding;
+        return this.rawEncoding;
     }
 
     /**
@@ -108,7 +108,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return the guessEncoding
      */
     public boolean isGuessEncoding() {
-        return guessEncoding;
+        return this.guessEncoding;
     }
 
     /**
@@ -125,7 +125,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return the selectEncoding
      */
     public String getSelectEncoding() {
-        return selectEncoding;
+        return this.selectEncoding;
     }
 
     /**
@@ -141,7 +141,7 @@ public class JTransCoderProperty implements IPropertyConfig {
      * @return
      */
     public String getCurrentInput() {
-        return currentInput;
+        return this.currentInput;
     }
 
     /**

@@ -503,15 +503,15 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         String encoding = (String) this.cmbDefaultLangEncoding.getSelectedItem();
-        if (encoding.equals("Default")) {
+        if (encoding.equals(UniversalViewProperty.LANG_DEFAULT)) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(null));
-        } else if (encoding.equals("Japanese")) {
+        } else if (encoding.equals(UniversalViewProperty.LANG_JAPANESE)) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.JAPANESE));
-        } else if (encoding.equals("Chinese")) {
+        } else if (encoding.equals(UniversalViewProperty.LANG_CHINESE)) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.CHINESE));
-        } else if (encoding.equals("Korean")) {
+        } else if (encoding.equals(UniversalViewProperty.LANG_KOREAN)) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.KOREAN));
-        } else if (encoding.equals("Other")) {
+        } else if (encoding.equals(UniversalViewProperty.LANG_OTHER)) {
             setEncodingList(UniversalViewProperty.getDefaultEncodingList(Locale.US));
         }
         this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());

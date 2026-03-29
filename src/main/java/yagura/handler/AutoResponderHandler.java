@@ -45,11 +45,11 @@ public class AutoResponderHandler implements HttpHandler, ProxyRequestHandler, E
     @Override
     public RequestToBeSentAction handleHttpRequestToBeSent(HttpRequestToBeSent httpRequestToBeSent) {
         // Autoresponder
-        if (extenderImpl.getProperty().getAutoResponderProperty().getAutoResponderEnable()) {
+        if (this.extenderImpl.getProperty().getAutoResponderProperty().getAutoResponderEnable()) {
             final String url = httpRequestToBeSent.url();
-            AutoResponderItem item = extenderImpl.getProperty().getAutoResponderProperty().findItem(url, httpRequestToBeSent.method());
+            AutoResponderItem item = this.extenderImpl.getProperty().getAutoResponderProperty().findItem(url, httpRequestToBeSent.method());
             if (item != null) {
-                HttpTarget httpTarget = new HttpTarget(extenderImpl.getTabbetOption().getMockServer().serviceURL());
+                HttpTarget httpTarget = new HttpTarget(this.extenderImpl.getTabbetOption().getMockServer().serviceURL());
                 HttpRequest updatedHttpServiceRequest = httpRequestToBeSent.withService(httpTarget).withAddedHeader(AutoResponderProperty.AUTO_RESPONDER_HEADER, url);
                 return RequestToBeSentAction.continueWith(updatedHttpServiceRequest);
             }
@@ -64,9 +64,9 @@ public class AutoResponderHandler implements HttpHandler, ProxyRequestHandler, E
 
     @Override
     public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
-        if (extenderImpl.getProperty().getAutoResponderProperty().getAutoResponderEnable() && extenderImpl.getProperty().getAutoResponderProperty().isHostNameForceResolv()) {
+        if (this.extenderImpl.getProperty().getAutoResponderProperty().getAutoResponderEnable() && this.extenderImpl.getProperty().getAutoResponderProperty().isHostNameForceResolv()) {
             final String url = interceptedRequest.url();
-            AutoResponderItem item = extenderImpl.getProperty().getAutoResponderProperty().findItem(url, interceptedRequest.method());
+            AutoResponderItem item = this.extenderImpl.getProperty().getAutoResponderProperty().findItem(url, interceptedRequest.method());
             if (item != null) {
                 if (!HttpUtil.isInetAddressByName(interceptedRequest.httpService().host())) {
                     BurpExtension.helpers().issueAlert("MockServer", "resolv:" + interceptedRequest.httpService().host(), extension.burp.MessageType.INFO);

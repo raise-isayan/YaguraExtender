@@ -38,7 +38,7 @@ public class OptoinPropertyTest {
      */
     @Test
     public void testLinkedHashMap() {
-        Map<String, String> synclink = Collections.synchronizedMap(new LinkedHashMap<String, String>());
+        Map<String, String> synclink = Collections.synchronizedMap(new LinkedHashMap<>());
         synclink.put("n5", "e");
         synclink.put("n4", "d");
         synclink.put("n3", "c");
@@ -49,14 +49,14 @@ public class OptoinPropertyTest {
         synclink.put("n4", "b");
         synclink.put("n2", "d");
         synclink.put("n5", "a");
-        Map<String, String> synclink2 = Collections.synchronizedMap(new LinkedHashMap<String, String>());
+        Map<String, String> synclink2 = Collections.synchronizedMap(new LinkedHashMap<>());
         synclink2.put("n3", "c");
         synclink2.put("n1", "e");
         synclink2.put("n4", "b");
         synclink2.put("n2", "d");
         synclink2.put("n5", "a");
 
-        Map<String, String> link = new LinkedHashMap<String, String>();
+        Map<String, String> link = new LinkedHashMap<>();
         link.put("5", "e");
         link.put("4", "d");
         link.put("3", "c");
@@ -70,13 +70,13 @@ public class OptoinPropertyTest {
         for (String k : link.keySet()) {
             System.out.println("origin:" + k);
         }
-        Map<String, String> newLink = new LinkedHashMap<String, String>();
+        Map<String, String> newLink = new LinkedHashMap<>();
         newLink.putAll(link);
         for (String k : newLink.keySet()) {
             System.out.println("newLink:" + k);
         }
 
-        Map<String, String> newSyncLink = new LinkedHashMap<String, String>();
+        Map<String, String> newSyncLink = new LinkedHashMap<>();
         newSyncLink.putAll(synclink);
         for (String k : newSyncLink.keySet()) {
             System.out.println("newSyncLink:" + k);
@@ -86,7 +86,7 @@ public class OptoinPropertyTest {
         for (String k : newSyncLink.keySet()) {
             System.out.println("newSyncLink2:" + k);
         }
-        Map<String, String> filterMap = Collections.synchronizedMap(new LinkedHashMap<String, String>(16, (float) 0.75, true));
+        Map<String, String> filterMap = Collections.synchronizedMap(new LinkedHashMap<>(16, (float) 0.75, true));
         filterMap.putAll(synclink);
         for (String k : filterMap.keySet()) {
             System.out.println("curSyncLinkMap:" + k);

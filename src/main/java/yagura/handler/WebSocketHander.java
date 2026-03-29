@@ -77,8 +77,8 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
             // WebSocket 出力
             if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && this.extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()) {
                 // Tool Log 出力
-                ToolSource toolSource = webSocketCreated.toolSource();
-                logging.writeWebSocketToolMessage(toolSource.toolType(), webSocketCreated, textMessage);
+                ToolSource toolSource = this.webSocketCreated.toolSource();
+                this.logging.writeWebSocketToolMessage(toolSource.toolType(), webSocketCreated, textMessage);
             }
             return TextMessageAction.continueWith(textMessage);
         }
@@ -88,8 +88,8 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
             // WebSocket 出力
             if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && this.extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()) {
                 // Tool Log 出力
-                ToolSource toolSource = webSocketCreated.toolSource();
-                logging.writeWebSocektToolMessage(toolSource.toolType(), webSocketCreated, binaryMessage);
+                ToolSource toolSource = this.webSocketCreated.toolSource();
+                this.logging.writeWebSocektToolMessage(toolSource.toolType(), webSocketCreated, binaryMessage);
             }
             return BinaryMessageAction.continueWith(binaryMessage);
         }
@@ -115,9 +115,9 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
         public TextMessageReceivedAction handleTextMessageReceived(InterceptedTextMessage interceptedTextMessage) {
             TextMessage requestResult = this.replaceProxyMessage(interceptedTextMessage);
             // WebSocket 出力
-            if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
+            if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedTextMessage.direction() == Direction.SERVER_TO_CLIENT) {
-                logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedTextMessage);
+                this.logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedTextMessage);
             }
             return TextMessageReceivedAction.continueWith(requestResult);
         }
@@ -125,9 +125,9 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
         @Override
         public TextMessageToBeSentAction handleTextMessageToBeSent(InterceptedTextMessage interceptedTextMessage) {
             // WebSockt 出力
-            if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
+            if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedTextMessage.direction() == Direction.CLIENT_TO_SERVER) {
-                logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedTextMessage);
+                this.logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedTextMessage);
             }
             return TextMessageToBeSentAction.continueWith(interceptedTextMessage);
         }
@@ -136,9 +136,9 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
         public BinaryMessageReceivedAction handleBinaryMessageReceived(InterceptedBinaryMessage interceptedBinaryMessage) {
             BinaryMessage requestResult = this.replaceProxyMessage(interceptedBinaryMessage);
             // WebSocket 出力
-            if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
+            if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedBinaryMessage.direction() == Direction.SERVER_TO_CLIENT) {
-                logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
+                this.logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedBinaryMessage);
             }
             return BinaryMessageReceivedAction.continueWith(requestResult);
         }
@@ -146,9 +146,9 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
         @Override
         public BinaryMessageToBeSentAction handleBinaryMessageToBeSent(InterceptedBinaryMessage interceptedBinaryMessage) {
             // WebSocket 出力
-            if (extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
+            if (this.extenderImpl.getProperty().getLoggingProperty().isAutoLogging() && extenderImpl.getProperty().getLoggingProperty().isWebSocketLog()
                     && interceptedBinaryMessage.direction() == Direction.CLIENT_TO_SERVER) {
-                logging.writeWebSocketFinalMessage(proxyWebSocketCreation, interceptedBinaryMessage);
+                this.logging.writeWebSocketFinalMessage(this.proxyWebSocketCreation, interceptedBinaryMessage);
             }
             return BinaryMessageToBeSentAction.continueWith(interceptedBinaryMessage);
         }
@@ -186,7 +186,7 @@ public class WebSocketHander implements ProxyWebSocketCreationHandler, WebSocket
             // headerとbodyに分割
             boolean edited = false;
             String message = StringUtil.getStringRaw(payload);
-            List<MatchReplaceItem> matchReplaceList = extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList(ProtocolType.WEBSOCKET);
+            List<MatchReplaceItem> matchReplaceList = this.extenderImpl.getProperty().getMatchReplaceProperty().getMatchReplaceList(ProtocolType.WEBSOCKET);
             for (int i = 0; i < matchReplaceList.size(); i++) {
                 MatchReplaceItem bean = matchReplaceList.get(i);
                 if (!bean.isSelected()) {

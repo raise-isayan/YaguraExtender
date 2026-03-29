@@ -37,21 +37,21 @@ public class HotKeyHander {
         for (SendToItem sendToItem : itemLists) {
             HotKeyAssign keyAssign = new HotKeyAssign(sendToItem);
             if (keyAssign.isValidHotKey()) {
-                Registration regster = api.userInterface().registerHotKeyHandler(keyAssign.getHotKey(), keyAssign.getHotKeyHandler());
+                Registration regster = this.api.userInterface().registerHotKeyHandler(keyAssign.getHotKey(), keyAssign.getHotKeyHandler());
                 this.registerHotkeys.add(regster);
             }
         }
     }
 
     public synchronized void deregisters() {
-        for (Registration reg : registerHotkeys) {
+        for (Registration reg : this.registerHotkeys) {
             reg.deregister();
         }
         this.registerHotkeys.clear();
     }
 
     public boolean exists(String hotkey) {
-        List<BurpConfig.Hotkey> hks = BurpConfig.getHotkey(api);
+        List<BurpConfig.Hotkey> hks = BurpConfig.getHotkey(this.api);
         boolean matchs = hks.stream().anyMatch(predicate -> hotkey.equals(predicate.getHotkey()));
         if (!matchs) {
             List<SendToItem> itemLists = this.sendto.getSendToItemList();

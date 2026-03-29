@@ -110,7 +110,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
     private final EnumSet<MessageView> mesageView = EnumSet.noneOf(MessageView.class);
 
     public EnumSet<MessageView> getMessageView() {
-        return mesageView;
+        return this.mesageView;
     }
 
     public void setMessageView(EnumSet<MessageView> view) {
@@ -137,7 +137,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             this.clearView();
 //            this.tabGeneratePoC.createNewInstance(messageItem.getController(), false);
             if (this.messageItem.getRequest() != null) {
-                this.isEnabledFor(messageItem.toHttpRequestResponse(), true);
+                this.isEnabledFor(this.messageItem.toHttpRequestResponse(), true);
                 if (this.tabbetRequestView.indexOfComponent(this.tabRequestRawView) > -1) {
                     this.tabRequestRawView.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
@@ -152,7 +152,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
                 }
             }
             if (this.messageItem.getResponse() != null) {
-                this.isEnabledFor(messageItem.toHttpRequestResponse(), false);
+                this.isEnabledFor(this.messageItem.toHttpRequestResponse(), false);
                 if (this.tabbetResponseView.indexOfComponent(this.tabResponseRawView) > -1) {
                     this.tabResponseRawView.setRequestResponse(messageInfo.toHttpRequestResponse());
                 }
@@ -173,7 +173,7 @@ public class MessageViewTab extends javax.swing.JPanel implements SendToMessage 
             if (this.messageItem == null) {
                 return;
             }
-            if (messageItem.getRequest() != null) {
+            if (this.messageItem.getRequest() != null) {
                 if (this.tabbetMessageView.getSelectedIndex() == this.tabbetMessageView.indexOfTab(tabRequestRawView.caption())) {
                     this.tabRequestRawView.setMessageEncoding(encoding);
                     this.tabRequestRawView.clearView();

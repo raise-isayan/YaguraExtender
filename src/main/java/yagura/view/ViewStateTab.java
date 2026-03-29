@@ -157,7 +157,7 @@ public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab 
     private void customizeComponents() {
         //this.txtJSON.setComponentPopupMenu(this.popMenu);
         this.treeViewState.setComponentPopupMenu(this.popMenu);
-        this.treeViewState.getActionMap().put("copy", copyAction);
+        this.treeViewState.getActionMap().put("copy", this.copyAction);
         Icon emptyIcon = SwingUtil.createEmptyIcon();
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) this.treeViewState.getCellRenderer();
         renderer.setOpenIcon(emptyIcon);
@@ -393,11 +393,11 @@ public class ViewStateTab extends javax.swing.JPanel implements IBurpMessageTab 
         }
 
         public ViewState getViewState() {
-            return viewState;
+            return this.viewState;
         }
 
         public DefaultTreeModel getViewStateModel() {
-            return model;
+            return this.model;
         }
     }
 

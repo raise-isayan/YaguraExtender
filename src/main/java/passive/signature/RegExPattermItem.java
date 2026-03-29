@@ -15,7 +15,7 @@ public class RegExPattermItem extends CaptureItem {
      * @return the regexPattern
      */
     public String getRegExPattern() {
-        return regexPattern;
+        return this.regexPattern;
     }
 
     /**
@@ -29,7 +29,7 @@ public class RegExPattermItem extends CaptureItem {
      * @return the regexFlag
      */
     public String getRegExFlag() {
-        return regexFlag;
+        return this.regexFlag;
     }
 
     /**

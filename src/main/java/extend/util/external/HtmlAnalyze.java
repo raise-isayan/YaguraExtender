@@ -1,6 +1,7 @@
 package extend.util.external;
 
-import burp.api.montoya.http.message.params.*;
+import burp.api.montoya.http.message.params.HttpParameterType;
+import extension.burp.TypeParameter;
 import java.util.ArrayList;
 import java.util.List;
 import org.jsoup.Jsoup;

@@ -203,7 +203,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
         String guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-        encodingItemStateChanged.itemStateChanged(null);
+        this.encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
     }
 

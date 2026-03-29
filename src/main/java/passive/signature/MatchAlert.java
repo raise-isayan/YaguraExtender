@@ -41,7 +41,7 @@ public class MatchAlert extends SignatureScanBase<IssueItem> {
      * @return the toolName
      */
     public String getToolName() {
-        return toolName;
+        return this.toolName;
     }
 
     public AuditIssue makeScanIssue(HttpRequestResponse messageInfo, List<IssueItem> issueItem) {

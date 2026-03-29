@@ -2,6 +2,7 @@ package yagura.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
@@ -79,13 +80,12 @@ public class ViewStateMainFrame extends javax.swing.JFrame {
             JMenuItem item = menuLookAndFeel.getItem(i);
             item.setSelected(item.getText().equals(lafName));
         }
-
     }
 
     public JMenuItem createLafMenuItem(JMenu menu, LookAndFeelUI lafUI) {
         JMenuItem mi = (JRadioButtonMenuItem) menu.add(new JRadioButtonMenuItem(lafUI.getName()));
         this.lafMenuGroup.add(mi);
-        mi.addActionListener(new ActionListener() {
+        mi.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setLookAndFeel(lafUI);
@@ -101,7 +101,7 @@ public class ViewStateMainFrame extends javax.swing.JFrame {
             Class lnfClass = Class.forName(lafUI.getClassName());
             LookAndFeel newLAF = (LookAndFeel) (lnfClass.getDeclaredConstructor().newInstance());
             return newLAF.isSupportedLookAndFeel();
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
             logger.log(Level.WARNING, ex.getMessage(), ex);
             return false;
         }
@@ -126,7 +126,7 @@ public class ViewStateMainFrame extends javax.swing.JFrame {
         try {
             UIManager.setLookAndFeel(this.currentLookAndFeel.getClassName());
             SwingUtilities.updateComponentTreeUI(this);
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }
@@ -180,15 +180,11 @@ public class ViewStateMainFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (InstantiationException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (IllegalAccessException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */

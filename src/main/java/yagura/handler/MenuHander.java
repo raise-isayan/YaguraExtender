@@ -18,11 +18,11 @@ import extension.helpers.SwingUtil;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -123,7 +123,7 @@ public class MenuHander {
         yaguraUpperCase.setText("Upper Case");
         yaguraUpperCase.setMnemonic(KeyEvent.VK_U);
         yaguraUpperCase.setActionCommand(TransUtil.ConvertCase.UPPER.name());
-        yaguraUpperCase.addActionListener(yaguraConvertCaseAction);
+        yaguraUpperCase.addActionListener(this.yaguraConvertCaseAction);
         yaguraEncodTypeMenu.add(yaguraUpperCase);
         this.menuYaguraConvertCaseGroup.add(yaguraUpperCase);
 
@@ -131,7 +131,7 @@ public class MenuHander {
         yaguraLowerCase.setText("Lowler Case");
         yaguraLowerCase.setMnemonic(KeyEvent.VK_L);
         yaguraLowerCase.setActionCommand(TransUtil.ConvertCase.LOWLER.name());
-        yaguraLowerCase.addActionListener(yaguraConvertCaseAction);
+        yaguraLowerCase.addActionListener(this.yaguraConvertCaseAction);
         yaguraEncodTypeMenu.add(yaguraLowerCase);
         this.menuYaguraConvertCaseGroup.add(yaguraLowerCase);
 
@@ -142,7 +142,7 @@ public class MenuHander {
         yaguraEncodeTypeAll.setText(TransUtil.EncodeType.ALL.toIdent());
         yaguraEncodeTypeAll.setMnemonic(KeyEvent.VK_A);
         yaguraEncodeTypeAll.setActionCommand(TransUtil.EncodeType.ALL.name());
-        yaguraEncodeTypeAll.addActionListener(yaguraEncodeTypeAction);
+        yaguraEncodeTypeAll.addActionListener(this.yaguraEncodeTypeAction);
         yaguraEncodTypeMenu.add(yaguraEncodeTypeAll);
         this.menuYaguraEncodeTypeGroup.add(yaguraEncodeTypeAll);
 
@@ -150,7 +150,7 @@ public class MenuHander {
         yaguraEncodeTypeAlphanum.setText(TransUtil.EncodeType.ALPHANUM.toIdent());
         yaguraEncodeTypeAlphanum.setMnemonic(KeyEvent.VK_N);
         yaguraEncodeTypeAlphanum.setActionCommand(TransUtil.EncodeType.ALPHANUM.name());
-        yaguraEncodeTypeAlphanum.addActionListener(yaguraEncodeTypeAction);
+        yaguraEncodeTypeAlphanum.addActionListener(this.yaguraEncodeTypeAction);
         yaguraEncodTypeMenu.add(yaguraEncodeTypeAlphanum);
         this.menuYaguraEncodeTypeGroup.add(yaguraEncodeTypeAlphanum);
 
@@ -166,7 +166,7 @@ public class MenuHander {
         yaguraEncodeTypeLight.setText(TransUtil.EncodeType.LIGHT.toIdent());
         yaguraEncodeTypeLight.setMnemonic(KeyEvent.VK_T);
         yaguraEncodeTypeLight.setActionCommand(TransUtil.EncodeType.LIGHT.name());
-        yaguraEncodeTypeLight.addActionListener(yaguraEncodeTypeAction);
+        yaguraEncodeTypeLight.addActionListener(this.yaguraEncodeTypeAction);
         yaguraEncodTypeMenu.add(yaguraEncodeTypeLight);
         this.menuYaguraEncodeTypeGroup.add(yaguraEncodeTypeLight);
 
@@ -174,7 +174,7 @@ public class MenuHander {
         yaguraEncodeTypeStandard.setText(TransUtil.EncodeType.STANDARD.toIdent());
         yaguraEncodeTypeStandard.setMnemonic(KeyEvent.VK_S);
         yaguraEncodeTypeStandard.setActionCommand(TransUtil.EncodeType.STANDARD.name());
-        yaguraEncodeTypeStandard.addActionListener(yaguraEncodeTypeAction);
+        yaguraEncodeTypeStandard.addActionListener(this.yaguraEncodeTypeAction);
         yaguraEncodTypeMenu.add(yaguraEncodeTypeStandard);
         this.menuYaguraEncodeTypeGroup.add(yaguraEncodeTypeStandard);
 
@@ -582,10 +582,10 @@ public class MenuHander {
      * @return the yaguraCharset
      */
     public String getYaguraCharset(String selectedText) {
-        if (yaguraCharset != null) {
-            return yaguraCharset;
+        if (this.yaguraCharset != null) {
+            return this.yaguraCharset;
         } else {
-            if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
+            if (BurpConfig.isSupportApi(this.api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
                 BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(api);
                 if (BurpConfig.CharacterSetMode.PLATFORM_DEFAULT.toIdent().equals(burpCharset.getMode())) {
                     return StringUtil.DEFAULT_ENCODING;
@@ -602,10 +602,10 @@ public class MenuHander {
     }
 
     public void setBamba(FilterProperty filter) {
-        BurpConfig.configBambda(api, filter, true);
+        BurpConfig.configBambda(this.api, filter, true);
     }
 
-    public static JMenuItem createMenuItem(String caption, int mnemonic, ActionListener actionListener) {
+    public static JMenuItem createMenuItem(String caption, int mnemonic, java.awt.event.ActionListener actionListener) {
         final JMenuItem yaguraMenuItem = new JMenuItem();
         yaguraMenuItem.setText(caption + " (" + (char) mnemonic + ")");
         yaguraMenuItem.setMnemonic(mnemonic);
@@ -614,7 +614,7 @@ public class MenuHander {
     }
 
     public static JMenuItem createMenuItem(String caption, int mnemonic, ITranslateAction action) {
-        return createMenuItem(caption, mnemonic, new ActionListener() {
+        return createMenuItem(caption, mnemonic, new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -631,7 +631,7 @@ public class MenuHander {
         });
     }
 
-    private final ActionListener burpCharsetModeAction = new ActionListener() {
+    private final java.awt.event.ActionListener burpCharsetModeAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             final List<String> encodngList = extenderImpl.getSelectEncodingList();
@@ -653,7 +653,7 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener resultFilterModeAction = new ActionListener() {
+    private final java.awt.event.ActionListener resultFilterModeAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             ResultFilterProperty resultFilterProperty = extenderImpl.getProperty().getResultFilterProperty();
@@ -672,7 +672,7 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener includeScopeAction = new ActionListener() {
+    private final java.awt.event.ActionListener includeScopeAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -684,7 +684,7 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener includeHostScopeAction = new ActionListener() {
+    private final java.awt.event.ActionListener includeHostScopeAction = new java.awt.event.ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -692,13 +692,13 @@ public class MenuHander {
                 String paste = SwingUtil.systemClipboardPaste();
                 URL url = new URL(paste);
                 BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), HttpUtil.buildHost(url.getHost(), url.getPort(), url.getProtocol())));
-            } catch (Exception ex) {
+            } catch (MalformedURLException ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
     };
 
-    private final ActionListener excludeScopeAction = new ActionListener() {
+    private final java.awt.event.ActionListener excludeScopeAction = new java.awt.event.ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -711,7 +711,7 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener includeTargetScopeAction = new ActionListener() {
+    private final java.awt.event.ActionListener includeTargetScopeAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -725,7 +725,7 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener includeRootURLTargetScopeAction = new ActionListener() {
+    private final java.awt.event.ActionListener includeRootURLTargetScopeAction = new java.awt.event.ActionListener() {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -740,7 +740,7 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener excludeTargetScopeAction = new ActionListener() {
+    private final java.awt.event.ActionListener excludeTargetScopeAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -754,7 +754,7 @@ public class MenuHander {
         }
     };
 
-    private final ActionListener sslPassThroughAction = new ActionListener() {
+    private final java.awt.event.ActionListener sslPassThroughAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
@@ -775,7 +775,7 @@ public class MenuHander {
     };
 
     public String getYaguraSelectEncode() {
-        ButtonModel model = menuYaguraCharsetsGroup.getSelection();
+        ButtonModel model = this.menuYaguraCharsetsGroup.getSelection();
         String charset = model.getActionCommand();
         if (USE_BURP_CHARSETS.equals(charset)) {
             return null;
@@ -785,11 +785,11 @@ public class MenuHander {
     }
 
     public void setYaguraSelectEncode(String encoding) {
-        yaguraCharset = encoding;
+        this.yaguraCharset = encoding;
         updateYaguraCharsetUI(this.yaguraCharsetMenu);
     }
 
-    private final ActionListener yaguraCharsetAction = new ActionListener() {
+    private final java.awt.event.ActionListener yaguraCharsetAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() instanceof JRadioButtonMenuItem item) {
@@ -821,12 +821,12 @@ public class MenuHander {
     }
 
     public TransUtil.ConvertCase getYaguraConvertCase() {
-        ButtonModel model = menuYaguraConvertCaseGroup.getSelection();
+        ButtonModel model = this.menuYaguraConvertCaseGroup.getSelection();
         TransUtil.ConvertCase convertCase = Enum.valueOf(TransUtil.ConvertCase.class, model.getActionCommand());
         return convertCase;
     }
 
-    private final ActionListener yaguraConvertCaseAction = new ActionListener() {
+    private final java.awt.event.ActionListener yaguraConvertCaseAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             extenderImpl.getProperty().getYaguraProperty().setConvertCase(getYaguraConvertCase());
@@ -840,7 +840,7 @@ public class MenuHander {
         return encodeType;
     }
 
-    private final ActionListener yaguraEncodeTypeAction = new ActionListener() {
+    private final java.awt.event.ActionListener yaguraEncodeTypeAction = new java.awt.event.ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             extenderImpl.getProperty().getYaguraProperty().setEncodeType(getYaguraEncodeType());
@@ -873,7 +873,7 @@ public class MenuHander {
             this.menuYaguraCharsetsGroup.remove(e.nextElement());
         }
         JRadioButtonMenuItem selectedYaguraCharSet = null;
-        final List<String> encodngList = extenderImpl.getSelectEncodingList();
+        final List<String> encodngList = this.extenderImpl.getSelectEncodingList();
         for (int i = 0; i < encodngList.size(); i++) {
             JRadioButtonMenuItem specificCharsetMenuCharSet = new JRadioButtonMenuItem();
             specificCharsetMenuCharSet.setText(encodngList.get(i));
@@ -893,7 +893,7 @@ public class MenuHander {
         if (this.yaguraCharset == null) {
             selectedYaguraCharSet = useBurpCharSet;
         }
-        useBurpCharSet.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION));
+        useBurpCharSet.setEnabled(BurpConfig.isSupportApi(this.api, BurpConfig.SupportApi.BURPSUITE_USEROPTION));
         yaguraCharsetMenu.add(useBurpCharSet);
         this.menuYaguraCharsetsGroup.add(useBurpCharSet);
 
@@ -920,7 +920,7 @@ public class MenuHander {
         for (Enumeration<AbstractButton> e = this.menuBurpCharsetsGroup.getElements(); e.hasMoreElements();) {
             this.menuBurpCharsetsGroup.remove(e.nextElement());
         }
-        if (!BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
+        if (!BurpConfig.isSupportApi(this.api, BurpConfig.SupportApi.BURPSUITE_USEROPTION)) {
             return;
         }
         JRadioButtonMenuItem selectedBurpCharSet = null;
@@ -982,10 +982,9 @@ public class MenuHander {
      * Burp Intercept
      */
     private void updateInterceptUI(JMenu burpInterceptMenu) {
-        BurpConfig.InterceptClientRequests burpInterceptRequest = BurpConfig.getInterceptClientRequests(api);
-        BurpConfig.InterceptServerResponses burpInterceptResponse = BurpConfig.getInterceptServerResponses(api);
-        BurpConfig.InterceptWebSocketsMessages burpInterceptWs = BurpConfig.getInterceptWebSocketsMessages(api);
-
+        BurpConfig.InterceptClientRequests burpInterceptRequest = BurpConfig.getInterceptClientRequests(this.api);
+        BurpConfig.InterceptServerResponses burpInterceptResponse = BurpConfig.getInterceptServerResponses(this.api);
+        BurpConfig.InterceptWebSocketsMessages burpInterceptWs = BurpConfig.getInterceptWebSocketsMessages(this.api);
     }
 
     /**

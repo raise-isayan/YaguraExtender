@@ -450,7 +450,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfAutoSubmit
          */
         public boolean isCsrfAutoSubmit() {
-            return csrfAutoSubmit;
+            return this.csrfAutoSubmit;
         }
 
         /**
@@ -464,7 +464,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the timeOutValue
          */
         public int getTimeOutValue() {
-            return timeOutValue;
+            return this.timeOutValue;
         }
 
         /**
@@ -478,7 +478,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfAuto
          */
         public boolean isCsrfAuto() {
-            return csrfAuto;
+            return this.csrfAuto;
         }
 
         /**
@@ -492,7 +492,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the useSecure
          */
         public boolean isUseSecure() {
-            return useSecure;
+            return this.useSecure;
         }
 
         /**
@@ -506,7 +506,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfTimeDelay
          */
         public boolean isCsrfTimeDelay() {
-            return csrfTimeDelay;
+            return this.csrfTimeDelay;
         }
 
         /**
@@ -520,7 +520,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfEncoding
          */
         public String getCsrfEncoding() {
-            return csrfEncoding;
+            return this.csrfEncoding;
         }
 
         /**
@@ -547,7 +547,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfUrlencode
          */
         public boolean isCsrfUrlencode() {
-            return csrfUrlencode;
+            return this.csrfUrlencode;
         }
 
         /**
@@ -561,7 +561,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfMultiPart
          */
         public boolean isCsrfMultiPart() {
-            return csrfMultiPart;
+            return this.csrfMultiPart;
         }
 
         /**
@@ -575,7 +575,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfTextPlain
          */
         public boolean isCsrfTextPlain() {
-            return csrfTextPlain;
+            return this.csrfTextPlain;
         }
 
         /**
@@ -589,7 +589,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfXHR
          */
         public boolean isCsrfXHR() {
-            return csrfXHR;
+            return this.csrfXHR;
         }
 
         /**
@@ -603,7 +603,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfXHRBinaly
          */
         public boolean isCsrfXHRBinaly() {
-            return csrfXHRBinaly;
+            return this.csrfXHRBinaly;
         }
 
         /**
@@ -617,7 +617,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfXHRWithXHeader
          */
         public boolean isCsrfXHRWithXHeader() {
-            return csrfXHRWithXHeader;
+            return this.csrfXHRWithXHeader;
         }
 
         /**
@@ -631,7 +631,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfLegacyFileUpload
          */
         public boolean isCsrfLegacyFileUpload() {
-            return csrfLegacyFileUpload;
+            return this.csrfLegacyFileUpload;
         }
 
         /**
@@ -645,7 +645,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfGetMethod
          */
         public boolean isCsrfGetMethod() {
-            return csrfGetMethod;
+            return this.csrfGetMethod;
         }
 
         /**
@@ -659,7 +659,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
          * @return the csrfMultiForm
          */
         public boolean isCsrfMultiForm() {
-            return csrfMultiForm;
+            return this.csrfMultiForm;
         }
 
         /**
@@ -1297,7 +1297,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
 
     @Override
     public HttpRequest getRequest() {
-        return httpRequestResponse.request();
+        return this.httpRequestResponse.request();
     }
 
     @Override
@@ -1320,7 +1320,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
         this.chkUseHttps.setSelected(useSecure);
         this.quickSearchTab.getEncodingComboBox().removeItemListener(encodingItemStateChanged);
         this.quickSearchTab.renewEncodingList(guessCharset, extenderImpl.getSelectEncodingList());
-        encodingItemStateChanged.itemStateChanged(null);
+        this.encodingItemStateChanged.itemStateChanged(null);
         this.quickSearchTab.getEncodingComboBox().addItemListener(encodingItemStateChanged);
     }
 

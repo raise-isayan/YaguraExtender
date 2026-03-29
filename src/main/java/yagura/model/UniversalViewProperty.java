@@ -20,6 +20,12 @@ public class UniversalViewProperty implements IPropertyConfig {
 
     public final static String UNIVERSAL_VIEW_PROPERTY = "universalViewProperty";
 
+    public final static String LANG_DEFAULT = "Default";
+    public final static String LANG_JAPANESE = "Japanese";
+    public final static String LANG_CHINESE = "Chinese";
+    public final static String LANG_KOREAN = "Korean";
+    public final static String LANG_OTHER = "Other";
+
     /**
      * https://l0.cm/encodings/table/
      * http://userguide.icu-project.org/conversion/detection

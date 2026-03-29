@@ -20,6 +20,8 @@ public class ResultFilterDlg extends CustomDialog {
 
     /**
      * Creates new form ResultFilterDlg
+     * @param parent
+     * @param modal
      */
     public ResultFilterDlg(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

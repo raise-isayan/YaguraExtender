@@ -158,9 +158,7 @@ public class JWKTab extends javax.swing.JPanel implements IBurpTab {
                 String jwkKeySet = JWKToken.toJWKS(keyPair, true);
                 appendTab("JWK(Keys)", jwkKeySet, true);
             }
-        } catch (InvalidKeySpecException ex) {
-            this.lblTokenValid.setText("invlid key");
-        } catch (IOException ex) {
+        } catch (InvalidKeySpecException | IOException ex) {
             this.lblTokenValid.setText("invlid key");
         }
     }//GEN-LAST:event_btnConvertActionPerformed

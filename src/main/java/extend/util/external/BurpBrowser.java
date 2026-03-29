@@ -378,7 +378,7 @@ public class BurpBrowser {
          * @return the profile
          */
         public String getProfileKey() {
-            return profileKey;
+            return this.profileKey;
         }
 
         /**
@@ -395,7 +395,7 @@ public class BurpBrowser {
          * @return the name
          */
         public String getName() {
-            return name;
+            return this.name;
         }
 
         /**
