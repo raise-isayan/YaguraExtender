@@ -20,6 +20,7 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -39,6 +40,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -189,92 +191,31 @@ public class MenuHander {
         yaguraEncoderMenu.setText("Encoder (E)");
         yaguraEncoderMenu.setMnemonic(KeyEvent.VK_E);
 
-        JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return SmartCodec.toUrlEncode(selectedText, getYaguraCharset(selectedText), TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, translate_encode_url);
+        yaguraEncoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderURLMenu);
 
-        JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnicodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-            }
-        });
-
+        JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, translate_encode_unicode_url);
         yaguraEncoderMenu.add(yaguraEncoderURLUnicodeMenu);
 
-        JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnicodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-            }
-        });
-
+        JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, translate_encode_unicode_json);
         yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
 
-        JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText));
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, translate_encode_base64);
+        yaguraEncoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
 
-        JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return CodecUtil.toBase64URLSafeEncode(selectedText, getYaguraCharset(selectedText));
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, translate_encode_base64_safe);
         yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
 
-        JMenuItem yaguraEncoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return SmartCodec.toUrlEncode(CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText)), StandardCharsets.US_ASCII, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraEncoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, translate_encode_base64_url);
         yaguraEncoderMenu.add(yaguraEncoderBase64andUrlMenu);
 
-        JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return SmartCodec.toHtmlDecEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
-            }
-        });
-
+        JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, translate_encode_html);
+        yaguraEncoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
 
-        JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return ConvertUtil.encodeJsonLiteral(selectedText, true);
-            }
-        });
-
+        JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, translate_encode_json_meta);
         yaguraEncoderMenu.add(yaguraEncoderMetacharMenu);
 
         yaguraMenu.add(yaguraEncoderMenu);
@@ -286,94 +227,31 @@ public class MenuHander {
         yaguraDecoderMenu.setText("Decoder (D)");
         yaguraDecoderMenu.setMnemonic(KeyEvent.VK_D);
 
-        JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return SmartCodec.toUrlDecode(selectedText, getYaguraCharset(selectedText));
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, translate_decode_url);
+        yaguraDecoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderURLMenu);
 
-        JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnicodeUrlDecode(selectedText);
-            }
-        });
-
+        JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, translate_decode_unicode_url);
         yaguraDecoderMenu.add(yaguraDecoderURLUnicodeMenu);
 
-        JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return SmartCodec.toUnocodeDecode(selectedText);
-            }
-        });
-
+        JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, translate_decode_unicode_json);
         yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
 
-        JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, new ITranslateAction() {
-
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return CodecUtil.toBase64Decode(selectedText, getYaguraCharset(selectedText));
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, translate_decode_base64);
+        yaguraDecoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
 
-        JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return CodecUtil.toBase64URLSafeDecode(selectedText, getYaguraCharset(selectedText));
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, translate_decode_base64_safe);
         yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
 
-        JMenuItem yaguraDecoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(selectedText, StandardCharsets.US_ASCII), getYaguraCharset(selectedText));
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraDecoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, translate_decode_base64_url);
         yaguraDecoderMenu.add(yaguraDecoderBase64andUrlMenu);
 
-        JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, new ITranslateAction() {
-
-            @Override
-            public String translate(String allText, String selectedText) {
-                return SmartCodec.toHtmlDecode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
-            }
-        });
-
+        JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, translate_decode_html);
+        yaguraDecoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
 
-        JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return ConvertUtil.decodeJsonLiteral(selectedText, true);
-            }
-        });
-
+        JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, translate_decode_json_meta);
         yaguraDecoderMenu.add(yaguraDecoderMetacharMenu);
 
         yaguraMenu.add(yaguraDecoderMenu);
@@ -385,64 +263,22 @@ public class MenuHander {
         yaguraConverterMenu.setText("Converter (C)");
         yaguraConverterMenu.setMnemonic(KeyEvent.VK_C);
 
-        JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return selectedText.toUpperCase();
-            }
-        });
-
+        JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, translate_upper_case);
         yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
 
-        JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return selectedText.toLowerCase();
-            }
-        });
-
+        JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, translate_lowler_case);
         yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
 
-        JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return TransUtil.toByteHexEncode(selectedText, getYaguraCharset(selectedText), false);
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, translate_bin2hex);
         yaguraConverterMenu.add(yaguraConverterBin2HexMenu);
 
-        JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return TransUtil.toByteHexDecode(selectedText, getYaguraCharset(selectedText));
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, translate_hex2bin);
         yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
 
-        JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return TransUtil.translateFullWidth2HalfWidth(selectedText);
-            }
-        });
+        JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, translate_full2half);
         yaguraConverterMenu.add(yaguraConverterFull2Half);
 
-        JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                return TransUtil.translateHalfWidth2FullWidth(selectedText);
-            }
-        });
+        JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, translate_half2full);
         yaguraConverterMenu.add(yaguraConverterHalf2Full);
         yaguraMenu.add(yaguraConverterMenu);
 
@@ -453,85 +289,22 @@ public class MenuHander {
         yaguraHashMenu.setText("Hash (H)");
         yaguraHashMenu.setMnemonic(KeyEvent.VK_H);
 
-        JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return BouncyUtil.toMD2Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, translate_md2);
         yaguraHashMenu.add(yaguraHashMD2Menu);
 
-        JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return BouncyUtil.toMD5Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, translate_md5);
         yaguraHashMenu.add(yaguraHashMD5Menu);
 
-        JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, new ITranslateAction() {
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return BouncyUtil.toSHA1Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, translate_sha1);
         yaguraHashMenu.add(yaguraHashSha1Menu);
 
-        JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_3, new ITranslateAction() {
-
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return BouncyUtil.toSHA256Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_3, translate_sha256);
         yaguraHashMenu.add(yaguraHashSha256Menu);
 
-        JMenuItem yaguraHashSha384Menu = createMenuItem("sha384", KeyEvent.VK_4, new ITranslateAction() {
-
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return BouncyUtil.toSHA384Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraHashSha384Menu = createMenuItem("sha384", KeyEvent.VK_4, translate_sha384);
         yaguraHashMenu.add(yaguraHashSha384Menu);
 
-        JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_5, new ITranslateAction() {
-
-            @Override
-            public String translate(String allText, String selectedText) {
-                try {
-                    return BouncyUtil.toSHA512Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-                } catch (UnsupportedEncodingException ex) {
-                    return selectedText;
-                }
-            }
-        });
-
+        JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_5, translate_sha512);
         yaguraHashMenu.add(yaguraHashSha512Menu);
         yaguraMenu.add(yaguraHashMenu);
 
@@ -630,6 +403,266 @@ public class MenuHander {
             }
         });
     }
+
+    private final ITranslateAction translate_encode_url = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return SmartCodec.toUrlEncode(selectedText, getYaguraCharset(selectedText), TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_encode_unicode_url = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return SmartCodec.toUnicodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+        }
+    };
+
+    private final ITranslateAction translate_encode_unicode_json = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return SmartCodec.toUnicodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+        }
+    };
+
+    private final ITranslateAction translate_encode_base64 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_encode_base64_safe = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64URLSafeEncode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_encode_base64_url = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return SmartCodec.toUrlEncode(CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText)), StandardCharsets.US_ASCII, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_encode_html = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return SmartCodec.toHtmlDecEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
+        }
+    };
+
+    private final ITranslateAction translate_encode_json_meta = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return ConvertUtil.encodeJsonLiteral(selectedText, true);
+        }
+    };
+
+    private final ITranslateAction translate_decode_url = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return SmartCodec.toUrlDecode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_decode_unicode_url = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return SmartCodec.toUnicodeUrlDecode(selectedText);
+        }
+    };
+
+    private final ITranslateAction translate_decode_unicode_json = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return SmartCodec.toUnocodeDecode(selectedText);
+        }
+    };
+
+    private final ITranslateAction translate_decode_base64 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64Decode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_decode_base64_safe = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64URLSafeDecode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_decode_base64_url = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(selectedText, StandardCharsets.US_ASCII), getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_decode_html = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return SmartCodec.toHtmlDecode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
+        }
+    };
+
+    private final ITranslateAction translate_decode_json_meta = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return ConvertUtil.decodeJsonLiteral(selectedText, true);
+        }
+    };
+
+    private final ITranslateAction translate_upper_case = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return selectedText.toUpperCase();
+        }
+    };
+
+    private final ITranslateAction translate_lowler_case = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return selectedText.toLowerCase();
+        }
+    };
+
+    private final ITranslateAction translate_bin2hex = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return TransUtil.toByteHexEncode(selectedText, getYaguraCharset(selectedText), false);
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_hex2bin = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return TransUtil.toByteHexDecode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_full2half = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return TransUtil.translateFullWidth2HalfWidth(selectedText);
+        }
+    };
+
+    private final ITranslateAction translate_half2full = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            return TransUtil.translateHalfWidth2FullWidth(selectedText);
+        }
+    };
+
+    private final ITranslateAction translate_md2 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toMD2Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_md5 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toMD5Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_sha1 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA1Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_sha256 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA256Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_sha384 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA384Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final ITranslateAction translate_sha512 = new ITranslateAction() {
+        @Override
+        public String translate(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA512Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
 
     private final java.awt.event.ActionListener burpCharsetModeAction = new java.awt.event.ActionListener() {
         @Override
