@@ -408,7 +408,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         this.cmbProfile.setModel(this.modelProfile);
         this.renewProfile();
         Frame frame = BurpUtil.suiteFrame();
-        JToggleButton button = BurpUtil.findSuiteIntercept(frame);
+        JToggleButton button = findSuiteIntercept();
         if (button != null) {
             this.tglButtonChangeListener.stateChanged(new ChangeEvent(button));
             button.addChangeListener(this.tglButtonChangeListener);
@@ -432,13 +432,45 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         }
     }
 
+    private JToggleButton findSuiteIntercept() {
+        Frame frame = BurpUtil.suiteFrame();
+        JToggleButton button = BurpUtil.findSuiteIntercept(frame);
+        if (button != null) {
+            return button;
+        }
+        else {
+            Frame proxyFrame = BurpUtil.suiteFrame("Proxy");
+            if (proxyFrame != null) {
+                JToggleButton innerButton = BurpUtil.findSuiteIntercept(proxyFrame);
+                if (innerButton != null) {
+                    return innerButton;
+                }
+            }
+        }
+        return null;
+    }
+
+
     private void selectInterceptTab() {
         JTabbedPane suiteTab = BurpUtil.suiteTabbedPane();
         if (suiteTab != null) {
-            suiteTab.setSelectedIndex(suiteTab.indexOfTab("Proxy"));
-            JTabbedPane secondSuiteTab = BurpUtil.secondarySuiteTabbedPane(suiteTab);
-            if (secondSuiteTab != null) {
-                secondSuiteTab.setSelectedIndex(secondSuiteTab.indexOfTab("Intercept"));
+            int proxyIndex = suiteTab.indexOfTab("Proxy");
+            if (0 <= proxyIndex) {
+                suiteTab.setSelectedIndex(proxyIndex);
+                JTabbedPane secondSuiteTab = BurpUtil.secondarySuiteTabbedPane(suiteTab);
+                if (secondSuiteTab != null) {
+                    secondSuiteTab.setSelectedIndex(secondSuiteTab.indexOfTab("Intercept"));
+                }
+            }
+            else {
+                Frame proxyFrame = BurpUtil.suiteFrame("Proxy");
+                if (proxyFrame != null) {
+                    proxyFrame.toFront();
+                    JTabbedPane secondSuiteTab = BurpUtil.secondarySuiteTabbedPane(proxyFrame);
+                    if (secondSuiteTab != null) {
+                        secondSuiteTab.setSelectedIndex(secondSuiteTab.indexOfTab("Intercept"));
+                    }
+                }
             }
         }
     }
@@ -834,7 +866,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     @Override
     public void extensionUnloaded() {
         Frame frame = BurpUtil.suiteFrame();
-        JToggleButton button = BurpUtil.findSuiteIntercept(frame);
+        JToggleButton button = findSuiteIntercept();
         if (button != null) {
             button.removeChangeListener(this.tglButtonChangeListener);
         }

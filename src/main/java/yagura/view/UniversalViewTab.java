@@ -466,9 +466,10 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         });
         this.listSelect.setModel(this.modelSelect);
 
-        if (!BurpConfig.isSupportApi(BurpExtension.api(), BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
-            this.chkBurpSuiteToolBar.setEnabled(false);
-        }
+//        if (!BurpConfig.isSupportApi(BurpExtension.api(), BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
+//            this.chkBurpSuiteToolBar.setEnabled(false);
+//            this.chkToolBarFloatable.setEnabled(false);
+//        }
 
     }
 

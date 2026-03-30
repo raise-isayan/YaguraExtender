@@ -52,7 +52,6 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
-import javax.swing.JTabbedPane;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -195,7 +194,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             api.logging().logToOutput("build:" + version.build());
             api.logging().logToOutput("buildNumber:" + version.buildNumber());
         }
-
         this.registerTemporaryProject();
 
         ThemeUI.addPropertyChangeListener(propertyListener);
@@ -242,10 +240,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 // init
                 BurpExtension.this.menuHandler.setYaguraSelectEncode(option.getYaguraProperty().getSelectEncoding());
                 BurpExtension.this.menuHandler.setYaguraEncodeType(option.getYaguraProperty().getEncodeType());
-                if (BurpConfig.isSupportApi(api, BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
-                    BurpExtension.this.toolbar = new BurpToolBar(api);
-                    BurpExtension.this.applyUniversalProperty();
-                }
+                BurpExtension.this.applyUniversalProperty();
             }
         });
 
@@ -433,6 +428,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     }
 
     public void applyUniversalProperty() {
+        MontoyaApi api = this.api();
+        if (this.toolbar == null && BurpConfig.isSupportApi(api, BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
+            this.toolbar = new BurpToolBar(api);
+        }
         if (this.toolbar == null) {
             return;
         }
