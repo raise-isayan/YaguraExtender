@@ -9,6 +9,7 @@ import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
+import java.awt.Container;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -457,7 +458,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             int proxyIndex = suiteTab.indexOfTab("Proxy");
             if (0 <= proxyIndex) {
                 suiteTab.setSelectedIndex(proxyIndex);
-                JTabbedPane secondSuiteTab = BurpUtil.secondarySuiteTabbedPane(suiteTab);
+                JTabbedPane secondSuiteTab = BurpUtil.secondarySuiteTabbedName(suiteTab, "Intercept");
                 if (secondSuiteTab != null) {
                     secondSuiteTab.setSelectedIndex(secondSuiteTab.indexOfTab("Intercept"));
                 }

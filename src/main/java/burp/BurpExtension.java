@@ -244,6 +244,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         });
 
+//        BurpUtil.printComponents(BurpUtil.suiteFrame(), 0);
+
     }
 
     @SuppressWarnings("unchecked")
