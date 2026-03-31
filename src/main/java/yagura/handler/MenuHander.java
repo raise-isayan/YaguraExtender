@@ -192,7 +192,7 @@ public class MenuHander {
         yaguraEncoderMenu.setMnemonic(KeyEvent.VK_E);
 
         JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, translate_encode_url);
-        yaguraEncoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+//        yaguraEncoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderURLMenu);
 
         JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, translate_encode_unicode_url);
@@ -202,7 +202,7 @@ public class MenuHander {
         yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
 
         JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, translate_encode_base64);
-        yaguraEncoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+//        yaguraEncoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
 
         JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, translate_encode_base64_safe);
@@ -212,7 +212,7 @@ public class MenuHander {
         yaguraEncoderMenu.add(yaguraEncoderBase64andUrlMenu);
 
         JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, translate_encode_html);
-        yaguraEncoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+//        yaguraEncoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
 
         JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, translate_encode_json_meta);
@@ -228,7 +228,7 @@ public class MenuHander {
         yaguraDecoderMenu.setMnemonic(KeyEvent.VK_D);
 
         JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, translate_decode_url);
-        yaguraDecoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+ //       yaguraDecoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderURLMenu);
 
         JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, translate_decode_unicode_url);
@@ -238,7 +238,7 @@ public class MenuHander {
         yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
 
         JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, translate_decode_base64);
-        yaguraDecoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+ //       yaguraDecoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
 
         JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, translate_decode_base64_safe);
@@ -248,7 +248,7 @@ public class MenuHander {
         yaguraDecoderMenu.add(yaguraDecoderBase64andUrlMenu);
 
         JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, translate_decode_html);
-        yaguraDecoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
+//        yaguraDecoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
 
         JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, translate_decode_json_meta);
