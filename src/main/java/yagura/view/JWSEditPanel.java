@@ -308,12 +308,12 @@ public class JWSEditPanel extends javax.swing.JPanel {
             if (JWSToken.SYMMETRIC_KEY.contains(header.getAlgorithm())) {
                 JWSToken token = new JWSToken(header, payload);
                 byte[] signature = token.sign(this.toSecretKey());
-                token.getSignature().setEncodeBase64Url(signature);
+                token.getSignature().setEncodeBase64UrlByte(signature);
                 return token.getToken();
             } else {
                 JWSToken token = new JWSToken(header, payload);
                 byte[] signature = token.sign(this.toPrivateKey());
-                token.getSignature().setEncodeBase64Url(signature);
+                token.getSignature().setEncodeBase64UrlByte(signature);
                 return token.getToken();
             }
         } catch (PEMException ex) {

@@ -34,6 +34,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.plaf.basic.BasicToolBarUI;
 import javax.swing.table.TableModel;
+import yagura.model.UniversalViewProperty;
+import yagura.model.UniversalViewProperty.AutoInterceptState;
 
 /**
  *
@@ -857,6 +859,24 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         }
     }
 
+    public void setAutoInterceptState(UniversalViewProperty.AutoInterceptState autoInterceptState) {
+        if (AutoInterceptState.OFF.equals(autoInterceptState)) {
+            this.tglAuto.setSelected(false);
+        }
+        else if (AutoInterceptState.ON.equals(autoInterceptState)) {
+            this.tglAuto.setSelected(true);
+        }
+    }
+
+    public UniversalViewProperty.AutoInterceptState getAutoInterceptState() {
+        if (this.tglAuto.isSelected()) {
+            return AutoInterceptState.ON;
+        }
+        else {
+            return AutoInterceptState.OFF;
+        }
+    }
+
 //    public void setIntervalTime(int interval_time) {
 //        this.interval_time = interval_time;
 //    }
@@ -877,4 +897,5 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             model.removeTableModelListener(interceptModelListener);
         }
     }
+
 }

@@ -228,15 +228,31 @@ public class UniversalViewProperty implements IPropertyConfig {
         FLOATABLE;
     }
 
+    public enum AutoInterceptState {
+        OFF,
+        ON;
+    }
+
     @Expose
     private EnumSet<BurpToolBar> burpToolBar = EnumSet.of(BurpToolBar.FLOATABLE);
 
     public EnumSet<BurpToolBar> getBurpToolBar() {
-        return burpToolBar;
+        return this.burpToolBar;
     }
 
     public void setBurpToolBar(EnumSet<BurpToolBar> burpToolBar) {
         this.burpToolBar = burpToolBar;
+    }
+
+    @Expose
+    private AutoInterceptState defaultAutoInterceptState = AutoInterceptState.OFF;
+
+    public AutoInterceptState getDefaultAutoInterceptState() {
+        return this.defaultAutoInterceptState;
+    }
+
+    public void setDefaultAutoInterceptState(AutoInterceptState autoInterceptState) {
+        this.defaultAutoInterceptState = autoInterceptState;
     }
 
     public void setProperty(UniversalViewProperty property) {
@@ -247,6 +263,7 @@ public class UniversalViewProperty implements IPropertyConfig {
         this.setLineWrap(property.isLineWrap());
         this.setBurpView(property.getBurpView());
         this.setBurpToolBar(property.getBurpToolBar());
+        this.setDefaultAutoInterceptState(property.getDefaultAutoInterceptState());
     }
 
     @Override

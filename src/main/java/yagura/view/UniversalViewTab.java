@@ -5,8 +5,6 @@
  */
 package yagura.view;
 
-import burp.BurpExtension;
-import extension.burp.BurpConfig;
 import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
 import yagura.model.UniversalViewProperty;
@@ -25,6 +23,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import extension.burp.IBurpTab;
+import yagura.model.UniversalViewProperty.AutoInterceptState;
 
 /**
  *
@@ -84,6 +83,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         tabBurpView = new javax.swing.JPanel();
         chkBurpSuiteToolBar = new javax.swing.JCheckBox();
         chkToolBarFloatable = new javax.swing.JCheckBox();
+        lblAutoInterceptState = new javax.swing.JLabel();
+        cmbAutoInterceptState = new javax.swing.JComboBox<>();
 
         setName("Encoding"); // NOI18N
         setPreferredSize(new java.awt.Dimension(600, 450));
@@ -396,27 +397,45 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
+        lblAutoInterceptState.setText("Default AUTO button state");
+
+        cmbAutoInterceptState.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbAutoInterceptStateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout tabBurpViewLayout = new javax.swing.GroupLayout(tabBurpView);
         tabBurpView.setLayout(tabBurpViewLayout);
         tabBurpViewLayout.setHorizontalGroup(
             tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabBurpViewLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabBurpViewLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(chkToolBarFloatable))
-                    .addComponent(chkBurpSuiteToolBar))
-                .addContainerGap(705, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addGroup(tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(tabBurpViewLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
+                                .addComponent(chkToolBarFloatable))
+                            .addComponent(chkBurpSuiteToolBar)
+                            .addComponent(lblAutoInterceptState)))
+                    .addGroup(tabBurpViewLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(cmbAutoInterceptState, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(682, Short.MAX_VALUE))
         );
         tabBurpViewLayout.setVerticalGroup(
             tabBurpViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabBurpViewLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(chkBurpSuiteToolBar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(2, 2, 2)
                 .addComponent(chkToolBarFloatable)
-                .addContainerGap(363, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAutoInterceptState)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmbAutoInterceptState, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(317, Short.MAX_VALUE))
         );
 
         tabUniversalView.addTab("Burp View", tabBurpView);
@@ -465,6 +484,8 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
 
         });
         this.listSelect.setModel(this.modelSelect);
+        this.cmbAutoInterceptState.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { AutoInterceptState.OFF.name(), AutoInterceptState.ON.name() }));
+
 
 //        if (!BurpConfig.isSupportApi(BurpExtension.api(), BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
 //            this.chkBurpSuiteToolBar.setEnabled(false);
@@ -581,6 +602,10 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
     }//GEN-LAST:event_chkJsCommentActionPerformed
 
+    private void cmbAutoInterceptStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbAutoInterceptStateActionPerformed
+        this.firePropertyChange(UniversalViewProperty.UNIVERSAL_VIEW_PROPERTY, null, this.getUniversalViewProperty());
+    }//GEN-LAST:event_cmbAutoInterceptStateActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;
     private javax.swing.JButton btnEncLerftArraw;
@@ -599,7 +624,9 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JCheckBox chkUniversalRaw;
     private javax.swing.JCheckBox chkViewState;
     private javax.swing.JCheckBox chklineWrap;
+    private javax.swing.JComboBox<String> cmbAutoInterceptState;
     private javax.swing.JComboBox<String> cmbDefaultLangEncoding;
+    private javax.swing.JLabel lblAutoInterceptState;
     private javax.swing.JLabel lblDispayMaxLength;
     private javax.swing.JLabel lblSelect;
     private javax.swing.JLabel lblTarget;
@@ -681,6 +708,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         this.chklineWrap.setSelected(property.isLineWrap());
         this.setBurpView(property.getBurpView());
         this.setBurpToolBar(property.getBurpToolBar());
+        this.setAutoInterceptState(property.getDefaultAutoInterceptState());
     }
 
     public UniversalViewProperty getUniversalViewProperty() {
@@ -692,6 +720,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         property.setLineWrap(this.chklineWrap.isSelected());
         property.setBurpView(this.getBurpView());
         property.setBurpToolBar(this.getBurpToolBar());
+        property.setDefaultAutoInterceptState(this.getAutoInterceptState());
         return property;
     }
 
@@ -783,4 +812,18 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
         }
         return toolBar;
     }
+
+
+    private void setAutoInterceptState(AutoInterceptState autoInterceptState) {
+        this.cmbAutoInterceptState.setSelectedItem(autoInterceptState.name());
+    }
+
+    private AutoInterceptState getAutoInterceptState() {
+        String state = (String)this.cmbAutoInterceptState.getSelectedItem();
+        if (state != null) {
+            return AutoInterceptState.valueOf(state);
+        }
+        return AutoInterceptState.OFF;
+    }
+
 }

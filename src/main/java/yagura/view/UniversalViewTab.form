@@ -493,16 +493,25 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                              <Component id="chkToolBarFloatable" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
+                                      <Component id="chkToolBarFloatable" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="chkBurpSuiteToolBar" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblAutoInterceptState" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <Component id="chkBurpSuiteToolBar" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                              <Component id="cmbAutoInterceptState" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="705" max="32767" attributes="0"/>
+                      <EmptySpace pref="682" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -511,9 +520,13 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="chkBurpSuiteToolBar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Component id="chkToolBarFloatable" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="363" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="lblAutoInterceptState" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cmbAutoInterceptState" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="317" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -535,6 +548,24 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkToolBarFloatableActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblAutoInterceptState">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Default AUTO button state"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JComboBox" name="cmbAutoInterceptState">
+              <Properties>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="0"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbAutoInterceptStateActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

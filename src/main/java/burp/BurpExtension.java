@@ -243,9 +243,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 BurpExtension.this.applyUniversalProperty();
             }
         });
-
-//        BurpUtil.printComponents(BurpUtil.suiteFrame(), 0);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -431,14 +428,15 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     public void applyUniversalProperty() {
         MontoyaApi api = this.api();
+        Frame frame = BurpUtil.suiteFrame();
+        UniversalViewProperty property = option.getUniversalViewProperty();
         if (this.toolbar == null && BurpConfig.isSupportApi(api, BurpConfig.SupportApi.PROXY_IS_INTERCEPT)) {
             this.toolbar = new BurpToolBar(api);
+            this.toolbar.setAutoInterceptState(property.getDefaultAutoInterceptState());
         }
         if (this.toolbar == null) {
             return;
         }
-        Frame frame = BurpUtil.suiteFrame();
-        UniversalViewProperty property = option.getUniversalViewProperty();
         EnumSet<UniversalViewProperty.BurpView> burpView = property.getBurpView();
         EnumSet<UniversalViewProperty.BurpToolBar> burpToolBar = property.getBurpToolBar();
         if (burpView.contains(UniversalViewProperty.BurpView.TOOL_BAR)) {
