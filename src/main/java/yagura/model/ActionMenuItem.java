@@ -1,25 +1,27 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author isayan
  */
 public class ActionMenuItem {
-
-    public ActionMenuItem() {
-
-    }
-
     @Expose
-    private String caption;
-
-    @Expose
-    private int mnemonic = -1;
+    private String caption = "";
 
     @Expose
     private String hotKey = "";
+
+    public ActionMenuItem() {
+    }
+
+    public ActionMenuItem(String caption, String hotKey) {
+        this.caption = caption;
+        this.hotKey = hotKey;
+    }
 
     /**
      * @return the caption
@@ -35,19 +37,6 @@ public class ActionMenuItem {
         this.caption = caption;
     }
 
-    /**
-     * @return the mnemonic
-     */
-    public int getMnemonic() {
-        return mnemonic;
-    }
-
-    /**
-     * @param mnemonic the mnemonic to set
-     */
-    public void setMnemonic(int mnemonic) {
-        this.mnemonic = mnemonic;
-    }
 
     /**
      * @return the hotKey
@@ -70,4 +59,19 @@ public class ActionMenuItem {
         ITranslateAction action = null;
         return action;
     }
+
+    private final static Pattern MNEMONIC = Pattern.compile("\\(\\[0-9A-Z]\\)");
+
+    public int getMnemonic() {
+        Matcher m = MNEMONIC.matcher(this.caption);
+        if (m.find()) {
+            String n = m.group(0);
+            if (!n.isEmpty()) {
+                return (int)n.charAt(0);
+            }
+        }
+        return -1;
+    }
+
+
 }

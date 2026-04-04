@@ -119,6 +119,8 @@ It is equivalent to switching Charsets in Burp's [User Interface] -> [Inspector 
 
 == Burp ToolBar
 
+image:images/burp_toolbar.png[Burp Toolbar]
+
 Intarcept Toggle Bottn::
 
 It has the same functionality as the Intercept feature in the Proxy tab and works in conjunction with Burp core behavior.
@@ -137,6 +139,12 @@ You can configure the Request interception rules, Response interception rules an
   ** Intercept server-to-client messages
   ** Only intercept in-scope messages
 
+Switch to Intarcept tab::
+Select the [Proxy] -> [Intercept] tab.
+
+Switch to Intarcept tab AUTO button::
+Automatically selects the [Proxy] -> [Intercept] tab.
+
 Open Browser::
 
 Launch the browser with the selected profile.
@@ -145,8 +153,10 @@ Manage global settings icon::
 
 You can load and save User and Project settings.
 
+  ** Restore Default Project
   ** Load project settings
   ** Save project settings
+  ** Restore Default User
   ** Load user settings
   ** Save user settings
 
@@ -190,6 +200,9 @@ Select::
 [HTML Comment] check box::
     Display HTML Comment tab in message tab.
 
+[JavaScript Comment] check box::
+    Display JavaScript Comment tab in message tab.
+
 [JSON] check box::
     Display the JSON tab in the message tab.
 
@@ -226,6 +239,10 @@ image:images/custom_burpview.png[Burp View tab]
 
 [Floatable] check box::
   Enable floating Burp suite Toolbar. 
+
+[Default AUTO button state] combobox::
+  OFF ::  Hide
+  ON :: Show
 
 image:images/burp_toolbar.png[Burp ToolBar]
 
@@ -982,17 +999,17 @@ HTML(<,>,",')::
 &#xhh;::
     Encodes and decodes the entity reference format in hexadecimal format.
 
-hh(byte)::
-    Encodes and decodes in hexadecimal format in byte code units.
-
 \xhh(unicode)::
     Encodes and decodes in hexadecimal format in unicode code units.
 
 \xhh(byte)::
     Encodes and decodes in hexadecimal format in byte code units.
 
-\ooo::
+\ooo(oct)::
     Encodes and decodes in octal format.
+
+\b{bbbb}(bin)::
+    Encodes and decodes in binary format.
 
 \uhhhh::
     Encodes and decodes in Unicode format.
@@ -1038,25 +1055,6 @@ Metachar checkbox::
 |\n       |Convert to LF(0x0a)
 |\t       |Convert to TAB(0x09)
 |=======================
-
-===== Format
-
-Minify::
-    Compress XML and JSON.
-
-Beautify::
-    Format XML and JSON.
-
-[Smart Format] button::
-     Formats a string. Supports XML and JSON formatting.
-
-===== Regex
-
-Smart Math::
-   Smart Math generates regular expressions to match various escapes.
-
-with Byte::
-   When checked, include regular expressions that take byte matching into Smart Math.
 
 ===== Hash/Checksum
 
@@ -1301,6 +1299,42 @@ Murmur3/32x86::
 
 Murmur3/128x64::
     Calculate checksum by MurmurHash3 128bit
+
+===== Convert
+
+Convert button:
+
+* Upper Case
+    Convert to uppercase
+* Lower Case
+    Convert to lowercase
+* bin2hex
+    Converts ASCII binary notation to HEX
+* hex2bin
+    Convert HEX to ASCII in binary notation
+* Full width -> Half width
+    Convert full-width characters to half-width characters.
+* Half width -> Full width
+    Convert half-width characterss to full-width character.
+
+===== Format
+
+Minify::
+    Compress XML and JSON.
+
+Beautify::
+    Format XML and JSON.
+
+[Smart Format] button::
+     Formats a string. Supports XML and JSON formatting.
+
+===== Regex
+
+Smart Math::
+   Smart Math generates regular expressions to match various escapes.
+
+with Byte::
+   When checked, include regular expressions that take byte matching into Smart Math.
 
 ==== Generater tab
 

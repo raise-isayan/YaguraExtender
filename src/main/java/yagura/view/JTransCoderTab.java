@@ -79,6 +79,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import extension.helpers.jws.JWSToken;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -286,6 +287,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         calendar.add(Calendar.YEAR, 1);
         this.setGeneraterDateEnd(calendar.getTime());
 
+        this.pnlConvertAction.setLayout(new VerticalFlowLayout());
+
         /**
          * * UI design end **
          */
@@ -437,7 +440,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void initComponents() {
 
         btnGrpNewLine = new javax.swing.ButtonGroup();
-        btnConvertCase = new javax.swing.ButtonGroup();
+        btnEncodeCase = new javax.swing.ButtonGroup();
         btnGrpEncodeType = new javax.swing.ButtonGroup();
         rdoEncodeDecodeGrp = new javax.swing.ButtonGroup();
         rdoRandomLengthGrp = new javax.swing.ButtonGroup();
@@ -446,10 +449,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoFormatGrp = new javax.swing.ButtonGroup();
         btnGrpKeySize = new javax.swing.ButtonGroup();
         btnGrpExportKeyPair = new javax.swing.ButtonGroup();
+        btnConvertCase = new javax.swing.ButtonGroup();
         tabbetTranscoder = new javax.swing.JTabbedPane();
         tabTransrator = new javax.swing.JPanel();
         pnlTranslator = new javax.swing.JPanel();
-        pnlConvert = new javax.swing.JPanel();
+        pnlTrans = new javax.swing.JPanel();
         pnlHeader = new javax.swing.JPanel();
         lblPositionStatus = new javax.swing.JLabel();
         cmbHistory = new javax.swing.JComboBox<>();
@@ -476,13 +480,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnClear = new javax.swing.JButton();
         btnOutputCopy = new javax.swing.JButton();
         pnlSelectOption = new javax.swing.JPanel();
-        pnlEncode = new javax.swing.JPanel();
+        pnlEncodeType = new javax.swing.JPanel();
         rdoAll = new javax.swing.JRadioButton();
         rdoAlphaNum = new javax.swing.JRadioButton();
         rdoURLSafe = new javax.swing.JRadioButton();
         rdoLigth = new javax.swing.JRadioButton();
         rdoStandard = new javax.swing.JRadioButton();
-        pnlConvertCase = new javax.swing.JPanel();
+        pnlEncodeCase = new javax.swing.JPanel();
         rdoLowerCase = new javax.swing.JRadioButton();
         rdoUpperCase = new javax.swing.JRadioButton();
         pnlNewLine = new javax.swing.JPanel();
@@ -527,10 +531,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoUnicodeHex = new javax.swing.JRadioButton();
         rdoUnicodeHex2 = new javax.swing.JRadioButton();
         pnlJSHexEnc = new javax.swing.JPanel();
-        rdoByteNoneHex = new javax.swing.JRadioButton();
         rdoByteXHex = new javax.swing.JRadioButton();
         rdoByteHex2 = new javax.swing.JRadioButton();
         rdoByteOct = new javax.swing.JRadioButton();
+        rdoByteBin = new javax.swing.JRadioButton();
         pnlCompress = new javax.swing.JPanel();
         rdoGzip = new javax.swing.JRadioButton();
         rdoZLIB = new javax.swing.JRadioButton();
@@ -545,13 +549,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoSQLLang = new javax.swing.JRadioButton();
         rdoRegex = new javax.swing.JRadioButton();
         chkMetaChar = new javax.swing.JCheckBox();
-        pnlFormat = new javax.swing.JPanel();
-        rdoMinifyFormat = new javax.swing.JRadioButton();
-        rdoBeautifyFormat = new javax.swing.JRadioButton();
-        btnSmartFormat = new javax.swing.JButton();
-        pnlRegex = new javax.swing.JPanel();
-        btnSmartMatch = new javax.swing.JButton();
-        chkWithByte = new javax.swing.JCheckBox();
         pnlHashCheckSum = new javax.swing.JPanel();
         pnlHashTrans = new javax.swing.JPanel();
         btnHashMd2 = new javax.swing.JButton();
@@ -634,6 +631,25 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnXXHash32 = new javax.swing.JButton();
         btnMurmurHash3_32x86 = new javax.swing.JButton();
         btnMurmurHash3_128x64 = new javax.swing.JButton();
+        pnlConvertAction = new javax.swing.JPanel();
+        pnlConverter = new javax.swing.JPanel();
+        btnConvert = new javax.swing.JButton();
+        pnlTextCase = new javax.swing.JPanel();
+        rdoConvertUpperCase = new javax.swing.JRadioButton();
+        rdoConvertLowlerCase = new javax.swing.JRadioButton();
+        pnlConvertHex = new javax.swing.JPanel();
+        rdoConvertBin2Hex = new javax.swing.JRadioButton();
+        rdoConvertHex2Bin = new javax.swing.JRadioButton();
+        pnlZenHan = new javax.swing.JPanel();
+        rdoConvertHalf2Full = new javax.swing.JRadioButton();
+        rdoConvertFull2Half = new javax.swing.JRadioButton();
+        pnlFormat = new javax.swing.JPanel();
+        rdoMinifyFormat = new javax.swing.JRadioButton();
+        rdoBeautifyFormat = new javax.swing.JRadioButton();
+        btnSmartFormat = new javax.swing.JButton();
+        pnlRegex = new javax.swing.JPanel();
+        btnSmartMatch = new javax.swing.JButton();
+        chkWithByte = new javax.swing.JCheckBox();
         tabGenerator = new javax.swing.JPanel();
         splitGenerator = new javax.swing.JSplitPane();
         pnlTop = new javax.swing.JPanel();
@@ -792,7 +808,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnDotDecAIP = new javax.swing.JButton();
         lblIPv4MappedIPv6 = new javax.swing.JLabel();
         txtIPv4MappedIPv6 = new javax.swing.JTextField();
-        btnDotAHexIP1 = new javax.swing.JButton();
+        btnIPv4MapIPv4 = new javax.swing.JButton();
         lblIPv4toUnicode = new javax.swing.JLabel();
         txtIPv4ToUnicode = new javax.swing.JTextField();
         btnIPv4ToUnicode = new javax.swing.JButton();
@@ -803,9 +819,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnDotOctAIP = new javax.swing.JButton();
         txtDotOctAIP = new javax.swing.JTextField();
         lblTailDotDecCIP = new javax.swing.JLabel();
-        txtDotTailDecCIP = new javax.swing.JTextField();
-        btnDotTailDecCIP = new javax.swing.JButton();
+        txtDotDecimalCIP = new javax.swing.JTextField();
+        btnDotDecimalCIP = new javax.swing.JButton();
         lblDotDectAIP = new javax.swing.JLabel();
+        btnCopyAll = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -813,7 +830,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlTranslator.setLayout(new java.awt.BorderLayout());
 
-        pnlConvert.setLayout(new java.awt.BorderLayout());
+        pnlTrans.setLayout(new java.awt.BorderLayout());
 
         pnlHeader.setLayout(new java.awt.BorderLayout());
 
@@ -822,7 +839,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlHeader.add(cmbHistory, java.awt.BorderLayout.CENTER);
 
-        pnlConvert.add(pnlHeader, java.awt.BorderLayout.NORTH);
+        pnlTrans.add(pnlHeader, java.awt.BorderLayout.NORTH);
 
         splitConvert.setDividerLocation(200);
         splitConvert.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -844,7 +861,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         splitConvert.setBottomComponent(tabbetOutput);
 
-        pnlConvert.add(splitConvert, java.awt.BorderLayout.CENTER);
+        pnlTrans.add(splitConvert, java.awt.BorderLayout.CENTER);
 
         pnlStatus.setLayout(new java.awt.BorderLayout());
 
@@ -910,9 +927,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlStatus.add(btnOutput, java.awt.BorderLayout.SOUTH);
 
-        pnlConvert.add(pnlStatus, java.awt.BorderLayout.WEST);
+        pnlTrans.add(pnlStatus, java.awt.BorderLayout.WEST);
 
-        pnlTranslator.add(pnlConvert, java.awt.BorderLayout.CENTER);
+        pnlTranslator.add(pnlTrans, java.awt.BorderLayout.CENTER);
 
         pnlSelect.setLayout(new java.awt.BorderLayout());
 
@@ -1018,8 +1035,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlSelect.add(pnlInputOutput, java.awt.BorderLayout.EAST);
 
-        pnlEncode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode Type"));
-        pnlEncode.setLayout(new java.awt.GridLayout(5, 0));
+        pnlEncodeType.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode Type"));
+        pnlEncodeType.setLayout(new java.awt.GridLayout(5, 0));
 
         btnGrpEncodeType.add(rdoAll);
         rdoAll.setText("All");
@@ -1028,7 +1045,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 rdoAllActionPerformed(evt);
             }
         });
-        pnlEncode.add(rdoAll);
+        pnlEncodeType.add(rdoAll);
 
         btnGrpEncodeType.add(rdoAlphaNum);
         rdoAlphaNum.setSelected(true);
@@ -1039,7 +1056,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 rdoAlphaNumActionPerformed(evt);
             }
         });
-        pnlEncode.add(rdoAlphaNum);
+        pnlEncodeType.add(rdoAlphaNum);
 
         btnGrpEncodeType.add(rdoURLSafe);
         rdoURLSafe.setText("Burp Like");
@@ -1049,7 +1066,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 rdoURLSafeActionPerformed(evt);
             }
         });
-        pnlEncode.add(rdoURLSafe);
+        pnlEncodeType.add(rdoURLSafe);
 
         btnGrpEncodeType.add(rdoLigth);
         rdoLigth.setText("Light");
@@ -1059,19 +1076,19 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 rdoLigthActionPerformed(evt);
             }
         });
-        pnlEncode.add(rdoLigth);
+        pnlEncodeType.add(rdoLigth);
 
         btnGrpEncodeType.add(rdoStandard);
         rdoStandard.setText("Standard");
         rdoStandard.setToolTipText("[^A-Za-z0-9!\\\"'()*,/:<>@\\[\\\\\\]^`{|}~]");
-        pnlEncode.add(rdoStandard);
+        pnlEncodeType.add(rdoStandard);
 
-        pnlSelectOption.add(pnlEncode);
+        pnlSelectOption.add(pnlEncodeType);
 
-        pnlConvertCase.setBorder(javax.swing.BorderFactory.createTitledBorder("Convert Case"));
-        pnlConvertCase.setLayout(new java.awt.GridLayout(4, 0));
+        pnlEncodeCase.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode Case"));
+        pnlEncodeCase.setLayout(new java.awt.GridLayout(4, 0));
 
-        btnConvertCase.add(rdoLowerCase);
+        btnEncodeCase.add(rdoLowerCase);
         rdoLowerCase.setSelected(true);
         rdoLowerCase.setText("Lower Case");
         rdoLowerCase.addActionListener(new java.awt.event.ActionListener() {
@@ -1079,18 +1096,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 rdoLowerCaseActionPerformed(evt);
             }
         });
-        pnlConvertCase.add(rdoLowerCase);
+        pnlEncodeCase.add(rdoLowerCase);
 
-        btnConvertCase.add(rdoUpperCase);
+        btnEncodeCase.add(rdoUpperCase);
         rdoUpperCase.setText("Upper Case");
         rdoUpperCase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rdoUpperCaseActionPerformed(evt);
             }
         });
-        pnlConvertCase.add(rdoUpperCase);
+        pnlEncodeCase.add(rdoUpperCase);
 
-        pnlSelectOption.add(pnlConvertCase);
+        pnlSelectOption.add(pnlEncodeCase);
 
         pnlNewLine.setBorder(javax.swing.BorderFactory.createTitledBorder("NewLine"));
         pnlNewLine.setLayout(new java.awt.GridLayout(4, 0));
@@ -1194,7 +1211,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlUrl.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoUrl);
-        rdoUrl.setSelected(true);
         rdoUrl.setText("URL(%hh)");
         pnlUrl.add(rdoUrl);
 
@@ -1310,10 +1326,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
 
-        rdoEncodeDecodeGrp.add(rdoByteNoneHex);
-        rdoByteNoneHex.setText("hh(hex)");
-        pnlJSHexEnc.add(rdoByteNoneHex);
-
         rdoEncodeDecodeGrp.add(rdoByteXHex);
         rdoByteXHex.setText("\\xhh(hex)");
         pnlJSHexEnc.add(rdoByteXHex);
@@ -1325,6 +1337,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoEncodeDecodeGrp.add(rdoByteOct);
         rdoByteOct.setText("\\ooo(oct)");
         pnlJSHexEnc.add(rdoByteOct);
+
+        rdoEncodeDecodeGrp.add(rdoByteBin);
+        rdoByteBin.setText("\\b{bbbb}(bin)");
+        pnlJSHexEnc.add(rdoByteBin);
 
         pnlEncodeDecode.add(pnlJSHexEnc);
 
@@ -1394,44 +1410,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlEncodeDecode.add(pnlLang);
 
         pnlTransAction.add(pnlEncodeDecode);
-
-        pnlFormat.setBorder(javax.swing.BorderFactory.createTitledBorder("Format"));
-        pnlFormat.setLayout(new java.awt.GridLayout(1, 3));
-
-        rdoFormatGrp.add(rdoMinifyFormat);
-        rdoMinifyFormat.setText("Minify");
-        pnlFormat.add(rdoMinifyFormat);
-
-        rdoFormatGrp.add(rdoBeautifyFormat);
-        rdoBeautifyFormat.setSelected(true);
-        rdoBeautifyFormat.setText("Beautify");
-        pnlFormat.add(rdoBeautifyFormat);
-
-        btnSmartFormat.setText("Smart Format");
-        btnSmartFormat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSmartFormatActionPerformed(evt);
-            }
-        });
-        pnlFormat.add(btnSmartFormat);
-
-        pnlTransAction.add(pnlFormat);
-
-        pnlRegex.setBorder(javax.swing.BorderFactory.createTitledBorder("Regex"));
-        pnlRegex.setLayout(new java.awt.BorderLayout());
-
-        btnSmartMatch.setText("Smart Match");
-        btnSmartMatch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSmartMatchActionPerformed(evt);
-            }
-        });
-        pnlRegex.add(btnSmartMatch, java.awt.BorderLayout.CENTER);
-
-        chkWithByte.setText("with Byte");
-        pnlRegex.add(chkWithByte, java.awt.BorderLayout.EAST);
-
-        pnlTransAction.add(pnlRegex);
 
         tabbetTransAction.addTab("Encode/Decode", pnlTransAction);
 
@@ -2080,6 +2058,97 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlHashCheckSum.add(pnlCheckSumTrans);
 
         tabbetTransAction.addTab("Hash/Checksum", pnlHashCheckSum);
+
+        pnlConvertAction.setLayout(new javax.swing.BoxLayout(pnlConvertAction, javax.swing.BoxLayout.PAGE_AXIS));
+
+        pnlConverter.setBorder(javax.swing.BorderFactory.createTitledBorder("Convert"));
+        pnlConverter.setLayout(new java.awt.GridLayout(4, 1));
+
+        btnConvert.setText("Convert");
+        btnConvert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConvertActionPerformed(evt);
+            }
+        });
+        pnlConverter.add(btnConvert);
+
+        pnlTextCase.setLayout(new java.awt.GridLayout(1, 2));
+
+        btnConvertCase.add(rdoConvertUpperCase);
+        rdoConvertUpperCase.setText("Upper Case");
+        pnlTextCase.add(rdoConvertUpperCase);
+
+        btnConvertCase.add(rdoConvertLowlerCase);
+        rdoConvertLowlerCase.setText("Lowler Case");
+        pnlTextCase.add(rdoConvertLowlerCase);
+
+        pnlConverter.add(pnlTextCase);
+
+        pnlConvertHex.setLayout(new java.awt.GridLayout(1, 2));
+
+        btnConvertCase.add(rdoConvertBin2Hex);
+        rdoConvertBin2Hex.setText("bin2hex");
+        pnlConvertHex.add(rdoConvertBin2Hex);
+
+        btnConvertCase.add(rdoConvertHex2Bin);
+        rdoConvertHex2Bin.setText("hex2bin");
+        pnlConvertHex.add(rdoConvertHex2Bin);
+
+        pnlConverter.add(pnlConvertHex);
+
+        pnlZenHan.setLayout(new java.awt.GridLayout(1, 2));
+
+        btnConvertCase.add(rdoConvertHalf2Full);
+        rdoConvertHalf2Full.setText("Half width -> Full width");
+        pnlZenHan.add(rdoConvertHalf2Full);
+
+        btnConvertCase.add(rdoConvertFull2Half);
+        rdoConvertFull2Half.setText("Full width -> Half width");
+        pnlZenHan.add(rdoConvertFull2Half);
+
+        pnlConverter.add(pnlZenHan);
+
+        pnlConvertAction.add(pnlConverter);
+
+        pnlFormat.setBorder(javax.swing.BorderFactory.createTitledBorder("Format"));
+        pnlFormat.setLayout(new java.awt.GridLayout(1, 3));
+
+        rdoFormatGrp.add(rdoMinifyFormat);
+        rdoMinifyFormat.setText("Minify");
+        pnlFormat.add(rdoMinifyFormat);
+
+        rdoFormatGrp.add(rdoBeautifyFormat);
+        rdoBeautifyFormat.setSelected(true);
+        rdoBeautifyFormat.setText("Beautify");
+        pnlFormat.add(rdoBeautifyFormat);
+
+        btnSmartFormat.setText("Smart Format");
+        btnSmartFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSmartFormatActionPerformed(evt);
+            }
+        });
+        pnlFormat.add(btnSmartFormat);
+
+        pnlConvertAction.add(pnlFormat);
+
+        pnlRegex.setBorder(javax.swing.BorderFactory.createTitledBorder("Regex"));
+        pnlRegex.setLayout(new java.awt.BorderLayout());
+
+        btnSmartMatch.setText("Smart Match");
+        btnSmartMatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSmartMatchActionPerformed(evt);
+            }
+        });
+        pnlRegex.add(btnSmartMatch, java.awt.BorderLayout.CENTER);
+
+        chkWithByte.setText("with Byte");
+        pnlRegex.add(chkWithByte, java.awt.BorderLayout.EAST);
+
+        pnlConvertAction.add(pnlRegex);
+
+        tabbetTransAction.addTab("Convert", pnlConvertAction);
 
         tabTransrator.add(tabbetTransAction, java.awt.BorderLayout.EAST);
 
@@ -2800,12 +2869,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(cmbTimezone, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblZoneDate, javax.swing.GroupLayout.Alignment.TRAILING))
                     .addComponent(spnZoneDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDateGMT)
                     .addComponent(txtSystemZoneDateGMT, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnZoneDateGMTCopy, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabDateConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblDate)
                     .addComponent(txtSystemZoneDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3125,10 +3194,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         txtIPv4MappedIPv6.setEditable(false);
 
-        btnDotAHexIP1.setText("Copy");
-        btnDotAHexIP1.addActionListener(new java.awt.event.ActionListener() {
+        btnIPv4MapIPv4.setText("Copy");
+        btnIPv4MapIPv4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDotAHexIP1ActionPerformed(evt);
+                btnIPv4MapIPv4ActionPerformed(evt);
             }
         });
 
@@ -3172,16 +3241,23 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         lblTailDotDecCIP.setText("DottedDecimal C IP:");
 
-        txtDotTailDecCIP.setEditable(false);
+        txtDotDecimalCIP.setEditable(false);
 
-        btnDotTailDecCIP.setText("Copy");
-        btnDotTailDecCIP.addActionListener(new java.awt.event.ActionListener() {
+        btnDotDecimalCIP.setText("Copy");
+        btnDotDecimalCIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDotTailDecCIPActionPerformed(evt);
+                btnDotDecimalCIPActionPerformed(evt);
             }
         });
 
         lblDotDectAIP.setText("DottedDecimal A IP:");
+
+        btnCopyAll.setText("Copy All");
+        btnCopyAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCopyAllActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout tabIPFormatConverterLayout = new javax.swing.GroupLayout(tabIPFormatConverter);
         tabIPFormatConverter.setLayout(tabIPFormatConverterLayout);
@@ -3211,46 +3287,44 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(lblDotDectAIP)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tabIPFormatConverterLayout.createSequentialGroup()
-                        .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDotOctBIP, javax.swing.GroupLayout.DEFAULT_SIZE, 1358, Short.MAX_VALUE)
-                            .addComponent(txtDotHexAIP)
-                            .addComponent(txtDotTailDecCIP)
-                            .addComponent(txtHexIP)
-                            .addComponent(txtDotHexCIP)
-                            .addComponent(txtDotOctCIP)
-                            .addComponent(txtIntIP)
-                            .addComponent(txtIPv4ToUnicode)
-                            .addComponent(txtIPv4MappedIPv6)
-                            .addComponent(txtDotOctAIP)
-                            .addComponent(txtOctIP)
-                            .addComponent(txtDotDecAIP)
-                            .addComponent(txtDotHexBIP)
-                            .addComponent(txtDotDecBIP, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnDotDecAIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotTailDecCIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotOctCIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotBOctIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotOctAIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnOctIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotHexCIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotHexBIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotHexAIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnHexIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotAHexIP1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnIPv4ToUnicode, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnDotDecBIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnIntIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(82, 82, 82))
+                    .addComponent(txtDotOctBIP, javax.swing.GroupLayout.DEFAULT_SIZE, 1358, Short.MAX_VALUE)
+                    .addComponent(txtDotHexAIP)
+                    .addComponent(txtDotDecimalCIP)
+                    .addComponent(txtHexIP)
+                    .addComponent(txtDotHexCIP)
+                    .addComponent(txtDotOctCIP)
+                    .addComponent(txtIntIP)
+                    .addComponent(txtIPv4ToUnicode)
+                    .addComponent(txtIPv4MappedIPv6)
+                    .addComponent(txtDotOctAIP)
+                    .addComponent(txtOctIP)
+                    .addComponent(txtDotDecAIP)
+                    .addComponent(txtDotHexBIP)
+                    .addComponent(txtDotDecBIP, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(tabIPFormatConverterLayout.createSequentialGroup()
                         .addComponent(pnlDotDecIP, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDecIPConvert)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(0, 0, 0))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDotDecAIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotDecimalCIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotOctCIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotBOctIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotOctAIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOctIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotHexCIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotHexBIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotHexAIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHexIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIPv4MapIPv4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIPv4ToUnicode, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotDecBIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIntIP, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCopyAll, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(82, 82, 82))
         );
         tabIPFormatConverterLayout.setVerticalGroup(
             tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3261,7 +3335,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         .addComponent(lblIPValid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblDotDeclIP)
                         .addComponent(pnlDotDecIP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(btnDecIPConvert))
+                    .addComponent(btnDecIPConvert)
+                    .addComponent(btnCopyAll))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -3282,8 +3357,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTailDotDecCIP)
-                    .addComponent(txtDotTailDecCIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDotTailDecCIP))
+                    .addComponent(txtDotDecimalCIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDotDecimalCIP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDotOctCIP)
@@ -3327,7 +3402,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIPv4MappedIPv6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDotAHexIP1)
+                    .addComponent(btnIPv4MapIPv4)
                     .addComponent(lblIPv4MappedIPv6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tabIPFormatConverterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -3424,14 +3499,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = SmartCodec.toUnicodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUnicodeHex2.isSelected()) {
                 encode = SmartCodec.toUnicodeEncode(value, "$", TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
-            } else if (this.rdoByteNoneHex.isSelected()) {
-                encode = TransUtil.toByteHexEncode(value, this.getSelectEncode(), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteXHex.isSelected()) {
                 encode = TransUtil.toByteHex1Encode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteHex2.isSelected()) {
                 encode = TransUtil.toByteHex2Encode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteOct.isSelected()) {
                 encode = TransUtil.toByteOctEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()));
+            } else if (this.rdoByteBin.isSelected()) {
+                encode = TransUtil.toByteBinEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlDec.isSelected()) {
                 encode = SmartCodec.toHtmlDecEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()));
             } else if (this.rdoHtmlUnicode.isSelected()) {
@@ -3502,14 +3577,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             encodePattern = TransUtil.EncodePattern.UNICODE;
         } else if (this.rdoUnicodeHex2.isSelected()) {
             encodePattern = TransUtil.EncodePattern.UNICODE2;
-        } else if (this.rdoByteNoneHex.isSelected()) {
-            encodePattern = TransUtil.EncodePattern.BYTE_HEX;
         } else if (this.rdoByteXHex.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BYTE_HEX1;
         } else if (this.rdoByteHex2.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BYTE_HEX2;
         } else if (this.rdoByteOct.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BYTE_OCT;
+        } else if (this.rdoByteBin.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BYTE_BIN;
         } else if (this.rdoHtmlDec.isSelected()) {
             encodePattern = TransUtil.EncodePattern.HTML;
         } else if (this.rdoHtmlByteHex.isSelected()) {
@@ -4796,9 +4871,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         SwingUtil.systemClipboardCopy(this.txtIPv4ToUnicode.getText());
     }//GEN-LAST:event_btnIPv4ToUnicodeActionPerformed
 
-    private void btnDotAHexIP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDotAHexIP1ActionPerformed
+    private void btnIPv4MapIPv4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIPv4MapIPv4ActionPerformed
         SwingUtil.systemClipboardCopy(this.txtIPv4MappedIPv6.getText());
-    }//GEN-LAST:event_btnDotAHexIP1ActionPerformed
+    }//GEN-LAST:event_btnIPv4MapIPv4ActionPerformed
 
     private void btnDotDecAIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDotDecAIPActionPerformed
         SwingUtil.systemClipboardCopy(this.txtDotDecAIP.getText());
@@ -4837,36 +4912,25 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }//GEN-LAST:event_btnDotOctCIPActionPerformed
 
     private void btnDecIPConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecIPConvertActionPerformed
-        int dec1 = ConvertUtil.parseIntDefault(this.txtDec1.getText(), -1);
-        int dec2 = ConvertUtil.parseIntDefault(this.txtDec2.getText(), -1);
-        int dec3 = ConvertUtil.parseIntDefault(this.txtDec3.getText(), -1);
-        int dec4 = ConvertUtil.parseIntDefault(this.txtDec4.getText(), -1);
-        if (dec1 < 0 || dec2 < 0 || dec3 < 0 || dec4 < 0) {
-            this.lblIPValid.setText("IP addres Invalid");
-            return;
+        try {
+            int [] ipv4 = getIPv4Address();
+            this.txtDotDecBIP.setText(IpUtil.IPv4ToDotBDec(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtDotDecAIP.setText(IpUtil.IPv4ToDotADec(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtIntIP.setText(IpUtil.IPv4ToInt(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtDotDecimalCIP.setText(IpUtil.IPv4ToDotCDec(ipv4[0], ipv4[1], ipv4[2], ipv4[3]) + ".");
+            this.txtDotOctCIP.setText(IpUtil.IPv4ToDotCOct(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtDotOctBIP.setText(IpUtil.IPv4ToDotBOct(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtDotOctAIP.setText(IpUtil.IPv4ToDotAOct(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtOctIP.setText(IpUtil.IPv4ToOct(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtDotHexCIP.setText(IpUtil.IPv4ToDotCHex(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtDotHexBIP.setText(IpUtil.IPv4ToDotBHex(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtDotHexAIP.setText(IpUtil.IPv4ToDotAHex(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtHexIP.setText(IpUtil.IPv4ToHex(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            this.txtIPv4MappedIPv6.setText(IpUtil.IPv4MappedIPv6(IpUtil.IPv4ToDotCDec(ipv4[0], ipv4[1], ipv4[2], ipv4[3])));
+            this.txtIPv4ToUnicode.setText(IpUtil.IPv4ToUnicodeDigit(IpUtil.IPv4ToDotCDec(ipv4[0], ipv4[1], ipv4[2], ipv4[3])));
+        } catch (UnknownHostException ex) {
+            this.lblIPValid.setText(ex.getMessage());
         }
-        if (!(0 <= dec1 && dec1 <= 255
-                && 0 <= dec2 && dec2 <= 255
-                && 0 <= dec3 && dec3 <= 255
-                && 0 <= dec4 && dec4 <= 255)) {
-            this.lblIPValid.setText("IP addres renge Invalid");
-            return;
-        }
-
-        this.txtDotDecBIP.setText(IpUtil.IPv4ToDotBDec(dec1, dec2, dec3, dec4));
-        this.txtDotDecAIP.setText(IpUtil.IPv4ToDotADec(dec1, dec2, dec3, dec4));
-        this.txtIntIP.setText(IpUtil.IPv4ToInt(dec1, dec2, dec3, dec4));
-        this.txtDotTailDecCIP.setText(IpUtil.IPv4ToDotCDec(dec1, dec2, dec3, dec4) + ".");
-        this.txtDotOctCIP.setText(IpUtil.IPv4ToDotCOct(dec1, dec2, dec3, dec4));
-        this.txtDotOctBIP.setText(IpUtil.IPv4ToDotBOct(dec1, dec2, dec3, dec4));
-        this.txtDotOctAIP.setText(IpUtil.IPv4ToDotAOct(dec1, dec2, dec3, dec4));
-        this.txtOctIP.setText(IpUtil.IPv4ToOct(dec1, dec2, dec3, dec4));
-        this.txtDotHexCIP.setText(IpUtil.IPv4ToDotCHex(dec1, dec2, dec3, dec4));
-        this.txtDotHexBIP.setText(IpUtil.IPv4ToDotBHex(dec1, dec2, dec3, dec4));
-        this.txtDotHexAIP.setText(IpUtil.IPv4ToDotAHex(dec1, dec2, dec3, dec4));
-        this.txtHexIP.setText(IpUtil.IPv4ToHex(dec1, dec2, dec3, dec4));
-        this.txtIPv4MappedIPv6.setText(IpUtil.IPv4MappedIPv6(IpUtil.IPv4ToDotCDec(dec1, dec2, dec3, dec4)));
-        this.txtIPv4ToUnicode.setText(IpUtil.IPv4ToUnicodeDigit(IpUtil.IPv4ToDotCDec(dec1, dec2, dec3, dec4)));
     }//GEN-LAST:event_btnDecIPConvertActionPerformed
 
     private void btnDecIPPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecIPPasteActionPerformed
@@ -4881,12 +4945,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnDecIPPasteActionPerformed
 
-    private void btnDotTailDecCIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDotTailDecCIPActionPerformed
-        SwingUtil.systemClipboardCopy(this.txtDotTailDecCIP.getText());
-    }//GEN-LAST:event_btnDotTailDecCIPActionPerformed
+    private void btnDotDecimalCIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDotDecimalCIPActionPerformed
+        SwingUtil.systemClipboardCopy(this.txtDotDecimalCIP.getText());
+    }//GEN-LAST:event_btnDotDecimalCIPActionPerformed
 
     private void txtDotDecBIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDotDecBIPActionPerformed
-        // TODO add your handling code here:
+        SwingUtil.systemClipboardCopy(this.txtDotDecBIP.getText());
     }//GEN-LAST:event_txtDotDecBIPActionPerformed
 
     private void btnHashISAPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashISAPActionPerformed
@@ -5060,43 +5124,74 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         this.txtGenarate.setText("");
     }//GEN-LAST:event_btnGeneClearActionPerformed
 
-    public String exportKeyPairToPem() {
-        String algo = getAlgorithm();
-        if ("DSA".equals(algo) && this.rdoConvertKeyPairJWK.isSelected()) {
-            throw new UnsupportedOperationException("Unsupport algorithm:" + algo);
-        }
-        StringWriter exportKeyPair = new StringWriter();
-        KeyPair keyPair = this.getExportKeyPair();
-        if (keyPair != null) {
-            try {
-                if (this.rdoConvertKeyPairPEM.isSelected()) {
-                    String key = BouncyUtil.exportKeyPairPem(keyPair);
-                    exportKeyPair.append(key);
-                } else if (this.rdoConvertKeyPairJWK.isSelected()) {
-                    String jwk = JWKToken.toJWK(keyPair, true);
-                    exportKeyPair.append(jwk);
-                }
-            } catch (InvalidKeySpecException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            } catch (IOException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
+    private void btnConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConvertActionPerformed
+        try {
+            String value = this.getInputText();
+            String encode = value;
+            if (this.rdoConvertUpperCase.isSelected()) {
+                encode = encode.toUpperCase();
             }
-        } else {
-            throw new UnsupportedOperationException("No KeyPair has been selected.:" + algo);
+            else if (this.rdoConvertLowlerCase.isSelected()) {
+                encode = encode.toLowerCase();
+            }
+            else if (this.rdoConvertHex2Bin.isSelected()) {
+                encode = TransUtil.toByteHexDecode(encode, this.getSelectEncode());
+            }
+            else if (this.rdoConvertBin2Hex.isSelected()) {
+                encode = TransUtil.toByteHexEncode(encode, this.getSelectEncode(), false);
+            }
+            else if (this.rdoConvertHalf2Full.isSelected()) {
+                encode = TransUtil.translateHalfWidth2FullWidth(encode);
+            }
+            else if (this.rdoConvertFull2Half.isSelected()) {
+                encode = TransUtil.translateFullWidth2HalfWidth(encode);
+            }
+            this.setOutput(encode);
+        } catch (IOException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
-        return exportKeyPair.toString();
-    }
+    }//GEN-LAST:event_btnConvertActionPerformed
 
-    private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
-            if (property != null) {
-                clearText();
-                setInputText(property.getCurrentInput());
-            }
+    private void btnCopyAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyAllActionPerformed
+        try {
+            StringBuilder copyAll = new StringBuilder();
+            int [] ipv4 = getIPv4Address();
+            copyAll.append(IpUtil.IPv4ToDotCDec(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
+            copyAll.append("\n");
+            copyAll.append(this.txtDotDecBIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotDecAIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtIntIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotDecimalCIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotOctCIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotOctBIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotOctAIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtOctIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotHexCIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotHexBIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtDotHexAIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtHexIP.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtIPv4MappedIPv6.getText());
+            copyAll.append("\n");
+            copyAll.append(this.txtIPv4ToUnicode.getText());
+            copyAll.append("\n");
+            SwingUtil.systemClipboardCopy(copyAll.toString());
+        } catch (UnknownHostException ex) {
+            this.lblIPValid.setText(ex.getMessage());
         }
-    };
+    }//GEN-LAST:event_btnCopyAllActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdler32;
@@ -5106,22 +5201,24 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnCRC32C;
     private javax.swing.JButton btnCalc;
     private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnConvert;
     private javax.swing.ButtonGroup btnConvertCase;
+    private javax.swing.JButton btnCopyAll;
     private javax.swing.JButton btnDecCopy;
     private javax.swing.JButton btnDecIPConvert;
     private javax.swing.JButton btnDecIPPaste;
     private javax.swing.JButton btnDecode;
-    private javax.swing.JButton btnDotAHexIP1;
     private javax.swing.JButton btnDotBOctIP;
     private javax.swing.JButton btnDotDecAIP;
     private javax.swing.JButton btnDotDecBIP;
+    private javax.swing.JButton btnDotDecimalCIP;
     private javax.swing.JButton btnDotHexAIP;
     private javax.swing.JButton btnDotHexBIP;
     private javax.swing.JButton btnDotHexCIP;
     private javax.swing.JButton btnDotOctAIP;
     private javax.swing.JButton btnDotOctCIP;
-    private javax.swing.JButton btnDotTailDecCIP;
     private javax.swing.JButton btnEncode;
+    private javax.swing.ButtonGroup btnEncodeCase;
     private javax.swing.JButton btnExcelSerial;
     private javax.swing.JButton btnGeneClear;
     private javax.swing.JButton btnGeneCopy;
@@ -5204,6 +5301,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashXoodyak;
     private javax.swing.JButton btnHexCopy;
     private javax.swing.JButton btnHexIP;
+    private javax.swing.JButton btnIPv4MapIPv4;
     private javax.swing.JButton btnIPv4ToUnicode;
     private javax.swing.JButton btnInputfile;
     private javax.swing.JButton btnIntIP;
@@ -5304,14 +5402,16 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlCharacterLength;
     private javax.swing.JPanel pnlCheckSumTrans;
     private javax.swing.JPanel pnlCompress;
-    private javax.swing.JPanel pnlConvert;
-    private javax.swing.JPanel pnlConvertCase;
+    private javax.swing.JPanel pnlConvertAction;
+    private javax.swing.JPanel pnlConvertHex;
+    private javax.swing.JPanel pnlConverter;
     private javax.swing.JPanel pnlCustom;
     private javax.swing.JPanel pnlDate;
     private javax.swing.JPanel pnlDotDecIP;
     private javax.swing.JPanel pnlEncDec;
-    private javax.swing.JPanel pnlEncode;
+    private javax.swing.JPanel pnlEncodeCase;
     private javax.swing.JPanel pnlEncodeDecode;
+    private javax.swing.JPanel pnlEncodeType;
     private javax.swing.JPanel pnlEncoding;
     private javax.swing.JPanel pnlFormat;
     private javax.swing.JPanel pnlGenerate;
@@ -5342,11 +5442,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlSelect;
     private javax.swing.JPanel pnlSelectOption;
     private javax.swing.JPanel pnlStatus;
+    private javax.swing.JPanel pnlTextCase;
     private javax.swing.JPanel pnlTop;
+    private javax.swing.JPanel pnlTrans;
     private javax.swing.JPanel pnlTransAction;
     private javax.swing.JPanel pnlTranslator;
     private javax.swing.JPanel pnlUrl;
     private javax.swing.JPanel pnlWrap;
+    private javax.swing.JPanel pnlZenHan;
     private javax.swing.JRadioButton rdoAll;
     private javax.swing.JRadioButton rdoAlphaNum;
     private javax.swing.JRadioButton rdoBase16;
@@ -5355,8 +5458,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoBase64URLSafe;
     private javax.swing.JRadioButton rdoBase64andURL;
     private javax.swing.JRadioButton rdoBeautifyFormat;
+    private javax.swing.JRadioButton rdoByteBin;
     private javax.swing.JRadioButton rdoByteHex2;
-    private javax.swing.JRadioButton rdoByteNoneHex;
     private javax.swing.JRadioButton rdoByteOct;
     private javax.swing.JRadioButton rdoByteXHex;
     private javax.swing.JRadioButton rdoCLang;
@@ -5367,8 +5470,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoCharacterLength4;
     private javax.swing.JRadioButton rdoCharacterLength8;
     private javax.swing.JRadioButton rdoCharacterLengthNum;
+    private javax.swing.JRadioButton rdoConvertBin2Hex;
+    private javax.swing.JRadioButton rdoConvertFull2Half;
+    private javax.swing.JRadioButton rdoConvertHalf2Full;
+    private javax.swing.JRadioButton rdoConvertHex2Bin;
     private javax.swing.JRadioButton rdoConvertKeyPairJWK;
     private javax.swing.JRadioButton rdoConvertKeyPairPEM;
+    private javax.swing.JRadioButton rdoConvertLowlerCase;
+    private javax.swing.JRadioButton rdoConvertUpperCase;
     private javax.swing.ButtonGroup rdoEncodeDecodeGrp;
     private javax.swing.ButtonGroup rdoFormatGrp;
     private javax.swing.JRadioButton rdoGenerateCount1;
@@ -5443,13 +5552,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JTextField txtDec4;
     private javax.swing.JTextField txtDotDecAIP;
     private javax.swing.JTextField txtDotDecBIP;
+    private javax.swing.JTextField txtDotDecimalCIP;
     private javax.swing.JTextField txtDotHexAIP;
     private javax.swing.JTextField txtDotHexBIP;
     private javax.swing.JTextField txtDotHexCIP;
     private javax.swing.JTextField txtDotOctAIP;
     private javax.swing.JTextField txtDotOctBIP;
     private javax.swing.JTextField txtDotOctCIP;
-    private javax.swing.JTextField txtDotTailDecCIP;
     private javax.swing.JFormattedTextField txtExcelSerial;
     private javax.swing.JTextField txtExponent;
     private javax.swing.JTextArea txtGenarate;
@@ -5470,6 +5579,61 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JTextArea txtTokenList;
     private javax.swing.JFormattedTextField txtUnixtime;
     // End of variables declaration//GEN-END:variables
+
+    public int [] getIPv4Address() throws UnknownHostException {
+        int dec1 = ConvertUtil.parseIntDefault(this.txtDec1.getText(), -1);
+        int dec2 = ConvertUtil.parseIntDefault(this.txtDec2.getText(), -1);
+        int dec3 = ConvertUtil.parseIntDefault(this.txtDec3.getText(), -1);
+        int dec4 = ConvertUtil.parseIntDefault(this.txtDec4.getText(), -1);
+        if (dec1 < 0 || dec2 < 0 || dec3 < 0 || dec4 < 0) {
+            throw new UnknownHostException("IP addres Invalid");
+        }
+        if (!(0 <= dec1 && dec1 <= 255
+                && 0 <= dec2 && dec2 <= 255
+                && 0 <= dec3 && dec3 <= 255
+                && 0 <= dec4 && dec4 <= 255)) {
+            throw new UnknownHostException("IP addres renge Invalid");
+        }
+        return new int [] {dec1, dec2, dec3, dec4};
+    }
+
+    public String exportKeyPairToPem() {
+        String algo = getAlgorithm();
+        if ("DSA".equals(algo) && this.rdoConvertKeyPairJWK.isSelected()) {
+            throw new UnsupportedOperationException("Unsupport algorithm:" + algo);
+        }
+        StringWriter exportKeyPair = new StringWriter();
+        KeyPair keyPair = this.getExportKeyPair();
+        if (keyPair != null) {
+            try {
+                if (this.rdoConvertKeyPairPEM.isSelected()) {
+                    String key = BouncyUtil.exportKeyPairPem(keyPair);
+                    exportKeyPair.append(key);
+                } else if (this.rdoConvertKeyPairJWK.isSelected()) {
+                    String jwk = JWKToken.toJWK(keyPair, true);
+                    exportKeyPair.append(jwk);
+                }
+            } catch (InvalidKeySpecException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        } else {
+            throw new UnsupportedOperationException("No KeyPair has been selected.:" + algo);
+        }
+        return exportKeyPair.toString();
+    }
+
+    private final java.awt.event.ActionListener historyActionPerformed = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            JTransCoderProperty property = (JTransCoderProperty) cmbHistory.getSelectedItem();
+            if (property != null) {
+                clearText();
+                setInputText(property.getCurrentInput());
+            }
+        }
+    };
 
     public void caretUpdate(javax.swing.JTextArea textArea) {
         try {

@@ -769,6 +769,9 @@ It is equivalent to switching Charsets in Burp&#8217;s [User Interface] &#8594; 
 <div class="sect1">
 <h2 id="_burp_toolbar">3. Burp ToolBar</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><span class="image"><img src="images/burp_toolbar.png" alt="Burp Toolbar"></span></p>
+</div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Intarcept Toggle Bottn</dt>
@@ -810,6 +813,14 @@ It is equivalent to switching Charsets in Burp&#8217;s [User Interface] &#8594; 
 </ul>
 </div>
 </dd>
+<dt class="hdlist1">Switch to Intarcept tab</dt>
+<dd>
+<p>Select the [Proxy] &#8594; [Intercept] tab.</p>
+</dd>
+<dt class="hdlist1">Switch to Intarcept tab AUTO button</dt>
+<dd>
+<p>Automatically selects the [Proxy] &#8594; [Intercept] tab.</p>
+</dd>
 <dt class="hdlist1">Open Browser</dt>
 <dd>
 <p>Launch the browser with the selected profile.</p>
@@ -820,10 +831,16 @@ It is equivalent to switching Charsets in Burp&#8217;s [User Interface] &#8594; 
 <div class="ulist">
 <ul>
 <li>
+<p>Restore Default Project</p>
+</li>
+<li>
 <p>Load project settings</p>
 </li>
 <li>
 <p>Save project settings</p>
+</li>
+<li>
+<p>Restore Default User</p>
 </li>
 <li>
 <p>Load user settings</p>
@@ -895,6 +912,10 @@ Not supported in current version.</p>
 <dd>
 <p>Display HTML Comment tab in message tab.</p>
 </dd>
+<dt class="hdlist1">[JavaScript Comment] check box</dt>
+<dd>
+<p>Display JavaScript Comment tab in message tab.</p>
+</dd>
 <dt class="hdlist1">[JSON] check box</dt>
 <dd>
 <p>Display the JSON tab in the message tab.</p>
@@ -947,6 +968,15 @@ Currently read-only.</p>
 <dt class="hdlist1">[Floatable] check box</dt>
 <dd>
 <p>Enable floating Burp suite Toolbar.</p>
+</dd>
+<dt class="hdlist1">[Default AUTO button state] combobox</dt>
+<dt class="hdlist1">OFF </dt>
+<dd>
+<p>Hide</p>
+</dd>
+<dt class="hdlist1">ON </dt>
+<dd>
+<p>Show</p>
 </dd>
 </dl>
 </div>
@@ -2208,10 +2238,6 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 <dd>
 <p>Encodes and decodes the entity reference format in hexadecimal format.</p>
 </dd>
-<dt class="hdlist1">hh(byte)</dt>
-<dd>
-<p>Encodes and decodes in hexadecimal format in byte code units.</p>
-</dd>
 <dt class="hdlist1">\xhh(unicode)</dt>
 <dd>
 <p>Encodes and decodes in hexadecimal format in unicode code units.</p>
@@ -2220,9 +2246,13 @@ Encoding is performed only for (&lt;,&gt;,',").</p>
 <dd>
 <p>Encodes and decodes in hexadecimal format in byte code units.</p>
 </dd>
-<dt class="hdlist1">\ooo</dt>
+<dt class="hdlist1">\ooo(oct)</dt>
 <dd>
 <p>Encodes and decodes in octal format.</p>
+</dd>
+<dt class="hdlist1">\b{bbbb}(bin)</dt>
+<dd>
+<p>Encodes and decodes in binary format.</p>
 </dd>
 <dt class="hdlist1">\uhhhh</dt>
 <dd>
@@ -2301,40 +2331,6 @@ The following meta characters are available.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect4">
-<h5 id="_format">Format</h5>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Minify</dt>
-<dd>
-<p>Compress XML and JSON.</p>
-</dd>
-<dt class="hdlist1">Beautify</dt>
-<dd>
-<p>Format XML and JSON.</p>
-</dd>
-<dt class="hdlist1">[Smart Format] button</dt>
-<dd>
-<p>Formats a string. Supports XML and JSON formatting.</p>
-</dd>
-</dl>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_regex">Regex</h5>
-<div class="dlist">
-<dl>
-<dt class="hdlist1">Smart Math</dt>
-<dd>
-<p>Smart Math generates regular expressions to match various escapes.</p>
-</dd>
-<dt class="hdlist1">with Byte</dt>
-<dd>
-<p>When checked, include regular expressions that take byte matching into Smart Math.</p>
-</dd>
-</dl>
-</div>
 </div>
 <div class="sect4">
 <h5 id="_hashchecksum">Hash/Checksum</h5>
@@ -2662,6 +2658,74 @@ The following meta characters are available.</p>
 <dt class="hdlist1">Murmur3/128x64</dt>
 <dd>
 <p>Calculate checksum by MurmurHash3 128bit</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_convert">Convert</h5>
+<div class="paragraph">
+<p>Convert button:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Upper Case
+Convert to uppercase</p>
+</li>
+<li>
+<p>Lower Case
+Convert to lowercase</p>
+</li>
+<li>
+<p>bin2hex
+Converts ASCII binary notation to HEX</p>
+</li>
+<li>
+<p>hex2bin
+Convert HEX to ASCII in binary notation</p>
+</li>
+<li>
+<p>Full width &#8594; Half width
+Convert full-width characters to half-width characters.</p>
+</li>
+<li>
+<p>Half width &#8594; Full width
+Convert half-width characterss to full-width character.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_format">Format</h5>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Minify</dt>
+<dd>
+<p>Compress XML and JSON.</p>
+</dd>
+<dt class="hdlist1">Beautify</dt>
+<dd>
+<p>Format XML and JSON.</p>
+</dd>
+<dt class="hdlist1">[Smart Format] button</dt>
+<dd>
+<p>Formats a string. Supports XML and JSON formatting.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_regex">Regex</h5>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Smart Math</dt>
+<dd>
+<p>Smart Math generates regular expressions to match various escapes.</p>
+</dd>
+<dt class="hdlist1">with Byte</dt>
+<dd>
+<p>When checked, include regular expressions that take byte matching into Smart Math.</p>
 </dd>
 </dl>
 </div>
@@ -3341,7 +3405,7 @@ This option may not work for items that contain binaries. In that case, use the 
 <div id="footer">
 <div id="footer-text">
 Version v3.3.5.0<br>
-Last updated 2026-03-15 19:06:24 +0900
+Last updated 2026-04-04 21:11:30 +0900
 </div>
 </div>
 </body>

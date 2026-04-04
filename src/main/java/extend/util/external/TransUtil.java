@@ -104,7 +104,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX;
+        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, BYTE_BIN, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX;
 
 //        public static EncodePattern parseEnum(String s) {
 //            String value = s.toUpperCase();
@@ -125,6 +125,7 @@ public class TransUtil {
     private final static Pattern PTN_BYTE_HEX2 = Pattern.compile("\\\\([0-9a-fA-F]{2})");
     private final static Pattern PTN_BYTE_OCT_SMART = Pattern.compile("\\\\(0[0-9]{1,})");
     private final static Pattern PTN_BYTE_OCT = Pattern.compile("\\\\([0-9]{1,})");
+    private final static Pattern PTN_BYTE_BIN = Pattern.compile("([01]{1,})");
     private final static Pattern PTN_GZIP = Pattern.compile("\\x1f\\x8b");
 
     public static EncodePattern getSmartDecode(String value) {
@@ -298,6 +299,16 @@ public class TransUtil {
                             encode = toByteOctEncode(value, applyCharset, pattern);
                         } else {
                             encode = toByteOctEncode(value, StandardCharsets.ISO_8859_1.name(), pattern);
+                        }
+                        break;
+                    }
+                    case BYTE_BIN: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = toByteBinEncode(value, applyCharset, pattern);
+                        } else {
+                            encode = toByteBinEncode(value, StandardCharsets.ISO_8859_1.name(), pattern);
                         }
                         break;
                     }
@@ -574,6 +585,16 @@ public class TransUtil {
                             decode = toByteDecode(value, applyCharset);
                         } else {
                             decode = toByteDecode(value, StandardCharsets.ISO_8859_1.name());
+                        }
+                        break;
+                    }
+                    case BYTE_BIN: {
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(StringUtil.getBytesRaw(toByteBinDecode(value, StandardCharsets.ISO_8859_1.name()))) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = toByteBinDecode(value, applyCharset);
+                        } else {
+                            decode = toByteBinDecode(value, StandardCharsets.ISO_8859_1.name());
                         }
                         break;
                     }
@@ -951,6 +972,22 @@ public class TransUtil {
         return toByteOctEncode(StringUtil.getBytesCharset(input, charset), pattern);
     }
 
+    public static String toByteBinEncode(String input, String charset) throws UnsupportedEncodingException {
+        return toByteBinEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM);
+    }
+
+    public static String toByteBinEncode(String input, Charset charset) throws UnsupportedEncodingException {
+        return toByteBinEncode(input, charset, SmartCodec.ENCODE_PATTERN_ALPHANUM);
+    }
+
+    public static String toByteBinEncode(String input, Charset charset, Pattern pattern) throws UnsupportedEncodingException {
+        return toByteBinEncode(StringUtil.getBytesCharset(input, charset), pattern);
+    }
+
+    public static String toByteBinEncode(String input, String charset, Pattern pattern) throws UnsupportedEncodingException {
+        return toByteBinEncode(StringUtil.getBytesCharset(input, charset), pattern);
+    }
+
     public static String toByteHexEncode(byte[] bytes, boolean upperCase) {
         return ConvertUtil.toHexString(bytes, upperCase);
     }
@@ -1012,6 +1049,20 @@ public class TransUtil {
             Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 buff.append(String.format("\\%02o", b));
+            } else {
+                buff.append((char) b);
+            }
+        }
+        return buff.toString();
+    }
+
+    public static String toByteBinEncode(byte[] bytes, Pattern pattern) {
+        StringBuilder buff = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            int b = bytes[i] & 0xff;
+            Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
+            if (m.matches()) {
+                buff.append(String.format("\\b{%8s}", Integer.toBinaryString(b)).replace(' ', '0'));
             } else {
                 buff.append((char) b);
             }
@@ -1111,6 +1162,31 @@ public class TransUtil {
                     int u = Character.digit(hexcode.charAt(0), 16);
                     int l = Character.digit(hexcode.charAt(1), 16);
                     buf.put((byte) ((u << 4) + l));
+                }
+                buf.flip();
+                byte[] value = new byte[buf.limit()];
+                buf.get(value);
+                m.appendReplacement(buff, Matcher.quoteReplacement(StringUtil.getStringCharset(value, charset)));
+            }
+        }
+        m.appendTail(buff);
+        return buff.toString();
+    }
+
+    private final static Pattern PTN_BYTE_BIN_GROUP = Pattern.compile("(?:\\\\[b]\\{([01]{8})+)\\}");
+
+    public static String toByteBinDecode(String input, String charset) throws UnsupportedEncodingException {
+        StringBuffer buff = new StringBuffer();
+        Matcher m = PTN_BYTE_BIN_GROUP.matcher(input);
+        while (m.find()) {
+            String bin = m.group(1);
+            if (bin != null) {
+                Matcher m0 = PTN_BYTE_BIN.matcher(bin);
+                ByteBuffer buf = ByteBuffer.allocate(bin.length());
+                while (m0.find()) {
+                    String bincode = m0.group(1);
+                    int n = Integer.parseUnsignedInt(bincode, 2);
+                    buf.put((byte) n);
                 }
                 buf.flip();
                 byte[] value = new byte[buf.limit()];

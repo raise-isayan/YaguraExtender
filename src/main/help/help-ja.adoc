@@ -118,6 +118,8 @@ Burpの [User Interface] -> [Inspector and Message Editor] の Charsetsの切り
 
 == Burp ToolBar
 
+image:images/burp_toolbar.png[Burp Toolbar]
+
 Intarcept トグルボタン::
 
 Proxy タブのIntarcept と同一の機能を持っており、Burp本体の挙動と連動します。
@@ -136,6 +138,14 @@ Proxy settings の Request interception rules、Response interception rules、We
   ** Intercept server-to-client messages
   ** Only intercept in-scope messages
 
+Switch to Intarcept tab::
+
+[Proxy] -> [Intercept]タブを選択状態にします。
+
+Switch to Intarcept tab AUTO ボタン::
+
+自動で[Proxy] -> [Intercept]タブを選択状態にします。
+
 Open Browser::
 
 選択したプロファイルでブラウザを起動します。
@@ -144,8 +154,10 @@ Manage global settings アイコン::
 
 User および Projectの設定のロード、セーブを行えます。
 
+  ** Restore Default Project
   ** Load project settings
   ** Save project settings
+  ** Restore Default User
   ** Load user settings
   ** Save user settings
 
@@ -190,6 +202,9 @@ Select::
 [HTML Comment] チェックボックス::
     メッセージタブにHTML Commentタブを表示するようにします。
 
+[JS Comment] チェックボックス::
+    メッセージタブにJavaScript Commentタブを表示するようにします。
+
 [JSON] チェックボックス::
     メッセージタブにJSONタブを表示するようにします。
 
@@ -226,6 +241,10 @@ image:images/custom_burpview.png[Burp View tab]
 
 [Floatable] チェックボックス::
   Burp suite ツールバーをフローティング可能にします。
+
+[Default AUTO button state] コンボボックス::
+  OFF ::  非表示
+  ON ::  表示
 
 image:images/burp_toolbar.png[Burp ToolBar]
 
@@ -973,17 +992,17 @@ HTML(<,>,",')::
 &#xhh;::
     16進数形式の実体参照形式のエンコード、デコードを行います。
 
-hh(unicode)::
-    byteコード単位で16進数形式によるエンコード、デコードを行います。
-
 \xhh(byte)::
     byteコード単位で16進数形式によるエンコード、デコードを行います。
 
 \xhh(byte)::
     byteコード単位で16進数形式によるエンコード、デコードを行います。
 
-\ooo::
+\ooo(oct)::
     8進数形式によるエンコード、デコードを行います。
+
+\b{bbbb}(bin)::
+    2進数形式によるエンコード、デコードを行います。
 
 \uhhhh::
     Unicode形式によるエンコード、デコードを行います。
@@ -1029,25 +1048,6 @@ Metachar チェックボックス::
 |\n      |LF(0x0a) に変換
 |\t      |TAB(0x09) に変換
 |=======================
-
-===== Format
-
-Minify::
-    XMLやJSONを圧縮します。
-
-Beautify::
-    XMLやJSONを整形します。
-
-[Smart Format]ボタン::
-     文字列を整形します。XMLおよびJSONの整形に対応しています。
-
-===== Regex
-
-Smart Math::
-   Smart Mathは、各種エスケープを考慮したマッチを行うための正規表現を生成します。
-
-with Byte::
-   チェック時、Smart Mathにバイトマッチを考慮した正規表現を含めます。
 
 ===== Hash/Checksum
 
@@ -1280,6 +1280,42 @@ Murmur3/32x86::
 
 Murmur3/128x64::
     MurmurHash3 128bitによるチェックサムを計算します。
+
+===== Convert
+
+Convert ボタン:
+
+* Upper Case
+    大文字に変換します｡
+* Lower Case
+    小文字に変換します｡
+* bin2hex
+    2進数表記のASCIIをHEXに変換します
+* hex2bin
+    HEXを2進数表記のASCIIに変換します
+* Full width -> Half width
+   全角を半角に変換します。
+* Half width -> Full width
+   半角を全角に変換します。
+
+===== Format
+
+Minify::
+    XMLやJSONを圧縮します。
+
+Beautify::
+    XMLやJSONを整形します。
+
+[Smart Format]ボタン::
+     文字列を整形します。XMLおよびJSONの整形に対応しています。
+
+===== Regex
+
+Smart Math::
+   Smart Mathは、各種エスケープを考慮したマッチを行うための正規表現を生成します。
+
+with Byte::
+   チェック時、Smart Mathにバイトマッチを考慮した正規表現を含めます。
 
 ==== Generaterタブ
 

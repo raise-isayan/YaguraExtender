@@ -274,6 +274,45 @@ public class TransUtilTest {
     }
 
     /**
+     * Test of testToOctEncode method, of class TransUtil.
+     */
+    @Test
+    public void testToOctEncode() {
+        try {
+            System.out.println("testToOctEncode");
+            String oct = TransUtil.toByteOctEncode("abcdef",StandardCharsets.ISO_8859_1.name(), SmartCodec.ENCODE_PATTERN_ALL);
+            System.out.println("OCT:" + oct);
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    /**
+     * Test of testToBinEncode method, of class TransUtil.
+     */
+    @Test
+    public void testToBinEncode() {
+        try {
+            System.out.println("testToBinEncode");
+            String bin = TransUtil.toByteBinEncode("abcdef",StandardCharsets.ISO_8859_1.name(), SmartCodec.ENCODE_PATTERN_ALL);
+            System.out.println("BIN:" + bin);
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    @Test
+    public void testToBinDecode() {
+        try {
+            System.out.println("testToBinDecode");
+            String bin = TransUtil.toByteBinDecode("\\b{01100001}\\b{01100010}\\b{01100011}\\b{01100100}\\b{01100101}\\b{01100110}",StandardCharsets.ISO_8859_1.name());
+            System.out.println("BIN:" + bin);
+        } catch (UnsupportedEncodingException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }
+
+    /**
      * Test of toByteHexEncode method, of class TransUtil.
      */
     @Test

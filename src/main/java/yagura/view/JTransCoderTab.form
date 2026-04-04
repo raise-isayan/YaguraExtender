@@ -4,7 +4,7 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="btnGrpNewLine">
     </Component>
-    <Component class="javax.swing.ButtonGroup" name="btnConvertCase">
+    <Component class="javax.swing.ButtonGroup" name="btnEncodeCase">
     </Component>
     <Component class="javax.swing.ButtonGroup" name="btnGrpEncodeType">
     </Component>
@@ -21,6 +21,8 @@
     <Component class="javax.swing.ButtonGroup" name="btnGrpKeySize">
     </Component>
     <Component class="javax.swing.ButtonGroup" name="btnGrpExportKeyPair">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="btnConvertCase">
     </Component>
   </NonVisualComponents>
   <AuxValues>
@@ -67,7 +69,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
               <SubComponents>
-                <Container class="javax.swing.JPanel" name="pnlConvert">
+                <Container class="javax.swing.JPanel" name="pnlTrans">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="Center"/>
@@ -466,7 +468,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
                       <SubComponents>
-                        <Container class="javax.swing.JPanel" name="pnlEncode">
+                        <Container class="javax.swing.JPanel" name="pnlEncodeType">
                           <Properties>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -539,11 +541,11 @@
                             </Component>
                           </SubComponents>
                         </Container>
-                        <Container class="javax.swing.JPanel" name="pnlConvertCase">
+                        <Container class="javax.swing.JPanel" name="pnlEncodeCase">
                           <Properties>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                                <TitledBorder title="Convert Case"/>
+                                <TitledBorder title="Encode Case"/>
                               </Border>
                             </Property>
                           </Properties>
@@ -556,7 +558,7 @@
                             <Component class="javax.swing.JRadioButton" name="rdoLowerCase">
                               <Properties>
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                  <ComponentRef name="btnConvertCase"/>
+                                  <ComponentRef name="btnEncodeCase"/>
                                 </Property>
                                 <Property name="selected" type="boolean" value="true"/>
                                 <Property name="text" type="java.lang.String" value="Lower Case"/>
@@ -568,7 +570,7 @@
                             <Component class="javax.swing.JRadioButton" name="rdoUpperCase">
                               <Properties>
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                  <ComponentRef name="btnConvertCase"/>
+                                  <ComponentRef name="btnEncodeCase"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Upper Case"/>
                               </Properties>
@@ -763,7 +765,6 @@
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                                   <ComponentRef name="rdoEncodeDecodeGrp"/>
                                 </Property>
-                                <Property name="selected" type="boolean" value="true"/>
                                 <Property name="text" type="java.lang.String" value="URL(%hh)"/>
                               </Properties>
                             </Component>
@@ -979,14 +980,6 @@
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
-                            <Component class="javax.swing.JRadioButton" name="rdoByteNoneHex">
-                              <Properties>
-                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                                  <ComponentRef name="rdoEncodeDecodeGrp"/>
-                                </Property>
-                                <Property name="text" type="java.lang.String" value="hh(hex)"/>
-                              </Properties>
-                            </Component>
                             <Component class="javax.swing.JRadioButton" name="rdoByteXHex">
                               <Properties>
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -1009,6 +1002,14 @@
                                   <ComponentRef name="rdoEncodeDecodeGrp"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="\u005cooo(oct)" containsInvalidXMLChars="true"/>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JRadioButton" name="rdoByteBin">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="rdoEncodeDecodeGrp"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="\u005cb{bbbb}(bin)" containsInvalidXMLChars="true"/>
                               </Properties>
                             </Component>
                           </SubComponents>
@@ -1135,83 +1136,6 @@
                             </Component>
                           </SubComponents>
                         </Container>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="pnlFormat">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Format"/>
-                          </Border>
-                        </Property>
-                      </Properties>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                        <Property name="columns" type="int" value="3"/>
-                        <Property name="rows" type="int" value="1"/>
-                      </Layout>
-                      <SubComponents>
-                        <Component class="javax.swing.JRadioButton" name="rdoMinifyFormat">
-                          <Properties>
-                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                              <ComponentRef name="rdoFormatGrp"/>
-                            </Property>
-                            <Property name="text" type="java.lang.String" value="Minify"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JRadioButton" name="rdoBeautifyFormat">
-                          <Properties>
-                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                              <ComponentRef name="rdoFormatGrp"/>
-                            </Property>
-                            <Property name="selected" type="boolean" value="true"/>
-                            <Property name="text" type="java.lang.String" value="Beautify"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="btnSmartFormat">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Smart Format"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSmartFormatActionPerformed"/>
-                          </Events>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="pnlRegex">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Regex"/>
-                          </Border>
-                        </Property>
-                      </Properties>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                      <SubComponents>
-                        <Component class="javax.swing.JButton" name="btnSmartMatch">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Smart Match"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSmartMatchActionPerformed"/>
-                          </Events>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                              <BorderConstraints direction="Center"/>
-                            </Constraint>
-                          </Constraints>
-                        </Component>
-                        <Component class="javax.swing.JCheckBox" name="chkWithByte">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="with Byte"/>
-                          </Properties>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                              <BorderConstraints direction="East"/>
-                            </Constraint>
-                          </Constraints>
-                        </Component>
                       </SubComponents>
                     </Container>
                   </SubComponents>
@@ -1890,6 +1814,197 @@
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMurmurHash3_128x64ActionPerformed"/>
                           </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="pnlConvertAction">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+                      <JTabbedPaneConstraints tabName="Convert">
+                        <Property name="tabTitle" type="java.lang.String" value="Convert"/>
+                      </JTabbedPaneConstraints>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+                    <Property name="axis" type="int" value="3"/>
+                  </Layout>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="pnlConverter">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                            <TitledBorder title="Convert"/>
+                          </Border>
+                        </Property>
+                      </Properties>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                        <Property name="columns" type="int" value="1"/>
+                        <Property name="rows" type="int" value="4"/>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JButton" name="btnConvert">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Convert"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConvertActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Container class="javax.swing.JPanel" name="pnlTextCase">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                            <Property name="columns" type="int" value="2"/>
+                            <Property name="rows" type="int" value="1"/>
+                          </Layout>
+                          <SubComponents>
+                            <Component class="javax.swing.JRadioButton" name="rdoConvertUpperCase">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="btnConvertCase"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="Upper Case"/>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JRadioButton" name="rdoConvertLowlerCase">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="btnConvertCase"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="Lowler Case"/>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="pnlConvertHex">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                            <Property name="columns" type="int" value="2"/>
+                            <Property name="rows" type="int" value="1"/>
+                          </Layout>
+                          <SubComponents>
+                            <Component class="javax.swing.JRadioButton" name="rdoConvertBin2Hex">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="btnConvertCase"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="bin2hex"/>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JRadioButton" name="rdoConvertHex2Bin">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="btnConvertCase"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="hex2bin"/>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="pnlZenHan">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                            <Property name="columns" type="int" value="2"/>
+                            <Property name="rows" type="int" value="1"/>
+                          </Layout>
+                          <SubComponents>
+                            <Component class="javax.swing.JRadioButton" name="rdoConvertHalf2Full">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="btnConvertCase"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="Half width -&gt; Full width"/>
+                              </Properties>
+                            </Component>
+                            <Component class="javax.swing.JRadioButton" name="rdoConvertFull2Half">
+                              <Properties>
+                                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                                  <ComponentRef name="btnConvertCase"/>
+                                </Property>
+                                <Property name="text" type="java.lang.String" value="Full width -&gt; Half width"/>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="pnlFormat">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                            <TitledBorder title="Format"/>
+                          </Border>
+                        </Property>
+                      </Properties>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                        <Property name="columns" type="int" value="3"/>
+                        <Property name="rows" type="int" value="1"/>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JRadioButton" name="rdoMinifyFormat">
+                          <Properties>
+                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                              <ComponentRef name="rdoFormatGrp"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="Minify"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JRadioButton" name="rdoBeautifyFormat">
+                          <Properties>
+                            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                              <ComponentRef name="rdoFormatGrp"/>
+                            </Property>
+                            <Property name="selected" type="boolean" value="true"/>
+                            <Property name="text" type="java.lang.String" value="Beautify"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnSmartFormat">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Smart Format"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSmartFormatActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="pnlRegex">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                            <TitledBorder title="Regex"/>
+                          </Border>
+                        </Property>
+                      </Properties>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                      <SubComponents>
+                        <Component class="javax.swing.JButton" name="btnSmartMatch">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Smart Match"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSmartMatchActionPerformed"/>
+                          </Events>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="Center"/>
+                            </Constraint>
+                          </Constraints>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="chkWithByte">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="with Byte"/>
+                          </Properties>
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="East"/>
+                            </Constraint>
+                          </Constraints>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -3029,13 +3144,13 @@
                               </Group>
                               <Component id="spnZoneDateTime" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblDateGMT" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtSystemZoneDateGMT" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                               <Component id="btnZoneDateGMTCopy" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="2" attributes="0">
                               <Component id="lblDate" alignment="2" min="-2" max="-2" attributes="0"/>
                               <Component id="txtSystemZoneDate" alignment="0" min="-2" pref="28" max="-2" attributes="0"/>
@@ -3498,42 +3613,20 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtDotOctBIP" alignment="0" pref="1358" max="32767" attributes="0"/>
-                                      <Component id="txtDotHexAIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDotTailDecCIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtHexIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDotHexCIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDotOctCIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtIntIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtIPv4ToUnicode" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtIPv4MappedIPv6" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDotOctAIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtOctIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDotDecAIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDotHexBIP" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="txtDotDecBIP" alignment="1" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="btnDotDecAIP" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotTailDecCIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotOctCIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotBOctIP" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotOctAIP" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnOctIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotHexCIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotHexBIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotHexAIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnHexIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotAHexIP1" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnIPv4ToUnicode" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnDotDecBIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="btnIntIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="txtDotOctBIP" alignment="0" pref="1358" max="32767" attributes="0"/>
+                              <Component id="txtDotHexAIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDotDecimalCIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtHexIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDotHexCIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDotOctCIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtIntIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtIPv4ToUnicode" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtIPv4MappedIPv6" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDotOctAIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtOctIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDotDecAIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDotHexBIP" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txtDotDecBIP" alignment="1" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="pnlDotDecIP" min="-2" pref="467" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
@@ -3542,7 +3635,25 @@
                                   <Component id="lblIPValid" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btnDotDecAIP" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotDecimalCIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotOctCIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotBOctIP" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotOctAIP" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnOctIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotHexCIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotHexBIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotHexAIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnHexIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnIPv4MapIPv4" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnIPv4ToUnicode" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnDotDecBIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnIntIP" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="btnCopyAll" min="-2" pref="94" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -3557,6 +3668,7 @@
                                   <Component id="pnlDotDecIP" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <Component id="btnDecIPConvert" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnCopyAll" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -3583,8 +3695,8 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="lblTailDotDecCIP" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtDotTailDecCIP" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnDotTailDecCIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtDotDecimalCIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDotDecimalCIP" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -3637,7 +3749,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtIPv4MappedIPv6" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnDotAHexIP1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnIPv4MapIPv4" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblIPv4MappedIPv6" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -3882,12 +3994,12 @@
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnDotAHexIP1">
+                <Component class="javax.swing.JButton" name="btnIPv4MapIPv4">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Copy"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotAHexIP1ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIPv4MapIPv4ActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblIPv4toUnicode">
@@ -3952,23 +4064,31 @@
                     <Property name="text" type="java.lang.String" value="DottedDecimal C IP:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="txtDotTailDecCIP">
+                <Component class="javax.swing.JTextField" name="txtDotDecimalCIP">
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnDotTailDecCIP">
+                <Component class="javax.swing.JButton" name="btnDotDecimalCIP">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Copy"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotTailDecCIPActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDotDecimalCIPActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="lblDotDectAIP">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="DottedDecimal A IP:"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnCopyAll">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Copy All"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCopyAllActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
