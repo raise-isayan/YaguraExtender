@@ -118,12 +118,13 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JScrollPane scrollInputRaw;
     private javax.swing.JTextArea txtInputRaw;
 
-    //private javax.swing.JScrollPane scrollOutputRaw;
-    //private javax.swing.JTextArea txtOutputRaw;
+    private javax.swing.JScrollPane scrollOutputRaw;
+    private javax.swing.JTextArea txtOutputRaw;
     //private javax.swing.JScrollPane scrollOutputFormat;
     //private javax.swing.JTextArea txtOutputFormat;
-    private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
-    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
+
+//    private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
+//    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
 
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputFormat;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputFormat;
@@ -230,17 +231,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
 //        scrollURaw.setViewportView(txtURaw);
 //        this.pnlInputRaw.add(this.scrollInputRaw, BorderLayout.CENTER);
-        this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
-//        this.txtOutputRaw = new javax.swing.JTextArea();
+//        this.txtOutputRaw = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
+        this.txtOutputRaw = new javax.swing.JTextArea();
 
 //        this.txtOutputRaw.setFont(new Font("ＭＳ ゴシック", Font.PLAIN, 24));
         this.txtOutputRaw.setEditable(false);
-        this.txtOutputRaw.setHyperlinksEnabled(false);
-        this.txtOutputRaw.setHighlightCurrentLine(false);
-        this.txtOutputRaw.setHyperlinksEnabled(false);
+//        this.txtOutputRaw.setHyperlinksEnabled(false);
+//        this.txtOutputRaw.setHighlightCurrentLine(false);
+//        this.txtOutputRaw.setHyperlinksEnabled(false);
 //        this.txtOutputRaw.setBackground(SystemColor.text);
-        this.scrollOutputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputRaw);
-//        this.scrollOutputRaw = new javax.swing.JScrollPane(this.txtOutputRaw);
+//        this.scrollOutputRaw = new org.fife.ui.rtextarea.RTextScrollPane(this.txtOutputRaw);
+        this.scrollOutputRaw = new javax.swing.JScrollPane(this.txtOutputRaw);
         this.pnlOutputRaw.add(this.scrollOutputRaw, BorderLayout.CENTER);
 
         this.txtOutputFormat = new org.fife.ui.rsyntaxtextarea.RSyntaxTextArea();
@@ -529,6 +530,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoHtmlByteHex = new javax.swing.JRadioButton();
         pnlJSUnicodeEnc = new javax.swing.JPanel();
         rdoUnicodeHex = new javax.swing.JRadioButton();
+        rdoUnicodePointHex = new javax.swing.JRadioButton();
         rdoUnicodeHex2 = new javax.swing.JRadioButton();
         pnlJSHexEnc = new javax.swing.JPanel();
         rdoByteXHex = new javax.swing.JRadioButton();
@@ -1312,11 +1314,16 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlHtmlHex);
 
-        pnlJSUnicodeEnc.setLayout(new java.awt.GridLayout(1, 1));
+        pnlJSUnicodeEnc.setLayout(new java.awt.GridLayout(1, 3));
 
         rdoEncodeDecodeGrp.add(rdoUnicodeHex);
         rdoUnicodeHex.setText("\\uhhhh");
         pnlJSUnicodeEnc.add(rdoUnicodeHex);
+
+        rdoEncodeDecodeGrp.add(rdoUnicodePointHex);
+        rdoUnicodePointHex.setText("\\u{h-hhhh}");
+        rdoUnicodePointHex.setToolTipText("");
+        pnlJSUnicodeEnc.add(rdoUnicodePointHex);
 
         rdoEncodeDecodeGrp.add(rdoUnicodeHex2);
         rdoUnicodeHex2.setText("$hhhh");
@@ -3497,6 +3504,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = HttpUtil.toHtmlEncode(value);
             } else if (this.rdoUnicodeHex.isSelected()) {
                 encode = SmartCodec.toUnicodeEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoUnicodePointHex.isSelected()) {
+                encode = SmartCodec.toUnicodePointEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUnicodeHex2.isSelected()) {
                 encode = SmartCodec.toUnicodeEncode(value, "$", TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoByteXHex.isSelected()) {
@@ -3575,6 +3584,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             encodePattern = TransUtil.EncodePattern.HTML;
         } else if (this.rdoUnicodeHex.isSelected()) {
             encodePattern = TransUtil.EncodePattern.UNICODE;
+        } else if (this.rdoUnicodePointHex.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.UNICODE_POINT;
         } else if (this.rdoUnicodeHex2.isSelected()) {
             encodePattern = TransUtil.EncodePattern.UNICODE2;
         } else if (this.rdoByteXHex.isSelected()) {
@@ -5507,6 +5518,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoUTF7;
     private javax.swing.JRadioButton rdoUnicodeHex;
     private javax.swing.JRadioButton rdoUnicodeHex2;
+    private javax.swing.JRadioButton rdoUnicodePointHex;
     private javax.swing.JRadioButton rdoUpperCase;
     private javax.swing.JRadioButton rdoUrl;
     private javax.swing.JRadioButton rdoUrlUnicode;

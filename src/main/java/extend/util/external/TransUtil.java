@@ -104,7 +104,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, BYTE_BIN, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX;
+        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE_POINT, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, BYTE_BIN, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX;
 
 //        public static EncodePattern parseEnum(String s) {
 //            String value = s.toUpperCase();
@@ -118,8 +118,9 @@ public class TransUtil {
     private final static Pattern PTN_PUNYCODE = Pattern.compile("xn--[0-9a-zA-Z_\\.]+");
     private final static Pattern PTN_URL = Pattern.compile("%([0-9a-fA-F]{2})");
     private final static Pattern PTN_HTML = Pattern.compile("(&#(\\d+);)|(&(lt|gt|amp|quot);)|(&#[xX]([0-9a-fA-F]+);)");
-    private final static Pattern PTN_URL_UNICODE = Pattern.compile("%[uU]([0-9a-fA-F]{4})");
-    private final static Pattern PTN_UNICODE = Pattern.compile("\\\\[uU]([0-9a-fA-F]{4})");
+    private final static Pattern PTN_URL_UNICODE = Pattern.compile("%[u]([0-9a-fA-F]{4})");
+    private final static Pattern PTN_UNICODE = Pattern.compile("\\\\[u]([0-9a-fA-F]{4})");
+    private final static Pattern PTN_UNICODE_POINT = Pattern.compile("\\\\[u]\\{([0-9a-fA-F]{4})\\}");
     private final static Pattern PTN_BYTE_HEX_GROUP = Pattern.compile("\\A((?:[0-9a-fA-F]{2})+)\\z");
     private final static Pattern PTN_BYTE_HEX1 = Pattern.compile("\\\\[xX]([0-9a-fA-F]{2})");
     private final static Pattern PTN_BYTE_HEX2 = Pattern.compile("\\\\([0-9a-fA-F]{2})");
@@ -144,6 +145,8 @@ public class TransUtil {
         Matcher mURL_UNICODE = PTN_URL_UNICODE.matcher(value);
         // unicode
         Matcher mUNICODE = PTN_UNICODE.matcher(value);
+        // unicode point
+        Matcher mUNICODE_POINT = PTN_UNICODE_POINT.matcher(value);
         // byte hex
         Matcher mBYTE_HEX1 = PTN_BYTE_HEX1.matcher(value);
         // byte hex2
@@ -164,6 +167,9 @@ public class TransUtil {
         } // unicode
         else if (mUNICODE.find()) {
             return EncodePattern.UNICODE;
+        } // unicode point
+        else if (mUNICODE_POINT.find()) {
+            return EncodePattern.UNICODE_POINT;
         } // byte hex
         else if (mBYTE_HEX1.find()) {
             return EncodePattern.BYTE_HEX1;
@@ -240,6 +246,11 @@ public class TransUtil {
                     // Unicode
                     case UNICODE: {
                         encode = SmartCodec.toUnicodeEncode(value, pattern, upperCase);
+                        break;
+                    }
+                    // Unicode Point
+                    case UNICODE_POINT: {
+                        encode = SmartCodec.toUnicodePointEncode(value, pattern, upperCase);
                         break;
                     }
                     // Unicode2
@@ -526,6 +537,11 @@ public class TransUtil {
                     // Unicode
                     case UNICODE: {
                         decode = SmartCodec.toUnicodeDecode(value);
+                        break;
+                    }
+                    // Unicode Point
+                    case UNICODE_POINT: {
+                        decode = SmartCodec.toUnicodePointDecode(value);
                         break;
                     }
                     // Unicode2
