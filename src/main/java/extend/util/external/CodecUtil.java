@@ -501,7 +501,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toSHA3_224um(String str, boolean upperCase) {
+    public static String toSHA3_224Sum(String str, boolean upperCase) {
         if (upperCase) {
             return SHA3_224_HASH.digestAsHex(str).toUpperCase();
         } else {
@@ -551,7 +551,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toSHA3_256um(String str, boolean upperCase) {
+    public static String toSHA3_256Sum(String str, boolean upperCase) {
         if (upperCase) {
             return SHA3_256_HASH.digestAsHex(str).toUpperCase();
         } else {
@@ -586,7 +586,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toSHA3_512um(byte[] binary, boolean upperCase) {
+    public static String toSHA3_512Sum(byte[] binary, boolean upperCase) {
         if (upperCase) {
             return SHA3_512_HASH.digestAsHex(binary).toUpperCase();
         } else {
@@ -601,7 +601,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toSHA3_512um(String str, boolean upperCase) {
+    public static String toSHA3_512Sum(String str, boolean upperCase) {
         if (upperCase) {
             return SHA3_512_HASH.digestAsHex(str).toUpperCase();
         } else {
@@ -636,7 +636,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toSHA3_384um(byte[] binary, boolean upperCase) {
+    public static String toSHA3_384Sum(byte[] binary, boolean upperCase) {
         if (upperCase) {
             return SHA3_384_HASH.digestAsHex(binary).toUpperCase();
         } else {
@@ -651,7 +651,7 @@ public class CodecUtil {
      * @param upperCase
      * @return ハッシュ値
      */
-    public static String toSHA3_384um(String str, boolean upperCase) {
+    public static String toSHA3_384Sum(String str, boolean upperCase) {
         if (upperCase) {
             return SHA3_384_HASH.digestAsHex(str).toUpperCase();
         } else {
@@ -674,6 +674,106 @@ public class CodecUtil {
             return SHA3_384_HASH.digestAsHex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
         } else {
             return SHA3_384_HASH.digestAsHex(StringUtil.getBytesCharset(str, charset));
+        }
+    }
+
+    private final static DigestUtils SHAKE128_256 = new DigestUtils(MessageDigestAlgorithms.SHAKE128_256);
+
+    /**
+     * SHAKE128-256値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase
+     * @return ハッシュ値
+     */
+    public static String toSHAKE128_256Sum(byte[] binary, boolean upperCase) {
+        if (upperCase) {
+            return SHAKE128_256.digestAsHex(binary).toUpperCase();
+        } else {
+            return SHAKE128_256.digestAsHex(binary);
+        }
+    }
+
+    /**
+     * SHAKE128-256値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase
+     * @return ハッシュ値
+     */
+    public static String toSHAKE128_256Sum(String str, boolean upperCase) {
+        if (upperCase) {
+            return SHAKE128_256.digestAsHex(str).toUpperCase();
+        } else {
+            return SHAKE128_256.digestAsHex(str);
+        }
+    }
+
+    /**
+     * SHAKE128-256値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHAKE128_256Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase) {
+            return SHAKE128_256.digestAsHex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
+        } else {
+            return SHAKE128_256.digestAsHex(StringUtil.getBytesCharset(str, charset));
+        }
+    }
+
+    private final static DigestUtils SHAKE256_512 = new DigestUtils(MessageDigestAlgorithms.SHAKE256_512);
+
+    /**
+     * SHAKE256-512値の取得
+     *
+     * @param binary 対象バイト
+     * @param upperCase
+     * @return ハッシュ値
+     */
+    public static String toSHAKE256_512Sum(byte[] binary, boolean upperCase) {
+        if (upperCase) {
+            return SHAKE256_512.digestAsHex(binary).toUpperCase();
+        } else {
+            return SHAKE256_512.digestAsHex(binary);
+        }
+    }
+
+    /**
+     * SHAKE256-512値の取得
+     *
+     * @param str 対象文字列
+     * @param upperCase
+     * @return ハッシュ値
+     */
+    public static String toSHAKE256_512Sum(String str, boolean upperCase) {
+        if (upperCase) {
+            return SHAKE256_512.digestAsHex(str).toUpperCase();
+        } else {
+            return SHAKE256_512.digestAsHex(str);
+        }
+    }
+
+    /**
+     * SHAKE256-512値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @param upperCase
+     * @return ハッシュ値
+     * @throws UnsupportedEncodingException
+     */
+    public static String toSHAKE256_512Sum(String str, String charset, boolean upperCase)
+            throws UnsupportedEncodingException {
+        if (upperCase) {
+            return SHAKE256_512.digestAsHex(StringUtil.getBytesCharset(str, charset)).toUpperCase();
+        } else {
+            return SHAKE256_512.digestAsHex(StringUtil.getBytesCharset(str, charset));
         }
     }
 

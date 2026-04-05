@@ -4406,7 +4406,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnHashSHAKE256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashSHAKE256ActionPerformed
         try {
-            String inputText = BouncyUtil.toSHAKE256um(getInputText(),
+            String inputText = BouncyUtil.toSHAKE256Sum(getInputText(),
                     this.getSelectEncode(), this.rdoUpperCase.isSelected());
             this.setOutput(inputText);
         } catch (UnsupportedEncodingException ex) {

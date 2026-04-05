@@ -2,7 +2,6 @@ package extend.util.external;
 
 import extension.helpers.ConvertUtil;
 import extension.helpers.StringUtil;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.jupiter.api.AfterAll;

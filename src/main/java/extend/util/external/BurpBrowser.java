@@ -169,12 +169,12 @@ public class BurpBrowser {
 //        for (Object k : p.keySet()) {
 //            BurpExtension.helpers().outPrintln("key:" + k + " value:" + p.get(k));
 //        }
-
     /**
      * JDK 24 の場合以下の値がnullになる BurpBrowser.class.getResource("/")
      *
      * @return
-     **/
+     *
+     */
     public static Path getBaseDirectory() {
         String exe4j = System.getProperty("install4j.appDir");
         if (exe4j != null) {

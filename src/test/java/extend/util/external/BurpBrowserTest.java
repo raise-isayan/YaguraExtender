@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,15 +37,7 @@ public class BurpBrowserTest {
             if (field.get(null) instanceof Properties prop) {
                 prop.load(BurpBrowserTest.class.getResourceAsStream("/resources/chromium.properties"));
             }
-        } catch (NoSuchFieldException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (NoSuchFieldException | SecurityException | IOException | IllegalArgumentException | IllegalAccessException ex) {
             logger.log(Level.SEVERE, null, ex);
         }
     }
@@ -62,11 +55,20 @@ public class BurpBrowserTest {
     }
 
     @Test
+    public void testOSTest() {
+        System.out.println("testOSTest");
+        String osver = BurpBrowser.getOSArc();
+        assertNotNull(osver);
+        System.out.println("osver:" + osver);
+    }
+
+    @Test
     public void testBrowserTest() {
         System.out.println("testBrowserTest");
         Path path = BurpBrowser.getBrowsePath();
         System.out.println("path:" + path);
         String version = BurpBrowser.getBrowserVersion();
+        assertNotNull(version);
         System.out.println("version:" + version);
         assertEquals("131.0.6778.86", version);
     }
@@ -81,7 +83,7 @@ public class BurpBrowserTest {
                 System.out.println("keys:" + key);
                 System.out.println("value:" + profile_map.get(key).getName());
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             fail(ex.getMessage(), ex);
         }
     }
