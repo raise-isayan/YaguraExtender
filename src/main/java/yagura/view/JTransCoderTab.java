@@ -3470,9 +3470,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = SmartCodec.toUrlEncode(value, this.getSelectEncode(), TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
             } else if (this.rdoUrlUnicode.isSelected()) {
                 encode = SmartCodec.toUnicodeUrlEncode(value, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
-                if (this.rdoUpperCase.isSelected()) {
-                    encode = encode.toUpperCase();
-                }
             } else if (this.rdoBase64.isSelected()) {
                 encode = CodecUtil.toBase64Encode(value, this.getSelectEncode(), this.chkPadding.isSelected());
                 if (this.chk76Newline.isSelected()) {

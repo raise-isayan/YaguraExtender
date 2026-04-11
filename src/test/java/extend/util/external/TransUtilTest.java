@@ -80,6 +80,15 @@ public class TransUtilTest {
         }
     }
 
+    @Test
+    public void testEncodeTest() {
+        System.out.println("testEncodeTest");
+        System.out.println("UnicodeURL:" + SmartCodec.toUnicodeUrlEncode("あいうえお", true));
+        System.out.println("UnicodeURL:" + SmartCodec.toUnicodeUrlEncode("あいうえお", SmartCodec.ENCODE_PATTERN_ALL, true));
+        System.out.println("UnicodeURL:" + SmartCodec.toUnicodeUrlEncode("あいうえお", false));
+        System.out.println("UnicodeURL:" + SmartCodec.toUnicodeUrlEncode("あいうえお", SmartCodec.ENCODE_PATTERN_ALL, false));
+    }
+
     /**
      * Test of getSmartDecode method, of class TransUtil.
      */
@@ -229,7 +238,7 @@ public class TransUtilTest {
     @Test
     public void testToHexEncode() {
         try {
-            System.out.println("testToHex1Encode");
+            System.out.println("testToHexEncode");
             assertEquals("6162636465660d0a21226768692324256a6b66", TransUtil.toByteHexEncode(StringUtil.getBytesRaw("abcdef\r\n!\"ghi#$%jkf"), false));
             assertEquals("6162636465660D0A21226768692324256A6B66", TransUtil.toByteHexEncode(StringUtil.getBytesRaw("abcdef\r\n!\"ghi#$%jkf"), true));
 
@@ -256,13 +265,13 @@ public class TransUtilTest {
         try {
             System.out.println("testToHex1Encode");
             assertEquals("abcdef\\x0d\\x0a\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toByteHex1Encode("abcdef\r\n!\"ghi#$%jkf", "8859_1", false));
-            assertEquals("abcdef\\X0D\\X0A\\X21\\X22ghi\\X23\\X24\\X25jkf", TransUtil.toByteHex1Encode("abcdef\r\n!\"ghi#$%jkf", "8859_1", true));
+            assertEquals("abcdef\\x0D\\x0A\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toByteHex1Encode("abcdef\r\n!\"ghi#$%jkf", "8859_1", true));
 
             assertEquals("abcdef\\x0d\\x0a\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toByteHex1Encode("abcdef\r\n!\"ghi#$%jkf", StandardCharsets.ISO_8859_1, false));
-            assertEquals("abcdef\\X0D\\X0A\\X21\\X22ghi\\X23\\X24\\X25jkf", TransUtil.toByteHex1Encode("abcdef\r\n!\"ghi#$%jkf", StandardCharsets.ISO_8859_1, true));
+            assertEquals("abcdef\\x0D\\x0A\\x21\\x22ghi\\x23\\x24\\x25jkf", TransUtil.toByteHex1Encode("abcdef\r\n!\"ghi#$%jkf", StandardCharsets.ISO_8859_1, true));
 
             assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0d\\x0a\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6a\\x6b\\x66", TransUtil.toByteHex1Encode(StringUtil.getBytesRaw("abcdef\r\n!\"ghi#$%jkf"), SmartCodec.ENCODE_PATTERN_ALL, false));
-            assertEquals("\\X61\\X62\\X63\\X64\\X65\\X66\\X0D\\X0A\\X21\\X22\\X67\\X68\\X69\\X23\\X24\\X25\\X6A\\X6B\\X66", TransUtil.toByteHex1Encode(StringUtil.getBytesRaw("abcdef\r\n!\"ghi#$%jkf"), SmartCodec.ENCODE_PATTERN_ALL, true));
+            assertEquals("\\x61\\x62\\x63\\x64\\x65\\x66\\x0D\\x0A\\x21\\x22\\x67\\x68\\x69\\x23\\x24\\x25\\x6A\\x6B\\x66", TransUtil.toByteHex1Encode(StringUtil.getBytesRaw("abcdef\r\n!\"ghi#$%jkf"), SmartCodec.ENCODE_PATTERN_ALL, true));
 
             System.out.println(TransUtil.toByteHex1Encode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", "8859_1", SmartCodec.ENCODE_PATTERN_JS, false));
             assertEquals(" !\\x22#$\\x25&\\x27()*+,-\\x2e/0123456789\\x3a\\x3b\\x3c=\\x3e?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\x5c\\x5c]\\x5e\\x5f\\x60abcdefghijklmnopqrstuvwxyz{|}~", TransUtil.toByteHex1Encode(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~", "8859_1", SmartCodec.ENCODE_PATTERN_JS, false));

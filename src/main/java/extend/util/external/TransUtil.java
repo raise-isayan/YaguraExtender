@@ -122,7 +122,7 @@ public class TransUtil {
     private final static Pattern PTN_UNICODE = Pattern.compile("\\\\[u]([0-9a-fA-F]{4})");
     private final static Pattern PTN_UNICODE_POINT = Pattern.compile("\\\\[u]\\{([0-9a-fA-F]{4})\\}");
     private final static Pattern PTN_BYTE_HEX_GROUP = Pattern.compile("\\A((?:[0-9a-fA-F]{2})+)\\z");
-    private final static Pattern PTN_BYTE_HEX1 = Pattern.compile("\\\\[xX]([0-9a-fA-F]{2})");
+    private final static Pattern PTN_BYTE_HEX1 = Pattern.compile("\\\\[x]([0-9a-fA-F]{2})");
     private final static Pattern PTN_BYTE_HEX2 = Pattern.compile("\\\\([0-9a-fA-F]{2})");
     private final static Pattern PTN_BYTE_OCT_SMART = Pattern.compile("\\\\(0[0-9]{1,})");
     private final static Pattern PTN_BYTE_OCT = Pattern.compile("\\\\([0-9]{1,})");
@@ -1015,7 +1015,7 @@ public class TransUtil {
             Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 if (upperCase) {
-                    buff.append(String.format("\\X%02X", b));
+                    buff.append(String.format("\\x%02X", b));
                 } else {
                     buff.append(String.format("\\x%02x", b));
                 }
@@ -1033,7 +1033,7 @@ public class TransUtil {
             Matcher m = pattern.matcher(String.valueOf(new char[]{(char) b}));
             if (m.matches()) {
                 if (upperCase) {
-                    buff.append(String.format("\\%02X", b));
+                    buff.append(String.format("\\%02x", b));
                 } else {
                     buff.append(String.format("\\%02x", b));
                 }
@@ -1086,7 +1086,7 @@ public class TransUtil {
         return buff.toString();
     }
 
-    private final static Pattern PTN_BYTE_GROUP = Pattern.compile("((?:\\\\[xX][0-9a-fA-F]{2})+)|((?:\\\\[0-9]{1,3})+)");
+    private final static Pattern PTN_BYTE_GROUP = Pattern.compile("((?:\\\\[x][0-9a-fA-F]{2})+)|((?:\\\\[0-9]{1,3})+)");
 
     public static String toByteDecode(String input, String charset) throws UnsupportedEncodingException {
         StringBuffer buff = new StringBuffer();
@@ -1149,7 +1149,7 @@ public class TransUtil {
         return buff.toString();
     }
 
-    private final static Pattern PTN_BYTE_HEX2_GROUP = Pattern.compile("((?:\\\\[xX][0-9a-fA-F]{2})+)|((?:\\\\[0-9a-fA-F]{2})+)");
+    private final static Pattern PTN_BYTE_HEX2_GROUP = Pattern.compile("((?:\\\\[x][0-9a-fA-F]{2})+)|((?:\\\\[0-9a-fA-F]{2})+)");
 
     public static String toByteHex2Decode(String input, String charset) throws UnsupportedEncodingException {
         StringBuffer buff = new StringBuffer();
