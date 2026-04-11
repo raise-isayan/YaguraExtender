@@ -134,6 +134,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
     testImplementation 'org.bouncycastle:bcprov-jdk18on:1.81'
 
+    // https://mvnrepository.com/artifact/commons-codec/commons-codec
+    testImplementation 'commons-codec:commons-codec:1.21.0'
+
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.5'
     //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.5'

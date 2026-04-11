@@ -1,6 +1,7 @@
 package yagura.model;
 
 import com.google.gson.annotations.Expose;
+import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,9 +56,8 @@ public class ActionMenuItem {
     /**
      * @return the action
      */
-    public ITranslateAction getAction() {
-        ITranslateAction action = null;
-        return action;
+    public BiFunction<String,String,String> getAction() {
+        return null;
     }
 
     private final static Pattern MNEMONIC = Pattern.compile("\\(\\[0-9A-Z]\\)");

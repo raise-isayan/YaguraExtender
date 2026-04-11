@@ -153,8 +153,8 @@ public class JavaScriptAnalyze {
     }
 
     public void analyze(String script) {
-        this.commentList.clear();
-        this.regexList.clear();
+        // パーサーの生成と実行
+        this.clearAll();
         // パーサーの生成と実行
         final Parser parser = new Parser(this.env);
         AstRoot root = parser.parse(script, null, 1);
@@ -173,6 +173,12 @@ public class JavaScriptAnalyze {
             // ASTを走査（ビジターパターン）
             root.visit(new RegExpVisitor(script));
         }
+    }
+
+
+    public void clearAll() {
+        this.commentList.clear();
+        this.regexList.clear();
     }
 
 }

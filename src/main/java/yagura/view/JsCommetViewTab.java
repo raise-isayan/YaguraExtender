@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingWorker;
-import passive.ast.HtmlAnalyze;
+import passive.ast.HtmlPatternAnalyze;
 import passive.ast.JavaScriptAnalyze;
 import yagura.model.UniversalViewProperty;
 
@@ -176,7 +176,7 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
             }
         }
         else if(mimeType == MimeType.HTML || mimeType == MimeType.XML || mimeType == MimeType.IMAGE_SVG_XML) {
-            HtmlAnalyze htmlAnalyze = new HtmlAnalyze(body);
+            HtmlPatternAnalyze htmlAnalyze = new HtmlPatternAnalyze(body);
             htmlAnalyze.analyze();
             for (CaptureItem script : htmlAnalyze.getScriptList()) {
                 jsAnalyze.analyze(script.getCaptureValue());

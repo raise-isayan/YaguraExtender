@@ -2155,7 +2155,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlConvertAction.add(pnlRegex);
 
-        tabbetTransAction.addTab("Convert", pnlConvertAction);
+        tabbetTransAction.addTab("Converter", pnlConvertAction);
 
         tabTransrator.add(tabbetTransAction, java.awt.BorderLayout.EAST);
 
@@ -5149,7 +5149,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = TransUtil.toByteHexDecode(encode, this.getSelectEncode());
             }
             else if (this.rdoConvertBin2Hex.isSelected()) {
-                encode = TransUtil.toByteHexEncode(encode, this.getSelectEncode(), false);
+                encode = TransUtil.toByteHexEncode(encode, this.getSelectEncode(), this.rdoUpperCase.isSelected());
             }
             else if (this.rdoConvertHalf2Full.isSelected()) {
                 encode = TransUtil.translateHalfWidth2FullWidth(encode);

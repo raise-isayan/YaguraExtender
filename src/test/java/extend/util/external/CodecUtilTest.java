@@ -151,7 +151,7 @@ public class CodecUtilTest {
 
     @Test
     public void testBaseN() {
-
+        System.out.println("testBaseN");
         assertEquals("", CodecUtil.toBase32Encode("", StandardCharsets.ISO_8859_1, true));
         assertEquals("MY======", CodecUtil.toBase32Encode("f", StandardCharsets.ISO_8859_1, true));
         assertEquals("MZXQ====", CodecUtil.toBase32Encode("fo", StandardCharsets.ISO_8859_1, true));
