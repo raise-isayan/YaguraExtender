@@ -6,6 +6,7 @@ import extension.helpers.BouncyUtil;
 import extend.util.external.CodecUtil;
 import extend.util.external.TransUtil;
 import extension.burp.BurpConfig;
+import extension.burp.BurpHotKey;
 import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -41,6 +43,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -48,13 +51,14 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty.SendToMenuPlace;
+import yagura.model.TranslateItemAction;
 import yagura.view.ResultFilterDlg;
 
 /**
  *
  * @author isayan
  */
-public class MenuHander {
+public final class MenuHander {
 
     private final static Logger logger = Logger.getLogger(MenuHander.class.getName());
 
@@ -74,6 +78,10 @@ public class MenuHander {
     private final static String USE_BURP_CHARSETS = "Use Burp Charsets";
 
     private String yaguraCharset = StandardCharsets.UTF_8.name();
+
+    public enum MENU_ACTION {
+        ENCODER, DECODER, CONVERTER, HASH;
+    };
 
     public MenuHander(MontoyaApi api) {
         this.api = api;
@@ -190,8 +198,12 @@ public class MenuHander {
         yaguraEncoderMenu.setText("Encoder (E)");
         yaguraEncoderMenu.setMnemonic(KeyEvent.VK_E);
 
+        for (TranslateItemAction menuAction : MENU_ENCODE_ACTION) {
+            yaguraEncoderMenu.add(createMenuItem(menuAction));
+        }
+
+/****
         JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, this.TRANSLATE_ENCODE_URL);
-//        yaguraEncoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderURLMenu);
 
         JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, this.TRANSLATE_ENCODE_UNICODE_URL);
@@ -201,7 +213,6 @@ public class MenuHander {
         yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
 
         JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, this.TRANSLATE_ENCODE_BASE64);
-//        yaguraEncoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
 
         JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, this.TRANSLATE_ENCODE_BASE64_SAFE);
@@ -211,11 +222,11 @@ public class MenuHander {
         yaguraEncoderMenu.add(yaguraEncoderBase64andUrlMenu);
 
         JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, this.TRANSLATE_ENCODE_HTML);
-//        yaguraEncoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
 
         JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, this.TRANSLATE_ENCODE_JSON_META);
         yaguraEncoderMenu.add(yaguraEncoderMetacharMenu);
+****/
 
         yaguraMenu.add(yaguraEncoderMenu);
 
@@ -226,8 +237,12 @@ public class MenuHander {
         yaguraDecoderMenu.setText("Decoder (D)");
         yaguraDecoderMenu.setMnemonic(KeyEvent.VK_D);
 
+        for (TranslateItemAction menuAction : MENU_DECODER_ACTION) {
+            yaguraDecoderMenu.add(createMenuItem(menuAction));
+        }
+
+/****
         JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, this.TRANSLATE_DECODE_URL);
-        //       yaguraDecoderURLMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderURLMenu);
 
         JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, this.TRANSLATE_DECODE_UNICODE_URL);
@@ -237,7 +252,6 @@ public class MenuHander {
         yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
 
         JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, this.TRANSLATE_DECODE_BASE64);
-        //       yaguraDecoderBase64Menu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
 
         JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, this.TRANSLATE_DECODE_BASE64_SAFE);
@@ -247,11 +261,11 @@ public class MenuHander {
         yaguraDecoderMenu.add(yaguraDecoderBase64andUrlMenu);
 
         JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, this.TRANSLATE_DECODE_HTML);
-//        yaguraDecoderHtmlMenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK));
         yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
 
         JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, this.TRANSLATE_DECODE_JSON_META);
         yaguraDecoderMenu.add(yaguraDecoderMetacharMenu);
+****/
 
         yaguraMenu.add(yaguraDecoderMenu);
 
@@ -262,23 +276,30 @@ public class MenuHander {
         yaguraConverterMenu.setText("Converter (C)");
         yaguraConverterMenu.setMnemonic(KeyEvent.VK_C);
 
-        JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, this.TRANSLATE_UPPER_CASE);
+        for (TranslateItemAction menuAction : MENU_CONVERT_ACTION) {
+            yaguraConverterMenu.add(createMenuItem(menuAction));
+        }
+
+/****
+        JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, this.TRANSLATE_CONVERT_UPPER_CASE);
         yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
 
-        JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, this.TRANSLATE_LOWLER_CASE);
+        JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, this.TRANSLATE_CONVERT_LOWLER_CASE);
         yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
 
-        JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, this.TRANSLATE_BIN2HEX);
+        JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, this.TRANSLATE_CONVERT_BIN2HEX);
         yaguraConverterMenu.add(yaguraConverterBin2HexMenu);
 
-        JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, this.TRANSLATE_HEX2BIN);
+        JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, this.TRANSLATE_CONVERT_HEX2BIN);
         yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
 
-        JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, this.TRANSLATE_FULL2HALF);
+        JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, this.TRANSLATE_CONVERT_FULL2HALF);
         yaguraConverterMenu.add(yaguraConverterFull2Half);
 
-        JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, this.TRANSLATE_HALF2FULL);
+        JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, this.TRANSLATE_CONVERT_HALF2FULL);
         yaguraConverterMenu.add(yaguraConverterHalf2Full);
+****/
+
         yaguraMenu.add(yaguraConverterMenu);
 
         /**
@@ -288,23 +309,30 @@ public class MenuHander {
         yaguraHashMenu.setText("Hash (H)");
         yaguraHashMenu.setMnemonic(KeyEvent.VK_H);
 
-        JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, this.TRANSLATE_MD2);
+        for (TranslateItemAction menuAction : MENU_HASH_ACTION) {
+            yaguraHashMenu.add(createMenuItem(menuAction));
+        }
+
+/****
+        JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, this.TRANSLATE_HASH_MD2);
         yaguraHashMenu.add(yaguraHashMD2Menu);
 
-        JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, this.TRANSLATE_MD5);
+        JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, this.TRANSLATE_HASH_MD5);
         yaguraHashMenu.add(yaguraHashMD5Menu);
 
-        JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, this.TRANSLATE_SHA1);
+        JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, this.TRANSLATE_HASH_SHA1);
         yaguraHashMenu.add(yaguraHashSha1Menu);
 
-        JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_3, this.TRANSLATE_SHA256);
+        JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_3, this.TRANSLATE_HASH_SHA256);
         yaguraHashMenu.add(yaguraHashSha256Menu);
 
-        JMenuItem yaguraHashSha384Menu = createMenuItem("sha384", KeyEvent.VK_4, this.TRANSLATE_SHA384);
+        JMenuItem yaguraHashSha384Menu = createMenuItem("sha384", KeyEvent.VK_4, this.TRANSLATE_HASH_SHA384);
         yaguraHashMenu.add(yaguraHashSha384Menu);
 
-        JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_5, this.TRANSLATE_SHA512);
+        JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_5, this.TRANSLATE_HASH_SHA512);
         yaguraHashMenu.add(yaguraHashSha512Menu);
+****/
+
         yaguraMenu.add(yaguraHashMenu);
 
         /**
@@ -378,9 +406,23 @@ public class MenuHander {
     }
 
     public static JMenuItem createMenuItem(String caption, int mnemonic, java.awt.event.ActionListener actionListener) {
-        final JMenuItem yaguraMenuItem = new JMenuItem();
-        yaguraMenuItem.setText(caption + " (" + (char) mnemonic + ")");
-        yaguraMenuItem.setMnemonic(mnemonic);
+        return createMenuItem(caption, mnemonic, null, actionListener);
+    }
+
+    public static JMenuItem createMenuItem(String caption, int mnemonic, String hotKey, java.awt.event.ActionListener actionListener) {
+        JMenuItem yaguraMenuItem = new JMenuItem();
+        if (mnemonic < 0) {
+            yaguraMenuItem.setText(caption);
+        } else {
+            yaguraMenuItem.setText(caption + " (" + (char) mnemonic + ")");
+            yaguraMenuItem.setMnemonic(mnemonic);
+        }
+        if (hotKey != null) {
+            KeyStroke ks = BurpHotKey.parseKeyText(hotKey);
+            if (BurpHotKey.isValid(ks)) {
+                yaguraMenuItem.setAccelerator(ks);
+            }
+        }
         yaguraMenuItem.addActionListener(actionListener);
         return yaguraMenuItem;
     }
@@ -403,409 +445,26 @@ public class MenuHander {
         });
     }
 
-    private final BiFunction TRANSLATE_ENCODE_URL = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return SmartCodec.toUrlEncode(selectedText, getYaguraCharset(selectedText), TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_ENCODE_UNICODE_URL = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return SmartCodec.toUnicodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-        }
-    };
-
-    private final BiFunction TRANSLATE_ENCODE_UNICODE_JSON = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return SmartCodec.toUnicodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-        }
-    };
-
-    private final BiFunction TRANSLATE_ENCODE_BASE64 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText));
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_ENCODE_BASE64_SAFE = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return CodecUtil.toBase64URLSafeEncode(selectedText, getYaguraCharset(selectedText));
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_ENCODE_BASE64_URL = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return SmartCodec.toUrlEncode(CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText)), StandardCharsets.US_ASCII, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_ENCODE_HTML = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return SmartCodec.toHtmlDecEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
-        }
-    };
-
-    private final BiFunction TRANSLATE_ENCODE_JSON_META = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return ConvertUtil.encodeJsonLiteral(selectedText, true);
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_URL = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return SmartCodec.toUrlDecode(selectedText, getYaguraCharset(selectedText));
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_UNICODE_URL = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return SmartCodec.toUnicodeUrlDecode(selectedText);
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_UNICODE_JSON = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return SmartCodec.toUnocodeDecode(selectedText);
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_BASE64 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return CodecUtil.toBase64Decode(selectedText, getYaguraCharset(selectedText));
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_BASE64_SAFE = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return CodecUtil.toBase64URLSafeDecode(selectedText, getYaguraCharset(selectedText));
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_BASE64_URL = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(selectedText, StandardCharsets.US_ASCII), getYaguraCharset(selectedText));
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_HTML = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return SmartCodec.toHtmlDecode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
-        }
-    };
-
-    private final BiFunction TRANSLATE_DECODE_JSON_META = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return ConvertUtil.decodeJsonLiteral(selectedText, true);
-        }
-    };
-
-    private final BiFunction TRANSLATE_UPPER_CASE = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return selectedText.toUpperCase();
-        }
-    };
-
-    private final BiFunction TRANSLATE_LOWLER_CASE = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return selectedText.toLowerCase();
-        }
-    };
-
-    private final BiFunction TRANSLATE_BIN2HEX = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return TransUtil.toByteHexEncode(selectedText, getYaguraCharset(selectedText), false);
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_HEX2BIN = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return TransUtil.toByteHexDecode(selectedText, getYaguraCharset(selectedText));
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_FULL2HALF = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return TransUtil.translateFullWidth2HalfWidth(selectedText);
-        }
-    };
-
-    private final BiFunction TRANSLATE_HALF2FULL = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            return TransUtil.translateHalfWidth2FullWidth(selectedText);
-        }
-    };
-
-    private final BiFunction TRANSLATE_MD2 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return BouncyUtil.toMD2Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_MD5 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return BouncyUtil.toMD5Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_SHA1 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return BouncyUtil.toSHA1Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_SHA256 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return BouncyUtil.toSHA256Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_SHA384 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return BouncyUtil.toSHA384Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final BiFunction TRANSLATE_SHA512 = new BiFunction<String, String, String>() {
-        @Override
-        public String apply(String allText, String selectedText) {
-            try {
-                return BouncyUtil.toSHA512Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
-            } catch (UnsupportedEncodingException ex) {
-                return selectedText;
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener BURP_CHARSETMODE_MODE_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            final List<String> encodngList = extenderImpl.getSelectEncodingList();
-            BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
-            Enumeration<AbstractButton> rdoCharsets = menuBurpCharsetsGroup.getElements();
-            while (rdoCharsets.hasMoreElements()) {
-                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoCharsets.nextElement();
-                if (item.isSelected()) {
-                    if (encodngList.contains(item.getText())) {
-                        burpCharset.setMode(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent());
-                        burpCharset.setCharacterSet(item.getText());
-                    } else {
-                        burpCharset.setMode(item.getText());
+    public JMenuItem createMenuItem(TranslateItemAction translate) {
+        return createMenuItem(translate.getCaption(), translate.getMnemonic(), translate.getHotKey(), new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                KeyboardFocusManager mgr = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                Component owner = mgr.getPermanentFocusOwner();
+                if (owner instanceof JTextArea textArea) {
+                    BiFunction<String, String, String> func = ACTION_MAP.get(translate.getAction());
+                    if (func != null) {
+                        String allText = textArea.getText();
+                        String selectedText = textArea.getSelectedText();
+                        String encode = func.apply(allText, selectedText);
+                        if (encode != null) {
+                            textArea.replaceSelection(encode);
+                        }
                     }
-                    break;
                 }
             }
-            BurpConfig.configCharacterSets(api, burpCharset);
-        }
-    };
-
-    private final java.awt.event.ActionListener RESULTFILTER_MODE_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            ResultFilterProperty resultFilterProperty = extenderImpl.getProperty().getResultFilterProperty();
-            Map<String, FilterProperty> filterMap = resultFilterProperty.getFilterMap();
-            FilterProperty filterProperty = null;
-            if (e.getSource() instanceof JMenuItem menuItem) {
-                String selectedName = menuItem.getText();
-                filterProperty = filterMap.get(selectedName);
-                if (filterProperty != null) {
-                    resultFilterProperty.setSelectedName(selectedName);
-                    BurpConfig.configBambda(api, filterProperty, true);
-                    IBurpTab tab = extenderImpl.getRootTabComponent();
-                    BurpUtil.flashTab(tab, "Proxy");
-                }
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener INCLUDE_SCOPE_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String paste = SwingUtil.systemClipboardPaste();
-                BurpExtension.helpers().addIncludeScope(paste);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener INCLUDE_HOST_SCOPE_ACTION = new java.awt.event.ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String paste = SwingUtil.systemClipboardPaste();
-                URI uri = URI.create(paste);
-                URL url = uri.toURL();
-                BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), HttpUtil.buildHost(url.getHost(), url.getPort(), url.getProtocol())));
-            } catch (MalformedURLException ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener EXCLUDE_SCOPE_ACTION = new java.awt.event.ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String paste = SwingUtil.systemClipboardPaste();
-                BurpExtension.helpers().addExcludeScope(paste);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener INCLUDE_TARGET_SCOPE_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String paste = SwingUtil.systemClipboardPaste();
-                BurpExtension.helpers().addIncludeTargetScope(paste, false);
-                IBurpTab tab = extenderImpl.getRootTabComponent();
-                BurpUtil.flashTab(tab, "Target");
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener INCLUDE_ROOTURL_TARGET_SCOPE_ACTION = new java.awt.event.ActionListener() {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String paste = SwingUtil.systemClipboardPaste();
-                BurpExtension.helpers().addIncludeRootURLTargetScope(paste, false);
-                IBurpTab tab = extenderImpl.getRootTabComponent();
-                BurpUtil.flashTab(tab, "Target");
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener EXCLUDE_TARGET_SCOPE_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String paste = SwingUtil.systemClipboardPaste();
-                BurpExtension.helpers().addExcludeTargetScope(paste, false);
-                IBurpTab tab = extenderImpl.getRootTabComponent();
-                BurpUtil.flashTab(tab, "Target");
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    };
-
-    private final java.awt.event.ActionListener SSL_PASS_THROUGH_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String paste = SwingUtil.systemClipboardPaste();
-                URL[] urls = TargetScopeItem.parseMultilineURL(paste);
-                List<BurpConfig.SSLPassThroughRule> rules = new ArrayList<>();
-                for (URL u : urls) {
-                    int port = u.getPort() > 0 ? u.getPort() : u.getDefaultPort();
-                    rules.add(new BurpConfig.SSLPassThroughRule(true, BurpUtil.escapeRegex(u.getHost()), BurpUtil.escapeRegex(StringUtil.toString(port))));
-                }
-                BurpConfig.configSSLPassThroughRules(api, rules, false);
-                IBurpTab tab = extenderImpl.getRootTabComponent();
-                BurpUtil.flashTab(tab, "Proxy");
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, ex.getMessage(), ex);
-            }
-        }
-    };
+        });
+    }
 
     public String getYaguraSelectEncode() {
         ButtonModel model = this.menuYaguraCharsetsGroup.getSelection();
@@ -822,33 +481,6 @@ public class MenuHander {
         updateYaguraCharsetUI(this.yaguraCharsetMenu);
     }
 
-    private final java.awt.event.ActionListener YAGURA_CHARSET_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() instanceof JRadioButtonMenuItem item) {
-                extenderImpl.getProperty().getYaguraProperty().setSelectEncoding(getYaguraSelectEncode());
-                extenderImpl.applyOptionProperty();
-            }
-        }
-    };
-
-    private final ChangeListener YAGURA_CHARSET_CHANGE_ACTION = new ChangeListener() {
-
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            if (e.getSource() instanceof JRadioButtonMenuItem item) {
-                if (item.isSelected()) {
-                    String caption = item.getText();
-                    if (USE_BURP_CHARSETS.equals(caption)) {
-                        yaguraCharset = null;
-                    } else {
-                        yaguraCharset = caption;
-                    }
-                }
-            }
-        }
-    };
-
     public boolean isYaguraConvertUpperCase() {
         return TransUtil.ConvertCase.UPPER.equals(getYaguraConvertCase());
     }
@@ -859,27 +491,11 @@ public class MenuHander {
         return convertCase;
     }
 
-    private final java.awt.event.ActionListener YAGURA_CONVERT_CASE_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            extenderImpl.getProperty().getYaguraProperty().setConvertCase(getYaguraConvertCase());
-            extenderImpl.applyOptionProperty();
-        }
-    };
-
     public TransUtil.EncodeType getYaguraEncodeType() {
         ButtonModel model = menuYaguraEncodeTypeGroup.getSelection();
         TransUtil.EncodeType encodeType = Enum.valueOf(TransUtil.EncodeType.class, model.getActionCommand());
         return encodeType;
     }
-
-    private final java.awt.event.ActionListener YAGURA_ENCODE_TYPE_ACTION = new java.awt.event.ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            extenderImpl.getProperty().getYaguraProperty().setEncodeType(getYaguraEncodeType());
-            extenderImpl.applyOptionProperty();
-        }
-    };
 
     public void setYaguraEncodeType(TransUtil.EncodeType encodeType) {
         for (Enumeration<AbstractButton> e = this.menuYaguraEncodeTypeGroup.getElements(); e.hasMoreElements();) {
@@ -1043,6 +659,551 @@ public class MenuHander {
         }
     }
 
+    /**
+     * Yagura Charsets
+     */
+    private final java.awt.event.ActionListener YAGURA_CHARSET_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() instanceof JRadioButtonMenuItem item) {
+                extenderImpl.getProperty().getYaguraProperty().setSelectEncoding(getYaguraSelectEncode());
+                extenderImpl.applyOptionProperty();
+            }
+        }
+    };
+
+    private final ChangeListener YAGURA_CHARSET_CHANGE_ACTION = new ChangeListener() {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() instanceof JRadioButtonMenuItem item) {
+                if (item.isSelected()) {
+                    String caption = item.getText();
+                    if (USE_BURP_CHARSETS.equals(caption)) {
+                        yaguraCharset = null;
+                    } else {
+                        yaguraCharset = caption;
+                    }
+                }
+            }
+        }
+    };
+
+    /**
+     * Yagura Encode Tyoe
+     */
+    private final java.awt.event.ActionListener YAGURA_CONVERT_CASE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            extenderImpl.getProperty().getYaguraProperty().setConvertCase(getYaguraConvertCase());
+            extenderImpl.applyOptionProperty();
+        }
+    };
+
+    private final java.awt.event.ActionListener YAGURA_ENCODE_TYPE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            extenderImpl.getProperty().getYaguraProperty().setEncodeType(getYaguraEncodeType());
+            extenderImpl.applyOptionProperty();
+        }
+    };
+
+    /**
+     * Encoder
+     */
+    private final BiFunction TRANSLATE_ENCODE_URL = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return SmartCodec.toUrlEncode(selectedText, getYaguraCharset(selectedText), TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_ENCODE_UNICODE_URL = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return SmartCodec.toUnicodeUrlEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+        }
+    };
+
+    private final BiFunction TRANSLATE_ENCODE_UNICODE_JSON = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return SmartCodec.toUnicodeEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+        }
+    };
+
+    private final BiFunction TRANSLATE_ENCODE_BASE64 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_ENCODE_BASE64_SAFE = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64URLSafeEncode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_ENCODE_BASE64_URL = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return SmartCodec.toUrlEncode(CodecUtil.toBase64Encode(selectedText, getYaguraCharset(selectedText)), StandardCharsets.US_ASCII, TransUtil.getEncodeTypePattern(getYaguraEncodeType()), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_ENCODE_HTML = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return SmartCodec.toHtmlDecEncode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
+        }
+    };
+
+    private final BiFunction TRANSLATE_ENCODE_JSON_META = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return ConvertUtil.encodeJsonLiteral(selectedText, true);
+        }
+    };
+
+    /**
+     * Decoder
+     */
+    private final BiFunction TRANSLATE_DECODE_URL = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return SmartCodec.toUrlDecode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_DECODE_UNICODE_URL = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return SmartCodec.toUnicodeUrlDecode(selectedText);
+        }
+    };
+
+    private final BiFunction TRANSLATE_DECODE_UNICODE_JSON = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return SmartCodec.toUnocodeDecode(selectedText);
+        }
+    };
+
+    private final BiFunction TRANSLATE_DECODE_BASE64 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64Decode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_DECODE_BASE64_SAFE = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64URLSafeDecode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_DECODE_BASE64_URL = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(selectedText, StandardCharsets.US_ASCII), getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_DECODE_HTML = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return SmartCodec.toHtmlDecode(selectedText, TransUtil.getEncodeTypePattern(getYaguraEncodeType()));
+        }
+    };
+
+    private final BiFunction TRANSLATE_DECODE_JSON_META = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return ConvertUtil.decodeJsonLiteral(selectedText, true);
+        }
+    };
+
+    /**
+     * Converter
+     */
+    private final BiFunction TRANSLATE_CONVERT_UPPER_CASE = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return selectedText.toUpperCase();
+        }
+    };
+
+    private final BiFunction TRANSLATE_CONVERT_LOWLER_CASE = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return selectedText.toLowerCase();
+        }
+    };
+
+    private final BiFunction TRANSLATE_CONVERT_BIN2HEX = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return TransUtil.toByteHexEncode(selectedText, getYaguraCharset(selectedText), false);
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_CONVERT_HEX2BIN = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return TransUtil.toByteHexDecode(selectedText, getYaguraCharset(selectedText));
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_CONVERT_FULL2HALF = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return TransUtil.translateFullWidth2HalfWidth(selectedText);
+        }
+    };
+
+    private final BiFunction TRANSLATE_CONVERT_HALF2FULL = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            return TransUtil.translateHalfWidth2FullWidth(selectedText);
+        }
+    };
+
+    /**
+     * Hash
+     */
+    private final BiFunction TRANSLATE_HASH_MD2 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toMD2Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_HASH_MD5 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toMD5Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_HASH_SHA1 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA1Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_HASH_SHA256 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA256Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_HASH_SHA384 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA384Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final BiFunction TRANSLATE_HASH_SHA512 = new BiFunction<String, String, String>() {
+        @Override
+        public String apply(String allText, String selectedText) {
+            try {
+                return BouncyUtil.toSHA512Sum(selectedText, getYaguraCharset(selectedText), isYaguraConvertUpperCase());
+            } catch (UnsupportedEncodingException ex) {
+                return selectedText;
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener RESULTFILTER_MODE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ResultFilterProperty resultFilterProperty = extenderImpl.getProperty().getResultFilterProperty();
+            Map<String, FilterProperty> filterMap = resultFilterProperty.getFilterMap();
+            FilterProperty filterProperty = null;
+            if (e.getSource() instanceof JMenuItem menuItem) {
+                String selectedName = menuItem.getText();
+                filterProperty = filterMap.get(selectedName);
+                if (filterProperty != null) {
+                    resultFilterProperty.setSelectedName(selectedName);
+                    BurpConfig.configBambda(api, filterProperty, true);
+                    IBurpTab tab = extenderImpl.getRootTabComponent();
+                    BurpUtil.flashTab(tab, "Proxy");
+                }
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener INCLUDE_SCOPE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                BurpExtension.helpers().addIncludeScope(paste);
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener INCLUDE_HOST_SCOPE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                URI uri = URI.create(paste);
+                URL url = uri.toURL();
+                BurpExtension.helpers().addIncludeScope(String.format("%s://%s/", url.getProtocol(), HttpUtil.buildHost(url.getHost(), url.getPort(), url.getProtocol())));
+            } catch (MalformedURLException ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    /**
+     * Extension
+     */
+    private final java.awt.event.ActionListener INCLUDE_TARGET_SCOPE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                BurpExtension.helpers().addIncludeTargetScope(paste, false);
+                IBurpTab tab = extenderImpl.getRootTabComponent();
+                BurpUtil.flashTab(tab, "Target");
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener INCLUDE_ROOTURL_TARGET_SCOPE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                BurpExtension.helpers().addIncludeRootURLTargetScope(paste, false);
+                IBurpTab tab = extenderImpl.getRootTabComponent();
+                BurpUtil.flashTab(tab, "Target");
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener EXCLUDE_SCOPE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                BurpExtension.helpers().addExcludeScope(paste);
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener EXCLUDE_TARGET_SCOPE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                BurpExtension.helpers().addExcludeTargetScope(paste, false);
+                IBurpTab tab = extenderImpl.getRootTabComponent();
+                BurpUtil.flashTab(tab, "Target");
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener SSL_PASS_THROUGH_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                URL[] urls = TargetScopeItem.parseMultilineURL(paste);
+                List<BurpConfig.SSLPassThroughRule> rules = new ArrayList<>();
+                for (URL u : urls) {
+                    int port = u.getPort() > 0 ? u.getPort() : u.getDefaultPort();
+                    rules.add(new BurpConfig.SSLPassThroughRule(true, BurpUtil.escapeRegex(u.getHost()), BurpUtil.escapeRegex(StringUtil.toString(port))));
+                }
+                BurpConfig.configSSLPassThroughRules(api, rules, false);
+                IBurpTab tab = extenderImpl.getRootTabComponent();
+                BurpUtil.flashTab(tab, "Proxy");
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    /**
+     * Burp Charsets
+     */
+    private final java.awt.event.ActionListener BURP_CHARSETMODE_MODE_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            final List<String> encodngList = extenderImpl.getSelectEncodingList();
+            BurpConfig.CharacterSets burpCharset = BurpConfig.getCharacterSets(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET, StandardCharsets.UTF_8.name());
+            Enumeration<AbstractButton> rdoCharsets = menuBurpCharsetsGroup.getElements();
+            while (rdoCharsets.hasMoreElements()) {
+                JRadioButtonMenuItem item = (JRadioButtonMenuItem) rdoCharsets.nextElement();
+                if (item.isSelected()) {
+                    if (encodngList.contains(item.getText())) {
+                        burpCharset.setMode(BurpConfig.CharacterSetMode.SPECIFIC_CHARACTER_SET.toIdent());
+                        burpCharset.setCharacterSet(item.getText());
+                    } else {
+                        burpCharset.setMode(item.getText());
+                    }
+                    break;
+                }
+            }
+            BurpConfig.configCharacterSets(api, burpCharset);
+        }
+    };
+
+    public final static TranslateItemAction MENU_ENCODE_ACTION[] = {
+        new TranslateItemAction("URL(%hh)", KeyEvent.VK_U, null, TranslateItemAction.TranslateAction.ENCODE_URL), // KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+        new TranslateItemAction("Unicode(%uhhhh) - URL", KeyEvent.VK_N, null, TranslateItemAction.TranslateAction.ENCODE_UNICODE_URL),
+        new TranslateItemAction("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, null, TranslateItemAction.TranslateAction.ENCODE_UNICODE_JSON),
+        new TranslateItemAction("Base64", KeyEvent.VK_B, null, TranslateItemAction.TranslateAction.ENCODE_BASE64), // KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+        new TranslateItemAction("Base64URLSafe", KeyEvent.VK_S, null, TranslateItemAction.TranslateAction.ENCODE_BASE64_SAFE),
+        new TranslateItemAction("Base64 + URL", KeyEvent.VK_A, null, TranslateItemAction.TranslateAction.ENCODE_BASE64_URL),
+        new TranslateItemAction("Html", KeyEvent.VK_A, null, TranslateItemAction.TranslateAction.ENCODE_HTML), // KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+        new TranslateItemAction("JSON with Meta", KeyEvent.VK_M, null, TranslateItemAction.TranslateAction.ENCODE_JSON_META)
+    };
+
+    public final static TranslateItemAction MENU_DECODER_ACTION[] = {
+        new TranslateItemAction("URL(%hh)", KeyEvent.VK_U, null, TranslateItemAction.TranslateAction.DECODE_URL), // KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+        new TranslateItemAction("Unicode(%uhhhh) - URL", KeyEvent.VK_N, null, TranslateItemAction.TranslateAction.DECODE_UNICODE_URL),
+        new TranslateItemAction("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, null, TranslateItemAction.TranslateAction.DECODE_UNICODE_JSON),
+        new TranslateItemAction("Base64", KeyEvent.VK_B, null, TranslateItemAction.TranslateAction.DECODE_BASE64), // KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+        new TranslateItemAction("Base64URLSafe", KeyEvent.VK_S, null, TranslateItemAction.TranslateAction.DECODE_BASE64_SAFE),
+        new TranslateItemAction("Base64 + URL", KeyEvent.VK_A, null, TranslateItemAction.TranslateAction.DECODE_BASE64_URL),
+        new TranslateItemAction("Html", KeyEvent.VK_A, null, TranslateItemAction.TranslateAction.DECODE_HTML), // KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK)
+        new TranslateItemAction("JSON with Meta", KeyEvent.VK_M, null, TranslateItemAction.TranslateAction.DECODE_JSON_META)
+    };
+
+    public final static TranslateItemAction MENU_CONVERT_ACTION[] = {
+        new TranslateItemAction("Upper Case", KeyEvent.VK_U, null, TranslateItemAction.TranslateAction.CONVERT_UPPER_CASE),
+        new TranslateItemAction("Lowler Case", KeyEvent.VK_L, null, TranslateItemAction.TranslateAction.CONVERT_LOWLER_CASE),
+        new TranslateItemAction("bin2hex", KeyEvent.VK_B, null, TranslateItemAction.TranslateAction.CONVERT_BIN2HEX),
+        new TranslateItemAction("hex2bin", KeyEvent.VK_H, null, TranslateItemAction.TranslateAction.CONVERT_HEX2BIN),
+        new TranslateItemAction("Full width -> Half width", KeyEvent.VK_F, null, TranslateItemAction.TranslateAction.CONVERT_FULL2HALF),
+        new TranslateItemAction("Half width -> Full width", KeyEvent.VK_K, null, TranslateItemAction.TranslateAction.CONVERT_HALF2FULL)
+    };
+
+    public final static TranslateItemAction MENU_HASH_ACTION[] = {
+        new TranslateItemAction("md2", KeyEvent.VK_0, null, TranslateItemAction.TranslateAction.HASH_MD2),
+        new TranslateItemAction("md5", KeyEvent.VK_1, null, TranslateItemAction.TranslateAction.HASH_MD5),
+        new TranslateItemAction("sha1", KeyEvent.VK_2, null, TranslateItemAction.TranslateAction.HASH_SHA1),
+        new TranslateItemAction("sha256", KeyEvent.VK_3, null, TranslateItemAction.TranslateAction.HASH_SHA256),
+        new TranslateItemAction("sha384", KeyEvent.VK_4, null, TranslateItemAction.TranslateAction.HASH_SHA384),
+        new TranslateItemAction("sha512", KeyEvent.VK_5, null, TranslateItemAction.TranslateAction.HASH_SHA512)
+    };
+
+    private final Map<TranslateItemAction.TranslateAction, BiFunction<String, String, String>> ACTION_MAP = new HashMap<>() {
+        {
+            /* Encode */
+            put(TranslateItemAction.TranslateAction.ENCODE_URL, TRANSLATE_ENCODE_URL);
+            put(TranslateItemAction.TranslateAction.ENCODE_UNICODE_URL, TRANSLATE_ENCODE_UNICODE_URL);
+            put(TranslateItemAction.TranslateAction.ENCODE_UNICODE_JSON, TRANSLATE_ENCODE_UNICODE_JSON);
+            put(TranslateItemAction.TranslateAction.ENCODE_BASE64, TRANSLATE_ENCODE_BASE64);
+            put(TranslateItemAction.TranslateAction.ENCODE_BASE64_SAFE, TRANSLATE_ENCODE_BASE64_SAFE);
+            put(TranslateItemAction.TranslateAction.ENCODE_BASE64_URL, TRANSLATE_ENCODE_BASE64_URL);
+            put(TranslateItemAction.TranslateAction.ENCODE_HTML, TRANSLATE_ENCODE_HTML);
+            put(TranslateItemAction.TranslateAction.ENCODE_JSON_META, TRANSLATE_ENCODE_JSON_META);
+            /* Decode */
+            put(TranslateItemAction.TranslateAction.DECODE_URL, TRANSLATE_DECODE_URL);
+            put(TranslateItemAction.TranslateAction.DECODE_UNICODE_URL, TRANSLATE_DECODE_UNICODE_URL);
+            put(TranslateItemAction.TranslateAction.DECODE_UNICODE_JSON, TRANSLATE_DECODE_UNICODE_JSON);
+            put(TranslateItemAction.TranslateAction.DECODE_BASE64, TRANSLATE_DECODE_BASE64);
+            put(TranslateItemAction.TranslateAction.DECODE_BASE64_SAFE, TRANSLATE_DECODE_BASE64_SAFE);
+            put(TranslateItemAction.TranslateAction.DECODE_BASE64_URL, TRANSLATE_DECODE_BASE64_URL);
+            put(TranslateItemAction.TranslateAction.DECODE_HTML, TRANSLATE_DECODE_HTML);
+            put(TranslateItemAction.TranslateAction.DECODE_JSON_META, TRANSLATE_DECODE_JSON_META);
+            /* Convert */
+            put(TranslateItemAction.TranslateAction.CONVERT_UPPER_CASE, TRANSLATE_CONVERT_UPPER_CASE);
+            put(TranslateItemAction.TranslateAction.CONVERT_LOWLER_CASE, TRANSLATE_CONVERT_LOWLER_CASE);
+            put(TranslateItemAction.TranslateAction.CONVERT_BIN2HEX, TRANSLATE_CONVERT_BIN2HEX);
+            put(TranslateItemAction.TranslateAction.CONVERT_HEX2BIN, TRANSLATE_CONVERT_HEX2BIN);
+            put(TranslateItemAction.TranslateAction.CONVERT_FULL2HALF, TRANSLATE_CONVERT_FULL2HALF);
+            put(TranslateItemAction.TranslateAction.CONVERT_HALF2FULL, TRANSLATE_CONVERT_HALF2FULL);
+            /* Hash */
+            put(TranslateItemAction.TranslateAction.HASH_MD2, TRANSLATE_HASH_MD2);
+            put(TranslateItemAction.TranslateAction.HASH_MD5, TRANSLATE_HASH_MD5);
+            put(TranslateItemAction.TranslateAction.HASH_SHA1, TRANSLATE_HASH_SHA1);
+            put(TranslateItemAction.TranslateAction.HASH_SHA256, TRANSLATE_HASH_SHA256);
+            put(TranslateItemAction.TranslateAction.HASH_SHA384, TRANSLATE_HASH_SHA384);
+            put(TranslateItemAction.TranslateAction.HASH_SHA512, TRANSLATE_HASH_SHA512);
+        }
+    };
+
     public static void changeContextMenuLevel(JMenuItem sendToPlaceMenu, SendToMenuPlace sendToMenuLevel) {
         sendToPlaceMenu.addHierarchyListener(new HierarchyListener() {
             private boolean changeFlag1 = false;
@@ -1118,7 +1279,6 @@ public class MenuHander {
                 }
             }
         }
-
     }
 
 }

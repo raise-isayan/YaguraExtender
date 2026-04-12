@@ -1,14 +1,18 @@
 package yagura.view;
 
+import burp.BurpExtension;
 import extension.burp.BurpUtil;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
@@ -42,7 +46,9 @@ public class PopupMessage extends javax.swing.JPanel {
         lblTimer = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        setPreferredSize(new java.awt.Dimension(600, 120));
+        setMinimumSize(new java.awt.Dimension(300, 100));
+        setName(""); // NOI18N
+        setPreferredSize(new java.awt.Dimension(600, 150));
         setRequestFocusEnabled(false);
         setLayout(new java.awt.BorderLayout());
 
@@ -109,15 +115,16 @@ public class PopupMessage extends javax.swing.JPanel {
         final Timer tm = new Timer();
         tm.schedule(new TimerTask() {
             int count = delay / 1000;
-
             @Override
             public void run() {
-                lblTimer.setText(String.format("%d sec. to popup auto-close", count));
-                if (count <= 0) {
-                    popup.hide();
-                    tm.cancel();
-                }
-                count--;
+                SwingUtilities.invokeLater(() -> {
+                    lblTimer.setText(String.format("%d sec. to popup auto-close", count));
+                    if (count <= 0) {
+                        popup.hide();
+                        tm.cancel();
+                    }
+                    count--;
+                });
             }
         }, 0, 1000L);
     }
