@@ -160,8 +160,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
     private void registerTemporaryProject() {
         // MainFrame閉じる処理
         if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
-            this.isTemporaryProject = BurpUtil.isTemporaryProject();
-            synchronized (JFrame.class) {
+            synchronized (this) {
                 //burpFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
                 WindowListener[] wl = burpFrame.getWindowListeners();
                 for (WindowListener l : wl) {
@@ -171,6 +170,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 for (WindowListener l : wl) {
                     burpFrame.addWindowListener(l);
                 }
+                // テンポラリ判定
+                this.isTemporaryProject = BurpUtil.isTemporaryProject();
             }
         }
     }
