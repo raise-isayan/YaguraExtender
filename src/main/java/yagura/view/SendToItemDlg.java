@@ -13,10 +13,14 @@ import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomDialog;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import yagura.model.OptionProperty;
 import yagura.model.SendToExtendProperty;
 
 /**
@@ -363,6 +367,41 @@ public class SendToItemDlg extends CustomDialog {
         }
         MontoyaApi api = BurpExtension.api();
         this.btnHotKeyAssign.setEnabled(BurpConfig.isSupportApi(api, BurpConfig.SupportApi.BURPSUITE_HOTKEY));
+        this.hotkeyDlg.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String hotKey = e.getActionCommand();
+                if (hotKey != null) {
+                    hotkeyDlg.setWarningMessage("");
+                    String dupHotKeyName = existsHotKeyName(hotKey);
+                    if (dupHotKeyName != null) {
+                        hotkeyDlg.setWarningMessage("This hotkey is alredy assined: " + dupHotKeyName);
+                    }
+                }
+            }
+        });
+    }
+
+    public String existsHotKeyName(String hotkey) {
+        MontoyaApi api = BurpExtension.api();
+        List<BurpConfig.Hotkey> hks = BurpConfig.getHotkey(api);
+        // boolean matchs = hks.stream().anyMatch(predicate -> hotkey.equals(predicate.getHotkey()));
+        Optional<BurpConfig.Hotkey> hotkeyItem = hks.stream().filter(predicate -> hotkey.equals(predicate.getHotkey())).findFirst();
+        if (hotkeyItem.isPresent()) {
+            BurpConfig.Hotkey hk = hotkeyItem.get();
+            return hk.getAction().replace('_', ' ');
+        }
+        else {
+            OptionProperty prop = BurpExtension.getInstance().getProperty();
+            List<SendToItem> itemLists = prop.getSendToProperty().getSendToItemList();
+            //boolean find = itemLists.stream().anyMatch(predicate -> hotkey.equals(predicate.getHotKey()));
+            Optional<SendToItem> sendtoItem = itemLists.stream().filter(predicate -> hotkey.equals(predicate.getHotKey())).findFirst();
+            if (sendtoItem.isPresent()) {
+                SendToItem item = sendtoItem.get();
+                return item.getCaption();
+            }
+        }
+        return null;
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

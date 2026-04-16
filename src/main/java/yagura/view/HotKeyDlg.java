@@ -2,6 +2,7 @@ package yagura.view;
 
 import extension.burp.BurpHotKey;
 import extension.view.base.CustomDialog;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
@@ -12,12 +13,15 @@ import javax.swing.KeyStroke;
  */
 public class HotKeyDlg extends CustomDialog {
 
+    protected ActionListener actionListener = null;
+
     /**
      * Creates new form HotKeyDlg
      */
     public HotKeyDlg(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        customizeComponents();
     }
 
     /**
@@ -32,6 +36,7 @@ public class HotKeyDlg extends CustomDialog {
         pnlMain = new javax.swing.JPanel();
         lblHotkeyHint = new javax.swing.JLabel();
         txtKey = new javax.swing.JTextField();
+        lblWarningMessage = new javax.swing.JLabel();
         pnlApply = new javax.swing.JPanel();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
@@ -49,6 +54,8 @@ public class HotKeyDlg extends CustomDialog {
             }
         });
 
+        lblWarningMessage.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
@@ -56,10 +63,11 @@ public class HotKeyDlg extends CustomDialog {
             .addGroup(pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtKey)
                     .addGroup(pnlMainLayout.createSequentialGroup()
                         .addComponent(lblHotkeyHint, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 288, Short.MAX_VALUE))
-                    .addComponent(txtKey))
+                    .addComponent(lblWarningMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
@@ -69,7 +77,9 @@ public class HotKeyDlg extends CustomDialog {
                 .addComponent(lblHotkeyHint)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblWarningMessage, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);
@@ -116,6 +126,10 @@ public class HotKeyDlg extends CustomDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void customizeComponents() {
+
+    }
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.setModalResult(JOptionPane.CANCEL_OPTION);
         this.closeDialog(null);
@@ -136,9 +150,12 @@ public class HotKeyDlg extends CustomDialog {
 
     private void txtKeyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKeyKeyReleased
         if (isValidHotKey(evt)) {
-            this.setHotKeyText(BurpHotKey.toKeyText(KeyStroke.getKeyStroke(evt.getKeyCode(), evt.getModifiersEx())));
+            String hotKey = BurpHotKey.toKeyText(KeyStroke.getKeyStroke(evt.getKeyCode(), evt.getModifiersEx()));
+            this.setHotKeyText(hotKey);
+            this.fireActionPerformed(hotKey);
         } else if (evt.getKeyChar() == KeyEvent.VK_BACK_SPACE || evt.getKeyChar() == KeyEvent.VK_DELETE) {
             this.setHotKeyText(null);
+            this.setWarningMessage("");
         }
     }//GEN-LAST:event_txtKeyKeyReleased
 
@@ -194,6 +211,7 @@ public class HotKeyDlg extends CustomDialog {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOK;
     private javax.swing.JLabel lblHotkeyHint;
+    private javax.swing.JLabel lblWarningMessage;
     private javax.swing.JPanel pnlApply;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JTextField txtKey;
@@ -209,6 +227,14 @@ public class HotKeyDlg extends CustomDialog {
 
     public String getHotKeyText() {
         return this.txtKey.getText();
+    }
+
+    public void setWarningMessage(String message) {
+        this.lblWarningMessage.setText(message);
+    }
+
+    public String getWarningMessage() {
+        return this.lblWarningMessage.getText();
     }
 
 }

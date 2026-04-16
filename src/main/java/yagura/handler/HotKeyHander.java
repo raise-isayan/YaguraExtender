@@ -50,14 +50,4 @@ public class HotKeyHander {
         this.registerHotkeys.clear();
     }
 
-    public boolean exists(String hotkey) {
-        List<BurpConfig.Hotkey> hks = BurpConfig.getHotkey(this.api);
-        boolean matchs = hks.stream().anyMatch(predicate -> hotkey.equals(predicate.getHotkey()));
-        if (!matchs) {
-            List<SendToItem> itemLists = this.sendto.getSendToItemList();
-            matchs = itemLists.stream().anyMatch(predicate -> hotkey.equals(predicate.getHotKey()));
-        }
-        return matchs;
-    }
-
 }
