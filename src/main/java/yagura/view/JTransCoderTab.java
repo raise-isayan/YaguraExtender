@@ -73,13 +73,11 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.ProviderException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.HashMap;
-import java.util.Map;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import extension.helpers.jws.JWSToken;
 import java.net.UnknownHostException;
+import java.security.NoSuchProviderException;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  *
@@ -125,7 +123,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
 //    private org.fife.ui.rtextarea.RTextScrollPane scrollOutputRaw;
 //    private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputRaw;
-
     private org.fife.ui.rtextarea.RTextScrollPane scrollOutputFormat;
     private org.fife.ui.rsyntaxtextarea.RSyntaxTextArea txtOutputFormat;
 
@@ -167,27 +164,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     }
 
     private final CertificateTab certificateTab = new CertificateTab();
+    private final KeyPairGeneratorPanel pnlKeyPairAlgorithm = new KeyPairGeneratorPanel();
 
     private File currentPrivateKeyDirectory = null;
 
     private final DefaultComboBoxModel modelAlgo = new DefaultComboBoxModel();
-
-    // https://docs.oracle.com/javase/jp/11/docs/specs/security/standard-names.html#keypairgenerator-algorithms
-    private final static String[] ALGORITHM = new String[]{"RSA", "DSA", "EC", "Ed25519", "Ed448"};
-    private final static Map<String, Boolean> KEY_USE_MAP = new HashMap();
-    private final static int[] RSA_KEYSIZE = new int[]{512, 1024, 2048, 3072, 4098};
-    private final static int[] DSA_KEYSIZE = new int[]{512, 768, 1024, 2048, 3072};
-    private final static int[] EC_KEYSIZE = new int[]{224, 256, 384, 521};
-    private final static int[] ED25519_KEYSIZE = new int[]{255};
-    private final static int[] ED448_KEYSIZE = new int[]{448};
-
-    static {
-        KEY_USE_MAP.put("RSA", Boolean.TRUE);
-        KEY_USE_MAP.put("DSA", Boolean.TRUE);
-        KEY_USE_MAP.put("EC", Boolean.TRUE);
-        KEY_USE_MAP.put("Ed25519", Boolean.FALSE);
-        KEY_USE_MAP.put("Ed448", Boolean.FALSE);
-    }
 
     private void customizeComponents() {
 
@@ -288,6 +269,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         calendar.add(Calendar.YEAR, 1);
         this.setGeneraterDateEnd(calendar.getTime());
 
+        this.pnlGenerateKey.add(this.pnlKeyPairAlgorithm, java.awt.BorderLayout.NORTH);
         this.pnlConvertAction.setLayout(new VerticalFlowLayout());
 
         /**
@@ -348,11 +330,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         this.propertyListener.propertyChange(null);
         ThemeUI.addPropertyChangeListener(this.propertyListener);
-
-        // KeyPairGenerager
-        this.cmbAlgorithm.setModel(modelAlgo);
-        this.modelAlgo.addAll(List.of(ALGORITHM));
-        this.cmbAlgorithm.setSelectedIndex(0);
 
     }
 
@@ -701,12 +678,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoGenerateCountNum = new javax.swing.JRadioButton();
         spnGenerateCountNum = new javax.swing.JSpinner();
         pnlGenerateKey = new javax.swing.JPanel();
-        pnlKeyPairAlgorithm = new javax.swing.JPanel();
-        lbAlgorithm = new javax.swing.JLabel();
-        lblKeySize = new javax.swing.JLabel();
-        cmbAlgorithm = new javax.swing.JComboBox<>();
-        lblKeyPairValid = new javax.swing.JLabel();
-        pnlKeySize = new javax.swing.JPanel();
         pnlKeyPairConvertFormat = new javax.swing.JPanel();
         rdoConvertKeyPairPEM = new javax.swing.JRadioButton();
         rdoConvertKeyPairJWK = new javax.swing.JRadioButton();
@@ -2431,56 +2402,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlGenerateKey.setLayout(new java.awt.BorderLayout());
 
-        lbAlgorithm.setText("Algorithm:");
-
-        lblKeySize.setText("KeySize;");
-
-        cmbAlgorithm.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cmbAlgorithmItemStateChanged(evt);
-            }
-        });
-
-        pnlKeySize.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        javax.swing.GroupLayout pnlKeyPairAlgorithmLayout = new javax.swing.GroupLayout(pnlKeyPairAlgorithm);
-        pnlKeyPairAlgorithm.setLayout(pnlKeyPairAlgorithmLayout);
-        pnlKeyPairAlgorithmLayout.setHorizontalGroup(
-            pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbAlgorithm)
-                    .addComponent(lblKeySize))
-                .addGap(11, 11, 11)
-                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
-                        .addComponent(cmbAlgorithm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, 670, Short.MAX_VALUE)
-                        .addContainerGap(674, Short.MAX_VALUE))
-                    .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
-                        .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
-        );
-        pnlKeyPairAlgorithmLayout.setVerticalGroup(
-            pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlKeyPairAlgorithmLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lbAlgorithm)
-                        .addComponent(cmbAlgorithm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lblKeyPairValid, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        pnlGenerateKey.add(pnlKeyPairAlgorithm, java.awt.BorderLayout.NORTH);
-
         btnGrpExportKeyPair.add(rdoConvertKeyPairPEM);
         rdoConvertKeyPairPEM.setSelected(true);
         rdoConvertKeyPairPEM.setText("KeyPair in PEM format");
@@ -2506,7 +2427,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 .addComponent(rdoConvertKeyPairPEM)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdoConvertKeyPairJWK)
-                .addContainerGap(881, Short.MAX_VALUE))
+                .addContainerGap(951, Short.MAX_VALUE))
         );
 
         pnlGenerateKey.add(pnlKeyPairConvertFormat, java.awt.BorderLayout.CENTER);
@@ -4921,7 +4842,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
     private void btnDecIPConvertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDecIPConvertActionPerformed
         try {
-            int [] ipv4 = getIPv4Address();
+            int[] ipv4 = getIPv4Address();
             this.txtDotDecBIP.setText(IpUtil.IPv4ToDotBDec(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
             this.txtDotDecAIP.setText(IpUtil.IPv4ToDotADec(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
             this.txtIntIP.setText(IpUtil.IPv4ToInt(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
@@ -5096,38 +5017,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTimezoneActionPerformed
 
-    private void cmbAlgorithmItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbAlgorithmItemStateChanged
-        int[] keysize_list = new int[0];
-        String algo = this.getAlgorithm();
-        if ("RSA".equals(algo)) {
-            keysize_list = RSA_KEYSIZE;
-        } else if ("DSA".equals(algo)) {
-            keysize_list = DSA_KEYSIZE;
-        } else if ("EC".equals(algo)) {
-            keysize_list = EC_KEYSIZE;
-        } else if ("Ed25519".equals(algo)) {
-            keysize_list = ED25519_KEYSIZE;
-        } else if ("Ed448".equals(algo)) {
-            keysize_list = ED448_KEYSIZE;
-        }
-        List<AbstractButton> rdoGroup = ConvertUtil.toList(this.btnGrpKeySize.getElements().asIterator());
-        for (int i = 0; i < rdoGroup.size(); i++) {
-            this.btnGrpKeySize.remove(rdoGroup.get(i));
-        }
-        this.pnlKeySize.removeAll();
-        for (int i = 0; i < keysize_list.length; i++) {
-            javax.swing.JRadioButton rdoKeySize = new javax.swing.JRadioButton();
-            if (i == (keysize_list.length / 2)) {
-                rdoKeySize.setSelected(true);
-            }
-            rdoKeySize.setText(String.valueOf(keysize_list[i]));
-            rdoKeySize.setActionCommand(String.valueOf(keysize_list[i]));
-            this.pnlKeySize.add(rdoKeySize);
-            this.btnGrpKeySize.add(rdoKeySize);
-        }
-        this.pnlKeySize.updateUI();
-    }//GEN-LAST:event_cmbAlgorithmItemStateChanged
-
     private void btnGeneClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneClearActionPerformed
         this.txtGenarate.setText("");
     }//GEN-LAST:event_btnGeneClearActionPerformed
@@ -5138,20 +5027,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             String encode = value;
             if (this.rdoConvertUpperCase.isSelected()) {
                 encode = encode.toUpperCase();
-            }
-            else if (this.rdoConvertLowlerCase.isSelected()) {
+            } else if (this.rdoConvertLowlerCase.isSelected()) {
                 encode = encode.toLowerCase();
-            }
-            else if (this.rdoConvertHex2Bin.isSelected()) {
+            } else if (this.rdoConvertHex2Bin.isSelected()) {
                 encode = TransUtil.toByteHexDecode(encode, this.getSelectEncode());
-            }
-            else if (this.rdoConvertBin2Hex.isSelected()) {
+            } else if (this.rdoConvertBin2Hex.isSelected()) {
                 encode = TransUtil.toByteHexEncode(encode, this.getSelectEncode(), this.rdoUpperCase.isSelected());
-            }
-            else if (this.rdoConvertHalf2Full.isSelected()) {
+            } else if (this.rdoConvertHalf2Full.isSelected()) {
                 encode = TransUtil.translateHalfWidth2FullWidth(encode);
-            }
-            else if (this.rdoConvertFull2Half.isSelected()) {
+            } else if (this.rdoConvertFull2Half.isSelected()) {
                 encode = TransUtil.translateFullWidth2HalfWidth(encode);
             }
             this.setOutput(encode);
@@ -5164,7 +5048,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private void btnCopyAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopyAllActionPerformed
         try {
             StringBuilder copyAll = new StringBuilder();
-            int [] ipv4 = getIPv4Address();
+            int[] ipv4 = getIPv4Address();
             copyAll.append(IpUtil.IPv4ToDotCDec(ipv4[0], ipv4[1], ipv4[2], ipv4[3]));
             copyAll.append("\n");
             copyAll.append(this.txtDotDecBIP.getText());
@@ -5347,7 +5231,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JCheckBox chkRawMode;
     private javax.swing.JCheckBox chkViewLineWrap;
     private javax.swing.JCheckBox chkWithByte;
-    private javax.swing.JComboBox<String> cmbAlgorithm;
     private javax.swing.JComboBox<String> cmbDateUnit;
     private javax.swing.JComboBox<String> cmbEncoding;
     private javax.swing.JComboBox<String> cmbHistory;
@@ -5360,7 +5243,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbAlgorithm;
     private javax.swing.JLabel lblBin;
     private javax.swing.JLabel lblCount;
     private javax.swing.JLabel lblDate;
@@ -5387,8 +5269,6 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JLabel lblIPv4toUnicode;
     private javax.swing.JLabel lblIntIP;
     private javax.swing.JLabel lblJavaSerial;
-    private javax.swing.JLabel lblKeyPairValid;
-    private javax.swing.JLabel lblKeySize;
     private javax.swing.JLabel lblNumEnd;
     private javax.swing.JLabel lblNumFormat;
     private javax.swing.JLabel lblNumStart;
@@ -5436,9 +5316,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlInputRaw;
     private javax.swing.JPanel pnlJSHexEnc;
     private javax.swing.JPanel pnlJSUnicodeEnc;
-    private javax.swing.JPanel pnlKeyPairAlgorithm;
     private javax.swing.JPanel pnlKeyPairConvertFormat;
-    private javax.swing.JPanel pnlKeySize;
     private javax.swing.JPanel pnlLang;
     private javax.swing.JPanel pnlMail;
     private javax.swing.JPanel pnlNewLine;
@@ -5589,7 +5467,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JFormattedTextField txtUnixtime;
     // End of variables declaration//GEN-END:variables
 
-    public int [] getIPv4Address() throws UnknownHostException {
+    public int[] getIPv4Address() throws UnknownHostException {
         int dec1 = ConvertUtil.parseIntDefault(this.txtDec1.getText(), -1);
         int dec2 = ConvertUtil.parseIntDefault(this.txtDec2.getText(), -1);
         int dec3 = ConvertUtil.parseIntDefault(this.txtDec3.getText(), -1);
@@ -5603,11 +5481,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 && 0 <= dec4 && dec4 <= 255)) {
             throw new UnknownHostException("IP addres renge Invalid");
         }
-        return new int [] {dec1, dec2, dec3, dec4};
+        return new int[]{dec1, dec2, dec3, dec4};
     }
 
     public String exportKeyPairToPem() {
-        String algo = getAlgorithm();
+        String algo = this.pnlKeyPairAlgorithm.getAlgorithm();
         if ("DSA".equals(algo) && this.rdoConvertKeyPairJWK.isSelected()) {
             throw new UnsupportedOperationException("Unsupport algorithm:" + algo);
         }
@@ -6019,30 +5897,21 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         return buff.toString();
     }
 
-    protected String getAlgorithm() {
-        return (String) this.cmbAlgorithm.getSelectedItem();
-    }
-
-    protected int getKeySize() {
-        ButtonModel model = this.btnGrpKeySize.getSelection();
-        return Integer.parseInt(model.getActionCommand());
-    }
-
     private KeyPair getExportKeyPair() {
         try {
-            String algo = this.getAlgorithm();
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance(algo);
-            if (KEY_USE_MAP.getOrDefault(algo, Boolean.FALSE)) {
-                keyGen.initialize(this.getKeySize());
-            }
+            String algo = this.pnlKeyPairAlgorithm.getAlgorithm();
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance(algo, BouncyCastleProvider.PROVIDER_NAME);
+            keyGen.initialize(this.pnlKeyPairAlgorithm.getKeySize());
             KeyPair keyPair = keyGen.generateKeyPair();
             return keyPair;
         } catch (NoSuchAlgorithmException ex) {
-            this.lblKeyPairValid.setText(BUNDLE.getString("keypair.invalid.algorithm"));
+            this.pnlKeyPairAlgorithm.setValidErrorMessage(BUNDLE.getString("keypair.invalid.algorithm"));
         } catch (InvalidParameterException ex) {
-            this.lblKeyPairValid.setText(BUNDLE.getString("keypair.invalid.keysize"));
+            this.pnlKeyPairAlgorithm.setValidErrorMessage(BUNDLE.getString("keypair.invalid.keysize"));
         } catch (ProviderException ex) {
-            this.lblKeyPairValid.setText(BUNDLE.getString("keypair.invalid.keysize"));
+            this.pnlKeyPairAlgorithm.setValidErrorMessage(BUNDLE.getString("keypair.invalid.keysize"));
+        } catch (NoSuchProviderException ex) {
+            this.pnlKeyPairAlgorithm.setValidErrorMessage(ex.getMessage());
         }
         return null;
     }

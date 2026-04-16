@@ -7,17 +7,19 @@ import extension.burp.IBurpTab;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.view.base.CustomTableModel;
-import extension.view.layout.VerticalFlowLayout;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.ProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -29,11 +31,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import okhttp3.mockwebserver.Dispatcher;
 import okhttp3.mockwebserver.MockResponse;
-
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import okio.Buffer;
 import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import yagura.Version;
 import yagura.model.CertificateItem;
@@ -95,7 +97,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnProvidedServer = new javax.swing.JToggleButton();
         btnCopy = new javax.swing.JButton();
         pnlGenerateCA = new javax.swing.JPanel();
-        pnlGenerateIssuer = new javax.swing.JPanel();
+        pnlGenerateIssuerCN = new javax.swing.JPanel();
         lblIssuerYear = new javax.swing.JLabel();
         spnIssuerYear = new javax.swing.JSpinner();
         lblIssuerCommonName = new javax.swing.JLabel();
@@ -117,6 +119,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnSelectIssuerExecute = new javax.swing.JButton();
         lblSelectIsserCA = new javax.swing.JLabel();
         pnlGenerateSubject = new javax.swing.JPanel();
+        pnlGenerateSubjectCN = new javax.swing.JPanel();
         lblSubjectYear = new javax.swing.JLabel();
         spnSubjectYear = new javax.swing.JSpinner();
         lblSubjectCommonName = new javax.swing.JLabel();
@@ -379,72 +382,72 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        javax.swing.GroupLayout pnlGenerateIssuerLayout = new javax.swing.GroupLayout(pnlGenerateIssuer);
-        pnlGenerateIssuer.setLayout(pnlGenerateIssuerLayout);
-        pnlGenerateIssuerLayout.setHorizontalGroup(
-            pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateIssuerLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlGenerateIssuerCNLayout = new javax.swing.GroupLayout(pnlGenerateIssuerCN);
+        pnlGenerateIssuerCN.setLayout(pnlGenerateIssuerCNLayout);
+        pnlGenerateIssuerCNLayout.setHorizontalGroup(
+            pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateIssuerCNLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlGenerateIssuerLayout.createSequentialGroup()
-                        .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlGenerateIssuerCNLayout.createSequentialGroup()
+                        .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblIssuerYear)
                             .addComponent(lblIssuerCommonName)
                             .addComponent(lblIssuerOrganizationName)
                             .addComponent(lblIssuerLoccalityName)
                             .addComponent(lblIssuerCountry))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIssuerCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtIssuerCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtIssuerOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtIssuerLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(spnIssuerYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlGenerateIssuerLayout.createSequentialGroup()
-                        .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlGenerateIssuerCNLayout.createSequentialGroup()
+                        .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rdoIssuerExportPairPKCS12)
                             .addComponent(rdoIssuerExportPairPEM))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnIssuerExportCA)
                             .addComponent(txtIssuerPKCS12Password))))
                 .addContainerGap(312, Short.MAX_VALUE))
         );
-        pnlGenerateIssuerLayout.setVerticalGroup(
-            pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateIssuerLayout.createSequentialGroup()
+        pnlGenerateIssuerCNLayout.setVerticalGroup(
+            pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateIssuerCNLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIssuerYear)
                     .addComponent(spnIssuerYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIssuerCommonName)
                     .addComponent(txtIssuerCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIssuerOrganizationName)
                     .addComponent(txtIssuerOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIssuerLoccalityName)
                     .addComponent(txtIssuerLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIssuerCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblIssuerCountry))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoIssuerExportPairPEM)
                     .addComponent(btnIssuerExportCA))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateIssuerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoIssuerExportPairPKCS12)
                     .addComponent(txtIssuerPKCS12Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(695, Short.MAX_VALUE))
         );
 
-        pnlGenerateCA.add(pnlGenerateIssuer, java.awt.BorderLayout.PAGE_START);
+        pnlGenerateCA.add(pnlGenerateIssuerCN, java.awt.BorderLayout.CENTER);
 
         tabGenerateCA.addTab("GenerateCA", pnlGenerateCA);
 
@@ -481,7 +484,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSelectIssuerExecute, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblSelectIsserCA, javax.swing.GroupLayout.DEFAULT_SIZE, 656, Short.MAX_VALUE)))
+                        .addComponent(lblSelectIsserCA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlSelectIssuerLayout.setVerticalGroup(
@@ -500,6 +503,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         );
 
         pnlSignCA.add(pnlSelectIssuer, java.awt.BorderLayout.NORTH);
+
+        pnlGenerateSubject.setLayout(new java.awt.BorderLayout());
 
         lblSubjectYear.setText("Year:");
 
@@ -536,22 +541,22 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        javax.swing.GroupLayout pnlGenerateSubjectLayout = new javax.swing.GroupLayout(pnlGenerateSubject);
-        pnlGenerateSubject.setLayout(pnlGenerateSubjectLayout);
-        pnlGenerateSubjectLayout.setHorizontalGroup(
-            pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnlGenerateSubjectCNLayout = new javax.swing.GroupLayout(pnlGenerateSubjectCN);
+        pnlGenerateSubjectCN.setLayout(pnlGenerateSubjectCNLayout);
+        pnlGenerateSubjectCNLayout.setHorizontalGroup(
+            pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateSubjectCNLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlGenerateSubjectLayout.createSequentialGroup()
-                        .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlGenerateSubjectCNLayout.createSequentialGroup()
+                        .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblSubjectYear)
                             .addComponent(lblSubjectCommonName)
                             .addComponent(lblSubjectOrganizationName)
                             .addComponent(lblSubjectLoccalityName)
                             .addComponent(lblSubjectCountry))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtSubjectCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtSubjectCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtSubjectOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -560,55 +565,57 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                             .addComponent(txtSubjectSAN, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(lblSubjectCountry1)
                     .addComponent(chkUseSameCommonName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
-                        .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlGenerateSubjectCNLayout.createSequentialGroup()
+                        .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rdoSubjectExportPairPKCS12)
                             .addComponent(rdoSubjectExportPairPEM))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnSubjectExportCA)
                             .addComponent(txtSubjectPKCS12Password))))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-        pnlGenerateSubjectLayout.setVerticalGroup(
-            pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGenerateSubjectLayout.createSequentialGroup()
+        pnlGenerateSubjectCNLayout.setVerticalGroup(
+            pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlGenerateSubjectCNLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubjectYear)
                     .addComponent(spnSubjectYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubjectCommonName)
                     .addComponent(txtSubjectCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubjectOrganizationName)
                     .addComponent(txtSubjectOrganizationName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubjectLoccalityName)
                     .addComponent(txtSubjectLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSubjectCountry, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblSubjectCountry))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSubjectCountry1)
                     .addComponent(txtSubjectSAN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkUseSameCommonName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoSubjectExportPairPEM)
                     .addComponent(btnSubjectExportCA))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlGenerateSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(rdoSubjectExportPairPKCS12)
                     .addComponent(txtSubjectPKCS12Password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(581, Short.MAX_VALUE))
+                .addContainerGap(641, Short.MAX_VALUE))
         );
+
+        pnlGenerateSubject.add(pnlGenerateSubjectCN, java.awt.BorderLayout.CENTER);
 
         pnlSignCA.add(pnlGenerateSubject, java.awt.BorderLayout.CENTER);
 
@@ -624,8 +631,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private void btnSubjectExportCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubjectExportCAActionPerformed
         try {
             org.bouncycastle.asn1.x500.X500NameBuilder subjectDN = generateSubjectDN(this.txtSubjectCommonName.getText(), this.txtSubjectOrganizationName.getText(), this.txtSubjectLoccalityName.getText(), this.txtSubjectCountry.getText());
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-            keyGen.initialize(2048);
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance(this.pnlSubjectKeyPair.getAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
+            keyGen.initialize(this.pnlSubjectKeyPair.getKeySize());
             KeyPair subjectKeyPair = keyGen.generateKeyPair();
 
             String hostname = this.txtSubjectCommonName.getText().trim();
@@ -656,8 +663,22 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             } else {
                 JOptionPane.showMessageDialog(this, "No certificate has been selected.", "Certificate", JOptionPane.INFORMATION_MESSAGE);
             }
-        } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableKeyException ex) {
-            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        } catch (NoSuchAlgorithmException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(BUNDLE.getString("keypair.invalid.algorithm"));
+        } catch (InvalidParameterException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(BUNDLE.getString("keypair.invalid.keysize"));
+        } catch (ProviderException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(BUNDLE.getString("keypair.invalid.keysize"));
+        } catch (CertificateException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(ex.getMessage());
+        } catch (NoSuchProviderException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(ex.getMessage());
+        } catch (IOException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(ex.getMessage());
+        } catch (KeyStoreException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(ex.getMessage());
+        } catch (UnrecoverableKeyException ex) {
+            this.pnlSubjectKeyPair.setValidErrorMessage(ex.getMessage());
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, String.format("Empty is %s", ex.getMessage()), "Certificate", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -670,8 +691,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private void btnIssuerExportCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIssuerExportCAActionPerformed
         try {
             org.bouncycastle.asn1.x500.X500NameBuilder subjectDN = generateSubjectDN(this.txtIssuerCommonName.getText(), this.txtIssuerOrganizationName.getText(), this.txtIssuerLoccalityName.getText(), this.txtIssuerCountry.getText());
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-            keyGen.initialize(2048);
+
+            KeyPairGenerator keyGen = KeyPairGenerator.getInstance(this.pnlKeyPair.getAlgorithm(), BouncyCastleProvider.PROVIDER_NAME);
+            keyGen.initialize(this.pnlKeyPair.getKeySize());
             KeyPair caKeyPair = keyGen.generateKeyPair();
             X509Certificate issuerCA = BouncyUtil.createRootCA(caKeyPair, subjectDN.build(), (int) this.spnIssuerYear.getValue());
             JFileChooser filechooser = new JFileChooser();
@@ -689,7 +711,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     }
                 }
             }
-        } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableKeyException ex) {
+        } catch (NoSuchAlgorithmException | CertificateException | IOException | KeyStoreException | UnrecoverableKeyException | NoSuchProviderException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, String.format("Empty is %s", ex.getMessage()), "Certificate", JOptionPane.INFORMATION_MESSAGE);
@@ -760,17 +782,21 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     }//GEN-LAST:event_btnSelectExecuteActionPerformed
 
     private void rdoCustomCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoCustomCAActionPerformed
-        //        this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
+        // this.tableCertificate.setEnabled(this.rdoCustomCA.isSelected());
     }//GEN-LAST:event_rdoCustomCAActionPerformed
 
     private void rdoBurpCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoBurpCAActionPerformed
         rdoCustomCAActionPerformed(evt);
     }//GEN-LAST:event_rdoBurpCAActionPerformed
 
+    private KeyPairGeneratorPanel pnlKeyPair = new KeyPairGeneratorPanel();
+    private KeyPairGeneratorPanel pnlSubjectKeyPair = new KeyPairGeneratorPanel();
+
     private CustomTableModel modelCertificate = null;
 
     private void customizeComponents() {
-        this.pnlCertificateCA.setLayout(new VerticalFlowLayout());
+        this.pnlGenerateCA.add(this.pnlKeyPair, java.awt.BorderLayout.NORTH);
+        this.pnlGenerateSubject.add(this.pnlSubjectKeyPair, java.awt.BorderLayout.NORTH);
 
 //        this.modelCertificate = new CustomTableModel(this.tableCertificate.getModel());
 //        this.tableCertificate.setModel(this.modelCertificate);
@@ -1049,8 +1075,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JPanel pnlCertificateExports;
     private javax.swing.JPanel pnlConvertFormat;
     private javax.swing.JPanel pnlGenerateCA;
-    private javax.swing.JPanel pnlGenerateIssuer;
+    private javax.swing.JPanel pnlGenerateIssuerCN;
     private javax.swing.JPanel pnlGenerateSubject;
+    private javax.swing.JPanel pnlGenerateSubjectCN;
     private javax.swing.JPanel pnlListenPort;
     private javax.swing.JPanel pnlSelectCertificate;
     private javax.swing.JPanel pnlSelectIssuer;

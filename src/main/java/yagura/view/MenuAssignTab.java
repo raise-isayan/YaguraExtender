@@ -5,9 +5,6 @@ import extension.helpers.StringUtil;
 import extension.view.base.CustomListModel;
 import java.awt.Component;
 import javax.swing.DefaultListModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import yagura.model.UniversalViewProperty;
 
 /**
  *
@@ -103,12 +100,12 @@ public class MenuAssignTab extends javax.swing.JPanel implements IBurpTab {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(scrollTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
+                                .addComponent(scrollTarget, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnEncRightArraw, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnEncLerftArraw, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(12, 12, 12))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblTarget)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
@@ -120,7 +117,7 @@ public class MenuAssignTab extends javax.swing.JPanel implements IBurpTab {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(pop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(btnEncDownArraw))))
-                        .addGap(12, 12, 12))))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,7 +186,6 @@ public class MenuAssignTab extends javax.swing.JPanel implements IBurpTab {
         int index = this.modelSelect.moveDown(this.listSelect.getSelectedIndex());
         this.listSelect.setSelectedIndex(index);
     }//GEN-LAST:event_btnEncDownArrawActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncDownArraw;

@@ -2598,93 +2598,6 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                           <SubComponents>
-                            <Container class="javax.swing.JPanel" name="pnlKeyPairAlgorithm">
-                              <Constraints>
-                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                                  <BorderConstraints direction="North"/>
-                                </Constraint>
-                              </Constraints>
-
-                              <Layout>
-                                <DimensionLayout dim="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="lbAlgorithm" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblKeySize" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="cmbAlgorithm" min="-2" pref="130" max="-2" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                                  <Component id="lblKeyPairValid" pref="670" max="32767" attributes="0"/>
-                                                  <EmptySpace pref="674" max="32767" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" alignment="0" attributes="0">
-                                                  <Component id="pnlKeySize" max="32767" attributes="0"/>
-                                                  <EmptySpace max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
-                                      </Group>
-                                  </Group>
-                                </DimensionLayout>
-                                <DimensionLayout dim="1">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Group type="102" alignment="1" attributes="0">
-                                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="1" attributes="0">
-                                              <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                                  <Component id="lbAlgorithm" alignment="3" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="cmbAlgorithm" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Component id="lblKeyPairValid" alignment="1" min="-2" pref="24" max="-2" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="pnlKeySize" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="lblKeySize" alignment="0" pref="28" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                </DimensionLayout>
-                              </Layout>
-                              <SubComponents>
-                                <Component class="javax.swing.JLabel" name="lbAlgorithm">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Algorithm:"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JLabel" name="lblKeySize">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="KeySize;"/>
-                                  </Properties>
-                                </Component>
-                                <Component class="javax.swing.JComboBox" name="cmbAlgorithm">
-                                  <Properties>
-                                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                                      <StringArray count="0"/>
-                                    </Property>
-                                  </Properties>
-                                  <Events>
-                                    <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cmbAlgorithmItemStateChanged"/>
-                                  </Events>
-                                  <AuxValues>
-                                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                                  </AuxValues>
-                                </Component>
-                                <Component class="javax.swing.JLabel" name="lblKeyPairValid">
-                                </Component>
-                                <Container class="javax.swing.JPanel" name="pnlKeySize">
-
-                                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                                    <Property name="alignment" type="int" value="0"/>
-                                  </Layout>
-                                </Container>
-                              </SubComponents>
-                            </Container>
                             <Container class="javax.swing.JPanel" name="pnlKeyPairConvertFormat">
                               <Constraints>
                                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -2712,7 +2625,7 @@
                                           <Component id="rdoConvertKeyPairPEM" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Component id="rdoConvertKeyPairJWK" min="-2" max="-2" attributes="0"/>
-                                          <EmptySpace pref="881" max="32767" attributes="0"/>
+                                          <EmptySpace pref="951" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                 </DimensionLayout>

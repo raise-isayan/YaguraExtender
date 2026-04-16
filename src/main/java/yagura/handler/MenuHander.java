@@ -100,7 +100,6 @@ public final class MenuHander {
                     }
                 });
             }
-//
 
             @Override
             public void menuDeselected(MenuEvent e) {
