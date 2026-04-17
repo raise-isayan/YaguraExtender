@@ -375,7 +375,7 @@ public class SendToItemDlg extends CustomDialog {
                     hotkeyDlg.setWarningMessage("");
                     String dupHotKeyName = existsHotKeyName(hotKey);
                     if (dupHotKeyName != null) {
-                        hotkeyDlg.setWarningMessage("This hotkey is alredy assined: " + dupHotKeyName);
+                        hotkeyDlg.setWarningMessage("This hotkey is alredy assigned to: \"" + dupHotKeyName + "\"");
                     }
                 }
             }

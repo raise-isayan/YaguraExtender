@@ -1,0 +1,4 @@
+# sample host
+192.168.0.1 www.example.com 
+172.16.2.1 xyz.example.com
+192.168.0.11 www.example.jp # 構成

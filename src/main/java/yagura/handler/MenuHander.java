@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -49,6 +50,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import yagura.model.HostName;
+import yagura.model.HostNameEntry;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty.SendToMenuPlace;
 import yagura.model.TranslateItemAction;
@@ -201,32 +204,43 @@ public final class MenuHander {
             yaguraEncoderMenu.add(createMenuItem(menuAction));
         }
 
-/****
-        JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, this.TRANSLATE_ENCODE_URL);
-        yaguraEncoderMenu.add(yaguraEncoderURLMenu);
-
-        JMenuItem yaguraEncoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, this.TRANSLATE_ENCODE_UNICODE_URL);
-        yaguraEncoderMenu.add(yaguraEncoderURLUnicodeMenu);
-
-        JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, this.TRANSLATE_ENCODE_UNICODE_JSON);
-        yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
-
-        JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, this.TRANSLATE_ENCODE_BASE64);
-        yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
-
-        JMenuItem yaguraEncoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, this.TRANSLATE_ENCODE_BASE64_SAFE);
-        yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
-
-        JMenuItem yaguraEncoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, this.TRANSLATE_ENCODE_BASE64_URL);
-        yaguraEncoderMenu.add(yaguraEncoderBase64andUrlMenu);
-
-        JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, this.TRANSLATE_ENCODE_HTML);
-        yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
-
-        JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, this.TRANSLATE_ENCODE_JSON_META);
-        yaguraEncoderMenu.add(yaguraEncoderMetacharMenu);
-****/
-
+        /**
+         * **
+         * JMenuItem yaguraEncoderURLMenu = createMenuItem("URL(%hh)",
+         * KeyEvent.VK_U, this.TRANSLATE_ENCODE_URL);
+         * yaguraEncoderMenu.add(yaguraEncoderURLMenu);
+         *
+         * JMenuItem yaguraEncoderURLUnicodeMenu =
+         * createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N,
+         * this.TRANSLATE_ENCODE_UNICODE_URL);
+         * yaguraEncoderMenu.add(yaguraEncoderURLUnicodeMenu);
+         *
+         * JMenuItem yaguraEncoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)
+         * - JSON", KeyEvent.VK_J, this.TRANSLATE_ENCODE_UNICODE_JSON);
+         * yaguraEncoderMenu.add(yaguraEncoderUnicodeMenu);
+         *
+         * JMenuItem yaguraEncoderBase64Menu = createMenuItem("Base64",
+         * KeyEvent.VK_B, this.TRANSLATE_ENCODE_BASE64);
+         * yaguraEncoderMenu.add(yaguraEncoderBase64Menu);
+         *
+         * JMenuItem yaguraEncoderBase64UrlSafeMenu =
+         * createMenuItem("Base64URLSafe", KeyEvent.VK_S,
+         * this.TRANSLATE_ENCODE_BASE64_SAFE);
+         * yaguraEncoderMenu.add(yaguraEncoderBase64UrlSafeMenu);
+         *
+         * JMenuItem yaguraEncoderBase64andUrlMenu = createMenuItem("Base64 +
+         * URL", KeyEvent.VK_A, this.TRANSLATE_ENCODE_BASE64_URL);
+         * yaguraEncoderMenu.add(yaguraEncoderBase64andUrlMenu);
+         *
+         * JMenuItem yaguraEncoderHtmlMenu = createMenuItem("Html",
+         * KeyEvent.VK_H, this.TRANSLATE_ENCODE_HTML);
+         * yaguraEncoderMenu.add(yaguraEncoderHtmlMenu);
+         *
+         * JMenuItem yaguraEncoderMetacharMenu = createMenuItem("JSON with
+         * Meta", KeyEvent.VK_M, this.TRANSLATE_ENCODE_JSON_META);
+         * yaguraEncoderMenu.add(yaguraEncoderMetacharMenu);
+***
+         */
         yaguraMenu.add(yaguraEncoderMenu);
 
         /**
@@ -240,32 +254,43 @@ public final class MenuHander {
             yaguraDecoderMenu.add(createMenuItem(menuAction));
         }
 
-/****
-        JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)", KeyEvent.VK_U, this.TRANSLATE_DECODE_URL);
-        yaguraDecoderMenu.add(yaguraDecoderURLMenu);
-
-        JMenuItem yaguraDecoderURLUnicodeMenu = createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N, this.TRANSLATE_DECODE_UNICODE_URL);
-        yaguraDecoderMenu.add(yaguraDecoderURLUnicodeMenu);
-
-        JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh) - JSON", KeyEvent.VK_J, this.TRANSLATE_DECODE_UNICODE_JSON);
-        yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
-
-        JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64", KeyEvent.VK_B, this.TRANSLATE_DECODE_BASE64);
-        yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
-
-        JMenuItem yaguraDecoderBase64UrlSafeMenu = createMenuItem("Base64URLSafe", KeyEvent.VK_S, this.TRANSLATE_DECODE_BASE64_SAFE);
-        yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
-
-        JMenuItem yaguraDecoderBase64andUrlMenu = createMenuItem("Base64 + URL", KeyEvent.VK_A, this.TRANSLATE_DECODE_BASE64_URL);
-        yaguraDecoderMenu.add(yaguraDecoderBase64andUrlMenu);
-
-        JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html", KeyEvent.VK_H, this.TRANSLATE_DECODE_HTML);
-        yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
-
-        JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with Meta", KeyEvent.VK_M, this.TRANSLATE_DECODE_JSON_META);
-        yaguraDecoderMenu.add(yaguraDecoderMetacharMenu);
-****/
-
+        /**
+         * **
+         * JMenuItem yaguraDecoderURLMenu = createMenuItem("URL(%hh)",
+         * KeyEvent.VK_U, this.TRANSLATE_DECODE_URL);
+         * yaguraDecoderMenu.add(yaguraDecoderURLMenu);
+         *
+         * JMenuItem yaguraDecoderURLUnicodeMenu =
+         * createMenuItem("Unicode(%uhhhh) - URL", KeyEvent.VK_N,
+         * this.TRANSLATE_DECODE_UNICODE_URL);
+         * yaguraDecoderMenu.add(yaguraDecoderURLUnicodeMenu);
+         *
+         * JMenuItem yaguraDecoderUnicodeMenu = createMenuItem("Unicode(\\uhhhh)
+         * - JSON", KeyEvent.VK_J, this.TRANSLATE_DECODE_UNICODE_JSON);
+         * yaguraDecoderMenu.add(yaguraDecoderUnicodeMenu);
+         *
+         * JMenuItem yaguraDecoderBase64Menu = createMenuItem("Base64",
+         * KeyEvent.VK_B, this.TRANSLATE_DECODE_BASE64);
+         * yaguraDecoderMenu.add(yaguraDecoderBase64Menu);
+         *
+         * JMenuItem yaguraDecoderBase64UrlSafeMenu =
+         * createMenuItem("Base64URLSafe", KeyEvent.VK_S,
+         * this.TRANSLATE_DECODE_BASE64_SAFE);
+         * yaguraDecoderMenu.add(yaguraDecoderBase64UrlSafeMenu);
+         *
+         * JMenuItem yaguraDecoderBase64andUrlMenu = createMenuItem("Base64 +
+         * URL", KeyEvent.VK_A, this.TRANSLATE_DECODE_BASE64_URL);
+         * yaguraDecoderMenu.add(yaguraDecoderBase64andUrlMenu);
+         *
+         * JMenuItem yaguraDecoderHtmlMenu = createMenuItem("Html",
+         * KeyEvent.VK_H, this.TRANSLATE_DECODE_HTML);
+         * yaguraDecoderMenu.add(yaguraDecoderHtmlMenu);
+         *
+         * JMenuItem yaguraDecoderMetacharMenu = createMenuItem("JSON with
+         * Meta", KeyEvent.VK_M, this.TRANSLATE_DECODE_JSON_META);
+         * yaguraDecoderMenu.add(yaguraDecoderMetacharMenu);
+***
+         */
         yaguraMenu.add(yaguraDecoderMenu);
 
         /**
@@ -279,26 +304,33 @@ public final class MenuHander {
             yaguraConverterMenu.add(createMenuItem(menuAction));
         }
 
-/****
-        JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper Case", KeyEvent.VK_U, this.TRANSLATE_CONVERT_UPPER_CASE);
-        yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
-
-        JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler Case", KeyEvent.VK_L, this.TRANSLATE_CONVERT_LOWLER_CASE);
-        yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
-
-        JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex", KeyEvent.VK_B, this.TRANSLATE_CONVERT_BIN2HEX);
-        yaguraConverterMenu.add(yaguraConverterBin2HexMenu);
-
-        JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin", KeyEvent.VK_H, this.TRANSLATE_CONVERT_HEX2BIN);
-        yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
-
-        JMenuItem yaguraConverterFull2Half = createMenuItem("Full width -> Half width", KeyEvent.VK_F, this.TRANSLATE_CONVERT_FULL2HALF);
-        yaguraConverterMenu.add(yaguraConverterFull2Half);
-
-        JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width -> Full width", KeyEvent.VK_K, this.TRANSLATE_CONVERT_HALF2FULL);
-        yaguraConverterMenu.add(yaguraConverterHalf2Full);
-****/
-
+        /**
+         * **
+         * JMenuItem yaguraDecoderUpperCaseItemMenu = createMenuItem("Upper
+         * Case", KeyEvent.VK_U, this.TRANSLATE_CONVERT_UPPER_CASE);
+         * yaguraConverterMenu.add(yaguraDecoderUpperCaseItemMenu);
+         *
+         * JMenuItem yaguraDecoderLowlerCaseItemMenu = createMenuItem("Lowler
+         * Case", KeyEvent.VK_L, this.TRANSLATE_CONVERT_LOWLER_CASE);
+         * yaguraConverterMenu.add(yaguraDecoderLowlerCaseItemMenu);
+         *
+         * JMenuItem yaguraConverterBin2HexMenu = createMenuItem("bin2hex",
+         * KeyEvent.VK_B, this.TRANSLATE_CONVERT_BIN2HEX);
+         * yaguraConverterMenu.add(yaguraConverterBin2HexMenu);
+         *
+         * JMenuItem yaguraConverterHex2BinMenu = createMenuItem("hex2bin",
+         * KeyEvent.VK_H, this.TRANSLATE_CONVERT_HEX2BIN);
+         * yaguraConverterMenu.add(yaguraConverterHex2BinMenu);
+         *
+         * JMenuItem yaguraConverterFull2Half = createMenuItem("Full width ->
+         * Half width", KeyEvent.VK_F, this.TRANSLATE_CONVERT_FULL2HALF);
+         * yaguraConverterMenu.add(yaguraConverterFull2Half);
+         *
+         * JMenuItem yaguraConverterHalf2Full = createMenuItem("Half width ->
+         * Full width", KeyEvent.VK_K, this.TRANSLATE_CONVERT_HALF2FULL);
+         * yaguraConverterMenu.add(yaguraConverterHalf2Full);
+***
+         */
         yaguraMenu.add(yaguraConverterMenu);
 
         /**
@@ -312,26 +344,30 @@ public final class MenuHander {
             yaguraHashMenu.add(createMenuItem(menuAction));
         }
 
-/****
-        JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0, this.TRANSLATE_HASH_MD2);
-        yaguraHashMenu.add(yaguraHashMD2Menu);
-
-        JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1, this.TRANSLATE_HASH_MD5);
-        yaguraHashMenu.add(yaguraHashMD5Menu);
-
-        JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2, this.TRANSLATE_HASH_SHA1);
-        yaguraHashMenu.add(yaguraHashSha1Menu);
-
-        JMenuItem yaguraHashSha256Menu = createMenuItem("sha256", KeyEvent.VK_3, this.TRANSLATE_HASH_SHA256);
-        yaguraHashMenu.add(yaguraHashSha256Menu);
-
-        JMenuItem yaguraHashSha384Menu = createMenuItem("sha384", KeyEvent.VK_4, this.TRANSLATE_HASH_SHA384);
-        yaguraHashMenu.add(yaguraHashSha384Menu);
-
-        JMenuItem yaguraHashSha512Menu = createMenuItem("sha512", KeyEvent.VK_5, this.TRANSLATE_HASH_SHA512);
-        yaguraHashMenu.add(yaguraHashSha512Menu);
-****/
-
+        /**
+         * **
+         * JMenuItem yaguraHashMD2Menu = createMenuItem("md2", KeyEvent.VK_0,
+         * this.TRANSLATE_HASH_MD2); yaguraHashMenu.add(yaguraHashMD2Menu);
+         *
+         * JMenuItem yaguraHashMD5Menu = createMenuItem("md5", KeyEvent.VK_1,
+         * this.TRANSLATE_HASH_MD5); yaguraHashMenu.add(yaguraHashMD5Menu);
+         *
+         * JMenuItem yaguraHashSha1Menu = createMenuItem("sha1", KeyEvent.VK_2,
+         * this.TRANSLATE_HASH_SHA1); yaguraHashMenu.add(yaguraHashSha1Menu);
+         *
+         * JMenuItem yaguraHashSha256Menu = createMenuItem("sha256",
+         * KeyEvent.VK_3, this.TRANSLATE_HASH_SHA256);
+         * yaguraHashMenu.add(yaguraHashSha256Menu);
+         *
+         * JMenuItem yaguraHashSha384Menu = createMenuItem("sha384",
+         * KeyEvent.VK_4, this.TRANSLATE_HASH_SHA384);
+         * yaguraHashMenu.add(yaguraHashSha384Menu);
+         *
+         * JMenuItem yaguraHashSha512Menu = createMenuItem("sha512",
+         * KeyEvent.VK_5, this.TRANSLATE_HASH_SHA512);
+         * yaguraHashMenu.add(yaguraHashSha512Menu);
+***
+         */
         yaguraMenu.add(yaguraHashMenu);
 
         /**
@@ -354,7 +390,7 @@ public final class MenuHander {
         JMenuItem yaguraPasteIncludeTargetScopeMenu = createMenuItem("Paste include Target scope (multi-line)", KeyEvent.VK_I, this.INCLUDE_TARGET_SCOPE_ACTION);
         yaguraExtensionMenu.add(yaguraPasteIncludeTargetScopeMenu);
 
-        JMenuItem yaguraPasteIncludeTopUrlScopeMenu = createMenuItem("Paste Root URL into include Target scope (multi-line)", KeyEvent.VK_H, this.INCLUDE_ROOTURL_TARGET_SCOPE_ACTION);
+        JMenuItem yaguraPasteIncludeTopUrlScopeMenu = createMenuItem("Paste Root URL into include Target scope (multi-line)", KeyEvent.VK_R, this.INCLUDE_ROOTURL_TARGET_SCOPE_ACTION);
         yaguraExtensionMenu.add(yaguraPasteIncludeTopUrlScopeMenu);
 
         JMenuItem yaguraPasteExludeTargetScopeMenu = createMenuItem("Paste exclude Target scope (multi-line)", KeyEvent.VK_E, this.EXCLUDE_TARGET_SCOPE_ACTION);
@@ -362,6 +398,10 @@ public final class MenuHander {
 
         JMenuItem yaguraPasteSSLPassThroughMenu = createMenuItem("Paste SSL pass through (multi-line)", KeyEvent.VK_P, this.SSL_PASS_THROUGH_ACTION);
         yaguraExtensionMenu.add(yaguraPasteSSLPassThroughMenu);
+        yaguraMenu.add(yaguraExtensionMenu);
+
+        JMenuItem yaguraHostnameResolutionMenu = createMenuItem("Paste Hostname resolution (multi-line)", KeyEvent.VK_H, this.DNS_HOST_NAME_ACTION);
+        yaguraExtensionMenu.add(yaguraHostnameResolutionMenu);
         yaguraMenu.add(yaguraExtensionMenu);
 
         /**
@@ -1095,6 +1135,26 @@ public final class MenuHander {
                 BurpConfig.configSSLPassThroughRules(api, rules, false);
                 IBurpTab tab = extenderImpl.getRootTabComponent();
                 BurpUtil.flashTab(tab, "Proxy");
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, ex.getMessage(), ex);
+            }
+        }
+    };
+
+    private final java.awt.event.ActionListener DNS_HOST_NAME_ACTION = new java.awt.event.ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                String paste = SwingUtil.systemClipboardPaste();
+                Stream<String> hostlines = HostName.parseHostLines(paste);
+                HostName hostName = HostName.parseHosts(hostlines);
+                List<BurpConfig.HostnameResolution> hosts = new ArrayList<>();
+                for (HostNameEntry hostEntry : hostName.getHostNameEntry()) {
+                    if (hostEntry.isValidIP()) {
+                        hosts.add(new BurpConfig.HostnameResolution(true, hostEntry.getHostName(), hostEntry.getIPAddress()));
+                    }
+                }
+                BurpConfig.configHostnameResolution(api, hosts);
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, ex.getMessage(), ex);
             }
