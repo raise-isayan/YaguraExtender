@@ -649,6 +649,19 @@ public class TransUtilTest {
     }
 
     @Test
+    public void testUTF8Encode() {
+        System.out.println("testUTF8Encode");
+        for (int i = 2; i <= 6; i++) {
+            byte [] utf8_2 = TransUtil.UTF8Encode("あいうえお", i);
+            StringBuilder buff = new StringBuilder();
+            for (byte b : utf8_2) {
+                buff.append(String.format("%%%x", b));
+            }
+            System.out.println("UTF8-" + i + ":" + buff.toString());
+        }
+    }
+
+    @Test
     public void testTranslate() {
         System.out.println("translate");
         {

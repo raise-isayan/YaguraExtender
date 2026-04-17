@@ -147,14 +147,28 @@
                 </Constraint>
               </Constraints>
 
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="pnlCertificateCAExport" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlConvertFormat" min="-2" max="-2" attributes="0"/>
+                      <Component id="pnlCertificate" min="-2" pref="816" max="-2" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="pnlCertificateCAExport" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Component id="pnlConvertFormat" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Component id="pnlCertificate" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="pnlConvertFormat">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="North"/>
-                    </Constraint>
-                  </Constraints>
 
                   <Layout>
                     <DimensionLayout dim="0">
@@ -165,13 +179,8 @@
                                   <Component id="rdoConvertCertificateDER" min="-2" max="-2" attributes="0"/>
                                   <Component id="rdoConvertCertificatePEM" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="rdoConvertPrivateDER" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="rdoConvertPairPEM" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="btnExportCA" min="-2" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
-                              <EmptySpace min="84" pref="495" max="32767" attributes="0"/>
+                              <EmptySpace min="241" pref="652" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -179,31 +188,17 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="btnExportCA" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="rdoConvertPairPEM" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="rdoConvertCertificatePEM" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="rdoConvertCertificateDER" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="rdoConvertPrivateDER" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JRadioButton" name="rdoConvertPairPEM">
-                      <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="btnGrpExportCertificate"/>
-                        </Property>
-                        <Property name="selected" type="boolean" value="true"/>
-                        <Property name="text" type="java.lang.String" value="Certificate and Private key in PEM format"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JRadioButton" name="rdoConvertPrivateDER">
                       <Properties>
                         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -228,158 +223,216 @@
                         <Property name="text" type="java.lang.String" value="Certificate  in PEM format"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="btnExportCA">
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="pnlCertificateCAExport">
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="rdoConvertPairPEM" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="rdordoConvertPKCS12" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="btnCertificateCAExport" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtrdoConvertPKCS12Password" alignment="0" min="-2" pref="218" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace pref="312" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="rdoConvertPairPEM" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnCertificateCAExport" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="rdordoConvertPKCS12" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtrdoConvertPKCS12Password" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JRadioButton" name="rdoConvertPairPEM">
+                      <Properties>
+                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                          <ComponentRef name="btnGrpExportCertificate"/>
+                        </Property>
+                        <Property name="selected" type="boolean" value="true"/>
+                        <Property name="text" type="java.lang.String" value="Certificate and Private key in PEM format"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoConvertPairPEMActionPerformed"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JRadioButton" name="rdordoConvertPKCS12">
+                      <Properties>
+                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                          <ComponentRef name="btnGrpExportCertificate"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Certificate and Private key in PKCS#12 keystore"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtrdoConvertPKCS12Password">
+                    </Component>
+                    <Component class="javax.swing.JButton" name="btnCertificateCAExport">
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Export"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExportCAActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCertificateCAExportActionPerformed"/>
                       </Events>
                     </Component>
                   </SubComponents>
                 </Container>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="pnlCertificate">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="South"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="pnlServerCertificate">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="South"/>
-                    </Constraint>
-                  </Constraints>
+                <Container class="javax.swing.JPanel" name="pnlCertificate">
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                   <SubComponents>
-                    <Container class="javax.swing.JPanel" name="pnlServerEnable">
+                    <Container class="javax.swing.JPanel" name="pnlServerCertificate">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="North"/>
+                          <BorderConstraints direction="South"/>
                         </Constraint>
                       </Constraints>
 
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="chkProvidedServer" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="chkProvidedServer" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
                       <SubComponents>
-                        <Component class="javax.swing.JCheckBox" name="chkProvidedServer">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                              <ResourceString bundle="yagura/view/Bundle.properties" key="server.ocsp.tab.auto_start" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                            </Property>
-                          </Properties>
-                          <AccessibilityProperties>
-                            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-                          </AccessibilityProperties>
-                          <Events>
-                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkProvidedServerStateChanged"/>
-                          </Events>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="pnlListenPort">
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="Center"/>
-                        </Constraint>
-                      </Constraints>
+                        <Container class="javax.swing.JPanel" name="pnlServerEnable">
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="North"/>
+                            </Constraint>
+                          </Constraints>
 
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblListenPort" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="spnListenPort" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btnProvidedServer" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="btnCopy" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="btnProvidedServer" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblListenPort" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="spnListenPort" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="btnCopy" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Layout>
+                            <DimensionLayout dim="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="chkProvidedServer" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace pref="10" max="32767" attributes="0"/>
                               </Group>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
-                      <SubComponents>
-                        <Component class="javax.swing.JLabel" name="lblListenPort">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                              <ResourceString bundle="yagura/view/Bundle.properties" key="server.ocsp.tab.listen_port" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value=""/>
-                          </Properties>
-                          <AccessibilityProperties>
-                            <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-                          </AccessibilityProperties>
-                        </Component>
-                        <Component class="javax.swing.JSpinner" name="spnListenPort">
-                          <Properties>
-                            <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                              <SpinnerModel initial="5050" maximum="65535" minimum="1024" numberType="java.lang.Integer" stepSize="1" type="number"/>
-                            </Property>
-                            <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
-                              <SpinnerEditor format="#0" type="3"/>
-                            </Property>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnListenPortStateChanged"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JToggleButton" name="btnProvidedServer">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Start"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProvidedServerActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="btnCopy">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Copy URL"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCopyActionPerformed"/>
-                          </Events>
-                        </Component>
+                            </DimensionLayout>
+                            <DimensionLayout dim="1">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="chkProvidedServer" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                            </DimensionLayout>
+                          </Layout>
+                          <SubComponents>
+                            <Component class="javax.swing.JCheckBox" name="chkProvidedServer">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                                  <ResourceString bundle="yagura/view/Bundle.properties" key="server.ocsp.tab.auto_start" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                                </Property>
+                              </Properties>
+                              <AccessibilityProperties>
+                                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+                              </AccessibilityProperties>
+                              <Events>
+                                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkProvidedServerStateChanged"/>
+                              </Events>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="pnlListenPort">
+                          <Constraints>
+                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                              <BorderConstraints direction="Center"/>
+                            </Constraint>
+                          </Constraints>
+
+                          <Layout>
+                            <DimensionLayout dim="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="lblListenPort" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="spnListenPort" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="btnProvidedServer" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="btnCopy" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                            </DimensionLayout>
+                            <DimensionLayout dim="1">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="btnProvidedServer" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblListenPort" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="spnListenPort" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="btnCopy" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace pref="10" max="32767" attributes="0"/>
+                                  </Group>
+                              </Group>
+                            </DimensionLayout>
+                          </Layout>
+                          <SubComponents>
+                            <Component class="javax.swing.JLabel" name="lblListenPort">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                                  <ResourceString bundle="yagura/view/Bundle.properties" key="server.ocsp.tab.listen_port" replaceFormat="java.util.ResourceBundle.getBundle(&quot;{bundleNameSlashes}&quot;).getString(&quot;{key}&quot;)"/>
+                                </Property>
+                                <Property name="toolTipText" type="java.lang.String" value=""/>
+                              </Properties>
+                              <AccessibilityProperties>
+                                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
+                              </AccessibilityProperties>
+                            </Component>
+                            <Component class="javax.swing.JSpinner" name="spnListenPort">
+                              <Properties>
+                                <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                                  <SpinnerModel initial="5050" maximum="65535" minimum="1024" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                                </Property>
+                                <Property name="editor" type="javax.swing.JComponent" editor="org.netbeans.modules.form.editors.SpinnerEditorEditor">
+                                  <SpinnerEditor format="#0" type="3"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnListenPortStateChanged"/>
+                              </Events>
+                            </Component>
+                            <Component class="javax.swing.JToggleButton" name="btnProvidedServer">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" value="Start"/>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProvidedServerActionPerformed"/>
+                              </Events>
+                            </Component>
+                            <Component class="javax.swing.JButton" name="btnCopy">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" value="Copy URL"/>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCopyActionPerformed"/>
+                              </Events>
+                            </Component>
+                          </SubComponents>
+                        </Container>
                       </SubComponents>
                     </Container>
                   </SubComponents>
@@ -402,7 +455,7 @@
             <Container class="javax.swing.JPanel" name="pnlGenerateIssuerCN">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Center"/>
+                  <BorderConstraints direction="First"/>
                 </Constraint>
               </Constraints>
 
@@ -410,9 +463,9 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lblIssuerYear" min="-2" max="-2" attributes="0"/>
                                       <Component id="lblIssuerCommonName" min="-2" max="-2" attributes="0"/>
@@ -422,23 +475,15 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="txtIssuerCommonName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                      <Component id="txtIssuerCountry" min="-2" pref="367" max="-2" attributes="0"/>
-                                      <Component id="txtIssuerOrganizationName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                      <Component id="txtIssuerLoccalityName" min="-2" pref="367" max="-2" attributes="0"/>
-                                      <Component id="spnIssuerYear" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerCommonName" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerOrganizationName" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerLoccalityName" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
+                                      <Component id="txtIssuerCountry" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="rdoIssuerExportPairPKCS12" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="rdoIssuerExportPairPEM" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="btnIssuerExportCA" min="-2" max="-2" attributes="0"/>
-                                      <Component id="txtIssuerPKCS12Password" max="32767" attributes="0"/>
-                                  </Group>
+                                  <EmptySpace min="137" pref="137" max="-2" attributes="0"/>
+                                  <Component id="spnIssuerYear" min="-2" pref="100" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace pref="312" max="32767" attributes="0"/>
@@ -473,17 +518,7 @@
                               <Component id="txtIssuerCountry" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="lblIssuerCountry" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="rdoIssuerExportPairPEM" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnIssuerExportCA" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="rdoIssuerExportPairPKCS12" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtIssuerPKCS12Password" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="695" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -529,6 +564,52 @@
                 </Component>
                 <Component class="javax.swing.JTextField" name="txtIssuerCountry">
                 </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="pnlGenerateIssuerExport">
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="Center"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="rdoIssuerExportPairPEM" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="rdoIssuerExportPairPKCS12" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btnIssuerExportCA" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtIssuerPKCS12Password" alignment="0" min="-2" pref="218" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="160" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="rdoIssuerExportPairPEM" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnIssuerExportCA" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="rdoIssuerExportPairPKCS12" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtIssuerPKCS12Password" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
                 <Component class="javax.swing.JRadioButton" name="rdoIssuerExportPairPEM">
                   <Properties>
                     <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -537,6 +618,9 @@
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" value="Certificate and Private key in PEM format"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoIssuerExportPairPEMActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JRadioButton" name="rdoIssuerExportPairPKCS12">
                   <Properties>
@@ -679,40 +763,43 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblSubjectYear" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSubjectCommonName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSubjectOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSubjectLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSubjectCountry" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="txtSubjectCommonName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                          <Component id="txtSubjectCountry" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                          <Component id="txtSubjectOrganizationName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                          <Component id="txtSubjectLoccalityName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                          <Component id="spnSubjectYear" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                                          <Component id="txtSubjectSAN" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lblSubjectCountry1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="chkUseSameCommonName" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="lblSubjectCountry" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectCommonName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectYear" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtSubjectCommonName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                  <Component id="txtSubjectOrganizationName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                  <Component id="txtSubjectLoccalityName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                  <Component id="txtSubjectCountry" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                  <Component id="txtSubjectSAN" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
+                                  <Component id="spnSubjectYear" min="-2" pref="100" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="312" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="rdoSubjectExportPairPKCS12" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="rdoSubjectExportPairPEM" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="rdoSubjectExportPairPKCS12" max="32767" attributes="0"/>
+                                          <Component id="rdoSubjectExportPairPEM" max="32767" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="btnSubjectExportCA" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtSubjectPKCS12Password" max="32767" attributes="0"/>
+                                          <Component id="txtSubjectPKCS12Password" min="-2" pref="219" max="-2" attributes="0"/>
                                       </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="chkUseSameCommonName" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -730,14 +817,14 @@
                                   <Component id="txtSubjectCommonName" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblSubjectOrganizationName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtSubjectOrganizationName" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtSubjectOrganizationName" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectOrganizationName" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblSubjectLoccalityName" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="txtSubjectLoccalityName" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtSubjectLoccalityName" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectLoccalityName" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -761,7 +848,7 @@
                                   <Component id="rdoSubjectExportPairPKCS12" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="txtSubjectPKCS12Password" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="641" max="32767" attributes="0"/>
+                              <EmptySpace pref="581" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -825,6 +912,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtSubjectPKCS12Password">
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSubjectPKCS12PasswordActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="btnSubjectExportCA">
                       <Properties>

@@ -890,7 +890,27 @@ public class TransUtil {
         ByteArrayOutputStream byte_array = new ByteArrayOutputStream();
         for (char c : input_array) {
             switch (bytes) {
+                case 6: {
+                    // 1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxxs
+                    byte_array.write((byte) 0xfc);
+                    byte_array.write((byte) 0x80);
+                    byte_array.write((byte) 0x80);
+                    byte_array.write((byte) 0x80);
+                    byte_array.write((byte) (0x80 | ((c >> 6) & 0x3f)));
+                    byte_array.write((byte) (0x80 | (c & 0x3f)));
+                    break;
+                }
+                case 5: {
+                    // 111110xx 10xxxxxx 10xxxxxx 10xxxxx 10xxxxxx
+                    byte_array.write((byte) 0xf8);
+                    byte_array.write((byte) 0x80);
+                    byte_array.write((byte) 0x80);
+                    byte_array.write((byte) (0x80 | ((c >> 6) & 0x3f)));
+                    byte_array.write((byte) (0x80 | (c & 0x3f)));
+                    break;
+                }
                 case 4: {
+                    // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
                     byte_array.write((byte) (0xff & ((byte) 0xf0)));
                     byte_array.write((byte) (0xff & ((byte) 0x80)));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | ((c & 0x7f) >> 6)))));
@@ -898,12 +918,14 @@ public class TransUtil {
                     break;
                 }
                 case 3: {
+                    // 1110xxxx 10xxxxxx 10xxxxxx
                     byte_array.write((byte) (0xff & ((byte) 0xe0)));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | ((c & 0x7f) >> 6)))));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | (c & 0x3f)))));
                     break;
                 }
                 case 2: {
+                    // 110xxxxx 10xxxxxx
                     byte_array.write((byte) (0xff & ((byte) (0xc0 | ((c & 0x7f) >> 6)))));
                     byte_array.write((byte) (0xff & ((byte) (0x80 | (c & 0x3f)))));
                     break;
