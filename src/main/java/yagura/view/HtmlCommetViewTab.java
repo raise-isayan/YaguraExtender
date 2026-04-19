@@ -16,6 +16,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.List;
@@ -84,7 +85,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.propertyListener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(propertyListener);
+        ThemeUI.addPropertyChangeListener(this.propertyListener);
 
     }
 
@@ -241,7 +242,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
                 }
             }
             return false;
-        } catch (Exception ex) {
+        } catch (UnsupportedEncodingException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
             return false;
         }

@@ -14,7 +14,7 @@ public class HotKeyProperty {
      * @return the hotkeyAssign
      */
     public String getHotKeyAssign() {
-        return hotKeytAssign;
+        return this.hotKeytAssign;
     }
 
     /**

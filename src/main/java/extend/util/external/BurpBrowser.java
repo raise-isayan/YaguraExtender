@@ -115,37 +115,13 @@ public class BurpBrowser {
         if (browserDir.exists() && browserDir.list().length > 0) {
             return browserDir.toPath();
         } else {
-            Path burpPath = getBurpSuiteDirectoryPath();
+            Path burpPath = BurpConfig.getBurpSuiteDirectoryPath();
             return burpPath.resolve(CHROMIUM_BROWSER);
         }
     }
 
-    public static Path getBurpSuiteDirectoryPath() {
-        String home = "";
-        String burpDir = "";
-        BurpVersion.OSType os = BurpVersion.getOSType();
-        switch (os) {
-            case WINDOWS: {
-                home = System.getenv("APPDATA");
-                burpDir = "BurpSuite";
-                break;
-            }
-            case LINUX: {
-                home = System.getenv("HOME");
-                burpDir = ".BurpSuite";
-                break;
-            }
-            case MAC: {
-                home = System.getenv("HOME");
-                burpDir = ".BurpSuite";
-                break;
-            }
-        }
-        return Path.of(home, burpDir);
-    }
-
     public Path getBrowseUserDataDirectory() {
-        Path dir = getBurpSuiteDirectoryPath();
+        Path dir = BurpConfig.getBurpSuiteDirectoryPath();
         Path path = Path.of("pre-wired-browser");
         BurpConfig.EmbeddedBrowser browserConfig = BurpConfig.getEmbeddedBrowser(api);
         if (browserConfig.isAllowSavingBrowserSettings() && !StringUtil.isNullOrEmpty(browserConfig.getBrowserDataDirectory())) {
@@ -155,7 +131,7 @@ public class BurpBrowser {
     }
 
     public static Path getBrowseExtensionDirectory() {
-        Path dir = getBurpSuiteDirectoryPath();
+        Path dir = BurpConfig.getBurpSuiteDirectoryPath();
         Path path = Path.of(CHROMIUM_BROWSER_EXTENSION);
         return dir.resolve(path);
     }
@@ -407,7 +383,7 @@ public class BurpBrowser {
 
         @Override
         public String toString() {
-            return name;
+            return this.name;
         }
 
     }

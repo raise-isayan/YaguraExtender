@@ -25,7 +25,7 @@ public class AutoResponderItem extends MatchItem {
      * @return the method
      */
     public String getMethod() {
-        return method;
+        return this.method;
     }
 
     /**
@@ -58,7 +58,7 @@ public class AutoResponderItem extends MatchItem {
     private String contentType = "";
 
     public String getContentType() {
-        return contentType;
+        return this.contentType;
     }
 
     public void setContentType(String contentType) {

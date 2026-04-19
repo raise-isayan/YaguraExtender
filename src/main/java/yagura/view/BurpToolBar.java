@@ -1,6 +1,5 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.extension.ExtensionUnloadingHandler;
 import burp.api.montoya.ui.Theme;
@@ -9,7 +8,6 @@ import extension.burp.BurpConfig;
 import extension.burp.BurpUtil;
 import extension.helpers.FileUtil;
 import extension.helpers.StringUtil;
-import java.awt.Container;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -21,7 +19,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -290,11 +287,6 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         tglAuto.setFocusable(false);
         tglAuto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tglAuto.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tglAuto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tglAutoActionPerformed(evt);
-            }
-        });
         toolBar.add(tglAuto);
         toolBar.add(jSeparator1);
 
@@ -410,49 +402,53 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private void customizeComponents() {
         this.cmbProfile.setModel(this.modelProfile);
         this.renewProfile();
-        Frame frame = BurpUtil.suiteFrame();
+        Frame suiteFrame = BurpUtil.suiteFrame();
         JToggleButton button = findSuiteIntercept();
         if (button != null) {
             this.tglButtonChangeListener.stateChanged(new ChangeEvent(button));
             button.addChangeListener(this.tglButtonChangeListener);
         }
-        JTable interceptTable = BurpUtil.findSuiteTable("interceptTable", frame);
+        JTable interceptTable = BurpUtil.findSuiteTable("interceptTable", suiteFrame);
+        if (interceptTable == null) {
+            Frame detachedFrameProxy = BurpUtil.suiteFrameName("Proxy");
+            if (detachedFrameProxy != null) {
+                interceptTable = BurpUtil.findSuiteTable("interceptTable", detachedFrameProxy);
+            }
+        }
         this.tglAuto.setEnabled(interceptTable != null);
         if (interceptTable != null) {
             TableModel model = interceptTable.getModel();
             model.addTableModelListener(this.interceptModelListener);
         }
-        final JButton setting = BurpUtil.findSuiteButton("settingsButton", frame);
+//      final JButton setting = BurpUtil.findSuiteButton("settingsButton", frame);
+//      setting.doClick();
+        Frame setting = BurpUtil.suiteSettingsFrame();
         this.btnBurpConfig.setVisible(setting != null);
         if (setting != null) {
             this.btnBurpConfig.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    setting.doClick();
+                    setting.setVisible(true);
                 }
             });
-
         }
     }
 
     private JToggleButton findSuiteIntercept() {
-        Frame frame = BurpUtil.suiteFrame();
-        JToggleButton button = BurpUtil.findSuiteIntercept(frame);
+        Frame suiteFrame = BurpUtil.suiteFrame();
+        JToggleButton button = BurpUtil.findSuiteIntercept(suiteFrame);
         if (button != null) {
             return button;
         }
         else {
-            Frame proxyFrame = BurpUtil.suiteFrame("Proxy");
-            if (proxyFrame != null) {
-                JToggleButton innerButton = BurpUtil.findSuiteIntercept(proxyFrame);
-                if (innerButton != null) {
-                    return innerButton;
-                }
+            Frame detachedFrameProxy = BurpUtil.suiteFrameName("Proxy");
+            if (detachedFrameProxy != null) {
+                JToggleButton innerButton = BurpUtil.findSuiteIntercept(detachedFrameProxy);
+                return innerButton;
             }
         }
         return null;
     }
-
 
     private void selectInterceptTab() {
         JTabbedPane suiteTab = BurpUtil.suiteTabbedPane();
@@ -466,7 +462,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
                 }
             }
             else {
-                Frame proxyFrame = BurpUtil.suiteFrame("Proxy");
+                Frame proxyFrame = BurpUtil.suiteFrameTitle("Proxy");
                 if (proxyFrame != null) {
                     proxyFrame.toFront();
                     JTabbedPane secondSuiteTab = BurpUtil.secondarySuiteTabbedPane(proxyFrame);
@@ -703,10 +699,6 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private void btnSelectedInterceptTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectedInterceptTabActionPerformed
         this.selectInterceptTab();
     }//GEN-LAST:event_btnSelectedInterceptTabActionPerformed
-
-    private void tglAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tglAutoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tglAutoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBurpConfig;

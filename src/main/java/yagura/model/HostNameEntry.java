@@ -10,8 +10,8 @@ import java.net.UnknownHostException;
  */
 public class HostNameEntry {
 
-    private String ipAddress;
-    private String hostName;
+    private final String ipAddress;
+    private final String hostName;
 
     public HostNameEntry(String Address, String hostName) {
         this.ipAddress = Address;
@@ -22,18 +22,18 @@ public class HostNameEntry {
      * @return the ipAddresses
      */
     public String getIPAddress() {
-        return ipAddress;
+        return this.ipAddress;
     }
 
     public InetAddress asInetAddress() throws UnknownHostException {
-        return InetAddress.getByName(ipAddress);
+        return InetAddress.getByName(this.ipAddress);
     }
 
     /**
      * @return the hostName
      */
     public String getHostName() {
-        return hostName;
+        return this.hostName;
     }
 
     public boolean isValidIP() {

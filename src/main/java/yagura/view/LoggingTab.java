@@ -443,12 +443,15 @@ public class LoggingTab extends javax.swing.JPanel implements IBurpTab {
 
     public boolean isLogDirChanged() {
         return this.isAutoLogging()
-                && ((this.chkAutoLogging.isSelected() != this.initAutoLogging) || (!this.txtLogDir.getText().equals(this.initLogDir) || isHistoryLogInclude()));
+                && ((this.chkAutoLogging.isSelected() != this.initAutoLogging)
+                || (!this.txtLogDir.getText().equals(this.initLogDir)
+                || isHistoryLogInclude()));
     }
 
     public boolean isLogCompressChanged() {
         return this.isAutoLogging()
-                && ((this.chkAutoLogging.isSelected() != this.initAutoLogging) || (this.chkCompressLog.isSelected() != this.initCompress));
+                && ((this.chkAutoLogging.isSelected() != this.initAutoLogging)
+                || (this.chkCompressLog.isSelected() != this.initCompress));
     }
 
     /**

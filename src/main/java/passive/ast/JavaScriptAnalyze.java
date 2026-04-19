@@ -18,7 +18,7 @@ import org.mozilla.javascript.ast.NodeVisitor;
 import org.mozilla.javascript.ast.RegExpLiteral;
 import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.VariableInitializer;
-import passive.signature.RegExPattermItem;
+import extension.view.base.RegExPattermItem;
 
 /**
  *

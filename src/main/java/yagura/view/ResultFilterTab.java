@@ -171,9 +171,9 @@ public class ResultFilterTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        this.btnItemEdit.setEnabled((listResultFilter.getSelectedIndices().length > 0));
-        this.btnItemRemove.setEnabled((listResultFilter.getSelectedIndices().length > 0));
-        this.btnItemApply.setEnabled((listResultFilter.getSelectedIndices().length > 0));
+        this.btnItemEdit.setEnabled((this.listResultFilter.getSelectedIndices().length > 0));
+        this.btnItemRemove.setEnabled((this.listResultFilter.getSelectedIndices().length > 0));
+        this.btnItemApply.setEnabled((this.listResultFilter.getSelectedIndices().length > 0));
 
         this.listResultFilter.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 

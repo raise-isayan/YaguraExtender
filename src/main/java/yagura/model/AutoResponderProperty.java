@@ -24,7 +24,7 @@ public class AutoResponderProperty implements IPropertyConfig {
      * @return the redirectPort
      */
     public int getRedirectPort() {
-        return redirectPort;
+        return this.redirectPort;
     }
 
     /**

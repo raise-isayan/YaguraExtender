@@ -582,7 +582,7 @@ public class UniversalViewTab extends javax.swing.JPanel implements IBurpTab {
     private void listSelectValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listSelectValueChanged
         if (evt.getSource() instanceof javax.swing.JList list) {
             String selectValue = String.valueOf(list.getSelectedValue());
-            btnEncLerftArraw.setEnabled(!UniversalViewProperty.isRequiredCharset(selectValue));
+            this.btnEncLerftArraw.setEnabled(!UniversalViewProperty.isRequiredCharset(selectValue));
         }
     }//GEN-LAST:event_listSelectValueChanged
 

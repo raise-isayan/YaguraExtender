@@ -88,7 +88,7 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
         add(this.quickSearchTab, java.awt.BorderLayout.SOUTH);
 
         this.propertyListener.propertyChange(null);
-        ThemeUI.addPropertyChangeListener(propertyListener);
+        ThemeUI.addPropertyChangeListener(this.propertyListener);
 
     }
 
@@ -170,8 +170,8 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
         List<String> comments = new ArrayList<>();
         MimeType mimeType = httpRequestResponse.response().inferredMimeType();
         if (mimeType == MimeType.SCRIPT) {
-            jsAnalyze.analyze(body);
-            for (CaptureItem comment : jsAnalyze.getCommentList()) {
+            this.jsAnalyze.analyze(body);
+            for (CaptureItem comment : this.jsAnalyze.getCommentList()) {
                 comments.add(comment.getCaptureValue());
             }
         }
@@ -180,7 +180,7 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
             htmlAnalyze.analyze();
             for (CaptureItem script : htmlAnalyze.getScriptList()) {
                 jsAnalyze.analyze(script.getCaptureValue());
-                for (CaptureItem comment : jsAnalyze.getCommentList()) {
+                for (CaptureItem comment : this.jsAnalyze.getCommentList()) {
                     comments.add(comment.getCaptureValue());
                 }
             }
@@ -258,8 +258,8 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
                     || (httpRequestResponse.response() != null && httpRequestResponse.response().toByteArray().length() == 0)) {
                 return true;
             }
-            final boolean uniq = quickSearchTab.getUniqCheckBox().isSelected();
-            String encoding = quickSearchTab.getSelectedEncoding();
+            final boolean uniq = this.quickSearchTab.getUniqCheckBox().isSelected();
+            String encoding = this.quickSearchTab.getSelectedEncoding();
             if (encoding != null) {
                 List<String> comments = extractComments(httpRequestResponse, encoding);
                 if (uniq) {

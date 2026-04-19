@@ -27,7 +27,7 @@ public class CertificateItem {
      * @return the selected
      */
     public boolean isSelected() {
-        return selected;
+        return this.selected;
     }
 
     /**
@@ -44,7 +44,7 @@ public class CertificateItem {
      * @return the storeType
      */
     public StoreType getStoreType() {
-        return storeType;
+        return this.storeType;
     }
 
     /**
@@ -61,7 +61,7 @@ public class CertificateItem {
      * @return the clientCertificate
      */
     public byte[] getClientCertificate() {
-        return clientCertificate;
+        return this.clientCertificate;
     }
 
     /**
@@ -78,7 +78,7 @@ public class CertificateItem {
      * @return the clientCertificatePasswd
      */
     public String getClientCertificatePasswd() {
-        return clientCertificatePasswd;
+        return this.clientCertificatePasswd;
     }
 
     /**

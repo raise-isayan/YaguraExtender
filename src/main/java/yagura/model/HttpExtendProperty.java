@@ -49,7 +49,7 @@ public class HttpExtendProperty {
      * @return the httpClientType
      */
     public HttpClientType getHttpClientType() {
-        return httpClientType;
+        return this.httpClientType;
     }
 
     /**
@@ -79,7 +79,7 @@ public class HttpExtendProperty {
      * @return the authorizationType
      */
     public AuthorizationType getAuthorizationType() {
-        return authorizationType;
+        return this.authorizationType;
     }
 
     /**
@@ -93,7 +93,7 @@ public class HttpExtendProperty {
      * @return the authorizationUser
      */
     public String getAuthorizationUser() {
-        return authorizationUser;
+        return this.authorizationUser;
     }
 
     /**
@@ -107,7 +107,7 @@ public class HttpExtendProperty {
      * @return the authorizationPasswd
      */
     public String getAuthorizationPasswd() {
-        return authorizationPasswd;
+        return this.authorizationPasswd;
     }
 
     /**
@@ -121,7 +121,7 @@ public class HttpExtendProperty {
      * @return the proxyProtocol
      */
     public Proxy.Type getProxyProtocol() {
-        return proxyProtocol;
+        return this.proxyProtocol;
     }
 
     /**
@@ -135,7 +135,7 @@ public class HttpExtendProperty {
      * @return the proxyHost
      */
     public String getProxyHost() {
-        return proxyHost;
+        return this.proxyHost;
     }
 
     /**
@@ -149,7 +149,7 @@ public class HttpExtendProperty {
      * @return the proxyPort
      */
     public int getProxyPort() {
-        return proxyPort;
+        return this.proxyPort;
     }
 
     /**
@@ -163,7 +163,7 @@ public class HttpExtendProperty {
      * @return the proxyUser
      */
     public String getProxyUser() {
-        return proxyUser;
+        return this.proxyUser;
     }
 
     /**
@@ -177,7 +177,7 @@ public class HttpExtendProperty {
      * @return the proxyPasswd
      */
     public String getProxyPasswd() {
-        return proxyPasswd;
+        return this.proxyPasswd;
     }
 
     /**
@@ -191,7 +191,7 @@ public class HttpExtendProperty {
      * @return the ignoreValidateCertification
      */
     public boolean isIgnoreValidateCertification() {
-        return ignoreValidateCertification;
+        return this.ignoreValidateCertification;
     }
 
     /**
