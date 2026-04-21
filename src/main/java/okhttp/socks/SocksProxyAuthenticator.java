@@ -35,6 +35,6 @@ public class SocksProxyAuthenticator extends Authenticator {
 
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
-        return credentials.get();
+        return this.credentials.get();
     }
 }

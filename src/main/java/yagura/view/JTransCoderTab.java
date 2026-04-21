@@ -512,6 +512,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlJSHexEnc = new javax.swing.JPanel();
         rdoByteXHex = new javax.swing.JRadioButton();
         rdoByteHex2 = new javax.swing.JRadioButton();
+        pnlJSOctEnc = new javax.swing.JPanel();
         rdoByteOct = new javax.swing.JRadioButton();
         rdoByteBin = new javax.swing.JRadioButton();
         pnlCompress = new javax.swing.JPanel();
@@ -601,10 +602,20 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashESCH384 = new javax.swing.JButton();
         btnHashPhotonBeetle = new javax.swing.JButton();
         btnHashXoodyak = new javax.swing.JButton();
+        btnHashUUIDv3 = new javax.swing.JButton();
         pnlCheckSumTrans = new javax.swing.JPanel();
         btnCRC32 = new javax.swing.JButton();
         btnCRC32C = new javax.swing.JButton();
         btnAdler32 = new javax.swing.JButton();
+        btnCRC16Arc = new javax.swing.JButton();
+        btnCrc16Ccitt = new javax.swing.JButton();
+        btnCrc16Dnp = new javax.swing.JButton();
+        btnCrc16IbmSdlc = new javax.swing.JButton();
+        btnCrc16Maxim = new javax.swing.JButton();
+        btnCrc16Mcrf4xx = new javax.swing.JButton();
+        btnCrc16Modbus = new javax.swing.JButton();
+        btnCrc16Nrsc5 = new javax.swing.JButton();
+        btnCrc16Usb = new javax.swing.JButton();
         btnMurmurHash2_32 = new javax.swing.JButton();
         btnMurmurHash2_64 = new javax.swing.JButton();
         btnXXHash32 = new javax.swing.JButton();
@@ -1146,7 +1157,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlTransAction.setLayout(new javax.swing.BoxLayout(pnlTransAction, javax.swing.BoxLayout.PAGE_AXIS));
 
         pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(15, 0, 1, 1));
+        pnlEncodeDecode.setLayout(new java.awt.GridLayout(16, 0, 1, 1));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -1156,7 +1167,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlEncodeDecode.add(btnSmartDecode);
 
-        pnlEncDec.setLayout(new java.awt.GridLayout(1, 1));
+        pnlEncDec.setLayout(new java.awt.GridLayout(1, 2));
 
         btnEncode.setMnemonic('E');
         btnEncode.setText("Encode");
@@ -1221,7 +1232,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlBase64);
 
-        pnlBase64URLSafe.setLayout(new java.awt.GridLayout(1, 1));
+        pnlBase64URLSafe.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoBase64URLSafe);
         rdoBase64URLSafe.setText("Base64URLSafe");
@@ -1233,7 +1244,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlBase64URLSafe);
 
-        pnlBaseN.setLayout(new java.awt.GridLayout(1, 0));
+        pnlBaseN.setLayout(new java.awt.GridLayout(1, 3));
 
         rdoEncodeDecodeGrp.add(rdoBase32);
         rdoBase32.setText("Base32");
@@ -1249,7 +1260,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlBaseN);
 
-        pnlMail.setLayout(new java.awt.GridLayout(1, 2));
+        pnlMail.setLayout(new java.awt.GridLayout(1, 1));
 
         rdoEncodeDecodeGrp.add(rdoQuotedPrintable);
         rdoQuotedPrintable.setText("QuotedPrintable");
@@ -1261,7 +1272,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoPunycode.setText("puyencode");
         pnlEncodeDecode.add(rdoPunycode);
 
-        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 4));
+        pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoHtml);
         rdoHtml.setText("HTML(<,>,&,\",')");
@@ -1302,7 +1313,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlJSUnicodeEnc);
 
-        pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 1));
+        pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoByteXHex);
         rdoByteXHex.setText("\\xhh(hex)");
@@ -1310,19 +1321,28 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         rdoEncodeDecodeGrp.add(rdoByteHex2);
         rdoByteHex2.setText("\\h(hex)");
+        rdoByteHex2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdoByteHex2ActionPerformed(evt);
+            }
+        });
         pnlJSHexEnc.add(rdoByteHex2);
-
-        rdoEncodeDecodeGrp.add(rdoByteOct);
-        rdoByteOct.setText("\\ooo(oct)");
-        pnlJSHexEnc.add(rdoByteOct);
-
-        rdoEncodeDecodeGrp.add(rdoByteBin);
-        rdoByteBin.setText("\\b{bbbb}(bin)");
-        pnlJSHexEnc.add(rdoByteBin);
 
         pnlEncodeDecode.add(pnlJSHexEnc);
 
-        pnlCompress.setLayout(new java.awt.GridLayout(1, 2));
+        pnlJSOctEnc.setLayout(new java.awt.GridLayout(1, 2));
+
+        rdoEncodeDecodeGrp.add(rdoByteOct);
+        rdoByteOct.setText("\\ooo(oct)");
+        pnlJSOctEnc.add(rdoByteOct);
+
+        rdoEncodeDecodeGrp.add(rdoByteBin);
+        rdoByteBin.setText("\\b{bbbb}(bin)");
+        pnlJSOctEnc.add(rdoByteBin);
+
+        pnlEncodeDecode.add(pnlJSOctEnc);
+
+        pnlCompress.setLayout(new java.awt.GridLayout(1, 3));
 
         rdoEncodeDecodeGrp.add(rdoGzip);
         rdoGzip.setText("Gzip");
@@ -1338,7 +1358,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlCompress);
 
-        pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 3));
+        pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 2));
 
         rdoEncodeDecodeGrp.add(rdoUTF7);
         rdoUTF7.setText("UTF-7");
@@ -1359,7 +1379,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlEncodeDecode.add(pnlILLUTF8);
 
-        pnlLang.setLayout(new java.awt.GridLayout(1, 4));
+        pnlLang.setLayout(new java.awt.GridLayout(1, 5));
 
         rdoEncodeDecodeGrp.add(rdoCLang);
         rdoCLang.setText("C Lang");
@@ -1964,10 +1984,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlHashTrans.add(btnHashXoodyak);
 
+        btnHashUUIDv3.setText("UUIDv3");
+        btnHashUUIDv3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHashUUIDv3ActionPerformed(evt);
+            }
+        });
+        pnlHashTrans.add(btnHashUUIDv3);
+
         pnlHashCheckSum.add(pnlHashTrans);
 
         pnlCheckSumTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("CheckSum"));
-        pnlCheckSumTrans.setLayout(new java.awt.GridLayout(3, 3));
+        pnlCheckSumTrans.setLayout(new java.awt.GridLayout(6, 3));
 
         btnCRC32.setText("CRC32");
         btnCRC32.addActionListener(new java.awt.event.ActionListener() {
@@ -1992,6 +2020,78 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             }
         });
         pnlCheckSumTrans.add(btnAdler32);
+
+        btnCRC16Arc.setText("CRC-16/ARC");
+        btnCRC16Arc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCRC16ArcActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCRC16Arc);
+
+        btnCrc16Ccitt.setText("CRC-16/CCIT");
+        btnCrc16Ccitt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16CcittActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16Ccitt);
+
+        btnCrc16Dnp.setText("CRC16-DNP");
+        btnCrc16Dnp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16DnpActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16Dnp);
+
+        btnCrc16IbmSdlc.setText("CRC16-IBM-SDLC");
+        btnCrc16IbmSdlc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16IbmSdlcActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16IbmSdlc);
+
+        btnCrc16Maxim.setText("CRC-16/MAXIM");
+        btnCrc16Maxim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16MaximActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16Maxim);
+
+        btnCrc16Mcrf4xx.setText("CRC16-MCRF4XX");
+        btnCrc16Mcrf4xx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16Mcrf4xxActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16Mcrf4xx);
+
+        btnCrc16Modbus.setText("CRC16-MODBUS");
+        btnCrc16Modbus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16ModbusActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16Modbus);
+
+        btnCrc16Nrsc5.setText("CRC16-NRSC-5");
+        btnCrc16Nrsc5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16Nrsc5ActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16Nrsc5);
+
+        btnCrc16Usb.setText("CRC16-USB");
+        btnCrc16Usb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrc16UsbActionPerformed(evt);
+            }
+        });
+        pnlCheckSumTrans.add(btnCrc16Usb);
 
         btnMurmurHash2_32.setText("Murmur2/32");
         btnMurmurHash2_32.addActionListener(new java.awt.event.ActionListener() {
@@ -5085,10 +5185,116 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         }
     }//GEN-LAST:event_btnCopyAllActionPerformed
 
+    private void btnHashUUIDv3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHashUUIDv3ActionPerformed
+        try {
+            String inputText = HashUtil.toUUIDv3(getInputText(),
+                    this.getSelectEncode(), this.rdoUpperCase.isSelected());
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnHashUUIDv3ActionPerformed
+
+    private void btnCRC16ArcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCRC16ArcActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Arc(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCRC16ArcActionPerformed
+
+    private void btnCrc16CcittActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16CcittActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Ccitt(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16CcittActionPerformed
+
+    private void btnCrc16DnpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16DnpActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Dnp(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16DnpActionPerformed
+
+    private void btnCrc16IbmSdlcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16IbmSdlcActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16IbmSdlc(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16IbmSdlcActionPerformed
+
+    private void btnCrc16MaximActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16MaximActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Maxim(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16MaximActionPerformed
+
+    private void btnCrc16Mcrf4xxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16Mcrf4xxActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Mcrf4xx(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16Mcrf4xxActionPerformed
+
+    private void btnCrc16ModbusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16ModbusActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Modbus(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16ModbusActionPerformed
+
+    private void btnCrc16Nrsc5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16Nrsc5ActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Nrsc5(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16Nrsc5ActionPerformed
+
+    private void btnCrc16UsbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrc16UsbActionPerformed
+        try {
+            String inputText = Long.toString(CodecUtil.toCrc16Usb(getInputText(), this.getSelectEncode()));
+            this.setOutput(inputText);
+        } catch (UnsupportedEncodingException ex) {
+            this.setOutputText(StringUtil.getStackTraceMessage(ex));
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+    }//GEN-LAST:event_btnCrc16UsbActionPerformed
+
+    private void rdoByteHex2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoByteHex2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoByteHex2ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdler32;
     private javax.swing.JButton btnAnalyze;
     private javax.swing.JButton btnBinCopy;
+    private javax.swing.JButton btnCRC16Arc;
     private javax.swing.JButton btnCRC32;
     private javax.swing.JButton btnCRC32C;
     private javax.swing.JButton btnCalc;
@@ -5096,6 +5302,14 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnConvert;
     private javax.swing.ButtonGroup btnConvertCase;
     private javax.swing.JButton btnCopyAll;
+    private javax.swing.JButton btnCrc16Ccitt;
+    private javax.swing.JButton btnCrc16Dnp;
+    private javax.swing.JButton btnCrc16IbmSdlc;
+    private javax.swing.JButton btnCrc16Maxim;
+    private javax.swing.JButton btnCrc16Mcrf4xx;
+    private javax.swing.JButton btnCrc16Modbus;
+    private javax.swing.JButton btnCrc16Nrsc5;
+    private javax.swing.JButton btnCrc16Usb;
     private javax.swing.JButton btnDecCopy;
     private javax.swing.JButton btnDecIPConvert;
     private javax.swing.JButton btnDecIPPaste;
@@ -5189,6 +5403,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JButton btnHashTUPLEHASH128_256;
     private javax.swing.JButton btnHashTUPLEHASH256_512;
     private javax.swing.JButton btnHashTiger;
+    private javax.swing.JButton btnHashUUIDv3;
     private javax.swing.JButton btnHashWHIRLPOOL;
     private javax.swing.JButton btnHashXoodyak;
     private javax.swing.JButton btnHexCopy;
@@ -5315,6 +5530,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlInputOutput;
     private javax.swing.JPanel pnlInputRaw;
     private javax.swing.JPanel pnlJSHexEnc;
+    private javax.swing.JPanel pnlJSOctEnc;
     private javax.swing.JPanel pnlJSUnicodeEnc;
     private javax.swing.JPanel pnlKeyPairConvertFormat;
     private javax.swing.JPanel pnlLang;

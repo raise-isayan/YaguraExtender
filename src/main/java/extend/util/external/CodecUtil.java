@@ -10,6 +10,7 @@ import java.util.Arrays;
 import org.apache.commons.codec.binary.Base16;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.Crc16;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.MessageDigestAlgorithms;
 import org.apache.commons.codec.digest.MurmurHash2;
@@ -781,6 +782,231 @@ public class CodecUtil {
 //            return SHAKE256_512.digestAsHex(StringUtil.getBytesCharset(str, charset));
 //        }
 //    }
+
+    /**
+     * CRC-16/ARC 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Arc(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Arc(str.getBytes(charset));
+    }
+
+    /**
+     * CRC-16/ARC 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Arc(byte[] binary) {
+        Crc16 crc = Crc16.arc();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * CRC-16/CCITT 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Ccitt(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Ccitt(str.getBytes(charset));
+    }
+
+    /**
+     * CRC-16/CCITT 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Ccitt(byte[] binary) {
+        Crc16 crc = Crc16.ccitt();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * CRC16-DNP 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Dnp(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Dnp(str.getBytes(charset));
+    }
+
+    /**
+     * CRC16-DNP 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Dnp(byte[] binary) {
+        Crc16 crc = Crc16.dnp();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * CRC16-IBM-SDLC 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16IbmSdlc(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16IbmSdlc(str.getBytes(charset));
+    }
+
+    /**
+     * CRC16-IBM-SDLC 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16IbmSdlc(byte[] binary) {
+        Crc16 crc = Crc16.ibmSdlc();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * CRC-16/MAXIM-DOW 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Maxim(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Maxim(str.getBytes(charset));
+    }
+
+    /**
+     * CRC-16/MAXIM-DOW 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Maxim(byte[] binary) {
+        Crc16 crc = Crc16.maxim();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * CRC16-MCRF4XX 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Mcrf4xx(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Mcrf4xx(str.getBytes(charset));
+    }
+
+    /**
+     * CRC16-MCRF4XX 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Mcrf4xx(byte[] binary) {
+        Crc16 crc = Crc16.mcrf4xx();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * CRC16-MODBUS 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Modbus(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Modbus(str.getBytes(charset));
+    }
+
+    /**
+     * CRC16-MODBUS 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Modbus(byte[] binary) {
+        Crc16 crc = Crc16.modbus();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * CRC16-NRSC-5 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Nrsc5(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Nrsc5(str.getBytes(charset));
+    }
+
+    /**
+     * CRC16-NRSC-5 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Nrsc5(byte[] binary) {
+        Crc16 crc = Crc16.nrsc5();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
+
+    /**
+     * toCrc16Usb 値の取得
+     *
+     * @param str 対象文字列
+     * @param charset エンコーディング
+     * @return CRC値
+     * @throws UnsupportedEncodingException
+     */
+    public static long toCrc16Usb(String str, String charset) throws UnsupportedEncodingException {
+        return toCrc16Usb(str.getBytes(charset));
+    }
+
+    /**
+     * CRC16-USB 値の取得
+     *
+     * @param binary 対象バイト
+     * @return ハッシュ値
+     */
+    public static long toCrc16Usb(byte[] binary) {
+        Crc16 crc = Crc16.usb();
+        crc.reset();
+        crc.update(binary);
+        return crc.getValue();
+    }
 
     /**
      * XXHash32値の取得

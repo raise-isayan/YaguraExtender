@@ -169,7 +169,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 for (WindowListener l : wl) {
                     burpFrame.removeWindowListener(l);
                 }
-                burpFrame.addWindowListener(windowPopupListener);
+                burpFrame.addWindowListener(this.windowPopupListener);
                 for (WindowListener l : wl) {
                     burpFrame.addWindowListener(l);
                 }
@@ -200,7 +200,7 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
         }
         this.registerTemporaryProject();
 
-        ThemeUI.addPropertyChangeListener(propertyListener);
+        ThemeUI.addPropertyChangeListener(this.propertyListener);
 
         Version version = Version.getInstance();
         api.extension().setName(String.format("%s v%d.%d", version.getTabCaption(), version.getMajorVersion(), version.getMinorVersion()));
@@ -247,6 +247,10 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 BurpExtension.this.applyUniversalProperty();
             }
         });
+
+        Frame frame = BurpUtil.suiteFrame();
+        BurpUtil.printComponents(frame, 0);
+
     }
 
     @SuppressWarnings("unchecked")

@@ -2,6 +2,7 @@ package yagura.dynamic;
 
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
+import burp.api.montoya.utilities.Utilities;
 
 /**
  *
@@ -9,6 +10,6 @@ import burp.api.montoya.proxy.http.ProxyRequestReceivedAction;
  */
 public interface BambdaInterceptAction extends BambdaFilter {
 
-    public ProxyRequestReceivedAction interceptReceived(InterceptedRequest interceptedRequest);
+    public ProxyRequestReceivedAction interceptReceived(InterceptedRequest interceptedRequest, Utilities utilities);
 
 }

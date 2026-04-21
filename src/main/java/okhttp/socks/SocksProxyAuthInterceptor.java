@@ -17,7 +17,7 @@ public class SocksProxyAuthInterceptor implements Interceptor {
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         synchronized (Authenticator.class) {
-            SocksProxyAuthenticator.getInstance().setCredentials(credentials);
+            SocksProxyAuthenticator.getInstance().setCredentials(this.credentials);
             try {
                 return chain.proceed(chain.request());
             } finally {

@@ -402,19 +402,12 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private void customizeComponents() {
         this.cmbProfile.setModel(this.modelProfile);
         this.renewProfile();
-        Frame suiteFrame = BurpUtil.suiteFrame();
         JToggleButton button = findSuiteIntercept();
         if (button != null) {
             this.tglButtonChangeListener.stateChanged(new ChangeEvent(button));
             button.addChangeListener(this.tglButtonChangeListener);
         }
-        JTable interceptTable = BurpUtil.findSuiteTable("interceptTable", suiteFrame);
-        if (interceptTable == null) {
-            Frame detachedFrameProxy = BurpUtil.suiteFrameName("Proxy");
-            if (detachedFrameProxy != null) {
-                interceptTable = BurpUtil.findSuiteTable("interceptTable", detachedFrameProxy);
-            }
-        }
+        JTable interceptTable = findSuiteInterceptTable();
         this.tglAuto.setEnabled(interceptTable != null);
         if (interceptTable != null) {
             TableModel model = interceptTable.getModel();
@@ -448,6 +441,18 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             }
         }
         return null;
+    }
+
+    private JTable findSuiteInterceptTable() {
+        Frame suiteFrame = BurpUtil.suiteFrame();
+        JTable interceptTable = BurpUtil.findSuiteTable("interceptTable", suiteFrame);
+        if (interceptTable == null) {
+            Frame detachedFrameProxy = BurpUtil.suiteFrameName("Proxy");
+            if (detachedFrameProxy != null) {
+                interceptTable = BurpUtil.findSuiteTable("interceptTable", detachedFrameProxy);
+            }
+        }
+        return interceptTable;
     }
 
     private void selectInterceptTab() {
@@ -752,10 +757,10 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             JCheckBoxMenuItem mnuRuleItem = new JCheckBoxMenuItem();
             mnuRuleItem.setSelected(requestRules.get(i).isEnabled());
             mnuRuleItem.setText(requestRules.get(i).toString());
-            mnuRuleItem.addActionListener(yaguraInterceptAction);
-            mnuRequestInterceptRules.add(mnuRuleItem);
+            mnuRuleItem.addActionListener(this.yaguraInterceptAction);
+            this.mnuRequestInterceptRules.add(mnuRuleItem);
         }
-        mnuChkRequestUpdateContentLength.setSelected(requestRule.isAutomaticallyUpdateContentLengthHeader());
+        this.mnuChkRequestUpdateContentLength.setSelected(requestRule.isAutomaticallyUpdateContentLengthHeader());
 
         BurpConfig.InterceptServerResponses responseRule = BurpConfig.getInterceptServerResponses(api);
         this.mnuResposeInterceptRule.setSelected(responseRule.isDoIntercept());
@@ -765,10 +770,10 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             JCheckBoxMenuItem mnuRuleItem = new JCheckBoxMenuItem();
             mnuRuleItem.setSelected(responseRules.get(i).isEnabled());
             mnuRuleItem.setText(responseRules.get(i).toString());
-            mnuRuleItem.addActionListener(yaguraInterceptAction);
+            mnuRuleItem.addActionListener(this.yaguraInterceptAction);
             mnuResposeInterceptRule.add(mnuRuleItem);
         }
-        mnuChkResponseUpdateContentLength.setSelected(responseRule.isAutomaticallyUpdateContentLengthHeader());
+        this.mnuChkResponseUpdateContentLength.setSelected(responseRule.isAutomaticallyUpdateContentLengthHeader());
 
         BurpConfig.InterceptWebSocketsMessages wsRule = BurpConfig.getInterceptWebSocketsMessages(api);
         this.mnuChkClientToServerMessages.setSelected(wsRule.isClientToServerMessages());
@@ -795,7 +800,6 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             responseRule.setAutomaticallyUpdateContentLengthHeader(true);
             List<BurpConfig.InterceptRule> responseRules = responseRule.getRules();
             responseRule.setDoIntercept(mnuChkResposeBasedRules.isSelected());
-            api.logging().logToOutput("res:" + responseRule.isDoIntercept());
             for (int i = 0; i < mnuResposeInterceptRule.getMenuComponentCount(); i++) {
                 if (mnuResposeInterceptRule.getMenuComponent(i) instanceof JCheckBoxMenuItem chkMenuItem) {
                     responseRules.get(i).setEnabled(chkMenuItem.isSelected());
@@ -878,15 +882,14 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
 //    }
     @Override
     public void extensionUnloaded() {
-        Frame frame = BurpUtil.suiteFrame();
         JToggleButton button = findSuiteIntercept();
         if (button != null) {
             button.removeChangeListener(this.tglButtonChangeListener);
         }
-        JTable interceptTable = BurpUtil.findSuiteTable("interceptTable", frame);
+        JTable interceptTable = findSuiteInterceptTable();
         if (interceptTable != null) {
             TableModel model = interceptTable.getModel();
-            model.removeTableModelListener(interceptModelListener);
+            model.removeTableModelListener(this.interceptModelListener);
         }
     }
 

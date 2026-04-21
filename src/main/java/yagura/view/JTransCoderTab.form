@@ -705,7 +705,7 @@
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                         <Property name="columns" type="int" value="0"/>
                         <Property name="horizontalGap" type="int" value="1"/>
-                        <Property name="rows" type="int" value="15"/>
+                        <Property name="rows" type="int" value="16"/>
                         <Property name="verticalGap" type="int" value="1"/>
                       </Layout>
                       <SubComponents>
@@ -720,7 +720,7 @@
                         <Container class="javax.swing.JPanel" name="pnlEncDec">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="1"/>
+                            <Property name="columns" type="int" value="2"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -820,7 +820,7 @@
                         <Container class="javax.swing.JPanel" name="pnlBase64URLSafe">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="1"/>
+                            <Property name="columns" type="int" value="2"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -845,7 +845,7 @@
                         <Container class="javax.swing.JPanel" name="pnlBaseN">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="0"/>
+                            <Property name="columns" type="int" value="3"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -876,7 +876,7 @@
                         <Container class="javax.swing.JPanel" name="pnlMail">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="2"/>
+                            <Property name="columns" type="int" value="1"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -901,7 +901,7 @@
                         <Container class="javax.swing.JPanel" name="pnlHtmlEnc">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="4"/>
+                            <Property name="columns" type="int" value="2"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -985,7 +985,7 @@
                         <Container class="javax.swing.JPanel" name="pnlJSHexEnc">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="1"/>
+                            <Property name="columns" type="int" value="2"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -1004,7 +1004,19 @@
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="\u005ch(hex)" containsInvalidXMLChars="true"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rdoByteHex2ActionPerformed"/>
+                              </Events>
                             </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="pnlJSOctEnc">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                            <Property name="columns" type="int" value="2"/>
+                            <Property name="rows" type="int" value="1"/>
+                          </Layout>
+                          <SubComponents>
                             <Component class="javax.swing.JRadioButton" name="rdoByteOct">
                               <Properties>
                                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
@@ -1026,7 +1038,7 @@
                         <Container class="javax.swing.JPanel" name="pnlCompress">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="2"/>
+                            <Property name="columns" type="int" value="3"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -1059,7 +1071,7 @@
                         <Container class="javax.swing.JPanel" name="pnlILLUTF8">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="3"/>
+                            <Property name="columns" type="int" value="2"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -1099,7 +1111,7 @@
                         <Container class="javax.swing.JPanel" name="pnlLang">
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
-                            <Property name="columns" type="int" value="4"/>
+                            <Property name="columns" type="int" value="5"/>
                             <Property name="rows" type="int" value="1"/>
                           </Layout>
                           <SubComponents>
@@ -1744,6 +1756,14 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashXoodyakActionPerformed"/>
                           </Events>
                         </Component>
+                        <Component class="javax.swing.JButton" name="btnHashUUIDv3">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="UUIDv3"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHashUUIDv3ActionPerformed"/>
+                          </Events>
+                        </Component>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JPanel" name="pnlCheckSumTrans">
@@ -1757,7 +1777,7 @@
 
                       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
                         <Property name="columns" type="int" value="3"/>
-                        <Property name="rows" type="int" value="3"/>
+                        <Property name="rows" type="int" value="6"/>
                       </Layout>
                       <SubComponents>
                         <Component class="javax.swing.JButton" name="btnCRC32">
@@ -1782,6 +1802,78 @@
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdler32ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCRC16Arc">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC-16/ARC"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCRC16ArcActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16Ccitt">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC-16/CCIT"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16CcittActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16Dnp">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC16-DNP"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16DnpActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16IbmSdlc">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC16-IBM-SDLC"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16IbmSdlcActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16Maxim">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC-16/MAXIM"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16MaximActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16Mcrf4xx">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC16-MCRF4XX"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16Mcrf4xxActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16Modbus">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC16-MODBUS"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16ModbusActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16Nrsc5">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC16-NRSC-5"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16Nrsc5ActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnCrc16Usb">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="CRC16-USB"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrc16UsbActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JButton" name="btnMurmurHash2_32">
