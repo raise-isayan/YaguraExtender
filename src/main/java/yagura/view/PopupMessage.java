@@ -1,13 +1,10 @@
 package yagura.view;
 
-import burp.BurpExtension;
 import extension.burp.BurpUtil;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import java.util.Timer;

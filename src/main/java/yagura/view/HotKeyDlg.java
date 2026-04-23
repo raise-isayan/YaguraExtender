@@ -4,6 +4,7 @@ import extension.burp.BurpHotKey;
 import extension.view.base.CustomDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
@@ -12,6 +13,8 @@ import javax.swing.KeyStroke;
  * @author isayan
  */
 public class HotKeyDlg extends CustomDialog {
+
+    private final static Logger logger = Logger.getLogger(HotKeyDlg.class.getName());
 
     protected ActionListener actionListener = null;
 
@@ -182,13 +185,13 @@ public class HotKeyDlg extends CustomDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HotKeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HotKeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HotKeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HotKeyDlg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 

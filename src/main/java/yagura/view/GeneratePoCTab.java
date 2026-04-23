@@ -194,11 +194,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlButtonLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGenerate)
-                    .addComponent(btnCopyClipbord)
-                    .addComponent(btnSavetoFile))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGroup(pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnCopyClipbord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGenerate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSavetoFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(112, Short.MAX_VALUE))
         );
         pnlButtonLayout.setVerticalGroup(
             pnlButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -796,6 +796,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     private String generateStandardPoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
+            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
+            if (!wrapRequest.hasHttpRequest()) {
+                return buff.toString();
+            }
+
             boolean csrfSecure = csrfParam.isUseSecure();
             boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
             boolean csrfUrlencode = csrfParam.isCsrfUrlencode();
@@ -806,7 +811,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             int timeOutValue = csrfParam.getTimeOutValue();
             String csrfEncoding = csrfParam.getCsrfEncoding();
 
-            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             // 自動判定
             String contentType = wrapRequest.getEnctype();
             String csrfEnctype = (contentType == null) ? HttpUtil.URL_ENCODED : contentType;
@@ -1044,6 +1048,11 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     private String generateXHRPoC(GenerateCsrfParameter csrfParam) {
         final StringBuilder buff = new StringBuilder();
         try {
+            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
+            if (!wrapRequest.hasHttpRequest()) {
+                return buff.toString();
+            }
+
             boolean csrfSecure = csrfParam.isUseSecure();
             boolean csrfAutoSubmit = csrfParam.isCsrfAutoSubmit();
             boolean csrfMultiForm = csrfParam.isCsrfMultiForm();
@@ -1055,7 +1064,6 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             int timeOutValue = csrfParam.getTimeOutValue();
             boolean csrfXHRWithXHeader = csrfParam.isCsrfXHRWithXHeader();
 
-            final HttpRequestWapper wrapRequest = new HttpRequestWapper(this.httpRequestResponse.request());
             String contentType = wrapRequest.getEnctype();
             String csrfEnctype = (contentType == null) ? HttpUtil.URL_ENCODED : contentType;
             // 自動判定
@@ -1304,9 +1312,12 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
     public void setRequestResponse(HttpRequestResponse httpRequestResponse) {
         final BurpExtension extenderImpl = BurpExtension.getInstance();
         this.httpRequestResponse = httpRequestResponse;
+        HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
+        if (!wrapRequest.hasHttpRequest()) {
+            return ;
+        }
         String guessCharset = StandardCharsets.ISO_8859_1.name();
         final boolean useSecure;
-        HttpRequestWapper wrapRequest = new HttpRequestWapper(httpRequestResponse.request());
         if (httpRequestResponse.response() != null) {
             HttpResponseWapper wrapResponse = new HttpResponseWapper(httpRequestResponse.response());
             guessCharset = wrapResponse.getGuessCharset(StandardCharsets.UTF_8.name());

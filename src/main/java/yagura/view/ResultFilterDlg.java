@@ -57,8 +57,6 @@ public class ResultFilterDlg extends CustomDialog {
         pnlMain.setName(""); // NOI18N
         pnlMain.setPreferredSize(new java.awt.Dimension(540, 520));
         pnlMain.setLayout(new java.awt.BorderLayout());
-
-        tabbeProtocol.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
         pnlMain.add(tabbeProtocol, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(pnlMain, java.awt.BorderLayout.CENTER);

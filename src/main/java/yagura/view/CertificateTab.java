@@ -100,6 +100,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         btnProvidedServer = new javax.swing.JToggleButton();
         btnCopy = new javax.swing.JButton();
         pnlGenerateCA = new javax.swing.JPanel();
+        pnlGenerateIssuer = new javax.swing.JPanel();
         pnlGenerateIssuerCN = new javax.swing.JPanel();
         lblIssuerYear = new javax.swing.JLabel();
         spnIssuerYear = new javax.swing.JSpinner();
@@ -401,6 +402,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         pnlGenerateCA.setLayout(new java.awt.BorderLayout());
 
+        pnlGenerateIssuer.setLayout(new java.awt.BorderLayout());
+
         lblIssuerYear.setText("Year:");
 
         spnIssuerYear.setModel(new javax.swing.SpinnerNumberModel(10, 1, 99, 1));
@@ -418,24 +421,21 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         pnlGenerateIssuerCNLayout.setHorizontalGroup(
             pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlGenerateIssuerCNLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlGenerateIssuerCNLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblIssuerYear)
-                            .addComponent(lblIssuerCommonName)
-                            .addComponent(lblIssuerOrganizationName)
-                            .addComponent(lblIssuerLoccalityName)
-                            .addComponent(lblIssuerCountry))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIssuerCommonName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIssuerOrganizationName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIssuerLoccalityName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtIssuerCountry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(pnlGenerateIssuerCNLayout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addComponent(spnIssuerYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(lblIssuerYear)
+                    .addComponent(lblIssuerCommonName)
+                    .addComponent(lblIssuerOrganizationName)
+                    .addComponent(lblIssuerLoccalityName)
+                    .addComponent(lblIssuerCountry))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlGenerateIssuerCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtIssuerCommonName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIssuerOrganizationName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIssuerLoccalityName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtIssuerCountry, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnIssuerYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(312, Short.MAX_VALUE))
         );
         pnlGenerateIssuerCNLayout.setVerticalGroup(
@@ -464,7 +464,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pnlGenerateCA.add(pnlGenerateIssuerCN, java.awt.BorderLayout.PAGE_START);
+        pnlGenerateIssuer.add(pnlGenerateIssuerCN, java.awt.BorderLayout.CENTER);
+
+        pnlGenerateCA.add(pnlGenerateIssuer, java.awt.BorderLayout.NORTH);
 
         btnGrpExportIssuerCA.add(rdoIssuerExportPairPEM);
         rdoIssuerExportPairPEM.setSelected(true);
@@ -897,7 +899,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private CustomTableModel modelCertificate = null;
 
     private void customizeComponents() {
-        this.pnlGenerateCA.add(this.pnlKeyPair, java.awt.BorderLayout.NORTH);
+        this.pnlGenerateIssuer.add(this.pnlKeyPair, java.awt.BorderLayout.NORTH);
         this.pnlGenerateSubject.add(this.pnlSubjectKeyPair, java.awt.BorderLayout.NORTH);
 
 //        this.modelCertificate = new CustomTableModel(this.tableCertificate.getModel());
@@ -1178,6 +1180,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JPanel pnlCertificateExports;
     private javax.swing.JPanel pnlConvertFormat;
     private javax.swing.JPanel pnlGenerateCA;
+    private javax.swing.JPanel pnlGenerateIssuer;
     private javax.swing.JPanel pnlGenerateIssuerCN;
     private javax.swing.JPanel pnlGenerateIssuerExport;
     private javax.swing.JPanel pnlGenerateSubject;

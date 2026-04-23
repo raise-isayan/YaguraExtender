@@ -452,118 +452,124 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
           <SubComponents>
-            <Container class="javax.swing.JPanel" name="pnlGenerateIssuerCN">
+            <Container class="javax.swing.JPanel" name="pnlGenerateIssuer">
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="First"/>
+                  <BorderConstraints direction="North"/>
                 </Constraint>
               </Constraints>
 
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="lblIssuerYear" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblIssuerCommonName" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblIssuerOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblIssuerLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lblIssuerCountry" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="pnlGenerateIssuerCN">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="lblIssuerYear" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblIssuerCommonName" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblIssuerOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblIssuerLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblIssuerCountry" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="txtIssuerCommonName" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
                                       <Component id="txtIssuerOrganizationName" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
                                       <Component id="txtIssuerLoccalityName" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
                                       <Component id="txtIssuerCountry" alignment="1" min="-2" pref="367" max="-2" attributes="0"/>
                                   </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="137" pref="137" max="-2" attributes="0"/>
                                   <Component id="spnIssuerYear" min="-2" pref="100" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace pref="312" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="312" max="32767" attributes="0"/>
                       </Group>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblIssuerYear" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="spnIssuerYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblIssuerYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="spnIssuerYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblIssuerCommonName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtIssuerCommonName" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblIssuerOrganizationName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtIssuerOrganizationName" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="lblIssuerLoccalityName" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtIssuerLoccalityName" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="txtIssuerCountry" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblIssuerCountry" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblIssuerCommonName" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtIssuerCommonName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblIssuerOrganizationName" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtIssuerOrganizationName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="lblIssuerLoccalityName" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="txtIssuerLoccalityName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtIssuerCountry" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblIssuerCountry" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
-              <SubComponents>
-                <Component class="javax.swing.JLabel" name="lblIssuerYear">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Year:"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JSpinner" name="spnIssuerYear">
-                  <Properties>
-                    <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                      <SpinnerModel initial="10" maximum="99" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
-                    </Property>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblIssuerCommonName">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Common Name (CN):"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtIssuerCommonName">
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblIssuerOrganizationName">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Organization Name (O):"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtIssuerOrganizationName">
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblIssuerLoccalityName">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Loccality Name (L):"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtIssuerLoccalityName">
-                </Component>
-                <Component class="javax.swing.JLabel" name="lblIssuerCountry">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Country (C):"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtIssuerCountry">
-                </Component>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="lblIssuerYear">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Year:"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JSpinner" name="spnIssuerYear">
+                      <Properties>
+                        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+                          <SpinnerModel initial="10" maximum="99" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblIssuerCommonName">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Common Name (CN):"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtIssuerCommonName">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblIssuerOrganizationName">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Organization Name (O):"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtIssuerOrganizationName">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblIssuerLoccalityName">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Loccality Name (L):"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtIssuerLoccalityName">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblIssuerCountry">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Country (C):"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtIssuerCountry">
+                    </Component>
+                  </SubComponents>
+                </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="pnlGenerateIssuerExport">

@@ -116,7 +116,7 @@ public class MainFrame extends javax.swing.JFrame {
 //                    option.setJTransCoderProperty(jTransCoder.getProperty());
 //                    Config.saveToJson(CONFIG_FILE, option);
 //                } catch (IOException ex) {
-//                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+//                    logger.log(Level.SEVERE, null, ex);
 //                }
             }
         });

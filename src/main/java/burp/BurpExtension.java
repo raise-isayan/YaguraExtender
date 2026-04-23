@@ -52,9 +52,6 @@ import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import extension.helpers.SwingUtil;
 import extension.helpers.json.JsonUtil;
-import java.awt.Window;
-import javax.swing.JTabbedPane;
-import javax.swing.JToggleButton;
 import yagura.Config;
 import yagura.Version;
 import yagura.handler.AutoResponderHandler;
@@ -248,8 +245,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
             }
         });
 
-        Frame frame = BurpUtil.suiteFrame();
-        BurpUtil.printComponents(frame, 0);
+//        Frame frame = BurpUtil.suiteFrame();
+//        BurpUtil.printComponents(frame, 0);
 
     }
 
