@@ -5,7 +5,6 @@ import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.ui.Selection;
 import extend.util.external.ThemeUI;
-import extend.util.external.TransUtil;
 import extension.burp.IBurpMessageTab;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpResponseWapper;
@@ -140,7 +139,7 @@ public class JsCommetViewTab extends javax.swing.JPanel implements IBurpMessageT
                     if (uniq) {
                         comments = ConvertUtil.toUniqList(comments);
                     }
-                    return TransUtil.join("\r\n", comments);
+                    return StringUtil.join("\r\n", comments);
                 }
 
                 @Override

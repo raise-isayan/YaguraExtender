@@ -3902,7 +3902,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         @Override
                         protected String doInBackground() throws Exception {
                             String[] list = TransUtil.generaterList(numFormat, startNum, endNum, stepNum);
-                            return TransUtil.join(System.lineSeparator(), list);
+                            return StringUtil.join(System.lineSeparator(), list);
                         }
 
                         @Override
@@ -3940,7 +3940,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                         protected String doInBackground() throws Exception {
                             DateUnit unit = Enum.valueOf(DateUnit.class, dateUnit);
                             String[] list = TransUtil.dateList(numFormat, localDateStart, localDateLocalEnd, stepNum, unit);
-                            return TransUtil.join(System.lineSeparator(), list);
+                            return StringUtil.join(System.lineSeparator(), list);
                         }
 
                         @Override
@@ -3974,7 +3974,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                     @Override
                     protected String doInBackground() throws Exception {
                         String[] list = TransUtil.randomList(rangeChars, length, count);
-                        return TransUtil.join(System.lineSeparator(), list);
+                        return StringUtil.join(System.lineSeparator(), list);
                     }
 
                     protected void process(List<Object> chunks) {
@@ -4003,7 +4003,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 @Override
                 protected String doInBackground() throws Exception {
                     String[] list = TransUtil.uuidv4List(count);
-                    return TransUtil.join(System.lineSeparator(), list);
+                    return StringUtil.join(System.lineSeparator(), list);
                 }
 
                 protected void process(List<Object> chunks) {

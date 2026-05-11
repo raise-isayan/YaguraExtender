@@ -42,7 +42,7 @@ gradlew release
 * v2024.2.1.3 or higher (http://www.portswigger.net/burp/)
 
 ### Development environment
-* NetBeans 28 (https://netbeans.apache.org/)
+* NetBeans 29 (https://netbeans.apache.org/)
 * Gradle 8.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 

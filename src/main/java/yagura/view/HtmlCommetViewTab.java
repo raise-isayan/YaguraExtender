@@ -5,7 +5,6 @@ import burp.api.montoya.http.message.MimeType;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.ui.Selection;
 import extend.util.external.ThemeUI;
-import extend.util.external.TransUtil;
 import extension.burp.IBurpMessageTab;
 import extension.helpers.HttpResponseWapper;
 import extension.helpers.HttpUtil;
@@ -136,7 +135,7 @@ public class HtmlCommetViewTab extends javax.swing.JPanel implements IBurpMessag
                     for (int i = 0; i < comments.length; i++) {
                         comments[i] = SmartCodec.toHtmlDecode(comments[i]);
                     }
-                    return TransUtil.join("\r\n", comments);
+                    return StringUtil.join("\r\n", comments);
                 }
 
                 @Override

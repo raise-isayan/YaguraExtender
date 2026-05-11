@@ -11,6 +11,8 @@ import extension.burp.BurpUtil;
 import extension.burp.FilterProperty;
 import extension.burp.IBurpTab;
 import extension.burp.TargetScopeItem;
+import extension.burp.HostName;
+import extension.burp.HostNameEntry;
 import extension.helpers.ConvertUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.SmartCodec;
@@ -50,8 +52,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import yagura.model.HostName;
-import yagura.model.HostNameEntry;
 import yagura.model.ResultFilterProperty;
 import yagura.model.SendToProperty.SendToMenuPlace;
 import yagura.model.TranslateItemAction;
@@ -1149,7 +1149,7 @@ public final class MenuHander {
                 Stream<String> hostlines = HostName.parseHostLines(paste);
                 HostName hostName = HostName.parseHosts(hostlines);
                 List<BurpConfig.HostnameResolution> hosts = new ArrayList<>();
-                for (HostNameEntry hostEntry : hostName.getHostNameEntry()) {
+                for (HostNameEntry hostEntry : hostName.getHostNameList()) {
                     if (hostEntry.isValidIP()) {
                         hosts.add(new BurpConfig.HostnameResolution(true, hostEntry.getHostName(), hostEntry.getIPAddress()));
                     }

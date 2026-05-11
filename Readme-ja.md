@@ -42,7 +42,7 @@ gradlew release
 * Burp Suite v2024.2.1.3 以上 (http://www.portswigger.net/burp/)
 
 ### 開発環境
-* NetBeans 28 (https://netbeans.apache.org/)
+* NetBeans 29 (https://netbeans.apache.org/)
 * Gradle 8.6 (https://gradle.org/)
 * asciidoc (http://asciidoc.org/)
 

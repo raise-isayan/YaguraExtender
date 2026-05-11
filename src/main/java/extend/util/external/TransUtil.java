@@ -863,28 +863,6 @@ public class TransUtil {
         return ConvertUtil.newLine(separator, value, length);
     }
 
-    public static String join(String separator, String[] lines) {
-        StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < lines.length; i++) {
-            if (i > 0) {
-                buff.append(separator);
-            }
-            buff.append(lines[i]);
-        }
-        return buff.toString();
-    }
-
-    public static String join(String separator, List lines) {
-        StringBuilder buff = new StringBuilder();
-        for (int i = 0; i < lines.size(); i++) {
-            if (i > 0) {
-                buff.append(separator);
-            }
-            buff.append(lines.get(i));
-        }
-        return buff.toString();
-    }
-
     public static byte[] UTF8Encode(String input, int bytes) {
         char[] input_array = input.toCharArray();
         ByteArrayOutputStream byte_array = new ByteArrayOutputStream();

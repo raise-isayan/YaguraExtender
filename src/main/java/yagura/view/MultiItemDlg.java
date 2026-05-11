@@ -1,6 +1,6 @@
 package yagura.view;
 
-import extend.util.external.TransUtil;
+import extension.helpers.StringUtil;
 import extension.view.base.CustomDialog;
 import javax.swing.JOptionPane;
 
@@ -123,7 +123,7 @@ public class MultiItemDlg extends CustomDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     public void setMultiLine(String[] lines) {
-        this.txtMultiLine.setText(TransUtil.join("\n", lines));
+        this.txtMultiLine.setText(StringUtil.join("\n", lines));
     }
 
     public String[] getMultiLine() {
