@@ -1146,7 +1146,7 @@ public final class MenuHander {
         public void actionPerformed(ActionEvent e) {
             try {
                 String paste = SwingUtil.systemClipboardPaste();
-                Stream<String> hostlines = HostName.parseHostLines(paste);
+                Stream<String> hostlines = HostName.parseLines(paste);
                 HostName hostName = HostName.parseHosts(hostlines);
                 List<BurpConfig.HostnameResolution> hosts = new ArrayList<>();
                 for (HostNameEntry hostEntry : hostName.getHostNameList()) {

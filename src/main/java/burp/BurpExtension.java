@@ -494,8 +494,6 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
 
     @Override
     public void extensionUnloaded() {
-        this.tabbetOption.extensionUnloaded();
-        this.autoResponderHandler.extensionUnloaded();
         if (BurpUtil.suiteFrame() instanceof JFrame burpFrame) {
             burpFrame.removeWindowListener(this.windowPopupListener);
             if (this.toolbar != null) {
@@ -504,6 +502,8 @@ public class BurpExtension extends BurpExtensionImpl implements ExtensionUnloadi
                 this.toolbar.extensionUnloaded();
             }
         }
+        this.tabbetOption.extensionUnloaded();
+        this.autoResponderHandler.extensionUnloaded();
         ThemeUI.removePropertyChangeListener();
         try {
             this.logging.close();
