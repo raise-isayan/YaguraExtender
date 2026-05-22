@@ -1531,4 +1531,13 @@ public class TransUtil {
         return translate(target, HALF_WIDTH_STR, FULL_WIDTH_STR);
     }
 
+    public static String [] parseDomainList(String multiLine) {
+        List<String> domainList = new ArrayList<>();
+        String hostNames[] = multiLine.split(",");
+        for (String host : hostNames) {
+            domainList.add(host.trim());
+        }
+        return domainList.toArray(String[]::new);
+    }
+
 }

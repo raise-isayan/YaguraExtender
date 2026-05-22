@@ -1,6 +1,7 @@
 package yagura.view;
 
 import burp.BurpPreferences;
+import extend.util.external.TransUtil;
 import extension.helpers.CertUtil;
 import extension.helpers.BouncyUtil;
 import extension.burp.IBurpTab;
@@ -139,7 +140,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         rdoSubjectExportPairPKCS12 = new javax.swing.JRadioButton();
         txtSubjectPKCS12Password = new javax.swing.JTextField();
         btnSubjectExportCA = new javax.swing.JButton();
-        lblSubjectCountry1 = new javax.swing.JLabel();
+        lblSubjectSAN = new javax.swing.JLabel();
         txtSubjectSAN = new javax.swing.JTextField();
         chkUseSameCommonName = new javax.swing.JCheckBox();
 
@@ -171,7 +172,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        lblSelectCA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblSelectCA.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         javax.swing.GroupLayout pnlSelectCertificateLayout = new javax.swing.GroupLayout(pnlSelectCertificate);
         pnlSelectCertificate.setLayout(pnlSelectCertificateLayout);
@@ -536,7 +537,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        lblSelectIsserCA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        lblSelectIsserCA.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         javax.swing.GroupLayout pnlSelectIssuerLayout = new javax.swing.GroupLayout(pnlSelectIssuer);
         pnlSelectIssuer.setLayout(pnlSelectIssuerLayout);
@@ -607,7 +608,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        lblSubjectCountry1.setText("SAN(DNS):");
+        lblSubjectSAN.setText("SAN(DNS,IP):");
 
         chkUseSameCommonName.setText("Use the same value as the common name");
         chkUseSameCommonName.addActionListener(new java.awt.event.ActionListener() {
@@ -623,7 +624,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlGenerateSubjectCNLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSubjectCountry1)
+                    .addComponent(lblSubjectSAN)
                     .addComponent(lblSubjectCountry)
                     .addComponent(lblSubjectLoccalityName)
                     .addComponent(lblSubjectOrganizationName)
@@ -678,7 +679,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(lblSubjectCountry))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblSubjectCountry1)
+                    .addComponent(lblSubjectSAN)
                     .addComponent(txtSubjectSAN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(chkUseSameCommonName)
@@ -713,12 +714,12 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             keyGen.initialize(this.pnlSubjectKeyPair.getKeySize());
             KeyPair subjectKeyPair = keyGen.generateKeyPair();
 
-            String hostname = this.txtSubjectCommonName.getText().trim();
+            String subjectSAN = this.txtSubjectCommonName.getText().trim();
             if (!this.chkUseSameCommonName.isSelected()) {
-                hostname = this.txtSubjectSAN.getText().trim();
+                subjectSAN = this.txtSubjectSAN.getText().trim();
             }
-
-            PKCS10CertificationRequest csr = BouncyUtil.createCsr(subjectKeyPair, subjectDN.build(), new String[]{hostname});
+            String [] hostnames = TransUtil.parseDomainList(subjectSAN);
+            PKCS10CertificationRequest csr = BouncyUtil.createCsr(subjectKeyPair, subjectDN.build(), hostnames);
             Map.Entry<Key, X509Certificate> caCert = this.getIsserExportCerticate();
             if (caCert != null) {
                 X509Certificate signCA = BouncyUtil.signCsr(csr, caCert.getValue(), (PrivateKey) caCert.getKey(), (int) this.spnSubjectYear.getValue());
@@ -929,7 +930,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         //SwingUtil.setContainerEnable(this.pnlCertSIelectmport, this.rdoCustomCA.isSelected());
         SwingUtil.setContainerEnable(this.pnlListenPort, this.chkProvidedServer.isSelected());
         this.txtSubjectSAN.setEnabled(!this.chkUseSameCommonName.isSelected());
-
+        SwingUtil.addHintText(this.txtSubjectSAN, "www.example.com,192.168.0.2");
         this.mockServer.setDispatcher(dispatcher);
 
     }
@@ -1170,9 +1171,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JLabel lblSelectIsserCA;
     private javax.swing.JLabel lblSubjectCommonName;
     private javax.swing.JLabel lblSubjectCountry;
-    private javax.swing.JLabel lblSubjectCountry1;
     private javax.swing.JLabel lblSubjectLoccalityName;
     private javax.swing.JLabel lblSubjectOrganizationName;
+    private javax.swing.JLabel lblSubjectSAN;
     private javax.swing.JLabel lblSubjectYear;
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlCertificateCA;

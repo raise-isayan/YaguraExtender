@@ -49,7 +49,7 @@ public class KeyPairGeneratorPanel extends javax.swing.JPanel {
 
         cmbAlgorithm.addItemListener(this::cmbAlgorithmItemStateChanged);
 
-        pnlKeySize.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        pnlKeySize.setLayout(new java.awt.FlowLayout(0));
 
         javax.swing.GroupLayout pnlKeyPairAlgorithmLayout = new javax.swing.GroupLayout(pnlKeyPairAlgorithm);
         pnlKeyPairAlgorithm.setLayout(pnlKeyPairAlgorithmLayout);
@@ -65,8 +65,8 @@ public class KeyPairGeneratorPanel extends javax.swing.JPanel {
                     .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
                         .addComponent(cmbAlgorithm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                        .addContainerGap(154, Short.MAX_VALUE))
+                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
                         .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
@@ -83,7 +83,7 @@ public class KeyPairGeneratorPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
+                    .addComponent(lblKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 

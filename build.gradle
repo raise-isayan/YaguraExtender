@@ -50,7 +50,7 @@ processResources {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -92,9 +92,9 @@ task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
 dependencies {
 
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.81'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.84'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.81'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.84'
 
     // https://mvnrepository.com/artifact/org.brotli/dec
     compileOnly 'org.brotli:dec:0.1.2'
@@ -104,9 +104,9 @@ dependencies {
 
     // standalone 利用のため
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
-    implementation 'net.portswigger.burp.extensions:montoya-api:2026.2'
+    implementation 'net.portswigger.burp.extensions:montoya-api:2026.4'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    implementation 'commons-codec:commons-codec:1.21.0'
+    implementation 'commons-codec:commons-codec:1.22.0'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
     implementation 'com.fifesoft:rsyntaxtextarea:3.5.4'
 
@@ -128,12 +128,12 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on
-    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.81'
+    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.84'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.81'
+    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.84'
 
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    testImplementation 'commons-codec:commons-codec:1.21.0'
+    testImplementation 'commons-codec:commons-codec:1.22.0'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.5'
@@ -143,7 +143,7 @@ dependencies {
  //   testImplementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
-    testImplementation 'net.portswigger.burp.extensions:montoya-api:2026.2'
+    testImplementation 'net.portswigger.burp.extensions:montoya-api:2026.4'
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     testImplementation 'com.squareup.okhttp3:okhttp:4.12.0'
