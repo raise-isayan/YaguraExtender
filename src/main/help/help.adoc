@@ -1144,6 +1144,12 @@ SKEIN-1024-512::
 SKEIN-1024-1024::
     Calculate hash with SKEIN-1024-1024
 
+KECCAK-224::
+    Calculate hash with KECCAK-224
+
+KECCAK-256::
+    Calculate hash with KECCAK-256
+
 KECCAK-288::
     Calculate hash with KECCAK-288
 
@@ -1170,6 +1176,9 @@ RIPEMD256::
 
 RIPEMD320::
     Calculate hash with RIPEMD320
+
+GOST3411::
+    Calculate hash with GOST3411
 
 GOST2012-256::
     Calculate hash with GOST3411-2012-256
@@ -1213,35 +1222,20 @@ BLAKE2S-256::
 BLAKE3-256::
     Calculate hash with BLAKE3-256
 
-Tiger::
-    Calculate hash with Tiger
-
 PARALLEL128-256::
    Calculate hash with PARALLELHASH128-256
 
 PARALLEL256-512::
    Calculate hash with PARALLELHASH256-512
 
-TUPLE128-256::
-   Calculate hash with TUPLEHASH128-256
-
-TUPLE256-512::
-   Calculate hash with TUPLEHASH256-512
-
-GOST3411::
-    Calculate hash with GOST3411
+Tiger::
+    Calculate hash with Tiger
 
 WHIRLPOOL::
     Calculate hash with WHIRLPOOL
 
 SM3::
    Calculate hash with SM3
-
-PARALLEL128-256::
-   Calculate hash with PARALLELHASH128-256
-
-PARALLEL256-512::
-   Calculate hash with PARALLELHASH256-512
 
 TUPLE128-256::
    Calculate hash with TUPLEHASH128-256
@@ -1276,6 +1270,8 @@ PhotonBeetle::
 Xoodyak::
    Calculate hash with Xoodyak
 
+===== Checksum
+
 CRC32::
     Calculate checksum by crc32
 
@@ -1284,6 +1280,33 @@ CRC32C::
 
 Adler-32::
     Calculate checksum by Adler-32
+
+CRC16/ARC::
+    Calculate checksum by CRC16/ARC
+
+CRC16/CCIT::
+    Calculate checksum by CRC16-CCIT
+
+CRC16-DNP::
+    Calculate checksum by CRC16-DNP
+
+CRC16-IBM-SDLC::
+    Calculate checksum by CRC16-IBM-SDLC
+
+CRC16-MAXIM::
+    Calculate checksum by CRC16-MAXIM
+
+CRC16-MCRF4XX::
+    Calculate checksum by CRC16-MCRF4XX
+
+CRC16-MODBUS::
+    Calculate checksum by CRC16-MODBUS
+
+CRC16-NRSC-5::
+    Calculate checksum by CRC16-NRSC-5
+
+CRC16-USB::
+    Calculate checksum by CRC16-USB
 
 MurmurHash2/32::
     Calculate checksum by MurmurHash2 32bit

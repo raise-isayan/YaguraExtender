@@ -1049,7 +1049,7 @@ Metachar チェックボックス::
 |\t      |TAB(0x09) に変換
 |=======================
 
-===== Hash/Checksum
+===== Hash
 
 テキストエリアに入力されている値でハッシュ値計算を行います。
 
@@ -1137,6 +1137,12 @@ SKEIN-1024-512::
 SKEIN-1024-1024::
     SKEIN-1024-1024によるハッシュを計算します。
 
+KECCAK-224::
+    KECCAK-224によるハッシュを計算します。
+
+KECCAK-256::
+    KECCAK-256によるハッシュを計算します。
+
 KECCAK-288::
     KECCAK-288によるハッシュを計算します。
 
@@ -1209,6 +1215,12 @@ BLAKE2S-256::
 BLAKE3-256::
     BLAKE3-256によるハッシュを計算します。
 
+PARALLEL128-256::
+   PARALLELHASH128-256によるハッシュを計算します。
+
+PARALLEL256-512::
+   PARALLELHASH256-512によるハッシュを計算します。
+
 Tiger::
     Tigerによるハッシュを計算します。
 
@@ -1217,12 +1229,6 @@ WHIRLPOOL::
 
 SM3::
    SM3によるハッシュを計算します。
-
-PARALLEL128-256::
-   PARALLELHASH128-256によるハッシュを計算します。
-
-PARALLEL256-512::
-   PARALLELHASH256-512によるハッシュを計算します。
 
 TUPLE128-256::
    TUPLEHASH128-256によるハッシュを計算します。
@@ -1257,6 +1263,8 @@ PhotonBeetle::
 Xoodyak::
    Xoodyakによるハッシュを計算します。
 
+===== Checksum
+
 CRC32::
     crc32によるチェックサムを計算します。
 
@@ -1265,6 +1273,33 @@ CRC32C::
 
 Adler-32::
     Adlerによるチェックサムを計算します。
+
+CRC16/ARC::
+    CRC16/ARCによるチェックサムを計算します。
+
+CRC16/CCIT::
+    CRC16-CCITによるチェックサムを計算します。
+
+CRC16-DNP::
+    CRC16-DNPによるチェックサムを計算します。
+
+CRC16-IBM-SDLC::
+    CRC16-IBM-SDLCによるチェックサムを計算します。
+
+CRC16-MAXIM::
+    CRC16-MAXIMによるチェックサムを計算します。
+
+CRC16-MCRF4XX::
+    CRC16-MCRF4XXによるチェックサムを計算します。
+
+CRC16-MODBUS::
+    CRC16-MODBUSによるチェックサムを計算します。
+
+CRC16-NRSC-5::
+    CRC16-NRSC-5によるチェックサムを計算します。
+
+CRC16-USB::
+    CRC16-USBによるチェックサムを計算します。
 
 Murmur2/32::
     MurmurHash2 32bitによるチェックサムを計算します。

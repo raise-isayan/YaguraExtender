@@ -440,7 +440,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>YaguraExtension Help</h1>
 <div class="details">
-<span id="revnumber">version v3.3.7.0</span>
+<span id="revnumber">version v3.3.8.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -2451,6 +2451,14 @@ The following meta characters are available.</p>
 <dd>
 <p>Calculate hash with SKEIN-1024-1024</p>
 </dd>
+<dt class="hdlist1">KECCAK-224</dt>
+<dd>
+<p>Calculate hash with KECCAK-224</p>
+</dd>
+<dt class="hdlist1">KECCAK-256</dt>
+<dd>
+<p>Calculate hash with KECCAK-256</p>
+</dd>
 <dt class="hdlist1">KECCAK-288</dt>
 <dd>
 <p>Calculate hash with KECCAK-288</p>
@@ -2486,6 +2494,10 @@ The following meta characters are available.</p>
 <dt class="hdlist1">RIPEMD320</dt>
 <dd>
 <p>Calculate hash with RIPEMD320</p>
+</dd>
+<dt class="hdlist1">GOST3411</dt>
+<dd>
+<p>Calculate hash with GOST3411</p>
 </dd>
 <dt class="hdlist1">GOST2012-256</dt>
 <dd>
@@ -2543,10 +2555,6 @@ The following meta characters are available.</p>
 <dd>
 <p>Calculate hash with BLAKE3-256</p>
 </dd>
-<dt class="hdlist1">Tiger</dt>
-<dd>
-<p>Calculate hash with Tiger</p>
-</dd>
 <dt class="hdlist1">PARALLEL128-256</dt>
 <dd>
 <p>Calculate hash with PARALLELHASH128-256</p>
@@ -2555,17 +2563,9 @@ The following meta characters are available.</p>
 <dd>
 <p>Calculate hash with PARALLELHASH256-512</p>
 </dd>
-<dt class="hdlist1">TUPLE128-256</dt>
+<dt class="hdlist1">Tiger</dt>
 <dd>
-<p>Calculate hash with TUPLEHASH128-256</p>
-</dd>
-<dt class="hdlist1">TUPLE256-512</dt>
-<dd>
-<p>Calculate hash with TUPLEHASH256-512</p>
-</dd>
-<dt class="hdlist1">GOST3411</dt>
-<dd>
-<p>Calculate hash with GOST3411</p>
+<p>Calculate hash with Tiger</p>
 </dd>
 <dt class="hdlist1">WHIRLPOOL</dt>
 <dd>
@@ -2574,14 +2574,6 @@ The following meta characters are available.</p>
 <dt class="hdlist1">SM3</dt>
 <dd>
 <p>Calculate hash with SM3</p>
-</dd>
-<dt class="hdlist1">PARALLEL128-256</dt>
-<dd>
-<p>Calculate hash with PARALLELHASH128-256</p>
-</dd>
-<dt class="hdlist1">PARALLEL256-512</dt>
-<dd>
-<p>Calculate hash with PARALLELHASH256-512</p>
 </dd>
 <dt class="hdlist1">TUPLE128-256</dt>
 <dd>
@@ -2627,6 +2619,13 @@ The following meta characters are available.</p>
 <dd>
 <p>Calculate hash with Xoodyak</p>
 </dd>
+</dl>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_checksum">Checksum</h5>
+<div class="dlist">
+<dl>
 <dt class="hdlist1">CRC32</dt>
 <dd>
 <p>Calculate checksum by crc32</p>
@@ -2638,6 +2637,42 @@ The following meta characters are available.</p>
 <dt class="hdlist1">Adler-32</dt>
 <dd>
 <p>Calculate checksum by Adler-32</p>
+</dd>
+<dt class="hdlist1">CRC16/ARC</dt>
+<dd>
+<p>Calculate checksum by CRC16/ARC</p>
+</dd>
+<dt class="hdlist1">CRC16/CCIT</dt>
+<dd>
+<p>Calculate checksum by CRC16-CCIT</p>
+</dd>
+<dt class="hdlist1">CRC16-DNP</dt>
+<dd>
+<p>Calculate checksum by CRC16-DNP</p>
+</dd>
+<dt class="hdlist1">CRC16-IBM-SDLC</dt>
+<dd>
+<p>Calculate checksum by CRC16-IBM-SDLC</p>
+</dd>
+<dt class="hdlist1">CRC16-MAXIM</dt>
+<dd>
+<p>Calculate checksum by CRC16-MAXIM</p>
+</dd>
+<dt class="hdlist1">CRC16-MCRF4XX</dt>
+<dd>
+<p>Calculate checksum by CRC16-MCRF4XX</p>
+</dd>
+<dt class="hdlist1">CRC16-MODBUS</dt>
+<dd>
+<p>Calculate checksum by CRC16-MODBUS</p>
+</dd>
+<dt class="hdlist1">CRC16-NRSC-5</dt>
+<dd>
+<p>Calculate checksum by CRC16-NRSC-5</p>
+</dd>
+<dt class="hdlist1">CRC16-USB</dt>
+<dd>
+<p>Calculate checksum by CRC16-USB</p>
 </dd>
 <dt class="hdlist1">MurmurHash2/32</dt>
 <dd>
@@ -3404,8 +3439,8 @@ This option may not work for items that contain binaries. In that case, use the 
 </div>
 <div id="footer">
 <div id="footer-text">
-Version v3.3.7.0<br>
-Last updated 2026-04-04 21:11:30 +0900
+Version v3.3.8.0<br>
+Last updated 2026-05-26 20:11:16 +0900
 </div>
 </div>
 </body>
