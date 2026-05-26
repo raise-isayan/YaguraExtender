@@ -250,7 +250,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         this.cmbEncoding.setEnabled(!this.chkRawMode.isSelected());
 
-        this.pnlHashCheckSum.setLayout(new VerticalFlowLayout());
+        this.pnlTransTab.setLayout(new VerticalFlowLayout());
+        this.pnlHashTab.setLayout(new VerticalFlowLayout());
+        this.pnlCheckSumTab.setLayout(new VerticalFlowLayout());
+        this.pnlConvertTab.setLayout(new VerticalFlowLayout());
 
         this.pnlCharacter.setLayout(new VerticalFlowLayout());
 
@@ -475,8 +478,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlWrap = new javax.swing.JPanel();
         chkViewLineWrap = new javax.swing.JCheckBox();
         tabbetTransAction = new javax.swing.JTabbedPane();
+        scrolllTransAction = new javax.swing.JScrollPane();
+        pnlTransTab = new javax.swing.JPanel();
         pnlTransAction = new javax.swing.JPanel();
-        pnlEncodeDecode = new javax.swing.JPanel();
         btnSmartDecode = new javax.swing.JButton();
         pnlEncDec = new javax.swing.JPanel();
         btnEncode = new javax.swing.JButton();
@@ -529,8 +533,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoSQLLang = new javax.swing.JRadioButton();
         rdoRegex = new javax.swing.JRadioButton();
         chkMetaChar = new javax.swing.JCheckBox();
-        pnlHashCheckSum = new javax.swing.JPanel();
-        pnlHashTrans = new javax.swing.JPanel();
+        scrollHashAction = new javax.swing.JScrollPane();
+        pnlHashTab = new javax.swing.JPanel();
+        pnlHashAction = new javax.swing.JPanel();
         btnHashMd2 = new javax.swing.JButton();
         btnHashMd4 = new javax.swing.JButton();
         btnHashMd5 = new javax.swing.JButton();
@@ -603,7 +608,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashPhotonBeetle = new javax.swing.JButton();
         btnHashXoodyak = new javax.swing.JButton();
         btnHashUUIDv3 = new javax.swing.JButton();
-        pnlCheckSumTrans = new javax.swing.JPanel();
+        scrollCheckSumAction = new javax.swing.JScrollPane();
+        pnlCheckSumTab = new javax.swing.JPanel();
+        pnlCheckSumAction = new javax.swing.JPanel();
         btnCRC32 = new javax.swing.JButton();
         btnCRC32C = new javax.swing.JButton();
         btnAdler32 = new javax.swing.JButton();
@@ -621,6 +628,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnXXHash32 = new javax.swing.JButton();
         btnMurmurHash3_32x86 = new javax.swing.JButton();
         btnMurmurHash3_128x64 = new javax.swing.JButton();
+        scrollConvertAction = new javax.swing.JScrollPane();
+        pnlConvertTab = new javax.swing.JPanel();
         pnlConvertAction = new javax.swing.JPanel();
         pnlConverter = new javax.swing.JPanel();
         btnConvert = new javax.swing.JButton();
@@ -1154,10 +1163,10 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         tabTransrator.add(pnlTranslator, java.awt.BorderLayout.CENTER);
 
-        pnlTransAction.setLayout(new javax.swing.BoxLayout(pnlTransAction, javax.swing.BoxLayout.PAGE_AXIS));
+        pnlTransTab.setLayout(new java.awt.BorderLayout());
 
-        pnlEncodeDecode.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
-        pnlEncodeDecode.setLayout(new java.awt.GridLayout(16, 0, 1, 1));
+        pnlTransAction.setBorder(javax.swing.BorderFactory.createTitledBorder("Encode/Decode"));
+        pnlTransAction.setLayout(new java.awt.GridLayout(16, 0, 1, 1));
 
         btnSmartDecode.setText("Smart Decode");
         btnSmartDecode.addActionListener(new java.awt.event.ActionListener() {
@@ -1165,7 +1174,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnSmartDecodeActionPerformed(evt);
             }
         });
-        pnlEncodeDecode.add(btnSmartDecode);
+        pnlTransAction.add(btnSmartDecode);
 
         pnlEncDec.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1190,7 +1199,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlEncDec.add(btnDecode);
 
-        pnlEncodeDecode.add(pnlEncDec);
+        pnlTransAction.add(pnlEncDec);
 
         pnlUrl.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1202,7 +1211,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoUrlUnicode.setText("URL(%uhhhh)");
         pnlUrl.add(rdoUrlUnicode);
 
-        pnlEncodeDecode.add(pnlUrl);
+        pnlTransAction.add(pnlUrl);
 
         pnlBase64.setLayout(new java.awt.GridLayout(1, 4));
 
@@ -1230,7 +1239,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         chkPadding.setText("Padding");
         pnlBase64.add(chkPadding);
 
-        pnlEncodeDecode.add(pnlBase64);
+        pnlTransAction.add(pnlBase64);
 
         pnlBase64URLSafe.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1242,7 +1251,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoBase64andURL.setText("Base64 + URL");
         pnlBase64URLSafe.add(rdoBase64andURL);
 
-        pnlEncodeDecode.add(pnlBase64URLSafe);
+        pnlTransAction.add(pnlBase64URLSafe);
 
         pnlBaseN.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -1258,7 +1267,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         chkNPadding.setText("Padding");
         pnlBaseN.add(chkNPadding);
 
-        pnlEncodeDecode.add(pnlBaseN);
+        pnlTransAction.add(pnlBaseN);
 
         pnlMail.setLayout(new java.awt.GridLayout(1, 1));
 
@@ -1266,11 +1275,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoQuotedPrintable.setText("QuotedPrintable");
         pnlMail.add(rdoQuotedPrintable);
 
-        pnlEncodeDecode.add(pnlMail);
+        pnlTransAction.add(pnlMail);
 
         rdoEncodeDecodeGrp.add(rdoPunycode);
         rdoPunycode.setText("puyencode");
-        pnlEncodeDecode.add(rdoPunycode);
+        pnlTransAction.add(rdoPunycode);
 
         pnlHtmlEnc.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1282,7 +1291,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoHtmlDec.setText("&#d;");
         pnlHtmlEnc.add(rdoHtmlDec);
 
-        pnlEncodeDecode.add(pnlHtmlEnc);
+        pnlTransAction.add(pnlHtmlEnc);
 
         pnlHtmlHex.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1294,7 +1303,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoHtmlByteHex.setText("&#xhh;(byte)");
         pnlHtmlHex.add(rdoHtmlByteHex);
 
-        pnlEncodeDecode.add(pnlHtmlHex);
+        pnlTransAction.add(pnlHtmlHex);
 
         pnlJSUnicodeEnc.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -1311,7 +1320,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoUnicodeHex2.setText("$hhhh");
         pnlJSUnicodeEnc.add(rdoUnicodeHex2);
 
-        pnlEncodeDecode.add(pnlJSUnicodeEnc);
+        pnlTransAction.add(pnlJSUnicodeEnc);
 
         pnlJSHexEnc.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1328,7 +1337,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         });
         pnlJSHexEnc.add(rdoByteHex2);
 
-        pnlEncodeDecode.add(pnlJSHexEnc);
+        pnlTransAction.add(pnlJSHexEnc);
 
         pnlJSOctEnc.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1340,7 +1349,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoByteBin.setText("\\b{bbbb}(bin)");
         pnlJSOctEnc.add(rdoByteBin);
 
-        pnlEncodeDecode.add(pnlJSOctEnc);
+        pnlTransAction.add(pnlJSOctEnc);
 
         pnlCompress.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -1356,7 +1365,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoZLIB_NOWRAP.setText("Zlib(with Gzip)");
         pnlCompress.add(rdoZLIB_NOWRAP);
 
-        pnlEncodeDecode.add(pnlCompress);
+        pnlTransAction.add(pnlCompress);
 
         pnlILLUTF8.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -1377,7 +1386,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         cmbIILUTF8.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2", "3", "4" }));
         pnlILLUTF8.add(cmbIILUTF8);
 
-        pnlEncodeDecode.add(pnlILLUTF8);
+        pnlTransAction.add(pnlILLUTF8);
 
         pnlLang.setLayout(new java.awt.GridLayout(1, 5));
 
@@ -1405,16 +1414,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         chkMetaChar.setText("Metachar");
         pnlLang.add(chkMetaChar);
 
-        pnlEncodeDecode.add(pnlLang);
+        pnlTransAction.add(pnlLang);
 
-        pnlTransAction.add(pnlEncodeDecode);
+        pnlTransTab.add(pnlTransAction, java.awt.BorderLayout.PAGE_START);
 
-        tabbetTransAction.addTab("Encode/Decode", pnlTransAction);
+        scrolllTransAction.setViewportView(pnlTransTab);
 
-        pnlHashCheckSum.setLayout(new javax.swing.BoxLayout(pnlHashCheckSum, javax.swing.BoxLayout.PAGE_AXIS));
+        tabbetTransAction.addTab("Encode/Decode", scrolllTransAction);
 
-        pnlHashTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
-        pnlHashTrans.setLayout(new java.awt.GridLayout(24, 3));
+        pnlHashTab.setLayout(new java.awt.BorderLayout());
+
+        pnlHashAction.setBorder(javax.swing.BorderFactory.createTitledBorder("Hash"));
+        pnlHashAction.setLayout(new java.awt.GridLayout(24, 3));
 
         btnHashMd2.setText("md2");
         btnHashMd2.addActionListener(new java.awt.event.ActionListener() {
@@ -1422,7 +1433,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashMd2ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashMd2);
+        pnlHashAction.add(btnHashMd2);
 
         btnHashMd4.setText("md4");
         btnHashMd4.addActionListener(new java.awt.event.ActionListener() {
@@ -1430,7 +1441,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashMd4ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashMd4);
+        pnlHashAction.add(btnHashMd4);
 
         btnHashMd5.setText("md5");
         btnHashMd5.addActionListener(new java.awt.event.ActionListener() {
@@ -1438,7 +1449,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashMd5ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashMd5);
+        pnlHashAction.add(btnHashMd5);
 
         btnHashSha1.setText("sha1");
         btnHashSha1.addActionListener(new java.awt.event.ActionListener() {
@@ -1446,7 +1457,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha1ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha1);
+        pnlHashAction.add(btnHashSha1);
 
         btnHashSha224.setText("sha224");
         btnHashSha224.addActionListener(new java.awt.event.ActionListener() {
@@ -1454,7 +1465,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha224);
+        pnlHashAction.add(btnHashSha224);
 
         btnHashSha256.setText("sha256");
         btnHashSha256.addActionListener(new java.awt.event.ActionListener() {
@@ -1462,7 +1473,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha256);
+        pnlHashAction.add(btnHashSha256);
 
         btnHashSha384.setText("sha384");
         btnHashSha384.addActionListener(new java.awt.event.ActionListener() {
@@ -1470,7 +1481,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha384);
+        pnlHashAction.add(btnHashSha384);
 
         btnHashSha512.setText("sha512");
         btnHashSha512.addActionListener(new java.awt.event.ActionListener() {
@@ -1478,7 +1489,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha512);
+        pnlHashAction.add(btnHashSha512);
 
         btnHashSha512_224.setText("sha512/224");
         btnHashSha512_224.addActionListener(new java.awt.event.ActionListener() {
@@ -1486,7 +1497,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha512_224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha512_224);
+        pnlHashAction.add(btnHashSha512_224);
 
         btnHashSha512_256.setText("sha512/256");
         btnHashSha512_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1494,7 +1505,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha512_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha512_256);
+        pnlHashAction.add(btnHashSha512_256);
 
         btnHashSha3_224.setText("sha3-224");
         btnHashSha3_224.addActionListener(new java.awt.event.ActionListener() {
@@ -1502,7 +1513,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha3_224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha3_224);
+        pnlHashAction.add(btnHashSha3_224);
 
         btnHashSha3_256.setText("sha3-256");
         btnHashSha3_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1510,7 +1521,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha3_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha3_256);
+        pnlHashAction.add(btnHashSha3_256);
 
         btnHashSha3_384.setText("sha3-384");
         btnHashSha3_384.addActionListener(new java.awt.event.ActionListener() {
@@ -1518,7 +1529,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha3_384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha3_384);
+        pnlHashAction.add(btnHashSha3_384);
 
         btnHashSha3_512.setText("sha3-512");
         btnHashSha3_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1526,7 +1537,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSha3_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSha3_512);
+        pnlHashAction.add(btnHashSha3_512);
 
         btnHashSHAKE128.setText("SHAKE128");
         btnHashSHAKE128.addActionListener(new java.awt.event.ActionListener() {
@@ -1534,7 +1545,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSHAKE128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSHAKE128);
+        pnlHashAction.add(btnHashSHAKE128);
 
         btnHashSHAKE256.setText("SHAKE256");
         btnHashSHAKE256.addActionListener(new java.awt.event.ActionListener() {
@@ -1542,7 +1553,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSHAKE256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSHAKE256);
+        pnlHashAction.add(btnHashSHAKE256);
 
         btnHashSKEIN256_128.setText("SKEIN-256-128");
         btnHashSKEIN256_128.addActionListener(new java.awt.event.ActionListener() {
@@ -1550,7 +1561,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN256_128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN256_128);
+        pnlHashAction.add(btnHashSKEIN256_128);
 
         btnHashSKEIN256_160.setText("SKEIN-256-160");
         btnHashSKEIN256_160.addActionListener(new java.awt.event.ActionListener() {
@@ -1558,7 +1569,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN256_160ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN256_160);
+        pnlHashAction.add(btnHashSKEIN256_160);
 
         btnHashSKEIN256_224.setText("SKEIN-256-224");
         btnHashSKEIN256_224.addActionListener(new java.awt.event.ActionListener() {
@@ -1566,7 +1577,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN256_224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN256_224);
+        pnlHashAction.add(btnHashSKEIN256_224);
 
         btnHashSKEIN256_256.setText("SKEIN-256-256");
         btnHashSKEIN256_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1574,7 +1585,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN256_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN256_256);
+        pnlHashAction.add(btnHashSKEIN256_256);
 
         btnHashSKEIN512_128.setText("SKEIN-512-128");
         btnHashSKEIN512_128.addActionListener(new java.awt.event.ActionListener() {
@@ -1582,7 +1593,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN512_128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN512_128);
+        pnlHashAction.add(btnHashSKEIN512_128);
 
         btnHashSKEIN512_160.setText("SKEIN-512-160");
         btnHashSKEIN512_160.addActionListener(new java.awt.event.ActionListener() {
@@ -1590,7 +1601,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN512_160ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN512_160);
+        pnlHashAction.add(btnHashSKEIN512_160);
 
         btnHashSKEIN512_224.setText("SKEIN-512-224");
         btnHashSKEIN512_224.addActionListener(new java.awt.event.ActionListener() {
@@ -1598,7 +1609,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN512_224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN512_224);
+        pnlHashAction.add(btnHashSKEIN512_224);
 
         btnHashSKEIN512_256.setText("SKEIN-512-256");
         btnHashSKEIN512_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1606,7 +1617,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN512_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN512_256);
+        pnlHashAction.add(btnHashSKEIN512_256);
 
         btnHashSKEIN512_384.setText("SKEIN-512-384");
         btnHashSKEIN512_384.addActionListener(new java.awt.event.ActionListener() {
@@ -1614,7 +1625,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN512_384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN512_384);
+        pnlHashAction.add(btnHashSKEIN512_384);
 
         btnHashSKEIN512_512.setText("SKEIN-512-512");
         btnHashSKEIN512_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1622,7 +1633,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN512_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN512_512);
+        pnlHashAction.add(btnHashSKEIN512_512);
 
         btnHashSKEIN1024_384.setText("SKEIN-1024-384");
         btnHashSKEIN1024_384.addActionListener(new java.awt.event.ActionListener() {
@@ -1630,7 +1641,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN1024_384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN1024_384);
+        pnlHashAction.add(btnHashSKEIN1024_384);
 
         btnHashSKEIN1024_512.setText("SKEIN-1024-512");
         btnHashSKEIN1024_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1638,7 +1649,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN1024_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN1024_512);
+        pnlHashAction.add(btnHashSKEIN1024_512);
 
         btnHashSKEIN1024_1024.setText("SKEIN-1024-1024");
         btnHashSKEIN1024_1024.addActionListener(new java.awt.event.ActionListener() {
@@ -1646,7 +1657,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSKEIN1024_1024ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSKEIN1024_1024);
+        pnlHashAction.add(btnHashSKEIN1024_1024);
 
         btnHashKECCAK224.setText("KECCAK-224");
         btnHashKECCAK224.addActionListener(new java.awt.event.ActionListener() {
@@ -1654,7 +1665,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashKECCAK224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashKECCAK224);
+        pnlHashAction.add(btnHashKECCAK224);
 
         btnHashKECCAK256.setText("KECCAK-256");
         btnHashKECCAK256.addActionListener(new java.awt.event.ActionListener() {
@@ -1662,7 +1673,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashKECCAK256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashKECCAK256);
+        pnlHashAction.add(btnHashKECCAK256);
 
         btnHashKECCAK288.setText("KECCAK-288");
         btnHashKECCAK288.addActionListener(new java.awt.event.ActionListener() {
@@ -1670,7 +1681,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashKECCAK288ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashKECCAK288);
+        pnlHashAction.add(btnHashKECCAK288);
 
         btnHashKECCAK384.setText("KECCAK-384");
         btnHashKECCAK384.addActionListener(new java.awt.event.ActionListener() {
@@ -1678,7 +1689,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashKECCAK384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashKECCAK384);
+        pnlHashAction.add(btnHashKECCAK384);
 
         btnHashKECCAK512.setText("KECCAK-512");
         btnHashKECCAK512.addActionListener(new java.awt.event.ActionListener() {
@@ -1686,7 +1697,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashKECCAK512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashKECCAK512);
+        pnlHashAction.add(btnHashKECCAK512);
 
         btnHashHARAKA256.setText("HARAKA-256");
         btnHashHARAKA256.addActionListener(new java.awt.event.ActionListener() {
@@ -1694,7 +1705,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashHARAKA256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashHARAKA256);
+        pnlHashAction.add(btnHashHARAKA256);
 
         btnHashHARAKA512.setText("HARAKA-512");
         btnHashHARAKA512.addActionListener(new java.awt.event.ActionListener() {
@@ -1702,7 +1713,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashHARAKA512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashHARAKA512);
+        pnlHashAction.add(btnHashHARAKA512);
 
         btnHashRIPEMD128.setText("RIPEMD128");
         btnHashRIPEMD128.addActionListener(new java.awt.event.ActionListener() {
@@ -1710,7 +1721,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashRIPEMD128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashRIPEMD128);
+        pnlHashAction.add(btnHashRIPEMD128);
 
         btnHashRIPEMD129.setText("RIPEMD160");
         btnHashRIPEMD129.addActionListener(new java.awt.event.ActionListener() {
@@ -1718,7 +1729,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashRIPEMD160ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashRIPEMD129);
+        pnlHashAction.add(btnHashRIPEMD129);
 
         btnHashRIPEMD256.setText("RIPEMD256");
         btnHashRIPEMD256.addActionListener(new java.awt.event.ActionListener() {
@@ -1726,7 +1737,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashRIPEMD256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashRIPEMD256);
+        pnlHashAction.add(btnHashRIPEMD256);
 
         btnHashRIPEMD320.setText("RIPEMD320");
         btnHashRIPEMD320.addActionListener(new java.awt.event.ActionListener() {
@@ -1734,7 +1745,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashRIPEMD320ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashRIPEMD320);
+        pnlHashAction.add(btnHashRIPEMD320);
 
         btnHashGOST3411.setText("GOST3411");
         btnHashGOST3411.addActionListener(new java.awt.event.ActionListener() {
@@ -1742,7 +1753,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashGOST3411ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashGOST3411);
+        pnlHashAction.add(btnHashGOST3411);
 
         btnHashGOST3411_2012_256.setText("GOST2012-256");
         btnHashGOST3411_2012_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1750,7 +1761,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashGOST3411_2012_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashGOST3411_2012_256);
+        pnlHashAction.add(btnHashGOST3411_2012_256);
 
         btnHashGOST3411_2012_512.setText("GOST2012-512");
         btnHashGOST3411_2012_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1758,7 +1769,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashGOST3411_2012_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashGOST3411_2012_512);
+        pnlHashAction.add(btnHashGOST3411_2012_512);
 
         btnHashDSTU7564_256.setText("DSTU7564-256");
         btnHashDSTU7564_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1766,7 +1777,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashDSTU7564_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashDSTU7564_256);
+        pnlHashAction.add(btnHashDSTU7564_256);
 
         btnHashDSTU7564_384.setText("DSTU7564-384");
         btnHashDSTU7564_384.addActionListener(new java.awt.event.ActionListener() {
@@ -1774,7 +1785,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashDSTU7564_384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashDSTU7564_384);
+        pnlHashAction.add(btnHashDSTU7564_384);
 
         btnHashDSTU7564_512.setText("DSTU7564-512");
         btnHashDSTU7564_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1782,7 +1793,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashDSTU7564_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashDSTU7564_512);
+        pnlHashAction.add(btnHashDSTU7564_512);
 
         btnHashBLAKE2B_160.setText("BLAKE2B-160");
         btnHashBLAKE2B_160.addActionListener(new java.awt.event.ActionListener() {
@@ -1790,7 +1801,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2B_160ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2B_160);
+        pnlHashAction.add(btnHashBLAKE2B_160);
 
         btnHashBLAKE2B_256.setText("BLAKE2B-256");
         btnHashBLAKE2B_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1798,7 +1809,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2B_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2B_256);
+        pnlHashAction.add(btnHashBLAKE2B_256);
 
         btnHashBLAKE2B_384.setText("BLAKE2B-384");
         btnHashBLAKE2B_384.addActionListener(new java.awt.event.ActionListener() {
@@ -1806,7 +1817,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2B_384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2B_384);
+        pnlHashAction.add(btnHashBLAKE2B_384);
 
         btnHashBLAKE2B_512.setText("BLAKE2B-512");
         btnHashBLAKE2B_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1814,7 +1825,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2B_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2B_512);
+        pnlHashAction.add(btnHashBLAKE2B_512);
 
         btnHashBLAKE2S_128.setText("BLAKE2S-128");
         btnHashBLAKE2S_128.addActionListener(new java.awt.event.ActionListener() {
@@ -1822,7 +1833,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2S_128ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2S_128);
+        pnlHashAction.add(btnHashBLAKE2S_128);
 
         btnHashBLAKE2S_160.setText("BLAKE2S-160");
         btnHashBLAKE2S_160.addActionListener(new java.awt.event.ActionListener() {
@@ -1830,7 +1841,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2S_160ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2S_160);
+        pnlHashAction.add(btnHashBLAKE2S_160);
 
         btnHashBLAKE2_S224.setText("BLAKE2S-224");
         btnHashBLAKE2_S224.addActionListener(new java.awt.event.ActionListener() {
@@ -1838,7 +1849,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2_S224ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2_S224);
+        pnlHashAction.add(btnHashBLAKE2_S224);
 
         btnHashBLAKE2S_256.setText("BLAKE2S-256");
         btnHashBLAKE2S_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1846,7 +1857,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE2S_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE2S_256);
+        pnlHashAction.add(btnHashBLAKE2S_256);
 
         btnHashBLAKE3_256.setText("BLAKE3-256");
         btnHashBLAKE3_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1854,7 +1865,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashBLAKE3_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashBLAKE3_256);
+        pnlHashAction.add(btnHashBLAKE3_256);
 
         btnHashPARALLELHASH128_256.setText("PARALLEL128-256");
         btnHashPARALLELHASH128_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1862,7 +1873,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashPARALLELHASH128_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashPARALLELHASH128_256);
+        pnlHashAction.add(btnHashPARALLELHASH128_256);
 
         btnHashPARALLELHASH256_512.setText("PARALLEL256-512");
         btnHashPARALLELHASH256_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1870,7 +1881,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashPARALLELHASH256_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashPARALLELHASH256_512);
+        pnlHashAction.add(btnHashPARALLELHASH256_512);
 
         btnHashTiger.setText("Tiger");
         btnHashTiger.addActionListener(new java.awt.event.ActionListener() {
@@ -1878,7 +1889,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashTigerActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashTiger);
+        pnlHashAction.add(btnHashTiger);
 
         btnHashWHIRLPOOL.setText("WHIRLPOOL");
         btnHashWHIRLPOOL.addActionListener(new java.awt.event.ActionListener() {
@@ -1886,7 +1897,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashWHIRLPOOLActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashWHIRLPOOL);
+        pnlHashAction.add(btnHashWHIRLPOOL);
 
         btnHashSM3.setText("SM3");
         btnHashSM3.addActionListener(new java.awt.event.ActionListener() {
@@ -1894,7 +1905,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashSM3ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashSM3);
+        pnlHashAction.add(btnHashSM3);
 
         btnHashTUPLEHASH128_256.setText("TUPLE128-256");
         btnHashTUPLEHASH128_256.addActionListener(new java.awt.event.ActionListener() {
@@ -1902,7 +1913,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashTUPLEHASH128_256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashTUPLEHASH128_256);
+        pnlHashAction.add(btnHashTUPLEHASH128_256);
 
         btnHashTUPLEHASH256_512.setText("TUPLE256-512");
         btnHashTUPLEHASH256_512.addActionListener(new java.awt.event.ActionListener() {
@@ -1910,7 +1921,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashTUPLEHASH256_512ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashTUPLEHASH256_512);
+        pnlHashAction.add(btnHashTUPLEHASH256_512);
 
         btnHashISAP.setText("ISAP");
         btnHashISAP.addActionListener(new java.awt.event.ActionListener() {
@@ -1918,7 +1929,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashISAPActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashISAP);
+        pnlHashAction.add(btnHashISAP);
 
         btnHashAscon.setText("AsconHash");
         btnHashAscon.addActionListener(new java.awt.event.ActionListener() {
@@ -1926,7 +1937,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashAsconActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashAscon);
+        pnlHashAction.add(btnHashAscon);
 
         btnHashAsconA.setText("AsconHashA");
         btnHashAsconA.addActionListener(new java.awt.event.ActionListener() {
@@ -1934,7 +1945,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashAsconAActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashAsconA);
+        pnlHashAction.add(btnHashAsconA);
 
         btnHashAsconXof.setText("AsconXof");
         btnHashAsconXof.addActionListener(new java.awt.event.ActionListener() {
@@ -1942,7 +1953,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashAsconXofActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashAsconXof);
+        pnlHashAction.add(btnHashAsconXof);
 
         btnHashAsconXofA.setText("AsconXofA");
         btnHashAsconXofA.addActionListener(new java.awt.event.ActionListener() {
@@ -1950,7 +1961,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashAsconXofAActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashAsconXofA);
+        pnlHashAction.add(btnHashAsconXofA);
 
         btnHashESCH256.setText("ESCH256");
         btnHashESCH256.addActionListener(new java.awt.event.ActionListener() {
@@ -1958,7 +1969,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashESCH256ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashESCH256);
+        pnlHashAction.add(btnHashESCH256);
 
         btnHashESCH384.setText("ESCH384");
         btnHashESCH384.addActionListener(new java.awt.event.ActionListener() {
@@ -1966,7 +1977,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashESCH384ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashESCH384);
+        pnlHashAction.add(btnHashESCH384);
 
         btnHashPhotonBeetle.setText("PhotonBeetle");
         btnHashPhotonBeetle.addActionListener(new java.awt.event.ActionListener() {
@@ -1974,7 +1985,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashPhotonBeetleActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashPhotonBeetle);
+        pnlHashAction.add(btnHashPhotonBeetle);
 
         btnHashXoodyak.setText("Xoodyak");
         btnHashXoodyak.addActionListener(new java.awt.event.ActionListener() {
@@ -1982,7 +1993,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashXoodyakActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashXoodyak);
+        pnlHashAction.add(btnHashXoodyak);
 
         btnHashUUIDv3.setText("UUIDv3");
         btnHashUUIDv3.addActionListener(new java.awt.event.ActionListener() {
@@ -1990,12 +2001,18 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnHashUUIDv3ActionPerformed(evt);
             }
         });
-        pnlHashTrans.add(btnHashUUIDv3);
+        pnlHashAction.add(btnHashUUIDv3);
 
-        pnlHashCheckSum.add(pnlHashTrans);
+        pnlHashTab.add(pnlHashAction, java.awt.BorderLayout.PAGE_START);
 
-        pnlCheckSumTrans.setBorder(javax.swing.BorderFactory.createTitledBorder("CheckSum"));
-        pnlCheckSumTrans.setLayout(new java.awt.GridLayout(6, 3));
+        scrollHashAction.setViewportView(pnlHashTab);
+
+        tabbetTransAction.addTab("Hash", scrollHashAction);
+
+        pnlCheckSumTab.setLayout(new java.awt.BorderLayout());
+
+        pnlCheckSumAction.setBorder(javax.swing.BorderFactory.createTitledBorder("CheckSum"));
+        pnlCheckSumAction.setLayout(new java.awt.GridLayout(6, 3));
 
         btnCRC32.setText("CRC32");
         btnCRC32.addActionListener(new java.awt.event.ActionListener() {
@@ -2003,7 +2020,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCRC32ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCRC32);
+        pnlCheckSumAction.add(btnCRC32);
 
         btnCRC32C.setText("CRC32C");
         btnCRC32C.addActionListener(new java.awt.event.ActionListener() {
@@ -2011,7 +2028,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCRC32CActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCRC32C);
+        pnlCheckSumAction.add(btnCRC32C);
 
         btnAdler32.setText("Adler32");
         btnAdler32.addActionListener(new java.awt.event.ActionListener() {
@@ -2019,7 +2036,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnAdler32ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnAdler32);
+        pnlCheckSumAction.add(btnAdler32);
 
         btnCRC16Arc.setText("CRC-16/ARC");
         btnCRC16Arc.addActionListener(new java.awt.event.ActionListener() {
@@ -2027,7 +2044,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCRC16ArcActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCRC16Arc);
+        pnlCheckSumAction.add(btnCRC16Arc);
 
         btnCrc16Ccitt.setText("CRC-16/CCIT");
         btnCrc16Ccitt.addActionListener(new java.awt.event.ActionListener() {
@@ -2035,7 +2052,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16CcittActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16Ccitt);
+        pnlCheckSumAction.add(btnCrc16Ccitt);
 
         btnCrc16Dnp.setText("CRC16-DNP");
         btnCrc16Dnp.addActionListener(new java.awt.event.ActionListener() {
@@ -2043,7 +2060,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16DnpActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16Dnp);
+        pnlCheckSumAction.add(btnCrc16Dnp);
 
         btnCrc16IbmSdlc.setText("CRC16-IBM-SDLC");
         btnCrc16IbmSdlc.addActionListener(new java.awt.event.ActionListener() {
@@ -2051,7 +2068,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16IbmSdlcActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16IbmSdlc);
+        pnlCheckSumAction.add(btnCrc16IbmSdlc);
 
         btnCrc16Maxim.setText("CRC-16/MAXIM");
         btnCrc16Maxim.addActionListener(new java.awt.event.ActionListener() {
@@ -2059,7 +2076,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16MaximActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16Maxim);
+        pnlCheckSumAction.add(btnCrc16Maxim);
 
         btnCrc16Mcrf4xx.setText("CRC16-MCRF4XX");
         btnCrc16Mcrf4xx.addActionListener(new java.awt.event.ActionListener() {
@@ -2067,7 +2084,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16Mcrf4xxActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16Mcrf4xx);
+        pnlCheckSumAction.add(btnCrc16Mcrf4xx);
 
         btnCrc16Modbus.setText("CRC16-MODBUS");
         btnCrc16Modbus.addActionListener(new java.awt.event.ActionListener() {
@@ -2075,7 +2092,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16ModbusActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16Modbus);
+        pnlCheckSumAction.add(btnCrc16Modbus);
 
         btnCrc16Nrsc5.setText("CRC16-NRSC-5");
         btnCrc16Nrsc5.addActionListener(new java.awt.event.ActionListener() {
@@ -2083,7 +2100,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16Nrsc5ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16Nrsc5);
+        pnlCheckSumAction.add(btnCrc16Nrsc5);
 
         btnCrc16Usb.setText("CRC16-USB");
         btnCrc16Usb.addActionListener(new java.awt.event.ActionListener() {
@@ -2091,7 +2108,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnCrc16UsbActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnCrc16Usb);
+        pnlCheckSumAction.add(btnCrc16Usb);
 
         btnMurmurHash2_32.setText("Murmur2/32");
         btnMurmurHash2_32.addActionListener(new java.awt.event.ActionListener() {
@@ -2099,7 +2116,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnMurmurHash2_32ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnMurmurHash2_32);
+        pnlCheckSumAction.add(btnMurmurHash2_32);
 
         btnMurmurHash2_64.setText("Murmur2/64");
         btnMurmurHash2_64.addActionListener(new java.awt.event.ActionListener() {
@@ -2107,7 +2124,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnMurmurHash2_64ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnMurmurHash2_64);
+        pnlCheckSumAction.add(btnMurmurHash2_64);
 
         btnXXHash32.setText("xxHash32");
         btnXXHash32.addActionListener(new java.awt.event.ActionListener() {
@@ -2115,7 +2132,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnXXHash32ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnXXHash32);
+        pnlCheckSumAction.add(btnXXHash32);
 
         btnMurmurHash3_32x86.setText("Murmur3/32x86");
         btnMurmurHash3_32x86.addActionListener(new java.awt.event.ActionListener() {
@@ -2123,7 +2140,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnMurmurHash3_32x86ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnMurmurHash3_32x86);
+        pnlCheckSumAction.add(btnMurmurHash3_32x86);
 
         btnMurmurHash3_128x64.setText("Murmur3/128x64");
         btnMurmurHash3_128x64.addActionListener(new java.awt.event.ActionListener() {
@@ -2131,11 +2148,15 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 btnMurmurHash3_128x64ActionPerformed(evt);
             }
         });
-        pnlCheckSumTrans.add(btnMurmurHash3_128x64);
+        pnlCheckSumAction.add(btnMurmurHash3_128x64);
 
-        pnlHashCheckSum.add(pnlCheckSumTrans);
+        pnlCheckSumTab.add(pnlCheckSumAction, java.awt.BorderLayout.PAGE_START);
 
-        tabbetTransAction.addTab("Hash/Checksum", pnlHashCheckSum);
+        scrollCheckSumAction.setViewportView(pnlCheckSumTab);
+
+        tabbetTransAction.addTab("Checksum", scrollCheckSumAction);
+
+        pnlConvertTab.setLayout(new java.awt.BorderLayout());
 
         pnlConvertAction.setLayout(new javax.swing.BoxLayout(pnlConvertAction, javax.swing.BoxLayout.PAGE_AXIS));
 
@@ -2226,7 +2247,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlConvertAction.add(pnlRegex);
 
-        tabbetTransAction.addTab("Converter", pnlConvertAction);
+        pnlConvertTab.add(pnlConvertAction, java.awt.BorderLayout.PAGE_START);
+
+        scrollConvertAction.setViewportView(pnlConvertTab);
+
+        tabbetTransAction.addTab("Convert", scrollConvertAction);
 
         tabTransrator.add(tabbetTransAction, java.awt.BorderLayout.EAST);
 
@@ -5503,25 +5528,26 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlBottom;
     private javax.swing.JPanel pnlCharacter;
     private javax.swing.JPanel pnlCharacterLength;
-    private javax.swing.JPanel pnlCheckSumTrans;
+    private javax.swing.JPanel pnlCheckSumAction;
+    private javax.swing.JPanel pnlCheckSumTab;
     private javax.swing.JPanel pnlCompress;
     private javax.swing.JPanel pnlConvertAction;
     private javax.swing.JPanel pnlConvertHex;
+    private javax.swing.JPanel pnlConvertTab;
     private javax.swing.JPanel pnlConverter;
     private javax.swing.JPanel pnlCustom;
     private javax.swing.JPanel pnlDate;
     private javax.swing.JPanel pnlDotDecIP;
     private javax.swing.JPanel pnlEncDec;
     private javax.swing.JPanel pnlEncodeCase;
-    private javax.swing.JPanel pnlEncodeDecode;
     private javax.swing.JPanel pnlEncodeType;
     private javax.swing.JPanel pnlEncoding;
     private javax.swing.JPanel pnlFormat;
     private javax.swing.JPanel pnlGenerate;
     private javax.swing.JPanel pnlGenerateCount;
     private javax.swing.JPanel pnlGenerateKey;
-    private javax.swing.JPanel pnlHashCheckSum;
-    private javax.swing.JPanel pnlHashTrans;
+    private javax.swing.JPanel pnlHashAction;
+    private javax.swing.JPanel pnlHashTab;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlHtmlEnc;
     private javax.swing.JPanel pnlHtmlHex;
@@ -5548,6 +5574,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JPanel pnlTop;
     private javax.swing.JPanel pnlTrans;
     private javax.swing.JPanel pnlTransAction;
+    private javax.swing.JPanel pnlTransTab;
     private javax.swing.JPanel pnlTranslator;
     private javax.swing.JPanel pnlUrl;
     private javax.swing.JPanel pnlWrap;
@@ -5615,8 +5642,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoUrlUnicode;
     private javax.swing.JRadioButton rdoZLIB;
     private javax.swing.JRadioButton rdoZLIB_NOWRAP;
+    private javax.swing.JScrollPane scrollCheckSumAction;
+    private javax.swing.JScrollPane scrollConvertAction;
     private javax.swing.JScrollPane scrollGenerate;
+    private javax.swing.JScrollPane scrollHashAction;
     private javax.swing.JScrollPane scrollStatus;
+    private javax.swing.JScrollPane scrolllTransAction;
     private javax.swing.JSplitPane splitConvert;
     private javax.swing.JSplitPane splitGenerator;
     private javax.swing.JSpinner spnCharacterLengthNum;
