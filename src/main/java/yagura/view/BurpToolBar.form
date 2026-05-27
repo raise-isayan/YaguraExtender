@@ -229,18 +229,18 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInterceptOptionActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnSelectedInterceptTab">
+        <Component class="javax.swing.JButton" name="btnSwitchInterceptTab">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/yagura/resources/application_lightning.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="selected intercept tab"/>
+            <Property name="toolTipText" type="java.lang.String" value="switch to intercept tab"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSelectedInterceptTabActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSwitchInterceptTabActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="tglAuto">
@@ -283,7 +283,7 @@
             </Property>
             <Property name="lightWeightPopupEnabled" type="boolean" value="false"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[180, 28]"/>
+              <Dimension value="[200, 28]"/>
             </Property>
             <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[80, 28]"/>
@@ -295,6 +295,7 @@
           </Properties>
           <Events>
             <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="cmbProfilePopupMenuWillBecomeVisible"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbProfileActionPerformed"/>
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

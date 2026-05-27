@@ -478,7 +478,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         pnlWrap = new javax.swing.JPanel();
         chkViewLineWrap = new javax.swing.JCheckBox();
         tabbetTransAction = new javax.swing.JTabbedPane();
-        scrolllTransAction = new javax.swing.JScrollPane();
+        scrolllTransTab = new javax.swing.JScrollPane();
         pnlTransTab = new javax.swing.JPanel();
         pnlTransAction = new javax.swing.JPanel();
         btnSmartDecode = new javax.swing.JButton();
@@ -533,7 +533,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoSQLLang = new javax.swing.JRadioButton();
         rdoRegex = new javax.swing.JRadioButton();
         chkMetaChar = new javax.swing.JCheckBox();
-        scrollHashAction = new javax.swing.JScrollPane();
+        scrollHashTab = new javax.swing.JScrollPane();
         pnlHashTab = new javax.swing.JPanel();
         pnlHashAction = new javax.swing.JPanel();
         btnHashMd2 = new javax.swing.JButton();
@@ -608,7 +608,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnHashPhotonBeetle = new javax.swing.JButton();
         btnHashXoodyak = new javax.swing.JButton();
         btnHashUUIDv3 = new javax.swing.JButton();
-        scrollCheckSumAction = new javax.swing.JScrollPane();
+        scrollCheckSumTab = new javax.swing.JScrollPane();
         pnlCheckSumTab = new javax.swing.JPanel();
         pnlCheckSumAction = new javax.swing.JPanel();
         btnCRC32 = new javax.swing.JButton();
@@ -628,7 +628,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         btnXXHash32 = new javax.swing.JButton();
         btnMurmurHash3_32x86 = new javax.swing.JButton();
         btnMurmurHash3_128x64 = new javax.swing.JButton();
-        scrollConvertAction = new javax.swing.JScrollPane();
+        scrollConvertTab = new javax.swing.JScrollPane();
         pnlConvertTab = new javax.swing.JPanel();
         pnlConvertAction = new javax.swing.JPanel();
         pnlConverter = new javax.swing.JPanel();
@@ -1418,9 +1418,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlTransTab.add(pnlTransAction, java.awt.BorderLayout.PAGE_START);
 
-        scrolllTransAction.setViewportView(pnlTransTab);
+        scrolllTransTab.setViewportView(pnlTransTab);
 
-        tabbetTransAction.addTab("Encode/Decode", scrolllTransAction);
+        tabbetTransAction.addTab("Encode/Decode", scrolllTransTab);
 
         pnlHashTab.setLayout(new java.awt.BorderLayout());
 
@@ -2005,9 +2005,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlHashTab.add(pnlHashAction, java.awt.BorderLayout.PAGE_START);
 
-        scrollHashAction.setViewportView(pnlHashTab);
+        scrollHashTab.setViewportView(pnlHashTab);
 
-        tabbetTransAction.addTab("Hash", scrollHashAction);
+        tabbetTransAction.addTab("Hash", scrollHashTab);
 
         pnlCheckSumTab.setLayout(new java.awt.BorderLayout());
 
@@ -2152,9 +2152,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlCheckSumTab.add(pnlCheckSumAction, java.awt.BorderLayout.PAGE_START);
 
-        scrollCheckSumAction.setViewportView(pnlCheckSumTab);
+        scrollCheckSumTab.setViewportView(pnlCheckSumTab);
 
-        tabbetTransAction.addTab("Checksum", scrollCheckSumAction);
+        tabbetTransAction.addTab("Checksum", scrollCheckSumTab);
 
         pnlConvertTab.setLayout(new java.awt.BorderLayout());
 
@@ -2249,9 +2249,9 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlConvertTab.add(pnlConvertAction, java.awt.BorderLayout.PAGE_START);
 
-        scrollConvertAction.setViewportView(pnlConvertTab);
+        scrollConvertTab.setViewportView(pnlConvertTab);
 
-        tabbetTransAction.addTab("Convert", scrollConvertAction);
+        tabbetTransAction.addTab("Convert", scrollConvertTab);
 
         tabTransrator.add(tabbetTransAction, java.awt.BorderLayout.EAST);
 
@@ -5642,12 +5642,12 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoUrlUnicode;
     private javax.swing.JRadioButton rdoZLIB;
     private javax.swing.JRadioButton rdoZLIB_NOWRAP;
-    private javax.swing.JScrollPane scrollCheckSumAction;
-    private javax.swing.JScrollPane scrollConvertAction;
+    private javax.swing.JScrollPane scrollCheckSumTab;
+    private javax.swing.JScrollPane scrollConvertTab;
     private javax.swing.JScrollPane scrollGenerate;
-    private javax.swing.JScrollPane scrollHashAction;
+    private javax.swing.JScrollPane scrollHashTab;
     private javax.swing.JScrollPane scrollStatus;
-    private javax.swing.JScrollPane scrolllTransAction;
+    private javax.swing.JScrollPane scrolllTransTab;
     private javax.swing.JSplitPane splitConvert;
     private javax.swing.JSplitPane splitGenerator;
     private javax.swing.JSpinner spnCharacterLengthNum;

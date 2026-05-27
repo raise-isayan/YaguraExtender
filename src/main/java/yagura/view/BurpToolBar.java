@@ -90,7 +90,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         toolBar = new javax.swing.JToolBar();
         tglIntercept = new javax.swing.JToggleButton();
         btnInterceptOption = new javax.swing.JButton();
-        btnSelectedInterceptTab = new javax.swing.JButton();
+        btnSwitchInterceptTab = new javax.swing.JButton();
         tglAuto = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         btnOpenBrowser = new javax.swing.JButton();
@@ -271,17 +271,17 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         });
         toolBar.add(btnInterceptOption);
 
-        btnSelectedInterceptTab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/application_lightning.png"))); // NOI18N
-        btnSelectedInterceptTab.setToolTipText("selected intercept tab");
-        btnSelectedInterceptTab.setFocusable(false);
-        btnSelectedInterceptTab.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnSelectedInterceptTab.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btnSelectedInterceptTab.addActionListener(new java.awt.event.ActionListener() {
+        btnSwitchInterceptTab.setIcon(new javax.swing.ImageIcon(getClass().getResource("/yagura/resources/application_lightning.png"))); // NOI18N
+        btnSwitchInterceptTab.setToolTipText("switch to intercept tab");
+        btnSwitchInterceptTab.setFocusable(false);
+        btnSwitchInterceptTab.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSwitchInterceptTab.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnSwitchInterceptTab.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSelectedInterceptTabActionPerformed(evt);
+                btnSwitchInterceptTabActionPerformed(evt);
             }
         });
-        toolBar.add(btnSelectedInterceptTab);
+        toolBar.add(btnSwitchInterceptTab);
 
         tglAuto.setText("AUTO");
         tglAuto.setFocusable(false);
@@ -306,7 +306,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         toolBar.add(btnOpenBrowser);
 
         cmbProfile.setLightWeightPopupEnabled(false);
-        cmbProfile.setMaximumSize(new java.awt.Dimension(180, 28));
+        cmbProfile.setMaximumSize(new java.awt.Dimension(200, 28));
         cmbProfile.setMinimumSize(new java.awt.Dimension(80, 28));
         cmbProfile.setName(""); // NOI18N
         cmbProfile.setPreferredSize(new java.awt.Dimension(120, 28));
@@ -317,6 +317,11 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
             }
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
                 cmbProfilePopupMenuWillBecomeVisible(evt);
+            }
+        });
+        cmbProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProfileActionPerformed(evt);
             }
         });
         toolBar.add(cmbProfile);
@@ -701,9 +706,13 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
         }
     }//GEN-LAST:event_mnuRestoreUserSettingsActionPerformed
 
-    private void btnSelectedInterceptTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectedInterceptTabActionPerformed
+    private void btnSwitchInterceptTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSwitchInterceptTabActionPerformed
         this.selectInterceptTab();
-    }//GEN-LAST:event_btnSelectedInterceptTabActionPerformed
+    }//GEN-LAST:event_btnSwitchInterceptTabActionPerformed
+
+    private void cmbProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProfileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbProfileActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBurpConfig;
@@ -711,7 +720,7 @@ public class BurpToolBar extends javax.swing.JPanel implements ExtensionUnloadin
     private javax.swing.JButton btnInterceptOption;
     private javax.swing.JButton btnOpenBrowser;
     private javax.swing.JButton btnScrollTabLayout;
-    private javax.swing.JButton btnSelectedInterceptTab;
+    private javax.swing.JButton btnSwitchInterceptTab;
     private javax.swing.JButton btnWrapTabLayout;
     private javax.swing.JComboBox<String> cmbProfile;
     private javax.swing.JPopupMenu.Separator jSeparator0;
