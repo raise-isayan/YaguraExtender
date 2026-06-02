@@ -38,9 +38,13 @@ public class KeyPairGeneratorPanel extends javax.swing.JPanel {
         lblKeyPairValid = new javax.swing.JLabel();
         pnlKeySize = new javax.swing.JPanel();
 
+        setMinimumSize(new java.awt.Dimension(400, 60));
+        setPreferredSize(new java.awt.Dimension(400, 80));
+        setVerifyInputWhenFocusTarget(false);
         setLayout(new java.awt.BorderLayout());
 
-        pnlKeyPairAlgorithm.setPreferredSize(new java.awt.Dimension(400, 60));
+        pnlKeyPairAlgorithm.setMinimumSize(new java.awt.Dimension(400, 60));
+        pnlKeyPairAlgorithm.setPreferredSize(new java.awt.Dimension(400, 80));
         pnlKeyPairAlgorithm.setRequestFocusEnabled(false);
 
         lbAlgorithm.setText("Algorithm:");
@@ -49,7 +53,7 @@ public class KeyPairGeneratorPanel extends javax.swing.JPanel {
 
         cmbAlgorithm.addItemListener(this::cmbAlgorithmItemStateChanged);
 
-        pnlKeySize.setLayout(new java.awt.FlowLayout(0));
+        pnlKeySize.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         javax.swing.GroupLayout pnlKeyPairAlgorithmLayout = new javax.swing.GroupLayout(pnlKeyPairAlgorithm);
         pnlKeyPairAlgorithm.setLayout(pnlKeyPairAlgorithmLayout);
@@ -65,11 +69,9 @@ public class KeyPairGeneratorPanel extends javax.swing.JPanel {
                     .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
                         .addComponent(cmbAlgorithm, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlKeyPairAlgorithmLayout.createSequentialGroup()
-                        .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addComponent(lblKeyPairValid, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                    .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pnlKeyPairAlgorithmLayout.setVerticalGroup(
             pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,8 +84,8 @@ public class KeyPairGeneratorPanel extends javax.swing.JPanel {
                     .addComponent(lblKeyPairValid, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlKeyPairAlgorithmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                    .addComponent(pnlKeySize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 

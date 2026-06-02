@@ -1113,30 +1113,30 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
             errorMessage.append("CN");
         }
-        if (!organizationName.trim().isEmpty()) {
-            subjectDN.addRDN(BCStyle.O, organizationName.trim());
-        } else {
-            if (!errorMessage.isEmpty()) {
-                errorMessage.append("/");
-            }
-            errorMessage.append("O");
-        }
-        if (!loccalityName.isEmpty()) {
-            subjectDN.addRDN(BCStyle.L, loccalityName.trim());
-        } else {
-            if (!errorMessage.isEmpty()) {
-                errorMessage.append("/");
-            }
-            errorMessage.append("L");
-        }
-        if (!country.trim().isEmpty()) {
-            subjectDN.addRDN(BCStyle.C, country.trim());
-        } else {
-            if (!errorMessage.isEmpty()) {
-                errorMessage.append("/");
-            }
-            errorMessage.append("C");
-        }
+//        if (!organizationName.trim().isEmpty()) {
+//            subjectDN.addRDN(BCStyle.O, organizationName.trim());
+//        } else {
+//            if (!errorMessage.isEmpty()) {
+//                errorMessage.append("/");
+//            }
+//            errorMessage.append("O");
+//        }
+//        if (!loccalityName.isEmpty()) {
+//            subjectDN.addRDN(BCStyle.L, loccalityName.trim());
+//        } else {
+//            if (!errorMessage.isEmpty()) {
+//                errorMessage.append("/");
+//            }
+//            errorMessage.append("L");
+//        }
+//        if (!country.trim().isEmpty()) {
+//            subjectDN.addRDN(BCStyle.C, country.trim());
+//        } else {
+//            if (!errorMessage.isEmpty()) {
+//                errorMessage.append("/");
+//            }
+//            errorMessage.append("C");
+//        }
         if (errorMessage.length() > 0) {
             throw new IllegalArgumentException(errorMessage.toString());
         }
