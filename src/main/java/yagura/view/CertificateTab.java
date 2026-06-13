@@ -24,6 +24,7 @@ import java.security.ProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -126,8 +127,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
         lblSelectIsserCA = new javax.swing.JLabel();
         pnlGenerateSubject = new javax.swing.JPanel();
         pnlGenerateSubjectCN = new javax.swing.JPanel();
-        lblSubjectYear = new javax.swing.JLabel();
-        spnSubjectYear = new javax.swing.JSpinner();
+        lblSubjectDays = new javax.swing.JLabel();
+        spnSubjectDay = new javax.swing.JSpinner();
         lblSubjectCommonName = new javax.swing.JLabel();
         txtSubjectCommonName = new javax.swing.JTextField();
         lblSubjectOrganizationName = new javax.swing.JLabel();
@@ -172,7 +173,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        lblSelectCA.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        lblSelectCA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout pnlSelectCertificateLayout = new javax.swing.GroupLayout(pnlSelectCertificate);
         pnlSelectCertificate.setLayout(pnlSelectCertificateLayout);
@@ -537,7 +538,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             }
         });
 
-        lblSelectIsserCA.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+        lblSelectIsserCA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         javax.swing.GroupLayout pnlSelectIssuerLayout = new javax.swing.GroupLayout(pnlSelectIssuer);
         pnlSelectIssuer.setLayout(pnlSelectIssuerLayout);
@@ -576,9 +577,9 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
 
         pnlGenerateSubject.setLayout(new java.awt.BorderLayout());
 
-        lblSubjectYear.setText("Year:");
+        lblSubjectDays.setText("Days:");
 
-        spnSubjectYear.setModel(new javax.swing.SpinnerNumberModel(1, 1, 99, 1));
+        spnSubjectDay.setModel(new javax.swing.SpinnerNumberModel(46, 1, 9999, 1));
 
         lblSubjectCommonName.setText("Common Name (CN):");
 
@@ -629,7 +630,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(lblSubjectLoccalityName)
                     .addComponent(lblSubjectOrganizationName)
                     .addComponent(lblSubjectCommonName)
-                    .addComponent(lblSubjectYear))
+                    .addComponent(lblSubjectDays))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtSubjectCommonName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -637,7 +638,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
                     .addComponent(txtSubjectLoccalityName, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSubjectCountry, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSubjectSAN, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spnSubjectYear, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(spnSubjectDay, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 312, Short.MAX_VALUE))
             .addGroup(pnlGenerateSubjectCNLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
@@ -659,8 +660,8 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             .addGroup(pnlGenerateSubjectCNLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSubjectYear)
-                    .addComponent(spnSubjectYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSubjectDays)
+                    .addComponent(spnSubjectDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlGenerateSubjectCNLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSubjectCommonName)
@@ -722,7 +723,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
             PKCS10CertificationRequest csr = BouncyUtil.createCsr(subjectKeyPair, subjectDN.build(), hostnames);
             Map.Entry<Key, X509Certificate> caCert = this.getIsserExportCerticate();
             if (caCert != null) {
-                X509Certificate signCA = BouncyUtil.signCsr(csr, caCert.getValue(), (PrivateKey) caCert.getKey(), (int) this.spnSubjectYear.getValue());
+                X509Certificate signCA = BouncyUtil.signCsr(csr, caCert.getValue(), (PrivateKey) caCert.getKey(), (int) this.spnSubjectDay.getValue(), ChronoUnit.DAYS);
 
                 JFileChooser filechooser = new JFileChooser();
                 filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -1171,10 +1172,10 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JLabel lblSelectIsserCA;
     private javax.swing.JLabel lblSubjectCommonName;
     private javax.swing.JLabel lblSubjectCountry;
+    private javax.swing.JLabel lblSubjectDays;
     private javax.swing.JLabel lblSubjectLoccalityName;
     private javax.swing.JLabel lblSubjectOrganizationName;
     private javax.swing.JLabel lblSubjectSAN;
-    private javax.swing.JLabel lblSubjectYear;
     private javax.swing.JPanel pnlCertificate;
     private javax.swing.JPanel pnlCertificateCA;
     private javax.swing.JPanel pnlCertificateCAExport;
@@ -1207,7 +1208,7 @@ public class CertificateTab extends javax.swing.JPanel implements IBurpTab {
     private javax.swing.JRadioButton rdordoConvertPKCS12;
     private javax.swing.JSpinner spnIssuerYear;
     private javax.swing.JSpinner spnListenPort;
-    private javax.swing.JSpinner spnSubjectYear;
+    private javax.swing.JSpinner spnSubjectDay;
     private javax.swing.JTabbedPane tabGenerateCA;
     private javax.swing.JTextField txtIssuerCommonName;
     private javax.swing.JTextField txtIssuerCountry;

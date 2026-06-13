@@ -775,7 +775,7 @@
                                   <Component id="lblSubjectLoccalityName" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblSubjectOrganizationName" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="lblSubjectCommonName" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblSubjectYear" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectDays" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -784,7 +784,7 @@
                                   <Component id="txtSubjectLoccalityName" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
                                   <Component id="txtSubjectCountry" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
                                   <Component id="txtSubjectSAN" alignment="0" min="-2" pref="367" max="-2" attributes="0"/>
-                                  <Component id="spnSubjectYear" min="-2" pref="100" max="-2" attributes="0"/>
+                                  <Component id="spnSubjectDay" min="-2" pref="100" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="312" max="32767" attributes="0"/>
                           </Group>
@@ -814,8 +814,8 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblSubjectYear" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="spnSubjectYear" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblSubjectDays" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="spnSubjectDay" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -860,15 +860,15 @@
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JLabel" name="lblSubjectYear">
+                    <Component class="javax.swing.JLabel" name="lblSubjectDays">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Year:"/>
+                        <Property name="text" type="java.lang.String" value="Days:"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JSpinner" name="spnSubjectYear">
+                    <Component class="javax.swing.JSpinner" name="spnSubjectDay">
                       <Properties>
                         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                          <SpinnerModel initial="1" maximum="99" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
+                          <SpinnerModel initial="46" maximum="9999" minimum="1" numberType="java.lang.Integer" stepSize="1" type="number"/>
                         </Property>
                       </Properties>
                     </Component>
