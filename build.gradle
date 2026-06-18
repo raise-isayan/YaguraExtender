@@ -9,7 +9,7 @@ buildscript {
 plugins {
     id 'java-library'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '9.4.2'
     id 'org.asciidoctor.jvm.base' version '4.0.5'
     id 'org.asciidoctor.jvm.convert' version '4.0.5'
     id 'org.asciidoctor.jvm.pdf' version '4.0.5'
@@ -132,6 +132,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.5'
     //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.5'
     //testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.5'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
  //   testImplementation fileTree(dir: 'libs', include: ['*.jar'])
 
