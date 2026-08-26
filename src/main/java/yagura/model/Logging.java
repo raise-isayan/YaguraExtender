@@ -9,7 +9,6 @@ import burp.api.montoya.proxy.websocket.ProxyWebSocketCreation;
 import burp.api.montoya.websocket.BinaryMessage;
 import burp.api.montoya.websocket.TextMessage;
 import burp.api.montoya.websocket.WebSocketCreated;
-import extend.util.external.ZipUtil;
 import extension.burp.BurpUtil;
 import extension.burp.HttpTarget;
 import extension.helpers.ConvertUtil;
@@ -17,13 +16,12 @@ import extension.helpers.FileUtil;
 import extension.helpers.HttpUtil;
 import extension.helpers.StringUtil;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -34,6 +32,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPOutputStream;
 import yagura.Config;
 
 /**
@@ -55,7 +54,7 @@ public class Logging implements Closeable {
     }
 
     public final static String LOG_PREFIX = "burp_";
-    public final static String LOG_SUFFIX = ".zip";
+    public final static String LOG_GZ_SUFFIX = ".gz";
 
     private final static Pattern LOG_COUNTER = Pattern.compile(LOG_PREFIX + "\\d{8}(?:_(\\d+))?");
 
@@ -90,14 +89,6 @@ public class Logging implements Closeable {
         };
     }
 
-    protected FileSystem openFileSystem(Path filePath) throws IOException, URISyntaxException {
-        if (getLoggingProperty().isCompress()) {
-            return ZipUtil.openZip(filePath);
-        } else {
-            return null;
-        }
-    }
-
     /**
      * ログの取得
      *
@@ -105,11 +96,7 @@ public class Logging implements Closeable {
      * @throws java.io.IOException
      */
     public File mkLog() throws IOException {
-        if (this.getLoggingProperty().isCompress()) {
-            return mkLogZip(getLoggingProperty().getBaseDir(), getLoggingProperty().getLogDirFormat());
-        } else {
-            return mkLogDir(getLoggingProperty().getBaseDir(), getLoggingProperty().getLogDirFormat());
-        }
+        return mkLogDir(getLoggingProperty().getBaseDir(), getLoggingProperty().getLogDirFormat());
     }
 
     private final static Comparator<File> LOG_FILE_COMPARE = new Comparator<File>() {
@@ -120,40 +107,6 @@ public class Logging implements Closeable {
             return i2 - i1;
         }
     };
-
-    /**
-     * ログZipファイルの作成
-     *
-     * @param logBaseDir 基準ディレクトリ
-     * @param logdirFormat フォーマット
-     * @return 作成ディレクトリ
-     * @throws java.io.IOException
-     */
-    protected File mkLogZip(String logBaseDir, String logdirFormat) throws IOException {
-        File baseDir = new File(logBaseDir);
-        File[] logFiles = baseDir.listFiles(listLogFileFilter(false, LOG_SUFFIX));
-        if (logFiles == null || (logFiles != null && logFiles.length == 0)) {
-            logFiles = new File[]{new File(getLogFileName(logdirFormat, 0) + LOG_SUFFIX)};
-        }
-        Arrays.sort(logFiles, LOG_FILE_COMPARE);
-        File targetZip = logFiles[0];
-        int countup = getLogFileCounter(targetZip.getName());
-        do {
-            String fname = getLogFileName(logdirFormat, countup) + LOG_SUFFIX;
-            targetZip = new File(logBaseDir, fname);
-            if (!targetZip.exists()) {
-                targetZip = FileUtil.createEmptyZip(targetZip);
-                break;
-            } else {
-                if (FileUtil.totalFileSize(targetZip, false) > this.getLoggingProperty().getLogFileByteLimitSize() && this.getLoggingProperty().getLogFileByteLimitSize() > 0) {
-                    countup++;
-                    continue;
-                }
-                break;
-            }
-        } while (true);
-        return targetZip;
-    }
 
     /**
      * ログディレクトリの作成
@@ -199,31 +152,21 @@ public class Logging implements Closeable {
         return getLogFileBaseName(logdirFormat) + suffix;
     }
 
-    private FileSystem fs = null;
+//    private FileSystem fs = null;
     private Path logFilePath = null;
 
     public void open(File logFile) throws IOException {
-        try {
-            this.logFilePath = logFile.toPath();
-            this.fs = openFileSystem(this.logFilePath);
-        } catch (URISyntaxException ex) {
-            throw new IOException(ex);
-        }
+        this.logFilePath = logFile.toPath();
     }
 
     @Override
     public void close() throws IOException {
-        if (getLoggingProperty().isCompress()) {
-            if (this.fs != null && this.fs.isOpen()) {
-                this.fs.close();
-            }
-        }
     }
 
     protected Path getLoggingPath(String filename) {
         Path path = null;
-        if (this.getLoggingProperty().isCompress()) {
-            path = this.fs.getPath(filename);
+       if (this.getLoggingProperty().isCompress()) {
+            path = Path.of(this.logFilePath.toString(), filename + LOG_GZ_SUFFIX);
         } else {
             path = Path.of(this.logFilePath.toString(), filename);
         }
@@ -256,7 +199,7 @@ public class Logging implements Closeable {
                 }
                 if (includeLog) {
                     Path path = getLoggingPath(baseLogFileName);
-                    try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                    try (OutputStream ostm = new AppendLogStream(path, this.getLoggingProperty().isCompress())) {
                         HttpRequestResponse messageInfo = HttpRequestResponse.httpRequestResponse(httpResuest, httpResponse);
                         writeMessage(ostm, messageInfo);
                         ostm.flush();
@@ -294,7 +237,7 @@ public class Logging implements Closeable {
                 }
                 if (includeLog) {
                     Path path = getLoggingPath(baseLogFileName);
-                    try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+                    try (OutputStream ostm = new AppendLogStream(path, this.getLoggingProperty().isCompress())) {
                         writeMessage(ostm, messageInfo);
                         ostm.flush();
                     }
@@ -346,7 +289,7 @@ public class Logging implements Closeable {
     protected synchronized void writeWebSocektMessage(String baseLogFileName, final HttpRequest upgradeRequest, TextMessage textMessage) {
         try {
             Path path = getLoggingPath(baseLogFileName);
-            try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            try (OutputStream ostm = new AppendLogStream(path, this.getLoggingProperty().isCompress())) {
                 writeWebSocektTextMessage(ostm, upgradeRequest, textMessage);
                 ostm.flush();
             }
@@ -365,7 +308,7 @@ public class Logging implements Closeable {
     public void writeWebSocektMessage(String baseLogFileName, final HttpRequest upgradeRequest, BinaryMessage binaryMessage) {
         try {
             Path path = getLoggingPath(baseLogFileName);
-            try (OutputStream ostm = Files.newOutputStream(path, StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            try (OutputStream ostm = new AppendLogStream(path, this.getLoggingProperty().isCompress())) {
                 writeWebSocektBinayMessage(ostm, upgradeRequest, binaryMessage);
                 ostm.flush();
             }
@@ -395,6 +338,88 @@ public class Logging implements Closeable {
             fostm.write(StringUtil.getBytesRaw(HttpUtil.LINE_TERMINATE));
             fostm.write(StringUtil.getBytesRaw("======================================================" + HttpUtil.LINE_TERMINATE));
         }
+    }
+
+
+    public static class AppendLogStream extends OutputStream implements Closeable {
+
+        private final Path path;
+        private final int flushThresholdBytes;
+        private final boolean compress;
+        private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+        public AppendLogStream(Path path, boolean compress) throws IOException {
+            this(path, compress, -1);
+        }
+
+        public AppendLogStream(Path path, boolean compress, int flushThresholdBytes) throws IOException {
+            this.path = path;
+            this.flushThresholdBytes = flushThresholdBytes;
+            this.compress = compress;
+            createEmptyFile();
+        }
+
+        /**
+         * 新規作成。compress=trueなら空の有効なgzip、falseなら空のテキストファイル
+         */
+        private void createEmptyFile() throws IOException {
+            if (compress) {
+                try (OutputStream os = Files.newOutputStream(path,
+                        StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
+                    try (GZIPOutputStream gzos = new GZIPOutputStream(os)) {
+                    }
+                }
+            } else {
+                Files.newOutputStream(path,
+                        StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING).close();
+            }
+        }
+
+        public synchronized void write(byte[] data) throws IOException {
+            buffer.write(data);
+            if (0 <= flushThresholdBytes && flushThresholdBytes <= buffer.size()) {
+                flush();
+            }
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            buffer.write(b);
+            if (0 <= flushThresholdBytes && flushThresholdBytes <= buffer.size()) {
+                flush();
+            }
+        }
+
+        /**
+         * バッファの中身をファイル末尾に書き出す
+         */
+        @Override
+        public void flush() throws IOException {
+            if (buffer.size() == 0) {
+                return;
+            }
+            if (compress) {
+                // 新しいgzipメンバーとして追記
+                try (OutputStream os = Files.newOutputStream(path, StandardOpenOption.APPEND)) {
+                    try (GZIPOutputStream gzos = new GZIPOutputStream(os)) {
+                        buffer.writeTo(gzos);
+                    }
+                }
+            } else {
+                // プレーンテキストとしてそのまま追記
+                try (OutputStream os = Files.newOutputStream(path, StandardOpenOption.APPEND)) {
+                    buffer.writeTo(os);
+                }
+            }
+            buffer.reset();
+        }
+
+        @Override
+        public synchronized void close() throws IOException {
+            flush();
+            buffer.close();
+        }
+
     }
 
 }

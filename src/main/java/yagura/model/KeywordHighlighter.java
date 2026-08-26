@@ -1,5 +1,6 @@
 package yagura.model;
 
+import extension.view.base.CaptureItem;
 import extension.view.base.RegexItem;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -77,6 +78,7 @@ public class KeywordHighlighter extends DefaultHighlighter implements IKeywordHi
             this.addHighlight(lastPosition - s.length(), lastPosition, highlightPainter);
         }
     }
+
 
     @Override
     public void clearHighlightKeyword() {

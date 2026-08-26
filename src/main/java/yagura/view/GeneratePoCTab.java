@@ -857,7 +857,7 @@ public class GeneratePoCTab extends javax.swing.JPanel implements ExtensionProvi
             DateTimeFormatter localfmt = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
             final StringBuilder formAction = new StringBuilder();
-            formAction.append("<!-- begen form -->").append(HttpUtil.LINE_TERMINATE);
+            formAction.append("<!-- begin form -->").append(HttpUtil.LINE_TERMINATE);
             String targetLink = (csrfMultiForm) ? "target=\"_blank\"" : "";
             // csrf urlencoded/multipart
             if (!csrfTextPlain) {
