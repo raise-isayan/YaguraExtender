@@ -38,13 +38,14 @@ import extension.view.base.RegexItem;
 import java.util.EnumSet;
 import yagura.model.HttpMessageItem;
 import yagura.model.JSearchProperty;
-import yagura.model.ResultView;
 import yagura.model.UniversalViewProperty.MessageView;
 import extension.burp.IBurpTab;
 import extension.helpers.HttpRequestWapper;
 import extension.helpers.HttpResponseWapper;
 import java.util.List;
 import yagura.model.ResultFilter;
+import yagura.model.ResultView;
+import yagura.model.ResultViewModel;
 
 /**
  *
@@ -376,7 +377,9 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         return this;
     }
 
-    private DefaultObjectTableModel<ResultView> modelSearch = null;
+//    private DefaultObjectTableModel<ResultView> modelSearch = null;
+    private ResultViewModel modelSearch = null;
+
     private final MessageViewTab tabMessageView = new MessageViewTab();
     private final JComboBox cmbColor = new JComboBox();
     private final DefaultTableCellRenderer colorTableRenderer = new DefaultTableCellRenderer() {
@@ -486,7 +489,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         this.tabMessageView.setVisible(false);
         this.tabMessageView.setMessageView(EnumSet.of(MessageView.JRAW));
 
-        this.modelSearch = new DefaultObjectTableModel<>(this.tableResult.getModel());
+//        this.modelSearch = new DefaultObjectTableModel<>(this.tableResult.getModel());
+        this.modelSearch = new ResultViewModel(this.tableResult.getModel());
         this.modelSearch.setCellEditable(true);
         this.tableResult.setModel(this.modelSearch);
 
@@ -653,7 +657,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
         }
         int rowIndex = this.tableResult.convertRowIndexToModel(row);
         if (rowIndex > -1) {
-            ProxyHttpRequestResponse msgItem = this.modelSearch.getData(rowIndex);
+//            ProxyHttpRequestResponse msgItem = this.modelSearch.getData(rowIndex);
+            ProxyHttpRequestResponse msgItem = this.modelSearch.getBean(rowIndex);
             item = new HttpMessageItem(msgItem);
         }
         return item;
@@ -792,7 +797,8 @@ public class JSearchTab extends javax.swing.JPanel implements IBurpTab {
                     this.lblProgress.setText(String.format(SEARCH_PROGRESS, (double) i / proxyHistory.size() * 100.0));
                 } while (false);
                 if (m != null && find) {
-                    this.modelSearch.addRow(new ResultView(item, item.getOrdinal()));
+                    this.modelSearch.addBean(new ResultView(item, item.getOrdinal()));
+                    //addRow(new ResultViewLegacy(item, item.getOrdinal()));
                 }
                 if (this.cancel) {
                     break;

@@ -165,7 +165,7 @@ public class Logging implements Closeable {
 
     protected Path getLoggingPath(String filename) {
         Path path = null;
-       if (this.getLoggingProperty().isCompress()) {
+        if (this.getLoggingProperty().isCompress()) {
             path = Path.of(this.logFilePath.toString(), filename + LOG_GZ_SUFFIX);
         } else {
             path = Path.of(this.logFilePath.toString(), filename);
@@ -340,7 +340,6 @@ public class Logging implements Closeable {
         }
     }
 
-
     public static class AppendLogStream extends OutputStream implements Closeable {
 
         private final Path path;
@@ -363,29 +362,30 @@ public class Logging implements Closeable {
          * 新規作成。compress=trueなら空の有効なgzip、falseなら空のテキストファイル
          */
         private void createEmptyFile() throws IOException {
-            if (compress) {
-                try (OutputStream os = Files.newOutputStream(path,
+            if (this.compress) {
+                try (OutputStream os = Files.newOutputStream(this.path,
                         StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
                     try (GZIPOutputStream gzos = new GZIPOutputStream(os)) {
                     }
                 }
             } else {
-                Files.newOutputStream(path,
+                Files.newOutputStream(this.path,
                         StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING).close();
             }
         }
 
+        @Override
         public synchronized void write(byte[] data) throws IOException {
-            buffer.write(data);
-            if (0 <= flushThresholdBytes && flushThresholdBytes <= buffer.size()) {
+            this.buffer.write(data);
+            if (0 <= this.flushThresholdBytes && this.flushThresholdBytes <= this.buffer.size()) {
                 flush();
             }
         }
 
         @Override
         public void write(int b) throws IOException {
-            buffer.write(b);
-            if (0 <= flushThresholdBytes && flushThresholdBytes <= buffer.size()) {
+            this.buffer.write(b);
+            if (0 <= this.flushThresholdBytes && this.flushThresholdBytes <= this.buffer.size()) {
                 flush();
             }
         }
@@ -395,29 +395,29 @@ public class Logging implements Closeable {
          */
         @Override
         public void flush() throws IOException {
-            if (buffer.size() == 0) {
+            if (this.buffer.size() == 0) {
                 return;
             }
-            if (compress) {
+            if (this.compress) {
                 // 新しいgzipメンバーとして追記
-                try (OutputStream os = Files.newOutputStream(path, StandardOpenOption.APPEND)) {
+                try (OutputStream os = Files.newOutputStream(this.path, StandardOpenOption.APPEND)) {
                     try (GZIPOutputStream gzos = new GZIPOutputStream(os)) {
                         buffer.writeTo(gzos);
                     }
                 }
             } else {
                 // プレーンテキストとしてそのまま追記
-                try (OutputStream os = Files.newOutputStream(path, StandardOpenOption.APPEND)) {
-                    buffer.writeTo(os);
+                try (OutputStream os = Files.newOutputStream(this.path, StandardOpenOption.APPEND)) {
+                    this.buffer.writeTo(os);
                 }
             }
-            buffer.reset();
+            this.buffer.reset();
         }
 
         @Override
         public synchronized void close() throws IOException {
             flush();
-            buffer.close();
+            this.buffer.close();
         }
 
     }

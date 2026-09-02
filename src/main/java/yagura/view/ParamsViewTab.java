@@ -33,8 +33,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.swing.SwingWorker;
 import yagura.model.Parameter;
-import yagura.model.ParamsView;
-import yagura.model.ParamsViewModel;
+import yagura.model.ParameterView;
+import yagura.model.ParameterViewModel;
 import yagura.model.UniversalViewProperty;
 
 /**
@@ -233,7 +233,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
     }//GEN-LAST:event_btnDecodeStateChanged
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        this.modelParams.addRow(new ParamsView());
+        this.modelParams.addBean(new ParameterView());
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
@@ -256,7 +256,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
         this.toggleDecode = this.btnDecode.isSelected();
     }//GEN-LAST:event_btnDecodeActionPerformed
 
-    private ParamsViewModel modelParams = null;
+    private ParameterViewModel modelParams = null;
     private final QuickSearchTab quickSearchTab = new QuickSearchTab();
 
     private final Action copyAction = new AbstractAction() {
@@ -267,7 +267,7 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
     };
 
     private void customizeComponents() {
-        this.modelParams = new ParamsViewModel(this.tableParams.getModel());
+        this.modelParams = new ParameterViewModel(this.tableParams.getModel());
         this.tableParams.setModel(this.modelParams);
         this.modelParams.addTableModelListener(new TableModelListener() {
             @Override
@@ -397,21 +397,21 @@ public class ParamsViewTab extends javax.swing.JPanel implements IBurpMessageTab
         this.modelParams.removeAll();
         for (int i = 0; i < params.size(); i++) {
             ParsedHttpParameter p = params.get(i);
-            this.modelParams.addRow(new ParamsView(p));
+            this.modelParams.addBean(new ParameterView(p));
         }
     }
 
     public List<Parameter> getParams() {
         List<Parameter> params = new ArrayList<>();
         for (int i = 0; i < this.modelParams.getRowCount(); i++) {
-            ParamsView p = this.modelParams.getData(i);
+            ParameterView p = this.modelParams.getBean(i);
             params.add(p.getParameter());
         }
         return params;
     }
 
     public void addParam(Parameter p) {
-        this.modelParams.addRow(new ParamsView(p));
+        this.modelParams.addBean(new ParameterView(p));
     }
 
     @Override

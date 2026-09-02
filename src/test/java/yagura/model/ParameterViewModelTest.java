@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author isayan
  */
-public class ParamsViewModelTest {
+public class ParameterViewModelTest {
 
-    public ParamsViewModelTest() {
+    public ParameterViewModelTest() {
     }
 
     @BeforeAll
@@ -43,13 +43,13 @@ public class ParamsViewModelTest {
         {
             String value = new String("あいうえお".getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
             String expResult = "あいうえお";
-            String result = ParamsViewModel.paramDecode(value, StandardCharsets.UTF_8.name(), ContentType.JSON);
+            String result = ParameterViewModel.paramDecode(value, StandardCharsets.UTF_8.name(), ContentType.JSON);
             assertEquals(expResult, result);
         }
         {
             String value = "\\u3042\\u3044\\u3046\\u3048\\u304a";
             String expResult = "あいうえお";
-            String result = ParamsViewModel.paramDecode(value, StandardCharsets.UTF_8.name(), ContentType.JSON);
+            String result = ParameterViewModel.paramDecode(value, StandardCharsets.UTF_8.name(), ContentType.JSON);
             assertEquals(expResult, result);
         }
     }
@@ -63,7 +63,7 @@ public class ParamsViewModelTest {
         {
             String value = "あいうえお";
             String expResult = "\\u3042\\u3044\\u3046\\u3048\\u304a";
-            String result = ParamsViewModel.paramEncode(value, StandardCharsets.UTF_8.name(), ContentType.JSON);
+            String result = ParameterViewModel.paramEncode(value, StandardCharsets.UTF_8.name(), ContentType.JSON);
             assertEquals(expResult, result);
         }
     }

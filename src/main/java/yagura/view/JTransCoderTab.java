@@ -65,6 +65,7 @@ import yagura.model.UniversalViewProperty;
 import extension.burp.IBurpTab;
 import extension.helpers.DateUtil;
 import extension.helpers.SmartCodec;
+import extension.helpers.SmartFormat;
 import extension.helpers.jws.JWKToken;
 import java.io.StringWriter;
 import java.security.InvalidParameterException;
@@ -5949,6 +5950,17 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 this.txtOutputFormat.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
                 this.tabbetOutput.addTab("XML", this.pnlOutputFormat);
                 this.txtOutputFormat.setText(FormatUtil.prettyXml(outputText, pretty));
+            } else {
+                SmartFormat.FormatType fmtType = SmartFormat.guessFormat(outputText);
+                if (fmtType == fmtType.JSON) {
+                    this.txtOutputFormat.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+                    this.tabbetOutput.addTab("JSON", this.pnlOutputFormat);
+                    this.txtOutputFormat.setText(SmartFormat.formatJson(outputText, 2));
+                } else if (fmtType == fmtType.XML) {
+                    this.txtOutputFormat.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
+                    this.tabbetOutput.addTab("XML", this.pnlOutputFormat);
+                    this.txtOutputFormat.setText(SmartFormat.formatXml(outputText, 2));
+                }
             }
             this.txtOutputFormat.setCaretPosition(0);
         } catch (IOException ex) {
