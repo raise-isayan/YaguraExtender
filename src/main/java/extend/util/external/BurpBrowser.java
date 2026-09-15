@@ -1,5 +1,6 @@
 package extend.util.external;
 
+import burp.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import extension.burp.BurpConfig;
 import extension.burp.BurpVersion;
@@ -12,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -19,12 +21,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,9 +45,9 @@ public class BurpBrowser {
 
     private final static String CHROMIUM_BROWSER = "burpbrowser";
 
-    private final static String CHROMIUM_BROWSER_EXTENSION = "burp-chromium-extension";
+    private final static String BURP_CHROMIUM_BROWSER = "resources/Browser/";
 
-    private final static String BURP_CHROMIUM_EXTENSION = "resources/Browser/ChromiumExtension";
+    private final static Map<String, String> BURP_CHROMIUM_EXTENSIONS = new HashMap<>();
 
     private final static String BURP_CHROMIUM_PROPERTIES = "/chromium.properties";
 
@@ -54,6 +58,10 @@ public class BurpBrowser {
     static {
         try {
             chromium_prop.load(BurpBrowser.class.getResourceAsStream(BURP_CHROMIUM_PROPERTIES));
+            BURP_CHROMIUM_EXTENSIONS.put("ChromiumExtension", "burp-chromium-extension");
+            BURP_CHROMIUM_EXTENSIONS.put("DomInvader", "dom-invader");
+            BURP_CHROMIUM_EXTENSIONS.put("NavigationRecorder", "navigation-recorder");
+            BURP_CHROMIUM_EXTENSIONS.put("NewTab", "new-tab");
         } catch (IOException | java.lang.NullPointerException ex) {
             logger.log(Level.SEVERE, ex.getMessage(), ex);
         }
@@ -130,21 +138,35 @@ public class BurpBrowser {
         return dir.resolve(path);
     }
 
-    public static Path getBrowseExtensionDirectory() {
-        Path dir = BurpConfig.getBurpSuiteDirectoryPath();
-        Path path = Path.of(CHROMIUM_BROWSER_EXTENSION);
-        return dir.resolve(path);
+    public static File [] getBrowseExtensionDirectory() {
+        File dir = BurpConfig.getBurpSuiteDirectoryPath().toFile();
+        return dir.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return BURP_CHROMIUM_EXTENSIONS.values().contains(name);
+            }
+        });
     }
 
-    public static boolean existsBrowseExtensionDirectory() {
-        File dir = getBrowseExtensionDirectory().toFile();
-        return dir.exists();
+    public static File [] getBrowseExtensions() {
+        Path burpDir = BurpConfig.getBurpSuiteDirectoryPath();
+        Path launchJar = getBaseLaunchJar();
+        BurpExtension.api().logging().logToOutput("jar:" + launchJar.toAbsolutePath().toString());
+        List<File> paths = new ArrayList<>();
+        try {
+            String [] extensions = ZipUtil.getSubDirectories(launchJar.toAbsolutePath().toFile(), BURP_CHROMIUM_BROWSER);
+            for (String ext : extensions) {
+                String fileName = BURP_CHROMIUM_EXTENSIONS.get(ext);
+                if (fileName != null) {
+                    paths.add(new File(burpDir.toFile(), fileName));
+                }
+            }
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return paths.toArray(File[]::new);
     }
 
-//        Properties p = System.getProperties();
-//        for (Object k : p.keySet()) {
-//            BurpExtension.helpers().outPrintln("key:" + k + " value:" + p.get(k));
-//        }
     /**
      * JDK 24 の場合以下の値がnullになる BurpBrowser.class.getResource("/")
      *
@@ -166,6 +188,28 @@ public class BurpBrowser {
         if (command != null) {
             File execFile = new File(command);
             return execFile.getParentFile().toPath();
+        }
+        return null;
+    }
+
+    public static Path getBaseLaunchJar() {
+        String exe4j = System.getProperty("exe4j.launchName");
+        if (exe4j != null) {
+            File execFile = new File(exe4j);
+            File execFileJar [] = execFile.getParentFile().listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return (name.endsWith(".jar"));
+                }
+            });
+            if (execFileJar.length > 0) {
+                return execFileJar[0].toPath();
+            }
+        }
+        String command = System.getProperty("sun.java.command");
+        if (command != null) {
+            File execFile = new File(command);
+            return execFile.toPath();
         }
         return null;
     }
@@ -193,16 +237,23 @@ public class BurpBrowser {
     }
 
     public static void copyBrowserExtension() throws IOException {
-        if (!existsBrowseExtensionDirectory()) {
-            File browserExtensions = getBrowseExtensionDirectory().toFile();
-            browserExtensions.mkdir();
-            URL burpJarUrl = BurpBrowser.class.getResource("/");
-            String burpJar = ZipUtil.getBaseJar(burpJarUrl);
-            ZipUtil.decompressZip(new File(burpJar), browserExtensions, BURP_CHROMIUM_EXTENSION);
+        Path burpDir = BurpConfig.getBurpSuiteDirectoryPath();
+        Path launchJar = getBaseLaunchJar();
+        String [] extensions = ZipUtil.getSubDirectories(launchJar.toAbsolutePath().toFile(), BURP_CHROMIUM_BROWSER);
+        for (String ext : extensions) {
+            String  fileName = BURP_CHROMIUM_EXTENSIONS.get(ext);
+            if (fileName != null) {
+                File browserExtensions = new File(burpDir.toFile(), fileName);
+                browserExtensions.mkdir();
+                ZipUtil.decompressZip(launchJar.toFile(), browserExtensions, BURP_CHROMIUM_BROWSER + ext);
+            }
         }
     }
 
     public List<String> getBrowserExecAndArgs(String profileKey, int port) {
+        File [] extensionFiles = getBrowseExtensions();
+        String extensions =  Arrays.stream(extensionFiles).map(x -> x.getAbsolutePath()).collect(Collectors.joining(","));
+        BurpExtension.api().logging().logToOutput("args;" + extensions);
         // chrome://version/ から情報取得
         final List<String> CHROME_ARGS = List.of(
                 "--disable-ipc-flooding-protection",
@@ -241,7 +292,7 @@ public class BurpBrowser {
                 String.format("--user-data-dir=%s", getBrowseUserDataDirectory().toString()),
                 String.format("--profile-directory=%s", profileKey),
                 "--ignore-certificate-errors",
-                String.format("--load-extension=%s", getBrowseExtensionDirectory().toString()),
+                String.format("--load-extension=%s", extensions),
                 "chrome://newtab"
         );
         List<String> chromeExecAndArg = new ArrayList<>();

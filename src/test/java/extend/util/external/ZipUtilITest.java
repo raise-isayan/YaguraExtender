@@ -50,6 +50,18 @@ public class ZipUtilITest {
     }
 
     @Test
+    public void testFileJarDir() throws IOException {
+        System.out.println("testFileJarDir");
+        File file = new File("C:/burp/burpsuite_desktop_v2026.8.jar");
+        if (file.exists()) {
+            String extensions [] = ZipUtil.getSubDirectories(file, "resources/Browser/");
+            for (String l : extensions) {
+                System.out.println("extension:" + l);
+            }
+        }
+    }
+
+    @Test
     public void testBaseJar() throws IOException {
         System.out.println("testBaseJar");
         URL url = new URL("file:/resources/help.jar!/images/Extender_Yagura.png");

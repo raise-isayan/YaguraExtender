@@ -11,10 +11,14 @@ import java.net.URL;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.util.Enumeration;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 /**
@@ -80,7 +84,27 @@ public class ZipUtil {
                 }
             }
         }
-
     }
 
+    public static String[] getSubDirectories(File zipFilePath, String targetPath) throws IOException {
+        // ディレクトリ指定として確実に末尾を '/' に揃える
+        String formattedPrefix = targetPath.endsWith("/") ? targetPath : targetPath + "/";
+        Set<String> dirNames = new TreeSet<>();
+        try (ZipFile zipFile = new ZipFile(zipFilePath)) {
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();
+            while (entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                String entryName = entry.getName();
+                if (entryName.startsWith(formattedPrefix) && entryName.length() > formattedPrefix.length()) {
+                    String relativePath = entryName.substring(formattedPrefix.length());
+                    int slashIndex = relativePath.indexOf('/');
+                    if (slashIndex != -1) {
+                        String subDirName = relativePath.substring(0, slashIndex);
+                        dirNames.add(subDirName);
+                    }
+                }
+            }
+        }
+        return dirNames.toArray(new String[0]);
+    }
 }
