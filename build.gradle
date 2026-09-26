@@ -9,7 +9,7 @@ buildscript {
 plugins {
     id 'application'
     id 'java-library'
-    id 'com.gradleup.shadow' version '9.4.2'
+    id 'com.gradleup.shadow' version '9.6.1'
     id 'org.asciidoctor.jvm.base' version '4.0.5'
     id 'org.asciidoctor.jvm.convert' version '4.0.5'
     id 'org.asciidoctor.jvm.pdf' version '4.0.5'
@@ -85,9 +85,9 @@ task release(type: Zip, dependsOn: ['build', 'asciidoctor']) {
 dependencies {
 
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.84'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.86'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.84'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.86'
 
     // https://mvnrepository.com/artifact/org.brotli/dec
     compileOnly 'org.brotli:dec:0.1.2'
@@ -99,15 +99,15 @@ dependencies {
     // https://mvnrepository.com/artifact/net.portswigger.burp.extensions/montoya-api
     implementation 'net.portswigger.burp.extensions:montoya-api:2026.7'
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    implementation 'commons-codec:commons-codec:1.22.0'
+    implementation 'commons-codec:commons-codec:1.22.1'
     // https://mvnrepository.com/artifact/com.fifesoft/rsyntaxtextarea
-    implementation 'com.fifesoft:rsyntaxtextarea:3.5.4'
+    implementation 'com.fifesoft:rsyntaxtextarea:3.6.3'
 
     // Source: https://mvnrepository.com/artifact/org.mozilla/rhino
     implementation 'org.mozilla:rhino:1.9.1'
 
     // https://mvnrepository.com/artifact/org.jsoup/jsoup
-    implementation 'org.jsoup:jsoup:1.21.2'
+    implementation 'org.jsoup:jsoup:1.23.2'
 
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
@@ -121,12 +121,12 @@ dependencies {
 
     // Use JUnit Jupiter for testing.
     // https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk18on
-    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.84'
+    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.86'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
-    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.84'
+    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.86'
 
     // https://mvnrepository.com/artifact/commons-codec/commons-codec
-    testImplementation 'commons-codec:commons-codec:1.22.0'
+    testImplementation 'commons-codec:commons-codec:1.22.1'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation 'org.junit.jupiter:junit-jupiter:5.14.4'
@@ -145,7 +145,7 @@ dependencies {
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
 
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
-    testImplementation 'org.mockito:mockito-core:5.4.0'
+    testImplementation 'org.mockito:mockito-core:5.15.2'
 
 }
 
