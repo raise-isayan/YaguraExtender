@@ -121,12 +121,15 @@ public class CodecUtilTest {
     }
 
     @Test
-    public void testBase64() {
-        System.out.println("testBase64");
-
+    public void testBase64Decode() {
+        System.out.println("testBase64Decode");
         assertEquals("!\"#$%&'()=~", CodecUtil.toBase64Decode("ISIjJCUmJygpPX4=", StandardCharsets.ISO_8859_1));
         assertEquals("qwertyuiopASDFGHJKL", CodecUtil.toBase64Decode("cXdlcnR5dWlvcEFTREZHSEpLTA==", StandardCharsets.ISO_8859_1));
+    }
 
+    @Test
+    public void testBase64Encode() {
+        System.out.println("testBase64Encode");
         assertEquals(ConvertUtil.toBase64Encode("12345667890q", StandardCharsets.ISO_8859_1, false), CodecUtil.toBase64Encode("12345667890q", StandardCharsets.ISO_8859_1, false));
         assertEquals(ConvertUtil.toBase64Encode("!\"#$%&'()=", StandardCharsets.ISO_8859_1, false), CodecUtil.toBase64Encode("!\"#$%&'()=", StandardCharsets.ISO_8859_1, false));
         assertEquals(ConvertUtil.toBase64Encode("qwertyuiopASDFGHJKL", StandardCharsets.ISO_8859_1, false), CodecUtil.toBase64Encode("qwertyuiopASDFGHJKL", StandardCharsets.ISO_8859_1, false));
@@ -146,12 +149,20 @@ public class CodecUtilTest {
         assertEquals("Zm9vYg", CodecUtil.toBase64Encode("foob", StandardCharsets.ISO_8859_1, false));
         assertEquals("Zm9vYmE", CodecUtil.toBase64Encode("fooba", StandardCharsets.ISO_8859_1, false));
         assertEquals("Zm9vYmFy", CodecUtil.toBase64Encode("foobar", StandardCharsets.ISO_8859_1, false));
-
     }
 
     @Test
-    public void testBaseN() {
-        System.out.println("testBaseN");
+    public void testBaseNEncode() {
+        System.out.println("testBaseNEncode");
+        assertEquals("", CodecUtil.toBase58Encode("", StandardCharsets.ISO_8859_1));
+        assertEquals("2m", CodecUtil.toBase58Encode("f", StandardCharsets.ISO_8859_1));
+        assertEquals("8o8", CodecUtil.toBase58Encode("fo", StandardCharsets.ISO_8859_1));
+        assertEquals("bQbp", CodecUtil.toBase58Encode("foo", StandardCharsets.ISO_8859_1));
+        assertEquals("3csAg9", CodecUtil.toBase58Encode("foob", StandardCharsets.ISO_8859_1));
+        assertEquals("CZJRhmz", CodecUtil.toBase58Encode("fooba", StandardCharsets.ISO_8859_1));
+        assertEquals("t1Zv2yaZ", CodecUtil.toBase58Encode("foobar", StandardCharsets.ISO_8859_1));
+
+
         assertEquals("", CodecUtil.toBase32Encode("", StandardCharsets.ISO_8859_1, true));
         assertEquals("MY======", CodecUtil.toBase32Encode("f", StandardCharsets.ISO_8859_1, true));
         assertEquals("MZXQ====", CodecUtil.toBase32Encode("fo", StandardCharsets.ISO_8859_1, true));

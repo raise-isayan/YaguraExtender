@@ -498,6 +498,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
         rdoBase64URLSafe = new javax.swing.JRadioButton();
         rdoBase64andURL = new javax.swing.JRadioButton();
         pnlBaseN = new javax.swing.JPanel();
+        rdoBase58 = new javax.swing.JRadioButton();
         rdoBase32 = new javax.swing.JRadioButton();
         rdoBase16 = new javax.swing.JRadioButton();
         chkNPadding = new javax.swing.JCheckBox();
@@ -1254,7 +1255,11 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
 
         pnlTransAction.add(pnlBase64URLSafe);
 
-        pnlBaseN.setLayout(new java.awt.GridLayout(1, 3));
+        pnlBaseN.setLayout(new java.awt.GridLayout(1, 4));
+
+        rdoEncodeDecodeGrp.add(rdoBase58);
+        rdoBase58.setText("Base58");
+        pnlBaseN.add(rdoBase58);
 
         rdoEncodeDecodeGrp.add(rdoBase32);
         rdoBase32.setText("Base32");
@@ -3534,6 +3539,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
                 encode = CodecUtil.toBase64URLSafeEncode(value, this.getSelectEncode());
             } else if (this.rdoBase64andURL.isSelected()) {
                 encode = SmartCodec.toUrlEncode(CodecUtil.toBase64Encode(value, this.getSelectEncode()), StandardCharsets.US_ASCII, TransUtil.getEncodeTypePattern(this.getEncodeType()), this.rdoUpperCase.isSelected());
+            } else if (this.rdoBase58.isSelected()) {
+                encode = CodecUtil.toBase58Encode(value, this.getSelectEncode());
             } else if (this.rdoBase32.isSelected()) {
                 encode = CodecUtil.toBase32Encode(value, this.getSelectEncode(), this.chkNPadding.isSelected());
             } else if (this.rdoBase16.isSelected()) {
@@ -3614,6 +3621,8 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
             encodePattern = TransUtil.EncodePattern.BASE64_URLSAFE;
         } else if (this.rdoBase64andURL.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BASE64_AND_URL;
+        } else if (this.rdoBase58.isSelected()) {
+            encodePattern = TransUtil.EncodePattern.BASE58;
         } else if (this.rdoBase32.isSelected()) {
             encodePattern = TransUtil.EncodePattern.BASE32;
         } else if (this.rdoBase16.isSelected()) {
@@ -5584,6 +5593,7 @@ public class JTransCoderTab extends javax.swing.JPanel implements IBurpTab, Exte
     private javax.swing.JRadioButton rdoAlphaNum;
     private javax.swing.JRadioButton rdoBase16;
     private javax.swing.JRadioButton rdoBase32;
+    private javax.swing.JRadioButton rdoBase58;
     private javax.swing.JRadioButton rdoBase64;
     private javax.swing.JRadioButton rdoBase64URLSafe;
     private javax.swing.JRadioButton rdoBase64andURL;

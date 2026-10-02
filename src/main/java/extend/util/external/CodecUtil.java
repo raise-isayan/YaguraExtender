@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import org.apache.commons.codec.binary.Base16;
 import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Base58;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.Crc16;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -1169,6 +1170,51 @@ public class CodecUtil {
     public static BigInteger toMurmurHash3_128x64(String str, String charset)
             throws UnsupportedEncodingException {
         return toMurmurHash3_128x64(StringUtil.getBytesCharset(str, charset));
+    }
+
+    public static String toBase58Encode(String src, Charset charset, int lineLength, String lineSeparator) {
+        final Base58 b58 = new Base58.Builder().setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        byte bytes[] = b58.encode(StringUtil.getBytesCharset(src, charset));
+        return StringUtil.getBytesRawString(bytes);
+    }
+
+    public static String toBase58Encode(String src, Charset charset) {
+        Base58 b58 = Base58.builder().get();
+        byte bytes[] = b58.encode(StringUtil.getBytesCharset(src, charset));
+        return StringUtil.getBytesRawString(bytes);
+    }
+
+    public static String toBase58Encode(String src, String charset, int lineLength, String lineSeparator)
+            throws UnsupportedEncodingException {
+        final Base58 b58 = new Base58.Builder().setLineLength(lineLength).setLineSeparator(lineSeparator.getBytes(StandardCharsets.ISO_8859_1)).get();
+        byte bytes[] = b58.encode(StringUtil.getBytesCharset(src, charset));
+        return StringUtil.getBytesRawString(bytes);
+    }
+
+    public static String toBase58Encode(String src, String charset)
+            throws UnsupportedEncodingException {
+        Base58 b58 = Base58.builder().get();
+        byte bytes[] = b58.encode(StringUtil.getBytesCharset(src, charset));
+        return StringUtil.getBytesRawString(bytes);
+    }
+
+    public static String toBase58Decode(String str, Charset charset) {
+        Base58 b58 = Base58.builder().get();
+        byte bytes[] = b58.decode(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static String toBase58Decode(String str, String charset)
+            throws UnsupportedEncodingException {
+        Base58 b58 = Base58.builder().get();
+        byte bytes[] = b58.decode(str);
+        return StringUtil.getStringCharset(bytes, charset);
+    }
+
+    public static byte[] toBase58Decode(String str) {
+        Base58 b58 = Base58.builder().get();
+        byte bytes[] = b58.decode(str);
+        return bytes;
     }
 
     public static boolean isBase64Encoded(String value) {

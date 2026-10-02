@@ -104,7 +104,7 @@ public class TransUtil {
     }
 
     public enum EncodePattern {
-        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE_POINT, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, BYTE_BIN, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX;
+        NONE, BASE64, BASE64_URLSAFE, BASE64_AND_URL, BASE64_MIME, BASE58, BASE32, BASE16, UUENCODE, QUOTEDPRINTABLE, PUNYCODE, URL_STANDARD, HTML, HTML_UNICODE, HTML_BYTE, URL_UNICODE, UNICODE, UNICODE_POINT, UNICODE2, BYTE_HEX, BYTE_HEX1, BYTE_HEX2, BYTE_OCT, BYTE_BIN, GZIP, ZLIB, ZLIB_NOWRAP, UTF7, UTF8_ILL, C_LANG, JSON, SQL_LANG, REGEX;
 
 //        public static EncodePattern parseEnum(String s) {
 //            String value = s.toUpperCase();
@@ -386,6 +386,19 @@ public class TransUtil {
                             encode = CodecUtil.toBase64Encode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), applyCharset);
                         } else {
                             encode = CodecUtil.toBase64Encode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Base58 encode
+                    case BASE58: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = CodecUtil.toBase58Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            encode = CodecUtil.toBase58Encode(value, applyCharset);
+                        } else {
+                            encode = CodecUtil.toBase58Encode(value, StandardCharsets.ISO_8859_1);
                         }
                         break;
                     }
@@ -677,6 +690,19 @@ public class TransUtil {
                             decode = CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), applyCharset);
                         } else {
                             decode = CodecUtil.toBase64Decode(SmartCodec.toUrlDecode(value, StandardCharsets.US_ASCII), StandardCharsets.ISO_8859_1);
+                        }
+                        break;
+                    }
+                    // Base58 encode
+                    case BASE58: {
+                        value = value.replaceAll("[\r\n]", ""); // 改行削除
+                        byte[] bytes = CodecUtil.toBase58Decode(value);
+                        String guessCode = (charset == null) ? HttpUtil.getUniversalGuessCode(bytes) : charset;
+                        if (guessCode != null) {
+                            applyCharset = guessCode;
+                            decode = CodecUtil.toBase58Decode(value, applyCharset);
+                        } else {
+                            decode = CodecUtil.toBase58Decode(value, StandardCharsets.ISO_8859_1);
                         }
                         break;
                     }
