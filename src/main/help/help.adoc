@@ -5,7 +5,7 @@
 :table-caption: table
 :numbered:
 
-Language/xref:help-ja.adoc[日本語]
+Language/xref:help-ja.adoc[Japanese]
 
 == Start up 
 After pressing the "Add" button from the "Extensions" tab of Burp suite, add YaguraExtension.jar.
@@ -976,6 +976,9 @@ Base64URLSafe::
 
 Base64 + URLS::
     Encodes and decodes Base64 and URL format.
+
+Base58::
+    Encodes and decodes Base58 format.
 
 Base32::
     Encodes and decodes Base32 format.
